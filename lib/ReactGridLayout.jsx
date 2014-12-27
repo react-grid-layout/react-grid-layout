@@ -80,7 +80,12 @@ var ReactGridLayout = module.exports = React.createClass({
       breakpoint: this.props.initialBreakpoint,
       width: this.props.initialWidth,
       // Fills it full of zeroes
-      dragOffsets: _.range(0, this.props.children.length, 0)
+      dragOffsets: _.range(0, this.props.children.length, 0),
+      // TODO this should contain the x,y,w,h of a drag, if active, and render to an actual element
+      // that element should cause items around it to move
+      // this means that items should take up unoccupied space above themselves so that a cancelled drag doesn't
+      // cause an actual change
+      activeDrag: null
     };
   },
 
@@ -185,6 +190,15 @@ var ReactGridLayout = module.exports = React.createClass({
     return num * 100 + '%';
   },
 
+  placeholder() {
+    if (!this.state.activeDrag) return null;
+    var {x, y, width, height} = this.calcPosition(this.state.activeDrag);
+
+    return (
+      <div style={{width: width, height: height, left: x, top: y, position: 'absolute'}} className="placeholder" />
+    );
+  },
+
   /**
    * Given a grid item, set its style attributes & surround in a <Draggable>.
    * @param  {Element} child React element.
@@ -208,11 +222,38 @@ var ReactGridLayout = module.exports = React.createClass({
     return (
       <Draggable
         start={{x: x, y: y}}
-        watchStart={true} 
-        onStop={this.onDragStop.bind(this, i)}>
+        watchStart={!this.state.activeDrag} 
+        onStop={this.onDragStop.bind(this, i)}
+        onDrag={this.onDrag.bind(this, i)}>
         {child}
       </Draggable>
     );
+  },
+
+  onDrag(i, e, {element, position}) {
+    var newX = parseInt(element.style.left, 10);
+    var newY = parseInt(element.style.top, 10);
+
+    var x = Math.round((newX / this.state.width) * this.props.cols);
+    var y = Math.round(newY / this.props.rowHeight);
+    x = Math.max(Math.min(x, this.props.cols), 0);
+    y = Math.max(y, 0);
+
+    var l = this.state.layout[i];
+
+    var activeDrag = {
+      w: l.w, h: l.h, x: x, y: y, placeholder: true
+    };
+    
+    // var layout = [].concat(this.state.layout);
+    // layout = _.without(layout, {placeholder: true}).concat(activeDrag);
+    // layout[layout.length - 1].index = layout.length - 1;
+    // layout = this.moveElement(layout, layout.length - 1, x, y);
+    
+    this.setState({
+      // layout: layout,
+      activeDrag: activeDrag
+    });
   },
 
   /**
@@ -229,9 +270,10 @@ var ReactGridLayout = module.exports = React.createClass({
     x = Math.max(Math.min(x, this.props.cols), 0);
     y = Math.max(y, 0);
 
-    var layout = this.moveElement(this.state.layout, i, x, y);
-    console.log('moving to', x, y);
-    this.setState({layout: [].concat(layout)}); // use concat to make simple shouldComponentUpdate
+    // Remove placeholder from layout
+    var layout = _.without(layout, {placeholder: true});
+    layout = this.moveElement(this.state.layout, i, x, y);
+    this.setState({layout: [].concat(layout), activeDrag: null}); // use concat to make simple shouldComponentUpdate
   },
 
   render() {
@@ -240,9 +282,11 @@ var ReactGridLayout = module.exports = React.createClass({
     className = (className || "") + " reactGridLayout";
 
     var children = React.Children.map(this.props.children, this.processGridItem);
+
     return (
       <div {...props} className={className} style={{position: 'relative', height: '100%'}}>
         {children}
+        {this.placeholder()}
       </div>
     );
   }
