@@ -9,17 +9,18 @@ var TestLayout = module.exports = React.createClass({
 
   generate() {
     return _.map(_.range(12), function(i) {
-      return (<div key={i} className="gridItem">{i}</div>);
+      return (<div key={i} className="gridItem"><span className="text">{i}</span></div>);
     });
   },
 
   render() {
     var items = this.generate();
     var layout = _.map(items, function(item, i) {
-      return {x: i * 2 % 12, y: Math.floor(i / 6) * 2, w: 2, h: 2};
+      var y = Math.ceil(Math.random() * 8) + 1;
+      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y};
     });
     return (
-      <ReactGridLayout className="layout" initialLayout={layout} cols={12} rowHeight={150}>
+      <ReactGridLayout className="layout" initialLayout={layout} cols={12} rowHeight={30}>
         {this.generate()}
       </ReactGridLayout>
     );

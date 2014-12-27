@@ -26,9 +26,25 @@ var ReactGridLayout = module.exports = React.createClass({
     window.removeEventListener('resize', this.onResize);
   },
 
+  /**
+   * Return position on the page given an x, y, w, h.
+   * x, y, w, h are all in pixels.
+   * @param  {Object} l Layout object.
+   * @return {Object}   Object containing coords.
+   */
+  calcPosition(l) {
+    var cols = this.props.cols;
+    return {
+      x: this.state.width * (l.x / cols),
+      y: this.props.rowHeight * l.y,
+      width: (this.state.width * l.w / cols) - ((l.w - 1) * this.props.margin[0]) + 'px',
+      height: l.h * this.props.rowHeight - this.props.margin[1] + 'px'
+    };
+  },
+
   onResize() {
     // Set breakpoint
-    var width = this.refs.layout.getDOMNode().offsetWidth;
+    var width = this.getDOMNode().offsetWidth;
     var breakpoint = _(this.props.breakpoints)
     .pairs()
     .sortBy(function(val) { return -val[1];})
@@ -85,44 +101,53 @@ var ReactGridLayout = module.exports = React.createClass({
     return layout;
   },
 
+  /**
+   * Move / resize an element. Responsible for doing cascading movements of other elements.
+   * @param  {Number} i Index of element.
+   * @param  {Number} x X position in grid units.
+   * @param  {Number} y Y position in grid units.
+   * @param  {Number} w Width in grid units.
+   * @param  {Number} h Height in grid units.
+   */
+  moveElement(i, x, y, w, h) {
+    var change = {};
+    change[i] = {$merge: {x: x, y: y, w: w, h: h}};
+    this.setState({layout: React.addons.update(this.state.layout, change)});
+  },
+
+  /**
+   * Helper to convert a number to a percentage string.
+   * @param  {Number} num Any number
+   * @return {String}     That number as a percentage.
+   */
   perc(num) {
     return num * 100 + '%';
   },
 
+  /**
+   * Given a grid item, set its style attributes & surround in a <Draggable>.
+   * @param  {Element} child React element.
+   * @param  {Number}  i     Index of element.
+   * @return {Element}       Element wrapped in draggable and properly placed.
+   */
   processGridItem(child, i) {
     var l = this.state.layout[i];
-    var cols = this.props.cols;
+
+    // We calculate the x and y every pass, even though it's only actually used the first time.
+    var {x, y, width, height} = this.calcPosition(l);
 
     // We can set the width and height on the child, but unfortunately we can't set the position
     child.props.style = {
-      width: this.perc(l.w / cols),
-      height: l.h * this.props.rowHeight + 'px',
+      width: width,
+      height: height,
       position: 'absolute'
     };
 
-    // We calculate the x and y every pass, even though it's only actually used the first time.
-    var x = this.state.width * (l.x / cols);
-    var y = this.props.rowHeight * l.y;
-
-    // If the width has changed, we need to change the x position.
-    if (this.state.width !== this.props.initialWidth) {
-      // This is what the x position would be without resizing.
-      var originalX = this.props.initialWidth * (l.x / cols);
-      
-      // If the item has been dragged, we need to take that into account.
-      var widthMult = this.state.width / this.props.initialWidth;
-      x += (this.state.dragOffsets[i] * widthMult);
-      originalX += this.state.dragOffsets[i];
-      
-      // Margin the child over by the difference. Draggable doesn't mess with the margin so this is
-      // safe to set.
-      child.props.style.marginLeft = x - originalX + 'px';
-    }
-
+    // watchStart property tells Draggable to react to changes in the start param
     return (
       <Draggable
-        grid={[25, 25]} 
         start={{x: x, y: y}}
+        watchStart={true} 
         onStop={this.onDragStop.bind(this, i)}>
         {child}
       </Draggable>
@@ -130,33 +155,29 @@ var ReactGridLayout = module.exports = React.createClass({
   },
 
   /**
-   * When dragging stops, record the new position of the element in dragOffsets. This is as an x offset
-   * from its original position.
+   * When dragging stops, figure out which position the element is closest to and update its x and y.
    * @param  {Number} i Index of the child.
    * @param  {Event}  e DOM Event.
    */
-  onDragStop(i, e) {
-    var widthMult = this.state.width / this.props.initialWidth;
-    // Calculate the new position by using the existing left + marginLeft, and multiplying by the reciprocal
-    // of the width difference (so a 50px move at 1/2 screen size = 100px)
-    var newPosition = parseInt(e.target.style.left, 10) + parseInt(e.target.style.marginLeft, 10) * (1 / widthMult);
-    // Calculate the offset - this is the new position minus the expected position. The offset needs to be
-    // modulated by the width multiple
-    var offset = (newPosition - this.getSimpleAbsolutePosition(i).x) * widthMult;
+  onDragStop(i, e, {element, position}) {
+    var newX = parseInt(element.style.left, 10);
+    var newY = parseInt(element.style.top, 10);
+
+    var x = Math.round((newX / this.state.width) * this.props.cols);
+    var y = Math.round(newY / this.props.rowHeight);
 
     // Make the change. We use the immutability helpers for this so we can do a simple shouldComponentUpdate
-    var change = {};
-    change[i] = {$set: offset};
-    var offsets = React.addons.update(this.state.dragOffsets, change);
-    this.setState({dragOffsets: offsets});
+    this.moveElement(i, x, y);
   },
 
   render() {
+    // Calculate classname
     var {className, initialLayout, ...props} = this.props;
     className = (className || "") + " reactGridLayout";
+
     var children = React.Children.map(this.props.children, this.processGridItem);
     return (
-      <div {...props} className={className} style={{position: 'relative', height: '100%'}} ref="layout">
+      <div {...props} className={className} style={{position: 'relative', height: '100%'}}>
         {children}
       </div>
     );

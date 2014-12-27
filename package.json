@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/webpack",
-    "dev-server": "webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base . & open http://localhost:4002/example.html"
+    "dev-server": "echo 'Open http://localhost:4002/example.html'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base ."
   },
   "repository": {
     "type": "git",

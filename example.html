@@ -4,10 +4,36 @@
       .gridItem {
         background: #ccc;
         border: 1px solid black;
+        transition: all 200ms ease;
+        transition-property: left, top;
+      }
+      .gridItem .text {
+        font-size: 24px;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 24px;
+      }
+      .gridItem.react-draggable-dragging {
+        transition: none;
       }
       #content {
         width: 100%;
         height: 100%;
+      }
+      .react-draggable {
+        position: relative;
+      }
+      .react-draggable-active {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
       }
     </style>
     <script src="http://localhost:4002/bundle.js"></script>
