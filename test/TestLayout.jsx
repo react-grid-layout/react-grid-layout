@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react/addons');
-typeof window !== "undefined" && (window.React = React) // for devtools
+typeof window !== "undefined" && (window.React = React); // for devtools
 var _ = require('lodash');
 var ReactGridLayout = require('../lib/ReactGridLayout.jsx');
 
@@ -8,7 +8,7 @@ var TestLayout = module.exports = React.createClass({
   displayName: 'TestLayout',
 
   generate() {
-    return _.map(_.range(12), function(i) {
+    return _.map(_.range(24), function(i) {
       return (<div key={i} className="gridItem"><span className="text">{i}</span></div>);
     });
   },
