@@ -31,3 +31,16 @@
   -o-user-select: none;
   user-select: none;
 }
+.react-grid-resize-handle {
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 28px;
+  font-size: 20px;
+  text-align: right;
+  cursor: se-resize;
+}
+.react-grid-item:hover .react-grid-resize-handle {
+  opacity: 1;
+}

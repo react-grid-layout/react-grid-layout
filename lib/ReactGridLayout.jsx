@@ -2,6 +2,7 @@
 var React = require('react/addons');
 var _ = require('lodash');
 var GridItem = require('./GridItem.jsx');
+var utils = require('./utils');
 
 var ReactGridLayout = module.exports = React.createClass({
   displayName: 'ReactGridLayout',
@@ -48,12 +49,12 @@ var ReactGridLayout = module.exports = React.createClass({
   },
 
   componentDidMount() {
-    window.addEventListener('resize', this.onResize);
-    this.onResize();
+    window.addEventListener('resize', this.onWindowResize);
+    this.onWindowResize();
   },
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('resize', this.onWindowResize);
   },
 
   /**
@@ -84,7 +85,7 @@ var ReactGridLayout = module.exports = React.createClass({
     if (layout.length !== this.props.children.length) {
       // Fill in the blanks
     }
-    return compact(layout);
+    return utils.compact(layout);
   },
 
   getBreakpointFromWidth(width) {
@@ -97,7 +98,7 @@ var ReactGridLayout = module.exports = React.createClass({
   /**
    * On window resize, work through breakpoints and reset state with the new width & breakpoint.
    */
-  onResize() {
+  onWindowResize() {
     // Set breakpoint
     var width = this.getDOMNode().offsetWidth;
     this.setState({width: width, breakpoint: this.getBreakpointFromWidth(width)});
@@ -109,7 +110,7 @@ var ReactGridLayout = module.exports = React.createClass({
 
   onDrag(i, x, y) {
     var layout = this.state.layout;
-    var l = getLayoutItem(layout, i);
+    var l = utils.getLayoutItem(layout, i);
 
     // Create drag element (display only)
     var activeDrag = {
@@ -117,10 +118,10 @@ var ReactGridLayout = module.exports = React.createClass({
     };
     
     // Move the element to the dragged location.
-    layout = moveElement(layout, l, x, y);
+    layout = utils.moveElement(layout, l, x, y);
 
     this.setState({
-      layout: compact(layout),
+      layout: utils.compact(layout),
       activeDrag: activeDrag
     });
   },
@@ -132,12 +133,20 @@ var ReactGridLayout = module.exports = React.createClass({
    */
   onDragStop(i, x, y) {
     var layout = this.state.layout;
-    var l = getLayoutItem(layout, i);
+    var l = utils.getLayoutItem(layout, i);
 
     // Move the element here
-    layout = moveElement(layout, l, x, y);
+    layout = utils.moveElement(layout, l, x, y);
     // Set state
-    this.setState({layout: compact(layout), activeDrag: null});
+    this.setState({layout: utils.compact(layout), activeDrag: null});
+  },
+
+  onResize(e, {element, position}) {
+    console.log('resizing');
+  },
+
+  onResizeStop(e, {element, position}) {
+
   },
 
   /**
@@ -170,7 +179,7 @@ var ReactGridLayout = module.exports = React.createClass({
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
   processGridItem(child, i) {
-    var l = getLayoutItem(this.state.layout, i);
+    var l = utils.getLayoutItem(this.state.layout, i);
 
     // watchStart property tells Draggable to react to changes in the start param
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
@@ -187,7 +196,10 @@ var ReactGridLayout = module.exports = React.createClass({
         handle={this.props.handle}
         onDragStop={this.onDragStop}
         onDragStart={this.onDragStart}
-        onDrag={this.onDrag}>
+        onDrag={this.onDrag}
+        onResize={this.onResize}
+        onResizeStop={this.onResizeStop}
+        >
         {child}
       </GridItem>
     );
@@ -207,141 +219,3 @@ var ReactGridLayout = module.exports = React.createClass({
   }
 });
 
-/**
- * Given two layouts, check if they collide.
- * @param  {Object} l1 Layout object.
- * @param  {Object} l2 Layout object.
- * @return {Boolean}   True if colliding.
- */
-function collides(l1, l2) {
-  if (l1 === l2) return false; // same element
-  if (l1.x + l1.w <= l2.x) return false; // l1 is left of l2
-  if (l1.x >= l2.x + l2.w) return false; // l1 is right of l2
-  if (l1.y + l1.h <= l2.y) return false; // l1 is above l2
-  if (l1.y >= l2.y + l2.h) return false; // l1 is below l2
-  return true; // boxes overlap
-}
-
-/**
- * Given a layout, compact it. This involves going down each y coordinate and removing gaps
- * between items.
- * @param  {Array} layout Layout.
- * @return {Array}       Compacted Layout.
- */
-function compact(layout) {
-  // We go through the items by row and column.
-  var sorted = getLayoutItemsByRowCol(layout);
-  var out = _.map(getLayoutItemsByRowCol(layout), function(l, i) {
-    // Only collide with elements before this one.
-    var ls = sorted.slice(0, i);
-    // Move the element up as far as it can go without colliding.
-    do {
-      l.y--;
-    }
-    while (l.y > -1 && !layoutItemCollidesWith(ls, l).length);
-
-    // Move it down, and keep moving it down if it's colliding.
-    do {
-      l.y++;
-    } while(layoutItemCollidesWith(ls, l).length);
-
-    delete l.moved;
-    return l;
-  });
-  return _.sortBy(out, 'i');
-}
-
-/**
- * Get a layout item by index. Used so we can override later on if necessary.
- *
- * @param  {Array} layout Layout array.
- * @param  {Number} i      Index
- * @return {LayoutItem}        Item at index.
- */
-function getLayoutItem(layout, i) {
-  return layout[i];
-}
-
-/**
- * Get layout items sorted from top left to right and down.
- * @return {Array} Array of layout objects.
- */
-function getLayoutItemsByRowCol(layout) {
-  return [].concat(layout).sort(function(a, b) {
-    if (a.y > b.y || (a.y === b.y && a.x > b.x)) {
-      return 1;
-    }
-    return -1;
-  });
-}
-
-/**
- * Get layout items sorted from top left to down.
- * @return {Array} Array of layout objects.
- */
-function getLayoutItemsByColRow(layout) {
-  return [].concat(layout).sort(function(a, b) {
-    if (a.x > b.x || a.x === b.x && a.y > b.y) {
-      return 1;
-    }
-    return -1;
-  });
-}
-
-/**
- * Returns an array of items this layout item collides with.
- * @param  {Object} layoutItem Layout item.
- * @return {Array}             Array of colliding layout objects.
- */
-function layoutItemCollidesWith(layout, layoutItem) {
-  return _.filter(layout, collides.bind(null, layoutItem));
-}
-
-/**
- * Move / resize an element. Responsible for doing cascading movements of other elements.
- * @param  {Array}  layout Full layout to modify.
- * @param  {LayoutItem} l element to move.
- * @param  {Number} [x] X position in grid units.
- * @param  {Number} [y] Y position in grid units.
- * @param  {Number} [w] Width in grid units.
- * @param  {Number} [h] Height in grid units.
- */
-function moveElement(layout, l, x, y, w, h) {
-  // _.pick trickery removes undefined values from the object so we don't overwrite
-  // the object with attrs we didn't pass
-  _.extend(l, _.pick({x: x, y: y, w: w, h: h, moved: 1}, _.isNumber));
-
-  // Get all items this box collides with.
-  var collisions = layoutItemCollidesWith(layout, l);
-
-  // Move each item that collides away from this element.
-  _.each(collisions, function(coll) {
-    if (coll.moved) return; // short circuit so we don't re-move items
-    layout = moveElementAwayFromCollision(layout, l, coll);
-  });
-
-  return layout;
-}
-
-/**
- * This is where the magic needs to happen - given a collision, move an element away from the collision.
- * It's okay to cascade movements here, but be careful to not have a move b move c move a.
- * @param  {Array} layout            Full layout to modify.
- * @param  {LayoutItem} collidesWith Layout item we're colliding with.
- * @param  {LayoutItem} itemToMove   Layout item we're moving.
- */
-function moveElementAwayFromCollision(layout, collidesWith, itemToMove) {
-  var fakeItem = _.extend({}, itemToMove, {y: 0});
-
-  var sorted = getLayoutItemsByRowCol(layout);
-  var itemsBefore = sorted.slice(0, sorted.indexOf(itemToMove)).concat(collidesWith);
-
-  // While the item collides with any of the items before it, move it down.
-  var collisions;
-  do {
-    collisions = layoutItemCollidesWith(itemsBefore, fakeItem);
-    if (collisions.length) fakeItem.y = collisions[0].y + collisions[0].h;
-  } while(collisions.length);
-
-  return moveElement(layout, itemToMove, undefined, fakeItem.y);
-}

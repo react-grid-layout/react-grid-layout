@@ -5,6 +5,7 @@ typeof window !== "undefined" && (window.Perf = React.addons.Perf); // for devto
 var _ = require('lodash');
 var ReactGridLayout = require('../lib/ReactGridLayout.jsx');
 require('style!css!../css/styles.css');
+require('style!css!../node_modules/react-resizable/css/styles.css');
 
 var TestLayout = module.exports = React.createClass({
   displayName: 'TestLayout',
