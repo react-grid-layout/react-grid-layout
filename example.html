@@ -1,13 +1,25 @@
 <html>
   <head>
     <style>
-      .gridItem {
+      body {
+        background: white;
+        padding: 20px;
+      }
+      #content {
+        width: 100%;
+        background: #eee;
+      }
+      .react-grid-layout {
+        position: relative;
+        transition: height 200ms ease;
+      }
+      .react-grid-item {
         background: #ccc;
         border: 1px solid black;
         transition: all 200ms ease;
         transition-property: left, top;
       }
-      .gridItem .text {
+      .react-grid-item .text {
         font-size: 24px;
         text-align: center;
         position: absolute;
@@ -18,19 +30,16 @@
         margin: auto;
         height: 24px;
       }
-      .placeholder {
+      .react-grid-placeholder {
         background: red;
         opacity: 0.3;
         user-select: none;
         z-index: 0;
+        transition: none;
       }
-      .gridItem.react-draggable-dragging {
+      .react-grid-item.react-draggable-dragging {
         transition: none;
         z-index: 100;
-      }
-      #content {
-        width: 100%;
-        height: 100%;
       }
       .react-draggable {
         position: relative;
@@ -47,6 +56,8 @@
     <title>RGL Example</title>
   </head>
   <body>
+    <h3>React-Grid-Layout Demo</h3>
+    <p>Try dragging the elements around.</p>
     <div id="content"></div>
   </body>
 </html>

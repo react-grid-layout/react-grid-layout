@@ -9,8 +9,8 @@ var TestLayout = module.exports = React.createClass({
   displayName: 'TestLayout',
 
   generate() {
-    return _.map(_.range(24), function(i) {
-      return (<div key={i} className="gridItem"><span className="text">{i}</span></div>);
+    return _.map(_.range(12), function(i) {
+      return (<div key={i}><span className="text">{i}</span></div>);
     });
   },
 

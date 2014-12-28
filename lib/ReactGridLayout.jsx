@@ -1,37 +1,45 @@
 'use strict';
 var React = require('react/addons');
 var _ = require('lodash');
-var Draggable = require('react-draggable');
+var GridItem = require('./GridItem.jsx');
 
 var ReactGridLayout = module.exports = React.createClass({
   displayName: 'ReactGridLayout',
   mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
+    // If true, the container swells and contracts to fit contents
+    autoSize: React.PropTypes.bool,
+    // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
+    breakpoints: React.PropTypes.object,
+    // # of cols
+    cols: React.PropTypes.number,
     // Layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
     initialLayout: React.PropTypes.array,
-    bounds: React.PropTypes.array,
+    // This allows setting this on the server side
+    initialWidth: React.PropTypes.number,
+    // margin between items (x, y) in px
     margin: React.PropTypes.array,
-    // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
-    breakpoints: React.PropTypes.object
+    // Rows have a static height, but you can change this based on breakpoints if you like
+    rowHeight: React.PropTypes.number
   },
 
   getDefaultProps() {
     return {
-      cols: 10, // # of cols, rows
-      rowHeight: 150, // Rows have a static height, but you can change this based on breakpoints if you like
-      initialWidth: 1280, // This allows setting this on the server side
-      margin: [10, 10],  // margin between items (x, y) in px
-      initialBreakpoint: 'lg',
-      breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}
+      autoSize: true,
+      breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
+      cols: 10, 
+      rowHeight: 150,
+      initialWidth: 1280,
+      margin: [10, 10]
     };
   },
 
   getInitialState() {
     return {
       layout: this.generateLayout(this.props.initialLayout),
-      breakpoint: this.props.initialBreakpoint,
+      breakpoint: this.getBreakpointFromWidth(this.props.initialWidth),
       width: this.props.initialWidth,
       activeDrag: null
     };
@@ -47,42 +55,16 @@ var ReactGridLayout = module.exports = React.createClass({
   },
 
   /**
-   * Return position on the page given an x, y, w, h.
-   * left, top, width, height are all in pixels.
-   * @param  {Object}  l             Layout object.
-   * @return {Object}                Object containing coords.
+   * Calculates a pixel value for the container.
+   * @return {String} Container height in pixels.
    */
-  calcPosition(l) {
-    var cols = this.props.cols;
-    var out = {
-      left: this.state.width * (l.x / cols),
-      top: this.props.rowHeight * l.y,
-      width: (this.state.width * l.w / cols) - ((l.w - 1) * this.props.margin[0]) + 'px',
-      height: l.h * this.props.rowHeight - this.props.margin[1] + 'px'
-    };
-    // If we're not mounted yet, use percentages; otherwise items won't fit the window properly
-    // because this.state.width hasn't actually been populated with a real value
-    if (!this.isMounted()) {
-      out.left = perc(out.x / this.state.width);
-      out.width = perc(out.width / this.state.width);
-    }
-    return out;
-  },
-
-  /**
-   * Given an element, inspect its styles and generate new x,y coordinates.
-   * @param  {DOMElement} element DOM Element.
-   * @return {Object}             x and y coordinates.
-   */
-  calcXY(element) {
-    var newX = parseInt(element.style.left, 10);
-    var newY = parseInt(element.style.top, 10);
-
-    var x = Math.round((newX / this.state.width) * this.props.cols);
-    var y = Math.round(newY / this.props.rowHeight);
-    x = Math.max(Math.min(x, this.props.cols), 0);
-    y = Math.max(y, 0);
-    return {x, y};
+  containerHeight() {
+    if (!this.props.autoSize) return;
+    // Calculate container height
+    var bottom = _.max(this.state.layout, function(l) {
+      return l.y + l.h;
+    });
+    return (bottom.y + bottom.h) * this.props.rowHeight + this.props.margin[1] + 'px';
   },
 
   /**
@@ -103,18 +85,11 @@ var ReactGridLayout = module.exports = React.createClass({
     return compact(layout);
   },
 
-  /**
-   * Get the absolute position of a child by index. This does not include drag offsets or window resizing.
-   * @param  {Number} i Index of the child.
-   * @return {Object}   X and Y coordinates, in px.
-   */
-  getSimpleAbsolutePosition(i) {
-    var s = this.state, p = this.props;
-    var l = getLayoutItem(this.state.layout, i);
-    return {
-      x: (l.x / p.cols) * s.width,
-      y: l.y * p.rowHeight
-    };
+  getBreakpointFromWidth(width) {
+    return _(this.props.breakpoints)
+    .pairs()
+    .sortBy(function(val) { return -val[1];})
+    .find(function(val) {return width > val[1];})[0];
   },
 
   /**
@@ -123,12 +98,44 @@ var ReactGridLayout = module.exports = React.createClass({
   onResize() {
     // Set breakpoint
     var width = this.getDOMNode().offsetWidth;
-    var breakpoint = _(this.props.breakpoints)
-    .pairs()
-    .sortBy(function(val) { return -val[1];})
-    .find(function(val) {return width > val[1];})[0];
+    this.setState({width: width, breakpoint: this.getBreakpointFromWidth(width)});
+  },
 
-    this.setState({width: width, breakpoint: breakpoint});
+  onDragStart(i, e, {element, position}) {
+    // nothing
+  },
+
+  onDrag(i, x, y) {
+    var layout = this.state.layout;
+    var l = getLayoutItem(layout, i);
+
+    // Create drag element (display only)
+    var activeDrag = {
+      w: l.w, h: l.h, x: x, y: y, placeholder: true, i: i
+    };
+    
+    // Move the element to the dragged location.
+    layout = moveElement(layout, l, x, y);
+
+    this.setState({
+      layout: compact(layout),
+      activeDrag: activeDrag
+    });
+  },
+
+  /**
+   * When dragging stops, figure out which position the element is closest to and update its x and y.
+   * @param  {Number} i Index of the child.
+   * @param  {Event}  e DOM Event.
+   */
+  onDragStop(i, x, y) {
+    var layout = this.state.layout;
+    var l = getLayoutItem(layout, i);
+
+    // Move the element here
+    layout = moveElement(layout, l, x, y);
+    // Set state
+    this.setState({layout: compact(layout), activeDrag: null});
   },
 
   /**
@@ -137,11 +144,19 @@ var ReactGridLayout = module.exports = React.createClass({
    */
   placeholder() {
     if (!this.state.activeDrag) return null;
-    var {left, top, width, height} = this.calcPosition(this.state.activeDrag);
 
     return (
-      <div style={{width: width, height: height, left: left, top: top, position: 'absolute'}} 
-        className="placeholder" />
+      <GridItem
+        {...this.state.activeDrag}
+        className="react-grid-placeholder"
+        containerWidth={this.state.width}
+        cols={this.props.cols}
+        margin={this.props.margin}
+        rowHeight={this.props.rowHeight}
+        isDraggable={false}
+        >
+        <div />
+      </GridItem>
     );
   },
 
@@ -154,94 +169,34 @@ var ReactGridLayout = module.exports = React.createClass({
   processGridItem(child, i) {
     var l = getLayoutItem(this.state.layout, i);
 
-    var {left, top, width, height} = this.calcPosition(l);
-
-    // We can set the width and height on the child, but unfortunately we can't set the position
-    child.props.style = {
-      width: width,
-      height: height,
-      position: 'absolute'
-    };
-
     // watchStart property tells Draggable to react to changes in the start param
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
     var drag = this.state.activeDrag;
     var watchStart = drag && drag.i === i ? false : true;
     return (
-      <Draggable
-        start={{x: left, y: top}}
-        watchStart={watchStart} 
-        onStop={this.onDragStop.bind(this, i)}
-        onStart={this.onDragStart.bind(this, i)}
-        onDrag={this.onDrag.bind(this, i)}>
+      <GridItem 
+        {...l}
+        containerWidth={this.state.width}
+        cols={this.props.cols}
+        margin={this.props.margin}
+        rowHeight={this.props.rowHeight}
+        watchStart={watchStart}
+        onDragStop={this.onDragStop}
+        onDragStart={this.onDragStart}
+        onDrag={this.onDrag}>
         {child}
-      </Draggable>
+      </GridItem>
     );
-  },
-
-  onDragStart(i, e, {element, position}) {
-    // nothing
-  },
-
-  onDrag(i, e, {element, position}) {
-    var layout = this.state.layout;
-    var l = getLayoutItem(layout, i);
-
-    // Get new XY
-    var {x, y} = this.calcXY(element);
-
-    // Cap x at numCols
-    if (x + l.w > this.props.cols) {
-      x = this.props.cols - l.w;
-    }
-
-    // Create drag element (display only)
-    var activeDrag = {
-      w: l.w, h: l.h, x: x, y: y, placeholder: true, i: i
-    };
-    
-    // Move the element to the dragged location.
-    layout = moveElement(layout, l, x, y);
-    
-    this.setState({
-      layout: compact(layout),
-      activeDrag: activeDrag
-    });
-  },
-
-  /**
-   * When dragging stops, figure out which position the element is closest to and update its x and y.
-   * @param  {Number} i Index of the child.
-   * @param  {Event}  e DOM Event.
-   */
-  onDragStop(i, e, {element, position}) {
-    var layout = this.state.layout;
-    var l = getLayoutItem(layout, i);
-
-    // Get new XY
-    var {x, y} = this.calcXY(element);
-
-    // Cap x at numCols
-    if (x + l.w > this.props.cols) {
-      x = this.props.cols - l.w;
-    }
-
-    // Move the element here
-    layout = moveElement(layout, l, x, y);
-    // Set state
-    this.setState({layout: compact(layout), activeDrag: null});
   },
 
   render() {
     // Calculate classname
     var {className, initialLayout, ...props} = this.props;
-    className = (className || "") + " reactGridLayout";
-
-    var children = React.Children.map(this.props.children, this.processGridItem);
+    className = 'react-grid-layout ' + (className || '');
 
     return (
-      <div {...props} className={className} style={{position: 'relative', height: '100%'}}>
-        {children}
+      <div {...props} className={className} style={{height: this.containerHeight()}}>
+        {React.Children.map(this.props.children, this.processGridItem)}
         {this.placeholder()}
       </div>
     );
@@ -378,17 +333,11 @@ function moveElementAwayFromCollision(layout, collidesWith, itemToMove) {
   var itemsBefore = sorted.slice(0, sorted.indexOf(itemToMove)).concat(collidesWith);
 
   // While the item collides with any of the items before it, move it down.
-  while (layoutItemCollidesWith(itemsBefore, fakeItem).length) {
-    fakeItem.y++;
-  }
-  return moveElement(layout, itemToMove, undefined, fakeItem.y);
-}
+  var collisions;
+  do {
+    collisions = layoutItemCollidesWith(itemsBefore, fakeItem);
+    if (collisions.length) fakeItem.y = collisions[0].y + collisions[0].h;
+  } while(collisions.length);
 
-/**
- * Helper to convert a number to a percentage string.
- * @param  {Number} num Any number
- * @return {String}     That number as a percentage.
- */
-function perc(num) {
-  return num * 100 + '%';
+  return moveElement(layout, itemToMove, undefined, fakeItem.y);
 }
