@@ -14,6 +14,8 @@ var ReactGridLayout = module.exports = React.createClass({
     breakpoints: React.PropTypes.object,
     // # of cols
     cols: React.PropTypes.number,
+    // A selector for the draggable handler
+    handle: React.PropTypes.string,
     // Layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
     initialLayout: React.PropTypes.array,
@@ -154,6 +156,7 @@ var ReactGridLayout = module.exports = React.createClass({
         margin={this.props.margin}
         rowHeight={this.props.rowHeight}
         isDraggable={false}
+        isResizable={false}
         >
         <div />
       </GridItem>
@@ -172,7 +175,7 @@ var ReactGridLayout = module.exports = React.createClass({
     // watchStart property tells Draggable to react to changes in the start param
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
     var drag = this.state.activeDrag;
-    var watchStart = drag && drag.i === i ? false : true;
+    var moveOnStartChange = drag && drag.i === i ? false : true;
     return (
       <GridItem 
         {...l}
@@ -180,7 +183,8 @@ var ReactGridLayout = module.exports = React.createClass({
         cols={this.props.cols}
         margin={this.props.margin}
         rowHeight={this.props.rowHeight}
-        watchStart={watchStart}
+        moveOnStartChange={moveOnStartChange}
+        handle={this.props.handle}
         onDragStop={this.onDragStop}
         onDragStart={this.onDragStart}
         onDrag={this.onDrag}>

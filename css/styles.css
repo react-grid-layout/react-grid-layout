@@ -9,9 +9,13 @@
 .react-grid-placeholder {
   background: red;
   opacity: 0.3;
-  user-select: none;
+  transition-duration: 100ms;
   z-index: 0;
-  transition: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 .react-grid-item.react-draggable-dragging {
   transition: none;
