@@ -1,6 +1,6 @@
 ### React-Grid-Layout
 
-[View the Demo](https://strml.github.io/react-grid-layout/example/1.html)
+[View the Demo](https://strml.github.io/react-grid-layout/examples/1.html)
 
 React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or 
 [Gridster](http://gridster.net), for React. 
@@ -18,10 +18,10 @@ If you have a feature request, add it as an issue.
 
 #### TODO List
 
-[x] Basic grid layout
-[x] Fluid grid layout
-[x] Grid packing
-[x] Draggable grid items
-[x] Live grid packing while dragging
-[ ] Define grid attributes on children themselves (`_grid` key)
-[ ] Resizable grid items
+- [x] Basic grid layout
+- [x] Fluid grid layout
+- [x] Grid packing
+- [x] Draggable grid items
+- [x] Live grid packing while dragging
+- [ ] Define grid attributes on children themselves (`_grid` key)
+- [ ] Resizable grid items
