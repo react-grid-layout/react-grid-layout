@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: __dirname + "/dist",
         filename: "bundle.js",
-        sourceMapFilename: "debugging/[file].map",
+        sourceMapFilename: "[file].map",
     },
     module: {
       loaders: [
@@ -17,6 +17,7 @@ module.exports = {
       ]
     },
     debug: true,
+    devtool: "#inline-source-map",
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
     }

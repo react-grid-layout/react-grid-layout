@@ -17,52 +17,6 @@ var ReactGridLayout = module.exports = React.createClass({
     breakpoints: React.PropTypes.object
   },
 
-  componentDidMount() {
-    window.addEventListener('resize', this.onResize);
-    this.onResize();
-  },
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
-  /**
-   * Return position on the page given an x, y, w, h.
-   * x, y, w, h are all in pixels.
-   * @param  {Object}  l             Layout object.
-   * @return {Object}                Object containing coords.
-   */
-  calcPosition(l, usePercentage) {
-    var cols = this.props.cols;
-    var out = {
-      x: this.state.width * (l.x / cols),
-      y: this.props.rowHeight * l.y,
-      width: (this.state.width * l.w / cols) - ((l.w - 1) * this.props.margin[0]) + 'px',
-      height: l.h * this.props.rowHeight - this.props.margin[1] + 'px'
-    };
-    // If we're not mounted yet, use percentages; otherwise items won't fit the window properly
-    // because this.state.width hasn't actually been populated with a real value
-    if (!this.isMounted()) {
-      out.x = this.perc(out.x / this.state.width);
-      out.width = this.perc(out.width / this.state.width);
-    }
-    return out;
-  },
-
-  /**
-   * Given two layouts, check if they collide.
-   * @param  {Object} l1 Layout object.
-   * @param  {Object} l2 Layout object.
-   * @return {Boolean}   True if colliding.
-   */
-  collides(l1, l2) {
-    if (l1.x + l1.w <= l2.x) return false; // l1 is left of l2
-    if (l1.x >= l2.x + l2.w) return false; // l1 is right of l2
-    if (l1.y + l1.h <= l2.y) return false; // l1 is above l2
-    if (l1.y >= l2.y + l2.h) return false; // l1 is below l2
-    return true; // boxes overlap
-  },
-
   getDefaultProps() {
     return {
       cols: 10, // # of cols, rows
@@ -79,14 +33,56 @@ var ReactGridLayout = module.exports = React.createClass({
       layout: this.generateLayout(this.props.initialLayout),
       breakpoint: this.props.initialBreakpoint,
       width: this.props.initialWidth,
-      // Fills it full of zeroes
-      dragOffsets: _.range(0, this.props.children.length, 0),
-      // TODO this should contain the x,y,w,h of a drag, if active, and render to an actual element
-      // that element should cause items around it to move
-      // this means that items should take up unoccupied space above themselves so that a cancelled drag doesn't
-      // cause an actual change
       activeDrag: null
     };
+  },
+
+  componentDidMount() {
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
+  /**
+   * Return position on the page given an x, y, w, h.
+   * left, top, width, height are all in pixels.
+   * @param  {Object}  l             Layout object.
+   * @return {Object}                Object containing coords.
+   */
+  calcPosition(l) {
+    var cols = this.props.cols;
+    var out = {
+      left: this.state.width * (l.x / cols),
+      top: this.props.rowHeight * l.y,
+      width: (this.state.width * l.w / cols) - ((l.w - 1) * this.props.margin[0]) + 'px',
+      height: l.h * this.props.rowHeight - this.props.margin[1] + 'px'
+    };
+    // If we're not mounted yet, use percentages; otherwise items won't fit the window properly
+    // because this.state.width hasn't actually been populated with a real value
+    if (!this.isMounted()) {
+      out.left = perc(out.x / this.state.width);
+      out.width = perc(out.width / this.state.width);
+    }
+    return out;
+  },
+
+  /**
+   * Given an element, inspect its styles and generate new x,y coordinates.
+   * @param  {DOMElement} element DOM Element.
+   * @return {Object}             x and y coordinates.
+   */
+  calcXY(element) {
+    var newX = parseInt(element.style.left, 10);
+    var newY = parseInt(element.style.top, 10);
+
+    var x = Math.round((newX / this.state.width) * this.props.cols);
+    var y = Math.round(newY / this.props.rowHeight);
+    x = Math.max(Math.min(x, this.props.cols), 0);
+    y = Math.max(y, 0);
+    return {x, y};
   },
 
   /**
@@ -98,13 +94,13 @@ var ReactGridLayout = module.exports = React.createClass({
   generateLayout(initialLayout) {
     var layout = [].concat(initialLayout || []);
     layout = layout.map(function(l, i) {
-      l.index = i;
+      l.i = i;
       return l;
     });
     if (layout.length !== this.props.children.length) {
       // Fill in the blanks
     }
-    return layout;
+    return compact(layout);
   },
 
   /**
@@ -114,62 +110,16 @@ var ReactGridLayout = module.exports = React.createClass({
    */
   getSimpleAbsolutePosition(i) {
     var s = this.state, p = this.props;
+    var l = getLayoutItem(this.state.layout, i);
     return {
-      x: (s.layout[i].x / p.cols) * s.width,
-      y: s.layout[i].y * p.rowHeight
+      x: (l.x / p.cols) * s.width,
+      y: l.y * p.rowHeight
     };
   },
 
   /**
-   * Get layout items sorted from top right down.
-   * @return {Array} Array of layout objects.
+   * On window resize, work through breakpoints and reset state with the new width & breakpoint.
    */
-  getLayoutsByRowCol(layouts) {
-    return _.sortBy(layouts || this.props.layout, function(a, b) {
-      if (a.y > b.y || a.y === b.y && a.x > b.x) {
-        return 1;
-      }
-      return -1;
-    });
-  },
-
-  /**
-   * Returns an array of items this layout collides with.
-   * @param  {Object} layoutItem Layout item.
-   * @return {Array}             Array of colliding layout objects.
-   */
-  layoutCollidesWith(layoutItem, layout) {
-    var sorted = this.getLayoutsByRowCol(_.without(layout, layoutItem));
-    return _.filter(sorted, this.collides.bind(this, layoutItem));
-  },
-
-  /**
-   * Move / resize an element. Responsible for doing cascading movements of other elements.
-   * @param  {Array}  layout Layout to modify.
-   * @param  {Number} i Index of element.
-   * @param  {Number} [x] X position in grid units.
-   * @param  {Number} [y] Y position in grid units.
-   * @param  {Number} [w] Width in grid units.
-   * @param  {Number} [h] Height in grid units.
-   */
-  moveElement(layout, i, x, y, w, h) {
-    // _.pick trickery removes undefined values from the object so we don't overwrite
-    // the object with attrs we didn't pass
-    var l = _.extend(layout[i], _.pick({x: x, y: y, w: w, h: h}, _.isNumber));
-    layout[i] = l;
-
-    var collisions = this.layoutCollidesWith(l, layout);
-    collisions = _.map(collisions, function(c) { return _.extend(c, {causedBy: l}); });
-
-    if (collisions.length) {  
-      _.each(collisions, function(collision) {
-        this.moveElement(layout, collision.index, undefined, l.y + l.h);
-      }.bind(this));
-    }
-
-    return layout;
-  },
-
   onResize() {
     // Set breakpoint
     var width = this.getDOMNode().offsetWidth;
@@ -178,24 +128,20 @@ var ReactGridLayout = module.exports = React.createClass({
     .sortBy(function(val) { return -val[1];})
     .find(function(val) {return width > val[1];})[0];
 
-    this.setState({width: width, lastWidth: this.state.width, breakpoint: breakpoint});
+    this.setState({width: width, breakpoint: breakpoint});
   },
 
   /**
-   * Helper to convert a number to a percentage string.
-   * @param  {Number} num Any number
-   * @return {String}     That number as a percentage.
+   * Create a placeholder object.
+   * @return {Element} Placeholder div.
    */
-  perc(num) {
-    return num * 100 + '%';
-  },
-
   placeholder() {
     if (!this.state.activeDrag) return null;
-    var {x, y, width, height} = this.calcPosition(this.state.activeDrag);
+    var {left, top, width, height} = this.calcPosition(this.state.activeDrag);
 
     return (
-      <div style={{width: width, height: height, left: x, top: y, position: 'absolute'}} className="placeholder" />
+      <div style={{width: width, height: height, left: left, top: top, position: 'absolute'}} 
+        className="placeholder" />
     );
   },
 
@@ -206,10 +152,9 @@ var ReactGridLayout = module.exports = React.createClass({
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
   processGridItem(child, i) {
-    var l = this.state.layout[i];
+    var l = getLayoutItem(this.state.layout, i);
 
-    // We calculate the x and y every pass, even though it's only actually used the first time.
-    var {x, y, width, height} = this.calcPosition(l);
+    var {left, top, width, height} = this.calcPosition(l);
 
     // We can set the width and height on the child, but unfortunately we can't set the position
     child.props.style = {
@@ -219,39 +164,47 @@ var ReactGridLayout = module.exports = React.createClass({
     };
 
     // watchStart property tells Draggable to react to changes in the start param
+    // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
+    var drag = this.state.activeDrag;
+    var watchStart = drag && drag.i === i ? false : true;
     return (
       <Draggable
-        start={{x: x, y: y}}
-        watchStart={!this.state.activeDrag} 
+        start={{x: left, y: top}}
+        watchStart={watchStart} 
         onStop={this.onDragStop.bind(this, i)}
+        onStart={this.onDragStart.bind(this, i)}
         onDrag={this.onDrag.bind(this, i)}>
         {child}
       </Draggable>
     );
   },
 
+  onDragStart(i, e, {element, position}) {
+    // nothing
+  },
+
   onDrag(i, e, {element, position}) {
-    var newX = parseInt(element.style.left, 10);
-    var newY = parseInt(element.style.top, 10);
+    var layout = this.state.layout;
+    var l = getLayoutItem(layout, i);
 
-    var x = Math.round((newX / this.state.width) * this.props.cols);
-    var y = Math.round(newY / this.props.rowHeight);
-    x = Math.max(Math.min(x, this.props.cols), 0);
-    y = Math.max(y, 0);
+    // Get new XY
+    var {x, y} = this.calcXY(element);
 
-    var l = this.state.layout[i];
+    // Cap x at numCols
+    if (x + l.w > this.props.cols) {
+      x = this.props.cols - l.w;
+    }
 
+    // Create drag element (display only)
     var activeDrag = {
-      w: l.w, h: l.h, x: x, y: y, placeholder: true
+      w: l.w, h: l.h, x: x, y: y, placeholder: true, i: i
     };
     
-    // var layout = [].concat(this.state.layout);
-    // layout = _.without(layout, {placeholder: true}).concat(activeDrag);
-    // layout[layout.length - 1].index = layout.length - 1;
-    // layout = this.moveElement(layout, layout.length - 1, x, y);
+    // Move the element to the dragged location.
+    layout = moveElement(layout, l, x, y);
     
     this.setState({
-      // layout: layout,
+      layout: compact(layout),
       activeDrag: activeDrag
     });
   },
@@ -262,18 +215,21 @@ var ReactGridLayout = module.exports = React.createClass({
    * @param  {Event}  e DOM Event.
    */
   onDragStop(i, e, {element, position}) {
-    var newX = parseInt(element.style.left, 10);
-    var newY = parseInt(element.style.top, 10);
+    var layout = this.state.layout;
+    var l = getLayoutItem(layout, i);
 
-    var x = Math.round((newX / this.state.width) * this.props.cols);
-    var y = Math.round(newY / this.props.rowHeight);
-    x = Math.max(Math.min(x, this.props.cols), 0);
-    y = Math.max(y, 0);
+    // Get new XY
+    var {x, y} = this.calcXY(element);
 
-    // Remove placeholder from layout
-    var layout = _.without(layout, {placeholder: true});
-    layout = this.moveElement(this.state.layout, i, x, y);
-    this.setState({layout: [].concat(layout), activeDrag: null}); // use concat to make simple shouldComponentUpdate
+    // Cap x at numCols
+    if (x + l.w > this.props.cols) {
+      x = this.props.cols - l.w;
+    }
+
+    // Move the element here
+    layout = moveElement(layout, l, x, y);
+    // Set state
+    this.setState({layout: compact(layout), activeDrag: null});
   },
 
   render() {
@@ -291,3 +247,148 @@ var ReactGridLayout = module.exports = React.createClass({
     );
   }
 });
+
+/**
+ * Given two layouts, check if they collide.
+ * @param  {Object} l1 Layout object.
+ * @param  {Object} l2 Layout object.
+ * @return {Boolean}   True if colliding.
+ */
+function collides(l1, l2) {
+  if (l1 === l2) return false; // same element
+  if (l1.x + l1.w <= l2.x) return false; // l1 is left of l2
+  if (l1.x >= l2.x + l2.w) return false; // l1 is right of l2
+  if (l1.y + l1.h <= l2.y) return false; // l1 is above l2
+  if (l1.y >= l2.y + l2.h) return false; // l1 is below l2
+  return true; // boxes overlap
+}
+
+/**
+ * Given a layout, compact it. This involves going down each y coordinate and removing gaps
+ * between items.
+ * @param  {Array} layout Layout.
+ * @return {Array}       Compacted Layout.
+ */
+function compact(layout) {
+  // We go through the items by row and column.
+  var sorted = getLayoutItemsByRowCol(layout);
+  var out = _.map(getLayoutItemsByRowCol(layout), function(l, i) {
+    // Only collide with elements before this one.
+    var ls = sorted.slice(0, i);
+    // Move the element up as far as it can go without colliding.
+    do {
+      l.y--;
+    }
+    while (l.y > -1 && !layoutItemCollidesWith(ls, l).length);
+
+    // Move it down, and keep moving it down if it's colliding.
+    do {
+      l.y++;
+    } while(layoutItemCollidesWith(ls, l).length);
+
+    delete l.moved;
+    return l;
+  });
+  return _.sortBy(out, 'i');
+}
+
+/**
+ * Get a layout item by index. Used so we can override later on if necessary.
+ *
+ * @param  {Array} layout Layout array.
+ * @param  {Number} i      Index
+ * @return {LayoutItem}        Item at index.
+ */
+function getLayoutItem(layout, i) {
+  return layout[i];
+}
+
+/**
+ * Get layout items sorted from top left to right and down.
+ * @return {Array} Array of layout objects.
+ */
+function getLayoutItemsByRowCol(layout) {
+  return [].concat(layout).sort(function(a, b) {
+    if (a.y > b.y || (a.y === b.y && a.x > b.x)) {
+      return 1;
+    }
+    return -1;
+  });
+}
+
+/**
+ * Get layout items sorted from top left to down.
+ * @return {Array} Array of layout objects.
+ */
+function getLayoutItemsByColRow(layout) {
+  return [].concat(layout).sort(function(a, b) {
+    if (a.x > b.x || a.x === b.x && a.y > b.y) {
+      return 1;
+    }
+    return -1;
+  });
+}
+
+/**
+ * Returns an array of items this layout item collides with.
+ * @param  {Object} layoutItem Layout item.
+ * @return {Array}             Array of colliding layout objects.
+ */
+function layoutItemCollidesWith(layout, layoutItem) {
+  return _.filter(layout, collides.bind(null, layoutItem));
+}
+
+/**
+ * Move / resize an element. Responsible for doing cascading movements of other elements.
+ * @param  {Array}  layout Full layout to modify.
+ * @param  {LayoutItem} l element to move.
+ * @param  {Number} [x] X position in grid units.
+ * @param  {Number} [y] Y position in grid units.
+ * @param  {Number} [w] Width in grid units.
+ * @param  {Number} [h] Height in grid units.
+ */
+function moveElement(layout, l, x, y, w, h) {
+  // _.pick trickery removes undefined values from the object so we don't overwrite
+  // the object with attrs we didn't pass
+  _.extend(l, _.pick({x: x, y: y, w: w, h: h, moved: 1}, _.isNumber));
+
+  // Get all items this box collides with.
+  var collisions = layoutItemCollidesWith(layout, l);
+
+  // Move each item that collides away from this element.
+  _.each(collisions, function(coll) {
+    if (coll.moved) return; // short circuit so we don't re-move items
+    layout = moveElementAwayFromCollision(layout, l, coll);
+  });
+
+  return layout;
+}
+
+/**
+ * This is where the magic needs to happen - given a collision, move an element away from the collision.
+ * It's okay to cascade movements here, but be careful to not have a move b move c move a.
+ * @param  {Array} layout            Full layout to modify.
+ * @param  {LayoutItem} collidesWith Layout item we're colliding with.
+ * @param  {LayoutItem} itemToMove   Layout item we're moving.
+ */
+function moveElementAwayFromCollision(layout, collidesWith, itemToMove) {
+  var fakeItem = _.extend({}, itemToMove, {y: 0});
+
+  var sorted = getLayoutItemsByRowCol(layout);
+  var itemsBefore = sorted.slice(0, sorted.indexOf(itemToMove)).concat(collidesWith);
+
+  // While the item collides with any of the items before it, move it down.
+  while (layoutItemCollidesWith(itemsBefore, fakeItem).length) {
+    fakeItem.y++;
+  }
+  return moveElement(layout, itemToMove, undefined, fakeItem.y);
+}
+
+/**
+ * Helper to convert a number to a percentage string.
+ * @param  {Number} num Any number
+ * @return {String}     That number as a percentage.
+ */
+function perc(num) {
+  return num * 100 + '%';
+}

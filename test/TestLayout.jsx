@@ -1,6 +1,7 @@
 'use strict';
 var React = require('react/addons');
 typeof window !== "undefined" && (window.React = React); // for devtools
+typeof window !== "undefined" && (window.Perf = React.addons.Perf); // for devtools
 var _ = require('lodash');
 var ReactGridLayout = require('../lib/ReactGridLayout.jsx');
 
