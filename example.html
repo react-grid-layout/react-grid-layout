@@ -9,15 +9,9 @@
         width: 100%;
         background: #eee;
       }
-      .react-grid-layout {
-        position: relative;
-        transition: height 200ms ease;
-      }
       .react-grid-item {
         background: #ccc;
         border: 1px solid black;
-        transition: all 200ms ease;
-        transition-property: left, top;
       }
       .react-grid-item .text {
         font-size: 24px;
@@ -30,27 +24,6 @@
         margin: auto;
         height: 24px;
       }
-      .react-grid-placeholder {
-        background: red;
-        opacity: 0.3;
-        user-select: none;
-        z-index: 0;
-        transition: none;
-      }
-      .react-grid-item.react-draggable-dragging {
-        transition: none;
-        z-index: 100;
-      }
-      .react-draggable {
-        position: relative;
-      }
-      .react-draggable-active {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
-        user-select: none;
-      }
     </style>
     <script src="http://localhost:4002/bundle.js"></script>
     <title>RGL Example</title>
@@ -58,6 +31,8 @@
   <body>
     <h3>React-Grid-Layout Demo</h3>
     <p>Try dragging the elements around.</p>
+    <p>If you don't see any content, run webpack (<span style="font-family:monospace">npm run dev-server</span>) 
+      and load this file from the server it opens.</p>
     <div id="content"></div>
   </body>
 </html>
