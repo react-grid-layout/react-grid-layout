@@ -11,7 +11,7 @@ var TestLayout = module.exports = React.createClass({
   displayName: 'TestLayout',
 
   generate() {
-    return _.map(_.range(12), function(i) {
+    return _.map(_.range(this.props.gridProps && this.props.gridProps.items || 12), function(i) {
       return (<div key={i}><span className="text">{i}</span></div>);
     });
   },
@@ -23,7 +23,7 @@ var TestLayout = module.exports = React.createClass({
       return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y};
     });
     return (
-      <ReactGridLayout className="layout" initialLayout={layout} cols={12} rowHeight={30}>
+      <ReactGridLayout className="layout" initialLayout={layout} cols={12} rowHeight={30} {...this.props.gridProps}>
         {this.generate()}
       </ReactGridLayout>
     );

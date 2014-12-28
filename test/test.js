@@ -3,5 +3,6 @@ var Layout = require('./TestLayout.jsx');
 var React = require('react');
 document.addEventListener("DOMContentLoaded", function(event) { 
   var contentDiv = document.getElementById('content');
-  React.render(React.createElement(Layout), contentDiv);
+  var gridProps = window.gridProps || {};
+  React.render(React.createElement(Layout, {gridProps: gridProps}), contentDiv);
 });

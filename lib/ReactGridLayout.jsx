@@ -9,7 +9,7 @@ var ReactGridLayout = module.exports = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
-    // If true, the container swells and contracts to fit contents
+    // If true, the container height swells and contracts to fit contents
     autoSize: React.PropTypes.bool,
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
     breakpoints: React.PropTypes.object,
@@ -25,7 +25,11 @@ var ReactGridLayout = module.exports = React.createClass({
     // margin between items (x, y) in px
     margin: React.PropTypes.array,
     // Rows have a static height, but you can change this based on breakpoints if you like
-    rowHeight: React.PropTypes.number
+    rowHeight: React.PropTypes.number,
+
+    // Flags
+    isDraggable: React.PropTypes.bool,
+    isResizable: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -35,7 +39,9 @@ var ReactGridLayout = module.exports = React.createClass({
       cols: 10, 
       rowHeight: 150,
       initialWidth: 1280,
-      margin: [10, 10]
+      margin: [10, 10],
+      isDraggable: true,
+      isResizable: true
     };
   },
 
@@ -199,6 +205,8 @@ var ReactGridLayout = module.exports = React.createClass({
         onDrag={this.onDrag}
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
+        isDraggable={this.props.isDraggable}
+        isResizable={this.props.isResizable}
         >
         {child}
       </GridItem>
