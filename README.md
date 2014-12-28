@@ -1,6 +1,6 @@
 ### React-Grid-Layout
 
-[View the Demo](https://strml.github.io/react-grid-layout/example.html)
+[View the Demo](https://strml.github.io/react-grid-layout/example/1.html)
 
 React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or 
 [Gridster](http://gridster.net), for React. 
