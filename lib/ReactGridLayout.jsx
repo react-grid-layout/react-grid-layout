@@ -111,7 +111,7 @@ var ReactGridLayout = module.exports = React.createClass({
 
     // Create drag element (display only)
     var activeDrag = {
-      w: l.w, h: l.h, x: x, y: y, placeholder: true, i: i
+      w: l.w, h: l.h, x: l.x, y: l.y, placeholder: true, i: i
     };
     
     // Move the element to the dragged location.
