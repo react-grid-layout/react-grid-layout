@@ -8,6 +8,8 @@ React-Grid-Layout is a grid layout system much like [Packery](http://packery.met
 RGL is not as full-featured as the above projects. However, it solves a major pain point I've found with those
 projects - it is responsive! Try resizing the window in the demo and see how the grid resizes without any fuss.
 
+RGL works just fine with server-side rendering.
+
 RGL is React-only and does not require jQuery. It does (for the time being) require lodash.
 
 More demos are coming soon. RGL supports adding and removing components without fuss.
