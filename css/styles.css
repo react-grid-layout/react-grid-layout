@@ -9,9 +9,13 @@
 .react-grid-placeholder {
   background: red;
   opacity: 0.3;
-  user-select: none;
+  transition-duration: 100ms;
   z-index: 0;
-  transition: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 .react-grid-item.react-draggable-dragging {
   transition: none;
@@ -26,4 +30,17 @@
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+.react-grid-resize-handle {
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 28px;
+  font-size: 20px;
+  text-align: right;
+  cursor: se-resize;
+}
+.react-grid-item:hover .react-grid-resize-handle {
+  opacity: 1;
 }

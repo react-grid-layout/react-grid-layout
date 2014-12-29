@@ -1,6 +1,8 @@
 'use strict';
 var React = require('react/addons');
+var utils = require('./utils');
 var Draggable = require('react-draggable');
+var Resizable = require('react-resizable').Resizable;
 
 var GridItem = module.exports = React.createClass({
   displayName: 'GridItem',
@@ -23,16 +25,39 @@ var GridItem = module.exports = React.createClass({
     i: React.PropTypes.number.isRequired,
 
     // If true, item will be repositioned when x/y/w/h change
-    watchStart: React.PropTypes.bool,
+    moveOnStartChange: React.PropTypes.bool,
     
     // Functions
     onDragStop: React.PropTypes.func,
     onDragStart: React.PropTypes.func,
     onDrag: React.PropTypes.func,
+    onResizeStop: React.PropTypes.func,
+    onResizeStart: React.PropTypes.func,
+    onResize: React.PropTypes.func,
 
-    // others
+    // Flags
+    isDraggable: React.PropTypes.bool,
+    isResizable: React.PropTypes.bool,
+
+    // Others
     className: React.PropTypes.string,
-    isDraggable: React.PropTypes.bool
+    // Selector for draggable handle
+    handle: React.PropTypes.string 
+  },
+
+  getDefaultProps() {
+    return {
+      isDraggable: true,
+      isResizable: true,
+      className: ''
+    };
+  },
+
+  getInitialState() {
+    return {
+      resizing: false,
+      className: ''
+    };
   },
 
   /**
@@ -47,14 +72,12 @@ var GridItem = module.exports = React.createClass({
     var out = {
       left: width * (p.x / p.cols) + p.margin[0],
       top: p.rowHeight * p.y + p.margin[1],
-      width: (width * p.w / p.cols) - ((p.w - 1) * p.margin[0]) + 'px',
-      height: p.h * p.rowHeight - p.margin[1] + 'px'
+      width: width * (p.w / p.cols) - p.margin[0],
+      height: p.h * p.rowHeight - p.margin[1]
     };
-    // If we're not mounted yet, use percentages; otherwise items won't fit the window properly
-    // because this.props.width hasn't actually been populated with a real value
-    if (!this.isMounted()) {
-      out.left = perc(out.x / p.containerWidth);
-      out.width = perc(out.width / p.containerWidth);
+    if (this.state.resizing) {
+      out.width = this.state.resizing.width;
+      out.height = this.state.resizing.height;
     }
     return out;
   },
@@ -75,71 +98,131 @@ var GridItem = module.exports = React.createClass({
     return {x, y};
   },
 
-  dragHandler(handlerName, element) {
-    if (!this.props[handlerName]) return;
-    // Get new XY
-    var {x, y} = this.calcXY(element);
-
-    // Cap x at numCols
-    if (x + this.props.w > this.props.cols) {
-      x = this.props.cols - this.props.w;
-    }
-
-    this.props[handlerName](this.props.i, x, y);
+  calcWH({height, width}) {
+    var w = Math.round((width / this.props.containerWidth) * this.props.cols);
+    var h = Math.round(height / this.props.rowHeight);
+    w = Math.max(Math.min(w, this.props.cols - this.props.x), 0);
+    h = Math.max(h, 0);
+    return {w, h};
   },
 
-  onDrag(e, {element, position}) {
-    this.dragHandler('onDrag', element);
+  mixinDraggable(child, position) {
+    return (
+      <Draggable
+        start={{x: position.left, y: position.top}}
+        moveOnStartChange={this.props.moveOnStartChange} 
+        onStop={this.onDragHandler('onDragStop')}
+        onStart={this.onDragHandler('onDragStart')}
+        onDrag={this.onDragHandler('onDrag')}
+        handle={this.props.handle}
+        cancel=".react-resizable-handle"
+        >
+        {child}
+      </Draggable>
+    );
   },
 
-  onDragStart(e, {element, position}) {
-    this.dragHandler('onDragStart', element);
+  mixinResizable(child, position) {
+    return (
+      <Resizable
+        width={position.width}
+        height={position.height}
+        onResizeStop={this.onResizeHandler('onResizeStop')}
+        onResizeStart={this.onResizeHandler('onResizeStart')}
+        onResize={this.onResizeHandler('onResize')}
+        >
+        {child}
+      </Resizable>
+    );
   },
 
-  onDragStop(e, {element, position}) {
-    this.dragHandler('onDragStop', element);
+  /**
+   * Wrapper around drag events to provide more useful data.
+   * All drag events call the function with the given handler name, 
+   * with the signature (index, x, y).
+   * 
+   * @param  {String} handlerName Handler name to wrap.
+   * @return {Function}           Handler function.
+   */
+  onDragHandler(handlerName) {
+    var me = this;
+    return function(e, {element, position}) {
+      if (!me.props[handlerName]) return;
+      // Get new XY
+      var {x, y} = me.calcXY(element);
+
+      // Cap x at numCols
+      if (x + me.props.w > me.props.cols) {
+        x = me.props.cols - me.props.w;
+      }
+
+      me.props[handlerName](me.props.i, x, y);
+    };
+  },
+
+  /**
+   * Wrapper around drag events to provide more useful data.
+   * All drag events call the function with the given handler name, 
+   * with the signature (index, x, y).
+   * 
+   * @param  {String} handlerName Handler name to wrap.
+   * @return {Function}           Handler function.
+   */
+  onResizeHandler(handlerName) {
+    var me = this;
+    return function(e, {element, size}) {
+      if (!me.props[handlerName]) return;
+
+      // Get new XY
+      var {w, h} = me.calcWH(size);
+
+      // Cap w at numCols
+      if (w + me.props.x > me.props.cols) {
+        w = me.props.cols - me.props.x;
+      }
+
+      me.setState({resizing: handlerName === 'onResizeStop' ? null : size});
+
+      me.props[handlerName](me.props.i, w, h);
+    };
   },
 
   render() {
-    var child = React.Children.only(this.props.children);
+    var p = this.props, pos = this.calcPosition();
 
-    var p = this.props;
-    var {left, top, width, height} = this.calcPosition();
-
-    child = React.addons.cloneWithProps(child, {
+    var child = React.addons.cloneWithProps(React.Children.only(this.props.children), {
+      // Munge a classname. Use passed in classnames, child classnames, and resizing.
+      className: ['react-grid-item', this.props.children.props.className || '', this.props.className,
+        this.state.resizing ? 'resizing' : ''].join(' '),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: {
-        width: width,
-        height: height,
+        width: pos.width + 'px',
+        height: pos.height + 'px',
         position: 'absolute'
       }
     });
-    child.props.className = 'react-grid-item ' + (child.props.className || "") + " " + (this.props.className || '');
-    
-    if (this.props.isDraggable !== false) {
-      return (
-        <Draggable
-          start={{x: left, y: top}}
-          watchStart={this.props.watchStart} 
-          onStop={this.onDragStop}
-          onStart={this.onDragStart}
-          onDrag={this.onDrag}>
-          {child}
-        </Draggable>
-      );
-    } else {
-      child.props.style.left = left, child.props.style.top = top;
-      return child;
+
+    // If we're not mounted yet, use percentages; otherwise items won't fit the window properly
+    // because this.props.width hasn't actually been populated with a real value
+    if (!this.isMounted()) {
+      pos.left = utils.perc(pos.left / p.containerWidth);
+      child.props.style.width = utils.perc(pos.width / p.containerWidth);
     }
 
+    // Resizable support. This is usually on but the user can toggle it off. 
+    if (this.props.isResizable && this.isMounted()) {
+      child = this.mixinResizable(child, pos);
+    }
+
+    // Draggable support. This is always on, except for with placeholders.
+    if (this.props.isDraggable) {
+      child = this.mixinDraggable(child, pos);
+    } 
+    // Place the element directly if draggability is turned off.
+    else {
+      child.props.style.left = pos.left, child.props.style.top = pos.top;
+    }
+
+    return child;
   }
 });
-
-/**
- * Helper to convert a number to a percentage string.
- * @param  {Number} num Any number
- * @return {String}     That number as a percentage.
- */
-function perc(num) {
-  return num * 100 + '%';
-}
