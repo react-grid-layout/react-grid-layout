@@ -186,7 +186,7 @@ var utils = module.exports = {
     for (var i = 0, len = layout.length; i < len; i++) {
       for (var j = 0; j < subProps.length; j++) {
         if (typeof layout[i][subProps[j]] !== 'number') {
-          throw new Error('ReactGridLayout: " + contextName + "[' + i + '].' + subProps[j] + ' must be a Number!');
+          throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].' + subProps[j] + ' must be a Number!');
         }
       }
     }
