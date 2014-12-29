@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
     context: __dirname,
     entry: [
@@ -13,6 +15,13 @@ module.exports = {
         {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
       ]
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        "process.env": {
+          NODE_ENV: JSON.stringify('production')
+        }
+      }),
+    ],
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
     }
