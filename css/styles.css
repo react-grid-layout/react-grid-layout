@@ -6,11 +6,14 @@
   transition: all 200ms ease;
   transition-property: left, top;
 }
+.react-grid-item.resizing {
+  z-index: 1;
+}
 .react-grid-placeholder {
   background: red;
-  opacity: 0.3;
+  opacity: 0.2;
   transition-duration: 100ms;
-  z-index: 0;
+  z-index: 2;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -19,7 +22,7 @@
 }
 .react-grid-item.react-draggable-dragging {
   transition: none;
-  z-index: 100;
+  z-index: 3;
 }
 .react-draggable {
   position: relative;
