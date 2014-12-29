@@ -20,6 +20,7 @@ var TestLayout = module.exports = React.createClass({
 
   getInitialState() {
     var layout = this.props.layout || this.generateLayout();
+    if (this.props.useGridProps) layout = undefined;
     return {
       layout: layout,
       initialLayout: layout
@@ -27,9 +28,16 @@ var TestLayout = module.exports = React.createClass({
   },
 
   generateDOM() {
-    return _.map(_.range(this.props.items), function(i) {
-      return (<div key={i}><span className="text">{i}</span></div>);
-    });
+    if (this.props.useGridProps) {
+      var layout = this.generateLayout();
+      return _.map(_.range(this.props.items), function(i) {
+        return (<div key={i} _grid={layout[i]}><span className="text">{i}</span></div>);
+      });
+    } else {
+      return _.map(_.range(this.props.items), function(i) {
+        return (<div key={i}><span className="text">{i}</span></div>);
+      });
+    }
   },
 
   generateLayout() {

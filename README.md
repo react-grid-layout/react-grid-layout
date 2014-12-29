@@ -49,6 +49,24 @@ render: function() {
 
 ```
 
+You can also set layout properties directly on the children:
+
+
+```javascript
+
+render: function() {
+  // layout is an array of objects, see the demo
+  return (
+    <ReactGridLayout className="layout" cols={12} rowHeight={30}>
+      <div key={1} _grid={{x: 0, y: 0, w: 1: h: 2}}>1</div>
+      <div key={2} _grid={{x: 1, y: 0, w: 1: h: 2}}>2</div>
+      <div key={3} _grid={{x: 2, y: 0, w: 1: h: 2}}>3</div>
+    </ReactGridLayout>
+  )
+}
+
+```
+
 
 #### Props
 
@@ -114,6 +132,7 @@ onLayoutChange: React.PropTypes.func
 1. [Basic](https://strml.github.io/react-grid-layout/examples/1-basic.html)
 1. [No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
 1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
+1. [Layout defined on children](https://strml.github.io/react-grid-layout/examples/4-grid-property.html)
 
 ----
 
@@ -126,4 +145,4 @@ onLayoutChange: React.PropTypes.func
 - [x] Live grid packing while dragging
 - [x] Resizable grid items
 - [x] Layouts per responsive breakpoint
-- [ ] Define grid attributes on children themselves (`_grid` key)
+- [x] Define grid attributes on children themselves (`_grid` key)
