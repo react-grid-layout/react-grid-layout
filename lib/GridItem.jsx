@@ -83,21 +83,25 @@ var GridItem = module.exports = React.createClass({
   },
 
   /**
-   * Given an element, inspect its styles and generate new x,y coordinates.
-   * @param  {DOMElement} element DOM Element.
-   * @return {Object}             x and y coordinates.
+   * Translate x and y coordinates from pixels to grid units.
+   * @param  {Number} options.left  Left offset in pixels.
+   * @param  {Number} options.top   Top offset in pixels.
+   * @return {Object}               x and y in grid units.
    */
-  calcXY(element) {
-    var newX = parseInt(element.style.left, 10);
-    var newY = parseInt(element.style.top, 10);
-
-    var x = Math.round((newX / this.props.containerWidth) * this.props.cols);
-    var y = Math.round(newY / this.props.rowHeight);
+  calcXY({left, top}) {
+    var x = Math.round((left / this.props.containerWidth) * this.props.cols);
+    var y = Math.round(top / this.props.rowHeight);
     x = Math.max(Math.min(x, this.props.cols), 0);
     y = Math.max(y, 0);
     return {x, y};
   },
 
+  /**
+   * Given a height and width in pixel values, calculate grid units.
+   * @param  {Number} options.height Height in pixels.
+   * @param  {Number} options.width  Width in pixels.
+   * @return {Object}                w, h as grid units.
+   */
   calcWH({height, width}) {
     var w = Math.round((width / this.props.containerWidth) * this.props.cols);
     var h = Math.round(height / this.props.rowHeight);
@@ -106,6 +110,12 @@ var GridItem = module.exports = React.createClass({
     return {w, h};
   },
 
+  /**
+   * Mix a Draggable instance into a child.
+   * @param  {Element} child    Child element.
+   * @param  {Object} position  Position object (pixel values)
+   * @return {Element}          Child wrapped in Draggable.
+   */
   mixinDraggable(child, position) {
     return (
       <Draggable
@@ -122,6 +132,12 @@ var GridItem = module.exports = React.createClass({
     );
   },
 
+  /**
+   * Mix a Resizable instance into a child.
+   * @param  {Element} child    Child element.
+   * @param  {Object} position  Position object (pixel values)
+   * @return {Element}          Child wrapped in Resizable.
+   */
   mixinResizable(child, position) {
     var p = this.props;
     var colWidth = p.containerWidth / p.cols - p.margin[0];
@@ -155,7 +171,7 @@ var GridItem = module.exports = React.createClass({
     return function(e, {element, position}) {
       if (!me.props[handlerName]) return;
       // Get new XY
-      var {x, y} = me.calcXY(element);
+      var {x, y} = me.calcXY(position);
 
       // Cap x at numCols
       x = Math.min(x, me.props.cols - me.props.w);

@@ -1,12 +1,11 @@
 'use strict';
 var React = require('react/addons');
-var _ = require('lodash');
 var GridItem = require('./GridItem.jsx');
 var utils = require('./utils');
 
 var ReactGridLayout = module.exports = React.createClass({
   displayName: 'ReactGridLayout',
-  mixins: [React.addons.PureRenderMixin],
+  // mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
     // If true, the container height swells and contracts to fit contents
@@ -87,12 +86,16 @@ var ReactGridLayout = module.exports = React.createClass({
    */
   containerHeight() {
     if (!this.props.autoSize) return;
-    // Calculate container height
-    var bottom = _.max(this.state.layout, function(l) {
-      return l.y + l.h;
-    });
-    return (bottom.y + bottom.h) * this.props.rowHeight + this.props.margin[1] + 'px';
+    var layout = this.state.layout;
+    // Calculate container height by finding bottom-most element
+    var max = 0, bottom;
+    for (var i = 0, len = layout.length; i < len; i++) {
+      bottom = layout[i].y + layout[i].h;
+      if (bottom > max) max = bottom;
+    }
+    return max * this.props.rowHeight + this.props.margin[1] + 'px';
   },
+
 
   /**
    * Generate a layout using the initialLayout as a template.
@@ -115,11 +118,23 @@ var ReactGridLayout = module.exports = React.createClass({
     return utils.compact(layout);
   },
 
+  /**
+   * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
+   * @param  {Number} width Screen width.
+   * @return {String}       Highest breakpoint that is less than width.
+   */
   getBreakpointFromWidth(width) {
-    return _(this.props.breakpoints)
-    .pairs()
-    .sortBy(function(val) { return -val[1];})
-    .find(function(val) {return width > val[1];})[0];
+    var breakpoints = this.props.breakpoints;
+    var keys = Object.keys(breakpoints);
+    var values = keys.map(function(k) { return breakpoints[k]; });
+
+    var match = []; // key, width
+    for (var i = 0; i < values.length; i++) {
+      if (width > values[i] && (!match[1] || values[i] > match[1])) {
+        match = [keys[i], values[i]];
+      }
+    }
+    return match[0];
   },
 
   getColsFromBreakpoint(breakpoint) {
@@ -145,7 +160,7 @@ var ReactGridLayout = module.exports = React.createClass({
     if (newState.cols !== this.state.cols) {
       // Store the current layout
       newState.layouts = this.state.layouts;
-      newState.layouts[this.state.breakpoint] = _.cloneDeep(this.state.layout);
+      newState.layouts[this.state.breakpoint] = JSON.parse(JSON.stringify(this.state.layout));
 
       // Find or generate the next layout
       newState.layout = this.state.layouts[newState.breakpoint];
