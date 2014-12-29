@@ -1,10 +1,12 @@
 'use strict';
 var React = require('react/addons');
-var GridItem = require('./GridItem.jsx');
+var GridItem = require('./GridItem');
 var utils = require('./utils');
 var PureDeepRenderMixin = require('./PureDeepRenderMixin');
 
-
+/**
+ * A reactive, fluid, responsive grid layout with draggable, resizable components.
+ */
 var ReactGridLayout = module.exports = React.createClass({
   displayName: 'ReactGridLayout',
   mixins: [PureDeepRenderMixin],
