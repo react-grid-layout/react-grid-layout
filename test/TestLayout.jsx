@@ -41,7 +41,6 @@ var TestLayout = module.exports = React.createClass({
   },
 
   onLayoutChange: function(layout) {
-    console.log(layout);
     this.setState({layout: layout});
   },
 
