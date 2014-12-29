@@ -4,8 +4,9 @@
       window.gridProps = {
         isDraggable: true,
         isResizable: true,
-        items: 20, 
-        w: 2
+        items: 20,
+        w: 2,
+        cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}
       };
     </script>
     <script src="/react-grid-layout/dist/bundle.js"></script>
@@ -15,7 +16,8 @@
     <h3>React-Grid-Layout Demo</h3>
     <p>Try dragging the elements around.</p>
     <p>React-Grid-Layout is the only grid layout system for React. It features auto-packing, resizable widgets,
-    and a fluid layout.</p>
+    a fluid layout, and separate layouts per responsive breakpoint.</p>
+    <p>Resize the window to try it out!</p>
     <p><a href="https://github.com/STRML/react-grid-layout">View project on GitHub</a></p>
     <div id="content"></div>
   </body>

@@ -1,3 +1,5 @@
+var webpack = require("webpack");
+
 module.exports = {
     context: __dirname,
     entry: [
@@ -16,6 +18,9 @@ module.exports = {
         {test: /\.jsx$/, loader: 'react-hot-loader'}
       ]
     },
+    plugins: [
+      new webpack.optimize.DedupePlugin(),
+    ],
     debug: true,
     devtool: "#inline-source-map",
     publicPath: '/examples/',
