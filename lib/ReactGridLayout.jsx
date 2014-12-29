@@ -29,7 +29,10 @@ var ReactGridLayout = module.exports = React.createClass({
 
     // Flags
     isDraggable: React.PropTypes.bool,
-    isResizable: React.PropTypes.bool
+    isResizable: React.PropTypes.bool,
+
+    // Callback so you can save the layout
+    onLayoutChange: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -41,7 +44,8 @@ var ReactGridLayout = module.exports = React.createClass({
       initialWidth: 1280,
       margin: [10, 10],
       isDraggable: true,
-      isResizable: true
+      isResizable: true,
+      onLayoutChange: function(){}
     };
   },
 
@@ -61,6 +65,13 @@ var ReactGridLayout = module.exports = React.createClass({
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize);
+  },
+
+  componentDidUpdate(prevProps, prevState) {
+    // Call back so we can store the layout
+    if (this.state.layout !== prevState.layout) {
+      this.props.onLayoutChange(this.state.layout);
+    }
   },
 
   /**
@@ -91,6 +102,8 @@ var ReactGridLayout = module.exports = React.createClass({
     if (layout.length !== this.props.children.length) {
       // Fill in the blanks
     }
+    
+    layout = utils.correctBounds(layout, {w: this.props.cols});
     return utils.compact(layout);
   },
 
@@ -147,12 +160,24 @@ var ReactGridLayout = module.exports = React.createClass({
     this.setState({layout: utils.compact(layout), activeDrag: null});
   },
 
-  onResize(e, {element, position}) {
-    console.log('resizing');
+  onResize(i, w, h) {
+    var layout = this.state.layout;
+    var l = utils.getLayoutItem(layout, i);
+
+    // Create drag element (display only)
+    var activeDrag = {
+      w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
+    };
+    l.w = w;
+    l.h = h;
+    
+    // Move the element to the dragged location.
+    // layout = utils.moveElement(layout, l, x, y);
+    this.setState({layout: utils.compact(layout), activeDrag: activeDrag});
   },
 
   onResizeStop(e, {element, position}) {
-
+    this.setState({activeDrag: null});
   },
 
   /**
@@ -160,7 +185,7 @@ var ReactGridLayout = module.exports = React.createClass({
    * @return {Element} Placeholder div.
    */
   placeholder() {
-    if (!this.state.activeDrag) return null;
+    if (!this.state.activeDrag) return '';
 
     return (
       <GridItem
@@ -216,7 +241,7 @@ var ReactGridLayout = module.exports = React.createClass({
   render() {
     // Calculate classname
     var {className, initialLayout, ...props} = this.props;
-    className = 'react-grid-layout ' + (className || '');
+    className = 'react-grid-layout ' + (className || '') + ' ' + this.state.className;
 
     return (
       <div {...props} className={className} style={{height: this.containerHeight()}}>

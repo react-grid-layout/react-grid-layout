@@ -1,6 +1,6 @@
 ### React-Grid-Layout
 
-[View the Demo](https://strml.github.io/react-grid-layout/examples/1.html)
+[View the Demo](https://strml.github.io/react-grid-layout/examples/1-basic.html)
 
 React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or 
 [Gridster](http://gridster.net), for React. 
@@ -16,6 +16,11 @@ More demos are coming soon. RGL supports adding and removing components without 
 
 If you have a feature request, add it as an issue.
 
+#### Demos
+
+[1. Basic](https://strml.github.io/react-grid-layout/examples/1-basic.html)
+[1. No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
+
 ----
 
 #### TODO List
@@ -25,5 +30,5 @@ If you have a feature request, add it as an issue.
 - [x] Grid packing
 - [x] Draggable grid items
 - [x] Live grid packing while dragging
+- [x] Resizable grid items
 - [ ] Define grid attributes on children themselves (`_grid` key)
-- [ ] Resizable grid items

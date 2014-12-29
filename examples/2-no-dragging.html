@@ -1,35 +1,11 @@
 <html>
   <head>
-    <style>
-      body {
-        background: white;
-        padding: 20px;
-      }
-      #content {
-        width: 100%;
-        background: #eee;
-      }
-      .react-grid-item {
-        background: #ccc;
-        border: 1px solid black;
-      }
-      .react-grid-item .text {
-        font-size: 24px;
-        text-align: center;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        height: 24px;
-      }
-    </style>
     <script>
       window.gridProps = {
         isDraggable: false,
         isResizable: false,
-        items: 50
+        items: 50,
+        w: 2
       };
     </script>
     <script src="http://localhost:4002/bundle.js"></script>
