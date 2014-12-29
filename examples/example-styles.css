@@ -15,9 +15,9 @@ body {
   padding: 10px;
 }
 .columns {
-  -moz-columns: 100px;
-  -webkit-columns: 100px;
-  columns: 100px;
+  -moz-columns: 105px;
+  -webkit-columns: 105px;
+  columns: 105px;
 }
 .react-grid-item:not(.react-grid-placeholder) {
   background: #ccc;
