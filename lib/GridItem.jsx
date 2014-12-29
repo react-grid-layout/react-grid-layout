@@ -123,10 +123,16 @@ var GridItem = module.exports = React.createClass({
   },
 
   mixinResizable(child, position) {
+    var p = this.props;
+    var colWidth = p.containerWidth / p.cols - p.margin[0];
+    var maxWidth = (colWidth + p.margin[0]) * (p.cols - p.x) - p.margin[0] * 2;
+    var rowHeight = p.rowHeight - p.margin[1];
     return (
       <Resizable
         width={position.width}
         height={position.height}
+        minConstraints={[colWidth, rowHeight]}
+        maxConstraints={[maxWidth, Infinity]}
         onResizeStop={this.onResizeHandler('onResizeStop')}
         onResizeStart={this.onResizeHandler('onResizeStart')}
         onResize={this.onResizeHandler('onResize')}
@@ -152,9 +158,7 @@ var GridItem = module.exports = React.createClass({
       var {x, y} = me.calcXY(element);
 
       // Cap x at numCols
-      if (x + me.props.w > me.props.cols) {
-        x = me.props.cols - me.props.w;
-      }
+      x = Math.min(x, me.props.cols - me.props.w);
 
       me.props[handlerName](me.props.i, x, y);
     };
@@ -177,9 +181,9 @@ var GridItem = module.exports = React.createClass({
       var {w, h} = me.calcWH(size);
 
       // Cap w at numCols
-      if (w + me.props.x > me.props.cols) {
-        w = me.props.cols - me.props.x;
-      }
+      w = Math.min(w, me.props.cols - me.props.x);
+      // Ensure w is at least 1
+      w = Math.max(w, 1);
 
       me.setState({resizing: handlerName === 'onResizeStop' ? null : size});
 

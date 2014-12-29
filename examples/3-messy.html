@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <script>
+      window.gridProps = {
+        isDraggable: true,
+        isResizable: true,
+        items: 20
+      };
+    </script>
+    <script src="http://localhost:4002/bundle.js"></script>
+    <title>RGL Example</title>
+  </head>
+  <body>
+    <h3>React-Grid-Layout Demo</h3>
+    <p>This demo shows what happens when elements are placed randomly all over the layout.</p>
+    <p>
+    RGL does not auto-pack in the same fashion as other projects, such as jQuery Masonry. Packing is only done
+    in the vertical dimension. If objects all have the same width, they will be packed efficiently.
+    </p>
+    <p>
+    If a layout is fed to RGL that has items with incorrect dimensions (width too big, overlapping other elements,
+    out of bounds, etc), they will be automatically corrected on startup. See the 
+    <a href="https://github.com/STRML/react-grid-layout/blob/master/test/TestLayout.jsx#L37">source of this demo</a>,
+    where elements are placed randomly in the layout.
+    </p>
+    <div id="content"></div>
+  </body>
+</html>
