@@ -3,10 +3,11 @@ var React = require('react/addons');
 var utils = require('./utils');
 var Draggable = require('react-draggable');
 var Resizable = require('react-resizable').Resizable;
+var PureDeepRenderMixin = require('./PureDeepRenderMixin');
 
 var GridItem = module.exports = React.createClass({
   displayName: 'GridItem',
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureDeepRenderMixin],
 
   propTypes: {
     // General grid attributes

@@ -2,10 +2,12 @@
 var React = require('react/addons');
 var GridItem = require('./GridItem.jsx');
 var utils = require('./utils');
+var PureDeepRenderMixin = require('./PureDeepRenderMixin');
+
 
 var ReactGridLayout = module.exports = React.createClass({
   displayName: 'ReactGridLayout',
-  // mixins: [React.addons.PureRenderMixin],
+  mixins: [PureDeepRenderMixin],
 
   propTypes: {
     // If true, the container height swells and contracts to fit contents
@@ -235,9 +237,15 @@ var ReactGridLayout = module.exports = React.createClass({
   placeholder() {
     if (!this.state.activeDrag) return '';
 
+    // {...this.state.activeDrag} is pretty slow, actually
     return (
       <GridItem
-        {...this.state.activeDrag}
+        w={this.state.activeDrag.w}
+        h={this.state.activeDrag.h}
+        x={this.state.activeDrag.x}
+        y={this.state.activeDrag.y}
+        i={this.state.activeDrag.i}
+        placeholder={true}
         className="react-grid-placeholder"
         containerWidth={this.state.width}
         cols={this.state.cols}
@@ -266,7 +274,11 @@ var ReactGridLayout = module.exports = React.createClass({
     var moveOnStartChange = drag && drag.i === i ? false : true;
     return (
       <GridItem 
-        {...l}
+        w={l.w}
+        h={l.h}
+        x={l.x}
+        y={l.y}
+        i={l.i}
         containerWidth={this.state.width}
         cols={this.state.cols}
         margin={this.props.margin}
