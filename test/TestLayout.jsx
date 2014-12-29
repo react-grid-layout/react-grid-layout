@@ -10,6 +10,7 @@ require('style!css!../node_modules/react-resizable/css/styles.css');
 
 var TestLayout = module.exports = React.createClass({
   displayName: 'TestLayout',
+  mixins: [React.addons.PureRenderMixin],
 
   getDefaultProps() {
     return {

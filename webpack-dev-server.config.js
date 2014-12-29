@@ -20,6 +20,11 @@ module.exports = {
     },
     plugins: [
       new webpack.optimize.DedupePlugin(),
+      new webpack.DefinePlugin({
+        "process.env": {
+          NODE_ENV: JSON.stringify('development')
+        }
+      }),
     ],
     debug: true,
     devtool: "#inline-source-map",
