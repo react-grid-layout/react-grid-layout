@@ -346,7 +346,7 @@ var ReactGridLayout = module.exports = React.createClass({
   render() {
     // Calculate classname
     var {className, initialLayout, ...props} = this.props;
-    className = 'react-grid-layout ' + (className || '') + ' ' + this.state.className;
+    className = 'react-grid-layout ' + (className || '');
 
     return (
       <div {...props} className={className} style={{height: this.containerHeight()}}>
