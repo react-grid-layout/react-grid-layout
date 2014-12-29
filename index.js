@@ -1,1 +1,1 @@
-module.exports = require('./build/ReactGridLayout.jsx');
+module.exports = require('./build/ReactGridLayout');
