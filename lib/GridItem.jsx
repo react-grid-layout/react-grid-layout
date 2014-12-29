@@ -5,6 +5,9 @@ var Draggable = require('react-draggable');
 var Resizable = require('react-resizable').Resizable;
 var PureDeepRenderMixin = require('./PureDeepRenderMixin');
 
+/**
+ * An individual item within a ReactGridLayout.
+ */
 var GridItem = module.exports = React.createClass({
   displayName: 'GridItem',
   mixins: [PureDeepRenderMixin],
