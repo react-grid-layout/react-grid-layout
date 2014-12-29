@@ -27,15 +27,9 @@ var ReactGridLayout = module.exports = React.createClass({
     // {x: Number, y: Number, w: Number, h: Number}
     initialLayout: function(props, propName, componentName) {
       var layout = props.initialLayout;
-      var subProps = ['x', 'y', 'w', 'h'];
-      if (!Array.isArray(layout)) throw new Error("InitialLayout must be an array!");
-      for (var i = 0, len = layout.length; i < len; i++) {
-        for (var j = 0; j < subProps.length; j++) {
-          if (typeof layout[i][subProps[j]] !== 'number') {
-            throw new Error('ReactGridLayout: initialLayout[' + i + '].' + subProps[j] + ' must be a Number!');
-          }
-        }
-      }
+      // I hope you're setting the on the grid items
+      if (layout === undefined) return; 
+      utils.validateLayout(layout, 'initialLayout');
     },
     // This allows setting this on the server side
     initialWidth: React.PropTypes.number,
@@ -47,6 +41,8 @@ var ReactGridLayout = module.exports = React.createClass({
     // Flags
     isDraggable: React.PropTypes.bool,
     isResizable: React.PropTypes.bool,
+    // If false, will not 
+    listenToWindowResize: React.PropTypes.bool,
 
     // Callback so you can save the layout
     onLayoutChange: React.PropTypes.func
@@ -62,6 +58,7 @@ var ReactGridLayout = module.exports = React.createClass({
       margin: [10, 10],
       isDraggable: true,
       isResizable: true,
+      listenToWindowResize: true,
       onLayoutChange: function(){}
     };
   },
@@ -80,8 +77,16 @@ var ReactGridLayout = module.exports = React.createClass({
   },
 
   componentDidMount() {
-    window.addEventListener('resize', this.onWindowResize);
+    if (this.props.listenToWindowResize) {
+      window.addEventListener('resize', this.onWindowResize);
+    }
     this.onWindowResize();
+  },
+
+  componentWillReceiveProps(nextProps) {
+    // This allows you to set the width manually if you like.
+    // Use manual width changes in combination with `listenToWindowResize: false`
+    if (nextProps.width) this.onWidthChange(nextProps.width);
   },
 
   componentWillUnmount() {
@@ -120,17 +125,38 @@ var ReactGridLayout = module.exports = React.createClass({
    * @return {Array}               Working layout.
    */
   generateLayout(initialLayout, breakpoint) {
-    var layout = [].concat(initialLayout || []);
-    layout = layout.map(function(l, i) {
-      l.i = i;
-      return l;
-    });
-    if (layout.length !== this.props.children.length) {
-      // Fill in the blanks
+    var layout;
+    // If no layout is supplied, look for `_grid` properties on children. 
+    if (!initialLayout) {
+      layout = this.props.children.map(function(child, i) {
+        var g = child.props._grid;
+        if (g) {
+          utils.validateLayout([g], 'ReactGridLayout.child');
+          return {
+            w: g.w, h: g.h, x: g.x, y: g.y, i: i
+          };
+        }
+      })
+      // Remove empties
+      .filter(function(val) { return val !== undefined; });
+    } else {
+      layout = [].concat(initialLayout || []);
+      layout = layout.map(function(l, i) {
+        l.i = i;
+        return l;
+      });
+    }
+
+    // Fill in the blanks
+    while (layout.length !== this.props.children.length) {
+      layout.push({w: 1, h: 1, x: 0, y: 0, i: layout.length - 1});
     }
     
+    // Correct the layout
     layout = utils.correctBounds(layout, {cols: this.getColsFromBreakpoint(breakpoint)});
-    return utils.compact(layout);
+    layout = utils.compact(layout);
+
+    return layout;
   },
 
   /**
@@ -162,13 +188,19 @@ var ReactGridLayout = module.exports = React.createClass({
   },
 
   /**
-   * On window resize, work through breakpoints and reset state with the new width & breakpoint.
+   * On window resize, update width.
    */
   onWindowResize() {
-    // Set breakpoint
-    var newState = {
-      width: this.getDOMNode().offsetWidth
-    };
+    this.onWidthChange(this.getDOMNode().offsetWidth);
+  },
+
+  /**
+   * When the width changes work through breakpoints and reset state with the new width & breakpoint.
+   * Width changes are necessary to figure out the widget widths.
+   */
+  onWidthChange(width) {
+    // Set new breakpoint
+    var newState = {width: width};
     newState.breakpoint = this.getBreakpointFromWidth(newState.width);
     newState.cols = this.getColsFromBreakpoint(newState.breakpoint);
     
