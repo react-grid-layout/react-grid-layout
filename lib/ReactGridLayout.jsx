@@ -25,7 +25,18 @@ var ReactGridLayout = module.exports = React.createClass({
     handle: React.PropTypes.string,
     // Layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
-    initialLayout: React.PropTypes.array,
+    initialLayout: function(props, propName, componentName) {
+      var layout = props.initialLayout;
+      var subProps = ['x', 'y', 'w', 'h'];
+      if (!Array.isArray(layout)) throw new Error("InitialLayout must be an array!");
+      for (var i = 0, len = layout.length; i < len; i++) {
+        for (var j = 0; j < subProps.length; j++) {
+          if (typeof layout[i][subProps[j]] !== 'number') {
+            throw new Error('ReactGridLayout: initialLayout[' + i + '].' + subProps[j] + ' must be a Number!');
+          }
+        }
+      }
+    },
     // This allows setting this on the server side
     initialWidth: React.PropTypes.number,
     // margin between items [x, y] in px
