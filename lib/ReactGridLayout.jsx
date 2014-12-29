@@ -13,8 +13,11 @@ var ReactGridLayout = module.exports = React.createClass({
     autoSize: React.PropTypes.bool,
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
     breakpoints: React.PropTypes.object,
-    // # of cols
-    cols: React.PropTypes.number,
+    // # of cols. Can be specified as a single number, or a breakpoint -> cols map
+    cols: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.number
+    ]),
     // A selector for the draggable handler
     handle: React.PropTypes.string,
     // Layout is an array of object with the format:
@@ -22,7 +25,7 @@ var ReactGridLayout = module.exports = React.createClass({
     initialLayout: React.PropTypes.array,
     // This allows setting this on the server side
     initialWidth: React.PropTypes.number,
-    // margin between items (x, y) in px
+    // margin between items [x, y] in px
     margin: React.PropTypes.array,
     // Rows have a static height, but you can change this based on breakpoints if you like
     rowHeight: React.PropTypes.number,
@@ -50,9 +53,13 @@ var ReactGridLayout = module.exports = React.createClass({
   },
 
   getInitialState() {
+    var breakpoint = this.getBreakpointFromWidth(this.props.initialWidth);
     return {
-      layout: this.generateLayout(this.props.initialLayout),
-      breakpoint: this.getBreakpointFromWidth(this.props.initialWidth),
+      layout: this.generateLayout(this.props.initialLayout, breakpoint),
+      // storage for layouts obsoleted by breakpoints
+      layouts: {},
+      breakpoint: breakpoint,
+      cols: this.getColsFromBreakpoint(breakpoint),
       width: this.props.initialWidth,
       activeDrag: null
     };
@@ -91,9 +98,10 @@ var ReactGridLayout = module.exports = React.createClass({
    * Generate a layout using the initialLayout as a template.
    * Missing entries will be added, extraneous ones will be truncated.
    * @param  {Array} initialLayout Layout passed in through props.
-   * @return {Array}                Working layout.
+   * @param  {String} breakpoint   Current responsive breakpoint.
+   * @return {Array}               Working layout.
    */
-  generateLayout(initialLayout) {
+  generateLayout(initialLayout, breakpoint) {
     var layout = [].concat(initialLayout || []);
     layout = layout.map(function(l, i) {
       l.i = i;
@@ -103,7 +111,7 @@ var ReactGridLayout = module.exports = React.createClass({
       // Fill in the blanks
     }
     
-    layout = utils.correctBounds(layout, {w: this.props.cols});
+    layout = utils.correctBounds(layout, {cols: this.getColsFromBreakpoint(breakpoint)});
     return utils.compact(layout);
   },
 
@@ -114,13 +122,38 @@ var ReactGridLayout = module.exports = React.createClass({
     .find(function(val) {return width > val[1];})[0];
   },
 
+  getColsFromBreakpoint(breakpoint) {
+    var cols = this.props.cols;
+    if (typeof cols === "number") return cols;
+    if (!cols[breakpoint]) {
+      throw new Error("ReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
+    }
+    return cols[breakpoint];
+  },
+
   /**
    * On window resize, work through breakpoints and reset state with the new width & breakpoint.
    */
   onWindowResize() {
     // Set breakpoint
-    var width = this.getDOMNode().offsetWidth;
-    this.setState({width: width, breakpoint: this.getBreakpointFromWidth(width)});
+    var newState = {
+      width: this.getDOMNode().offsetWidth
+    };
+    newState.breakpoint = this.getBreakpointFromWidth(newState.width);
+    newState.cols = this.getColsFromBreakpoint(newState.breakpoint);
+    
+    if (newState.cols !== this.state.cols) {
+      // Store the current layout
+      newState.layouts = this.state.layouts;
+      newState.layouts[this.state.breakpoint] = _.cloneDeep(this.state.layout);
+
+      // Find or generate the next layout
+      newState.layout = this.state.layouts[newState.breakpoint];
+      if (!newState.layout) {
+        newState.layout = utils.compact(utils.correctBounds(this.state.layout, {cols: newState.cols}));
+      }
+    }
+    this.setState(newState);
   },
 
   onDragStart(i, e, {element, position}) {
@@ -192,7 +225,7 @@ var ReactGridLayout = module.exports = React.createClass({
         {...this.state.activeDrag}
         className="react-grid-placeholder"
         containerWidth={this.state.width}
-        cols={this.props.cols}
+        cols={this.state.cols}
         margin={this.props.margin}
         rowHeight={this.props.rowHeight}
         isDraggable={false}
@@ -220,7 +253,7 @@ var ReactGridLayout = module.exports = React.createClass({
       <GridItem 
         {...l}
         containerWidth={this.state.width}
-        cols={this.props.cols}
+        cols={this.state.cols}
         margin={this.props.margin}
         rowHeight={this.props.rowHeight}
         moveOnStartChange={moveOnStartChange}
