@@ -14,7 +14,100 @@ RGL is React-only and does not require jQuery. It does (for the time being) requ
 
 More demos are coming soon. RGL supports adding and removing components without fuss.
 
-If you have a feature request, add it as an issue.
+If you have a feature request, please add it as an issue or make a pull request.
+
+#### Features
+
+* 100% React - no jQuery
+* Draggable widgets
+* Resizable widgets
+* Vertical auto-packing
+* Bounds checking for dragging and resizing
+* Layout can be serialized and restored
+* Responsive breakpoints
+* Separate layouts per responsive breakpoints
+
+
+#### Usage
+
+Use ReactGridLayout like any other component.
+
+```javascript
+
+render: function() {
+  // layout is an array of objects, see the demo
+  var initialLayout = getOrGenerateLayout(); 
+  return (
+    <ReactGridLayout className="layout" initialLayout={initialLayout} 
+      cols={12} rowHeight={30}>
+      <div key={1}>1</div>
+      <div key={2}>2</div>
+      <div key={3}>3</div>
+    </ReactGridLayout>
+  )
+}
+
+```
+
+
+#### Props
+
+RGL supports the following properties (see the source for the final word on this):
+
+```javascript
+// If true, the container height swells and contracts to fit contents
+autoSize: React.PropTypes.bool,
+
+// {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
+breakpoints: React.PropTypes.object,
+
+// Can be specified as a single number or a {breakpoint: cols} map
+cols: React.PropTypes.oneOfType([
+  React.PropTypes.object,
+  React.PropTypes.number
+]),
+
+// A selector for the draggable handler
+handle: React.PropTypes.string,
+
+// Layout is an array of object with the format:
+// {x: Number, y: Number, w: Number, h: Number}
+initialLayout: React.PropTypes.array,
+
+// This allows setting this on the server side
+initialWidth: React.PropTypes.number,
+
+// margin between items [x, y] in px
+margin: React.PropTypes.array,
+
+// Rows have a static height, but you can change this based on breakpoints 
+// if you like
+rowHeight: React.PropTypes.number,
+
+// Flags.
+isDraggable: React.PropTypes.bool,
+isResizable: React.PropTypes.bool,
+
+// Callback so you can save the layout
+onLayoutChange: React.PropTypes.func
+```
+
+###### Defaults
+
+```javascript
+{
+  autoSize: true,
+  breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
+  cols: 10, 
+  rowHeight: 150,
+  initialWidth: 1280,
+  margin: [10, 10],
+  isDraggable: true,
+  isResizable: true,
+  onLayoutChange: function(){}
+}
+```
+
 
 #### Demos
 
@@ -32,4 +125,5 @@ If you have a feature request, add it as an issue.
 - [x] Draggable grid items
 - [x] Live grid packing while dragging
 - [x] Resizable grid items
+- [x] Layouts per responsive breakpoint
 - [ ] Define grid attributes on children themselves (`_grid` key)
