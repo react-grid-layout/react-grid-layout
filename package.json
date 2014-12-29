@@ -42,5 +42,8 @@
     "style-loader": "^0.8.2",
     "webpack": "^1.4.14",
     "webpack-dev-server": "^1.7.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   }
 }
