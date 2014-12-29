@@ -10,7 +10,7 @@ projects - it is responsive! Try resizing the window in the demo and see how the
 
 RGL works just fine with server-side rendering.
 
-RGL is React-only and does not require jQuery. It does (for the time being) require lodash.
+RGL is React-only and does not require jQuery.
 
 More demos are coming soon. RGL supports adding and removing components without fuss.
 
