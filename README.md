@@ -20,6 +20,7 @@ If you have a feature request, add it as an issue.
 
 1. [Basic](https://strml.github.io/react-grid-layout/examples/1-basic.html)
 1. [No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
+1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
 
 ----
 

@@ -46,7 +46,7 @@ var TestLayout = module.exports = React.createClass({
 
   stringifyLayout() {
     return _.map(this.state.layout, function(l) {
-      return <div className="layoutItem"><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
+      return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
     });
   },
 
