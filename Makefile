@@ -1,5 +1,8 @@
-JAVASCRIPT_DIR := .
- 
+.PHONY: js
+
 js:
-	jsx $(JAVASCRIPT_DIR)/lib $(JAVASCRIPT_DIR)/build --harmony -x jsx --no-cache-dir
+	jsx ./lib ./build --harmony -x jsx --no-cache-dir
 	cp -R ./lib/*.js ./build
+
+check-build:
+	bash check-build.sh

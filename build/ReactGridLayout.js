@@ -126,6 +126,7 @@ var ReactGridLayout = module.exports = React.createClass({
    */
   generateLayout:function(initialLayout, breakpoint) {
     var layout;
+
     // If no layout is supplied, look for `_grid` properties on children. 
     if (!initialLayout) {
       layout = this.props.children.map(function(child, i) {
@@ -139,20 +140,25 @@ var ReactGridLayout = module.exports = React.createClass({
       })
       // Remove empties
       .filter(function(val) { return val !== undefined; });
-    } else {
+    } 
+    // Layout was supplied. Mark indices and trim off the end.
+    else {
+      // Clone initialLayout.
       layout = [].concat(initialLayout || []);
       layout = layout.map(function(l, i) {
         l.i = i;
         return l;
       });
+      // Ensure the user hasn't passed more entries than we have children.
+      layout = layout.slice(0, this.props.children.length);
     }
 
-    // Fill in the blanks
-    while (layout.length !== this.props.children.length) {
-      layout.push({w: 1, h: 1, x: 0, y: 0, i: layout.length - 1});
+    // Fill in the blanks.
+    while (layout.length < this.props.children.length) {
+      layout.push({w: 1, h: 1, x: 0, y: 0, i: layout.length});
     }
     
-    // Correct the layout
+    // Correct the layout.
     layout = utils.correctBounds(layout, {cols: this.getColsFromBreakpoint(breakpoint)});
     layout = utils.compact(layout);
 
@@ -346,7 +352,7 @@ var ReactGridLayout = module.exports = React.createClass({
   render:function() {
     // Calculate classname
     var $__0=    this.props,className=$__0.className,initialLayout=$__0.initialLayout,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,initialLayout:1});
-    className = 'react-grid-layout ' + (className || '') + ' ' + this.state.className;
+    className = 'react-grid-layout ' + (className || '');
 
     return (
       React.createElement("div", React.__spread({},  props, {className: className, style: {height: this.containerHeight()}}), 
