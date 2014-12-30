@@ -14,7 +14,8 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: '6to5-loader?experimental=true'},
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: '6to5-loader?experimental=true&runtime=true'},
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'imports-loader?to5Runtime=6to5/runtime'},
       ]
     },
     plugins: [
