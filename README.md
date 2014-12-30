@@ -16,6 +16,14 @@ More demos are coming soon. RGL supports adding and removing components without 
 
 If you have a feature request, please add it as an issue or make a pull request.
 
+#### Demos
+
+1. [Basic](https://strml.github.io/react-grid-layout/examples/1-basic.html)
+1. [No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
+1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
+1. [Layout Defined on Children](https://strml.github.io/react-grid-layout/examples/4-grid-property.html)
+1. [Static Elements](https://strml.github.io/react-grid-layout/examples/5-static-elements.html)
+
 #### Features
 
 * 100% React - no jQuery
@@ -26,7 +34,6 @@ If you have a feature request, please add it as an issue or make a pull request.
 * Layout can be serialized and restored
 * Responsive breakpoints
 * Separate layouts per responsive breakpoints
-
 
 #### Usage
 
@@ -127,14 +134,6 @@ onLayoutChange: React.PropTypes.func
 ```
 
 
-#### Demos
-
-1. [Basic](https://strml.github.io/react-grid-layout/examples/1-basic.html)
-1. [No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
-1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
-1. [Layout defined on children](https://strml.github.io/react-grid-layout/examples/4-grid-property.html)
-1. [Static Elements](https://strml.github.io/react-grid-layout/examples/5-static-elements.html)
-
 ----
 
 #### TODO List
@@ -147,6 +146,7 @@ onLayoutChange: React.PropTypes.func
 - [x] Resizable grid items
 - [x] Layouts per responsive breakpoint
 - [x] Define grid attributes on children themselves (`_grid` key)
+- [x] Static elements
 - [ ] Persistent id per item for predictable localstorage restores, even when # items changes
 - [ ] Min/max w/h per item
 - [ ] Resizable handles on other corners

@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -37,8 +37,10 @@
     "react-resizable": "^0.1.2"
   },
   "devDependencies": {
+    "6to5": "^2.2.0",
+    "6to5-loader": "^1.0.0",
     "css-loader": "^0.9.0",
-    "jsx-loader": "^0.12.2",
+    "imports-loader": "^0.6.3",
     "jsxhint": "^0.9.0",
     "lodash": "^2.4.1",
     "precommit-hook": "^1.0.7",
