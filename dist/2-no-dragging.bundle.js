@@ -2,22 +2,9 @@ webpackJsonp([4],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
-
-	var _objectWithoutProperties = function (obj, keys) {
-	  var target = {};
-	  for (var i in obj) {
-	    if (keys.indexOf(i) >= 0) continue;
-	    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-	    target[i] = obj[i];
-	  }
-
-	  return target;
-	};
-
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(to5Runtime, module) {"use strict";
 	var React = __webpack_require__(8);
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(31);
 	var ReactGridLayout = __webpack_require__(28);
 
 	var NoDraggingLayout = module.exports = React.createClass({
@@ -72,7 +59,7 @@ webpackJsonp([4],[
 
 	  render: function () {
 	    var layout = this.props.layout;
-	    var gridProps = _objectWithoutProperties(this.props, ["layout"]);
+	    var gridProps = to5Runtime.objectWithoutProperties(this.props, ["layout"]);
 
 	    return React.createElement(ReactGridLayout, React.__spread({
 	      className: "layout",
@@ -87,7 +74,7 @@ webpackJsonp([4],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(29)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30), __webpack_require__(27)(module)))
 
 /***/ }
 ]);

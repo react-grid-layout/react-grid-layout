@@ -4,7 +4,7 @@ webpackJsonp([1],[
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
 	var React = __webpack_require__(8);
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(31);
 	var ReactGridLayout = __webpack_require__(28);
 
 	/**
