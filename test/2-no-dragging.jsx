@@ -1,26 +1,24 @@
 'use strict';
 var React = require('react/addons');
-typeof window !== "undefined" && (window.React = React); // for devtools
-typeof window !== "undefined" && (window.Perf = React.addons.Perf); // for devtools
 var _ = require('lodash');
 var ReactGridLayout = require('../lib/ReactGridLayout.jsx');
-require('style!css!../css/styles.css');
-require('style!css!../examples/example-styles.css');
-require('style!css!../node_modules/react-resizable/css/styles.css');
 
-var TestLayout = module.exports = React.createClass({
-  displayName: 'TestLayout',
+var NoDraggingLayout = module.exports = React.createClass({
+  displayName: 'NoDraggingLayout',
   mixins: [React.addons.PureRenderMixin],
 
   getDefaultProps() {
     return {
-      items: 12
+      isDraggable: false,
+      isResizable: false,
+      items: 50,
+      w: 2,
+      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}
     };
   },
 
   getInitialState() {
     var layout = this.props.layout || this.generateLayout();
-    if (this.props.useGridProps) layout = undefined;
     return {
       layout: layout,
       initialLayout: layout
@@ -28,16 +26,9 @@ var TestLayout = module.exports = React.createClass({
   },
 
   generateDOM() {
-    if (this.props.useGridProps) {
-      var layout = this.generateLayout();
-      return _.map(_.range(this.props.items), function(i) {
-        return (<div key={i} _grid={layout[i]}><span className="text">{i}</span></div>);
-      });
-    } else {
-      return _.map(_.range(this.props.items), function(i) {
-        return (<div key={i}><span className="text">{i}</span></div>);
-      });
-    }
+    return _.map(_.range(this.props.items), function(i) {
+      return (<div key={i}><span className="text">{i}</span></div>);
+    });
   },
 
   generateLayout() {
@@ -77,3 +68,7 @@ var TestLayout = module.exports = React.createClass({
     );
   }
 });
+
+if (require.main === module) {
+  require('./test-hook.js')(module.exports);
+}

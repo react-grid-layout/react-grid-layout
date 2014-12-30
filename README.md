@@ -146,6 +146,7 @@ onLayoutChange: React.PropTypes.func
 - [x] Resizable grid items
 - [x] Layouts per responsive breakpoint
 - [x] Define grid attributes on children themselves (`_grid` key)
+- [ ] Persistent id per item for predictable localstorage restores, even when # items changes
 - [ ] Min/max w/h per item
 - [ ] Resizable handles on other corners
 - [ ] Configurable w/h per breakpoint
