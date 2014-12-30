@@ -1,0 +1,36 @@
+'use strict';
+var React = require('react/addons');
+var _ = require('lodash');
+var ReactGridLayout = require('react-grid-layout');
+
+/**
+ * This layout demonstrates how to use static grid elements.
+ * Static elements are not draggable or resizable, and cannot be moved.
+ */
+var StaticElementsLayout = module.exports = React.createClass({
+  displayName: 'StaticElementsLayout',
+  mixins: [React.addons.PureRenderMixin],
+
+  getInitialState() {
+    return {};
+  },
+
+  onLayoutChange: function(layout) {
+    this.props.onLayoutChange(layout);
+    this.setState({layout: layout});
+  },
+
+  render() {
+    return (
+      <ReactGridLayout className="layout" cols={12} onLayoutChange={this.onLayoutChange} rowHeight={30}>
+        <div _grid={{x: 0, y: 0, w: 2, h: 3}}><span className="text">1</span></div>
+        <div _grid={{x: 2, y: 0, w: 4, h: 3, static: true}}><span className="text">2 - Static</span></div>
+        <div _grid={{x: 6, y: 0, w: 2, h: 3}}><span className="text">3</span></div>
+      </ReactGridLayout>
+    );
+  }
+});
+
+if (require.main === module) {
+  require('../test-hook.jsx')(module.exports);
+}

@@ -133,6 +133,7 @@ onLayoutChange: React.PropTypes.func
 1. [No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
 1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
 1. [Layout defined on children](https://strml.github.io/react-grid-layout/examples/4-grid-property.html)
+1. [Static Elements](https://strml.github.io/react-grid-layout/examples/5-static-elements.html)
 
 ----
 

@@ -5,7 +5,7 @@ module.exports = {
     entry: [
       "webpack-dev-server/client?http://localhost:4002",
       "webpack/hot/dev-server", 
-      "./test/test.js",
+      "./test/dev-hook.jsx",
     ],
     output: {
         path: __dirname + "/dist",
@@ -30,6 +30,7 @@ module.exports = {
     devtool: "#inline-source-map",
     publicPath: '/examples/',
     resolve: {
-      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
+      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
+      alias: {'react-grid-layout': __dirname + '/lib/ReactGridLayout.jsx'}
     }
 };
