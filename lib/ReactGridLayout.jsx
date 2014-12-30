@@ -80,6 +80,8 @@ var ReactGridLayout = module.exports = React.createClass({
     if (this.props.listenToWindowResize) {
       window.addEventListener('resize', this.onWindowResize);
     }
+    // Call back with layout on mount
+    this.props.onLayoutChange(this.state.layout);
     this.onWindowResize();
   },
 

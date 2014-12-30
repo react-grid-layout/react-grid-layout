@@ -1,22 +1,28 @@
 'use strict';
 var React = require('react/addons');
 var _ = require('lodash');
-var ReactGridLayout = require('../lib/ReactGridLayout.jsx');
+var ReactGridLayout = require('react-grid-layout');
 
-var MessyLayout = module.exports = React.createClass({
-  displayName: 'MessyLayout',
+var BasicLayout = module.exports = React.createClass({
+  displayName: 'BasicLayout',
   mixins: [React.addons.PureRenderMixin],
+
+  propTypes: {
+    onLayoutChange: React.PropTypes.func.isRequired
+  },
 
   getDefaultProps() {
     return {
       isDraggable: true,
       isResizable: true,
-      items: 20
+      items: 20,
+      w: 2,
+      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}
     };
   },
 
   getInitialState() {
-    var layout = this.props.layout || this.generateLayout();
+    var layout = this.generateLayout();
     return {
       layout: layout,
       initialLayout: layout
@@ -39,34 +45,21 @@ var MessyLayout = module.exports = React.createClass({
   },
 
   onLayoutChange: function(layout) {
+    this.props.onLayoutChange(layout);
     this.setState({layout: layout});
-  },
-
-  stringifyLayout() {
-    return _.map(this.state.layout, function(l) {
-      return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
-    });
   },
 
   render() {
     var {layout, ...gridProps} = this.props;
     return (
-      <div>
-        <div className="layoutJSON">
-          Displayed as <code>[x, y, w, h]</code>:
-          <div className="columns">
-            {this.stringifyLayout()}
-          </div>
-        </div>
-        <ReactGridLayout className="layout" initialLayout={this.state.initialLayout} cols={12} onLayoutChange={this.onLayoutChange}
-            rowHeight={30} {...gridProps}>
-          {this.generateDOM()}
-        </ReactGridLayout>
-      </div>
+      <ReactGridLayout className="layout" initialLayout={this.state.initialLayout} cols={12} onLayoutChange={this.onLayoutChange}
+          rowHeight={30} {...gridProps}>
+        {this.generateDOM()}
+      </ReactGridLayout>
     );
   }
 });
 
 if (require.main === module) {
-  require('./test-hook.js')(module.exports);
+  require('../test-hook.jsx')(module.exports);
 }

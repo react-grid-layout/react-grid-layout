@@ -29,17 +29,18 @@ module.exports = {
       new webpack.optimize.DedupePlugin()
     ],
     resolve: {
-      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
+      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
+      alias: {'react-grid-layout': __dirname + '/lib/ReactGridLayout.jsx'}
     }
 };
 
 // Load all entry points
-var files = fs.readdirSync(__dirname + '/test').filter(function(element, index, array){
+var files = fs.readdirSync(__dirname + '/test/examples').filter(function(element, index, array){
     return element.match(/^.+\.jsx$/);
 });
 
 for(var idx in files){
     var file = files[idx];
     var module_name = file.replace(/\.jsx$/,'');
-    module.exports.entry[module_name] = './test/' + file;
+    module.exports.entry[module_name] = './test/examples/' + file;
 }
