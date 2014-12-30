@@ -1,2 +1,2 @@
-var DevLayout = require('./examples/5-static-elements.jsx');
+var DevLayout = require('./examples/1-basic.jsx');
 require('./test-hook.jsx')(DevLayout);

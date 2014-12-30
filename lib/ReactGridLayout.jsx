@@ -82,6 +82,10 @@ var ReactGridLayout = module.exports = React.createClass({
     }
     // Call back with layout on mount
     this.props.onLayoutChange(this.state.layout);
+
+    // This is intentional. Once to properly set the breakpoint and resize the elements,
+    // and again to compensate for any scrollbar that appeared because of the first step.
+    this.onWindowResize();
     this.onWindowResize();
   },
 
@@ -276,8 +280,7 @@ var ReactGridLayout = module.exports = React.createClass({
       w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
     };
     
-    // Move the element to the dragged location.
-    // layout = utils.moveElement(layout, l, x, y);
+    // Re-compact the layout and set the drag placeholder.
     this.setState({layout: utils.compact(layout), activeDrag: activeDrag});
   },
 

@@ -95,8 +95,12 @@ var GridItem = module.exports = React.createClass({
   calcXY: function (_ref) {
     var left = _ref.left;
     var top = _ref.top;
+    left = left - this.props.margin[0];
+    top = top - this.props.margin[1];
+    // This is intentional; because so much of the logic on moving boxes up/down relies
+    // on an exact y position, we only round the x, not the y.
     var x = Math.round(left / this.props.containerWidth * this.props.cols);
-    var y = Math.round(top / this.props.rowHeight);
+    var y = Math.floor(top / this.props.rowHeight);
     x = Math.max(Math.min(x, this.props.cols), 0);
     y = Math.max(y, 0);
     return { x: x, y: y };
