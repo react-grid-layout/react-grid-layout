@@ -5946,6 +5946,10 @@
 	    }
 	    // Call back with layout on mount
 	    this.props.onLayoutChange(this.state.layout);
+
+	    // This is intentional. Once to properly set the breakpoint and resize the elements,
+	    // and again to compensate for any scrollbar that appeared because of the first step.
+	    this.onWindowResize();
 	    this.onWindowResize();
 	  },
 
@@ -6145,8 +6149,7 @@
 	      w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
 	    };
 
-	    // Move the element to the dragged location.
-	    // layout = utils.moveElement(layout, l, x, y);
+	    // Re-compact the layout and set the drag placeholder.
 	    this.setState({ layout: utils.compact(layout), activeDrag: activeDrag });
 	  },
 
@@ -16379,7 +16382,7 @@
 	   * @param  {Array} layout Layout.
 	   * @return {Array}       Compacted Layout.
 	   */
-	  compact: function (layout, bounds) {
+	  compact: function (layout) {
 	    // We go through the items by row and column.
 	    var compareWith = [], out = [];
 	    var sorted = utils.getLayoutItemsByRowCol(layout);
@@ -16389,17 +16392,7 @@
 
 	      // Don't move static elements
 	      if (!l["static"]) {
-	        // Move the element up as far as it can go without colliding.
-	        while (l.y > 0 && !utils.layoutItemCollidesWith(compareWith, l).length) {
-	          l.y--;
-	        }
-
-	        // Move it down, and keep moving it down if it's colliding.
-	        var collides = utils.layoutItemCollidesWith(compareWith, l);
-	        while (collides.length) {
-	          l.y = collides[0].y + collides[0].h;
-	          collides = utils.layoutItemCollidesWith(compareWith, l);
-	        }
+	        l = utils.compactItem(compareWith, l);
 	      }
 
 	      // Add to comparison array. We only collide with items before this one.
@@ -16413,6 +16406,20 @@
 	    }
 
 	    return out;
+	  },
+
+	  compactItem: function (compareWith, l) {
+	    // Move the element up as far as it can go without colliding.
+	    while (l.y > 0 && !utils.getFirstCollision(compareWith, l)) {
+	      l.y--;
+	    }
+
+	    // Move it down, and keep moving it down if it's colliding.
+	    var collides;
+	    while (collides = utils.getFirstCollision(compareWith, l)) {
+	      l.y = collides.y + collides.h;
+	    }
+	    return l;
 	  },
 
 	  correctBounds: function (layout, bounds) {
@@ -16448,24 +16455,19 @@
 	  },
 
 	  /**
-	   * Get layout items sorted from top left to down.
-	   * @return {Array} Array of layout objects.
+	   * Returns the first item this layout collides with.
+	   * It doesn't appear to matter which order we approach this from, although
+	   * perhaps that is the wrong thing to do.
+	   * @param  {Object} layoutItem Layout item.
+	   * @return {Object|undefined}  A colliding layout item, or undefined.
 	   */
-	  getLayoutItemsByColRow: function (layout) {
-	    return [].concat(layout).sort(function (a, b) {
-	      if (a.x > b.x || a.x === b.x && a.y > b.y) {
-	        return 1;
-	      }
-	      return -1;
-	    });
+	  getFirstCollision: function (layout, layoutItem) {
+	    for (var i = 0, len = layout.length; i < len; i++) {
+	      if (utils.collides(layout[i], layoutItem)) return layout[i];
+	    }
 	  },
 
-	  /**
-	   * Returns an array of items this layout item collides with.
-	   * @param  {Object} layoutItem Layout item.
-	   * @return {Array}             Array of colliding layout objects.
-	   */
-	  layoutItemCollidesWith: function (layout, layoutItem) {
+	  getAllCollisions: function (layout, layoutItem) {
 	    var out = [];
 	    for (var i = 0, len = layout.length; i < len; i++) {
 	      if (utils.collides(layout[i], layoutItem)) out.push(layout[i]);
@@ -16474,61 +16476,75 @@
 	  },
 
 	  /**
-	   * Move / resize an element. Responsible for doing cascading movements of other elements.
+	   * Move an element. Responsible for doing cascading movements of other elements.
 	   * @param  {Array}  layout Full layout to modify.
 	   * @param  {LayoutItem} l element to move.
 	   * @param  {Number} [x] X position in grid units.
 	   * @param  {Number} [y] Y position in grid units.
-	   * @param  {Number} [w] Width in grid units.
-	   * @param  {Number} [h] Height in grid units.
 	   */
-	  moveElement: function (layout, l, x, y, w, h) {
+	  moveElement: function (layout, l, x, y) {
 	    if (l["static"]) return layout;
+
+	    // Short-circuit if nothing to do.
+	    // if (l.y === y && l.x === x) return layout;
+
+	    var movingUp = l.y > y;
 	    // This is quite a bit faster than extending the object
 	    if (x !== undefined) l.x = x;
 	    if (y !== undefined) l.y = y;
-	    if (w !== undefined) l.w = w;
-	    if (h !== undefined) l.h = h;
 	    l.moved = true;
 
-	    // Get all items this box collides with.
-	    var collisions = utils.layoutItemCollidesWith(layout, l);
+	    // If this collides with anything, move it.
+	    // When doing this comparison, we have to sort the items we compare with
+	    // to ensure, in the case of multiple collisions, that we're getting the
+	    // nearest collision.
+	    var sorted = utils.getLayoutItemsByRowCol(layout);
+	    if (movingUp) sorted = sorted.reverse();
+	    var collisions = utils.getAllCollisions(sorted, l);
 
 	    // Move each item that collides away from this element.
 	    for (var i = 0, len = collisions.length; i < len; i++) {
-	      if (collisions[i].moved) continue; // short circuit so we don't re-move items
+	      var collision = collisions[i];
+	      // console.log('resolving collision between', l.i, 'at', l.y, 'and', collision.i, 'at', collision.y);
+	      // Short circuit so we can't infinite loop
+	      if (collision.moved) continue;
+
+	      // This makes it feel a bit more precise by waiting to swap for just a bit when moving up.
+	      if (l.y > collision.y && l.y - collision.y > collision.h / 4) continue;
 
 	      // Don't move static items - we have to move *this* element away
-	      if (collisions[i]["static"]) {
-	        layout = utils.moveElementAwayFromCollision(layout, collisions[i], l);
+	      if (collision["static"]) {
+	        layout = utils.moveElementAwayFromCollision(layout, collision, l);
 	      } else {
-	        layout = utils.moveElementAwayFromCollision(layout, l, collisions[i]);
+	        layout = utils.moveElementAwayFromCollision(layout, l, collision);
 	      }
 	    }
-
 	    return layout;
 	  },
 
 	  /**
 	   * This is where the magic needs to happen - given a collision, move an element away from the collision.
-	   * It's okay to cascade movements here, but be careful to not have a move b move c move a.
+	   * We attempt to move it up if there's room, otherwise it goes below.
 	   * @param  {Array} layout            Full layout to modify.
 	   * @param  {LayoutItem} collidesWith Layout item we're colliding with.
 	   * @param  {LayoutItem} itemToMove   Layout item we're moving.
 	   */
 	  moveElementAwayFromCollision: function (layout, collidesWith, itemToMove) {
-	    var sorted = utils.getLayoutItemsByRowCol(layout);
-	    var itemsBefore = sorted.slice(0, sorted.indexOf(itemToMove)).concat(collidesWith);
+	    // Make a mock item so we don't modify the item here, only modify in moveElement.
+	    var fakeItem = {
+	      x: itemToMove.x,
+	      y: itemToMove.y,
+	      w: itemToMove.w,
+	      h: itemToMove.h };
 
-	    // While the item collides with any of the items before it, move it down.
-	    itemToMove.y = 0;
-	    var collisions;
-	    do {
-	      collisions = utils.layoutItemCollidesWith(itemsBefore, itemToMove);
-	      if (collisions.length) itemToMove.y = collisions[0].y + collisions[0].h;
-	    } while (collisions.length);
+	    // If there is enough space above the collision to put this element, move it there.
+	    fakeItem.y = Math.max(collidesWith.y - itemToMove.h, 0);
+	    if (!utils.getFirstCollision(layout, fakeItem)) {
+	      return utils.moveElement(layout, itemToMove, undefined, fakeItem.y);
+	    }
 
-	    return utils.moveElement(layout, itemToMove, undefined, itemToMove.y);
+	    // Didn't work, move below collision.
+	    return utils.moveElement(layout, itemToMove, undefined, collidesWith.y + collidesWith.h);
 	  },
 
 	  /**
@@ -20656,8 +20672,12 @@
 	  calcXY: function (_ref) {
 	    var left = _ref.left;
 	    var top = _ref.top;
+	    left = left - this.props.margin[0];
+	    top = top - this.props.margin[1];
+	    // This is intentional; because so much of the logic on moving boxes up/down relies
+	    // on an exact y position, we only round the x, not the y.
 	    var x = Math.round(left / this.props.containerWidth * this.props.cols);
-	    var y = Math.round(top / this.props.rowHeight);
+	    var y = Math.floor(top / this.props.rowHeight);
 	    x = Math.max(Math.min(x, this.props.cols), 0);
 	    y = Math.max(y, 0);
 	    return { x: x, y: y };
