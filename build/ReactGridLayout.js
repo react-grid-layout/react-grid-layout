@@ -155,7 +155,7 @@ var ReactGridLayout = module.exports = React.createClass({
 
     // Fill in the blanks.
     while (layout.length < this.props.children.length) {
-      layout.push({w: 1, h: 1, x: 0, y: 0, i: layout.length - 1});
+      layout.push({w: 1, h: 1, x: 0, y: 0, i: layout.length});
     }
     
     // Correct the layout.
