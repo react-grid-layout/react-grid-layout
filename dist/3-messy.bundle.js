@@ -1,11 +1,11 @@
-webpackJsonp([2],[
+webpackJsonp([3],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
-	var React = __webpack_require__(9);
-	var _ = __webpack_require__(33);
-	var ReactGridLayout = __webpack_require__(31);
+	var React = __webpack_require__(8);
+	var _ = __webpack_require__(30);
+	var ReactGridLayout = __webpack_require__(28);
 
 	var MessyLayout = module.exports = React.createClass({
 	  displayName: 'MessyLayout',
@@ -63,10 +63,10 @@ webpackJsonp([2],[
 	});
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(32)(module.exports);
+	  __webpack_require__(29)(module.exports);
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)(module)))
 
 /***/ }
 ]);

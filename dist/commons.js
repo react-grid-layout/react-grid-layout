@@ -95,7 +95,7 @@
 /******/ 			script.type = 'text/javascript';
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"1":"4-grid-property","2":"3-messy","3":"2-no-dragging","4":"1-basic"}[chunkId]||chunkId) + ".bundle.js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"1":"5-static-elements","2":"4-grid-property","3":"3-messy","4":"2-no-dragging","5":"1-basic"}[chunkId]||chunkId) + ".bundle.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -702,6 +702,13 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(150);
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
@@ -739,13 +746,6 @@
 
 
 /***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(150);
-
-
-/***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -769,7 +769,7 @@
 	var ReactElementValidator = __webpack_require__(45);
 	var ReactEmptyComponent = __webpack_require__(35);
 	var ReactErrorUtils = __webpack_require__(139);
-	var ReactLegacyElement = __webpack_require__(28);
+	var ReactLegacyElement = __webpack_require__(32);
 	var ReactOwner = __webpack_require__(71);
 	var ReactPerf = __webpack_require__(16);
 	var ReactPropTransferer = __webpack_require__(72);
@@ -781,7 +781,7 @@
 	var instantiateReactComponent = __webpack_require__(38);
 	var invariant = __webpack_require__(1);
 	var keyMirror = __webpack_require__(26);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 	var monitorCodeUse = __webpack_require__(39);
 	var mapObject = __webpack_require__(89);
 	var shouldUpdateReactComponent = __webpack_require__(56);
@@ -2545,7 +2545,7 @@
 	var ReactBrowserEventEmitter = __webpack_require__(23);
 	var ReactCurrentOwner = __webpack_require__(17);
 	var ReactElement = __webpack_require__(3);
-	var ReactLegacyElement = __webpack_require__(28);
+	var ReactLegacyElement = __webpack_require__(32);
 	var ReactInstanceHandles = __webpack_require__(25);
 	var ReactPerf = __webpack_require__(16);
 
@@ -3362,7 +3362,7 @@
 
 	var ReactElement = __webpack_require__(3);
 	var ReactElementValidator = __webpack_require__(45);
-	var ReactLegacyElement = __webpack_require__(28);
+	var ReactLegacyElement = __webpack_require__(32);
 
 	var mapObject = __webpack_require__(89);
 
@@ -4331,7 +4331,7 @@
 	"use strict";
 
 	var EventConstants = __webpack_require__(6);
-	var EventPluginHub = __webpack_require__(27);
+	var EventPluginHub = __webpack_require__(31);
 
 	var accumulateInto = __webpack_require__(47);
 	var forEachAccumulated = __webpack_require__(50);
@@ -4487,7 +4487,7 @@
 	var ReactDOMComponent = __webpack_require__(66);
 	var ReactDefaultInjection = __webpack_require__(138);
 	var ReactInstanceHandles = __webpack_require__(25);
-	var ReactLegacyElement = __webpack_require__(28);
+	var ReactLegacyElement = __webpack_require__(32);
 	var ReactMount = __webpack_require__(13);
 	var ReactMultiChild = __webpack_require__(68);
 	var ReactPerf = __webpack_require__(16);
@@ -4666,7 +4666,7 @@
 	"use strict";
 
 	var EventConstants = __webpack_require__(6);
-	var EventPluginHub = __webpack_require__(27);
+	var EventPluginHub = __webpack_require__(31);
 	var EventPluginRegistry = __webpack_require__(63);
 	var ReactEventEmitterMixin = __webpack_require__(140);
 	var ViewportMetrics = __webpack_require__(80);
@@ -5849,599 +5849,6 @@
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule EventPluginHub
-	 */
-
-	"use strict";
-
-	var EventPluginRegistry = __webpack_require__(63);
-	var EventPluginUtils = __webpack_require__(42);
-
-	var accumulateInto = __webpack_require__(47);
-	var forEachAccumulated = __webpack_require__(50);
-	var invariant = __webpack_require__(1);
-
-	/**
-	 * Internal store for event listeners
-	 */
-	var listenerBank = {};
-
-	/**
-	 * Internal queue of events that have accumulated their dispatches and are
-	 * waiting to have their dispatches executed.
-	 */
-	var eventQueue = null;
-
-	/**
-	 * Dispatches an event and releases it back into the pool, unless persistent.
-	 *
-	 * @param {?object} event Synthetic event to be dispatched.
-	 * @private
-	 */
-	var executeDispatchesAndRelease = function(event) {
-	  if (event) {
-	    var executeDispatch = EventPluginUtils.executeDispatch;
-	    // Plugins can provide custom behavior when dispatching events.
-	    var PluginModule = EventPluginRegistry.getPluginModuleForEvent(event);
-	    if (PluginModule && PluginModule.executeDispatch) {
-	      executeDispatch = PluginModule.executeDispatch;
-	    }
-	    EventPluginUtils.executeDispatchesInOrder(event, executeDispatch);
-
-	    if (!event.isPersistent()) {
-	      event.constructor.release(event);
-	    }
-	  }
-	};
-
-	/**
-	 * - `InstanceHandle`: [required] Module that performs logical traversals of DOM
-	 *   hierarchy given ids of the logical DOM elements involved.
-	 */
-	var InstanceHandle = null;
-
-	function validateInstanceHandle() {
-	  var invalid = !InstanceHandle||
-	    !InstanceHandle.traverseTwoPhase ||
-	    !InstanceHandle.traverseEnterLeave;
-	  if (invalid) {
-	    throw new Error('InstanceHandle not injected before use!');
-	  }
-	}
-
-	/**
-	 * This is a unified interface for event plugins to be installed and configured.
-	 *
-	 * Event plugins can implement the following properties:
-	 *
-	 *   `extractEvents` {function(string, DOMEventTarget, string, object): *}
-	 *     Required. When a top-level event is fired, this method is expected to
-	 *     extract synthetic events that will in turn be queued and dispatched.
-	 *
-	 *   `eventTypes` {object}
-	 *     Optional, plugins that fire events must publish a mapping of registration
-	 *     names that are used to register listeners. Values of this mapping must
-	 *     be objects that contain `registrationName` or `phasedRegistrationNames`.
-	 *
-	 *   `executeDispatch` {function(object, function, string)}
-	 *     Optional, allows plugins to override how an event gets dispatched. By
-	 *     default, the listener is simply invoked.
-	 *
-	 * Each plugin that is injected into `EventsPluginHub` is immediately operable.
-	 *
-	 * @public
-	 */
-	var EventPluginHub = {
-
-	  /**
-	   * Methods for injecting dependencies.
-	   */
-	  injection: {
-
-	    /**
-	     * @param {object} InjectedMount
-	     * @public
-	     */
-	    injectMount: EventPluginUtils.injection.injectMount,
-
-	    /**
-	     * @param {object} InjectedInstanceHandle
-	     * @public
-	     */
-	    injectInstanceHandle: function(InjectedInstanceHandle) {
-	      InstanceHandle = InjectedInstanceHandle;
-	      if (false) {
-	        validateInstanceHandle();
-	      }
-	    },
-
-	    getInstanceHandle: function() {
-	      if (false) {
-	        validateInstanceHandle();
-	      }
-	      return InstanceHandle;
-	    },
-
-	    /**
-	     * @param {array} InjectedEventPluginOrder
-	     * @public
-	     */
-	    injectEventPluginOrder: EventPluginRegistry.injectEventPluginOrder,
-
-	    /**
-	     * @param {object} injectedNamesToPlugins Map from names to plugin modules.
-	     */
-	    injectEventPluginsByName: EventPluginRegistry.injectEventPluginsByName
-
-	  },
-
-	  eventNameDispatchConfigs: EventPluginRegistry.eventNameDispatchConfigs,
-
-	  registrationNameModules: EventPluginRegistry.registrationNameModules,
-
-	  /**
-	   * Stores `listener` at `listenerBank[registrationName][id]`. Is idempotent.
-	   *
-	   * @param {string} id ID of the DOM element.
-	   * @param {string} registrationName Name of listener (e.g. `onClick`).
-	   * @param {?function} listener The callback to store.
-	   */
-	  putListener: function(id, registrationName, listener) {
-	    (false ? invariant(
-	      !listener || typeof listener === 'function',
-	      'Expected %s listener to be a function, instead got type %s',
-	      registrationName, typeof listener
-	    ) : invariant(!listener || typeof listener === 'function'));
-
-	    var bankForRegistrationName =
-	      listenerBank[registrationName] || (listenerBank[registrationName] = {});
-	    bankForRegistrationName[id] = listener;
-	  },
-
-	  /**
-	   * @param {string} id ID of the DOM element.
-	   * @param {string} registrationName Name of listener (e.g. `onClick`).
-	   * @return {?function} The stored callback.
-	   */
-	  getListener: function(id, registrationName) {
-	    var bankForRegistrationName = listenerBank[registrationName];
-	    return bankForRegistrationName && bankForRegistrationName[id];
-	  },
-
-	  /**
-	   * Deletes a listener from the registration bank.
-	   *
-	   * @param {string} id ID of the DOM element.
-	   * @param {string} registrationName Name of listener (e.g. `onClick`).
-	   */
-	  deleteListener: function(id, registrationName) {
-	    var bankForRegistrationName = listenerBank[registrationName];
-	    if (bankForRegistrationName) {
-	      delete bankForRegistrationName[id];
-	    }
-	  },
-
-	  /**
-	   * Deletes all listeners for the DOM element with the supplied ID.
-	   *
-	   * @param {string} id ID of the DOM element.
-	   */
-	  deleteAllListeners: function(id) {
-	    for (var registrationName in listenerBank) {
-	      delete listenerBank[registrationName][id];
-	    }
-	  },
-
-	  /**
-	   * Allows registered plugins an opportunity to extract events from top-level
-	   * native browser events.
-	   *
-	   * @param {string} topLevelType Record from `EventConstants`.
-	   * @param {DOMEventTarget} topLevelTarget The listening component root node.
-	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
-	   * @param {object} nativeEvent Native browser event.
-	   * @return {*} An accumulation of synthetic events.
-	   * @internal
-	   */
-	  extractEvents: function(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent) {
-	    var events;
-	    var plugins = EventPluginRegistry.plugins;
-	    for (var i = 0, l = plugins.length; i < l; i++) {
-	      // Not every plugin in the ordering may be loaded at runtime.
-	      var possiblePlugin = plugins[i];
-	      if (possiblePlugin) {
-	        var extractedEvents = possiblePlugin.extractEvents(
-	          topLevelType,
-	          topLevelTarget,
-	          topLevelTargetID,
-	          nativeEvent
-	        );
-	        if (extractedEvents) {
-	          events = accumulateInto(events, extractedEvents);
-	        }
-	      }
-	    }
-	    return events;
-	  },
-
-	  /**
-	   * Enqueues a synthetic event that should be dispatched when
-	   * `processEventQueue` is invoked.
-	   *
-	   * @param {*} events An accumulation of synthetic events.
-	   * @internal
-	   */
-	  enqueueEvents: function(events) {
-	    if (events) {
-	      eventQueue = accumulateInto(eventQueue, events);
-	    }
-	  },
-
-	  /**
-	   * Dispatches all synthetic events on the event queue.
-	   *
-	   * @internal
-	   */
-	  processEventQueue: function() {
-	    // Set `eventQueue` to null before processing it so that we can tell if more
-	    // events get enqueued while processing.
-	    var processingEventQueue = eventQueue;
-	    eventQueue = null;
-	    forEachAccumulated(processingEventQueue, executeDispatchesAndRelease);
-	    (false ? invariant(
-	      !eventQueue,
-	      'processEventQueue(): Additional events were enqueued while processing ' +
-	      'an event queue. Support for this has not yet been implemented.'
-	    ) : invariant(!eventQueue));
-	  },
-
-	  /**
-	   * These are needed for tests only. Do not use!
-	   */
-	  __purge: function() {
-	    listenerBank = {};
-	  },
-
-	  __getListenerBank: function() {
-	    return listenerBank;
-	  }
-
-	};
-
-	module.exports = EventPluginHub;
-
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactLegacyElement
-	 */
-
-	"use strict";
-
-	var ReactCurrentOwner = __webpack_require__(17);
-
-	var invariant = __webpack_require__(1);
-	var monitorCodeUse = __webpack_require__(39);
-	var warning = __webpack_require__(4);
-
-	var legacyFactoryLogs = {};
-	function warnForLegacyFactoryCall() {
-	  if (!ReactLegacyElementFactory._isLegacyCallWarningEnabled) {
-	    return;
-	  }
-	  var owner = ReactCurrentOwner.current;
-	  var name = owner && owner.constructor ? owner.constructor.displayName : '';
-	  if (!name) {
-	    name = 'Something';
-	  }
-	  if (legacyFactoryLogs.hasOwnProperty(name)) {
-	    return;
-	  }
-	  legacyFactoryLogs[name] = true;
-	  (false ? warning(
-	    false,
-	    name + ' is calling a React component directly. ' +
-	    'Use a factory or JSX instead. See: http://fb.me/react-legacyfactory'
-	  ) : null);
-	  monitorCodeUse('react_legacy_factory_call', { version: 3, name: name });
-	}
-
-	function warnForPlainFunctionType(type) {
-	  var isReactClass =
-	    type.prototype &&
-	    typeof type.prototype.mountComponent === 'function' &&
-	    typeof type.prototype.receiveComponent === 'function';
-	  if (isReactClass) {
-	    (false ? warning(
-	      false,
-	      'Did not expect to get a React class here. Use `Component` instead ' +
-	      'of `Component.type` or `this.constructor`.'
-	    ) : null);
-	  } else {
-	    if (!type._reactWarnedForThisType) {
-	      try {
-	        type._reactWarnedForThisType = true;
-	      } catch (x) {
-	        // just incase this is a frozen object or some special object
-	      }
-	      monitorCodeUse(
-	        'react_non_component_in_jsx',
-	        { version: 3, name: type.name }
-	      );
-	    }
-	    (false ? warning(
-	      false,
-	      'This JSX uses a plain function. Only React components are ' +
-	      'valid in React\'s JSX transform.'
-	    ) : null);
-	  }
-	}
-
-	function warnForNonLegacyFactory(type) {
-	  (false ? warning(
-	    false,
-	    'Do not pass React.DOM.' + type.type + ' to JSX or createFactory. ' +
-	    'Use the string "' + type.type + '" instead.'
-	  ) : null);
-	}
-
-	/**
-	 * Transfer static properties from the source to the target. Functions are
-	 * rebound to have this reflect the original source.
-	 */
-	function proxyStaticMethods(target, source) {
-	  if (typeof source !== 'function') {
-	    return;
-	  }
-	  for (var key in source) {
-	    if (source.hasOwnProperty(key)) {
-	      var value = source[key];
-	      if (typeof value === 'function') {
-	        var bound = value.bind(source);
-	        // Copy any properties defined on the function, such as `isRequired` on
-	        // a PropTypes validator.
-	        for (var k in value) {
-	          if (value.hasOwnProperty(k)) {
-	            bound[k] = value[k];
-	          }
-	        }
-	        target[key] = bound;
-	      } else {
-	        target[key] = value;
-	      }
-	    }
-	  }
-	}
-
-	// We use an object instead of a boolean because booleans are ignored by our
-	// mocking libraries when these factories gets mocked.
-	var LEGACY_MARKER = {};
-	var NON_LEGACY_MARKER = {};
-
-	var ReactLegacyElementFactory = {};
-
-	ReactLegacyElementFactory.wrapCreateFactory = function(createFactory) {
-	  var legacyCreateFactory = function(type) {
-	    if (typeof type !== 'function') {
-	      // Non-function types cannot be legacy factories
-	      return createFactory(type);
-	    }
-
-	    if (type.isReactNonLegacyFactory) {
-	      // This is probably a factory created by ReactDOM we unwrap it to get to
-	      // the underlying string type. It shouldn't have been passed here so we
-	      // warn.
-	      if (false) {
-	        warnForNonLegacyFactory(type);
-	      }
-	      return createFactory(type.type);
-	    }
-
-	    if (type.isReactLegacyFactory) {
-	      // This is probably a legacy factory created by ReactCompositeComponent.
-	      // We unwrap it to get to the underlying class.
-	      return createFactory(type.type);
-	    }
-
-	    if (false) {
-	      warnForPlainFunctionType(type);
-	    }
-
-	    // Unless it's a legacy factory, then this is probably a plain function,
-	    // that is expecting to be invoked by JSX. We can just return it as is.
-	    return type;
-	  };
-	  return legacyCreateFactory;
-	};
-
-	ReactLegacyElementFactory.wrapCreateElement = function(createElement) {
-	  var legacyCreateElement = function(type, props, children) {
-	    if (typeof type !== 'function') {
-	      // Non-function types cannot be legacy factories
-	      return createElement.apply(this, arguments);
-	    }
-
-	    var args;
-
-	    if (type.isReactNonLegacyFactory) {
-	      // This is probably a factory created by ReactDOM we unwrap it to get to
-	      // the underlying string type. It shouldn't have been passed here so we
-	      // warn.
-	      if (false) {
-	        warnForNonLegacyFactory(type);
-	      }
-	      args = Array.prototype.slice.call(arguments, 0);
-	      args[0] = type.type;
-	      return createElement.apply(this, args);
-	    }
-
-	    if (type.isReactLegacyFactory) {
-	      // This is probably a legacy factory created by ReactCompositeComponent.
-	      // We unwrap it to get to the underlying class.
-	      if (type._isMockFunction) {
-	        // If this is a mock function, people will expect it to be called. We
-	        // will actually call the original mock factory function instead. This
-	        // future proofs unit testing that assume that these are classes.
-	        type.type._mockedReactClassConstructor = type;
-	      }
-	      args = Array.prototype.slice.call(arguments, 0);
-	      args[0] = type.type;
-	      return createElement.apply(this, args);
-	    }
-
-	    if (false) {
-	      warnForPlainFunctionType(type);
-	    }
-
-	    // This is being called with a plain function we should invoke it
-	    // immediately as if this was used with legacy JSX.
-	    return type.apply(null, Array.prototype.slice.call(arguments, 1));
-	  };
-	  return legacyCreateElement;
-	};
-
-	ReactLegacyElementFactory.wrapFactory = function(factory) {
-	  (false ? invariant(
-	    typeof factory === 'function',
-	    'This is suppose to accept a element factory'
-	  ) : invariant(typeof factory === 'function'));
-	  var legacyElementFactory = function(config, children) {
-	    // This factory should not be called when JSX is used. Use JSX instead.
-	    if (false) {
-	      warnForLegacyFactoryCall();
-	    }
-	    return factory.apply(this, arguments);
-	  };
-	  proxyStaticMethods(legacyElementFactory, factory.type);
-	  legacyElementFactory.isReactLegacyFactory = LEGACY_MARKER;
-	  legacyElementFactory.type = factory.type;
-	  return legacyElementFactory;
-	};
-
-	// This is used to mark a factory that will remain. E.g. we're allowed to call
-	// it as a function. However, you're not suppose to pass it to createElement
-	// or createFactory, so it will warn you if you do.
-	ReactLegacyElementFactory.markNonLegacyFactory = function(factory) {
-	  factory.isReactNonLegacyFactory = NON_LEGACY_MARKER;
-	  return factory;
-	};
-
-	// Checks if a factory function is actually a legacy factory pretending to
-	// be a class.
-	ReactLegacyElementFactory.isValidFactory = function(factory) {
-	  // TODO: This will be removed and moved into a class validator or something.
-	  return typeof factory === 'function' &&
-	    factory.isReactLegacyFactory === LEGACY_MARKER;
-	};
-
-	ReactLegacyElementFactory.isValidClass = function(factory) {
-	  if (false) {
-	    ("production" !== process.env.NODE_ENV ? warning(
-	      false,
-	      'isValidClass is deprecated and will be removed in a future release. ' +
-	      'Use a more specific validator instead.'
-	    ) : null);
-	  }
-	  return ReactLegacyElementFactory.isValidFactory(factory);
-	};
-
-	ReactLegacyElementFactory._isLegacyCallWarningEnabled = true;
-
-	module.exports = ReactLegacyElementFactory;
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule SyntheticUIEvent
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var SyntheticEvent = __webpack_require__(18);
-
-	var getEventTarget = __webpack_require__(53);
-
-	/**
-	 * @interface UIEvent
-	 * @see http://www.w3.org/TR/DOM-Level-3-Events/
-	 */
-	var UIEventInterface = {
-	  view: function(event) {
-	    if (event.view) {
-	      return event.view;
-	    }
-
-	    var target = getEventTarget(event);
-	    if (target != null && target.window === target) {
-	      // target is a window object
-	      return target;
-	    }
-
-	    var doc = target.ownerDocument;
-	    // TODO: Figure out why `ownerDocument` is sometimes undefined in IE8.
-	    if (doc) {
-	      return doc.defaultView || doc.parentWindow;
-	    } else {
-	      return window;
-	    }
-	  },
-	  detail: function(event) {
-	    return event.detail || 0;
-	  }
-	};
-
-	/**
-	 * @param {object} dispatchConfig Configuration used to dispatch this event.
-	 * @param {string} dispatchMarker Marker identifying the event target.
-	 * @param {object} nativeEvent Native browser event.
-	 * @extends {SyntheticEvent}
-	 */
-	function SyntheticUIEvent(dispatchConfig, dispatchMarker, nativeEvent) {
-	  SyntheticEvent.call(this, dispatchConfig, dispatchMarker, nativeEvent);
-	}
-
-	SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
-
-	module.exports = SyntheticUIEvent;
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
 			module.deprecate = function() {};
@@ -6455,11 +5862,11 @@
 
 
 /***/ },
-/* 31 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React = __webpack_require__(9);
+	var React = __webpack_require__(8);
 	var GridItem = __webpack_require__(101);
 	var utils = __webpack_require__(59);
 	var PureDeepRenderMixin = __webpack_require__(58);
@@ -6596,7 +6003,7 @@
 	        if (g) {
 	          utils.validateLayout([g], 'ReactGridLayout.child');
 	          return {
-	            w: g.w, h: g.h, x: g.x, y: g.y, i: i
+	            w: g.w, h: g.h, x: g.x, y: g.y, static: g.static, i: i
 	          };
 	        }
 	      })
@@ -6803,8 +6210,8 @@
 	        onDrag: this.onDrag, 
 	        onResize: this.onResize, 
 	        onResizeStop: this.onResizeStop, 
-	        isDraggable: this.props.isDraggable, 
-	        isResizable: this.props.isResizable
+	        isDraggable: l.static ? false : this.props.isDraggable, 
+	        isResizable: l.static ? false : this.props.isResizable
 	        }, 
 	        child
 	      )
@@ -6828,7 +6235,7 @@
 
 
 /***/ },
-/* 32 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6884,7 +6291,7 @@
 
 
 /***/ },
-/* 33 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -14045,7 +13452,600 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)(module), (function() { return this; }())))
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule EventPluginHub
+	 */
+
+	"use strict";
+
+	var EventPluginRegistry = __webpack_require__(63);
+	var EventPluginUtils = __webpack_require__(42);
+
+	var accumulateInto = __webpack_require__(47);
+	var forEachAccumulated = __webpack_require__(50);
+	var invariant = __webpack_require__(1);
+
+	/**
+	 * Internal store for event listeners
+	 */
+	var listenerBank = {};
+
+	/**
+	 * Internal queue of events that have accumulated their dispatches and are
+	 * waiting to have their dispatches executed.
+	 */
+	var eventQueue = null;
+
+	/**
+	 * Dispatches an event and releases it back into the pool, unless persistent.
+	 *
+	 * @param {?object} event Synthetic event to be dispatched.
+	 * @private
+	 */
+	var executeDispatchesAndRelease = function(event) {
+	  if (event) {
+	    var executeDispatch = EventPluginUtils.executeDispatch;
+	    // Plugins can provide custom behavior when dispatching events.
+	    var PluginModule = EventPluginRegistry.getPluginModuleForEvent(event);
+	    if (PluginModule && PluginModule.executeDispatch) {
+	      executeDispatch = PluginModule.executeDispatch;
+	    }
+	    EventPluginUtils.executeDispatchesInOrder(event, executeDispatch);
+
+	    if (!event.isPersistent()) {
+	      event.constructor.release(event);
+	    }
+	  }
+	};
+
+	/**
+	 * - `InstanceHandle`: [required] Module that performs logical traversals of DOM
+	 *   hierarchy given ids of the logical DOM elements involved.
+	 */
+	var InstanceHandle = null;
+
+	function validateInstanceHandle() {
+	  var invalid = !InstanceHandle||
+	    !InstanceHandle.traverseTwoPhase ||
+	    !InstanceHandle.traverseEnterLeave;
+	  if (invalid) {
+	    throw new Error('InstanceHandle not injected before use!');
+	  }
+	}
+
+	/**
+	 * This is a unified interface for event plugins to be installed and configured.
+	 *
+	 * Event plugins can implement the following properties:
+	 *
+	 *   `extractEvents` {function(string, DOMEventTarget, string, object): *}
+	 *     Required. When a top-level event is fired, this method is expected to
+	 *     extract synthetic events that will in turn be queued and dispatched.
+	 *
+	 *   `eventTypes` {object}
+	 *     Optional, plugins that fire events must publish a mapping of registration
+	 *     names that are used to register listeners. Values of this mapping must
+	 *     be objects that contain `registrationName` or `phasedRegistrationNames`.
+	 *
+	 *   `executeDispatch` {function(object, function, string)}
+	 *     Optional, allows plugins to override how an event gets dispatched. By
+	 *     default, the listener is simply invoked.
+	 *
+	 * Each plugin that is injected into `EventsPluginHub` is immediately operable.
+	 *
+	 * @public
+	 */
+	var EventPluginHub = {
+
+	  /**
+	   * Methods for injecting dependencies.
+	   */
+	  injection: {
+
+	    /**
+	     * @param {object} InjectedMount
+	     * @public
+	     */
+	    injectMount: EventPluginUtils.injection.injectMount,
+
+	    /**
+	     * @param {object} InjectedInstanceHandle
+	     * @public
+	     */
+	    injectInstanceHandle: function(InjectedInstanceHandle) {
+	      InstanceHandle = InjectedInstanceHandle;
+	      if (false) {
+	        validateInstanceHandle();
+	      }
+	    },
+
+	    getInstanceHandle: function() {
+	      if (false) {
+	        validateInstanceHandle();
+	      }
+	      return InstanceHandle;
+	    },
+
+	    /**
+	     * @param {array} InjectedEventPluginOrder
+	     * @public
+	     */
+	    injectEventPluginOrder: EventPluginRegistry.injectEventPluginOrder,
+
+	    /**
+	     * @param {object} injectedNamesToPlugins Map from names to plugin modules.
+	     */
+	    injectEventPluginsByName: EventPluginRegistry.injectEventPluginsByName
+
+	  },
+
+	  eventNameDispatchConfigs: EventPluginRegistry.eventNameDispatchConfigs,
+
+	  registrationNameModules: EventPluginRegistry.registrationNameModules,
+
+	  /**
+	   * Stores `listener` at `listenerBank[registrationName][id]`. Is idempotent.
+	   *
+	   * @param {string} id ID of the DOM element.
+	   * @param {string} registrationName Name of listener (e.g. `onClick`).
+	   * @param {?function} listener The callback to store.
+	   */
+	  putListener: function(id, registrationName, listener) {
+	    (false ? invariant(
+	      !listener || typeof listener === 'function',
+	      'Expected %s listener to be a function, instead got type %s',
+	      registrationName, typeof listener
+	    ) : invariant(!listener || typeof listener === 'function'));
+
+	    var bankForRegistrationName =
+	      listenerBank[registrationName] || (listenerBank[registrationName] = {});
+	    bankForRegistrationName[id] = listener;
+	  },
+
+	  /**
+	   * @param {string} id ID of the DOM element.
+	   * @param {string} registrationName Name of listener (e.g. `onClick`).
+	   * @return {?function} The stored callback.
+	   */
+	  getListener: function(id, registrationName) {
+	    var bankForRegistrationName = listenerBank[registrationName];
+	    return bankForRegistrationName && bankForRegistrationName[id];
+	  },
+
+	  /**
+	   * Deletes a listener from the registration bank.
+	   *
+	   * @param {string} id ID of the DOM element.
+	   * @param {string} registrationName Name of listener (e.g. `onClick`).
+	   */
+	  deleteListener: function(id, registrationName) {
+	    var bankForRegistrationName = listenerBank[registrationName];
+	    if (bankForRegistrationName) {
+	      delete bankForRegistrationName[id];
+	    }
+	  },
+
+	  /**
+	   * Deletes all listeners for the DOM element with the supplied ID.
+	   *
+	   * @param {string} id ID of the DOM element.
+	   */
+	  deleteAllListeners: function(id) {
+	    for (var registrationName in listenerBank) {
+	      delete listenerBank[registrationName][id];
+	    }
+	  },
+
+	  /**
+	   * Allows registered plugins an opportunity to extract events from top-level
+	   * native browser events.
+	   *
+	   * @param {string} topLevelType Record from `EventConstants`.
+	   * @param {DOMEventTarget} topLevelTarget The listening component root node.
+	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
+	   * @param {object} nativeEvent Native browser event.
+	   * @return {*} An accumulation of synthetic events.
+	   * @internal
+	   */
+	  extractEvents: function(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent) {
+	    var events;
+	    var plugins = EventPluginRegistry.plugins;
+	    for (var i = 0, l = plugins.length; i < l; i++) {
+	      // Not every plugin in the ordering may be loaded at runtime.
+	      var possiblePlugin = plugins[i];
+	      if (possiblePlugin) {
+	        var extractedEvents = possiblePlugin.extractEvents(
+	          topLevelType,
+	          topLevelTarget,
+	          topLevelTargetID,
+	          nativeEvent
+	        );
+	        if (extractedEvents) {
+	          events = accumulateInto(events, extractedEvents);
+	        }
+	      }
+	    }
+	    return events;
+	  },
+
+	  /**
+	   * Enqueues a synthetic event that should be dispatched when
+	   * `processEventQueue` is invoked.
+	   *
+	   * @param {*} events An accumulation of synthetic events.
+	   * @internal
+	   */
+	  enqueueEvents: function(events) {
+	    if (events) {
+	      eventQueue = accumulateInto(eventQueue, events);
+	    }
+	  },
+
+	  /**
+	   * Dispatches all synthetic events on the event queue.
+	   *
+	   * @internal
+	   */
+	  processEventQueue: function() {
+	    // Set `eventQueue` to null before processing it so that we can tell if more
+	    // events get enqueued while processing.
+	    var processingEventQueue = eventQueue;
+	    eventQueue = null;
+	    forEachAccumulated(processingEventQueue, executeDispatchesAndRelease);
+	    (false ? invariant(
+	      !eventQueue,
+	      'processEventQueue(): Additional events were enqueued while processing ' +
+	      'an event queue. Support for this has not yet been implemented.'
+	    ) : invariant(!eventQueue));
+	  },
+
+	  /**
+	   * These are needed for tests only. Do not use!
+	   */
+	  __purge: function() {
+	    listenerBank = {};
+	  },
+
+	  __getListenerBank: function() {
+	    return listenerBank;
+	  }
+
+	};
+
+	module.exports = EventPluginHub;
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLegacyElement
+	 */
+
+	"use strict";
+
+	var ReactCurrentOwner = __webpack_require__(17);
+
+	var invariant = __webpack_require__(1);
+	var monitorCodeUse = __webpack_require__(39);
+	var warning = __webpack_require__(4);
+
+	var legacyFactoryLogs = {};
+	function warnForLegacyFactoryCall() {
+	  if (!ReactLegacyElementFactory._isLegacyCallWarningEnabled) {
+	    return;
+	  }
+	  var owner = ReactCurrentOwner.current;
+	  var name = owner && owner.constructor ? owner.constructor.displayName : '';
+	  if (!name) {
+	    name = 'Something';
+	  }
+	  if (legacyFactoryLogs.hasOwnProperty(name)) {
+	    return;
+	  }
+	  legacyFactoryLogs[name] = true;
+	  (false ? warning(
+	    false,
+	    name + ' is calling a React component directly. ' +
+	    'Use a factory or JSX instead. See: http://fb.me/react-legacyfactory'
+	  ) : null);
+	  monitorCodeUse('react_legacy_factory_call', { version: 3, name: name });
+	}
+
+	function warnForPlainFunctionType(type) {
+	  var isReactClass =
+	    type.prototype &&
+	    typeof type.prototype.mountComponent === 'function' &&
+	    typeof type.prototype.receiveComponent === 'function';
+	  if (isReactClass) {
+	    (false ? warning(
+	      false,
+	      'Did not expect to get a React class here. Use `Component` instead ' +
+	      'of `Component.type` or `this.constructor`.'
+	    ) : null);
+	  } else {
+	    if (!type._reactWarnedForThisType) {
+	      try {
+	        type._reactWarnedForThisType = true;
+	      } catch (x) {
+	        // just incase this is a frozen object or some special object
+	      }
+	      monitorCodeUse(
+	        'react_non_component_in_jsx',
+	        { version: 3, name: type.name }
+	      );
+	    }
+	    (false ? warning(
+	      false,
+	      'This JSX uses a plain function. Only React components are ' +
+	      'valid in React\'s JSX transform.'
+	    ) : null);
+	  }
+	}
+
+	function warnForNonLegacyFactory(type) {
+	  (false ? warning(
+	    false,
+	    'Do not pass React.DOM.' + type.type + ' to JSX or createFactory. ' +
+	    'Use the string "' + type.type + '" instead.'
+	  ) : null);
+	}
+
+	/**
+	 * Transfer static properties from the source to the target. Functions are
+	 * rebound to have this reflect the original source.
+	 */
+	function proxyStaticMethods(target, source) {
+	  if (typeof source !== 'function') {
+	    return;
+	  }
+	  for (var key in source) {
+	    if (source.hasOwnProperty(key)) {
+	      var value = source[key];
+	      if (typeof value === 'function') {
+	        var bound = value.bind(source);
+	        // Copy any properties defined on the function, such as `isRequired` on
+	        // a PropTypes validator.
+	        for (var k in value) {
+	          if (value.hasOwnProperty(k)) {
+	            bound[k] = value[k];
+	          }
+	        }
+	        target[key] = bound;
+	      } else {
+	        target[key] = value;
+	      }
+	    }
+	  }
+	}
+
+	// We use an object instead of a boolean because booleans are ignored by our
+	// mocking libraries when these factories gets mocked.
+	var LEGACY_MARKER = {};
+	var NON_LEGACY_MARKER = {};
+
+	var ReactLegacyElementFactory = {};
+
+	ReactLegacyElementFactory.wrapCreateFactory = function(createFactory) {
+	  var legacyCreateFactory = function(type) {
+	    if (typeof type !== 'function') {
+	      // Non-function types cannot be legacy factories
+	      return createFactory(type);
+	    }
+
+	    if (type.isReactNonLegacyFactory) {
+	      // This is probably a factory created by ReactDOM we unwrap it to get to
+	      // the underlying string type. It shouldn't have been passed here so we
+	      // warn.
+	      if (false) {
+	        warnForNonLegacyFactory(type);
+	      }
+	      return createFactory(type.type);
+	    }
+
+	    if (type.isReactLegacyFactory) {
+	      // This is probably a legacy factory created by ReactCompositeComponent.
+	      // We unwrap it to get to the underlying class.
+	      return createFactory(type.type);
+	    }
+
+	    if (false) {
+	      warnForPlainFunctionType(type);
+	    }
+
+	    // Unless it's a legacy factory, then this is probably a plain function,
+	    // that is expecting to be invoked by JSX. We can just return it as is.
+	    return type;
+	  };
+	  return legacyCreateFactory;
+	};
+
+	ReactLegacyElementFactory.wrapCreateElement = function(createElement) {
+	  var legacyCreateElement = function(type, props, children) {
+	    if (typeof type !== 'function') {
+	      // Non-function types cannot be legacy factories
+	      return createElement.apply(this, arguments);
+	    }
+
+	    var args;
+
+	    if (type.isReactNonLegacyFactory) {
+	      // This is probably a factory created by ReactDOM we unwrap it to get to
+	      // the underlying string type. It shouldn't have been passed here so we
+	      // warn.
+	      if (false) {
+	        warnForNonLegacyFactory(type);
+	      }
+	      args = Array.prototype.slice.call(arguments, 0);
+	      args[0] = type.type;
+	      return createElement.apply(this, args);
+	    }
+
+	    if (type.isReactLegacyFactory) {
+	      // This is probably a legacy factory created by ReactCompositeComponent.
+	      // We unwrap it to get to the underlying class.
+	      if (type._isMockFunction) {
+	        // If this is a mock function, people will expect it to be called. We
+	        // will actually call the original mock factory function instead. This
+	        // future proofs unit testing that assume that these are classes.
+	        type.type._mockedReactClassConstructor = type;
+	      }
+	      args = Array.prototype.slice.call(arguments, 0);
+	      args[0] = type.type;
+	      return createElement.apply(this, args);
+	    }
+
+	    if (false) {
+	      warnForPlainFunctionType(type);
+	    }
+
+	    // This is being called with a plain function we should invoke it
+	    // immediately as if this was used with legacy JSX.
+	    return type.apply(null, Array.prototype.slice.call(arguments, 1));
+	  };
+	  return legacyCreateElement;
+	};
+
+	ReactLegacyElementFactory.wrapFactory = function(factory) {
+	  (false ? invariant(
+	    typeof factory === 'function',
+	    'This is suppose to accept a element factory'
+	  ) : invariant(typeof factory === 'function'));
+	  var legacyElementFactory = function(config, children) {
+	    // This factory should not be called when JSX is used. Use JSX instead.
+	    if (false) {
+	      warnForLegacyFactoryCall();
+	    }
+	    return factory.apply(this, arguments);
+	  };
+	  proxyStaticMethods(legacyElementFactory, factory.type);
+	  legacyElementFactory.isReactLegacyFactory = LEGACY_MARKER;
+	  legacyElementFactory.type = factory.type;
+	  return legacyElementFactory;
+	};
+
+	// This is used to mark a factory that will remain. E.g. we're allowed to call
+	// it as a function. However, you're not suppose to pass it to createElement
+	// or createFactory, so it will warn you if you do.
+	ReactLegacyElementFactory.markNonLegacyFactory = function(factory) {
+	  factory.isReactNonLegacyFactory = NON_LEGACY_MARKER;
+	  return factory;
+	};
+
+	// Checks if a factory function is actually a legacy factory pretending to
+	// be a class.
+	ReactLegacyElementFactory.isValidFactory = function(factory) {
+	  // TODO: This will be removed and moved into a class validator or something.
+	  return typeof factory === 'function' &&
+	    factory.isReactLegacyFactory === LEGACY_MARKER;
+	};
+
+	ReactLegacyElementFactory.isValidClass = function(factory) {
+	  if (false) {
+	    ("production" !== process.env.NODE_ENV ? warning(
+	      false,
+	      'isValidClass is deprecated and will be removed in a future release. ' +
+	      'Use a more specific validator instead.'
+	    ) : null);
+	  }
+	  return ReactLegacyElementFactory.isValidFactory(factory);
+	};
+
+	ReactLegacyElementFactory._isLegacyCallWarningEnabled = true;
+
+	module.exports = ReactLegacyElementFactory;
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule SyntheticUIEvent
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var SyntheticEvent = __webpack_require__(18);
+
+	var getEventTarget = __webpack_require__(53);
+
+	/**
+	 * @interface UIEvent
+	 * @see http://www.w3.org/TR/DOM-Level-3-Events/
+	 */
+	var UIEventInterface = {
+	  view: function(event) {
+	    if (event.view) {
+	      return event.view;
+	    }
+
+	    var target = getEventTarget(event);
+	    if (target != null && target.window === target) {
+	      // target is a window object
+	      return target;
+	    }
+
+	    var doc = target.ownerDocument;
+	    // TODO: Figure out why `ownerDocument` is sometimes undefined in IE8.
+	    if (doc) {
+	      return doc.defaultView || doc.parentWindow;
+	    } else {
+	      return window;
+	    }
+	  },
+	  detail: function(event) {
+	    return event.detail || 0;
+	  }
+	};
+
+	/**
+	 * @param {object} dispatchConfig Configuration used to dispatch this event.
+	 * @param {string} dispatchMarker Marker identifying the event target.
+	 * @param {object} nativeEvent Native browser event.
+	 * @extends {SyntheticEvent}
+	 */
+	function SyntheticUIEvent(dispatchConfig, dispatchMarker, nativeEvent) {
+	  SyntheticEvent.call(this, dispatchConfig, dispatchMarker, nativeEvent);
+	}
+
+	SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
+
+	module.exports = SyntheticUIEvent;
+
 
 /***/ },
 /* 34 */
@@ -14175,7 +14175,7 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(29);
+	var SyntheticUIEvent = __webpack_require__(33);
 	var ViewportMetrics = __webpack_require__(80);
 
 	var getEventModifierState = __webpack_require__(52);
@@ -14508,7 +14508,7 @@
 	var warning = __webpack_require__(4);
 
 	var ReactElement = __webpack_require__(3);
-	var ReactLegacyElement = __webpack_require__(28);
+	var ReactLegacyElement = __webpack_require__(32);
 	var ReactNativeComponent = __webpack_require__(70);
 	var ReactEmptyComponent = __webpack_require__(35);
 
@@ -16379,22 +16379,25 @@
 	    for (var i = 0, len = sorted.length; i < len; i++) {
 	      var l = sorted[i];
 
-	      // Move the element up as far as it can go without colliding.
-	      while (l.y > 0 && !utils.layoutItemCollidesWith(compareWith, l).length) {
-	        l.y--;
-	      }
+	      // Don't move static elements
+	      if (!l.static) {
+	        // Move the element up as far as it can go without colliding.
+	        while (l.y > 0 && !utils.layoutItemCollidesWith(compareWith, l).length) {
+	          l.y--;
+	        }
 
-	      // Move it down, and keep moving it down if it's colliding.
-	      var collides = utils.layoutItemCollidesWith(compareWith, l);
-	      while(collides.length) {
-	        l.y = collides[0].y + collides[0].h;
-	        collides = utils.layoutItemCollidesWith(compareWith, l);
+	        // Move it down, and keep moving it down if it's colliding.
+	        var collides = utils.layoutItemCollidesWith(compareWith, l);
+	        while(collides.length) {
+	          l.y = collides[0].y + collides[0].h;
+	          collides = utils.layoutItemCollidesWith(compareWith, l);
+	        }
 	      }
 
 	      // Add to comparison array. We only collide with items before this one.
 	      compareWith.push(l);
 
-	      // add to output array to make sure they still come out in the right order.
+	      // Add to output array to make sure they still come out in the right order.
 	      out[l.i] = l;
 
 	      // Clear moved flag, if it exists.
@@ -16472,6 +16475,7 @@
 	   * @param  {Number} [h] Height in grid units.
 	   */
 	  moveElement: function moveElement(layout, l, x, y, w, h) {
+	    if (l.static) return layout;
 	    // This is quite a bit faster than extending the object
 	    if (x !== undefined) l.x = x;
 	    if (y !== undefined) l.y = y;
@@ -16485,7 +16489,13 @@
 	    // Move each item that collides away from this element.
 	    for (var i = 0, len = collisions.length; i < len; i++) {
 	      if (collisions[i].moved) continue; // short circuit so we don't re-move items
-	      layout = utils.moveElementAwayFromCollision(layout, l, collisions[i]);
+
+	      // Don't move static items - we have to move *this* element away
+	      if (collisions[i].static) {
+	        layout = utils.moveElementAwayFromCollision(layout, collisions[i], l);
+	      } else {
+	        layout = utils.moveElementAwayFromCollision(layout, l, collisions[i]);
+	      }
 	    }
 
 	    return layout;
@@ -16538,6 +16548,9 @@
 	          throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].' + subProps[j] + ' must be a Number!');
 	        }
 	      }
+	      if (layout[i].static !== undefined && typeof layout[i].static !== 'boolean') {
+	        throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].static must be a Boolean!');
+	      }
 	    }
 	  }
 	};
@@ -16548,7 +16561,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React = __webpack_require__(9);
+	var React = __webpack_require__(8);
 	var Draggable = __webpack_require__(109);
 	var assign = Object.assign || __webpack_require__(106);
 
@@ -17428,7 +17441,7 @@
 	var escapeTextForBrowser = __webpack_require__(49);
 	var invariant = __webpack_require__(1);
 	var isEventSupported = __webpack_require__(55);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 	var monitorCodeUse = __webpack_require__(39);
 
 	var deleteListener = ReactBrowserEventEmitter.deleteListener;
@@ -19679,7 +19692,7 @@
 	var ReactElement = __webpack_require__(3);
 	var ReactPropTransferer = __webpack_require__(72);
 
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 	var warning = __webpack_require__(4);
 
 	var CHILDREN_PROP = keyOf({children: null});
@@ -20702,7 +20715,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React = __webpack_require__(9);
+	var React = __webpack_require__(8);
 	var utils = __webpack_require__(59);
 	var Draggable = __webpack_require__(102);
 	var Resizable = __webpack_require__(105).Resizable;
@@ -20964,7 +20977,7 @@
 	'use strict';
 
 	/** @jsx React.DOM */
-	var React = __webpack_require__(9);
+	var React = __webpack_require__(8);
 	var emptyFunction = __webpack_require__(7);
 
 	function createUIEvent(draggable) {
@@ -21494,7 +21507,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React = __webpack_require__(9);
+	var React = __webpack_require__(8);
 	var Resizable = __webpack_require__(60);
 
 	// An example use of Resizable.
@@ -21716,7 +21729,7 @@
 	var ExecutionEnvironment = __webpack_require__(5);
 	var SyntheticInputEvent = __webpack_require__(159);
 
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 
 	var canUseTextInputEvent = (
 	  ExecutionEnvironment.canUseDOM &&
@@ -22051,7 +22064,7 @@
 	"use strict";
 
 	var EventConstants = __webpack_require__(6);
-	var EventPluginHub = __webpack_require__(27);
+	var EventPluginHub = __webpack_require__(31);
 	var EventPropagators = __webpack_require__(21);
 	var ExecutionEnvironment = __webpack_require__(5);
 	var ReactUpdates = __webpack_require__(11);
@@ -22059,7 +22072,7 @@
 
 	var isEventSupported = __webpack_require__(55);
 	var isTextInputElement = __webpack_require__(88);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -22473,7 +22486,7 @@
 	var SyntheticCompositionEvent = __webpack_require__(156);
 
 	var getTextContentAccessor = __webpack_require__(54);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
 	var START_KEYCODE = 229;
@@ -23093,7 +23106,7 @@
 
 	"use strict";
 
-	 var keyOf = __webpack_require__(8);
+	 var keyOf = __webpack_require__(9);
 
 	/**
 	 * Module that is injectable into `EventPluginHub`, that specifies a
@@ -23143,7 +23156,7 @@
 	var SyntheticMouseEvent = __webpack_require__(36);
 
 	var ReactMount = __webpack_require__(13);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 	var getFirstReactDOM = ReactMount.getFirstReactDOM;
@@ -25447,7 +25460,7 @@
 
 	"use strict";
 
-	var EventPluginHub = __webpack_require__(27);
+	var EventPluginHub = __webpack_require__(31);
 
 	function runEventQueueInBatch(events) {
 	  EventPluginHub.enqueueEvents(events);
@@ -25690,7 +25703,7 @@
 	"use strict";
 
 	var DOMProperty = __webpack_require__(19);
-	var EventPluginHub = __webpack_require__(27);
+	var EventPluginHub = __webpack_require__(31);
 	var ReactComponent = __webpack_require__(24);
 	var ReactCompositeComponent = __webpack_require__(10);
 	var ReactEmptyComponent = __webpack_require__(35);
@@ -26678,7 +26691,7 @@
 
 	var getActiveElement = __webpack_require__(84);
 	var isTextInputElement = __webpack_require__(88);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 	var shallowEqual = __webpack_require__(93);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -26915,13 +26928,13 @@
 	var SyntheticMouseEvent = __webpack_require__(36);
 	var SyntheticDragEvent = __webpack_require__(157);
 	var SyntheticTouchEvent = __webpack_require__(161);
-	var SyntheticUIEvent = __webpack_require__(29);
+	var SyntheticUIEvent = __webpack_require__(33);
 	var SyntheticWheelEvent = __webpack_require__(162);
 
 	var getEventCharCode = __webpack_require__(51);
 
 	var invariant = __webpack_require__(1);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 	var warning = __webpack_require__(4);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -27479,7 +27492,7 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(29);
+	var SyntheticUIEvent = __webpack_require__(33);
 
 	/**
 	 * @interface FocusEvent
@@ -27573,7 +27586,7 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(29);
+	var SyntheticUIEvent = __webpack_require__(33);
 
 	var getEventCharCode = __webpack_require__(51);
 	var getEventKey = __webpack_require__(173);
@@ -27664,7 +27677,7 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(29);
+	var SyntheticUIEvent = __webpack_require__(33);
 
 	var getEventModifierState = __webpack_require__(52);
 
@@ -28798,7 +28811,7 @@
 	"use strict";
 
 	var assign = __webpack_require__(2);
-	var keyOf = __webpack_require__(8);
+	var keyOf = __webpack_require__(9);
 	var invariant = __webpack_require__(1);
 
 	function shallowCopy(x) {
