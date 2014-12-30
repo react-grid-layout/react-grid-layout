@@ -32,15 +32,16 @@ var utils = module.exports = {
       var l = sorted[i];
 
       // Move the element up as far as it can go without colliding.
-      do {
+      while (l.y > 0 && !utils.layoutItemCollidesWith(compareWith, l).length) {
         l.y--;
       }
-      while (l.y > -1 && !utils.layoutItemCollidesWith(compareWith, l).length);
 
       // Move it down, and keep moving it down if it's colliding.
-      do {
-        l.y++;
-      } while(utils.layoutItemCollidesWith(compareWith, l).length);
+      var collides = utils.layoutItemCollidesWith(compareWith, l);
+      while(collides.length) {
+        l.y = collides[0].y + collides[0].h;
+        collides = utils.layoutItemCollidesWith(compareWith, l);
+      }
 
       // Add to comparison array. We only collide with items before this one.
       compareWith.push(l);
