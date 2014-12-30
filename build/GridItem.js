@@ -1,15 +1,15 @@
-'use strict';
-var React = require('react/addons');
-var utils = require('./utils');
-var Draggable = require('react-draggable');
-var Resizable = require('react-resizable').Resizable;
-var PureDeepRenderMixin = require('./PureDeepRenderMixin');
+"use strict";
+var React = require("react/addons");
+var utils = require("./utils");
+var Draggable = require("react-draggable");
+var Resizable = require("react-resizable").Resizable;
+var PureDeepRenderMixin = require("./PureDeepRenderMixin");
 
 /**
  * An individual item within a ReactGridLayout.
  */
 var GridItem = module.exports = React.createClass({
-  displayName: 'GridItem',
+  displayName: "GridItem",
   mixins: [PureDeepRenderMixin],
 
   propTypes: {
@@ -18,7 +18,7 @@ var GridItem = module.exports = React.createClass({
     containerWidth: React.PropTypes.number.isRequired,
     rowHeight: React.PropTypes.number.isRequired,
     margin: React.PropTypes.array.isRequired,
-    
+
     // These are all in grid units
     x: React.PropTypes.number.isRequired,
     y: React.PropTypes.number.isRequired,
@@ -30,7 +30,7 @@ var GridItem = module.exports = React.createClass({
 
     // If true, item will be repositioned when x/y/w/h change
     moveOnStartChange: React.PropTypes.bool,
-    
+
     // Functions
     onDragStop: React.PropTypes.func,
     onDragStart: React.PropTypes.func,
@@ -46,21 +46,21 @@ var GridItem = module.exports = React.createClass({
     // Others
     className: React.PropTypes.string,
     // Selector for draggable handle
-    handle: React.PropTypes.string 
+    handle: React.PropTypes.string
   },
 
-  getDefaultProps:function() {
+  getDefaultProps: function () {
     return {
       isDraggable: true,
       isResizable: true,
-      className: ''
+      className: ""
     };
   },
 
-  getInitialState:function() {
+  getInitialState: function () {
     return {
       resizing: false,
-      className: ''
+      className: ""
     };
   },
 
@@ -70,7 +70,7 @@ var GridItem = module.exports = React.createClass({
    * @param  {Object}  l             Layout object.
    * @return {Object}                Object containing coords.
    */
-  calcPosition:function(x, y, w, h) {
+  calcPosition: function (x, y, w, h) {
     var p = this.props;
     var width = p.containerWidth - p.margin[0];
     var out = {
@@ -92,12 +92,14 @@ var GridItem = module.exports = React.createClass({
    * @param  {Number} options.top   Top offset in pixels.
    * @return {Object}               x and y in grid units.
    */
-  calcXY:function($__0 ) {var left=$__0.left,top=$__0.top;
-    var x = Math.round((left / this.props.containerWidth) * this.props.cols);
+  calcXY: function (_ref) {
+    var left = _ref.left;
+    var top = _ref.top;
+    var x = Math.round(left / this.props.containerWidth * this.props.cols);
     var y = Math.round(top / this.props.rowHeight);
     x = Math.max(Math.min(x, this.props.cols), 0);
     y = Math.max(y, 0);
-    return {x:x, y:y};
+    return { x: x, y: y };
   },
 
   /**
@@ -106,12 +108,14 @@ var GridItem = module.exports = React.createClass({
    * @param  {Number} options.width  Width in pixels.
    * @return {Object}                w, h as grid units.
    */
-  calcWH:function($__0 ) {var height=$__0.height,width=$__0.width;
-    var w = Math.round((width / this.props.containerWidth) * this.props.cols);
+  calcWH: function (_ref2) {
+    var height = _ref2.height;
+    var width = _ref2.width;
+    var w = Math.round(width / this.props.containerWidth * this.props.cols);
     var h = Math.round(height / this.props.rowHeight);
     w = Math.max(Math.min(w, this.props.cols - this.props.x), 0);
     h = Math.max(h, 0);
-    return {w:w, h:h};
+    return { w: w, h: h };
   },
 
   /**
@@ -120,20 +124,16 @@ var GridItem = module.exports = React.createClass({
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable:function(child, position) {
-    return (
-      React.createElement(Draggable, {
-        start: {x: position.left, y: position.top}, 
-        moveOnStartChange: this.props.moveOnStartChange, 
-        onStop: this.onDragHandler('onDragStop'), 
-        onStart: this.onDragHandler('onDragStart'), 
-        onDrag: this.onDragHandler('onDrag'), 
-        handle: this.props.handle, 
-        cancel: ".react-resizable-handle"
-        }, 
-        child
-      )
-    );
+  mixinDraggable: function (child, position) {
+    return React.createElement(Draggable, {
+      start: { x: position.left, y: position.top },
+      moveOnStartChange: this.props.moveOnStartChange,
+      onStop: this.onDragHandler("onDragStop"),
+      onStart: this.onDragHandler("onDragStart"),
+      onDrag: this.onDragHandler("onDrag"),
+      handle: this.props.handle,
+      cancel: ".react-resizable-handle"
+    }, child);
   },
 
   /**
@@ -142,24 +142,20 @@ var GridItem = module.exports = React.createClass({
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable:function(child, position) {
+  mixinResizable: function (child, position) {
     var p = this.props;
     var colWidth = p.containerWidth / p.cols - p.margin[0];
     var maxWidth = (colWidth + p.margin[0]) * (p.cols - p.x) - p.margin[0] * 2;
     var rowHeight = p.rowHeight - p.margin[1];
-    return (
-      React.createElement(Resizable, {
-        width: position.width, 
-        height: position.height, 
-        minConstraints: [colWidth, rowHeight], 
-        maxConstraints: [maxWidth, Infinity], 
-        onResizeStop: this.onResizeHandler('onResizeStop'), 
-        onResizeStart: this.onResizeHandler('onResizeStart'), 
-        onResize: this.onResizeHandler('onResize')
-        }, 
-        child
-      )
-    );
+    return React.createElement(Resizable, {
+      width: position.width,
+      height: position.height,
+      minConstraints: [colWidth, rowHeight],
+      maxConstraints: [maxWidth, Infinity],
+      onResizeStop: this.onResizeHandler("onResizeStop"),
+      onResizeStart: this.onResizeHandler("onResizeStart"),
+      onResize: this.onResizeHandler("onResize")
+    }, child);
   },
 
   /**
@@ -170,12 +166,18 @@ var GridItem = module.exports = React.createClass({
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onDragHandler:function(handlerName) {
+  onDragHandler: function (handlerName) {
     var me = this;
-    return function(e, $__0 ) {var element=$__0.element,position=$__0.position;
+    return function (e, _ref3) {
+      var element = _ref3.element;
+      var position = _ref3.position;
       if (!me.props[handlerName]) return;
       // Get new XY
-      var $__1=   me.calcXY(position),x=$__1.x,y=$__1.y;
+      var _ref4 = me.calcXY(position);
+
+      var x = _ref4.x;
+      var y = _ref4.y;
+
 
       // Cap x at numCols
       x = Math.min(x, me.props.cols - me.props.w);
@@ -192,37 +194,42 @@ var GridItem = module.exports = React.createClass({
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler:function(handlerName) {
+  onResizeHandler: function (handlerName) {
     var me = this;
-    return function(e, $__0 ) {var element=$__0.element,size=$__0.size;
+    return function (e, _ref5) {
+      var element = _ref5.element;
+      var size = _ref5.size;
       if (!me.props[handlerName]) return;
 
       // Get new XY
-      var $__1=   me.calcWH(size),w=$__1.w,h=$__1.h;
+      var _ref6 = me.calcWH(size);
+
+      var w = _ref6.w;
+      var h = _ref6.h;
+
 
       // Cap w at numCols
       w = Math.min(w, me.props.cols - me.props.x);
       // Ensure w is at least 1
       w = Math.max(w, 1);
 
-      me.setState({resizing: handlerName === 'onResizeStop' ? null : size});
+      me.setState({ resizing: handlerName === "onResizeStop" ? null : size });
 
       me.props[handlerName](me.props.i, w, h);
     };
   },
 
-  render:function() {
+  render: function () {
     var p = this.props, pos = this.calcPosition();
 
     var child = React.addons.cloneWithProps(React.Children.only(this.props.children), {
       // Munge a classname. Use passed in classnames, child classnames, and resizing.
-      className: ['react-grid-item', this.props.children.props.className || '', this.props.className,
-        this.state.resizing ? 'resizing' : ''].join(' '),
+      className: ["react-grid-item", this.props.children.props.className || "", this.props.className, this.state.resizing ? "resizing" : ""].join(" "),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: {
-        width: pos.width + 'px',
-        height: pos.height + 'px',
-        position: 'absolute'
+        width: pos.width + "px",
+        height: pos.height + "px",
+        position: "absolute"
       }
     });
 
@@ -233,7 +240,7 @@ var GridItem = module.exports = React.createClass({
       child.props.style.width = utils.perc(pos.width / p.containerWidth);
     }
 
-    // Resizable support. This is usually on but the user can toggle it off. 
+    // Resizable support. This is usually on but the user can toggle it off.
     if (this.props.isResizable && this.isMounted()) {
       child = this.mixinResizable(child, pos);
     }
@@ -241,7 +248,7 @@ var GridItem = module.exports = React.createClass({
     // Draggable support. This is always on, except for with placeholders.
     if (this.props.isDraggable) {
       child = this.mixinDraggable(child, pos);
-    } 
+    }
     // Place the element directly if draggability is turned off.
     else {
       child.props.style.left = pos.left, child.props.style.top = pos.top;

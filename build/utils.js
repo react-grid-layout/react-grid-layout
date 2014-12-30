@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var utils = module.exports = {
 
@@ -8,7 +8,7 @@ var utils = module.exports = {
    * @param  {Object} l2 Layout object.
    * @return {Boolean}   True if colliding.
    */
-  collides: function collides(l1, l2) {
+  collides: function (l1, l2) {
     if (l1 === l2) return false; // same element
     if (l1.x + l1.w <= l2.x) return false; // l1 is left of l2
     if (l1.x >= l2.x + l2.w) return false; // l1 is right of l2
@@ -23,7 +23,7 @@ var utils = module.exports = {
    * @param  {Array} layout Layout.
    * @return {Array}       Compacted Layout.
    */
-  compact: function compact(layout, bounds) {
+  compact: function (layout, bounds) {
     // We go through the items by row and column.
     var compareWith = [], out = [];
     var sorted = utils.getLayoutItemsByRowCol(layout);
@@ -32,7 +32,7 @@ var utils = module.exports = {
       var l = sorted[i];
 
       // Don't move static elements
-      if (!l.static) {
+      if (!l["static"]) {
         // Move the element up as far as it can go without colliding.
         while (l.y > 0 && !utils.layoutItemCollidesWith(compareWith, l).length) {
           l.y--;
@@ -40,7 +40,7 @@ var utils = module.exports = {
 
         // Move it down, and keep moving it down if it's colliding.
         var collides = utils.layoutItemCollidesWith(compareWith, l);
-        while(collides.length) {
+        while (collides.length) {
           l.y = collides[0].y + collides[0].h;
           collides = utils.layoutItemCollidesWith(compareWith, l);
         }
@@ -59,7 +59,7 @@ var utils = module.exports = {
     return out;
   },
 
-  correctBounds: function(layout, bounds) {
+  correctBounds: function (layout, bounds) {
     for (var i = 0, len = layout.length; i < len; i++) {
       var l = layout[i];
       if (l.x + l.w > bounds.cols) l.x = bounds.cols - l.w;
@@ -74,7 +74,7 @@ var utils = module.exports = {
    * @param  {Number} i      Index
    * @return {LayoutItem}        Item at index.
    */
-  getLayoutItem: function getLayoutItem(layout, i) {
+  getLayoutItem: function (layout, i) {
     return layout[i];
   },
 
@@ -82,9 +82,9 @@ var utils = module.exports = {
    * Get layout items sorted from top left to right and down.
    * @return {Array} Array of layout objects.
    */
-  getLayoutItemsByRowCol: function getLayoutItemsByRowCol(layout) {
-    return [].concat(layout).sort(function(a, b) {
-      if (a.y > b.y || (a.y === b.y && a.x > b.x)) {
+  getLayoutItemsByRowCol: function (layout) {
+    return [].concat(layout).sort(function (a, b) {
+      if (a.y > b.y || a.y === b.y && a.x > b.x) {
         return 1;
       }
       return -1;
@@ -95,8 +95,8 @@ var utils = module.exports = {
    * Get layout items sorted from top left to down.
    * @return {Array} Array of layout objects.
    */
-  getLayoutItemsByColRow: function getLayoutItemsByColRow(layout) {
-    return [].concat(layout).sort(function(a, b) {
+  getLayoutItemsByColRow: function (layout) {
+    return [].concat(layout).sort(function (a, b) {
       if (a.x > b.x || a.x === b.x && a.y > b.y) {
         return 1;
       }
@@ -109,7 +109,7 @@ var utils = module.exports = {
    * @param  {Object} layoutItem Layout item.
    * @return {Array}             Array of colliding layout objects.
    */
-  layoutItemCollidesWith: function layoutItemCollidesWith(layout, layoutItem) {
+  layoutItemCollidesWith: function (layout, layoutItem) {
     var out = [];
     for (var i = 0, len = layout.length; i < len; i++) {
       if (utils.collides(layout[i], layoutItem)) out.push(layout[i]);
@@ -126,8 +126,8 @@ var utils = module.exports = {
    * @param  {Number} [w] Width in grid units.
    * @param  {Number} [h] Height in grid units.
    */
-  moveElement: function moveElement(layout, l, x, y, w, h) {
-    if (l.static) return layout;
+  moveElement: function (layout, l, x, y, w, h) {
+    if (l["static"]) return layout;
     // This is quite a bit faster than extending the object
     if (x !== undefined) l.x = x;
     if (y !== undefined) l.y = y;
@@ -143,7 +143,7 @@ var utils = module.exports = {
       if (collisions[i].moved) continue; // short circuit so we don't re-move items
 
       // Don't move static items - we have to move *this* element away
-      if (collisions[i].static) {
+      if (collisions[i]["static"]) {
         layout = utils.moveElementAwayFromCollision(layout, collisions[i], l);
       } else {
         layout = utils.moveElementAwayFromCollision(layout, l, collisions[i]);
@@ -160,7 +160,7 @@ var utils = module.exports = {
    * @param  {LayoutItem} collidesWith Layout item we're colliding with.
    * @param  {LayoutItem} itemToMove   Layout item we're moving.
    */
-  moveElementAwayFromCollision: function moveElementAwayFromCollision(layout, collidesWith, itemToMove) {
+  moveElementAwayFromCollision: function (layout, collidesWith, itemToMove) {
     var sorted = utils.getLayoutItemsByRowCol(layout);
     var itemsBefore = sorted.slice(0, sorted.indexOf(itemToMove)).concat(collidesWith);
 
@@ -170,7 +170,7 @@ var utils = module.exports = {
     do {
       collisions = utils.layoutItemCollidesWith(itemsBefore, itemToMove);
       if (collisions.length) itemToMove.y = collisions[0].y + collisions[0].h;
-    } while(collisions.length);
+    } while (collisions.length);
 
     return utils.moveElement(layout, itemToMove, undefined, itemToMove.y);
   },
@@ -180,8 +180,8 @@ var utils = module.exports = {
    * @param  {Number} num Any number
    * @return {String}     That number as a percentage.
    */
-  perc: function perc(num) {
-    return num * 100 + '%';
+  perc: function (num) {
+    return num * 100 + "%";
   },
 
   /**
@@ -190,18 +190,18 @@ var utils = module.exports = {
    * @param  {String} [contextName] Context name for errors.
    * @throw  {Error}                Validation error.
    */
-  validateLayout: function(layout, contextName) {
+  validateLayout: function (layout, contextName) {
     contextName = contextName || "Layout";
-    var subProps = ['x', 'y', 'w', 'h'];
+    var subProps = ["x", "y", "w", "h"];
     if (!Array.isArray(layout)) throw new Error(contextName + " must be an array!");
     for (var i = 0, len = layout.length; i < len; i++) {
       for (var j = 0; j < subProps.length; j++) {
-        if (typeof layout[i][subProps[j]] !== 'number') {
-          throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].' + subProps[j] + ' must be a Number!');
+        if (typeof layout[i][subProps[j]] !== "number") {
+          throw new Error("ReactGridLayout: " + contextName + "[" + i + "]." + subProps[j] + " must be a Number!");
         }
       }
-      if (layout[i].static !== undefined && typeof layout[i].static !== 'boolean') {
-        throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].static must be a Boolean!');
+      if (layout[i]["static"] !== undefined && typeof layout[i]["static"] !== "boolean") {
+        throw new Error("ReactGridLayout: " + contextName + "[" + i + "].static must be a Boolean!");
       }
     }
   }

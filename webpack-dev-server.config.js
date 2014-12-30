@@ -14,8 +14,8 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx$/, loader: 'jsx-loader?harmony'},
-        {test: /\.jsx$/, loader: 'react-hot-loader'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: '6to5-loader?experimental=true'},
+        {test: /\.jsx$/, exclude: /node_modules/, loader: 'react-hot-loader'}
       ]
     },
     plugins: [
