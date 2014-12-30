@@ -136,7 +136,7 @@ var ReactGridLayout = module.exports = React.createClass({
         if (g) {
           utils.validateLayout([g], 'ReactGridLayout.child');
           return {
-            w: g.w, h: g.h, x: g.x, y: g.y, i: i
+            w: g.w, h: g.h, x: g.x, y: g.y, static: g.static, i: i
           };
         }
       })
@@ -343,8 +343,8 @@ var ReactGridLayout = module.exports = React.createClass({
         onDrag={this.onDrag}
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
-        isDraggable={this.props.isDraggable}
-        isResizable={this.props.isResizable}
+        isDraggable={l.static ? false : this.props.isDraggable}
+        isResizable={l.static ? false : this.props.isResizable}
         >
         {child}
       </GridItem>
