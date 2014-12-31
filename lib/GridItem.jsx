@@ -25,8 +25,8 @@ var GridItem = module.exports = React.createClass({
     w: React.PropTypes.number.isRequired,
     h: React.PropTypes.number.isRequired,
 
-    // Index is nice to have for callbacks
-    i: React.PropTypes.number.isRequired,
+    // ID is nice to have for callbacks
+    i: React.PropTypes.string.isRequired,
 
     // If true, item will be repositioned when x/y/w/h change
     moveOnStartChange: React.PropTypes.bool,
@@ -111,6 +111,8 @@ var GridItem = module.exports = React.createClass({
    * @return {Object}                w, h as grid units.
    */
   calcWH({height, width}) {
+    width = width + this.props.margin[0];
+    height = height + this.props.margin[1];
     var w = Math.round((width / this.props.containerWidth) * this.props.cols);
     var h = Math.round(height / this.props.rowHeight);
     w = Math.max(Math.min(w, this.props.cols - this.props.x), 0);
@@ -149,7 +151,7 @@ var GridItem = module.exports = React.createClass({
   mixinResizable(child, position) {
     var p = this.props;
     var colWidth = p.containerWidth / p.cols - p.margin[0];
-    var maxWidth = (colWidth + p.margin[0]) * (p.cols - p.x) - p.margin[0] * 2;
+    var maxWidth = (colWidth + p.margin[0]) * (p.cols - p.x) - p.margin[0] * 1.5;
     var rowHeight = p.rowHeight - p.margin[1];
     return (
       <Resizable
