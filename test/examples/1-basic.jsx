@@ -13,10 +13,9 @@ var BasicLayout = module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      isDraggable: true,
-      isResizable: true,
+      className: "layout",
       items: 20,
-      w: 2,
+      rowHeight: 30,
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}
     };
   },
@@ -38,9 +37,8 @@ var BasicLayout = module.exports = React.createClass({
   generateLayout() {
     var p = this.props;
     return _.map(new Array(p.items), function(item, i) {
-      var w = _.result(p, 'w') || Math.ceil(Math.random() * 4);
       var y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1;
-      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i};
+      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i};
     });
   },
 
@@ -50,10 +48,9 @@ var BasicLayout = module.exports = React.createClass({
   },
 
   render() {
-    var {layout, ...gridProps} = this.props;
     return (
-      <ReactGridLayout className="layout" initialLayout={this.state.initialLayout} cols={12} onLayoutChange={this.onLayoutChange}
-          rowHeight={30} {...gridProps}>
+      <ReactGridLayout initialLayout={this.state.initialLayout} onLayoutChange={this.onLayoutChange}
+          {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>
     );
