@@ -4,7 +4,7 @@ var _ = require('lodash');
 var ReactGridLayout = require('react-grid-layout');
 
 /**
- * This layout demonstrates how to sync to localstorage.
+ * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
 var LocalStorageLayout = module.exports = React.createClass({
   displayName: 'LocalStorageLayout',
@@ -17,11 +17,12 @@ var LocalStorageLayout = module.exports = React.createClass({
         ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
       } catch(e) {}
     }
+    console.log(ls);
     return {
       className: "layout",
-      cols: 12,
+      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
       rowHeight: 30,
-      initialLayout: ls.layout || []
+      initialLayouts: ls.layouts || {}
     };
   },
 
@@ -40,15 +41,15 @@ var LocalStorageLayout = module.exports = React.createClass({
   _saveToLocalStorage() {
     if (global.localStorage) {
       global.localStorage.setItem('rgl-7', JSON.stringify({
-        layout: this.state.layout
+        layouts: this.state.layouts
       }));
     }
   },
 
-  onLayoutChange(layout) {
-    console.log('layout changed', layout);
+  onLayoutChange(layout, layouts) {
+    console.log(arguments);
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
+    this.setState({layout: layout, layouts: layouts});
   },
 
   render() {
