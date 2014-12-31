@@ -15,9 +15,9 @@ body {
   padding: 10px;
 }
 .columns {
-  -moz-columns: 105px;
-  -webkit-columns: 105px;
-  columns: 105px;
+  -moz-columns: 120px;
+  -webkit-columns: 120px;
+  columns: 120px;
 }
 .react-grid-item:not(.react-grid-placeholder) {
   background: #ccc;
@@ -36,4 +36,7 @@ body {
   right: 0;
   margin: auto;
   height: 24px;
+}
+.react-grid-item .add {
+  cursor: pointer;
 }

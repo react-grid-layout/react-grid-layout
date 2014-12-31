@@ -11,7 +11,9 @@ var GridPropertyLayout = module.exports = React.createClass({
     return {
       isDraggable: true,
       isResizable: true,
-      items: 20
+      items: 20,
+      rowHeight: 30,
+      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
     };
   },
 
@@ -43,10 +45,9 @@ var GridPropertyLayout = module.exports = React.createClass({
   },
 
   render() {
-    var {layout, ...gridProps} = this.props;
     return (
-      <ReactGridLayout className="layout" initialLayout={this.state.initialLayout} cols={12} onLayoutChange={this.onLayoutChange}
-          rowHeight={30} {...gridProps}>
+      <ReactGridLayout initialLayout={this.state.initialLayout} onLayoutChange={this.onLayoutChange}
+          {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>
     );

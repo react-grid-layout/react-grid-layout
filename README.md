@@ -23,17 +23,22 @@ If you have a feature request, please add it as an issue or make a pull request.
 1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
 1. [Layout Defined on Children](https://strml.github.io/react-grid-layout/examples/4-grid-property.html)
 1. [Static Elements](https://strml.github.io/react-grid-layout/examples/5-static-elements.html)
+1. [Adding/Removing Elements](https://strml.github.io/react-grid-layout/examples/7-dynamic-add-remove.html)
+1. [Saving Layout to LocalStorage](https://strml.github.io/react-grid-layout/examples/7-localstorage.html)
 
 #### Features
 
 * 100% React - no jQuery
+* Compatible with server-rendered apps
 * Draggable widgets
 * Resizable widgets
+* Static widgets
 * Vertical auto-packing
 * Bounds checking for dragging and resizing
+* Widgets may be added or removed without rebuilding grid
 * Layout can be serialized and restored
 * Responsive breakpoints
-* Separate layouts per responsive breakpoints
+* Separate layouts per responsive breakpoint
 
 #### Usage
 
@@ -62,7 +67,6 @@ You can also set layout properties directly on the children:
 ```javascript
 
 render: function() {
-  // layout is an array of objects, see the demo
   return (
     <ReactGridLayout className="layout" cols={12} rowHeight={30}>
       <div key={1} _grid={{x: 0, y: 0, w: 1: h: 2}}>1</div>
@@ -75,7 +79,7 @@ render: function() {
 ```
 
 
-#### Props
+#### Grid Layout Props
 
 RGL supports the following properties (see the source for the final word on this):
 
@@ -117,7 +121,26 @@ isResizable: React.PropTypes.bool,
 onLayoutChange: React.PropTypes.func
 ```
 
-###### Defaults
+#### Grid Item Props
+
+RGL supports the following properties on grid items or layout items. When initializing a grid,
+build a layout array (as in the first example above), or attach this object as the `_grid` property
+to each of your child elements (as in the second example).
+
+Note that if a grid item is provided but incomplete (missing one of `x, y, w, or h`), an error
+will be thrown so you can correct your layout.
+
+If no properties are provided for a grid item, one will be generated with a width and height of `1`.
+
+```
+// These are all in grid units, not pixels
+x: React.PropTypes.number.isRequired,
+y: React.PropTypes.number.isRequired,
+w: React.PropTypes.number.isRequired,
+h: React.PropTypes.number.isRequired,
+```
+
+#### Grid Layout Defaults
 
 ```javascript
 {
@@ -147,7 +170,7 @@ onLayoutChange: React.PropTypes.func
 - [x] Layouts per responsive breakpoint
 - [x] Define grid attributes on children themselves (`_grid` key)
 - [x] Static elements
-- [ ] Persistent id per item for predictable localstorage restores, even when # items changes
+- [x] Persistent id per item for predictable localstorage restores, even when # items changes
 - [ ] Min/max w/h per item
 - [ ] Resizable handles on other corners
 - [ ] Configurable w/h per breakpoint
