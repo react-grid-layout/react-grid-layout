@@ -1,4 +1,21 @@
-### React-Grid-Layout
+# React-Grid-Layout
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Summary](#summary)
+- [Demos](#demos)
+- [Features](#features)
+- [Usage](#usage)
+- [Responsive Usage](#responsive-usage)
+- [Grid Layout Props](#grid-layout-props)
+- [Grid Item Props](#grid-item-props)
+- [Grid Layout Defaults](#grid-layout-defaults)
+- [TODO List](#todo-list)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+#### Summary
 
 [View the Demo](https://strml.github.io/react-grid-layout/examples/1-basic.html)
 
@@ -19,7 +36,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
 1. [Layout Defined on Children](https://strml.github.io/react-grid-layout/examples/4-grid-property.html)
 1. [Static Elements](https://strml.github.io/react-grid-layout/examples/5-static-elements.html)
-1. [Adding/Removing Elements](https://strml.github.io/react-grid-layout/examples/7-dynamic-add-remove.html)
+1. [Adding/Removing Elements](https://strml.github.io/react-grid-layout/examples/6-dynamic-add-remove.html)
 1. [Saving Layout to LocalStorage](https://strml.github.io/react-grid-layout/examples/7-localstorage.html)
 
 #### Features
@@ -202,9 +219,6 @@ h: React.PropTypes.number.isRequired,
   listenToWindowResize: true
 }
 ```
-
-
-----
 
 #### TODO List
 
