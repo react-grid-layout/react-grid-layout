@@ -1,11 +1,11 @@
-webpackJsonp([1],[
+webpackJsonp([4],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
-	var React = __webpack_require__(8);
-	var _ = __webpack_require__(31);
-	var ReactGridLayout = __webpack_require__(28);
+	var React = __webpack_require__(6);
+	var _ = __webpack_require__(17);
+	var ReactGridLayout = __webpack_require__(15);
 
 	/**
 	 * This layout demonstrates how to use static grid elements.
@@ -27,7 +27,6 @@ webpackJsonp([1],[
 	  render: function () {
 	    return React.createElement(ReactGridLayout, {
 	      className: "layout",
-	      cols: 12,
 	      onLayoutChange: this.onLayoutChange,
 	      rowHeight: 30
 	    }, React.createElement("div", {
@@ -47,9 +46,9 @@ webpackJsonp([1],[
 	});
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(29)(module.exports);
+	  __webpack_require__(16)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)(module)))
 
 /***/ }
 ]);
