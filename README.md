@@ -38,6 +38,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 1. [Static Elements](https://strml.github.io/react-grid-layout/examples/5-static-elements.html)
 1. [Adding/Removing Elements](https://strml.github.io/react-grid-layout/examples/6-dynamic-add-remove.html)
 1. [Saving Layout to LocalStorage](https://strml.github.io/react-grid-layout/examples/7-localstorage.html)
+1. [Saving a Responsive Layout to LocalStorage](https://strml.github.io/react-grid-layout/examples/8-localstorage-responsive.html)
 
 #### Features
 
