@@ -1,4 +1,4 @@
-webpackJsonp([2],[
+webpackJsonp([1],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -8,7 +8,7 @@ webpackJsonp([2],[
 	var ReactGridLayout = __webpack_require__(15);
 
 	/**
-	 * This layout demonstrates how to sync to localstorage.
+	 * This layout demonstrates how to sync multiple responsive layouts to localstorage.
 	 */
 	var LocalStorageLayout = module.exports = React.createClass({
 	  displayName: "LocalStorageLayout",
@@ -21,11 +21,12 @@ webpackJsonp([2],[
 	        ls = JSON.parse(global.localStorage.getItem("rgl-7")) || {};
 	      } catch (e) {}
 	    }
+	    console.log(ls);
 	    return {
 	      className: "layout",
-	      cols: 12,
+	      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
 	      rowHeight: 30,
-	      initialLayout: ls.layout || []
+	      initialLayouts: ls.layouts || {}
 	    };
 	  },
 
@@ -44,15 +45,15 @@ webpackJsonp([2],[
 	  _saveToLocalStorage: function () {
 	    if (global.localStorage) {
 	      global.localStorage.setItem("rgl-7", JSON.stringify({
-	        layout: this.state.layout
+	        layouts: this.state.layouts
 	      }));
 	    }
 	  },
 
-	  onLayoutChange: function (layout) {
-	    console.log("layout changed", layout);
+	  onLayoutChange: function (layout, layouts) {
+	    console.log(arguments);
 	    this.props.onLayoutChange(layout);
-	    this.setState({ layout: layout });
+	    this.setState({ layout: layout, layouts: layouts });
 	  },
 
 	  render: function () {
