@@ -103,6 +103,8 @@ var ReactGridLayout = module.exports = React.createClass({
       breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
       cols: 12, 
       rowHeight: 150,
+      initialLayout: [],
+      initialLayouts: {},
       initialWidth: 1280,
       margin: [10, 10],
       isDraggable: true,
@@ -116,10 +118,14 @@ var ReactGridLayout = module.exports = React.createClass({
   getInitialState() {
     var breakpoint = utils.getBreakpointFromWidth(this.props.breakpoints, this.props.initialWidth);
     var cols = this.getColsFromBreakpoint(breakpoint);
+    var initialLayout = this.props.initialLayout;
+    if (this.props.initialLayouts && this.props.initialLayouts[breakpoint]) {
+      initialLayout = this.props.initialLayouts[breakpoint];
+    }
     return {
-      layout: utils.synchronizeLayoutWithChildren(this.props.initialLayout, this.props.children, cols),
+      layout: utils.synchronizeLayoutWithChildren(initialLayout, this.props.children, cols),
       // storage for layouts obsoleted by breakpoints
-      layouts: {},
+      layouts: this.props.initialLayouts || {},
       breakpoint: breakpoint,
       cols: cols,
       width: this.props.initialWidth,
@@ -138,7 +144,7 @@ var ReactGridLayout = module.exports = React.createClass({
 
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
-    this.props.onLayoutChange(this.state.layout);
+    this.props.onLayoutChange(this.state.layout, this.state.layouts);
   },
 
   componentWillReceiveProps(nextProps) {
@@ -155,7 +161,6 @@ var ReactGridLayout = module.exports = React.createClass({
 
     // Allow parent to set layout directly.
     if (nextProps.layout && nextProps.layout !== this.state.layout) {
-      console.log('regen');
       this.setState({
         layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, this.state.cols)
       });
@@ -225,6 +230,9 @@ var ReactGridLayout = module.exports = React.createClass({
 
       // This adds missing items.
       newState.layout = utils.synchronizeLayoutWithChildren(newState.layout, this.props.children, newState.cols);
+
+      // Store this new layout as well.
+      newState.layouts[newState.breakpoint] = newState.layout;
     }
 
     if (newState.cols !== this.state.cols) {
