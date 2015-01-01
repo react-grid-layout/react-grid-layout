@@ -265,7 +265,7 @@ var ReactGridLayout = React.createClass({
     };
 
     // Move the element to the dragged location.
-    layout = utils.moveElement(layout, l, x, y);
+    layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
     this.setState({
       layout: utils.compact(layout),
@@ -283,7 +283,7 @@ var ReactGridLayout = React.createClass({
     var l = utils.getLayoutItem(layout, i);
 
     // Move the element here
-    layout = utils.moveElement(layout, l, x, y);
+    layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
     // Set state
     this.setState({ layout: utils.compact(layout), activeDrag: null });
   },
@@ -375,8 +375,7 @@ var ReactGridLayout = React.createClass({
   render: function () {
     // Calculate classname
     var className = this.props.className;
-    var initialLayout = this.props.initialLayout;
-    var props = _objectWithoutProperties(this.props, ["className", "initialLayout"]);
+    var props = _objectWithoutProperties(this.props, ["className"]);
 
     className = "react-grid-layout " + (className || "");
 
@@ -388,3 +387,4 @@ var ReactGridLayout = React.createClass({
 });
 
 module.exports = ReactGridLayout;
+// nothing

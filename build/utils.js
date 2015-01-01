@@ -171,16 +171,18 @@ var utils = module.exports = {
   /**
    * Move an element. Responsible for doing cascading movements of other elements.
    * 
-   * @param  {Array}  layout Full layout to modify.
-   * @param  {LayoutItem} l element to move.
-   * @param  {Number} [x] X position in grid units.
-   * @param  {Number} [y] Y position in grid units.
+   * @param  {Array}      layout Full layout to modify.
+   * @param  {LayoutItem} l      element to move.
+   * @param  {Number}     [x]    X position in grid units.
+   * @param  {Number}     [y]    Y position in grid units.
+   * @param  {Boolean}    [isUserAction] If true, designates that the item we're moving is
+   *                                     being dragged/resized by th euser.
    */
-  moveElement: function (layout, l, x, y) {
+  moveElement: function (layout, l, x, y, isUserAction) {
     if (l["static"]) return layout;
 
     // Short-circuit if nothing to do.
-    // if (l.y === y && l.x === x) return layout;
+    if (l.y === y && l.x === x) return layout;
 
     var movingUp = l.y > y;
     // This is quite a bit faster than extending the object
@@ -200,6 +202,7 @@ var utils = module.exports = {
     for (var i = 0, len = collisions.length; i < len; i++) {
       var collision = collisions[i];
       // console.log('resolving collision between', l.i, 'at', l.y, 'and', collision.i, 'at', collision.y);
+
       // Short circuit so we can't infinite loop
       if (collision.moved) continue;
 
@@ -208,11 +211,12 @@ var utils = module.exports = {
 
       // Don't move static items - we have to move *this* element away
       if (collision["static"]) {
-        layout = utils.moveElementAwayFromCollision(layout, collision, l);
+        layout = utils.moveElementAwayFromCollision(layout, collision, l, isUserAction);
       } else {
-        layout = utils.moveElementAwayFromCollision(layout, l, collision);
+        layout = utils.moveElementAwayFromCollision(layout, l, collision, isUserAction);
       }
     }
+
     return layout;
   },
 
@@ -223,23 +227,29 @@ var utils = module.exports = {
    * @param  {Array} layout            Full layout to modify.
    * @param  {LayoutItem} collidesWith Layout item we're colliding with.
    * @param  {LayoutItem} itemToMove   Layout item we're moving.
+   * @param  {Boolean} [isUserAction]  If true, designates that the item we're moving is being dragged/resized
+   *                                   by the user.
    */
-  moveElementAwayFromCollision: function (layout, collidesWith, itemToMove) {
-    // Make a mock item so we don't modify the item here, only modify in moveElement.
-    var fakeItem = {
-      x: itemToMove.x,
-      y: itemToMove.y,
-      w: itemToMove.w,
-      h: itemToMove.h };
-
+  moveElementAwayFromCollision: function (layout, collidesWith, itemToMove, isUserAction) {
     // If there is enough space above the collision to put this element, move it there.
-    fakeItem.y = Math.max(collidesWith.y - itemToMove.h, 0);
-    if (!utils.getFirstCollision(layout, fakeItem)) {
-      return utils.moveElement(layout, itemToMove, undefined, fakeItem.y);
+    // We only do this on the main collision as this can get funky in cascades and cause
+    // unwanted swapping behavior.
+    if (isUserAction) {
+      // Make a mock item so we don't modify the item here, only modify in moveElement.
+      var fakeItem = {
+        x: itemToMove.x,
+        y: itemToMove.y,
+        w: itemToMove.w,
+        h: itemToMove.h };
+      fakeItem.y = Math.max(collidesWith.y - itemToMove.h, 0);
+      if (!utils.getFirstCollision(layout, fakeItem)) {
+        return utils.moveElement(layout, itemToMove, undefined, fakeItem.y);
+      }
     }
 
-    // Didn't work, move below collision.
-    return utils.moveElement(layout, itemToMove, undefined, collidesWith.y + collidesWith.h);
+    // Previously this was optimized to move below the collision directly, but this can cause problems
+    // with cascading moves, as an item may actually leapflog a collision and cause a reversal in order.
+    return utils.moveElement(layout, itemToMove, undefined, itemToMove.y + 1);
   },
 
   /**
