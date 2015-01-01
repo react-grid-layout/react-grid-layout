@@ -6,6 +6,7 @@ var fs = require('fs');
 module.exports = {
     context: __dirname,
     entry: {
+      commons: ["lodash"],
     },
     output: {
         path: __dirname + "/dist",
