@@ -9,7 +9,7 @@
     "eqnull"    : true,
     "strict"    : true,
     "quotmark"  : false,
-    "unused"    : false,
+    "unused"    : "vars",
     "newcap"    : false,
     "esnext"    : true,
     "browser"   : true,

@@ -20,7 +20,7 @@ var PureDeepRenderMixin = require("./PureDeepRenderMixin");
 /**
  * A reactive, fluid, responsive grid layout with draggable, resizable components.
  */
-var ReactGridLayout = module.exports = React.createClass({
+var ReactGridLayout = React.createClass({
   displayName: "ReactGridLayout",
   mixins: [PureDeepRenderMixin],
 
@@ -386,4 +386,5 @@ var ReactGridLayout = module.exports = React.createClass({
     }), React.Children.map(this.props.children, this.processGridItem), this.placeholder());
   }
 });
-// nothing
+
+module.exports = ReactGridLayout;

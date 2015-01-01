@@ -6,8 +6,7 @@ var ReactGridLayout = require('react-grid-layout');
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-var AddRemoveLayout = module.exports = React.createClass({
-  displayName: 'AddRemoveLayout',
+var AddRemoveLayout = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   getDefaultProps() {
@@ -91,6 +90,8 @@ var AddRemoveLayout = module.exports = React.createClass({
     );
   }
 });
+
+module.exports = AddRemoveLayout;
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);

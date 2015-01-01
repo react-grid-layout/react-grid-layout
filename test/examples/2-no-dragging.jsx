@@ -3,8 +3,7 @@ var React = require('react/addons');
 var _ = require('lodash');
 var ReactGridLayout = require('react-grid-layout');
 
-var NoDraggingLayout = module.exports = React.createClass({
-  displayName: 'NoDraggingLayout',
+var NoDraggingLayout = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
@@ -58,6 +57,8 @@ var NoDraggingLayout = module.exports = React.createClass({
     );
   }
 });
+
+module.exports = NoDraggingLayout;
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);
