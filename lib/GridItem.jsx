@@ -8,8 +8,7 @@ var PureDeepRenderMixin = require('./PureDeepRenderMixin');
 /**
  * An individual item within a ReactGridLayout.
  */
-var GridItem = module.exports = React.createClass({
-  displayName: 'GridItem',
+var GridItem = React.createClass({
   mixins: [PureDeepRenderMixin],
 
   propTypes: {
@@ -256,3 +255,5 @@ var GridItem = module.exports = React.createClass({
     return child;
   }
 });
+
+module.exports = GridItem;

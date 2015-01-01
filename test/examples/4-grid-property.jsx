@@ -3,8 +3,7 @@ var React = require('react/addons');
 var _ = require('lodash');
 var ReactGridLayout = require('react-grid-layout');
 
-var GridPropertyLayout = module.exports = React.createClass({
-  displayName: 'GridPropertyLayout',
+var GridPropertyLayout = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   getDefaultProps() {
@@ -53,6 +52,8 @@ var GridPropertyLayout = module.exports = React.createClass({
     );
   }
 });
+
+module.exports = GridPropertyLayout;
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);

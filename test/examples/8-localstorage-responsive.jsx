@@ -1,13 +1,11 @@
 'use strict';
 var React = require('react/addons');
-var _ = require('lodash');
 var ReactGridLayout = require('react-grid-layout');
 
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
-var LocalStorageLayout = module.exports = React.createClass({
-  displayName: 'LocalStorageLayout',
+var ResponsiveLocalStorageLayout = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   getDefaultProps() {
@@ -17,7 +15,6 @@ var LocalStorageLayout = module.exports = React.createClass({
         ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
       } catch(e) {}
     }
-    console.log(ls);
     return {
       className: "layout",
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
@@ -47,7 +44,6 @@ var LocalStorageLayout = module.exports = React.createClass({
   },
 
   onLayoutChange(layout, layouts) {
-    console.log(arguments);
     this.props.onLayoutChange(layout);
     this.setState({layout: layout, layouts: layouts});
   },
@@ -69,6 +65,8 @@ var LocalStorageLayout = module.exports = React.createClass({
     );
   }
 });
+
+module.exports = ResponsiveLocalStorageLayout;
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);

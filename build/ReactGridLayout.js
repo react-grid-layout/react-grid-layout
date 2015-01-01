@@ -20,7 +20,7 @@ var PureDeepRenderMixin = require("./PureDeepRenderMixin");
 /**
  * A reactive, fluid, responsive grid layout with draggable, resizable components.
  */
-var ReactGridLayout = module.exports = React.createClass({
+var ReactGridLayout = React.createClass({
   displayName: "ReactGridLayout",
   mixins: [PureDeepRenderMixin],
 
@@ -265,7 +265,7 @@ var ReactGridLayout = module.exports = React.createClass({
     };
 
     // Move the element to the dragged location.
-    layout = utils.moveElement(layout, l, x, y);
+    layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
     this.setState({
       layout: utils.compact(layout),
@@ -283,7 +283,7 @@ var ReactGridLayout = module.exports = React.createClass({
     var l = utils.getLayoutItem(layout, i);
 
     // Move the element here
-    layout = utils.moveElement(layout, l, x, y);
+    layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
     // Set state
     this.setState({ layout: utils.compact(layout), activeDrag: null });
   },
@@ -375,8 +375,7 @@ var ReactGridLayout = module.exports = React.createClass({
   render: function () {
     // Calculate classname
     var className = this.props.className;
-    var initialLayout = this.props.initialLayout;
-    var props = _objectWithoutProperties(this.props, ["className", "initialLayout"]);
+    var props = _objectWithoutProperties(this.props, ["className"]);
 
     className = "react-grid-layout " + (className || "");
 
@@ -386,4 +385,6 @@ var ReactGridLayout = module.exports = React.createClass({
     }), React.Children.map(this.props.children, this.processGridItem), this.placeholder());
   }
 });
+
+module.exports = ReactGridLayout;
 // nothing

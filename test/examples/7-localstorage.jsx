@@ -1,13 +1,11 @@
 'use strict';
 var React = require('react/addons');
-var _ = require('lodash');
 var ReactGridLayout = require('react-grid-layout');
 
 /**
  * This layout demonstrates how to sync to localstorage.
  */
-var LocalStorageLayout = module.exports = React.createClass({
-  displayName: 'LocalStorageLayout',
+var LocalStorageLayout = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   getDefaultProps() {
@@ -68,6 +66,8 @@ var LocalStorageLayout = module.exports = React.createClass({
     );
   }
 });
+
+module.exports = LocalStorageLayout;
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);
