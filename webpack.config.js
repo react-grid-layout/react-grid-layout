@@ -30,7 +30,8 @@ module.exports = {
       new webpack.optimize.DedupePlugin(),
       new webpack.ProvidePlugin({
         to5Runtime: "imports?global=>{}!exports-loader?global.to5Runtime!6to5/runtime"
-      })
+      }),
+      new webpack.optimize.UglifyJsPlugin({unsafe: true, compress: {warnings: false}})
     ],
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
