@@ -5,7 +5,6 @@ module.exports = [
     title: 'Showcase',
     source: 'showcase',
     paragraphs: [
-      'Try dragging the elements around.',
       'React-Grid-Layout is the only grid layout system for React. It features auto-packing, draggable and resizable ' + 
       'widgets, static widgets, a fluid layout, and separate layouts per responsive breakpoint.',
       'Try it out! Drag some boxes around, resize them, and resize the window to see the responsive breakpoints.'
