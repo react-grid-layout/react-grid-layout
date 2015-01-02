@@ -26,6 +26,9 @@ body {
 .react-grid-item.resizing {
   opacity: 0.9;
 }
+.react-grid-item.static {
+  background: #cce;
+}
 .react-grid-item .text {
   font-size: 24px;
   text-align: center;

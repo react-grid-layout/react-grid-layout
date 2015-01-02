@@ -12,7 +12,7 @@ var GridPropertyLayout = React.createClass({
       isResizable: true,
       items: 20,
       rowHeight: 30,
-      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+      cols: 12,
     };
   },
 
@@ -40,12 +40,11 @@ var GridPropertyLayout = React.createClass({
 
   onLayoutChange: function(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
   },
 
   render() {
     return (
-      <ReactGridLayout initialLayout={this.state.initialLayout} onLayoutChange={this.onLayoutChange}
+      <ReactGridLayout onLayoutChange={this.onLayoutChange}
           {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>

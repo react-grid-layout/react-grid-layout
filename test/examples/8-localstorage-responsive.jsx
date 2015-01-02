@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react/addons');
-var ReactGridLayout = require('react-grid-layout');
+var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
@@ -19,7 +19,7 @@ var ResponsiveLocalStorageLayout = React.createClass({
       className: "layout",
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
       rowHeight: 30,
-      initialLayouts: ls.layouts || {}
+      layouts: ls.layouts || {}
     };
   },
 
@@ -52,7 +52,7 @@ var ResponsiveLocalStorageLayout = React.createClass({
     return (
       <div>
         <button onClick={this.resetLayout}>Reset Layout</button>
-        <ReactGridLayout 
+        <ResponsiveReactGridLayout 
             {...this.props}
             onLayoutChange={this.onLayoutChange}>
           <div key={1} _grid={{w: 2, h: 3, x: 0, y: 0}}><span className="text">1</span></div>
@@ -60,7 +60,7 @@ var ResponsiveLocalStorageLayout = React.createClass({
           <div key={3} _grid={{w: 2, h: 3, x: 4, y: 0}}><span className="text">3</span></div>
           <div key={4} _grid={{w: 2, h: 3, x: 6, y: 0}}><span className="text">4</span></div>
           <div key={5} _grid={{w: 2, h: 3, x: 8, y: 0}}><span className="text">5</span></div>
-        </ReactGridLayout>
+        </ResponsiveReactGridLayout>
       </div>
     );
   }

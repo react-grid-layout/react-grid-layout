@@ -35,7 +35,7 @@ module.exports = {
     ],
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
-      alias: {'react-grid-layout': __dirname + '/lib/ReactGridLayout.jsx'}
+      alias: {'react-grid-layout': __dirname + '/index-dev.js'}
     }
 };
 

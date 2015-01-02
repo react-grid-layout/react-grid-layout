@@ -15,7 +15,6 @@ var StaticElementsLayout = React.createClass({
 
   onLayoutChange: function(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
   },
 
   render() {
