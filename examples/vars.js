@@ -8,7 +8,7 @@ module.exports = [
       'Try dragging the elements around.',
       'React-Grid-Layout is the only grid layout system for React. It features auto-packing, resizable widgets, ' +
         'a fluid layout, and separate layouts per responsive breakpoint.',
-      'Resize the window to try it out!'
+      'Try it out! Drag some boxes around, resize them, and resize the window to see the responsive breakpoints.'
     ]
   },
   {
@@ -58,7 +58,8 @@ module.exports = [
     source: 'dynamic-add-remove',
     paragraphs: [
       'This demo shows what happens when items are dynamically added and removed.',
-      'You can remove an item by clicking its "x", and add a new one with the button.'
+      'You can remove an item by clicking its "x", and add a new one with the button.',
+      'To further illustration RGL\'s capacities, this particular example is responsive. Trying resizing the window.'
     ]
   },
   {

@@ -1,4 +1,6 @@
-.PHONY: js
+.PHONY: js html check-build
+
+all: js html
 
 js:
 	rm -rf ./build

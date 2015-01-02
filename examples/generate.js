@@ -12,6 +12,7 @@ data.forEach(function(datum, i) {
   datum.base = base;
   datum.index = i;
   datum.banner = banner;
+  datum.previous = data[i - 1];
   datum.next = data[i + 1];
   var html = ejs.render(tpl, datum);
   fs.writeFileSync(__dirname + '/' + i + '-' + datum.source + '.html', html);
