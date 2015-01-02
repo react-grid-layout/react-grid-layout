@@ -41,9 +41,10 @@ var utils = module.exports = {
    * @return {Array}       Compacted Layout.
    */
   compact: function (layout) {
+    // Statics go in the compareWith array right away so items flow around them.
+    var compareWith = utils.getStatics(layout), out = [];
     // We go through the items by row and column.
-    var compareWith = [], out = [];
-    var sorted = utils.getLayoutItemsByRowCol(layout);
+    var sorted = utils.sortLayoutItemsByRowCol(layout);
 
     for (var i = 0, len = sorted.length; i < len; i++) {
       var l = sorted[i];
@@ -51,10 +52,11 @@ var utils = module.exports = {
       // Don't move static elements
       if (!l["static"]) {
         l = utils.compactItem(compareWith, l);
-      }
 
-      // Add to comparison array. We only collide with items before this one.
-      compareWith.push(l);
+        // Add to comparison array. We only collide with items before this one.
+        // Statics are already in this array.
+        compareWith.push(l);
+      }
 
       // Add to output array to make sure they still come out in the right order.
       out[layout.indexOf(l)] = l;
@@ -88,6 +90,7 @@ var utils = module.exports = {
    * @return {[type]}        [description]
    */
   correctBounds: function (layout, bounds) {
+    var collidesWith = utils.getStatics(layout);
     for (var i = 0, len = layout.length; i < len; i++) {
       var l = layout[i];
       // Overflows right
@@ -96,6 +99,13 @@ var utils = module.exports = {
       if (l.x < 0) {
         l.x = 0;
         l.w = bounds.cols;
+      }
+      if (!l["static"]) collidesWith.push(l);else {
+        // If this is static and collides with other statics, we must move it down.
+        // We have to do something nicer than just letting them overlap.
+        while (utils.getFirstCollision(collidesWith, l)) {
+          l.y++;
+        }
       }
     }
     return layout;
@@ -116,20 +126,6 @@ var utils = module.exports = {
   },
 
   /**
-   * Get layout items sorted from top left to right and down.
-   * 
-   * @return {Array} Array of layout objects.
-   */
-  getLayoutItemsByRowCol: function (layout) {
-    return [].concat(layout).sort(function (a, b) {
-      if (a.y > b.y || a.y === b.y && a.x > b.x) {
-        return 1;
-      }
-      return -1;
-    });
-  },
-
-  /**
    * Returns the first item this layout collides with.
    * It doesn't appear to matter which order we approach this from, although
    * perhaps that is the wrong thing to do.
@@ -147,6 +143,19 @@ var utils = module.exports = {
     var out = [];
     for (var i = 0, len = layout.length; i < len; i++) {
       if (utils.collides(layout[i], layoutItem)) out.push(layout[i]);
+    }
+    return out;
+  },
+
+  /**
+   * Get all static elements.
+   * @param  {Array} layout Array of layout objects.
+   * @return {Array}        Array of static layout items..
+   */
+  getStatics: function (layout) {
+    var out = [];
+    for (var i = 0, len = layout.length; i < len; i++) {
+      if (layout[i]["static"]) out.push(layout[i]);
     }
     return out;
   },
@@ -177,7 +186,7 @@ var utils = module.exports = {
     // When doing this comparison, we have to sort the items we compare with
     // to ensure, in the case of multiple collisions, that we're getting the
     // nearest collision.
-    var sorted = utils.getLayoutItemsByRowCol(layout);
+    var sorted = utils.sortLayoutItemsByRowCol(layout);
     if (movingUp) sorted = sorted.reverse();
     var collisions = utils.getAllCollisions(sorted, l);
 
@@ -243,6 +252,21 @@ var utils = module.exports = {
    */
   perc: function (num) {
     return num * 100 + "%";
+  },
+
+  /**
+   * Get layout items sorted from top left to right and down.
+   * 
+   * @return {Array} Array of layout objects.
+   * @return {Array}        Layout, sorted static items first.
+   */
+  sortLayoutItemsByRowCol: function (layout) {
+    return [].concat(layout).sort(function (a, b) {
+      if (a.y > b.y || a.y === b.y && a.x > b.x) {
+        return 1;
+      }
+      return -1;
+    });
   },
 
   /**

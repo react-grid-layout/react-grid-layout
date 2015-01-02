@@ -13,43 +13,71 @@ var BasicLayout = React.createClass({
   getDefaultProps() {
     return {
       className: "layout",
-      items: 20,
       rowHeight: 30,
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}
     };
   },
 
   getInitialState() {
-    var layout = this.generateLayout();
     return {
-      initialLayouts: {lg: layout}
+      layouts: {lg: this.generateLayout()},
+      currentLayout: [],
+      currentBreakpoint: 'lg'
     };
   },
 
   generateDOM() {
-    return _.map(_.range(this.props.items), function(i) {
-      return (<div key={i}><span className="text">{i}</span></div>);
+    return _.map(this.state.layouts.lg, function(l, i) {
+      return (
+        <div key={i} className={l.static ? 'static' : ''}>
+          {l.static ? 
+            <span className="text" title="This item is static and cannot be removed or resized.">Static - {i}</span>
+            : <span className="text">{i}</span>
+          }
+        </div>);
     });
   },
 
   generateLayout() {
     var p = this.props;
-    return _.map(new Array(p.items), function(item, i) {
+    return _.map(_.range(0, 25), function(item, i) {
       var y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1;
-      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i};
+      return {x: _.random(0, 5) * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i, static: Math.random() < 0.05};
     });
   },
 
-  onLayoutChange: function(layout) {
+  onBreakpointChange(breakpoint) {
+    this.setState({
+      currentBreakpoint: breakpoint
+    });
+  },
+
+  onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
+    this.setState({
+      currentLayout: layout
+    });
+  },
+
+  onNewLayout() {
+    this.setState({
+      layouts: {lg: this.generateLayout()}
+    });
   },
 
   render() {
     return (
-      <ResponsiveReactGridLayout initialLayouts={this.state.initialLayouts} onLayoutChange={this.onLayoutChange}
-          {...this.props}>
-        {this.generateDOM()}
-      </ResponsiveReactGridLayout>
+      <div>
+        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)</div>
+        <button onClick={this.onNewLayout}>Generate New Layout</button>
+        <ResponsiveReactGridLayout 
+            layouts={this.state.layouts}
+            onBreakpointChange={this.onBreakpointChange}
+            onLayoutChange={this.onLayoutChange}
+            {...this.props}>
+          {this.generateDOM()}
+        </ResponsiveReactGridLayout>
+      </div>
     );
   }
 });

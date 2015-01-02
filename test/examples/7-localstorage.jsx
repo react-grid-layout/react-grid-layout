@@ -19,7 +19,7 @@ var LocalStorageLayout = React.createClass({
       className: "layout",
       cols: 12,
       rowHeight: 30,
-      initialLayout: ls.layout || []
+      layout: ls.layout || []
     };
   },
 

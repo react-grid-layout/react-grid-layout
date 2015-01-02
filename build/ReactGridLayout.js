@@ -37,17 +37,17 @@ var ReactGridLayout = React.createClass({
     // A selector for the draggable handler
     handle: React.PropTypes.string,
 
-    // initialLayout is an array of object with the format:
+    // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
-    initialLayout: function (props, propName, componentName) {
-      var layout = props.initialLayout;
+    layout: function (props, propName, componentName) {
+      var layout = props.layout;
       // I hope you're setting the on the grid items
       if (layout === undefined) return;
-      utils.validateLayout(layout, "initialLayout");
+      utils.validateLayout(layout, "layout");
     },
 
-    initialLayouts: function (props, propName, componentName) {
-      if (props.initialLayouts) throw new Error("ReactGridLayout does not use `initialLayouts`: Use ReactGridLayout.Responsive.");
+    layouts: function (props, propName, componentName) {
+      if (props.layouts) throw new Error("ReactGridLayout does not use `layouts`: Use ReactGridLayout.Responsive.");
     },
 
     // margin between items [x, y] in px
@@ -96,7 +96,7 @@ var ReactGridLayout = React.createClass({
       autoSize: true,
       cols: 12,
       rowHeight: 150,
-      initialLayout: [],
+      layout: [],
       margin: [10, 10],
       isDraggable: true,
       isResizable: true,
@@ -106,7 +106,7 @@ var ReactGridLayout = React.createClass({
 
   getInitialState: function () {
     return {
-      layout: utils.synchronizeLayoutWithChildren(this.props.initialLayout, this.props.children, this.props.cols),
+      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols),
       width: this.props.initialWidth,
       activeDrag: null
     };

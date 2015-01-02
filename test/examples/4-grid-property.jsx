@@ -40,12 +40,11 @@ var GridPropertyLayout = React.createClass({
 
   onLayoutChange: function(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
   },
 
   render() {
     return (
-      <ReactGridLayout initialLayout={this.state.initialLayout} onLayoutChange={this.onLayoutChange}
+      <ReactGridLayout onLayoutChange={this.onLayoutChange}
           {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>

@@ -22,8 +22,7 @@ var MessyLayout = React.createClass({
   getInitialState() {
     var layout = this.generateLayout();
     return {
-      layout: layout,
-      initialLayout: layout
+      layout: layout
     };
   },
 
@@ -44,12 +43,11 @@ var MessyLayout = React.createClass({
 
   onLayoutChange: function(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
   },
 
   render() {
     return (
-      <ReactGridLayout initialLayout={this.state.initialLayout} onLayoutChange={this.onLayoutChange}
+      <ReactGridLayout layout={this.state.layout} onLayoutChange={this.onLayoutChange}
           {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>

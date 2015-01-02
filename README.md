@@ -17,7 +17,7 @@
 
 #### Summary
 
-[View the Demo](https://strml.github.io/react-grid-layout/examples/1-basic.html)
+[View the Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html)
 
 React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or 
 [Gridster](http://gridster.net), for React.
@@ -31,6 +31,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 
 #### Demos
 
+1. [Showcase](https://strml.github.io/react-grid-layout/examples/0-showcase.html)
 1. [Basic](https://strml.github.io/react-grid-layout/examples/1-basic.html)
 1. [No Dragging/Resizing (Layout Only)](https://strml.github.io/react-grid-layout/examples/2-no-dragging.html)
 1. [Messy Layout Autocorrect](https://strml.github.io/react-grid-layout/examples/3-messy.html)
@@ -59,12 +60,13 @@ If you have a feature request, please add it as an issue or make a pull request.
 Use ReactGridLayout like any other component.
 
 ```javascript
-
+var ReactGridLayout = require('react-grid-layout');
+//...
 render: function() {
   // layout is an array of objects, see the demo
-  var initialLayout = getOrGenerateLayout(); 
+  var layout = getOrGenerateLayout(); 
   return (
-    <ReactGridLayout className="layout" initialLayout={initialLayout} 
+    <ReactGridLayout className="layout" layout={layout} 
       cols={12} rowHeight={30}>
       <div key={1}>1</div>
       <div key={2}>2</div>
@@ -72,14 +74,14 @@ render: function() {
     </ReactGridLayout>
   )
 }
-
 ```
 
 You can also set layout properties directly on the children:
 
 
 ```javascript
-
+var ReactGridLayout = require('react-grid-layout');
+//...
 render: function() {
   return (
     <ReactGridLayout className="layout" cols={12} rowHeight={30}>
@@ -89,31 +91,32 @@ render: function() {
     </ReactGridLayout>
   )
 }
-
 ```
 
 #### Responsive Usage
 
-To make RGL responsive, supply a map as the `cols` prop:
+To make RGL responsive, use the `<ResponsiveReactGridLayout>` element:
 
 ```javascript
-
+var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
+//...
 render: function() {
+  // {lg: layout1, md: layout2, ...}
+  var layouts = getLayoutsFromSomewhere();
   return (
-    <ReactGridLayout className="layout" initialLayouts={...} 
+    <ResponsiveReactGridLayout className="layout" layouts={layouts} 
       cols={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}>
       <div key={1}>1</div>
       <div key={2}>2</div>
       <div key={3}>3</div>
-    </ReactGridLayout>
+    </ResponsiveReactGridLayout>
   )
 }
 ```
 
-You have a choice when in responsive mode: you can simply supply an single layout
-via `initialLayout`, or multiple layouts in a map via `initialLayouts`. 
+When in responsive mode, you should supply at least one breakpoint via the `layouts` property.
 
-When using `initialLayouts`, it is best to supply as many breakpoints as possible, especially the largest one. 
+When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one. 
 If the largest is provided, RGL will attempt to interpolate the rest. 
 
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
@@ -135,24 +138,15 @@ autoSize: React.PropTypes.bool,
 // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
 breakpoints: React.PropTypes.object,
 
-// Can be specified as a single number or a {breakpoint: cols} map.
-// If a map is provided, RGL becomes responsive and uses a separate layout
-// per breakpoint.
-cols: React.PropTypes.oneOfType([
-  React.PropTypes.object,
-  React.PropTypes.number
-]),
+// Number of columns in this layout.
+cols: React.PropTypes.number,
 
 // A selector for the draggable handler
 handle: React.PropTypes.string,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
-initialLayout: React.PropTypes.array,
-
-// initialLayouts is an object mapping breakpoints to layouts.
-// e.g. {lg: Layout, md: Layout, ...}
-initialLayouts: React.PropTypes.object,
+layout: React.PropTypes.array,
 
 // This allows setting this on the server side
 initialWidth: React.PropTypes.number,
@@ -178,12 +172,38 @@ listenToWindowResize: React.PropTypes.bool,
 // Callbacks
 // 
 
+// Callback so you can save the layout.
+// Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
+onLayoutChange: React.PropTypes.func,
+```
+
+#### Responsive Grid Layout Props
+
+The responsive grid layout can be used instead. It supports all of the props above, excepting `layout`.
+The new properties and changes are:
+
+```javascript
+// {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
+// Breakpoint names are arbitrary but must match in the cols and layouts objects.
+breakpoints: React.PropTypes.object,
+
+// # of cols. This is a breakpoint -> cols map, e.g. {lg: 12, md: 10, ...}
+cols: React.PropTypes.object,
+
+// layouts is an object mapping breakpoints to layouts.
+// e.g. {lg: Layout, md: Layout, ...}
+layouts: React.PropTypes.object
+
+// 
+// Callbacks
+// 
+
 // Calls back with breakpoint and new # cols
 onBreakpointChange: React.PropTypes.func,
 
 // Callback so you can save the layout.
 // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
-onLayoutChange: React.PropTypes.func,
+onLayoutChange: React.PropTypes.func
 ```
 
 #### Grid Item Props

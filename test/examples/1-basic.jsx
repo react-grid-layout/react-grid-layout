@@ -22,7 +22,7 @@ var BasicLayout = React.createClass({
   getInitialState() {
     var layout = this.generateLayout();
     return {
-      initialLayout: layout
+      layout: layout
     };
   },
 
@@ -46,7 +46,7 @@ var BasicLayout = React.createClass({
 
   render() {
     return (
-      <ReactGridLayout initialLayout={this.state.initialLayout} onLayoutChange={this.onLayoutChange}
+      <ReactGridLayout layout={this.state.layout} onLayoutChange={this.onLayoutChange}
           {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>

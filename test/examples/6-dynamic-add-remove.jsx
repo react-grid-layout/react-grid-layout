@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react/addons');
 var _ = require('lodash');
-var ReactGridLayout = require('react-grid-layout').Responsive;
+var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
@@ -82,10 +82,10 @@ var AddRemoveLayout = React.createClass({
     return (
       <div>
         <button onClick={this.onAddItem}>Add Item</button>
-        <ReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange} 
+        <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange} 
             {...this.props}>
           {_.map(this.state.items, this.createElement)}
-        </ReactGridLayout>
+        </ResponsiveReactGridLayout>
       </div>
     );
   }
