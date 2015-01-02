@@ -25,6 +25,24 @@ var GridItem = React.createClass({
     w: React.PropTypes.number.isRequired,
     h: React.PropTypes.number.isRequired,
 
+    // All optional
+    minW: function (props, propName, componentName) {
+      React.PropTypes.number.apply(this, arguments);
+      if (props.minW > props.w || props.minW > props.maxW) constraintError("minW", props);
+    },
+    maxW: function (props, propName, componentName) {
+      React.PropTypes.number.apply(this, arguments);
+      if (props.maxW < props.w || props.maxW < props.minW) constraintError("maxW", props);
+    },
+    minH: function (props, propName, componentName) {
+      React.PropTypes.number.apply(this, arguments);
+      if (props.minH > props.h || props.minH > props.maxH) constraintError("minH", props);
+    },
+    maxH: function (props, propName, componentName) {
+      React.PropTypes.number.apply(this, arguments);
+      if (props.maxH < props.h || props.maxH < props.minH) constraintError("maxH", props);
+    },
+
     // ID is nice to have for callbacks
     i: React.PropTypes.string.isRequired,
 
@@ -53,7 +71,11 @@ var GridItem = React.createClass({
     return {
       isDraggable: true,
       isResizable: true,
-      className: ""
+      className: "",
+      minH: 1,
+      minW: 1,
+      maxH: Infinity,
+      maxW: Infinity
     };
   },
 
@@ -67,22 +89,21 @@ var GridItem = React.createClass({
   /**
    * Return position on the page given an x, y, w, h.
    * left, top, width, height are all in pixels.
-   * @param  {Object}  l             Layout object.
+   * @param  {Number}  x             X coordinate in grid units.
+   * @param  {Number}  y             Y coordinate in grid units.
+   * @param  {Number}  w             W coordinate in grid units.
+   * @param  {Number}  h             H coordinate in grid units.
    * @return {Object}                Object containing coords.
    */
   calcPosition: function (x, y, w, h) {
     var p = this.props;
     var width = p.containerWidth - p.margin[0];
     var out = {
-      left: width * (p.x / p.cols) + p.margin[0],
-      top: p.rowHeight * p.y + p.margin[1],
-      width: width * (p.w / p.cols) - p.margin[0],
-      height: p.h * p.rowHeight - p.margin[1]
+      left: width * (x / p.cols) + p.margin[0],
+      top: p.rowHeight * y + p.margin[1],
+      width: width * (w / p.cols) - p.margin[0],
+      height: h * p.rowHeight - p.margin[1]
     };
-    if (this.state.resizing) {
-      out.width = this.state.resizing.width;
-      out.height = this.state.resizing.height;
-    }
     return out;
   },
 
@@ -150,14 +171,19 @@ var GridItem = React.createClass({
    */
   mixinResizable: function (child, position) {
     var p = this.props;
-    var colWidth = p.containerWidth / p.cols - p.margin[0];
-    var maxWidth = (colWidth + p.margin[0]) * (p.cols - p.x) - p.margin[0] * 1.5;
-    var rowHeight = p.rowHeight - p.margin[1];
+    // This is the max possible width - doesn't go to infinity because of the width of the window
+    var maxWidth = this.calcPosition(0, 0, p.cols - p.x, 0).width;
+
+    // Calculate min/max constraints using our min & maxes
+    var mins = this.calcPosition(0, 0, p.minW, p.minH);
+    var maxes = this.calcPosition(0, 0, p.maxW, p.maxH);
+    var minConstraints = [mins.width, mins.height];
+    var maxConstraints = [Math.min(maxes.width, maxWidth), Math.min(maxes.height, Infinity)];
     return React.createElement(Resizable, {
       width: position.width,
       height: position.height,
-      minConstraints: [colWidth, rowHeight],
-      maxConstraints: [maxWidth, Infinity],
+      minConstraints: minConstraints,
+      maxConstraints: maxConstraints,
       onResizeStop: this.onResizeHandler("onResizeStop"),
       onResizeStart: this.onResizeHandler("onResizeStart"),
       onResize: this.onResizeHandler("onResize")
@@ -219,6 +245,10 @@ var GridItem = React.createClass({
       // Ensure w is at least 1
       w = Math.max(w, 1);
 
+      // Min/max capping
+      w = Math.max(Math.min(w, me.props.maxW), me.props.minW);
+      h = Math.max(Math.min(h, me.props.maxH), me.props.minH);
+
       me.setState({ resizing: handlerName === "onResizeStop" ? null : size });
 
       me.props[handlerName](me.props.i, w, h);
@@ -226,7 +256,11 @@ var GridItem = React.createClass({
   },
 
   render: function () {
-    var p = this.props, pos = this.calcPosition();
+    var p = this.props, pos = this.calcPosition(p.x, p.y, p.w, p.h);
+    if (this.state.resizing) {
+      pos.width = this.state.resizing.width;
+      pos.height = this.state.resizing.height;
+    }
 
     var child = React.addons.cloneWithProps(React.Children.only(this.props.children), {
       // Munge a classname. Use passed in classnames, child classnames, and resizing.
@@ -263,5 +297,10 @@ var GridItem = React.createClass({
     return child;
   }
 });
+
+function constraintError(name, props) {
+  delete props.children;
+  throw new Error(name + " overrides contraints on gridItem " + props.i + ". Full props: " + JSON.stringify(props));
+}
 
 module.exports = GridItem;
