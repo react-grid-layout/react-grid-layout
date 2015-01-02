@@ -6,7 +6,7 @@ module.exports = [
     source: 'showcase',
     paragraphs: [
       'React-Grid-Layout is the only grid layout system for React. It features auto-packing, draggable and resizable ' + 
-      'widgets, static widgets, a fluid layout, and separate layouts per responsive breakpoint.',
+        'widgets, static widgets, a fluid layout, and separate layouts per responsive breakpoint.',
       'Try it out! Drag some boxes around, resize them, and resize the window to see the responsive breakpoints.'
     ]
   },
@@ -77,6 +77,16 @@ module.exports = [
       'Try moving and resizing elements, changing window width, moving some more, and refreshing.',
       'Each breakpoint has a separate layout. The <code>onLayoutChange</code> callback calls back with ' +
         'a hash of breakpoints to layouts, which is then synchronized to localStorage.'
+    ]
+  },
+  {
+    title: 'Minimum and Maximum Width/Height',
+    source: 'min-max-wh',
+    paragraphs: [
+      'You can set min and max dimensions on a grid item by using the `minW`, `maxW`, `minH`, and `maxH` properties.',
+      'In this demo, the min and max dimensions are generated automatically. Try resizing the items below.',
+      'If your mins and maxes collide: for example min > max, or the initial dimensions are out of range, ' +
+        'an error will be thrown.'
     ]
   },
 ];

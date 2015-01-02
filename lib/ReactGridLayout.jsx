@@ -252,11 +252,7 @@ var ReactGridLayout = React.createClass({
     var moveOnStartChange = drag && drag.i === i ? false : true;
     return (
       <GridItem 
-        w={l.w}
-        h={l.h}
-        x={l.x}
-        y={l.y}
-        i={l.i}
+        {...l}
         containerWidth={this.state.width}
         cols={this.props.cols}
         margin={this.props.margin}

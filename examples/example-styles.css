@@ -40,6 +40,9 @@ body {
   margin: auto;
   height: 24px;
 }
+.react-grid-item .minMax {
+  font-size: 12px;
+}
 .react-grid-item .add {
   cursor: pointer;
 }

@@ -217,12 +217,20 @@ will be thrown so you can correct your layout.
 
 If no properties are provided for a grid item, one will be generated with a width and height of `1`.
 
+You can set minimums and maximums for each dimension. This is for resizing; it of course has no effect if resizing
+is disabled. Errors will be thrown if your mins and maxes overlap incorrectly, or your initial dimensions
+are out of range.
+
 ```
 // These are all in grid units, not pixels
 x: React.PropTypes.number.isRequired,
 y: React.PropTypes.number.isRequired,
 w: React.PropTypes.number.isRequired,
 h: React.PropTypes.number.isRequired,
+minW: React.PropTypes.number,
+maxW: React.PropTypes.number,
+minH: React.PropTypes.number,
+maxH: React.PropTypes.number,
 ```
 
 #### Grid Layout Defaults
@@ -235,6 +243,10 @@ h: React.PropTypes.number.isRequired,
   rowHeight: 150,
   initialWidth: 1280,
   margin: [10, 10],
+  minH: 1,
+  minW: 1,
+  maxH: Infinity,
+  maxW: Infinity,
   isDraggable: true,
   isResizable: true,
   listenToWindowResize: true
@@ -253,6 +265,6 @@ h: React.PropTypes.number.isRequired,
 - [x] Define grid attributes on children themselves (`_grid` key)
 - [x] Static elements
 - [x] Persistent id per item for predictable localstorage restores, even when # items changes
-- [ ] Min/max w/h per item
+- [x] Min/max w/h per item
 - [ ] Resizable handles on other corners
 - [ ] Configurable w/h per breakpoint
