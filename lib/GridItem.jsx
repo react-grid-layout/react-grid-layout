@@ -3,7 +3,7 @@ var React = require('react/addons');
 var utils = require('./utils');
 var Draggable = require('react-draggable');
 var Resizable = require('react-resizable').Resizable;
-var PureDeepRenderMixin = require('./PureDeepRenderMixin');
+var PureDeepRenderMixin = require('./mixins/PureDeepRenderMixin');
 
 /**
  * An individual item within a ReactGridLayout.

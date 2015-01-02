@@ -12,7 +12,7 @@ var GridPropertyLayout = React.createClass({
       isResizable: true,
       items: 20,
       rowHeight: 30,
-      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+      cols: 12,
     };
   },
 

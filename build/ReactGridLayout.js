@@ -15,14 +15,15 @@ var _objectWithoutProperties = function (obj, keys) {
 var React = require("react/addons");
 var GridItem = require("./GridItem");
 var utils = require("./utils");
-var PureDeepRenderMixin = require("./PureDeepRenderMixin");
+var PureDeepRenderMixin = require("./mixins/PureDeepRenderMixin");
+var WidthListeningMixin = require("./mixins/WidthListeningMixin");
 
 /**
- * A reactive, fluid, responsive grid layout with draggable, resizable components.
+ * A reactive, fluid grid layout with draggable, resizable components.
  */
 var ReactGridLayout = React.createClass({
   displayName: "ReactGridLayout",
-  mixins: [PureDeepRenderMixin],
+  mixins: [PureDeepRenderMixin, WidthListeningMixin],
 
   propTypes: {
     //
@@ -31,10 +32,8 @@ var ReactGridLayout = React.createClass({
 
     // If true, the container height swells and contracts to fit contents
     autoSize: React.PropTypes.bool,
-    // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
-    breakpoints: React.PropTypes.object,
-    // # of cols. Can be specified as a single number, or a breakpoint -> cols map
-    cols: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
+    // # of cols.
+    cols: React.PropTypes.number,
     // A selector for the draggable handler
     handle: React.PropTypes.string,
 
@@ -47,18 +46,10 @@ var ReactGridLayout = React.createClass({
       utils.validateLayout(layout, "initialLayout");
     },
 
-    // initialLayouts is an object mapping breakpoints to layouts.
-    // e.g. {lg: Layout, md: Layout, ...}
     initialLayouts: function (props, propName, componentName) {
-      var layouts = props.initialLayouts;
-      if (layouts === undefined) return;
-      Object.keys(layouts).map(function (k) {
-        utils.validateLayout(layouts[k], "initialLayouts." + k);
-      });
+      if (props.initialLayouts) throw new Error("ReactGridLayout does not use `initialLayouts`: Use ReactGridLayout.Responsive.");
     },
 
-    // This allows setting this on the server side
-    initialWidth: React.PropTypes.number,
     // margin between items [x, y] in px
     margin: React.PropTypes.array,
     // Rows have a static height, but you can change this based on breakpoints if you like
@@ -70,16 +61,9 @@ var ReactGridLayout = React.createClass({
     isDraggable: React.PropTypes.bool,
     isResizable: React.PropTypes.bool,
 
-    // If false, you should supply width yourself. Good if you want to debounce resize events
-    // or reuse a handler from somewhere else.
-    listenToWindowResize: React.PropTypes.bool,
-
     //
     // Callbacks
     //
-
-    // Calls back with breakpoint and new # cols
-    onBreakpointChange: React.PropTypes.func,
 
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
@@ -110,75 +94,48 @@ var ReactGridLayout = React.createClass({
   getDefaultProps: function () {
     return {
       autoSize: true,
-      breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
       cols: 12,
       rowHeight: 150,
       initialLayout: [],
-      initialLayouts: {},
-      initialWidth: 1280,
       margin: [10, 10],
       isDraggable: true,
       isResizable: true,
-      listenToWindowResize: true,
-      onBreakpointChange: function () {},
       onLayoutChange: function () {}
     };
   },
 
   getInitialState: function () {
-    var breakpoint = utils.getBreakpointFromWidth(this.props.breakpoints, this.props.initialWidth);
-    var cols = this.getColsFromBreakpoint(breakpoint);
-    var initialLayout = this.props.initialLayout;
-    if (this.props.initialLayouts && this.props.initialLayouts[breakpoint]) {
-      initialLayout = this.props.initialLayouts[breakpoint];
-    }
     return {
-      layout: utils.synchronizeLayoutWithChildren(initialLayout, this.props.children, cols),
-      // storage for layouts obsoleted by breakpoints
-      layouts: this.props.initialLayouts || {},
-      breakpoint: breakpoint,
-      cols: cols,
+      layout: utils.synchronizeLayoutWithChildren(this.props.initialLayout, this.props.children, this.props.cols),
       width: this.props.initialWidth,
       activeDrag: null
     };
   },
 
   componentDidMount: function () {
-    if (this.props.listenToWindowResize) {
-      window.addEventListener("resize", this.onWindowResize);
-    }
-    // This is intentional. Once to properly set the breakpoint and resize the elements,
-    // and again to compensate for any scrollbar that appeared because of the first step.
-    this.onWindowResize();
-    this.onWindowResize();
-
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
-    this.props.onLayoutChange(this.state.layout, this.state.layouts);
+    this.props.onLayoutChange(this.state.layout);
   },
 
   componentWillReceiveProps: function (nextProps) {
     // This allows you to set the width manually if you like.
     // Use manual width changes in combination with `listenToWindowResize: false`
-    if (nextProps.width) this.onWidthChange(nextProps.width);
+    if (nextProps.width !== this.props.width) this.onWidthChange(nextProps.width);
 
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, this.state.cols)
+        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols)
       });
     }
 
     // Allow parent to set layout directly.
-    if (nextProps.layout && nextProps.layout !== this.state.layout) {
+    if (nextProps.layout && JSON.stringify(nextProps.layout) !== JSON.stringify(this.state.layout)) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, this.state.cols)
+        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols)
       });
     }
-  },
-
-  componentWillUnmount: function () {
-    window.removeEventListener("resize", this.onWindowResize);
   },
 
   componentDidUpdate: function (prevProps, prevState) {
@@ -198,56 +155,11 @@ var ReactGridLayout = React.createClass({
     return utils.bottom(this.state.layout) * this.props.rowHeight + this.props.margin[1] + "px";
   },
 
-  getColsFromBreakpoint: function (breakpoint) {
-    var cols = this.props.cols;
-    if (typeof cols === "number") return cols;
-    if (!cols[breakpoint]) {
-      throw new Error("ReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
-    }
-    return cols[breakpoint];
-  },
-
   /**
-   * On window resize, update width.
-   */
-  onWindowResize: function () {
-    this.onWidthChange(this.getDOMNode().offsetWidth);
-  },
-
-  /**
-   * When the width changes work through breakpoints and reset state with the new width & breakpoint.
-   * Width changes are necessary to figure out the widget widths.
+   * When the width changes, save it to state. This helps with left/width calculations.
    */
   onWidthChange: function (width) {
-    // Set new breakpoint
-    var newState = { width: width };
-    newState.breakpoint = utils.getBreakpointFromWidth(this.props.breakpoints, newState.width);
-    newState.cols = this.getColsFromBreakpoint(newState.breakpoint);
-
-    // Breakpoint change
-    if (newState.cols !== this.state.cols) {
-      // Store the current layout
-      newState.layouts = this.state.layouts;
-      newState.layouts[this.state.breakpoint] = JSON.parse(JSON.stringify(this.state.layout));
-
-      // Find or generate a new one.
-      newState.layout = newState.layouts[newState.breakpoint];
-      if (!newState.layout) {
-        newState.layout = utils.newResponsiveLayout(newState.layouts, this.props.breakpoints, newState.breakpoint, this.state.breakpoint, newState.cols);
-      }
-
-      // This adds missing items.
-      newState.layout = utils.synchronizeLayoutWithChildren(newState.layout, this.props.children, newState.cols);
-
-      // Store this new layout as well.
-      newState.layouts[newState.breakpoint] = newState.layout;
-    }
-
-    if (newState.cols !== this.state.cols) {
-      this.props.onBreakpointChange(newState.breakpoint, newState.cols);
-    }
-
-    this.setState(newState);
+    this.setState({ width: width });
   },
 
   onDragStart: function (i, e, _ref) {
@@ -328,7 +240,7 @@ var ReactGridLayout = React.createClass({
       placeholder: true,
       className: "react-grid-placeholder",
       containerWidth: this.state.width,
-      cols: this.state.cols,
+      cols: this.props.cols,
       margin: this.props.margin,
       rowHeight: this.props.rowHeight,
       isDraggable: false,
@@ -357,7 +269,7 @@ var ReactGridLayout = React.createClass({
       y: l.y,
       i: l.i,
       containerWidth: this.state.width,
-      cols: this.state.cols,
+      cols: this.props.cols,
       margin: this.props.margin,
       rowHeight: this.props.rowHeight,
       moveOnStartChange: moveOnStartChange,

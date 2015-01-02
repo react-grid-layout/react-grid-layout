@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react/addons');
 var _ = require('lodash');
-var ReactGridLayout = require('react-grid-layout');
+var ReactGridLayout = require('react-grid-layout').Responsive;
 
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.

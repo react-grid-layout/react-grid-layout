@@ -102,23 +102,6 @@ var utils = module.exports = {
   },
 
   /**
-   * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
-   * 
-   * @param  {Object} breakpoints Breakpoints object (e.g. {lg: 1200, md: 960, ...})
-   * @param  {Number} width Screen width.
-   * @return {String}       Highest breakpoint that is less than width.
-   */
-  getBreakpointFromWidth: function (breakpoints, width) {
-    var sorted = utils.sortBreakpoints(breakpoints);
-    var matching = sorted[0];
-    for (var i = 1, len = sorted.length; i < len; i++) {
-      var breakpointName = sorted[i];
-      if (width > breakpoints[breakpointName]) matching = breakpointName;
-    }
-    return matching;
-  },
-
-  /**
    * Get a layout item by ID. Used so we can override later on if necessary.
    *
    * @param  {Array}  layout Layout array.
@@ -253,33 +236,6 @@ var utils = module.exports = {
   },
 
   /**
-   * Given existing layouts and a new breakpoint, generate a new layout.
-   * This finds the layout above the new one and generates from it, if it exists.
-   * 
-   * @param  {Array} layouts     Existing layouts.
-   * @param  {Array} breakpoints All breakpoints.
-   * @param  {String} breakpoint New breakpoint.
-   * @param  {String} breakpoint Last breakpoint (for fallback).
-   * @param  {Number} cols       Column count at new breakpoint.
-   * @return {Array}             New layout.
-   */
-  newResponsiveLayout: function (layouts, breakpoints, breakpoint, lastBreakpoint, cols) {
-    // Find or generate the next layout
-    var layout = layouts[lastBreakpoint];
-    var breakpointsSorted = utils.sortBreakpoints(breakpoints);
-    var breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
-    for (var i = 0, len = breakpointsAbove.length; i < len; i++) {
-      var b = breakpointsAbove[i];
-      if (layouts[b]) {
-        layout = layouts[b];
-        break;
-      }
-    }
-    layout = JSON.parse(JSON.stringify(layout)); // clone layout so we don't modify existing items
-    return utils.compact(utils.correctBounds(layout, { cols: cols }));
-  },
-
-  /**
    * Helper to convert a number to a percentage string.
    * 
    * @param  {Number} num Any number
@@ -287,20 +243,6 @@ var utils = module.exports = {
    */
   perc: function (num) {
     return num * 100 + "%";
-  },
-
-  /**
-   * Given breakpoints, return an array of breakpoints sorted by width. This is usually
-   * e.g. ['xxs', 'xs', 'sm', ...]
-   * 
-   * @param  {Object} breakpoints Key/value pair of breakpoint names to widths.
-   * @return {Array}              Sorted breakpoints.
-   */
-  sortBreakpoints: function (breakpoints) {
-    var keys = Object.keys(breakpoints);
-    return keys.sort(function (a, b) {
-      return breakpoints[a] - breakpoints[b];
-    });
   },
 
   /**

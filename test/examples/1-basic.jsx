@@ -15,14 +15,13 @@ var BasicLayout = React.createClass({
       className: "layout",
       items: 20,
       rowHeight: 30,
-      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}
+      cols: 12
     };
   },
 
   getInitialState() {
     var layout = this.generateLayout();
     return {
-      layout: layout,
       initialLayout: layout
     };
   },
@@ -43,7 +42,6 @@ var BasicLayout = React.createClass({
 
   onLayoutChange: function(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
   },
 
   render() {
