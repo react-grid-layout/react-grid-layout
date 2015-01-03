@@ -4,7 +4,7 @@
 }
 .react-grid-item {
   transition: all 200ms ease;
-  transition-property: left, top;
+  transition-property: left, top, transform;
 }
 .react-grid-item.resizing {
   z-index: 1;

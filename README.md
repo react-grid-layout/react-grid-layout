@@ -54,6 +54,8 @@ If you have a feature request, please add it as an issue or make a pull request.
 * Layout can be serialized and restored
 * Responsive breakpoints
 * Separate layouts per responsive breakpoint
+* Grid Items placed using CSS Transforms 
+  * Performance: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
 
 #### Usage
 
@@ -163,6 +165,8 @@ rowHeight: React.PropTypes.number,
 //
 isDraggable: React.PropTypes.bool,
 isResizable: React.PropTypes.bool,
+// Uses CSS3 translate() instead of position top/left, about 6x faster paint performance
+useCSSTransforms: React.PropTypes.bool,
 
 // If false, you should supply width yourself. Good if you want to debounce resize events
 // or reuse a handler from somewhere else.
@@ -249,6 +253,7 @@ maxH: React.PropTypes.number,
   maxW: Infinity,
   isDraggable: true,
   isResizable: true,
+  useCSSTransforms: true,
   listenToWindowResize: true
 }
 ```
