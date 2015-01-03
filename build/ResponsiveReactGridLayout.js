@@ -31,6 +31,10 @@ var ResponsiveReactGridLayout = React.createClass({
     // Basic props
     //
 
+    // Optional, but if you are managing width yourself you may want to set the breakpoint
+    // yourself as well.
+    breakpoint: React.PropTypes.string,
+
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
     breakpoints: React.PropTypes.object,
 
@@ -71,7 +75,7 @@ var ResponsiveReactGridLayout = React.createClass({
   },
 
   getInitialState: function () {
-    var breakpoint = responsiveUtils.getBreakpointFromWidth(this.props.breakpoints, this.props.initialWidth);
+    var breakpoint = this.props.breakpoint || responsiveUtils.getBreakpointFromWidth(this.props.breakpoints, this.props.initialWidth);
     var cols = responsiveUtils.getColsFromBreakpoint(breakpoint, this.props.cols);
 
     // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
@@ -92,6 +96,11 @@ var ResponsiveReactGridLayout = React.createClass({
     // This allows you to set the width manually if you like.
     // Use manual width changes in combination with `listenToWindowResize: false`
     if (nextProps.width) this.onWidthChange(nextProps.width);
+
+    // Allow parent to set breakpoint directly.
+    if (nextProps.breakpoint !== this.props.breakpoint) {
+      this.onWidthChange(this.state.width);
+    }
 
     // Allow parent to set layouts directly.
     if (nextProps.layouts && nextProps.layouts !== this.state.layouts) {
@@ -121,7 +130,7 @@ var ResponsiveReactGridLayout = React.createClass({
   onWidthChange: function (width) {
     // Set new breakpoint
     var newState = { width: width };
-    newState.breakpoint = responsiveUtils.getBreakpointFromWidth(this.props.breakpoints, newState.width);
+    newState.breakpoint = this.props.breakpoint || responsiveUtils.getBreakpointFromWidth(this.props.breakpoints, newState.width);
     newState.cols = responsiveUtils.getColsFromBreakpoint(newState.breakpoint, this.props.cols);
 
     // Breakpoint change
