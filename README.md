@@ -1,5 +1,7 @@
 # React-Grid-Layout
 
+[![NPM](https://nodei.co/npm/react-grid-layout.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/react-grid-layout)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
