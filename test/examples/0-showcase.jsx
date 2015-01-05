@@ -74,6 +74,7 @@ var BasicLayout = React.createClass({
             layouts={this.state.layouts}
             onBreakpointChange={this.onBreakpointChange}
             onLayoutChange={this.onLayoutChange}
+            useCSSTransforms={true}
             {...this.props}>
           {this.generateDOM()}
         </ResponsiveReactGridLayout>

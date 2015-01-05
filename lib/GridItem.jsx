@@ -59,17 +59,21 @@ var GridItem = React.createClass({
     // Flags
     isDraggable: React.PropTypes.bool,
     isResizable: React.PropTypes.bool,
+    // Use CSS transforms instead of top/left
+    useCSSTransforms: React.PropTypes.bool, 
+    isPlaceholder: React.PropTypes.bool,
 
     // Others
     className: React.PropTypes.string,
     // Selector for draggable handle
-    handle: React.PropTypes.string 
+    handle: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
       isDraggable: true,
       isResizable: true,
+      useCSSTransforms: true,
       className: '',
       minH: 1,
       minW: 1,
@@ -156,6 +160,7 @@ var GridItem = React.createClass({
         onDrag={this.onDragHandler('onDrag')}
         handle={this.props.handle}
         cancel=".react-resizable-handle"
+        useCSSTransforms={this.props.useCSSTransforms && this.isMounted()}
         >
         {child}
       </Draggable>
@@ -261,13 +266,24 @@ var GridItem = React.createClass({
       style: {
         width: pos.width + 'px',
         height: pos.height + 'px',
+        left: pos.left + 'px',
+        top: pos.top + 'px',
         position: 'absolute'
       }
     });
 
-    // If we're not mounted yet, use percentages; otherwise items won't fit the window properly
-    // because this.props.width hasn't actually been populated with a real value
-    if (!this.isMounted()) {
+    // CSS Transforms support
+    // No CSS Transforms on server rendering, b/c we can't do percentages with CSS Translate(),
+    // it inexplicably is % of the element's size, not the parent's size.
+    if (process.browser && this.props.useCSSTransforms) {
+      utils.setTransform(child.props.style, [pos.left, pos.top]);
+      delete child.props.style.left;
+      delete child.props.style.top;
+    }
+
+    // Server rendering support. Use percentages in case the user viewport is different than the
+    // server viewport (which is pretty much guaranteed)
+    if (!process.browser) {
       pos.left = utils.perc(pos.left / p.containerWidth);
       child.props.style.width = utils.perc(pos.width / p.containerWidth);
     }
@@ -281,10 +297,6 @@ var GridItem = React.createClass({
     if (this.props.isDraggable) {
       child = this.mixinDraggable(child, pos);
     } 
-    // Place the element directly if draggability is turned off.
-    else {
-      child.props.style.left = pos.left, child.props.style.top = pos.top;
-    }
 
     return child;
   }

@@ -47,6 +47,8 @@ var ReactGridLayout = React.createClass({
     //
     isDraggable: React.PropTypes.bool,
     isResizable: React.PropTypes.bool,
+    // Use CSS transforms instead of top/left
+    useCSSTransforms: React.PropTypes.bool,
 
     // 
     // Callbacks
@@ -87,6 +89,7 @@ var ReactGridLayout = React.createClass({
       margin: [10, 10],
       isDraggable: true,
       isResizable: true,
+      useCSSTransforms: true,
       onLayoutChange: function(){}
     };
   },
@@ -222,7 +225,7 @@ var ReactGridLayout = React.createClass({
         x={this.state.activeDrag.x}
         y={this.state.activeDrag.y}
         i={this.state.activeDrag.i}
-        placeholder={true}
+        isPlaceholder={true}
         className="react-grid-placeholder"
         containerWidth={this.state.width}
         cols={this.props.cols}
@@ -230,6 +233,7 @@ var ReactGridLayout = React.createClass({
         rowHeight={this.props.rowHeight}
         isDraggable={false}
         isResizable={false}
+        useCSSTransforms={this.props.useCSSTransforms}
         >
         <div />
       </GridItem>
@@ -266,6 +270,7 @@ var ReactGridLayout = React.createClass({
         onResizeStop={this.onResizeStop}
         isDraggable={l.static ? false : this.props.isDraggable}
         isResizable={l.static ? false : this.props.isResizable}
+        useCSSTransforms={this.props.useCSSTransforms}
         >
         {child}
       </GridItem>
