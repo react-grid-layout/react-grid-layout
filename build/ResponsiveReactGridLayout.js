@@ -120,6 +120,8 @@ var ResponsiveReactGridLayout = React.createClass({
    * @param  {Array} layout Layout from inner Grid.
    */
   onLayoutChange: function (layout) {
+    this.state.layouts[this.state.breakpoint] = layout;
+    this.setState({ layout: layout, layouts: this.state.layouts });
     this.props.onLayoutChange(layout, this.state.layouts);
   },
 
