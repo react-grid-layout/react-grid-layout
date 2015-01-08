@@ -1,7 +1,7 @@
 "use strict";
-
 var _objectWithoutProperties = function (obj, keys) {
   var target = {};
+
   for (var i in obj) {
     if (keys.indexOf(i) >= 0) continue;
     if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
@@ -11,7 +11,6 @@ var _objectWithoutProperties = function (obj, keys) {
   return target;
 };
 
-"use strict";
 var React = require("react/addons");
 var GridItem = require("./GridItem");
 var utils = require("./utils");
@@ -85,7 +84,8 @@ var ReactGridLayout = React.createClass({
       var keys = children.map(function (child, i, list) {
         return child.key;
       });
-      for (var i = 0, len = keys.length; i < len; i++) {
+      for (var i = 0,
+          len = keys.length; i < len; i++) {
         if (keys[i] === keys[i + 1]) {
           throw new Error("Duplicate child key found! This will cause problems in ReactGridLayout.");
         }
@@ -93,7 +93,7 @@ var ReactGridLayout = React.createClass({
     }
   },
 
-  getDefaultProps: function () {
+  getDefaultProps: function getDefaultProps() {
     return {
       autoSize: true,
       cols: 12,
@@ -107,7 +107,7 @@ var ReactGridLayout = React.createClass({
     };
   },
 
-  getInitialState: function () {
+  getInitialState: function getInitialState() {
     return {
       layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols),
       width: this.props.initialWidth,
@@ -115,13 +115,13 @@ var ReactGridLayout = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+  componentDidMount: function componentDidMount() {
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
   },
 
-  componentWillReceiveProps: function (nextProps) {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     // This allows you to set the width manually if you like.
     // Use manual width changes in combination with `listenToWindowResize: false`
     if (nextProps.width !== this.props.width) this.onWidthChange(nextProps.width);
@@ -141,7 +141,7 @@ var ReactGridLayout = React.createClass({
     }
   },
 
-  componentDidUpdate: function (prevProps, prevState) {
+  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
     // Call back so we can store the layout
     // Do it only when a resize/drag is not active, otherwise there are way too many callbacks
     if (this.state.layout !== prevState.layout && !this.state.activeDrag) {
@@ -153,7 +153,7 @@ var ReactGridLayout = React.createClass({
    * Calculates a pixel value for the container.
    * @return {String} Container height in pixels.
    */
-  containerHeight: function () {
+  containerHeight: function containerHeight() {
     if (!this.props.autoSize) return;
     return utils.bottom(this.state.layout) * this.props.rowHeight + this.props.margin[1] + "px";
   },
@@ -161,16 +161,16 @@ var ReactGridLayout = React.createClass({
   /**
    * When the width changes, save it to state. This helps with left/width calculations.
    */
-  onWidthChange: function (width) {
+  onWidthChange: function onWidthChange(width) {
     this.setState({ width: width });
   },
 
-  onDragStart: function (i, e, _ref) {
+  onDragStart: function onDragStart(i, e, _ref) {
     var element = _ref.element;
     var position = _ref.position;
   },
 
-  onDrag: function (i, x, y) {
+  onDrag: function onDrag(i, x, y) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
@@ -193,7 +193,7 @@ var ReactGridLayout = React.createClass({
    * @param  {Number} i Index of the child.
    * @param  {Event}  e DOM Event.
    */
-  onDragStop: function (i, x, y) {
+  onDragStop: function onDragStop(i, x, y) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
@@ -203,7 +203,7 @@ var ReactGridLayout = React.createClass({
     this.setState({ layout: utils.compact(layout), activeDrag: null });
   },
 
-  onResize: function (i, w, h) {
+  onResize: function onResize(i, w, h) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
@@ -220,7 +220,7 @@ var ReactGridLayout = React.createClass({
     this.setState({ layout: utils.compact(layout), activeDrag: activeDrag });
   },
 
-  onResizeStop: function (e, _ref2) {
+  onResizeStop: function onResizeStop(e, _ref2) {
     var element = _ref2.element;
     var position = _ref2.position;
     this.setState({ activeDrag: null, layout: utils.compact(this.state.layout) });
@@ -230,26 +230,30 @@ var ReactGridLayout = React.createClass({
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder: function () {
+  placeholder: function placeholder() {
     if (!this.state.activeDrag) return "";
 
     // {...this.state.activeDrag} is pretty slow, actually
-    return React.createElement(GridItem, {
-      w: this.state.activeDrag.w,
-      h: this.state.activeDrag.h,
-      x: this.state.activeDrag.x,
-      y: this.state.activeDrag.y,
-      i: this.state.activeDrag.i,
-      isPlaceholder: true,
-      className: "react-grid-placeholder",
-      containerWidth: this.state.width,
-      cols: this.props.cols,
-      margin: this.props.margin,
-      rowHeight: this.props.rowHeight,
-      isDraggable: false,
-      isResizable: false,
-      useCSSTransforms: this.props.useCSSTransforms
-    }, React.createElement("div", null));
+    return React.createElement(
+      GridItem,
+      {
+        w: this.state.activeDrag.w,
+        h: this.state.activeDrag.h,
+        x: this.state.activeDrag.x,
+        y: this.state.activeDrag.y,
+        i: this.state.activeDrag.i,
+        isPlaceholder: true,
+        className: "react-grid-placeholder",
+        containerWidth: this.state.width,
+        cols: this.props.cols,
+        margin: this.props.margin,
+        rowHeight: this.props.rowHeight,
+        isDraggable: false,
+        isResizable: false,
+        useCSSTransforms: this.props.useCSSTransforms
+      },
+      React.createElement("div", null)
+    );
   },
 
   /**
@@ -258,7 +262,7 @@ var ReactGridLayout = React.createClass({
    * @param  {Number}  i     Index of element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem: function (child) {
+  processGridItem: function processGridItem(child) {
     var i = child.key;
     var l = utils.getLayoutItem(this.state.layout, i);
 
@@ -266,35 +270,41 @@ var ReactGridLayout = React.createClass({
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
     var drag = this.state.activeDrag;
     var moveOnStartChange = drag && drag.i === i ? false : true;
-    return React.createElement(GridItem, React.__spread({}, l, {
-      containerWidth: this.state.width,
-      cols: this.props.cols,
-      margin: this.props.margin,
-      rowHeight: this.props.rowHeight,
-      moveOnStartChange: moveOnStartChange,
-      handle: this.props.handle,
-      onDragStop: this.onDragStop,
-      onDragStart: this.onDragStart,
-      onDrag: this.onDrag,
-      onResize: this.onResize,
-      onResizeStop: this.onResizeStop,
-      isDraggable: l["static"] ? false : this.props.isDraggable,
-      isResizable: l["static"] ? false : this.props.isResizable,
-      useCSSTransforms: this.props.useCSSTransforms
-    }), child);
+    return React.createElement(
+      GridItem,
+      React.__spread({}, l, {
+        containerWidth: this.state.width,
+        cols: this.props.cols,
+        margin: this.props.margin,
+        rowHeight: this.props.rowHeight,
+        moveOnStartChange: moveOnStartChange,
+        handle: this.props.handle,
+        onDragStop: this.onDragStop,
+        onDragStart: this.onDragStart,
+        onDrag: this.onDrag,
+        onResize: this.onResize,
+        onResizeStop: this.onResizeStop,
+        isDraggable: l["static"] ? false : this.props.isDraggable,
+        isResizable: l["static"] ? false : this.props.isResizable,
+        useCSSTransforms: this.props.useCSSTransforms
+      }),
+      child
+    );
   },
 
-  render: function () {
+  render: function render() {
     // Calculate classname
     var className = this.props.className;
     var props = _objectWithoutProperties(this.props, ["className"]);
 
     className = "react-grid-layout " + (className || "");
 
-    return React.createElement("div", React.__spread({}, props, {
-      className: className,
-      style: { height: this.containerHeight() }
-    }), React.Children.map(this.props.children, this.processGridItem), this.placeholder());
+    return React.createElement(
+      "div",
+      React.__spread({}, props, { className: className, style: { height: this.containerHeight() } }),
+      React.Children.map(this.props.children, this.processGridItem),
+      this.placeholder()
+    );
   }
 });
 
