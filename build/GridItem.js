@@ -231,7 +231,7 @@ var GridItem = React.createClass({
       // Cap x at numCols
       x = Math.min(x, me.props.cols - me.props.w);
 
-      me.props[handlerName](me.props.i, x, y);
+      me.props[handlerName](me.props.i, x, y, { e: e, element: element, position: position });
     };
   },
 
@@ -268,7 +268,7 @@ var GridItem = React.createClass({
 
       me.setState({ resizing: handlerName === "onResizeStop" ? null : size });
 
-      me.props[handlerName](me.props.i, w, h);
+      me.props[handlerName](me.props.i, w, h, { e: e, element: element, size: size });
     };
   },
 
