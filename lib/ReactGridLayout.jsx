@@ -268,8 +268,8 @@ var ReactGridLayout = React.createClass({
         onDrag={this.onDrag}
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
-        isDraggable={l.static ? false : this.props.isDraggable}
-        isResizable={l.static ? false : this.props.isResizable}
+        isDraggable={l.static ? false : l.isDraggable !== undefined ? l.isDraggable : this.props.isDraggable}
+        isResizable={l.static ? false : l.isResizable !== undefined ? l.isResizable : this.props.isResizable}
         useCSSTransforms={this.props.useCSSTransforms}
         >
         {child}
