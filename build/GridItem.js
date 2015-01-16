@@ -1,5 +1,6 @@
 "use strict";
-var React = require("react/addons");
+var React = require("react");
+var cloneWithProps = require("react/lib/cloneWithProps");
 var utils = require("./utils");
 var Draggable = require("react-draggable");
 var Resizable = require("react-resizable").Resizable;
@@ -276,7 +277,7 @@ var GridItem = React.createClass({
       pos.height = this.state.resizing.height;
     }
 
-    var child = React.addons.cloneWithProps(React.Children.only(this.props.children), {
+    var child = cloneWithProps(React.Children.only(this.props.children), {
       // Munge a classname. Use passed in classnames, child classnames, and resizing.
       className: ["react-grid-item", this.props.children.props.className || "", this.props.className, this.state.resizing ? "resizing" : ""].join(" "),
       // We can set the width and height on the child, but unfortunately we can't set the position.

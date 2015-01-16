@@ -1,12 +1,13 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var ReactGridLayout = require('react-grid-layout');
 
 /**
  * This layout demonstrates how to sync to localstorage.
  */
 var LocalStorageLayout = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   getDefaultProps() {
     var ls = {};

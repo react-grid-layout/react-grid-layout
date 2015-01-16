@@ -1,10 +1,11 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
 var ReactGridLayout = require('react-grid-layout');
 
 var MinMaxLayout = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   getDefaultProps() {
     return {

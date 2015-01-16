@@ -11,7 +11,7 @@ var _objectWithoutProperties = function (obj, keys) {
   return target;
 };
 
-var React = require("react/addons");
+var React = require("react");
 var utils = require("./utils");
 var responsiveUtils = require("./responsiveUtils");
 var PureDeepRenderMixin = require("./mixins/PureDeepRenderMixin");

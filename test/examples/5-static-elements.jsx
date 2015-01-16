@@ -1,5 +1,6 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var ReactGridLayout = require('react-grid-layout');
 
 /**
@@ -7,7 +8,7 @@ var ReactGridLayout = require('react-grid-layout');
  * Static elements are not draggable or resizable, and cannot be moved.
  */
 var StaticElementsLayout = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   getInitialState() {
     return {};

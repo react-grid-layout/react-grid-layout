@@ -1,10 +1,11 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 
 var BasicLayout = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   propTypes: {
     onLayoutChange: React.PropTypes.func.isRequired
