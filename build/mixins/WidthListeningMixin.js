@@ -32,7 +32,7 @@ var WidthListeningMixin = {
     }
   },
 
-  componentWillUnmount: function () {
+  componentWillUnmount: function componentWillUnmount() {
     window.removeEventListener("resize", this.onWindowResize);
   },
 

@@ -70,7 +70,7 @@ var GridItem = React.createClass({
     handle: React.PropTypes.string
   },
 
-  getDefaultProps: function () {
+  getDefaultProps: function getDefaultProps() {
     return {
       isDraggable: true,
       isResizable: true,
@@ -83,7 +83,7 @@ var GridItem = React.createClass({
     };
   },
 
-  getInitialState: function () {
+  getInitialState: function getInitialState() {
     return {
       resizing: false,
       className: ""
@@ -99,7 +99,7 @@ var GridItem = React.createClass({
    * @param  {Number}  h             H coordinate in grid units.
    * @return {Object}                Object containing coords.
    */
-  calcPosition: function (x, y, w, h) {
+  calcPosition: function calcPosition(x, y, w, h) {
     var p = this.props;
     var width = p.containerWidth - p.margin[0];
     var out = {
@@ -117,7 +117,7 @@ var GridItem = React.createClass({
    * @param  {Number} options.top   Top offset in pixels.
    * @return {Object}               x and y in grid units.
    */
-  calcXY: function (_ref) {
+  calcXY: function calcXY(_ref) {
     var left = _ref.left;
     var top = _ref.top;
     left = left - this.props.margin[0];
@@ -137,7 +137,7 @@ var GridItem = React.createClass({
    * @param  {Number} options.width  Width in pixels.
    * @return {Object}                w, h as grid units.
    */
-  calcWH: function (_ref2) {
+  calcWH: function calcWH(_ref2) {
     var height = _ref2.height;
     var width = _ref2.width;
     width = width + this.props.margin[0];
@@ -155,17 +155,21 @@ var GridItem = React.createClass({
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable: function (child, position) {
-    return React.createElement(Draggable, {
-      start: { x: position.left, y: position.top },
-      moveOnStartChange: this.props.moveOnStartChange,
-      onStop: this.onDragHandler("onDragStop"),
-      onStart: this.onDragHandler("onDragStart"),
-      onDrag: this.onDragHandler("onDrag"),
-      handle: this.props.handle,
-      cancel: ".react-resizable-handle",
-      useCSSTransforms: this.props.useCSSTransforms && this.isMounted()
-    }, child);
+  mixinDraggable: function mixinDraggable(child, position) {
+    return React.createElement(
+      Draggable,
+      {
+        start: { x: position.left, y: position.top },
+        moveOnStartChange: this.props.moveOnStartChange,
+        onStop: this.onDragHandler("onDragStop"),
+        onStart: this.onDragHandler("onDragStart"),
+        onDrag: this.onDragHandler("onDrag"),
+        handle: this.props.handle,
+        cancel: ".react-resizable-handle",
+        useCSSTransforms: this.props.useCSSTransforms && this.isMounted()
+      },
+      child
+    );
   },
 
   /**
@@ -174,7 +178,7 @@ var GridItem = React.createClass({
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable: function (child, position) {
+  mixinResizable: function mixinResizable(child, position) {
     var p = this.props;
     // This is the max possible width - doesn't go to infinity because of the width of the window
     var maxWidth = this.calcPosition(0, 0, p.cols - p.x, 0).width;
@@ -184,15 +188,19 @@ var GridItem = React.createClass({
     var maxes = this.calcPosition(0, 0, p.maxW, p.maxH);
     var minConstraints = [mins.width, mins.height];
     var maxConstraints = [Math.min(maxes.width, maxWidth), Math.min(maxes.height, Infinity)];
-    return React.createElement(Resizable, {
-      width: position.width,
-      height: position.height,
-      minConstraints: minConstraints,
-      maxConstraints: maxConstraints,
-      onResizeStop: this.onResizeHandler("onResizeStop"),
-      onResizeStart: this.onResizeHandler("onResizeStart"),
-      onResize: this.onResizeHandler("onResize")
-    }, child);
+    return React.createElement(
+      Resizable,
+      {
+        width: position.width,
+        height: position.height,
+        minConstraints: minConstraints,
+        maxConstraints: maxConstraints,
+        onResizeStop: this.onResizeHandler("onResizeStop"),
+        onResizeStart: this.onResizeHandler("onResizeStart"),
+        onResize: this.onResizeHandler("onResize")
+      },
+      child
+    );
   },
 
   /**
@@ -203,17 +211,17 @@ var GridItem = React.createClass({
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onDragHandler: function (handlerName) {
+  onDragHandler: function onDragHandler(handlerName) {
     var me = this;
     return function (e, _ref3) {
       var element = _ref3.element;
       var position = _ref3.position;
       if (!me.props[handlerName]) return;
       // Get new XY
-      var _ref4 = me.calcXY(position);
+      var _me$calcXY = me.calcXY(position);
 
-      var x = _ref4.x;
-      var y = _ref4.y;
+      var x = _me$calcXY.x;
+      var y = _me$calcXY.y;
 
 
       // Cap x at numCols
@@ -231,18 +239,18 @@ var GridItem = React.createClass({
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler: function (handlerName) {
+  onResizeHandler: function onResizeHandler(handlerName) {
     var me = this;
-    return function (e, _ref5) {
-      var element = _ref5.element;
-      var size = _ref5.size;
+    return function (e, _ref4) {
+      var element = _ref4.element;
+      var size = _ref4.size;
       if (!me.props[handlerName]) return;
 
       // Get new XY
-      var _ref6 = me.calcWH(size);
+      var _me$calcWH = me.calcWH(size);
 
-      var w = _ref6.w;
-      var h = _ref6.h;
+      var w = _me$calcWH.w;
+      var h = _me$calcWH.h;
 
 
       // Cap w at numCols
@@ -260,8 +268,9 @@ var GridItem = React.createClass({
     };
   },
 
-  render: function () {
-    var p = this.props, pos = this.calcPosition(p.x, p.y, p.w, p.h);
+  render: function render() {
+    var p = this.props,
+        pos = this.calcPosition(p.x, p.y, p.w, p.h);
     if (this.state.resizing) {
       pos.width = this.state.resizing.width;
       pos.height = this.state.resizing.height;
