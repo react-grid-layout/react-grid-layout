@@ -33,8 +33,9 @@
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
     "deep-equal": "^0.2.1",
+    "object-assign": "^2.0.0",
     "react-draggable": "strml/react-draggable",
-    "react-resizable": "^0.1.2"
+    "react-resizable": "^0.2.1"
   },
   "devDependencies": {
     "6to5": "^2.2.0",
