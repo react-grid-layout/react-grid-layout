@@ -150,6 +150,10 @@ handle: React.PropTypes.string,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
+// The index into the layout must match the key used on each item component.
+// If you choose to use custom keys, you can specify that key in the layout
+// array objects like so:
+// {i: String, x: Number, y: Number, w: Number, h: Number}
 layout: React.PropTypes.array,
 
 // This allows setting this on the server side
