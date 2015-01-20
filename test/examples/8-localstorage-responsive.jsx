@@ -1,12 +1,13 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
 var ResponsiveLocalStorageLayout = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   getDefaultProps() {
     var ls = {};

@@ -150,6 +150,10 @@ handle: React.PropTypes.string,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
+// The index into the layout must match the key used on each item component.
+// If you choose to use custom keys, you can specify that key in the layout
+// array objects like so:
+// {i: String, x: Number, y: Number, w: Number, h: Number}
 layout: React.PropTypes.array,
 
 // This allows setting this on the server side
@@ -227,16 +231,28 @@ You can set minimums and maximums for each dimension. This is for resizing; it o
 is disabled. Errors will be thrown if your mins and maxes overlap incorrectly, or your initial dimensions
 are out of range.
 
-```
-// These are all in grid units, not pixels
-x: React.PropTypes.number.isRequired,
-y: React.PropTypes.number.isRequired,
-w: React.PropTypes.number.isRequired,
-h: React.PropTypes.number.isRequired,
-minW: React.PropTypes.number,
-maxW: React.PropTypes.number,
-minH: React.PropTypes.number,
-maxH: React.PropTypes.number,
+Any GridItem properties defined directly on the layout item will take precedence over globally-set options. For
+example, if the layout has the property `isDraggable: false`, but the grid item has `isDraggable: true`, the item
+will be draggable.
+
+```javascript
+{
+  // These are all in grid units, not pixels
+  x: React.PropTypes.number.isRequired,
+  y: React.PropTypes.number.isRequired,
+  w: React.PropTypes.number.isRequired,
+  h: React.PropTypes.number.isRequired,
+  minW: React.PropTypes.number,
+  maxW: React.PropTypes.number,
+  minH: React.PropTypes.number,
+  maxH: React.PropTypes.number,
+  // If true, equal to `isDraggable: false, isResizable: false`.
+  static: React.PropTypes.bool,
+  // If false, will not be draggable. Overrides `static`.
+  isDraggable: React.PropTypes.bool,
+  // If false, will not be resizable. Overrides `static`.
+  isResizable: React.PropTypes.bool
+}
 ```
 
 #### Grid Layout Defaults

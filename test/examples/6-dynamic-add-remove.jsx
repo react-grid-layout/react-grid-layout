@@ -1,5 +1,6 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 
@@ -7,7 +8,7 @@ var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
 var AddRemoveLayout = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   getDefaultProps() {
     return {
