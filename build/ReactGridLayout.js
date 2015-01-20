@@ -84,8 +84,7 @@ var ReactGridLayout = React.createClass({
       var keys = children.map(function (child, i, list) {
         return child.key;
       });
-      for (var i = 0,
-          len = keys.length; i < len; i++) {
+      for (var i = 0, len = keys.length; i < len; i++) {
         if (keys[i] === keys[i + 1]) {
           throw new Error("Duplicate child key found! This will cause problems in ReactGridLayout.");
         }

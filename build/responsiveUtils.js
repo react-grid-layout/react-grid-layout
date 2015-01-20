@@ -14,8 +14,7 @@ var responsiveUtils = module.exports = {
   getBreakpointFromWidth: function getBreakpointFromWidth(breakpoints, width) {
     var sorted = responsiveUtils.sortBreakpoints(breakpoints);
     var matching = sorted[0];
-    for (var i = 1,
-        len = sorted.length; i < len; i++) {
+    for (var i = 1, len = sorted.length; i < len; i++) {
       var breakpointName = sorted[i];
       if (width > breakpoints[breakpointName]) matching = breakpointName;
     }
@@ -55,8 +54,7 @@ var responsiveUtils = module.exports = {
     var layout = layouts[lastBreakpoint];
     var breakpointsSorted = responsiveUtils.sortBreakpoints(breakpoints);
     var breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
-    for (var i = 0,
-        len = breakpointsAbove.length; i < len; i++) {
+    for (var i = 0, len = breakpointsAbove.length; i < len; i++) {
       var b = breakpointsAbove[i];
       if (layouts[b]) {
         layout = layouts[b];

@@ -12,8 +12,7 @@ var utils = module.exports = {
    */
   bottom: function bottom(layout) {
     var max = 0, bottomY;
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       bottomY = layout[i].y + layout[i].h;
       if (bottomY > max) max = bottomY;
     }
@@ -50,8 +49,7 @@ var utils = module.exports = {
     // We go through the items by row and column.
     var sorted = utils.sortLayoutItemsByRowCol(layout);
 
-    for (var i = 0,
-        len = sorted.length; i < len; i++) {
+    for (var i = 0, len = sorted.length; i < len; i++) {
       var l = sorted[i];
 
       // Don't move static elements
@@ -96,8 +94,7 @@ var utils = module.exports = {
    */
   correctBounds: function correctBounds(layout, bounds) {
     var collidesWith = utils.getStatics(layout);
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       var l = layout[i];
       // Overflows right
       if (l.x + l.w > bounds.cols) l.x = bounds.cols - l.w;
@@ -126,8 +123,7 @@ var utils = module.exports = {
    */
   getLayoutItem: function getLayoutItem(layout, id) {
     id = "" + id;
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       if ("" + layout[i].i === id) return layout[i];
     }
   },
@@ -141,16 +137,14 @@ var utils = module.exports = {
    * @return {Object|undefined}  A colliding layout item, or undefined.
    */
   getFirstCollision: function getFirstCollision(layout, layoutItem) {
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       if (utils.collides(layout[i], layoutItem)) return layout[i];
     }
   },
 
   getAllCollisions: function getAllCollisions(layout, layoutItem) {
     var out = [];
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       if (utils.collides(layout[i], layoutItem)) out.push(layout[i]);
     }
     return out;
@@ -163,8 +157,7 @@ var utils = module.exports = {
    */
   getStatics: function getStatics(layout) {
     var out = [];
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       if (layout[i]["static"]) out.push(layout[i]);
     }
     return out;
@@ -201,8 +194,7 @@ var utils = module.exports = {
     var collisions = utils.getAllCollisions(sorted, l);
 
     // Move each item that collides away from this element.
-    for (var i = 0,
-        len = collisions.length; i < len; i++) {
+    for (var i = 0, len = collisions.length; i < len; i++) {
       var collision = collisions[i];
       // console.log('resolving collision between', l.i, 'at', l.y, 'and', collision.i, 'at', collision.y);
 
@@ -305,8 +297,7 @@ var utils = module.exports = {
 
     // Generate one layout item per child.
     var layout = [];
-    for (var i = 0,
-        len = children.length; i < len; i++) {
+    for (var i = 0, len = children.length; i < len; i++) {
       var child = children[i];
       // Don't overwrite if it already exists.
       var exists = utils.getLayoutItem(initialLayout, child.key);
@@ -347,8 +338,7 @@ var utils = module.exports = {
     contextName = contextName || "Layout";
     var subProps = ["x", "y", "w", "h"];
     if (!Array.isArray(layout)) throw new Error(contextName + " must be an array!");
-    for (var i = 0,
-        len = layout.length; i < len; i++) {
+    for (var i = 0, len = layout.length; i < len; i++) {
       for (var j = 0; j < subProps.length; j++) {
         if (typeof layout[i][subProps[j]] !== "number") {
           throw new Error("ReactGridLayout: " + contextName + "[" + i + "]." + subProps[j] + " must be a Number!");
