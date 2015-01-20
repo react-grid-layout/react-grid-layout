@@ -254,9 +254,14 @@ var ReactGridLayout = React.createClass({
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
     var drag = this.state.activeDrag;
     var moveOnStartChange = drag && drag.i === i ? false : true;
+
+    // Parse 'static'. Any properties defined directly on the grid item will take precedence.
+    var draggable, resizable;
+    if (l.static || this.props.isDraggable === false) draggable = false;
+    if (l.static || this.props.isResizable === false) resizable = false;
+
     return (
       <GridItem 
-        {...l}
         containerWidth={this.state.width}
         cols={this.props.cols}
         margin={this.props.margin}
@@ -268,9 +273,10 @@ var ReactGridLayout = React.createClass({
         onDrag={this.onDrag}
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
-        isDraggable={l.static ? false : l.isDraggable !== undefined ? l.isDraggable : this.props.isDraggable}
-        isResizable={l.static ? false : l.isResizable !== undefined ? l.isResizable : this.props.isResizable}
+        isDraggable={draggable}
+        isResizable={resizable}
         useCSSTransforms={this.props.useCSSTransforms}
+        {...l}
         >
         {child}
       </GridItem>
