@@ -1,5 +1,5 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
 var utils = require('./utils');
 var responsiveUtils = require('./responsiveUtils');
 var PureDeepRenderMixin = require('./mixins/PureDeepRenderMixin');

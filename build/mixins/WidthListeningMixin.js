@@ -1,5 +1,5 @@
 "use strict";
-var React = require("react/addons");
+var React = require("react");
 
 /**
  * A simple mixin that provides facility for listening to container resizes.
