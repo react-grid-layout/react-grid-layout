@@ -166,7 +166,7 @@ var GridItem = React.createClass({
         onStart: this.onDragHandler("onDragStart"),
         onDrag: this.onDragHandler("onDrag"),
         handle: this.props.handle,
-        cancel: ".react-resizable-handle",
+        cancel: ".react-resizable-handle" + (this.props.cancel ? " " + this.props.cancel : ""),
         useCSSTransforms: this.props.useCSSTransforms && this.isMounted()
       },
       child
