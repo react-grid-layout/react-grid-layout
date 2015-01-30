@@ -11,8 +11,7 @@ var utils = module.exports = {
    * @return {Number}       Bottom coordinate.
    */
   bottom: function bottom(layout) {
-    var max = 0,
-        bottomY;
+    var max = 0, bottomY;
     for (var i = 0, len = layout.length; i < len; i++) {
       bottomY = layout[i].y + layout[i].h;
       if (bottomY > max) max = bottomY;
@@ -294,6 +293,7 @@ var utils = module.exports = {
    * @return {Array}                Working layout.
    */
   synchronizeLayoutWithChildren: function synchronizeLayoutWithChildren(initialLayout, children, cols) {
+    children = [].concat(children); // ensure 'children' is always an array
     initialLayout = initialLayout || [];
 
     // Generate one layout item per child.
