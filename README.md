@@ -246,12 +246,19 @@ will be draggable.
   maxW: React.PropTypes.number,
   minH: React.PropTypes.number,
   maxH: React.PropTypes.number,
+  
   // If true, equal to `isDraggable: false, isResizable: false`.
   static: React.PropTypes.bool,
   // If false, will not be draggable. Overrides `static`.
   isDraggable: React.PropTypes.bool,
   // If false, will not be resizable. Overrides `static`.
-  isResizable: React.PropTypes.bool
+  isResizable: React.PropTypes.bool,
+  
+  className: React.PropTypes.string,
+  // Selector for draggable handle
+  handle: React.PropTypes.string,
+  // Selector for draggable cancel (see react-draggable)
+  cancel: React.PropTypes.string
 }
 ```
 

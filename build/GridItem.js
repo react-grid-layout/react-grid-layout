@@ -68,7 +68,9 @@ var GridItem = React.createClass({
     // Others
     className: React.PropTypes.string,
     // Selector for draggable handle
-    handle: React.PropTypes.string
+    handle: React.PropTypes.string,
+    // Selector for draggable cancel (see react-draggable)
+    cancel: React.PropTypes.string
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -77,6 +79,7 @@ var GridItem = React.createClass({
       isResizable: true,
       useCSSTransforms: true,
       className: "",
+      cancel: "",
       minH: 1,
       minW: 1,
       maxH: Infinity,
@@ -166,7 +169,7 @@ var GridItem = React.createClass({
         onStart: this.onDragHandler("onDragStart"),
         onDrag: this.onDragHandler("onDrag"),
         handle: this.props.handle,
-        cancel: ".react-resizable-handle" + (this.props.cancel ? " " + this.props.cancel : ""),
+        cancel: ".react-resizable-handle " + this.props.cancel,
         useCSSTransforms: this.props.useCSSTransforms && this.isMounted()
       },
       child
