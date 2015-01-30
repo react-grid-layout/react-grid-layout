@@ -11,7 +11,8 @@ var utils = module.exports = {
    * @return {Number}       Bottom coordinate.
    */
   bottom: function bottom(layout) {
-    var max = 0, bottomY;
+    var max = 0,
+        bottomY;
     for (var i = 0, len = layout.length; i < len; i++) {
       bottomY = layout[i].y + layout[i].h;
       if (bottomY > max) max = bottomY;
