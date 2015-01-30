@@ -20,8 +20,11 @@ var ReactGridLayout = React.createClass({
     autoSize: React.PropTypes.bool,
     // # of cols.
     cols: React.PropTypes.number,
+
+    // A selector that will not be draggable.
+    draggableCancel: React.PropTypes.string,
     // A selector for the draggable handler
-    handle: React.PropTypes.string,
+    draggableHandle: React.PropTypes.string,
 
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
@@ -267,7 +270,8 @@ var ReactGridLayout = React.createClass({
         margin={this.props.margin}
         rowHeight={this.props.rowHeight}
         moveOnStartChange={moveOnStartChange}
-        handle={this.props.handle}
+        cancel={this.props.draggableCancel}
+        handle={this.props.draggableHandle}
         onDragStop={this.onDragStop}
         onDragStart={this.onDragStart}
         onDrag={this.onDrag}

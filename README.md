@@ -145,8 +145,10 @@ breakpoints: React.PropTypes.object,
 // Number of columns in this layout.
 cols: React.PropTypes.number,
 
+// A selector that will not be draggable.
+draggableCancel: React.PropTypes.string,
 // A selector for the draggable handler
-handle: React.PropTypes.string,
+draggableHandle: React.PropTypes.string,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
