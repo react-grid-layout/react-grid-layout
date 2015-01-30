@@ -293,6 +293,7 @@ var utils = module.exports = {
    * @return {Array}                Working layout.
    */
   synchronizeLayoutWithChildren: function synchronizeLayoutWithChildren(initialLayout, children, cols) {
+    children = [].concat(children); // ensure 'children' is always an array
     initialLayout = initialLayout || [];
 
     // Generate one layout item per child.

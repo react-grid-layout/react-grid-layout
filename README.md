@@ -2,10 +2,8 @@
 
 [![NPM](https://nodei.co/npm/react-grid-layout.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/react-grid-layout)
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 - [Summary](#summary)
+- [Changelog](/CHANGELOG.md)
 - [Demos](#demos)
 - [Features](#features)
 - [Usage](#usage)
@@ -14,8 +12,6 @@
 - [Grid Item Props](#grid-item-props)
 - [Grid Layout Defaults](#grid-layout-defaults)
 - [TODO List](#todo-list)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 #### Summary
 
@@ -145,8 +141,10 @@ breakpoints: React.PropTypes.object,
 // Number of columns in this layout.
 cols: React.PropTypes.number,
 
+// A selector that will not be draggable.
+draggableCancel: React.PropTypes.string,
 // A selector for the draggable handler
-handle: React.PropTypes.string,
+draggableHandle: React.PropTypes.string,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
@@ -156,14 +154,14 @@ handle: React.PropTypes.string,
 // {i: String, x: Number, y: Number, w: Number, h: Number}
 layout: React.PropTypes.array,
 
-// This allows setting this on the server side
+// This allows setting the initial width on the server side.
 initialWidth: React.PropTypes.number,
 
-// margin between items [x, y] in px
+// Margin between items [x, y] in px.
 margin: React.PropTypes.array,
 
 // Rows have a static height, but you can change this based on breakpoints 
-// if you like
+// if you like.
 rowHeight: React.PropTypes.number,
 
 //
@@ -246,12 +244,19 @@ will be draggable.
   maxW: React.PropTypes.number,
   minH: React.PropTypes.number,
   maxH: React.PropTypes.number,
+  
   // If true, equal to `isDraggable: false, isResizable: false`.
   static: React.PropTypes.bool,
   // If false, will not be draggable. Overrides `static`.
   isDraggable: React.PropTypes.bool,
   // If false, will not be resizable. Overrides `static`.
-  isResizable: React.PropTypes.bool
+  isResizable: React.PropTypes.bool,
+  
+  className: React.PropTypes.string,
+  // Selector for draggable handle
+  handle: React.PropTypes.string,
+  // Selector for draggable cancel (see react-draggable)
+  cancel: React.PropTypes.string
 }
 ```
 

@@ -33,20 +33,25 @@ var ReactGridLayout = React.createClass({
     autoSize: React.PropTypes.bool,
     // # of cols.
     cols: React.PropTypes.number,
+
+    // A selector that will not be draggable.
+    draggableCancel: React.PropTypes.string,
     // A selector for the draggable handler
-    handle: React.PropTypes.string,
+    draggableHandle: React.PropTypes.string,
 
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
     layout: function (props, propName, componentName) {
       var layout = props.layout;
-      // I hope you're setting the on the grid items
+      // I hope you're setting the _grid property on the grid items
       if (layout === undefined) return;
       utils.validateLayout(layout, "layout");
     },
 
     layouts: function (props, propName, componentName) {
-      if (props.layouts) throw new Error("ReactGridLayout does not use `layouts`: Use ReactGridLayout.Responsive.");
+      if (props.layouts) {
+        throw new Error("ReactGridLayout does not use `layouts`: Use ReactGridLayout.Responsive.");
+      }
     },
 
     // margin between items [x, y] in px
@@ -81,14 +86,13 @@ var ReactGridLayout = React.createClass({
       var children = props[propName];
 
       // Check children keys for duplicates. Throw if found.
-      var keys = children.map(function (child, i, list) {
-        return child.key;
-      });
-      for (var i = 0, len = keys.length; i < len; i++) {
-        if (keys[i] === keys[i + 1]) {
+      var keys = {};
+      React.Children.forEach(children, function (child, i, list) {
+        if (keys[child.key]) {
           throw new Error("Duplicate child key found! This will cause problems in ReactGridLayout.");
         }
-      }
+        keys[child.key] = true;
+      });
     }
   },
 
@@ -283,7 +287,8 @@ var ReactGridLayout = React.createClass({
         margin: this.props.margin,
         rowHeight: this.props.rowHeight,
         moveOnStartChange: moveOnStartChange,
-        handle: this.props.handle,
+        cancel: this.props.draggableCancel,
+        handle: this.props.draggableHandle,
         onDragStop: this.onDragStop,
         onDragStart: this.onDragStart,
         onDrag: this.onDrag,
@@ -291,7 +296,8 @@ var ReactGridLayout = React.createClass({
         onResizeStop: this.onResizeStop,
         isDraggable: draggable,
         isResizable: resizable,
-        useCSSTransforms: this.props.useCSSTransforms
+        useCSSTransforms: this.props.useCSSTransforms && this.isMounted(),
+        usePercentages: !this.isMounted()
       }, l),
       child
     );

@@ -68,7 +68,9 @@ var GridItem = React.createClass({
     // Others
     className: React.PropTypes.string,
     // Selector for draggable handle
-    handle: React.PropTypes.string
+    handle: React.PropTypes.string,
+    // Selector for draggable cancel (see react-draggable)
+    cancel: React.PropTypes.string
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -77,6 +79,7 @@ var GridItem = React.createClass({
       isResizable: true,
       useCSSTransforms: true,
       className: "",
+      cancel: "",
       minH: 1,
       minW: 1,
       maxH: Infinity,
@@ -166,8 +169,8 @@ var GridItem = React.createClass({
         onStart: this.onDragHandler("onDragStart"),
         onDrag: this.onDragHandler("onDrag"),
         handle: this.props.handle,
-        cancel: ".react-resizable-handle",
-        useCSSTransforms: this.props.useCSSTransforms && this.isMounted()
+        cancel: ".react-resizable-handle " + this.props.cancel,
+        useCSSTransforms: this.props.useCSSTransforms
       },
       child
     );
@@ -278,8 +281,9 @@ var GridItem = React.createClass({
     }
 
     var child = cloneWithProps(React.Children.only(this.props.children), {
-      // Munge a classname. Use passed in classnames, child classnames, and resizing.
-      className: ["react-grid-item", this.props.children.props.className || "", this.props.className, this.state.resizing ? "resizing" : ""].join(" "),
+      // Munge a classname. Use passed in classnames and resizing.
+      // React with merge the classNames.
+      className: ["react-grid-item", this.props.className, this.state.resizing ? "resizing" : "", this.useCSSTransforms ? "cssTransforms" : ""].join(" "),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: {
         width: pos.width + "px",
@@ -290,24 +294,29 @@ var GridItem = React.createClass({
       }
     });
 
+    // This is where we set the grid item's absolute placement. It gets a little tricky because we want to do it
+    // well when server rendering, and the only way to do that properly is to use percentage width/left because
+    // we don't know exactly what the browser viewport is.
+    //
+    // Unfortunately, CSS Transforms, which are great for performance, break in this instance because a percentage
+    // left is relative to the item itself, not its container! So we cannot use them on the server rendering pass.
+
+    // This is used for server rendering.
+    if (this.props.usePercentages) {
+      pos.left = utils.perc(pos.left / p.containerWidth);
+      child.props.style.left = pos.left;
+      child.props.style.width = utils.perc(pos.width / p.containerWidth);
+    }
+
     // CSS Transforms support
-    // No CSS Transforms on server rendering, b/c we can't do percentages with CSS Translate(),
-    // it inexplicably is % of the element's size, not the parent's size.
-    if (process.browser && this.props.useCSSTransforms) {
+    if (this.props.useCSSTransforms) {
       utils.setTransform(child.props.style, [pos.left, pos.top]);
       delete child.props.style.left;
       delete child.props.style.top;
     }
 
-    // Server rendering support. Use percentages in case the user viewport is different than the
-    // server viewport (which is pretty much guaranteed)
-    if (!process.browser) {
-      pos.left = utils.perc(pos.left / p.containerWidth);
-      child.props.style.width = utils.perc(pos.width / p.containerWidth);
-    }
-
     // Resizable support. This is usually on but the user can toggle it off.
-    if (this.props.isResizable && this.isMounted()) {
+    if (this.props.isResizable) {
       child = this.mixinResizable(child, pos);
     }
 
