@@ -2,10 +2,8 @@
 
 [![NPM](https://nodei.co/npm/react-grid-layout.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/react-grid-layout)
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 - [Summary](#summary)
+- [Changelog](/CHANGELOG.md)
 - [Demos](#demos)
 - [Features](#features)
 - [Usage](#usage)
@@ -14,8 +12,6 @@
 - [Grid Item Props](#grid-item-props)
 - [Grid Layout Defaults](#grid-layout-defaults)
 - [TODO List](#todo-list)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 #### Summary
 
@@ -158,14 +154,14 @@ draggableHandle: React.PropTypes.string,
 // {i: String, x: Number, y: Number, w: Number, h: Number}
 layout: React.PropTypes.array,
 
-// This allows setting this on the server side
+// This allows setting the initial width on the server side.
 initialWidth: React.PropTypes.number,
 
-// margin between items [x, y] in px
+// Margin between items [x, y] in px.
 margin: React.PropTypes.array,
 
 // Rows have a static height, but you can change this based on breakpoints 
-// if you like
+// if you like.
 rowHeight: React.PropTypes.number,
 
 //
