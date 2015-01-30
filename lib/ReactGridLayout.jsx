@@ -275,7 +275,8 @@ var ReactGridLayout = React.createClass({
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
-        useCSSTransforms={this.props.useCSSTransforms}
+        useCSSTransforms={this.props.useCSSTransforms && this.isMounted()}
+        usePercentages={!this.isMounted()}
         {...l}
         >
         {child}

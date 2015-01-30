@@ -22,7 +22,6 @@ var BasicLayout = React.createClass({
   getInitialState() {
     return {
       layouts: {lg: this.generateLayout()},
-      currentLayout: [],
       currentBreakpoint: 'lg'
     };
   },
@@ -55,9 +54,6 @@ var BasicLayout = React.createClass({
 
   onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({
-      currentLayout: layout
-    });
   },
 
   onNewLayout() {
