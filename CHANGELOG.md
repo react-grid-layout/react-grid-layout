@@ -1,3 +1,8 @@
+0.7.1
+-----
+
+- Added callbacks for resize and drag start/active/stop.
+
 0.7.0
 -----
 
