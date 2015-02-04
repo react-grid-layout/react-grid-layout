@@ -74,15 +74,15 @@ var ReactGridLayout = React.createClass({
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
     onLayoutChange: React.PropTypes.func,
-    // Calls when drag starts, allows for canceling/restricting drag
+    // Calls when drag starts
     onDragStart: React.PropTypes.func,
-    // Calls on each drag movement, allows for modifying current drag layout, or preventing layout modificaiton
+    // Calls on each drag movement
     onDrag: React.PropTypes.func,
     // Calls when drag is complete
     onDragStop: React.PropTypes.func,
-    //Calls when resize starts, allows for canceling
+    //Calls when resize starts
     onResizeStart: React.PropTypes.func,
-    // Calls when resize movement happens, restrict resize
+    // Calls when resize movement happens
     onResize: React.PropTypes.func,
     // Calls when resize is complete
     onResizeStop: React.PropTypes.func,
@@ -227,8 +227,7 @@ var ReactGridLayout = React.createClass({
     // Move the element to the dragged location.
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
-    //Ask users for a new layout if they need to process
-    layout = this.props.onDrag(layout, this.state.layout, l, activeDrag, { e: e, element: element, position: position }) || layout;
+    this.props.onDrag(layout, this.state.layout, l, activeDrag, { e: e, element: element, position: position });
 
 
     this.setState({
@@ -257,8 +256,7 @@ var ReactGridLayout = React.createClass({
     // Move the element here
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
-    //Ask users for a new layout if they need to process
-    layout = this.props.onDragStop(layout, this.state.layout, l, null, { e: e, element: element, position: position }) || layout;
+    this.props.onDragStop(layout, this.state.layout, l, null, { e: e, element: element, position: position });
 
     // Set state
     this.setState({ layout: utils.compact(layout), activeDrag: null });
@@ -290,7 +288,7 @@ var ReactGridLayout = React.createClass({
       w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
     };
 
-    activeDrag = this.props.onResize(layout, layout, l, activeDrag, { e: e, element: element, size: size }) || activeDrag;
+    this.props.onResize(layout, layout, l, activeDrag, { e: e, element: element, size: size });
 
     // Re-compact the layout and set the drag placeholder.
     this.setState({ layout: utils.compact(layout), activeDrag: activeDrag });
@@ -303,7 +301,7 @@ var ReactGridLayout = React.createClass({
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
-    layout = this.props.onResizeStop(layout, layout, l, null, { e: e, element: element, size: size }) || layout;
+    this.props.onResizeStop(layout, layout, l, null, { e: e, element: element, size: size });
 
     this.setState({ activeDrag: null, layout: utils.compact(layout) });
   },
