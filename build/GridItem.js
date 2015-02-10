@@ -231,7 +231,7 @@ var GridItem = React.createClass({
       // Cap x at numCols
       x = Math.min(x, me.props.cols - me.props.w);
 
-      me.props[handlerName](me.props.i, x, y);
+      me.props[handlerName](me.props.i, x, y, { e: e, element: element, position: position });
     };
   },
 
@@ -268,7 +268,7 @@ var GridItem = React.createClass({
 
       me.setState({ resizing: handlerName === "onResizeStop" ? null : size });
 
-      me.props[handlerName](me.props.i, w, h);
+      me.props[handlerName](me.props.i, w, h, { e: e, element: element, size: size });
     };
   },
 
@@ -283,7 +283,7 @@ var GridItem = React.createClass({
     var child = cloneWithProps(React.Children.only(this.props.children), {
       // Munge a classname. Use passed in classnames and resizing.
       // React with merge the classNames.
-      className: ["react-grid-item", this.props.className, this.state.resizing ? "resizing" : "", this.useCSSTransforms ? "cssTransforms" : ""].join(" "),
+      className: ["react-grid-item", this.props.className, this.state.resizing ? "resizing" : "", this.props.useCSSTransforms ? "cssTransforms" : ""].join(" "),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: {
         width: pos.width + "px",
