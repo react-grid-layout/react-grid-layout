@@ -283,7 +283,7 @@ var GridItem = React.createClass({
     var child = cloneWithProps(React.Children.only(this.props.children), {
       // Munge a classname. Use passed in classnames and resizing.
       // React with merge the classNames.
-      className: ["react-grid-item", this.props.className, this.state.resizing ? "resizing" : "", this.useCSSTransforms ? "cssTransforms" : ""].join(" "),
+      className: ["react-grid-item", this.props.className, this.state.resizing ? "resizing" : "", this.props.useCSSTransforms ? "cssTransforms" : ""].join(" "),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: {
         width: pos.width + "px",
