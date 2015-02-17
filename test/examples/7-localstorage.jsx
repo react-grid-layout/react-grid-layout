@@ -10,22 +10,21 @@ var LocalStorageLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   getDefaultProps() {
+    return {
+      className: "layout",
+      cols: 12,
+      rowHeight: 30
+    };
+  },
+
+  getInitialState() {
     var ls = {};
     if (global.localStorage) {
       try {
         ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
       } catch(e) {}
     }
-    return {
-      className: "layout",
-      cols: 12,
-      rowHeight: 30,
-      layout: ls.layout || []
-    };
-  },
-
-  getInitialState() {
-    return {};
+    return {layout: ls.layout || []};
   },
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,7 +45,7 @@ var LocalStorageLayout = React.createClass({
 
   onLayoutChange(layout) {
     console.log('layout changed', layout);
-    this.props.onLayoutChange(layout);
+    this.props.onLayoutChange(layout); // updates status display
     this.setState({layout: layout});
   },
 
@@ -56,6 +55,7 @@ var LocalStorageLayout = React.createClass({
         <button onClick={this.resetLayout}>Reset Layout</button>
         <ReactGridLayout 
             {...this.props}
+            layout={this.state.layout}
             onLayoutChange={this.onLayoutChange}>
           <div key={1} _grid={{w: 2, h: 3, x: 0, y: 0}}><span className="text">1</span></div>
           <div key={2} _grid={{w: 2, h: 3, x: 2, y: 0}}><span className="text">2</span></div>
