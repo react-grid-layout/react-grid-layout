@@ -94,7 +94,9 @@ module.exports = [
     source: 'dynamic-min-max-wh',
     paragraphs: [
       'Your application may have more complex rules for determining an element\'s mins and maxes. This demo ' +
-      'demonstrates how to use the `onResize` handler to accomplish this.'
+      'demonstrates how to use the `onResize` handler to accomplish this.',
+      'In this grid, all elements are allowed a max width of 2 if the height < 3, ' + 
+      'and a min width of 2 if the height >= 3.'
     ]
   },
 ];
