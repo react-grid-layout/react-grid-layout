@@ -1,12 +1,12 @@
-webpackJsonp([10],[
+webpackJsonp([11],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
 	var React = __webpack_require__(4);
 	var PureRenderMixin = __webpack_require__(6);
-	var _ = __webpack_require__(18);
-	var ReactGridLayout = __webpack_require__(10);
+	var _ = __webpack_require__(15);
+	var ReactGridLayout = __webpack_require__(9);
 	
 	var BasicLayout = React.createClass({
 	  displayName: "BasicLayout",
@@ -71,9 +71,9 @@ webpackJsonp([10],[
 	module.exports = BasicLayout;
 	
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(11)(module.exports);
+	  __webpack_require__(10)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

@@ -5,8 +5,8 @@ webpackJsonp([1],[
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
 	var React = __webpack_require__(4);
 	var PureRenderMixin = __webpack_require__(6);
-	var _ = __webpack_require__(18);
-	var ReactGridLayout = __webpack_require__(10);
+	var _ = __webpack_require__(15);
+	var ReactGridLayout = __webpack_require__(9);
 	
 	var MinMaxLayout = React.createClass({
 	  displayName: "MinMaxLayout",
@@ -81,9 +81,9 @@ webpackJsonp([1],[
 	module.exports = MinMaxLayout;
 	
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(11)(module.exports);
+	  __webpack_require__(10)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

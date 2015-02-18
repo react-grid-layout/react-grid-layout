@@ -5,8 +5,8 @@ webpackJsonp([4],[
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
 	var React = __webpack_require__(4);
 	var PureRenderMixin = __webpack_require__(6);
-	var _ = __webpack_require__(18);
-	var ResponsiveReactGridLayout = __webpack_require__(10).Responsive;
+	var _ = __webpack_require__(15);
+	var ResponsiveReactGridLayout = __webpack_require__(9).Responsive;
 	
 	/**
 	 * This layout demonstrates how to use a grid with a dynamic number of elements.
@@ -116,9 +116,9 @@ webpackJsonp([4],[
 	module.exports = AddRemoveLayout;
 	
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(11)(module.exports);
+	  __webpack_require__(10)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

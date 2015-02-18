@@ -5,7 +5,7 @@ webpackJsonp([5],[
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
 	var React = __webpack_require__(4);
 	var PureRenderMixin = __webpack_require__(6);
-	var ReactGridLayout = __webpack_require__(10);
+	var ReactGridLayout = __webpack_require__(9);
 	
 	/**
 	 * This layout demonstrates how to use static grid elements.
@@ -61,9 +61,9 @@ webpackJsonp([5],[
 	module.exports = StaticElementsLayout;
 	
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(11)(module.exports);
+	  __webpack_require__(10)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

@@ -5,7 +5,7 @@ webpackJsonp([2],[
 	/* WEBPACK VAR INJECTION */(function(global, module) {"use strict";
 	var React = __webpack_require__(4);
 	var PureRenderMixin = __webpack_require__(6);
-	var ResponsiveReactGridLayout = __webpack_require__(10).Responsive;
+	var ResponsiveReactGridLayout = __webpack_require__(9).Responsive;
 	
 	/**
 	 * This layout demonstrates how to sync multiple responsive layouts to localstorage.
@@ -120,9 +120,9 @@ webpackJsonp([2],[
 	module.exports = ResponsiveLocalStorageLayout;
 	
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(11)(module.exports);
+	  __webpack_require__(10)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(8)(module)))
 
 /***/ }
 ]);

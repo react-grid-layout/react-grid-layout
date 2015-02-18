@@ -5,7 +5,7 @@ webpackJsonp([3],[
 	/* WEBPACK VAR INJECTION */(function(global, module) {"use strict";
 	var React = __webpack_require__(4);
 	var PureRenderMixin = __webpack_require__(6);
-	var ReactGridLayout = __webpack_require__(10);
+	var ReactGridLayout = __webpack_require__(9);
 	
 	/**
 	 * This layout demonstrates how to sync to localstorage.
@@ -121,9 +121,9 @@ webpackJsonp([3],[
 	module.exports = LocalStorageLayout;
 	
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(11)(module.exports);
+	  __webpack_require__(10)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(8)(module)))
 
 /***/ }
 ]);
