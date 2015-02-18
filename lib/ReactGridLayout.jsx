@@ -61,17 +61,19 @@ var ReactGridLayout = React.createClass({
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
     onLayoutChange: React.PropTypes.func,
-    // Calls when drag starts
+
+    // Calls when drag starts. Callback is of the signature (layout, oldItem, newItem, placeholder, e).
+    // All callbacks below have the same signature. 'start' and 'stop' callbacks omit the 'placeholder'.
     onDragStart: React.PropTypes.func,
-    // Calls on each drag movement
+    // Calls on each drag movement.
     onDrag: React.PropTypes.func,
-    // Calls when drag is complete
+    // Calls when drag is complete.
     onDragStop: React.PropTypes.func,
-    //Calls when resize starts
+    //Calls when resize starts.
     onResizeStart: React.PropTypes.func,
-    // Calls when resize movement happens
+    // Calls when resize movement happens.
     onResize: React.PropTypes.func,
-    // Calls when resize is complete
+    // Calls when resize is complete.
     onResizeStop: React.PropTypes.func,
 
     //
@@ -185,7 +187,8 @@ var ReactGridLayout = React.createClass({
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
-    this.props.onDragStart(layout, this.state.layout, l, null, {e, element, position});
+    // No need to clone, `l` hasn't changed.
+    this.props.onDragStart(layout, l, l, null, e);
   },
   /**
    * Each drag movement create a new dragelement and move the element to the dragged location
@@ -199,21 +202,23 @@ var ReactGridLayout = React.createClass({
   onDrag(i, x, y, {e, element, position}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
+    // Clone layout item so we can pass it to the callback.
+    var oldL = utils.clone(l);
 
-    // Create drag element (display only)
-    var activeDrag = {
+    // Create placeholder (display only)
+    var placeholder = {
       w: l.w, h: l.h, x: l.x, y: l.y, placeholder: true, i: i
     };
 
     // Move the element to the dragged location.
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
-    this.props.onDrag(layout, this.state.layout, l, activeDrag, {e, element, position});
+    this.props.onDrag(layout, oldL, l, placeholder, e);
 
 
     this.setState({
       layout: utils.compact(layout),
-      activeDrag: activeDrag
+      activeDrag: placeholder
     });
   },
 
@@ -230,11 +235,12 @@ var ReactGridLayout = React.createClass({
   onDragStop(i, x, y, {e, element, position}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
+    var oldL = utils.clone(l);
 
     // Move the element here
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
-    this.props.onDragStop(layout, this.state.layout, l, null, {e, element, position});
+    this.props.onDragStop(layout, oldL, l, null, e);
 
     // Set state
     this.setState({layout: utils.compact(layout), activeDrag: null});
@@ -244,33 +250,36 @@ var ReactGridLayout = React.createClass({
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
-    this.props.onResizeStart(layout, layout, l, null, {e, element, size});
+    // No need to clone, item hasn't changed
+    this.props.onResizeStart(layout, l, l, null, e);
   },
 
   onResize(i, w, h, {e, element, size}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
+    var oldL = utils.clone(l);
 
     // Set new width and height.
     l.w = w;
     l.h = h;
     
-    // Create drag element (display only)
-    var activeDrag = {
+    // Create placeholder element (display only)
+    var placeholder = {
       w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
     };
 
-    this.props.onResize(layout, layout, l, activeDrag, {e, element, size});
+    this.props.onResize(layout, oldL, l, placeholder, e);
     
     // Re-compact the layout and set the drag placeholder.
-    this.setState({layout: utils.compact(layout), activeDrag: activeDrag});
+    this.setState({layout: utils.compact(layout), activeDrag: placeholder});
   },
 
   onResizeStop(i, x, y, {e, element, size}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
+    var oldL = utils.clone(l);
         
-    this.props.onResizeStop(layout, layout, l, null, {e, element, size});
+    this.props.onResizeStop(layout, oldL, l, null, e);
 
     this.setState({activeDrag: null, layout: utils.compact(layout)});
   },

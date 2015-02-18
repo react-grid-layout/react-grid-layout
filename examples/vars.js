@@ -89,4 +89,12 @@ module.exports = [
         'an error will be thrown.'
     ]
   },
+  {
+    title: 'Dynamic Minimum and Maximum Width/Height',
+    source: 'dynamic-min-max-wh',
+    paragraphs: [
+      'Your application may have more complex rules for determining an element\'s mins and maxes. This demo ' +
+      'demonstrates how to use the `onResize` handler to accomplish this.'
+    ]
+  },
 ];

@@ -183,17 +183,19 @@ listenToWindowResize: React.PropTypes.bool,
 // Callback so you can save the layout.
 // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
 onLayoutChange: React.PropTypes.func,
-// Calls when drag starts. Callback is of the signature (newLayout, oldLayout, layoutItem, placeholder, {e, element, position}.
+
+// Calls when drag starts. Callback is of the signature (layout, oldItem, newItem, placeholder, e).
+// All callbacks below have the same signature. 'start' and 'stop' callbacks omit the 'placeholder'.
 onDragStart: React.PropTypes.func,
-// Calls on each drag movement. Callback is of the signature (newLayout, oldLayout, layoutItem, placeholder, {e, element, position}.
+// Calls on each drag movement.
 onDrag: React.PropTypes.func,
-// Calls when drag is complete. Callback is of the signature (newLayout, oldLayout, layoutItem, placeholder, {e, element, position}.
+// Calls when drag is complete.
 onDragStop: React.PropTypes.func,
-//Calls when resize starts. Callback is of the signature (newLayout, oldLayout, layoutItem, placeholder, {e, element, size}.
+//Calls when resize starts.
 onResizeStart: React.PropTypes.func,
-// Calls when resize movement happens. Callback is of the signature (newLayout, oldLayout, layoutItem, placeholder, {e, element, size}.
+// Calls when resize movement happens.
 onResize: React.PropTypes.func,
-// Calls when resize is complete. Callback is of the signature (newLayout, oldLayout, layoutItem, placeholder, {e, element, size}.
+// Calls when resize is complete.
 onResizeStop: React.PropTypes.func
 ```
 
