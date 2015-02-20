@@ -50,9 +50,10 @@ var utils = module.exports = {
    * between items.
    * 
    * @param  {Array} layout Layout.
+   * @param  {Boolean} verticalCompact    VerticalCompact passed in through props.
    * @return {Array}       Compacted Layout.
    */
-  compact: function compact(layout) {
+  compact: function compact(layout, verticalCompact) {
     // Statics go in the compareWith array right away so items flow around them.
     var compareWith = utils.getStatics(layout),
         out = [];
@@ -64,7 +65,7 @@ var utils = module.exports = {
 
       // Don't move static elements
       if (!l["static"]) {
-        l = utils.compactItem(compareWith, l);
+        l = utils.compactItem(compareWith, l, verticalCompact);
 
         // Add to comparison array. We only collide with items before this one.
         // Statics are already in this array.
@@ -81,10 +82,12 @@ var utils = module.exports = {
     return out;
   },
 
-  compactItem: function compactItem(compareWith, l) {
-    // Move the element up as far as it can go without colliding.
-    while (l.y > 0 && !utils.getFirstCollision(compareWith, l)) {
-      l.y--;
+  compactItem: function compactItem(compareWith, l, verticalCompact) {
+    if (verticalCompact) {
+      // Move the element up as far as it can go without colliding.
+      while (l.y > 0 && !utils.getFirstCollision(compareWith, l)) {
+        l.y--;
+      }
     }
 
     // Move it down, and keep moving it down if it's colliding.
@@ -300,9 +303,10 @@ var utils = module.exports = {
    * 
    * @param  {Array}  initialLayout Layout passed in through props.
    * @param  {String} breakpoint    Current responsive breakpoint.
+   * @param  {Boolean} verticalCompact    VerticalCompact passed in through props.
    * @return {Array}                Working layout.
    */
-  synchronizeLayoutWithChildren: function synchronizeLayoutWithChildren(initialLayout, children, cols) {
+  synchronizeLayoutWithChildren: function synchronizeLayoutWithChildren(initialLayout, children, cols, verticalCompact) {
     children = [].concat(children); // ensure 'children' is always an array
     initialLayout = initialLayout || [];
 
@@ -333,7 +337,7 @@ var utils = module.exports = {
 
     // Correct the layout.
     layout = utils.correctBounds(layout, { cols: cols });
-    layout = utils.compact(layout);
+    layout = utils.compact(layout, verticalCompact);
 
     return layout;
   },
