@@ -6,7 +6,7 @@ var utils = module.exports = {
 
   /**
    * Return the bottom coordinate of the layout.
-   * 
+   *
    * @param  {Array} layout Layout array.
    * @return {Number}       Bottom coordinate.
    */
@@ -31,7 +31,7 @@ var utils = module.exports = {
 
   /**
    * Given two layouts, check if they collide.
-   * 
+   *
    * @param  {Object} l1 Layout object.
    * @param  {Object} l2 Layout object.
    * @return {Boolean}   True if colliding.
@@ -48,7 +48,7 @@ var utils = module.exports = {
   /**
    * Given a layout, compact it. This involves going down each y coordinate and removing gaps
    * between items.
-   * 
+   *
    * @param  {Array} layout Layout.
    * @param  {Boolean} verticalCompact    VerticalCompact passed in through props.
    * @return {Array}       Compacted Layout.
@@ -100,7 +100,7 @@ var utils = module.exports = {
 
   /**
    * Given a layout, make sure all elements fit within its bounds.
-   * 
+   *
    * @param  {Array} layout Layout array.
    * @param  {Number} bounds Number of columns.
    * @return {[type]}        [description]
@@ -145,7 +145,7 @@ var utils = module.exports = {
    * Returns the first item this layout collides with.
    * It doesn't appear to matter which order we approach this from, although
    * perhaps that is the wrong thing to do.
-   * 
+   *
    * @param  {Object} layoutItem Layout item.
    * @return {Object|undefined}  A colliding layout item, or undefined.
    */
@@ -178,7 +178,7 @@ var utils = module.exports = {
 
   /**
    * Move an element. Responsible for doing cascading movements of other elements.
-   * 
+   *
    * @param  {Array}      layout Full layout to modify.
    * @param  {LayoutItem} l      element to move.
    * @param  {Number}     [x]    X position in grid units.
@@ -231,7 +231,7 @@ var utils = module.exports = {
   /**
    * This is where the magic needs to happen - given a collision, move an element away from the collision.
    * We attempt to move it up if there's room, otherwise it goes below.
-   * 
+   *
    * @param  {Array} layout            Full layout to modify.
    * @param  {LayoutItem} collidesWith Layout item we're colliding with.
    * @param  {LayoutItem} itemToMove   Layout item we're moving.
@@ -262,7 +262,7 @@ var utils = module.exports = {
 
   /**
    * Helper to convert a number to a percentage string.
-   * 
+   *
    * @param  {Number} num Any number
    * @return {String}     That number as a percentage.
    */
@@ -284,7 +284,7 @@ var utils = module.exports = {
 
   /**
    * Get layout items sorted from top left to right and down.
-   * 
+   *
    * @return {Array} Array of layout objects.
    * @return {Array}        Layout, sorted static items first.
    */
@@ -300,7 +300,7 @@ var utils = module.exports = {
   /**
    * Generate a layout using the initialLayout an children as a template.
    * Missing entries will be added, extraneous ones will be truncated.
-   * 
+   *
    * @param  {Array}  initialLayout Layout passed in through props.
    * @param  {String} breakpoint    Current responsive breakpoint.
    * @param  {Boolean} verticalCompact    VerticalCompact passed in through props.
@@ -328,7 +328,11 @@ var utils = module.exports = {
         utils.validateLayout([g], "ReactGridLayout.child");
         // Validated; add it to the layout. Bottom 'y' possible is the bottom of the layout.
         // This allows you to do nice stuff like specify {y: Infinity}
-        layout.push(assign({}, g, { y: Math.min(utils.bottom(layout), g.y), i: child.key }));
+        if (verticalCompact) {
+          layout.push(assign({}, g, { y: Math.min(utils.bottom(layout), g.y), i: child.key }));
+        } else {
+          layout.push(assign({}, g, { y: g.y, i: child.key }));
+        }
       } else {
         // Nothing provided: ensure this is added to the bottom
         layout.push({ w: 1, h: 1, x: 0, y: utils.bottom(layout), i: child.key });
@@ -344,7 +348,7 @@ var utils = module.exports = {
 
   /**
    * Validate a layout. Throws errors.
-   * 
+   *
    * @param  {Array}  layout        Array of layout items.
    * @param  {String} [contextName] Context name for errors.
    * @throw  {Error}                Validation error.
