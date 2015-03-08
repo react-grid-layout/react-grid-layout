@@ -45,9 +45,10 @@ var responsiveUtils = module.exports = {
    * @param  {String} breakpoint New breakpoint.
    * @param  {String} breakpoint Last breakpoint (for fallback).
    * @param  {Number} cols       Column count at new breakpoint.
+   * @param  {Boolean} verticalCompact    VerticalCompact passed in through props.
    * @return {Array}             New layout.
    */
-  findOrGenerateResponsiveLayout: function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols) {
+  findOrGenerateResponsiveLayout: function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols, verticalCompact) {
     // If it already exists, just return it.
     if (layouts[breakpoint]) return layouts[breakpoint];
     // Find or generate the next layout
@@ -62,7 +63,7 @@ var responsiveUtils = module.exports = {
       }
     }
     layout = JSON.parse(JSON.stringify(layout || [])); // clone layout so we don't modify existing items
-    return utils.compact(utils.correctBounds(layout, { cols: cols }));
+    return utils.compact(utils.correctBounds(layout, { cols: cols }), verticalCompact);
   },
 
 

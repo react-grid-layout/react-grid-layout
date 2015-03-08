@@ -26,6 +26,9 @@ var ReactGridLayout = React.createClass({
     // A selector for the draggable handler
     draggableHandle: React.PropTypes.string,
 
+    // If true that will compact vertically
+    verticalCompact: React.PropTypes.bool,
+
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
     layout: function(props, propName, componentName) {
@@ -106,6 +109,7 @@ var ReactGridLayout = React.createClass({
       isDraggable: true,
       isResizable: true,
       useCSSTransforms: true,
+      verticalCompact: true,
       onLayoutChange: function(){},
       onDragStart: function() {},
       onDrag: function() {},
@@ -118,7 +122,7 @@ var ReactGridLayout = React.createClass({
 
   getInitialState() {
     return {
-      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols),
+      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols, this.props.verticalCompact),
       width: this.props.initialWidth,
       activeDrag: null
     };
@@ -138,14 +142,14 @@ var ReactGridLayout = React.createClass({
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols)
+        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols, this.props.verticalCompact)
       });
     }
 
     // Allow parent to set layout directly.
     if (nextProps.layout && JSON.stringify(nextProps.layout) !== JSON.stringify(this.state.layout)) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols)
+        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols, this.props.verticalCompact)
       });
     }
   },
@@ -217,7 +221,7 @@ var ReactGridLayout = React.createClass({
 
 
     this.setState({
-      layout: utils.compact(layout),
+      layout: utils.compact(layout,this.props.verticalCompact),
       activeDrag: placeholder
     });
   },
@@ -243,7 +247,7 @@ var ReactGridLayout = React.createClass({
     this.props.onDragStop(layout, oldL, l, null, e);
 
     // Set state
-    this.setState({layout: utils.compact(layout), activeDrag: null});
+    this.setState({layout: utils.compact(layout, this.props.verticalCompact), activeDrag: null});
   },
 
   onResizeStart(i, w, h, {e, element, size}) {
@@ -271,7 +275,7 @@ var ReactGridLayout = React.createClass({
     this.props.onResize(layout, oldL, l, placeholder, e);
     
     // Re-compact the layout and set the drag placeholder.
-    this.setState({layout: utils.compact(layout), activeDrag: placeholder});
+    this.setState({layout: utils.compact(layout, this.props.verticalCompact), activeDrag: placeholder});
   },
 
   onResizeStop(i, x, y, {e, element, size}) {
@@ -281,7 +285,7 @@ var ReactGridLayout = React.createClass({
         
     this.props.onResizeStop(layout, oldL, l, null, e);
 
-    this.setState({activeDrag: null, layout: utils.compact(layout)});
+    this.setState({activeDrag: null, layout: utils.compact(layout, this.props.verticalCompact)});
   },
 
   /**
