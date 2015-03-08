@@ -107,7 +107,8 @@ render: function() {
   var layouts = getLayoutsFromSomewhere();
   return (
     <ResponsiveReactGridLayout className="layout" layouts={layouts} 
-      cols={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}>
+      breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
+      cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
       <div key={1}>1</div>
       <div key={2}>2</div>
       <div key={3}>3</div>
@@ -171,11 +172,12 @@ rowHeight: React.PropTypes.number,
 //
 isDraggable: React.PropTypes.bool,
 isResizable: React.PropTypes.bool,
-// Uses CSS3 translate() instead of position top/left, about 6x faster paint performance
+// Uses CSS3 translate() instead of position top/left.
+// This makes about 6x faster paint performance
 useCSSTransforms: React.PropTypes.bool,
 
-// If false, you should supply width yourself. Good if you want to debounce resize events
-// or reuse a handler from somewhere else.
+// If false, you should supply width yourself. Good if you want to debounce 
+// resize events or reuse a handler from somewhere else.
 listenToWindowResize: React.PropTypes.bool,
 
 // 
@@ -186,14 +188,18 @@ listenToWindowResize: React.PropTypes.bool,
 // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
 onLayoutChange: React.PropTypes.func,
 
-// Calls when drag starts. Callback is of the signature (layout, oldItem, newItem, placeholder, e).
-// All callbacks below have the same signature. 'start' and 'stop' callbacks omit the 'placeholder'.
+//
+// All callbacks below have signature (layout, oldItem, newItem, placeholder, e).
+// 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
+//
+
+// Calls when drag starts.
 onDragStart: React.PropTypes.func,
 // Calls on each drag movement.
 onDrag: React.PropTypes.func,
 // Calls when drag is complete.
 onDragStop: React.PropTypes.func,
-//Calls when resize starts.
+// Calls when resize starts.
 onResizeStart: React.PropTypes.func,
 // Calls when resize movement happens.
 onResize: React.PropTypes.func,
