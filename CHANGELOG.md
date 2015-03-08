@@ -1,3 +1,10 @@
+0.8.0
+-----
+
+- Changed signature on resize/drag callbacks to allow dynamic max/min W/H per item.
+- Fixed bug in `useCSSTransforms`.
+- Documentation and example fixes.
+
 0.7.1
 -----
 
