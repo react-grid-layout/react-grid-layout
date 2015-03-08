@@ -7,7 +7,7 @@ var ReactGridLayout = require('react-grid-layout');
 /**
  * This layout demonstrates how to use the `onResize` handler to enforce a min/max width and height.
  *
- * In this grid, all elements are allowed a max width of 2 if the height < 3, 
+ * In this grid, all elements are allowed a max width of 2 if the height < 3,
  * and a min width of 2 if the height >= 3.
  */
 var DynamicMinMaxLayout = React.createClass({

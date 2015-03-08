@@ -17,7 +17,7 @@
 
 [View the Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html)
 
-React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or 
+React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or
 [Gridster](http://gridster.net), for React.
 
 Unlike those systems, it is responsive and supports breakpoints. Breakpoint layouts can be provided by the user
@@ -54,7 +54,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 * Layout can be serialized and restored
 * Responsive breakpoints
 * Separate layouts per responsive breakpoint
-* Grid Items placed using CSS Transforms 
+* Grid Items placed using CSS Transforms
   * Performance: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
 
 #### Usage
@@ -66,9 +66,9 @@ var ReactGridLayout = require('react-grid-layout');
 //...
 render: function() {
   // layout is an array of objects, see the demo
-  var layout = getOrGenerateLayout(); 
+  var layout = getOrGenerateLayout();
   return (
-    <ReactGridLayout className="layout" layout={layout} 
+    <ReactGridLayout className="layout" layout={layout}
       cols={12} rowHeight={30}>
       <div key={1}>1</div>
       <div key={2}>2</div>
@@ -106,7 +106,7 @@ render: function() {
   // {lg: layout1, md: layout2, ...}
   var layouts = getLayoutsFromSomewhere();
   return (
-    <ResponsiveReactGridLayout className="layout" layouts={layouts} 
+    <ResponsiveReactGridLayout className="layout" layouts={layouts}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
       <div key={1}>1</div>
@@ -119,8 +119,8 @@ render: function() {
 
 When in responsive mode, you should supply at least one breakpoint via the `layouts` property.
 
-When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one. 
-If the largest is provided, RGL will attempt to interpolate the rest. 
+When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one.
+If the largest is provided, RGL will attempt to interpolate the rest.
 
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
@@ -131,7 +131,7 @@ items, but that is coming soon.
 RGL supports the following properties (see the source for the final word on this):
 
 ```javascript
-// 
+//
 // Basic props
 //
 
@@ -163,7 +163,7 @@ initialWidth: React.PropTypes.number,
 // Margin between items [x, y] in px.
 margin: React.PropTypes.array,
 
-// Rows have a static height, but you can change this based on breakpoints 
+// Rows have a static height, but you can change this based on breakpoints
 // if you like.
 rowHeight: React.PropTypes.number,
 
@@ -176,13 +176,13 @@ isResizable: React.PropTypes.bool,
 // This makes about 6x faster paint performance
 useCSSTransforms: React.PropTypes.bool,
 
-// If false, you should supply width yourself. Good if you want to debounce 
+// If false, you should supply width yourself. Good if you want to debounce
 // resize events or reuse a handler from somewhere else.
 listenToWindowResize: React.PropTypes.bool,
 
-// 
+//
 // Callbacks
-// 
+//
 
 // Callback so you can save the layout.
 // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
@@ -224,9 +224,9 @@ cols: React.PropTypes.object,
 // e.g. {lg: Layout, md: Layout, ...}
 layouts: React.PropTypes.object
 
-// 
+//
 // Callbacks
-// 
+//
 
 // Calls back with breakpoint and new # cols
 onBreakpointChange: React.PropTypes.func,
@@ -266,14 +266,14 @@ will be draggable.
   maxW: React.PropTypes.number,
   minH: React.PropTypes.number,
   maxH: React.PropTypes.number,
-  
+
   // If true, equal to `isDraggable: false, isResizable: false`.
   static: React.PropTypes.bool,
   // If false, will not be draggable. Overrides `static`.
   isDraggable: React.PropTypes.bool,
   // If false, will not be resizable. Overrides `static`.
   isResizable: React.PropTypes.bool,
-  
+
   className: React.PropTypes.string,
   // Selector for draggable handle
   handle: React.PropTypes.string,
@@ -288,7 +288,7 @@ will be draggable.
 {
   autoSize: true,
   breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
-  cols: 10, 
+  cols: 10,
   rowHeight: 150,
   initialWidth: 1280,
   margin: [10, 10],

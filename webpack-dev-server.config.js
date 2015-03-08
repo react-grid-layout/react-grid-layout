@@ -4,7 +4,7 @@ module.exports = {
     context: __dirname,
     entry: [
       "webpack-dev-server/client?http://localhost:4002",
-      "webpack/hot/dev-server", 
+      "webpack/hot/dev-server",
       "./test/dev-hook.jsx",
     ],
     output: {

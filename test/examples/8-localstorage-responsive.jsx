@@ -53,7 +53,7 @@ var ResponsiveLocalStorageLayout = React.createClass({
     return (
       <div>
         <button onClick={this.resetLayout}>Reset Layout</button>
-        <ResponsiveReactGridLayout 
+        <ResponsiveReactGridLayout
             {...this.props}
             onLayoutChange={this.onLayoutChange}>
           <div key={1} _grid={{w: 2, h: 3, x: 0, y: 0}}><span className="text">1</span></div>

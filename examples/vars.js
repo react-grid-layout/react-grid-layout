@@ -5,7 +5,7 @@ module.exports = [
     title: 'Showcase',
     source: 'showcase',
     paragraphs: [
-      'React-Grid-Layout is the only grid layout system for React. It features auto-packing, draggable and resizable ' + 
+      'React-Grid-Layout is the only grid layout system for React. It features auto-packing, draggable and resizable ' +
         'widgets, static widgets, a fluid layout, and separate layouts per responsive breakpoint.',
       'Try it out! Drag some boxes around, resize them, and resize the window to see the responsive breakpoints.'
     ]
@@ -30,10 +30,10 @@ module.exports = [
     source: 'messy',
     paragraphs: [
       'This demo shows what happens when elements are placed randomly all over the layout.',
-      'RGL does not auto-pack in the same fashion as other projects, such as jQuery Masonry. Packing is only done ' + 
+      'RGL does not auto-pack in the same fashion as other projects, such as jQuery Masonry. Packing is only done ' +
         'in the vertical dimension. If objects all have the same width, they will be packed efficiently.',
       'If a layout is fed to RGL that has items with incorrect dimensions (width too big, overlapping other elements, ' +
-        'out of bounds, etc), they will be automatically corrected on startup. See the ' + 
+        'out of bounds, etc), they will be automatically corrected on startup. See the ' +
         'source of this demo, where elements are placed randomly in the layout.'
     ]
   },
@@ -95,7 +95,7 @@ module.exports = [
     paragraphs: [
       'Your application may have more complex rules for determining an element\'s mins and maxes. This demo ' +
       'demonstrates how to use the `onResize` handler to accomplish this.',
-      'In this grid, all elements are allowed a max width of 2 if the height < 3, ' + 
+      'In this grid, all elements are allowed a max width of 2 if the height < 3, ' +
       'and a min width of 2 if the height >= 3.'
     ]
   },

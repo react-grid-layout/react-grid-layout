@@ -30,7 +30,7 @@ var BasicLayout = React.createClass({
     return _.map(this.state.layouts.lg, function(l, i) {
       return (
         <div key={i} className={l.static ? 'static' : ''}>
-          {l.static ? 
+          {l.static ?
             <span className="text" title="This item is static and cannot be removed or resized.">Static - {i}</span>
             : <span className="text">{i}</span>
           }
@@ -67,7 +67,7 @@ var BasicLayout = React.createClass({
       <div>
         <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)</div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
-        <ResponsiveReactGridLayout 
+        <ResponsiveReactGridLayout
             layouts={this.state.layouts}
             onBreakpointChange={this.onBreakpointChange}
             onLayoutChange={this.onLayoutChange}

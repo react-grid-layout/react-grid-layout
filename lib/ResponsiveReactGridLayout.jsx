@@ -13,7 +13,7 @@ var ResponsiveReactGridLayout = React.createClass({
   mixins: [PureDeepRenderMixin, WidthListeningMixin],
 
   propTypes: {
-    // 
+    //
     // Basic props
     //
 
@@ -38,9 +38,9 @@ var ResponsiveReactGridLayout = React.createClass({
       });
     },
 
-    // 
+    //
     // Callbacks
-    // 
+    //
 
     // Calls back with breakpoint and new # cols
     onBreakpointChange: React.PropTypes.func,
@@ -61,10 +61,10 @@ var ResponsiveReactGridLayout = React.createClass({
   },
 
   getInitialState() {
-    var breakpoint = this.props.breakpoint || 
+    var breakpoint = this.props.breakpoint ||
       responsiveUtils.getBreakpointFromWidth(this.props.breakpoints, this.props.initialWidth);
     var cols = responsiveUtils.getColsFromBreakpoint(breakpoint, this.props.cols);
-    
+
     // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
     // for this layout.
     var initialLayout = responsiveUtils.findOrGenerateResponsiveLayout(
@@ -121,10 +121,10 @@ var ResponsiveReactGridLayout = React.createClass({
   onWidthChange(width) {
     // Set new breakpoint
     var newState = {width: width};
-    newState.breakpoint = this.props.breakpoint || 
+    newState.breakpoint = this.props.breakpoint ||
       responsiveUtils.getBreakpointFromWidth(this.props.breakpoints, newState.width);
     newState.cols = responsiveUtils.getColsFromBreakpoint(newState.breakpoint, this.props.cols);
-    
+
     // Breakpoint change
     if (newState.cols !== this.state.cols) {
 
@@ -154,11 +154,11 @@ var ResponsiveReactGridLayout = React.createClass({
     /*jshint unused:false*/
     var {layouts, onBreakpointChange, breakpoints, ...props} = this.props;
     return (
-      <ReactGridLayout {...props} 
+      <ReactGridLayout {...props}
           layout={this.state.layout}
           cols={this.state.cols}
-          listenToWindowResize={false} 
-          onLayoutChange={this.onLayoutChange} 
+          listenToWindowResize={false}
+          onLayoutChange={this.onLayoutChange}
           width={this.state.width}>
         {this.props.children}
       </ReactGridLayout>

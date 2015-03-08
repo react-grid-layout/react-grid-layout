@@ -37,7 +37,7 @@ var AddRemoveLayout = React.createClass({
     var i = el.add ? '+' : el.i;
     return (
       <div key={i} _grid={el}>
-        {el.add ? 
+        {el.add ?
           <span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>
         : <span className="text">{i}</span>}
         <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(this, i)}>x</span>
@@ -53,7 +53,7 @@ var AddRemoveLayout = React.createClass({
         i: 'n' + this.state.newCounter,
         x: this.state.items.length * 2 % (this.state.cols || 12),
         y: Infinity, // puts it at the bottom
-        w: 2, 
+        w: 2,
         h: 2
       }),
       // Increment the counter to ensure key is always unique.
@@ -83,7 +83,7 @@ var AddRemoveLayout = React.createClass({
     return (
       <div>
         <button onClick={this.onAddItem}>Add Item</button>
-        <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange} 
+        <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange}
             {...this.props}>
           {_.map(this.state.items, this.createElement)}
         </ResponsiveReactGridLayout>

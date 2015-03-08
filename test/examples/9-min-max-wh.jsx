@@ -43,7 +43,7 @@ var MinMaxLayout = React.createClass({
       var w = _.random(minW, maxW);
       var y = _.random(minH, maxH);
       return {
-        x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i, 
+        x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i,
         minW: minW, maxW: maxW, minH: minH, maxH: maxH
       };
     });
