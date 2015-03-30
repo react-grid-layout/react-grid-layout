@@ -39,7 +39,9 @@
   },
   "devDependencies": {
     "babel": "^4.7.3",
-    "babel-loader": "^4.1.0",
+    "babel-core": "^4.7.16",
+    "babel-loader": "^4.2.0",
+    "babel-runtime": "^4.7.16",
     "css-loader": "^0.9.0",
     "ejs": "^1.0.0",
     "exports-loader": "^0.6.2",

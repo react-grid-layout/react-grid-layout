@@ -15,7 +15,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: '6to5-loader?experimental=true&runtime=true'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?experimental&optional=runtime'}
       ]
     },
     plugins: [
@@ -27,10 +27,7 @@ module.exports = {
       new webpack.optimize.CommonsChunkPlugin(
         "commons", "commons.js"),
       new webpack.optimize.OccurenceOrderPlugin(),
-      new webpack.optimize.DedupePlugin(),
-      new webpack.ProvidePlugin({
-        to5Runtime: "imports?global=>{}!exports-loader?global.to5Runtime!6to5/runtime"
-      })
+      new webpack.optimize.DedupePlugin()
     ],
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
