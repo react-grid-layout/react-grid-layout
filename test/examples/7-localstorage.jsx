@@ -53,7 +53,7 @@ var LocalStorageLayout = React.createClass({
     return (
       <div>
         <button onClick={this.resetLayout}>Reset Layout</button>
-        <ReactGridLayout 
+        <ReactGridLayout
             {...this.props}
             layout={this.state.layout}
             onLayoutChange={this.onLayoutChange}>
