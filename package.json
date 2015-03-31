@@ -7,7 +7,7 @@
     "lint": "jsxhint lib/ test/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bash build.sh",
-    "build-example": "webpack; node ./examples/generate.js",
+    "build-example": "webpack --config webpack-examples.config.js; node ./examples/generate.js",
     "dev": "echo 'Open http://localhost:4002'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base .",
     "prepublish": "npm run build"
   },

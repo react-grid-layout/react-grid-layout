@@ -94,6 +94,10 @@ render: function() {
   )
 }
 ```
+#### Usage without Browserify/Webpack
+
+A module usable in a `<script>` tag is included [here](/dist/react-grid-layout.min.js). It uses a UMD shim and
+excludes `React`, so it must be otherwise available in your application, either via RequireJS or on `window.React`.
 
 #### Responsive Usage
 
