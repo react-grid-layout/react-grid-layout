@@ -13,6 +13,9 @@ var GridItem = React.createClass({
   mixins: [PureDeepRenderMixin],
 
   propTypes: {
+    // Children must be only a single element
+    children: React.PropTypes.element,
+
     // General grid attributes
     cols: React.PropTypes.number.isRequired,
     containerWidth: React.PropTypes.number.isRequired,
@@ -149,6 +152,42 @@ var GridItem = React.createClass({
   },
 
   /**
+   * This is where we set the grid item's absolute placement. It gets a little tricky because we want to do it
+   * well when server rendering, and the only way to do that properly is to use percentage width/left because
+   * we don't know exactly what the browser viewport is.
+   * Unfortunately, CSS Transforms, which are great for performance, break in this instance because a percentage
+   * left is relative to the item itself, not its container! So we cannot use them on the server rendering pass.
+   *
+   * @param  {Object} pos Position object with width, height, left, top.
+   * @return {Object}     Style object.
+   */
+  createStyle(pos) {
+    var style = {
+      width: pos.width + 'px',
+      height: pos.height + 'px',
+      left: pos.left + 'px',
+      top: pos.top + 'px',
+      position: 'absolute'
+    };
+
+    // This is used for server rendering.
+    if (this.props.usePercentages) {
+      pos.left = utils.perc(pos.left / this.props.containerWidth);
+      style.left = pos.left;
+      style.width = utils.perc(pos.width / this.props.containerWidth);
+    }
+
+    // CSS Transforms support
+    if (this.props.useCSSTransforms) {
+      utils.setTransform(style, [pos.left, pos.top]);
+      delete style.left;
+      delete style.top;
+    }
+
+    return style;
+  },
+
+  /**
    * Mix a Draggable instance into a child.
    * @param  {Element} child    Child element.
    * @param  {Object} position  Position object (pixel values)
@@ -262,41 +301,15 @@ var GridItem = React.createClass({
       pos.height = this.state.resizing.height;
     }
 
-    var child = cloneWithProps(React.Children.only(this.props.children), {
+    // Create the child element. We clone the existing element but modify its className and style.
+    var child = cloneWithProps(this.props.children, {
       // Munge a classname. Use passed in classnames and resizing.
       // React with merge the classNames.
       className: ['react-grid-item', this.props.className, this.state.resizing ? 'resizing' : '',
         this.props.useCSSTransforms ? 'cssTransforms' : ''].join(' '),
       // We can set the width and height on the child, but unfortunately we can't set the position.
-      style: {
-        width: pos.width + 'px',
-        height: pos.height + 'px',
-        left: pos.left + 'px',
-        top: pos.top + 'px',
-        position: 'absolute'
-      }
+      style: this.createStyle(pos)
     });
-
-    // This is where we set the grid item's absolute placement. It gets a little tricky because we want to do it
-    // well when server rendering, and the only way to do that properly is to use percentage width/left because
-    // we don't know exactly what the browser viewport is.
-    //
-    // Unfortunately, CSS Transforms, which are great for performance, break in this instance because a percentage
-    // left is relative to the item itself, not its container! So we cannot use them on the server rendering pass.
-
-    // This is used for server rendering.
-    if (this.props.usePercentages) {
-      pos.left = utils.perc(pos.left / p.containerWidth);
-      child.props.style.left = pos.left;
-      child.props.style.width = utils.perc(pos.width / p.containerWidth);
-    }
-
-    // CSS Transforms support
-    if (this.props.useCSSTransforms) {
-      utils.setTransform(child.props.style, [pos.left, pos.top]);
-      delete child.props.style.left;
-      delete child.props.style.top;
-    }
 
     // Resizable support. This is usually on but the user can toggle it off.
     if (this.props.isResizable) {
