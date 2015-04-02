@@ -27,7 +27,7 @@ module.exports = {
       }),
     ],
     debug: true,
-    devtool: "#inline-source-map",
+    devtool: 'eval',
     publicPath: '/examples/',
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
