@@ -32,33 +32,34 @@
   },
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
-    "deep-equal": "^0.2.1",
+    "deep-equal": "^1.0.0",
     "object-assign": "^2.0.0",
     "react-draggable": "strml/react-draggable",
-    "react-resizable": "^0.2.1"
+    "react-resizable": "^0.2.3"
   },
   "devDependencies": {
-    "babel": "^4.7.3",
+    "babel": "^4.7.16",
     "babel-core": "^4.7.16",
-    "babel-loader": "^4.2.0",
+    "babel-loader": "^4.3.0",
     "babel-runtime": "^4.7.16",
-    "css-loader": "^0.9.0",
-    "ejs": "^1.0.0",
+    "css-loader": "^0.9.1",
+    "ejs": "^2.3.1",
     "exports-loader": "^0.6.2",
     "imports-loader": "^0.6.3",
-    "jsxhint": "^0.9.0",
-    "lodash": "^2.4.1",
-    "precommit-hook": "^1.0.7",
-    "react": "^0.12.2",
-    "react-hot-loader": "^1.0.4",
-    "style-loader": "^0.8.2",
-    "webpack": "^1.4.14",
-    "webpack-dev-server": "^1.7.0"
+    "jsxhint": "^0.14.0",
+    "lodash": "^3.6.0",
+    "pre-commit": "^1.0.6",
+    "precommit-hook": "^2.0.1",
+    "react": "^0.13.1",
+    "react-hot-loader": "^1.2.4",
+    "style-loader": "^0.9.0",
+    "webpack": "^1.7.3",
+    "webpack-dev-server": "^1.8.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "precommit": [
+  "pre-commit": [
     "lint"
   ]
 }
