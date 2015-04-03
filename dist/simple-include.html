@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Dist test</title>
+    <link rel="stylesheet" href="https://rawgit.com/STRML/react-grid-layout/master/css/styles.css" type="text/css" />
+    <link rel="stylesheet" href="https://rawgit.com/STRML/react-grid-layout/master/examples/example-styles.css" type="text/css" />
+    <link rel="stylesheet" href="https://rawgit.com/STRML/react-resizable/master/css/styles.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/JSXTransformer.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react.js"></script>
+    <script type="text/javascript" src="react-grid-layout.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.js"></script>
+    <script type="text/jsx;harmony=true" language="JavaScript 1.7">
+
+    var BasicLayout = React.createClass({
+      mixins: [React.PureRenderMixin],
+
+      componentDidMount: function() {
+        var ev = document.createEvent('Event');
+        ev.initEvent('resize', true, true);
+        window.dispatchEvent(ev);
+      },
+
+      getDefaultProps: function() {
+        return {
+          className: "layout",
+          items: 20,
+          rowHeight: 30,
+          cols: 12
+        };
+      },
+
+      getInitialState: function() {
+        var layout = this.generateLayout();
+        return {
+          layout: layout
+        };
+      },
+
+      generateDOM: function() {
+        return _.map(_.range(this.props.items), function(i) {
+          return (<div key={i}><span className="text">{i}</span></div>);
+        });
+      },
+
+      generateLayout: function() {
+        var p = this.props;
+        var layout = [];
+        var y;
+        for (i = 0; i <= p.items - 1; i++) {
+          y = p['y'] || Math.ceil(Math.random() * 4) + 1;
+          layout[i] = {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i};
+        }
+        return layout;
+      },
+
+      onLayoutChange: function(layout) {
+        //this.props.onLayoutChange(layout);
+      },
+
+      render: function() {
+        return (
+          <ReactGridLayout layout={this.state.layout} onLayoutChange={this.onLayoutChange}
+              {...this.props}>
+            {this.generateDOM()}
+          </ReactGridLayout>
+        );
+      }
+    });
+
+    React.render(<BasicLayout />, document.getElementById('container'));
+
+    </script>
+    </head>
+    <body>
+      <div id="container"></div>
+    </body>
+  </html>

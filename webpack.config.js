@@ -16,7 +16,8 @@ module.exports = {
     devtool: 'source-map',
     externals: {
       // React dep should be available as window.React
-      "react": "React"
+      "react": "React",
+      "react/addons": "React"
     },
     module: {
       loaders: [
@@ -31,6 +32,7 @@ module.exports = {
       }),
       new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.optimize.DedupePlugin(),
+      new webpack.NormalModuleReplacementPlugin(/\/react\/lib\/cloneWithProps/, '../../react-clonewithprops/index.js'),
       // Compress, but don't print warnings to console
       new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
     ],
