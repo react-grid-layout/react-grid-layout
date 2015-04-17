@@ -1,3 +1,8 @@
+0.8.2
+-----
+
+- Fix a crash when initializing with no children.
+
 0.8.1
 -----
 
