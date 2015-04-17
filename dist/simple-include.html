@@ -53,14 +53,9 @@
         return layout;
       },
 
-      onLayoutChange: function(layout) {
-        //this.props.onLayoutChange(layout);
-      },
-
       render: function() {
         return (
-          <ReactGridLayout layout={this.state.layout} onLayoutChange={this.onLayoutChange}
-              {...this.props}>
+          <ReactGridLayout layout={this.state.layout} {...this.props}>
             {this.generateDOM()}
           </ReactGridLayout>
         );
