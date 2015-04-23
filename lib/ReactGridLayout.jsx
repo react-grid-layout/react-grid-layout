@@ -137,12 +137,9 @@ var ReactGridLayout = React.createClass({
     // Use manual width changes in combination with `listenToWindowResize: false`
     if (nextProps.width !== this.props.width) this.onWidthChange(nextProps.width);
 
-    // If children change, regenerate the layout.
-    if (nextProps.children.length !== this.props.children.length) {
-      this.setState({
-        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols)
-      });
-    }
+    this.setState({
+      layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols)
+    });
 
     // Allow parent to set layout directly.
     if (nextProps.layout && JSON.stringify(nextProps.layout) !== JSON.stringify(this.state.layout)) {
