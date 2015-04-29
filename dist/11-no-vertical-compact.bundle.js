@@ -23,8 +23,6 @@ webpackJsonp([10],[
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      className: 'layout',
-	      isDraggable: false,
-	      isResizable: false,
 	      items: 50,
 	      cols: 12,
 	      rowHeight: 30,
