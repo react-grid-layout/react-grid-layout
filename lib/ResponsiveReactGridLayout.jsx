@@ -68,7 +68,7 @@ var ResponsiveReactGridLayout = React.createClass({
     // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
     // for this layout.
     var initialLayout = responsiveUtils.findOrGenerateResponsiveLayout(
-      this.props.layouts, this.props.breakpoints, breakpoint, breakpoint, cols);
+      this.props.layouts, this.props.breakpoints, breakpoint, breakpoint, cols, this.props.verticalCompact);
 
     return {
       layout: initialLayout,
@@ -95,7 +95,7 @@ var ResponsiveReactGridLayout = React.createClass({
       // Since we're setting an entirely new layout object, we must generate a new responsive layout
       // if one does not exist.
       var newLayout = responsiveUtils.findOrGenerateResponsiveLayout(
-        nextProps.layouts, nextProps.breakpoints, this.state.breakpoint, this.state.breakpoint, this.state.cols);
+        nextProps.layouts, nextProps.breakpoints, this.state.breakpoint, this.state.breakpoint, this.state.cols, this.props.verticalLayout);
 
       this.setState({
         layouts: nextProps.layouts,
@@ -134,10 +134,10 @@ var ResponsiveReactGridLayout = React.createClass({
 
       // Find or generate a new one.
       newState.layout = responsiveUtils.findOrGenerateResponsiveLayout(
-        newState.layouts, this.props.breakpoints, newState.breakpoint, this.state.breakpoint, newState.cols);
+        newState.layouts, this.props.breakpoints, newState.breakpoint, this.state.breakpoint, newState.cols, this.props.verticalLayout);
 
       // This adds missing items.
-      newState.layout = utils.synchronizeLayoutWithChildren(newState.layout, this.props.children, newState.cols);
+      newState.layout = utils.synchronizeLayoutWithChildren(newState.layout, this.props.children, newState.cols, this.props.verticalCompact);
 
       // Store this new layout as well.
       newState.layouts[newState.breakpoint] = newState.layout;
