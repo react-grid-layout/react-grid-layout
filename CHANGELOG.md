@@ -1,3 +1,16 @@
+0.8.2
+-----
+
+- Fix a crash when initializing with no children.
+
+0.8.1
+-----
+
+- Fixed React 0.13 warning about `isMounted()`.
+- Update to babel 5.
+- Added browser build for use with a `<script>` tag or in RequireJS builds.
+- Pinned react-draggable version in anticipation of React 0.13 update.
+
 0.8.0
 -----
 

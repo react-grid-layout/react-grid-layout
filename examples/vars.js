@@ -99,4 +99,12 @@ module.exports = [
       'and a min width of 2 if the height >= 3.'
     ]
   },
+  {
+    title: 'No Vertical Compacting (Free Movement)',
+    source: 'no-vertical-compact',
+    paragraphs: [
+      'You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the ' +
+      'property `verticalCompact` to `false` to achieve this effect.'
+    ]
+  },
 ];

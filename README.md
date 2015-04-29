@@ -94,6 +94,10 @@ render: function() {
   )
 }
 ```
+#### Usage without Browserify/Webpack
+
+A module usable in a `<script>` tag is included [here](/dist/react-grid-layout.min.js). It uses a UMD shim and
+excludes `React`, so it must be otherwise available in your application, either via RequireJS or on `window.React`.
 
 #### Responsive Usage
 
@@ -147,6 +151,9 @@ cols: React.PropTypes.number,
 // A selector that will not be draggable.
 draggableCancel: React.PropTypes.string,
 // A selector for the draggable handler
+draggableHandle: React.PropTypes.string,
+
+// If true, the layout will compact vertically
 draggableHandle: React.PropTypes.string,
 
 // Layout is an array of object with the format:
@@ -299,7 +306,8 @@ will be draggable.
   isDraggable: true,
   isResizable: true,
   useCSSTransforms: true,
-  listenToWindowResize: true
+  listenToWindowResize: true,
+  verticalCompact: true
 }
 ```
 

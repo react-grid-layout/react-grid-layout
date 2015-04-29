@@ -14,7 +14,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?experimental'},
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
         {test: /\.jsx$/, exclude: /node_modules/, loader: 'react-hot-loader'}
       ]
     },
@@ -27,7 +27,7 @@ module.exports = {
       }),
     ],
     debug: true,
-    devtool: "#inline-source-map",
+    devtool: 'eval',
     publicPath: '/examples/',
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],

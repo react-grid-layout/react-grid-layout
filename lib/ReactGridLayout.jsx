@@ -12,7 +12,7 @@ var ReactGridLayout = React.createClass({
   mixins: [PureDeepRenderMixin, WidthListeningMixin],
 
   propTypes: {
-    // 
+    //
     // Basic props
     //
 
@@ -26,12 +26,15 @@ var ReactGridLayout = React.createClass({
     // A selector for the draggable handler
     draggableHandle: React.PropTypes.string,
 
+    // If true, the layout will compact vertically
+    verticalCompact: React.PropTypes.bool,
+
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
     layout: function(props, propName, componentName) {
       var layout = props.layout;
       // I hope you're setting the _grid property on the grid items
-      if (layout === undefined) return; 
+      if (layout === undefined) return;
       utils.validateLayout(layout, 'layout');
     },
 
@@ -54,9 +57,9 @@ var ReactGridLayout = React.createClass({
     // Use CSS transforms instead of top/left
     useCSSTransforms: React.PropTypes.bool,
 
-    // 
+    //
     // Callbacks
-    // 
+    //
 
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
@@ -99,13 +102,14 @@ var ReactGridLayout = React.createClass({
   getDefaultProps() {
     return {
       autoSize: true,
-      cols: 12, 
+      cols: 12,
       rowHeight: 150,
       layout: [],
       margin: [10, 10],
       isDraggable: true,
       isResizable: true,
       useCSSTransforms: true,
+      verticalCompact: true,
       onLayoutChange: function(){},
       onDragStart: function() {},
       onDrag: function() {},
@@ -118,9 +122,10 @@ var ReactGridLayout = React.createClass({
 
   getInitialState() {
     return {
-      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols),
-      width: this.props.initialWidth,
-      activeDrag: null
+      activeDrag: null,
+      isMounted: false,
+      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols, this.props.verticalCompact),
+      width: this.props.initialWidth
     };
   },
 
@@ -128,6 +133,7 @@ var ReactGridLayout = React.createClass({
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
+    this.setState({isMounted: true});
   },
 
   componentWillReceiveProps(nextProps) {
@@ -138,14 +144,14 @@ var ReactGridLayout = React.createClass({
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols)
+        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols, this.props.verticalCompact)
       });
     }
 
     // Allow parent to set layout directly.
     if (nextProps.layout && JSON.stringify(nextProps.layout) !== JSON.stringify(this.state.layout)) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols)
+        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols, this.props.verticalCompact)
       });
     }
   },
@@ -197,7 +203,7 @@ var ReactGridLayout = React.createClass({
    * @param {Number} y Y position of the move
    * @param {Event} e The mousedown event
    * @param {Element} element The current dragging DOM element
-   * @param {Object} position Drag information   
+   * @param {Object} position Drag information
    */
   onDrag(i, x, y, {e, element, position}) {
     var layout = this.state.layout;
@@ -217,7 +223,7 @@ var ReactGridLayout = React.createClass({
 
 
     this.setState({
-      layout: utils.compact(layout),
+      layout: utils.compact(layout, this.props.verticalCompact),
       activeDrag: placeholder
     });
   },
@@ -243,7 +249,7 @@ var ReactGridLayout = React.createClass({
     this.props.onDragStop(layout, oldL, l, null, e);
 
     // Set state
-    this.setState({layout: utils.compact(layout), activeDrag: null});
+    this.setState({ layout: utils.compact(layout, this.props.verticalCompact), activeDrag: null });
   },
 
   onResizeStart(i, w, h, {e, element, size}) {
@@ -262,26 +268,26 @@ var ReactGridLayout = React.createClass({
     // Set new width and height.
     l.w = w;
     l.h = h;
-    
+
     // Create placeholder element (display only)
     var placeholder = {
       w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
     };
 
     this.props.onResize(layout, oldL, l, placeholder, e);
-    
+
     // Re-compact the layout and set the drag placeholder.
-    this.setState({layout: utils.compact(layout), activeDrag: placeholder});
+    this.setState({ layout: utils.compact(layout, this.props.verticalCompact), activeDrag: placeholder });
   },
 
   onResizeStop(i, x, y, {e, element, size}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
     var oldL = utils.clone(l);
-        
+
     this.props.onResizeStop(layout, oldL, l, null, e);
 
-    this.setState({activeDrag: null, layout: utils.compact(layout)});
+    this.setState({ activeDrag: null, layout: utils.compact(layout, this.props.verticalCompact) });
   },
 
   /**
@@ -335,7 +341,7 @@ var ReactGridLayout = React.createClass({
     if (l.static || this.props.isResizable === false) resizable = false;
 
     return (
-      <GridItem 
+      <GridItem
         containerWidth={this.state.width}
         cols={this.props.cols}
         margin={this.props.margin}
@@ -351,8 +357,8 @@ var ReactGridLayout = React.createClass({
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
-        useCSSTransforms={this.props.useCSSTransforms && this.isMounted()}
-        usePercentages={!this.isMounted()}
+        useCSSTransforms={this.props.useCSSTransforms && this.state.isMounted}
+        usePercentages={!this.state.isMounted}
         {...l}
         >
         {child}
