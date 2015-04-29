@@ -1,4 +1,4 @@
-webpackJsonp([8],[
+webpackJsonp([10],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -11,8 +11,8 @@ webpackJsonp([8],[
 	var _ = __webpack_require__(21);
 	var ReactGridLayout = __webpack_require__(13);
 
-	var NoDraggingLayout = React.createClass({
-	  displayName: 'NoDraggingLayout',
+	var NoCompactingLayout = React.createClass({
+	  displayName: 'NoCompactingLayout',
 
 	  mixins: [PureRenderMixin],
 
@@ -27,7 +27,9 @@ webpackJsonp([8],[
 	      isResizable: false,
 	      items: 50,
 	      cols: 12,
-	      rowHeight: 30
+	      rowHeight: 30,
+	      // This turns off compaction so you can place items wherever.
+	      verticalCompact: false
 	    };
 	  },
 
@@ -74,7 +76,7 @@ webpackJsonp([8],[
 	  }
 	});
 
-	module.exports = NoDraggingLayout;
+	module.exports = NoCompactingLayout;
 
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(14)(module.exports);
