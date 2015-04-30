@@ -155,7 +155,7 @@ draggableCancel: React.PropTypes.string,
 draggableHandle: React.PropTypes.string,
 
 // If true, the layout will compact vertically
-draggableHandle: React.PropTypes.string,
+verticalCompact: React.PropTypes.bool,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
