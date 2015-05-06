@@ -30,7 +30,7 @@ var ReactGridLayout = React.createClass({
     verticalCompact: React.PropTypes.bool,
 
     // layout is an array of object with the format:
-    // {x: Number, y: Number, w: Number, h: Number}
+    // {x: Number, y: Number, w: Number, h: Number, i: Number}
     layout: function(props, propName, componentName) {
       var layout = props.layout;
       // I hope you're setting the _grid property on the grid items
