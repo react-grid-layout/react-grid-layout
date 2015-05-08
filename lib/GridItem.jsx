@@ -194,9 +194,10 @@ var GridItem = React.createClass({
    * @return {Element}          Child wrapped in Draggable.
    */
   mixinDraggable(child, position) {
+    var start = typeof position.left === "string" ? undefined : {x: position.left, y: position.top};
     return (
       <Draggable
-        start={{x: position.left, y: position.top}}
+        start={start}
         moveOnStartChange={this.props.moveOnStartChange}
         onStop={this.onDragHandler('onDragStop')}
         onStart={this.onDragHandler('onDragStart')}
