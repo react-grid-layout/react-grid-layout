@@ -1,3 +1,14 @@
+0.9.0
+-----
+
+- Move off `react-draggable` fork to mainline `v0.7.2`. Incremented minor (major in the case of
+  npm's `^`, since we are pre-v1) version in case of unforeseen conflicts.
+
+0.8.3
+-----
+
+- Add `verticalCompact` toggle.
+
 0.8.2
 -----
 
