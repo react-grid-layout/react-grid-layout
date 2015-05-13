@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout",
-  "version": "0.8.2",
+  "version": "0.9.1",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -35,8 +35,8 @@
   "dependencies": {
     "deep-equal": "^1.0.0",
     "object-assign": "^2.0.0",
-    "react-draggable": "strml/react-draggable#v0.3.1",
-    "react-resizable": "^0.3.2"
+    "react-draggable": "^0.7.3",
+    "react-resizable": "^0.4.0"
   },
   "devDependencies": {
     "babel": "^5.0.1",

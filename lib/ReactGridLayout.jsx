@@ -30,7 +30,7 @@ var ReactGridLayout = React.createClass({
     verticalCompact: React.PropTypes.bool,
 
     // layout is an array of object with the format:
-    // {x: Number, y: Number, w: Number, h: Number}
+    // {x: Number, y: Number, w: Number, h: Number, i: Number}
     layout: function(props, propName, componentName) {
       var layout = props.layout;
       // I hope you're setting the _grid property on the grid items
@@ -332,8 +332,7 @@ var ReactGridLayout = React.createClass({
 
     // watchStart property tells Draggable to react to changes in the start param
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
-    var drag = this.state.activeDrag;
-    var moveOnStartChange = drag && drag.i === i ? false : true;
+    var moveOnStartChange = !(this.state.activeDrag && this.state.activeDrag.i === i);
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     var draggable, resizable;
