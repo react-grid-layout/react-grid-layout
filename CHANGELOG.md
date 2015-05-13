@@ -1,3 +1,8 @@
+0.9.1
+-----
+
+- Update `react-draggable` to `v0.7.3` to fix a bounds bug (#56).
+
 0.9.0
 -----
 
