@@ -1,3 +1,8 @@
+0.9.2
+-----
+
+- Update `react-draggable` to `v0.8.0` to fix IE11 issues (#29).
+
 0.9.1
 -----
 
