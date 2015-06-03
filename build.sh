@@ -5,4 +5,4 @@ rm -rf ./build
 find ./build -type f -name '*.jsx' -exec sh -c 'mv -f $0 ${0%.jsx}.js' {} \;
 
 # Build browser module
-webpack
+./node_modules/.bin/webpack
