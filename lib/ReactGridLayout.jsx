@@ -125,7 +125,9 @@ var ReactGridLayout = React.createClass({
       activeDrag: null,
       isMounted: false,
       layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols, this.props.verticalCompact),
-      width: this.props.initialWidth
+      width: this.props.initialWidth,
+      oldDragItem: null,
+      oldResizeItem: null
     };
   },
 
@@ -193,7 +195,8 @@ var ReactGridLayout = React.createClass({
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
-    // No need to clone, `l` hasn't changed.
+    this.setState({oldDragItem: utils.clone(l)});
+
     this.props.onDragStart(layout, l, l, null, e);
   },
   /**
@@ -208,8 +211,7 @@ var ReactGridLayout = React.createClass({
   onDrag(i, x, y, {e, element, position}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
-    // Clone layout item so we can pass it to the callback.
-    var oldL = utils.clone(l);
+    var oldL = this.state.oldDragItem;
 
     // Create placeholder (display only)
     var placeholder = {
@@ -241,7 +243,7 @@ var ReactGridLayout = React.createClass({
   onDragStop(i, x, y, {e, element, position}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
-    var oldL = utils.clone(l);
+    var oldL = this.state.oldDragItem;
 
     // Move the element here
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
@@ -249,21 +251,26 @@ var ReactGridLayout = React.createClass({
     this.props.onDragStop(layout, oldL, l, null, e);
 
     // Set state
-    this.setState({ layout: utils.compact(layout, this.props.verticalCompact), activeDrag: null });
+    this.setState({
+      layout: utils.compact(layout, this.props.verticalCompact),
+      activeDrag: null,
+      oldDragItem: null
+    });
   },
 
   onResizeStart(i, w, h, {e, element, size}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
 
-    // No need to clone, item hasn't changed
+    this.setState({oldResizeItem: utils.clone(l)});
+
     this.props.onResizeStart(layout, l, l, null, e);
   },
 
   onResize(i, w, h, {e, element, size}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
-    var oldL = utils.clone(l);
+    var oldL = this.state.oldResizeItem;
 
     // Set new width and height.
     l.w = w;
@@ -283,11 +290,15 @@ var ReactGridLayout = React.createClass({
   onResizeStop(i, x, y, {e, element, size}) {
     var layout = this.state.layout;
     var l = utils.getLayoutItem(layout, i);
-    var oldL = utils.clone(l);
+    var oldL = this.state.oldResizeItem;
 
     this.props.onResizeStop(layout, oldL, l, null, e);
 
-    this.setState({ activeDrag: null, layout: utils.compact(layout, this.props.verticalCompact) });
+    this.setState({
+      layout: utils.compact(layout, this.props.verticalCompact),
+      activeDrag: null,
+      oldResizeItem: null
+    });
   },
 
   /**
