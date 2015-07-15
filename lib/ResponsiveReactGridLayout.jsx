@@ -137,7 +137,7 @@ var ResponsiveReactGridLayout = React.createClass({
         newState.layouts, this.props.breakpoints, newState.breakpoint, this.state.breakpoint, newState.cols, this.props.verticalLayout);
 
       // This adds missing items.
-      newState.layout = utils.synchronizeLayoutWithChildren(newState.layout, this.props.children, newState.cols, this.props.verticalCompact);
+      newState.layout = utils.synchronizeLayoutWithChildren(newState.layout, this.props.children, newState.cols, this.props.verticalCompact, this.props.horizontalCompact);
 
       // Store this new layout as well.
       newState.layouts[newState.breakpoint] = newState.layout;

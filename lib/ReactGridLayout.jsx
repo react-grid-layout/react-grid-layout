@@ -29,6 +29,9 @@ var ReactGridLayout = React.createClass({
     // If true, the layout will compact vertically
     verticalCompact: React.PropTypes.bool,
 
+    // If true, the layout will compact each item horizontally after compacting it vertically
+    horizontalCompact: React.PropTypes.bool,
+
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number}
     layout: function(props, propName, componentName) {
@@ -110,6 +113,7 @@ var ReactGridLayout = React.createClass({
       isResizable: true,
       useCSSTransforms: true,
       verticalCompact: true,
+      horizontalCompact: false,
       onLayoutChange: function(){},
       onDragStart: function() {},
       onDrag: function() {},
@@ -124,7 +128,7 @@ var ReactGridLayout = React.createClass({
     return {
       activeDrag: null,
       isMounted: false,
-      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols, this.props.verticalCompact),
+      layout: utils.synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols, this.props.verticalCompact, this.props.horizontalCompact),
       width: this.props.initialWidth
     };
   },
@@ -144,14 +148,14 @@ var ReactGridLayout = React.createClass({
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols, this.props.verticalCompact)
+        layout: utils.synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols, this.props.verticalCompact, this.props.horizontalCompact)
       });
     }
 
     // Allow parent to set layout directly.
     if (nextProps.layout && JSON.stringify(nextProps.layout) !== JSON.stringify(this.state.layout)) {
       this.setState({
-        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols, this.props.verticalCompact)
+        layout: utils.synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols, this.props.verticalCompact, this.props.horizontalCompact)
       });
     }
   },

@@ -50,6 +50,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 * Resizable widgets
 * Static widgets
 * Vertical auto-packing
+* Horizontal auto-packing
 * Bounds checking for dragging and resizing
 * Widgets may be added or removed without rebuilding grid
 * Layout can be serialized and restored
@@ -156,6 +157,9 @@ draggableHandle: React.PropTypes.string,
 
 // If true, the layout will compact vertically
 verticalCompact: React.PropTypes.bool,
+
+// If true, the layout will compact each item horizontally after compacting them vertically
+horizontalCompact: React.PropTypes.bool,
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}
@@ -309,6 +313,7 @@ will be draggable.
   useCSSTransforms: true,
   listenToWindowResize: true,
   verticalCompact: true
+  horizontalCompact: false
 }
 ```
 
