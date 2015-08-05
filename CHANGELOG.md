@@ -1,3 +1,8 @@
+0.8.5
+-----
+
+- Fixup for possible duplicated React external.
+
 0.8.4
 -----
 
