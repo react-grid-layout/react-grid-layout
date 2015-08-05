@@ -15,9 +15,13 @@ module.exports = {
     },
     devtool: 'source-map',
     externals: {
-      // React dep should be available as window.React
-      "react": "React",
-      "react/addons": "React"
+      'react': {
+        'commonjs': 'react',
+        'commonjs2': 'react',
+        'amd': 'react',
+        // React dep should be available as window.React, not window.react
+        'root': 'React'
+      }
     },
     module: {
       loaders: [
