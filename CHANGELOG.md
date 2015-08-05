@@ -1,3 +1,13 @@
+0.8.4
+-----
+
+- Update underlying react-draggable fork to remove emptyFunction import.
+
+0.8.3
+-----
+
+- Add property to disable vertical compacting.
+
 0.8.2
 -----
 
