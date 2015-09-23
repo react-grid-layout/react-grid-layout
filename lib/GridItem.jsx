@@ -4,14 +4,11 @@ var cloneWithProps = require('react/lib/cloneWithProps');
 var utils = require('./utils');
 var Draggable = require('react-draggable');
 var Resizable = require('react-resizable').Resizable;
-var PureDeepRenderMixin = require('./mixins/PureDeepRenderMixin');
 
 /**
  * An individual item within a ReactGridLayout.
  */
 var GridItem = React.createClass({
-  mixins: [PureDeepRenderMixin],
-
   propTypes: {
     // Children must be only a single element
     children: React.PropTypes.element,

@@ -2,14 +2,13 @@
 var React = require('react');
 var GridItem = require('./GridItem');
 var utils = require('./utils');
-var PureDeepRenderMixin = require('./mixins/PureDeepRenderMixin');
 var WidthListeningMixin = require('./mixins/WidthListeningMixin');
 
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
  */
 var ReactGridLayout = React.createClass({
-  mixins: [PureDeepRenderMixin, WidthListeningMixin],
+  mixins: [WidthListeningMixin],
 
   propTypes: {
     //
