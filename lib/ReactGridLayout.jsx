@@ -116,7 +116,8 @@ var ReactGridLayout = React.createClass({
       onDragStop: function() {},
       onResizeStart: function() {},
       onResize: function() {},
-      onResizeStop: function() {}
+      onResizeStop: function() {},
+      scrollableAncestor: document
     };
   },
 
@@ -325,6 +326,7 @@ var ReactGridLayout = React.createClass({
         isDraggable={false}
         isResizable={false}
         useCSSTransforms={this.props.useCSSTransforms}
+        scrollableAncestor={this.props.scrollableAncestor}
         >
         <div />
       </GridItem>
@@ -369,6 +371,7 @@ var ReactGridLayout = React.createClass({
         isResizable={resizable}
         useCSSTransforms={this.props.useCSSTransforms && this.state.isMounted}
         usePercentages={!this.state.isMounted}
+        scrollableAncestor={this.props.scrollableAncestor}
         {...l}
         >
         {child}
