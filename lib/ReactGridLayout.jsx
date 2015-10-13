@@ -264,7 +264,7 @@ var ReactGridLayout = React.createClass({
 
     this.setState({oldResizeItem: utils.clone(l)});
 
-    this.props.onResizeStart(layout, l, l, null, e);
+    this.props.onResizeStart(layout, l, l, null, e, element);
   },
 
   onResize(i, w, h, {e, element, size}) {
@@ -281,7 +281,7 @@ var ReactGridLayout = React.createClass({
       w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
     };
 
-    this.props.onResize(layout, oldL, l, placeholder, e);
+    this.props.onResize(layout, oldL, l, placeholder, e, element);
 
     // Re-compact the layout and set the drag placeholder.
     this.setState({ layout: utils.compact(layout, this.props.verticalCompact), activeDrag: placeholder });
@@ -292,7 +292,7 @@ var ReactGridLayout = React.createClass({
     var l = utils.getLayoutItem(layout, i);
     var oldL = this.state.oldResizeItem;
 
-    this.props.onResizeStop(layout, oldL, l, null, e);
+    this.props.onResizeStop(layout, oldL, l, null, e, element);
 
     this.setState({
       layout: utils.compact(layout, this.props.verticalCompact),
