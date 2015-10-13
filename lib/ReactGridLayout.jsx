@@ -197,7 +197,7 @@ var ReactGridLayout = React.createClass({
 
     this.setState({oldDragItem: utils.clone(l)});
 
-    this.props.onDragStart(layout, l, l, null, e);
+    this.props.onDragStart(layout, l, l, null, e, element);
   },
   /**
    * Each drag movement create a new dragelement and move the element to the dragged location
@@ -221,7 +221,7 @@ var ReactGridLayout = React.createClass({
     // Move the element to the dragged location.
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
-    this.props.onDrag(layout, oldL, l, placeholder, e);
+    this.props.onDrag(layout, oldL, l, placeholder, e, element);
 
 
     this.setState({
@@ -248,7 +248,7 @@ var ReactGridLayout = React.createClass({
     // Move the element here
     layout = utils.moveElement(layout, l, x, y, true /* isUserAction */);
 
-    this.props.onDragStop(layout, oldL, l, null, e);
+    this.props.onDragStop(layout, oldL, l, null, e, element);
 
     // Set state
     this.setState({
