@@ -1,6 +1,5 @@
 'use strict';
 var React = require('react');
-var cloneWithProps = require('react/lib/cloneWithProps');
 var utils = require('./utils');
 var Draggable = require('react-draggable');
 var Resizable = require('react-resizable').Resizable;
@@ -303,7 +302,7 @@ var GridItem = React.createClass({
     }
 
     // Create the child element. We clone the existing element but modify its className and style.
-    var child = cloneWithProps(this.props.children, {
+    var child = React.cloneElement(this.props.children, {
       // Munge a classname. Use passed in classnames and resizing.
       // React with merge the classNames.
       className: ['react-grid-item', this.props.className, this.state.resizing ? 'resizing' : '',
