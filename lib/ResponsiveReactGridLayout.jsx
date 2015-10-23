@@ -47,7 +47,10 @@ var ResponsiveReactGridLayout = React.createClass({
 
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
-    onLayoutChange: React.PropTypes.func
+    onLayoutChange: React.PropTypes.func,
+
+    // Calls back with (containerWidth, margin, cols)
+    onWidthChange: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -56,7 +59,8 @@ var ResponsiveReactGridLayout = React.createClass({
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
       layouts: {},
       onBreakpointChange: function(){},
-      onLayoutChange: function(){}
+      onLayoutChange: function(){},
+      onWidthChange: function(containerWidth, margin, cols){}
     };
   },
 
@@ -144,7 +148,7 @@ var ResponsiveReactGridLayout = React.createClass({
 
       this.props.onBreakpointChange(newState.breakpoint, newState.cols);
     }
-
+    this.props.onWidthChange(width, this.props.margin, newState.cols);
     this.setState(newState);
   },
 
