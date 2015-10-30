@@ -205,6 +205,7 @@ var GridItem = React.createClass({
         handle={this.props.handle}
         cancel={".react-resizable-handle " + this.props.cancel}
         useCSSTransforms={this.props.useCSSTransforms}
+        scrollableAncestor={this.props.scrollableAncestor}
         >
         {child}
       </Draggable>
