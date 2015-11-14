@@ -2,7 +2,6 @@
 var React = require('react');
 var utils = require('./utils');
 var responsiveUtils = require('./responsiveUtils');
-var PureDeepRenderMixin = require('./mixins/PureDeepRenderMixin');
 var WidthListeningMixin = require('./mixins/WidthListeningMixin');
 var ReactGridLayout = require('./ReactGridLayout');
 
@@ -10,7 +9,7 @@ var ReactGridLayout = require('./ReactGridLayout');
  * A wrapper around ReactGridLayout to support responsive breakpoints.
  */
 var ResponsiveReactGridLayout = React.createClass({
-  mixins: [PureDeepRenderMixin, WidthListeningMixin],
+  mixins: [WidthListeningMixin],
 
   propTypes: {
     //
