@@ -197,7 +197,7 @@ listenToWindowResize: React.PropTypes.bool,
 onLayoutChange: React.PropTypes.func,
 
 //
-// All callbacks below have signature (layout, oldItem, newItem, placeholder, e).
+// All callbacks below have signature (layout, oldItem, newItem, placeholder, e, element).
 // 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
 //
 
