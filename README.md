@@ -242,6 +242,10 @@ onBreakpointChange: React.PropTypes.func,
 // Callback so you can save the layout.
 // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
 onLayoutChange: React.PropTypes.func
+
+// Callback when the width changes, so you can modify the layout as needed.
+// Calls back with (containerWidth, margin, cols)
+onWidthChange: React.Proptypes.func
 ```
 
 #### Grid Item Props
