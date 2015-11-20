@@ -52,7 +52,6 @@
     "pre-commit": "^1.1.2",
     "precommit-hook": "^3.0.0",
     "react": "^0.14.2",
-    "react-clonewithprops": "^1.0.1",
     "react-dom": "^0.14.2",
     "react-hot-loader": "^1.3.0",
     "style-loader": "^0.13.0",
