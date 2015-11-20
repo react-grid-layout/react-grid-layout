@@ -46,6 +46,7 @@ var AddRemoveLayout = React.createClass({
   },
 
   onAddItem() {
+    /*eslint no-console: 0*/
     console.log('adding', 'n' + this.state.newCounter);
     this.setState({
       // Add a new item. It must have a unique key!

@@ -4,7 +4,7 @@
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib/ test/",
+    "lint": "eslint --ext .js,.jsx lib/ test/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bash build.sh",
     "build-example": "webpack --config webpack-examples.config.js; node ./examples/generate.js",
@@ -43,6 +43,7 @@
     "babel-core": "^5.x",
     "babel-eslint": "^4.1.5",
     "babel-loader": "^5.x",
+    "babel-plugin-typecheck": "^3.0.1",
     "babel-runtime": "5.x",
     "css-loader": "^0.23.0",
     "ejs": "^2.3.4",

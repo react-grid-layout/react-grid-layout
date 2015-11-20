@@ -22,7 +22,7 @@ var LocalStorageLayout = React.createClass({
     if (global.localStorage) {
       try {
         ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-      } catch(e) {}
+      } catch(e) {/*ignore*/}
     }
     return {layout: ls.layout || []};
   },
@@ -44,6 +44,7 @@ var LocalStorageLayout = React.createClass({
   },
 
   onLayoutChange(layout) {
+    /*eslint no-console: 0*/
     console.log('layout changed', layout);
     this.props.onLayoutChange(layout); // updates status display
     this.setState({layout: layout});
