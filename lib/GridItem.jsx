@@ -1,10 +1,10 @@
 'use strict';
 var React = require('react');
-var cloneWithProps = require('react/lib/cloneWithProps');
 var utils = require('./utils');
 var Draggable = require('react-draggable');
 var Resizable = require('react-resizable').Resizable;
 var PureDeepRenderMixin = require('./mixins/PureDeepRenderMixin');
+var assign = require('object-assign');
 
 /**
  * An individual item within a ReactGridLayout.
@@ -206,7 +206,7 @@ var GridItem = React.createClass({
         cancel={".react-resizable-handle " + this.props.cancel}
         useCSSTransforms={this.props.useCSSTransforms}
         >
-        {child}
+        <span>{child}</span>
       </Draggable>
     );
   },
@@ -303,13 +303,13 @@ var GridItem = React.createClass({
     }
 
     // Create the child element. We clone the existing element but modify its className and style.
-    var child = cloneWithProps(this.props.children, {
+    var child = React.cloneElement(this.props.children, {
       // Munge a classname. Use passed in classnames and resizing.
       // React with merge the classNames.
       className: ['react-grid-item', this.props.className, this.state.resizing ? 'resizing' : '',
         this.props.useCSSTransforms ? 'cssTransforms' : ''].join(' '),
       // We can set the width and height on the child, but unfortunately we can't set the position.
-      style: this.createStyle(pos)
+      style: assign({}, this.props.style, this.createStyle(pos))
     });
 
     // Resizable support. This is usually on but the user can toggle it off.

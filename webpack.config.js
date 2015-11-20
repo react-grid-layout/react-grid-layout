@@ -35,8 +35,6 @@ module.exports = {
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
-    // See #40 - duplicated React modules don't play nice
-    new webpack.NormalModuleReplacementPlugin(/\/react\/lib\/cloneWithProps/, "../../react-clonewithprops/index.js"),
     // Compress, but don't print warnings to console
     new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
   ],
