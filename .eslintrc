@@ -40,5 +40,10 @@
   },
   "ecmaFeatures": {
     "jsx": true
+  },
+  "globals": {
+    // For Flow
+    "ReactElement",
+    "ReactClass"
   }
 }

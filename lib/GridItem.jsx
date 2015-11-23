@@ -6,7 +6,6 @@ import {Resizable} from 'react-resizable';
 import assign from 'object-assign';
 
 import type {Position, Size} from './utils';
-/*global ReactElement*/
 
 /**
  * An individual item within a ReactGridLayout.
@@ -169,8 +168,7 @@ export default class GridItem extends Component {
 
     // This is used for server rendering.
     if (this.props.usePercentages) {
-      pos.left = perc(pos.left / this.props.containerWidth);
-      style.left = pos.left;
+      style.left = perc(pos.left / this.props.containerWidth);
       style.width = perc(pos.width / this.props.containerWidth);
     }
 

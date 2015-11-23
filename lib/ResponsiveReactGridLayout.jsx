@@ -6,16 +6,15 @@ import ReactGridLayout from './ReactGridLayout';
 // import WidthListeningMixin from './mixins/WidthListeningMixin';
 
 // Types
-/*global ReactElement*/
 import type {Layout} from './utils';
-type ResponsiveLayout = {lg?: Layout, md?: Layout, sm?: Layout, xs?: Layout, xxs?: Layout};
+import type {ResponsiveLayout} from './responsiveUtils';
 type State = {
   layout: Layout,
   layouts: ResponsiveLayout,
   breakpoint: string,
   cols: number,
   width: number
-}
+};
 // End Types
 
 /**

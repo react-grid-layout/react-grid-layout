@@ -6,7 +6,6 @@ import GridItem from './GridItem';
 // import WidthListeningMixin from './mixins/WidthListeningMixin';
 
 // Types
-/*global ReactElement*/
 import type {Layout, LayoutItem, ResizeEvent, DragEvent} from './utils';
 type State = {
   activeDrag: ?LayoutItem,
@@ -205,6 +204,7 @@ export default class ReactGridLayout extends React.Component {
   onDragStart(i: number, x: number, y: number, {e, element}: DragEvent) {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
+    if (!l) return;
 
     this.setState({oldDragItem: clone(l)});
 
@@ -222,6 +222,7 @@ export default class ReactGridLayout extends React.Component {
   onDrag(i: number, x: number, y: number, {e, element}: DragEvent) {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
+    if (!l) return;
     var oldL = this.state.oldDragItem;
 
     // Create placeholder (display only)
@@ -254,6 +255,7 @@ export default class ReactGridLayout extends React.Component {
   onDragStop(i: number, x: number, y: number, {e, element}: DragEvent) {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
+    if (!l) return;
     var oldL = this.state.oldDragItem;
 
     // Move the element here
@@ -272,6 +274,7 @@ export default class ReactGridLayout extends React.Component {
   onResizeStart(i: number, w: number, h: number, {e, element}: ResizeEvent) {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
+    if (!l) return;
 
     this.setState({oldResizeItem: clone(l)});
 
@@ -281,6 +284,7 @@ export default class ReactGridLayout extends React.Component {
   onResize(i: number, w: number, h: number, {e, element}: ResizeEvent) {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
+    if (!l) return;
     var oldL = this.state.oldResizeItem;
 
     // Set new width and height.
@@ -348,9 +352,11 @@ export default class ReactGridLayout extends React.Component {
    * @param  {Number}  i     Index of element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: ReactElement): ReactElement {
-    var i = child.key;
+  processGridItem(child: ReactElement): ?ReactElement {
+    if (!child.key) return;
+    var i = parseInt(child.key, 10);
     var l = getLayoutItem(this.state.layout, i);
+    if (!l) return;
 
     // watchStart property tells Draggable to react to changes in the start param
     // Must be turned off on the item we're dragging as the changes in `activeDrag` cause rerenders
