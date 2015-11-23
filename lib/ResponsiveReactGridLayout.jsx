@@ -3,7 +3,7 @@ import React from 'react';
 import {synchronizeLayoutWithChildren, validateLayout} from './utils';
 import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveLayout} from './responsiveUtils';
 import ReactGridLayout from './ReactGridLayout';
-// import WidthListeningMixin from './mixins/WidthListeningMixin';
+import ListensToWidth from './components/ListensToWidth';
 
 // Types
 import type {Layout} from './utils';
@@ -20,7 +20,7 @@ type State = {
 /**
  * A wrapper around ReactGridLayout to support responsive breakpoints.
  */
-export default class ResponsiveReactGridLayout extends React.Component {
+class ResponsiveReactGridLayout extends React.Component {
   // mixins: [PureDeepRenderMixin, WidthListeningMixin], // FIXME
 
   static propTypes = {
@@ -75,8 +75,8 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
   state: State;
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     let breakpoint = this.props.breakpoint ||
       getBreakpointFromWidth(this.props.breakpoints, this.props.initialWidth);
@@ -126,17 +126,17 @@ export default class ResponsiveReactGridLayout extends React.Component {
    * Bubble this up, add `layouts` object.
    * @param  {Array} layout Layout from inner Grid.
    */
-  onLayoutChange(layout: Layout) {
+  onLayoutChange = (layout: Layout) => {
     this.state.layouts[this.state.breakpoint] = layout;
     this.setState({layout: layout, layouts: this.state.layouts});
     this.props.onLayoutChange(layout, this.state.layouts);
-  }
+  };
 
   /**
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(width: number) {
+  onWidthChange = (width: number) => {
     // Set new breakpoint
     let newState: Object = {
       width: width,
@@ -166,7 +166,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     this.props.onWidthChange(width, this.props.margin, newState.cols);
     this.setState(newState);
-  }
+  };
 
   render(): ReactElement {
     // Don't pass responsive props to RGL.
@@ -184,3 +184,5 @@ export default class ResponsiveReactGridLayout extends React.Component {
     );
   }
 }
+
+export default ListensToWidth(ResponsiveReactGridLayout);

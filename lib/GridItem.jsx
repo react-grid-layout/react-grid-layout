@@ -47,7 +47,7 @@ export default class GridItem extends Component {
     },
 
     // ID is nice to have for callbacks
-    i: React.PropTypes.string.isRequired,
+    i: React.PropTypes.number.isRequired,
 
     // If true, item will be repositioned when x/y/w/h change
     moveOnStartChange: React.PropTypes.bool,
@@ -63,6 +63,7 @@ export default class GridItem extends Component {
     // Flags
     isDraggable: React.PropTypes.bool,
     isResizable: React.PropTypes.bool,
+
     // Use CSS transforms instead of top/left
     useCSSTransforms: React.PropTypes.bool,
     isPlaceholder: React.PropTypes.bool,
@@ -299,8 +300,13 @@ export default class GridItem extends Component {
     var child = React.cloneElement(this.props.children, {
       // Munge a classname. Use passed in classnames and resizing.
       // React with merge the classNames.
-      className: ['react-grid-item', this.props.className, this.state.resizing ? 'resizing' : '',
-        this.props.useCSSTransforms ? 'cssTransforms' : ''].join(' '),
+      className: [
+        'react-grid-item',
+        this.props.className,
+        this.props.isDraggable ? '' : 'static',
+        this.state.resizing ? 'resizing' : '',
+        this.props.useCSSTransforms ? 'cssTransforms' : '',
+      ].join(' '),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: assign({}, this.props.style, this.createStyle(pos))
     });

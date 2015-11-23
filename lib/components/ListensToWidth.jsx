@@ -24,16 +24,16 @@ export default (ComposedComponent: ReactClass): ReactClass => {
     };
 
     componentDidMount() {
-      if (this.props.listenToWindowResize) {
-        window.addEventListener('resize', this.onWindowResize);
-        // This is intentional. Once to properly set the breakpoint and resize the elements,
-        // and again to compensate for any scrollbar that appeared because of the first step.
-        this.onWindowResize();
-        this.onWindowResize();
-      }
+      if (!this.props.listenToWindowResize) return;
+      window.addEventListener('resize', this.onWindowResize);
+      // This is intentional. Once to properly set the breakpoint and resize the elements,
+      // and again to compensate for any scrollbar that appeared because of the first step.
+      this.onWindowResize();
+      this.onWindowResize();
     }
 
     componentWillUnmount() {
+      if (!this.props.listenToWindowResize) return;
       window.removeEventListener('resize', this.onWindowResize);
     }
 

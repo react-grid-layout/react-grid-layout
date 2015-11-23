@@ -3,7 +3,7 @@ import React from 'react';
 import {bottom, clone, compact, getLayoutItem, moveElement,
         synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
-// import WidthListeningMixin from './mixins/WidthListeningMixin';
+import ListensToWidth from './components/ListensToWidth';
 
 // Types
 import type {Layout, LayoutItem, ResizeEvent, DragEvent} from './utils';
@@ -20,7 +20,7 @@ type State = {
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
  */
-export default class ReactGridLayout extends React.Component {
+class ReactGridLayout extends React.Component {
   // mixins: [PureDeepRenderMixin, WidthListeningMixin], // FIXME
 
   static propTypes = {
@@ -188,9 +188,9 @@ export default class ReactGridLayout extends React.Component {
   /**
    * When the width changes, save it to state. This helps with left/width calculations.
    */
-  onWidthChange(width: number) {
+  onWidthChange = (width: number) => {
     this.setState({width: width});
-  }
+  };
 
   /**
    * When dragging starts
@@ -201,7 +201,7 @@ export default class ReactGridLayout extends React.Component {
    * @param {Element} element The current dragging DOM element
    * @param {Object} position Drag information
    */
-  onDragStart(i: number, x: number, y: number, {e, element}: DragEvent) {
+  onDragStart = (i: number, x: number, y: number, {e, element}: DragEvent) => {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -209,7 +209,7 @@ export default class ReactGridLayout extends React.Component {
     this.setState({oldDragItem: clone(l)});
 
     this.props.onDragStart(layout, l, l, null, e, element);
-  }
+  };
   /**
    * Each drag movement create a new dragelement and move the element to the dragged location
    * @param {Number} i Index of the child
@@ -219,7 +219,7 @@ export default class ReactGridLayout extends React.Component {
    * @param {Element} element The current dragging DOM element
    * @param {Object} position Drag information
    */
-  onDrag(i: number, x: number, y: number, {e, element}: DragEvent) {
+  onDrag = (i: number, x: number, y: number, {e, element}: DragEvent) => {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -240,7 +240,7 @@ export default class ReactGridLayout extends React.Component {
       layout: compact(layout, this.props.verticalCompact),
       activeDrag: placeholder
     });
-  }
+  };
 
   /**
    * When dragging stops, figure out which position the element is closest to and update its x and y.
@@ -252,7 +252,7 @@ export default class ReactGridLayout extends React.Component {
    * @param {Element} element The current dragging DOM element
    * @param {Object} position Drag information
    */
-  onDragStop(i: number, x: number, y: number, {e, element}: DragEvent) {
+  onDragStop = (i: number, x: number, y: number, {e, element}: DragEvent) => {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -269,9 +269,9 @@ export default class ReactGridLayout extends React.Component {
       activeDrag: null,
       oldDragItem: null
     });
-  }
+  };
 
-  onResizeStart(i: number, w: number, h: number, {e, element}: ResizeEvent) {
+  onResizeStart = (i: number, w: number, h: number, {e, element}: ResizeEvent) => {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -279,9 +279,9 @@ export default class ReactGridLayout extends React.Component {
     this.setState({oldResizeItem: clone(l)});
 
     this.props.onResizeStart(layout, l, l, null, e, element);
-  }
+  };
 
-  onResize(i: number, w: number, h: number, {e, element}: ResizeEvent) {
+  onResize = (i: number, w: number, h: number, {e, element}: ResizeEvent) => {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -300,9 +300,9 @@ export default class ReactGridLayout extends React.Component {
 
     // Re-compact the layout and set the drag placeholder.
     this.setState({ layout: compact(layout, this.props.verticalCompact), activeDrag: placeholder });
-  }
+  };
 
-  onResizeStop(i: number, w: number, h: number, {e, element}: ResizeEvent) {
+  onResizeStop = (i: number, w: number, h: number, {e, element}: ResizeEvent) => {
     var layout = this.state.layout;
     var l = getLayoutItem(layout, i);
     var oldL = this.state.oldResizeItem;
@@ -314,7 +314,7 @@ export default class ReactGridLayout extends React.Component {
       activeDrag: null,
       oldResizeItem: null
     });
-  }
+  };
 
   /**
    * Create a placeholder object.
@@ -401,9 +401,11 @@ export default class ReactGridLayout extends React.Component {
 
     return (
       <div {...props} className={className} style={{height: this.containerHeight()}}>
-        {React.Children.map(this.props.children, this.processGridItem)}
+        {React.Children.map(this.props.children, this.processGridItem.bind(this))}
         {this.placeholder()}
       </div>
     );
   }
 }
+
+export default ListensToWidth(ReactGridLayout);
