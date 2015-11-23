@@ -14,8 +14,23 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0&plugins=typecheck'},
-        {test: /\.jsx$/, exclude: /node_modules/, loader: 'react-hot-loader'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader',
+          query: {
+            cacheDirectory: true,
+            plugins: ['react-transform'],
+            extra: {
+              'react-transform': {
+                transforms: [
+                  {
+                    transform: 'react-transform-hmr',
+                    imports: ['react'],
+                    locals: ['module']
+                  }
+                ]
+              }
+            }
+          }
+        }
       ]
     },
     plugins: [
