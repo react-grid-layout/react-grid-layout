@@ -1,4 +1,4 @@
 {
   "stage": 0,
-  "plugins": ["react-display-name"]
+  "plugins": ["react-class-display-name"]
 }

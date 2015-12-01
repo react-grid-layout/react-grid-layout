@@ -43,7 +43,7 @@
     "babel-core": "^5.x",
     "babel-eslint": "^4.1.5",
     "babel-loader": "^5.x",
-    "babel-plugin-react-display-name": "^2.0.0",
+    "babel-plugin-react-class-display-name": "^0.1.0",
     "babel-plugin-react-transform": "^1.1.1",
     "babel-plugin-typecheck": "^2.0.0",
     "babel-runtime": "5.x",
