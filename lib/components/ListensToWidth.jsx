@@ -1,5 +1,5 @@
 // @flow
-import { PropTypes, Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 
 type Props = {initialWidth: number, listenToWindowResize: boolean};
