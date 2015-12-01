@@ -1,3 +1,17 @@
+0.10.0-beta0
+------------
+
+*This release is unstable!*
+
+- React 0.14 compatibility.
+- This release includes a rewrite of much of the project in ES6/7 style with Flow typing.
+- This release brings us onto mainline (1.x) react-draggable and react-resizable, eliminating
+  the previous github dependency.
+- 0.10.0 is not yet complete. Use this release at your own risk.
+
+Known bugs:
+  - The placeholder box does not properly follow the mouse and stays pinned to the active drag.
+
 0.9.2
 -----
 
