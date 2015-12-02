@@ -1,3 +1,8 @@
+0.10.0-beta1
+------------
+
+- Fixed a React import bug on ListensToWidth.jsx (#130; thanks @mrblueblue)
+
 0.10.0-beta0
 ------------
 
