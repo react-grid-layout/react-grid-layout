@@ -47,7 +47,7 @@ export default class GridItem extends Component {
     },
 
     // ID is nice to have for callbacks
-    i: React.PropTypes.number.isRequired,
+    i: React.PropTypes.string.isRequired,
 
     // If true, item will be repositioned when x/y/w/h change
     moveOnStartChange: React.PropTypes.bool,
