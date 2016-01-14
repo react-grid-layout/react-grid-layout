@@ -106,10 +106,10 @@ export default class GridItem extends Component {
     var p = this.props;
     var width = p.containerWidth - p.margin[0];
     var out = {
-      left: width * (x / p.cols) + p.margin[0],
-      top: p.rowHeight * y + p.margin[1],
-      width: width * (w / p.cols) - p.margin[0],
-      height: h * p.rowHeight - p.margin[1]
+      left: Math.round(width * (x / p.cols) + p.margin[0]),
+      top: Math.round(p.rowHeight * y + p.margin[1]),
+      width: Math.round(width * (w / p.cols) - p.margin[0]),
+      height: Math.round(h * p.rowHeight - p.margin[1])
     };
     return out;
   }
