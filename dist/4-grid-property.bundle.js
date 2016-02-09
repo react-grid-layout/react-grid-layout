@@ -4,12 +4,12 @@ webpackJsonp([6],[
 
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
-	var _extends = __webpack_require__(10)['default'];
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(7);
-	var PureRenderMixin = __webpack_require__(9);
-	var _ = __webpack_require__(21);
-	var ReactGridLayout = __webpack_require__(13);
+	var React = __webpack_require__(4);
+	var PureRenderMixin = __webpack_require__(10);
+	var _ = __webpack_require__(15);
+	var ReactGridLayout = __webpack_require__(8);
 
 	var GridPropertyLayout = React.createClass({
 	  displayName: 'GridPropertyLayout',
@@ -22,13 +22,12 @@ webpackJsonp([6],[
 	      isResizable: true,
 	      items: 20,
 	      rowHeight: 30,
-	      cols: 12 };
+	      cols: 12
+	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    return {};
 	  },
-
 	  generateDOM: function generateDOM() {
 	    // Generate items with properties from the layout, rather than pass the layout directly
 	    var layout = this.generateLayout();
@@ -44,7 +43,6 @@ webpackJsonp([6],[
 	      );
 	    });
 	  },
-
 	  generateLayout: function generateLayout() {
 	    var p = this.props;
 	    return _.map(new Array(p.items), function (item, i) {
@@ -53,6 +51,7 @@ webpackJsonp([6],[
 	      return { x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i };
 	    });
 	  },
+
 
 	  onLayoutChange: function onLayoutChange(layout) {
 	    this.props.onLayoutChange(layout);
@@ -71,9 +70,9 @@ webpackJsonp([6],[
 	module.exports = GridPropertyLayout;
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(14)(module.exports);
+	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }
 ]);

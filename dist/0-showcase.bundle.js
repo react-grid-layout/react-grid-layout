@@ -4,12 +4,14 @@ webpackJsonp([13],[
 
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
-	var _extends = __webpack_require__(10)['default'];
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(7);
-	var PureRenderMixin = __webpack_require__(9);
-	var _ = __webpack_require__(21);
-	var ResponsiveReactGridLayout = __webpack_require__(13).Responsive;
+	var React = __webpack_require__(4);
+	var PureRenderMixin = __webpack_require__(10);
+	var _ = __webpack_require__(15);
+	var WidthProvider = __webpack_require__(8).WidthProvider;
+	var ResponsiveReactGridLayout = __webpack_require__(8).Responsive;
+	ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
 	var BasicLayout = React.createClass({
 	  displayName: 'BasicLayout',
@@ -22,25 +24,23 @@ webpackJsonp([13],[
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      className: 'layout',
+	      className: "layout",
 	      rowHeight: 30,
 	      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }
 	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    return {
 	      layouts: { lg: this.generateLayout() },
 	      currentBreakpoint: 'lg'
 	    };
 	  },
-
 	  generateDOM: function generateDOM() {
 	    return _.map(this.state.layouts.lg, function (l, i) {
 	      return React.createElement(
 	        'div',
-	        { key: i, className: l['static'] ? 'static' : '' },
-	        l['static'] ? React.createElement(
+	        { key: i, className: l.static ? 'static' : '' },
+	        l.static ? React.createElement(
 	          'span',
 	          { className: 'text', title: 'This item is static and cannot be removed or resized.' },
 	          'Static - ',
@@ -53,31 +53,33 @@ webpackJsonp([13],[
 	      );
 	    });
 	  },
-
 	  generateLayout: function generateLayout() {
 	    var p = this.props;
 	    return _.map(_.range(0, 25), function (item, i) {
 	      var y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1;
-	      return { x: _.random(0, 5) * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i, 'static': Math.random() < 0.05 };
+	      return {
+	        x: _.random(0, 5) * 2 % 12,
+	        y: Math.floor(i / 6) * y,
+	        w: 2,
+	        h: y,
+	        i: i.toString(),
+	        static: Math.random() < 0.05
+	      };
 	    });
 	  },
-
 	  onBreakpointChange: function onBreakpointChange(breakpoint) {
 	    this.setState({
 	      currentBreakpoint: breakpoint
 	    });
 	  },
-
 	  onLayoutChange: function onLayoutChange(layout) {
 	    this.props.onLayoutChange(layout);
 	  },
-
 	  onNewLayout: function onNewLayout() {
 	    this.setState({
 	      layouts: { lg: this.generateLayout() }
 	    });
 	  },
-
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -89,7 +91,7 @@ webpackJsonp([13],[
 	        this.state.currentBreakpoint,
 	        ' (',
 	        this.props.cols[this.state.currentBreakpoint],
-	        ' columns)'
+	        'columns)'
 	      ),
 	      React.createElement(
 	        'button',
@@ -113,9 +115,9 @@ webpackJsonp([13],[
 	module.exports = BasicLayout;
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(14)(module.exports);
+	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }
 ]);

@@ -4,12 +4,12 @@ webpackJsonp([4],[
 
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
-	var _extends = __webpack_require__(10)['default'];
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(7);
-	var PureRenderMixin = __webpack_require__(9);
-	var _ = __webpack_require__(21);
-	var ResponsiveReactGridLayout = __webpack_require__(13).Responsive;
+	var React = __webpack_require__(4);
+	var PureRenderMixin = __webpack_require__(10);
+	var _ = __webpack_require__(15);
+	var ResponsiveReactGridLayout = __webpack_require__(8).Responsive;
 
 	/**
 	 * This layout demonstrates how to use a grid with a dynamic number of elements.
@@ -21,12 +21,11 @@ webpackJsonp([4],[
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      className: 'layout',
+	      className: "layout",
 	      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
 	      rowHeight: 100
 	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    return {
 	      items: [0, 1, 2, 3, 4].map(function (i, key, list) {
@@ -35,7 +34,6 @@ webpackJsonp([4],[
 	      newCounter: 0
 	    };
 	  },
-
 	  createElement: function createElement(el) {
 	    var removeStyle = {
 	      position: 'absolute',
@@ -63,8 +61,8 @@ webpackJsonp([4],[
 	      )
 	    );
 	  },
-
 	  onAddItem: function onAddItem() {
+	    /*eslint no-console: 0*/
 	    console.log('adding', 'n' + this.state.newCounter);
 	    this.setState({
 	      // Add a new item. It must have a unique key!
@@ -80,6 +78,7 @@ webpackJsonp([4],[
 	    });
 	  },
 
+
 	  // We're using the cols coming back from this to calculate where to add new items.
 	  onBreakpointChange: function onBreakpointChange(breakpoint, cols) {
 	    this.setState({
@@ -87,17 +86,14 @@ webpackJsonp([4],[
 	      cols: cols
 	    });
 	  },
-
 	  onLayoutChange: function onLayoutChange(layout) {
 	    this.props.onLayoutChange(layout);
 	    this.setState({ layout: layout });
 	  },
-
 	  onRemoveItem: function onRemoveItem(i) {
 	    console.log('removing', i);
 	    this.setState({ items: _.reject(this.state.items, { i: i }) });
 	  },
-
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -120,9 +116,9 @@ webpackJsonp([4],[
 	module.exports = AddRemoveLayout;
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(14)(module.exports);
+	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }
 ]);

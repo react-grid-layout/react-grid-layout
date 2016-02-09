@@ -4,11 +4,11 @@ webpackJsonp([2],[
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';
 
-	var _extends = __webpack_require__(10)['default'];
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(7);
-	var PureRenderMixin = __webpack_require__(9);
-	var ResponsiveReactGridLayout = __webpack_require__(13).Responsive;
+	var React = __webpack_require__(4);
+	var PureRenderMixin = __webpack_require__(10);
+	var ResponsiveReactGridLayout = __webpack_require__(8).Responsive;
 
 	/**
 	 * This layout demonstrates how to sync multiple responsive layouts to localstorage.
@@ -23,28 +23,24 @@ webpackJsonp([2],[
 	    if (global.localStorage) {
 	      try {
 	        ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-	      } catch (e) {}
+	      } catch (e) {/*Ignore*/}
 	    }
 	    return {
-	      className: 'layout',
+	      className: "layout",
 	      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
 	      rowHeight: 30,
 	      layouts: ls.layouts || {}
 	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    return {};
 	  },
-
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 	    this._saveToLocalStorage();
 	  },
-
 	  resetLayout: function resetLayout() {
 	    this.setState({ layout: [] });
 	  },
-
 	  _saveToLocalStorage: function _saveToLocalStorage() {
 	    if (global.localStorage) {
 	      global.localStorage.setItem('rgl-7', JSON.stringify({
@@ -52,12 +48,10 @@ webpackJsonp([2],[
 	      }));
 	    }
 	  },
-
 	  onLayoutChange: function onLayoutChange(layout, layouts) {
 	    this.props.onLayoutChange(layout);
 	    this.setState({ layout: layout, layouts: layouts });
 	  },
-
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -124,9 +118,9 @@ webpackJsonp([2],[
 	module.exports = ResponsiveLocalStorageLayout;
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(14)(module.exports);
+	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(7)(module)))
 
 /***/ }
 ]);

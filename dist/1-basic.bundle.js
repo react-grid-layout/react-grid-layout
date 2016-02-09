@@ -4,12 +4,12 @@ webpackJsonp([12],[
 
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
-	var _extends = __webpack_require__(10)['default'];
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(7);
-	var PureRenderMixin = __webpack_require__(9);
-	var _ = __webpack_require__(21);
-	var ReactGridLayout = __webpack_require__(13);
+	var React = __webpack_require__(4);
+	var PureRenderMixin = __webpack_require__(10);
+	var _ = __webpack_require__(15);
+	var ReactGridLayout = __webpack_require__(8);
 
 	var BasicLayout = React.createClass({
 	  displayName: 'BasicLayout',
@@ -22,20 +22,18 @@ webpackJsonp([12],[
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      className: 'layout',
+	      className: "layout",
 	      items: 20,
 	      rowHeight: 30,
 	      cols: 12
 	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    var layout = this.generateLayout();
 	    return {
 	      layout: layout
 	    };
 	  },
-
 	  generateDOM: function generateDOM() {
 	    return _.map(_.range(this.props.items), function (i) {
 	      return React.createElement(
@@ -49,7 +47,6 @@ webpackJsonp([12],[
 	      );
 	    });
 	  },
-
 	  generateLayout: function generateLayout() {
 	    var p = this.props;
 	    return _.map(new Array(p.items), function (item, i) {
@@ -57,6 +54,7 @@ webpackJsonp([12],[
 	      return { x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i };
 	    });
 	  },
+
 
 	  onLayoutChange: function onLayoutChange(layout) {
 	    this.props.onLayoutChange(layout);
@@ -75,9 +73,9 @@ webpackJsonp([12],[
 	module.exports = BasicLayout;
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(14)(module.exports);
+	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }
 ]);

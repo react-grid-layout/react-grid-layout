@@ -4,11 +4,11 @@ webpackJsonp([3],[
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';
 
-	var _extends = __webpack_require__(10)['default'];
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(7);
-	var PureRenderMixin = __webpack_require__(9);
-	var ReactGridLayout = __webpack_require__(13);
+	var React = __webpack_require__(4);
+	var PureRenderMixin = __webpack_require__(10);
+	var ReactGridLayout = __webpack_require__(8);
 
 	/**
 	 * This layout demonstrates how to sync to localstorage.
@@ -20,30 +20,26 @@ webpackJsonp([3],[
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      className: 'layout',
+	      className: "layout",
 	      cols: 12,
 	      rowHeight: 30
 	    };
 	  },
-
 	  getInitialState: function getInitialState() {
 	    var ls = {};
 	    if (global.localStorage) {
 	      try {
 	        ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-	      } catch (e) {}
+	      } catch (e) {/*ignore*/}
 	    }
 	    return { layout: ls.layout || [] };
 	  },
-
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 	    this._saveToLocalStorage();
 	  },
-
 	  resetLayout: function resetLayout() {
 	    this.setState({ layout: [] });
 	  },
-
 	  _saveToLocalStorage: function _saveToLocalStorage() {
 	    if (global.localStorage) {
 	      global.localStorage.setItem('rgl-7', JSON.stringify({
@@ -51,13 +47,12 @@ webpackJsonp([3],[
 	      }));
 	    }
 	  },
-
 	  onLayoutChange: function onLayoutChange(layout) {
+	    /*eslint no-console: 0*/
 	    console.log('layout changed', layout);
 	    this.props.onLayoutChange(layout); // updates status display
 	    this.setState({ layout: layout });
 	  },
-
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -125,9 +120,9 @@ webpackJsonp([3],[
 	module.exports = LocalStorageLayout;
 
 	if (__webpack_require__.c[0] === module) {
-	  __webpack_require__(14)(module.exports);
+	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(7)(module)))
 
 /***/ }
 ]);
