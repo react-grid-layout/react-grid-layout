@@ -18,7 +18,6 @@ const ReactGridLayout = React.createClass({
     //
     // Basic props
     //
-    layouts: React.PropTypes.object,
     className: React.PropTypes.string,
     style: React.PropTypes.object,
     width: React.PropTypes.number.isRequired,
@@ -113,19 +112,19 @@ const ReactGridLayout = React.createClass({
       isResizable: true,
       useCSSTransforms: true,
       verticalCompact: true,
-      onLayoutChange: function () {
+      onLayoutChange: () => {
       },
-      onDragStart: function () {
+      onDragStart: () => {
       },
-      onDrag: function () {
+      onDrag: () => {
       },
-      onDragStop: function () {
+      onDragStop: () => {
       },
-      onResizeStart: function () {
+      onResizeStart: () => {
       },
-      onResize: function () {
+      onResize: () => {
       },
-      onResizeStop: function () {
+      onResizeStop: () => {
       }
     };
   },
@@ -143,7 +142,7 @@ const ReactGridLayout = React.createClass({
   componentDidMount() {
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
-    this.props.onLayoutChange(this.state.layout, this.props.layouts);
+    this.props.onLayoutChange(this.state.layout);
     this.setState({isMounted: true});
   },
 
@@ -155,7 +154,7 @@ const ReactGridLayout = React.createClass({
       });
       // Call back so we can store the layout
       // Do it only when a resize/drag is not active, otherwise there are way too many callbacks
-      if (!this.state.activeDrag) this.props.onLayoutChange(this.state.layout, this.props.layouts);
+      if (!this.state.activeDrag) this.props.onLayoutChange(this.state.layout);
     }
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {

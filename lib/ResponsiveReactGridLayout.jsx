@@ -80,8 +80,14 @@ class ResponsiveReactGridLayout extends React.Component {
   }
 
   render() {
-    const {breakpoint, breakpoints, cols, onBreakpointChange, onLayoutChange, onWidthChange, ...other} = this.props;
-    return <ReactGridLayout {...other} layout={this.state.layout} cols={this.state.cols}/>;
+    const {breakpoint, breakpoints, cols, layouts, onBreakpointChange, onLayoutChange, onWidthChange, ...other} = this.props;
+
+    // wrap layouts so we do not need to pass layouts to child
+    const onLayoutChangeWrapper = layout => onLayoutChange(layout, layouts);
+
+    return <ReactGridLayout {...other} onLayoutChange={onLayoutChangeWrapper}
+                                       layout={this.state.layout}
+                                       cols={this.state.cols}/>;
   }
 }
 
