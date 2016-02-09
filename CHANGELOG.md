@@ -1,3 +1,8 @@
+0.10.1
+------
+
+- Hotfix for default export incompatibility caused by Babel 6.
+
 0.10.0
 ------
 
