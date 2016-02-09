@@ -1,4 +1,7 @@
 {
-  "stage": 0,
-  "plugins": ["react-class-display-name"]
+  "presets": [
+    "es2015",
+    "stage-1",
+    "react"
+  ]
 }

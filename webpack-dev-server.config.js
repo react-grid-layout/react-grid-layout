@@ -17,18 +17,19 @@ module.exports = {
         {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader',
           query: {
             cacheDirectory: true,
-            plugins: ['react-transform'],
-            extra: {
-              'react-transform': {
-                transforms: [
-                  {
-                    transform: 'react-transform-hmr',
-                    imports: ['react'],
-                    locals: ['module']
-                  }
-                ]
-              }
-            }
+            plugins: [
+              ['react-transform',
+                {
+                  transforms: [
+                    {
+                      transform: 'react-transform-hmr',
+                      imports: ['react'],
+                      locals: ['module']
+                    }
+                  ]
+                }
+              ]
+            ]
           }
         }
       ]

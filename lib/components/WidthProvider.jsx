@@ -2,18 +2,19 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 
+type State = {width: number, offsetY: number, offsetX: number};
+
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-export default ComposedComponent => class extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      width: 1280,
-      offsetY: 0,
-      offsetX: 0
-    };
-  }
+export default (ComposedComponent: ReactClass): ReactClass => class extends React.Component {
+
+  state: State = {
+    width: 1280,
+    offsetY: 0,
+    offsetX: 0
+  };
+
   componentDidMount() {
     const node = ReactDOM.findDOMNode(this);
     window.addEventListener('resize', () => this.onWindowResize(node));

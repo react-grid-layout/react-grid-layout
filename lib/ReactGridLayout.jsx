@@ -1,20 +1,31 @@
 // @flow
 import React from 'react';
 import isEqual from 'lodash.isequal';
-import {bottom, clone, compact, getLayoutItem, moveElement,
+import {autoBindHandlers, bottom, clone, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
 
 // Types
-import type {ResizeEvent, DragEvent} from './utils';
+import type {ResizeEvent, DragEvent, Layout, LayoutItem} from './utils';
+type State = {
+  activeDrag: ?LayoutItem,
+  isMounted: boolean,
+  layout: Layout,
+  oldDragItem: ?LayoutItem,
+  oldResizeItem: ?LayoutItem
+};
+const noop = function() {};
 // End Types
 
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
  */
 
-const ReactGridLayout = React.createClass({
-  propTypes: {
+export default class ReactGridLayout extends React.Component {
+  // TODO publish internal ReactClass displayName transform
+  static displayName = "ReactGridLayout";
+
+  static propTypes = {
     //
     // Basic props
     //
@@ -99,58 +110,54 @@ const ReactGridLayout = React.createClass({
         keys[child.key] = true;
       });
     }
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      autoSize: true,
-      cols: 12,
-      rowHeight: 150,
-      layout: [],
-      margin: [10, 10],
-      isDraggable: true,
-      isResizable: true,
-      useCSSTransforms: true,
-      verticalCompact: true,
-      onLayoutChange: () => {
-      },
-      onDragStart: () => {
-      },
-      onDrag: () => {
-      },
-      onDragStop: () => {
-      },
-      onResizeStart: () => {
-      },
-      onResize: () => {
-      },
-      onResizeStop: () => {
-      }
-    };
-  },
+  static defaultProps = {
+    autoSize: true,
+    cols: 12,
+    rowHeight: 150,
+    layout: [],
+    margin: [10, 10],
+    isDraggable: true,
+    isResizable: true,
+    useCSSTransforms: true,
+    verticalCompact: true,
+    onLayoutChange: noop,
+    onDragStart: noop,
+    onDrag: noop,
+    onDragStop: noop,
+    onResizeStart: noop,
+    onResize: noop,
+    onResizeStop: noop
+  };
 
-  getInitialState() {
-    return {
-      activeDrag: null,
-      isMounted: false,
-      layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children, this.props.cols, this.props.verticalCompact),
-      oldDragItem: null,
-      oldResizeItem: null
-    };
-  },
+  state: State = {
+    activeDrag: null,
+    isMounted: false,
+    layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
+                                          this.props.cols, this.props.verticalCompact),
+    oldDragItem: null,
+    oldResizeItem: null
+  };
+
+  constructor(props: Object, context: ?Object): void {
+    super(props, context);
+    autoBindHandlers(this, ['onDragStart', 'onDrag', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop']);
+  }
 
   componentDidMount() {
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
     this.setState({isMounted: true});
-  },
+  }
 
-  componentWillReceiveProps(nextProps:Object) {
+  componentWillReceiveProps(nextProps: Object) {
     // Allow parent to set layout directly.
     if (!isEqual(nextProps.layout, this.state.layout)) {
       this.setState({
-        layout: synchronizeLayoutWithChildren(nextProps.layout, nextProps.children, nextProps.cols, nextProps.verticalCompact)
+        layout: synchronizeLayoutWithChildren(nextProps.layout, nextProps.children,
+                                              nextProps.cols, nextProps.verticalCompact)
       });
       // Call back so we can store the layout
       // Do it only when a resize/drag is not active, otherwise there are way too many callbacks
@@ -159,10 +166,11 @@ const ReactGridLayout = React.createClass({
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
       this.setState({
-        layout: synchronizeLayoutWithChildren(this.state.layout, nextProps.children, nextProps.cols, nextProps.verticalCompact)
+        layout: synchronizeLayoutWithChildren(this.state.layout, nextProps.children,
+                                              nextProps.cols, nextProps.verticalCompact)
       });
     }
-  },
+  }
 
   /**
    * Calculates a pixel value for the container.
@@ -171,7 +179,7 @@ const ReactGridLayout = React.createClass({
   containerHeight() {
     if (!this.props.autoSize) return;
     return bottom(this.state.layout) * this.props.rowHeight + this.props.margin[1] + 'px';
-  },
+  }
 
   /**
    * When dragging starts
@@ -189,7 +197,8 @@ const ReactGridLayout = React.createClass({
     this.setState({oldDragItem: clone(l)});
 
     this.props.onDragStart(layout, l, l, null, e, node);
-  },
+  }
+
   /**
    * Each drag movement create a new dragelement and move the element to the dragged location
    * @param {String} i Id of the child
@@ -218,7 +227,7 @@ const ReactGridLayout = React.createClass({
       layout: compact(layout, this.props.verticalCompact),
       activeDrag: placeholder
     });
-  },
+  }
 
   /**
    * When dragging stops, figure out which position the element is closest to and update its x and y.
@@ -245,19 +254,19 @@ const ReactGridLayout = React.createClass({
       activeDrag: null,
       oldDragItem: null
     });
-  },
+  }
 
-  onResizeStart(i:string, w:number, h:number, {e, element}: ResizeEvent) {
+  onResizeStart(i:string, w:number, h:number, {e, node}: ResizeEvent) {
     const {layout} = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
     this.setState({oldResizeItem: clone(l)});
 
-    this.props.onResizeStart(layout, l, l, null, e, element);
-  },
+    this.props.onResizeStart(layout, l, l, null, e, node);
+  }
 
-  onResize(i:string, w:number, h:number, {e, element}: ResizeEvent) {
+  onResize(i:string, w:number, h:number, {e, node}: ResizeEvent) {
     const {layout, oldResizeItem} = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -271,31 +280,31 @@ const ReactGridLayout = React.createClass({
       w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
     };
 
-    this.props.onResize(layout, oldResizeItem, l, placeholder, e, element);
+    this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the layout and set the drag placeholder.
     this.setState({layout: compact(layout, this.props.verticalCompact), activeDrag: placeholder});
-  },
+  }
 
-  onResizeStop(i:string, w:number, h:number, {e, element}: ResizeEvent) {
+  onResizeStop(i:string, w:number, h:number, {e, node}: ResizeEvent) {
     const {layout, oldResizeItem} = this.state;
     var l = getLayoutItem(layout, i);
 
-    this.props.onResizeStop(layout, oldResizeItem, l, null, e, element);
+    this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     this.setState({
       layout: compact(layout, this.props.verticalCompact),
       activeDrag: null,
       oldResizeItem: null
     });
-  },
+  }
 
 
   /**
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder() {
+  placeholder(): ?ReactElement {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
     const {width, offsetX, offsetY, cols, margin, rowHeight, useCSSTransforms} = this.props;
@@ -322,18 +331,19 @@ const ReactGridLayout = React.createClass({
         <div />
       </GridItem>
     );
-  },
+  }
 
   /**
    * Given a grid item, set its style attributes & surround in a <Draggable>.
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child:ReactElement){
+  processGridItem(child: ReactElement): ?ReactElement {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
     if (!l) return;
-    const {width, offsetX, offsetY, cols, margin, rowHeight, useCSSTransforms, draggableCancel, draggableHandle} = this.props;
+    const {width, offsetX, offsetY, cols, margin, rowHeight,
+           useCSSTransforms, draggableCancel, draggableHandle} = this.props;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     const draggable = (l.static || !this.props.isDraggable) ? false : true;
@@ -363,9 +373,9 @@ const ReactGridLayout = React.createClass({
         {child}
       </GridItem>
     );
-  },
+  }
 
-  render() {
+  render(): ReactElement {
     const {className, style} = this.props;
 
     const mergedClassName = `react-grid-layout ${className}`;
@@ -376,11 +386,9 @@ const ReactGridLayout = React.createClass({
 
     return (
       <div className={mergedClassName} style={mergedStyle}>
-        {React.Children.map(this.props.children, this.processGridItem)}
+        {React.Children.map(this.props.children, (child) => this.processGridItem(child))}
         {this.placeholder()}
       </div>
     );
   }
-});
-
-export default ReactGridLayout;
+}
