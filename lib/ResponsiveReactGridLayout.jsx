@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import isEqual from 'lodash.isequal';
-import forEach from 'lodash.foreach';
 
 import {synchronizeLayoutWithChildren, validateLayout} from './utils';
 import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveLayout} from './responsiveUtils';
@@ -37,7 +36,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     // e.g. {lg: Layout, md: Layout, ...}
     layouts: function (props) {
       React.PropTypes.object.isRequired.apply(this, arguments);
-      forEach(props.layouts, (layout, key) => validateLayout(layout, 'layouts.' + key));
+      Object.keys(props.layouts).forEach((key) => validateLayout(props.layouts[key], 'layouts.' + key));
     },
     width: React.PropTypes.number.isRequired,
     offsetY: React.PropTypes.number.isRequired,
