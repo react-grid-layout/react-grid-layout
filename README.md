@@ -15,6 +15,12 @@
 
 #### Summary
 
+|Version         | Compatibility|
+|----------------|--------------|
+| >= 0.10.0      | React 0.14   |
+| 0.8. - 0.9.2   | React 0.13   |
+| < 0.8          | React 0.12   |
+
 [View the Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html)
 
 React-Grid-Layout is a grid layout system much like [Packery](http://packery.metafizzy.co/) or
@@ -130,6 +136,9 @@ If the largest is provided, RGL will attempt to interpolate the rest.
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
 
+#### Compatibility
+
+
 
 #### Grid Layout Props
 
@@ -197,7 +206,7 @@ listenToWindowResize: React.PropTypes.bool,
 onLayoutChange: React.PropTypes.func,
 
 //
-// All callbacks below have signature (layout, oldItem, newItem, placeholder, e).
+// All callbacks below have signature (layout, oldItem, newItem, placeholder, e, element).
 // 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
 //
 
@@ -242,6 +251,10 @@ onBreakpointChange: React.PropTypes.func,
 // Callback so you can save the layout.
 // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
 onLayoutChange: React.PropTypes.func
+
+// Callback when the width changes, so you can modify the layout as needed.
+// Calls back with (containerWidth, margin, cols)
+onWidthChange: React.Proptypes.func
 ```
 
 #### Grid Item Props

@@ -1,3 +1,41 @@
+0.10.1
+------
+
+- Hotfix for default export incompatibility caused by Babel 6.
+
+0.10.0
+------
+
+- *Finally* compatible with React 0.14! Big thanks to @menelike for his help.
+- Upgraded to Babel 6.
+- Full typechecking via Flow.
+- Lots of misc bugfixes.
+  - See beta releases below for more details.
+
+0.10.0-beta1
+------------
+
+- Fixed a React import bug on ListensToWidth.jsx (#130; thanks @mrblueblue)
+
+0.10.0-beta0
+------------
+
+*This release is unstable!*
+
+- React 0.14 compatibility.
+- This release includes a rewrite of much of the project in ES6/7 style with Flow typing.
+- This release brings us onto mainline (1.x) react-draggable and react-resizable, eliminating
+  the previous github dependency.
+- 0.10.0 is not yet complete. Use this release at your own risk.
+
+Known bugs:
+  - The placeholder box does not properly follow the mouse and stays pinned to the active drag.
+
+0.9.2
+-----
+
+- Update `react-draggable` to `v0.8.0` to fix IE11 issues (#29).
+
 0.9.1
 -----
 

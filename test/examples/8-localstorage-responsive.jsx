@@ -14,7 +14,7 @@ var ResponsiveLocalStorageLayout = React.createClass({
     if (global.localStorage) {
       try {
         ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-      } catch(e) {}
+      } catch(e) {/*Ignore*/}
     }
     return {
       className: "layout",
