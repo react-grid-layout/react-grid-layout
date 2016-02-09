@@ -1,3 +1,12 @@
+0.10.0
+------
+
+- *Finally* compatible with React 0.14! Big thanks to @menelike for his help.
+- Upgraded to Babel 6.
+- Full typechecking via Flow.
+- Lots of misc bugfixes.
+  - See beta releases below for more details.
+
 0.10.0-beta1
 ------------
 
