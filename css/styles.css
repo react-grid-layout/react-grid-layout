@@ -12,7 +12,13 @@
 .react-grid-item.resizing {
   z-index: 1;
 }
-.react-grid-placeholder {
+
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 3;
+}
+
+.react-grid-item.react-grid-placeholder {
   background: red;
   opacity: 0.2;
   transition-duration: 100ms;
@@ -23,14 +29,8 @@
   -o-user-select: none;
   user-select: none;
 }
-.react-grid-item.react-draggable-dragging {
-  transition: none;
-  z-index: 3;
-}
-.react-resizable {
-  position: relative;
-}
-.react-resizable-handle.react-draggable {
+
+.react-grid-item > .react-resizable-handle {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -43,11 +43,4 @@
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
-  /* Since this handle is absolutely positioned, we don't want the
-     draggable transforms to actually move it */
-  transform: none !important;
-  -webkit-transform: none !important;
-  -ms-transform: none !important;
-  -o-transform: none !important;
-  -moz-transform: none !important;
 }

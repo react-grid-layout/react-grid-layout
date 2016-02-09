@@ -1,6 +1,8 @@
 node_modules
 dist/*
 !dist/react-grid-layout.min*
+!dist/react-grid-layout.meteor.js
 !dist/*.html
 npm-debug.log
 build/
+.idea

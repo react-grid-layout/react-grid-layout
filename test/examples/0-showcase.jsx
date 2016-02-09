@@ -2,7 +2,9 @@
 var React = require('react');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
+var WidthProvider = require('react-grid-layout').WidthProvider;
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
+ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
 var BasicLayout = React.createClass({
   mixins: [PureRenderMixin],
@@ -27,7 +29,7 @@ var BasicLayout = React.createClass({
   },
 
   generateDOM() {
-    return _.map(this.state.layouts.lg, function(l, i) {
+    return _.map(this.state.layouts.lg, function (l, i) {
       return (
         <div key={i} className={l.static ? 'static' : ''}>
           {l.static ?
@@ -40,9 +42,16 @@ var BasicLayout = React.createClass({
 
   generateLayout() {
     var p = this.props;
-    return _.map(_.range(0, 25), function(item, i) {
+    return _.map(_.range(0, 25), function (item, i) {
       var y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1;
-      return {x: _.random(0, 5) * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i, static: Math.random() < 0.05};
+      return {
+        x: _.random(0, 5) * 2 % 12,
+        y: Math.floor(i / 6) * y,
+        w: 2,
+        h: y,
+        i: i.toString(),
+        static: Math.random() < 0.05
+      };
     });
   },
 
@@ -65,14 +74,16 @@ var BasicLayout = React.createClass({
   render() {
     return (
       <div>
-        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)</div>
+        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]}
+          columns)
+        </div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
         <ResponsiveReactGridLayout
-            layouts={this.state.layouts}
-            onBreakpointChange={this.onBreakpointChange}
-            onLayoutChange={this.onLayoutChange}
-            useCSSTransforms={true}
-            {...this.props}>
+          layouts={this.state.layouts}
+          onBreakpointChange={this.onBreakpointChange}
+          onLayoutChange={this.onLayoutChange}
+          useCSSTransforms={true}
+          {...this.props}>
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>
