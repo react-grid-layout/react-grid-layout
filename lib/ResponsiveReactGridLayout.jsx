@@ -118,30 +118,36 @@ export default class ResponsiveReactGridLayout extends React.Component {
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(width: number, breakpoint: string) {
+  onWidthChange(width: number, newBreakpoint: string) {
     const {breakpoints, verticalLayout, verticalCompact, cols} = this.props;
 
-    const colNo = getColsFromBreakpoint(breakpoint, cols);
+    const lastBreakpoint = this.state.breakpoint;
 
-    // Store the current layout
-    let layouts = this.props.layouts;
-    layouts[breakpoint] = JSON.parse(JSON.stringify(this.state.layout));
+    // Breakpoint change
+    if (lastBreakpoint !== newBreakpoint) {
 
-    // Find or generate a new one.
-    let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, breakpoint, colNo, verticalLayout);
+      // Store the current layout
+      const layouts = this.props.layouts;
+      layouts[lastBreakpoint] = JSON.parse(JSON.stringify(this.state.layout));
 
-    // This adds missing items.
-    layout = synchronizeLayoutWithChildren(layout, this.props.children, colNo, verticalCompact);
+      // Find or generate a new one.
+      const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
+      let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint,
+                                                  lastBreakpoint, newCols, verticalLayout);
 
-    // Store this new layout as well.
-    layouts[breakpoint] = layout;
+      // This adds missing items.
+      layout = synchronizeLayoutWithChildren(layout, this.props.children, newCols, verticalCompact);
 
-    // callbacks
-    this.props.onLayoutChange(layout, layouts);
-    this.props.onBreakpointChange(breakpoint, colNo);
-    this.props.onWidthChange(width, this.props.margin, colNo);
+      // Store this new layout as well.
+      layouts[newBreakpoint] = layout;
 
-    this.setState({breakpoint: breakpoint, layout: layout, cols: colNo});
+      // callbacks
+      this.props.onLayoutChange(layout, layouts);
+      this.props.onBreakpointChange(newBreakpoint, newCols);
+      this.props.onWidthChange(width, this.props.margin, newCols);
+
+      this.setState({breakpoint: newBreakpoint, layout: layout, cols: newCols});
+    }
   }
 
   render(): ReactElement {
