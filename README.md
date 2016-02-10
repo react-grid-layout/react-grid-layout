@@ -94,9 +94,9 @@ var ReactGridLayout = require('react-grid-layout');
 render: function() {
   return (
     <ReactGridLayout className="layout" cols={12} rowHeight={30}>
-      <div key={1} _grid={{x: 0, y: 0, w: 1, h: 2}}>1</div>
-      <div key={2} _grid={{x: 1, y: 0, w: 1, h: 2}}>2</div>
-      <div key={3} _grid={{x: 2, y: 0, w: 1, h: 2}}>3</div>
+      <div key={"1"} _grid={{x: 0, y: 0, w: 1, h: 2}}>1</div>
+      <div key={"2"} _grid={{x: 1, y: 0, w: 1, h: 2}}>2</div>
+      <div key={"3"} _grid={{x: 2, y: 0, w: 1, h: 2}}>3</div>
     </ReactGridLayout>
   )
 }
@@ -120,9 +120,9 @@ render: function() {
     <ResponsiveReactGridLayout className="layout" layouts={layouts}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
-      <div key={1}>1</div>
-      <div key={2}>2</div>
-      <div key={3}>3</div>
+      <div key={"1"}>1</div>
+      <div key={"2"}>2</div>
+      <div key={"3"}>3</div>
     </ResponsiveReactGridLayout>
   )
 }
@@ -135,6 +135,34 @@ If the largest is provided, RGL will attempt to interpolate the rest.
 
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
+
+#### Providing grid width and offsets
+Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width`, `offsetX` and `offsetY` to calculate 
+positions on drag events. In simple cases a HOC `<WidthProvider>` can be used to automatically determine 
+all values upon initialization and window resize events.
+  
+```javascript
+var WidthProvider = require('react-grid-layout').WidthProvider;
+var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
+ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
+
+//...
+render: function() {
+  // {lg: layout1, md: layout2, ...}
+  var layouts = getLayoutsFromSomewhere();
+  return (
+    <ResponsiveReactGridLayout className="layout" layouts={layouts}
+      breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
+      cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
+      <div key={"1"}>1</div>
+      <div key={"2"}>2</div>
+      <div key={"3"}>3</div>
+    </ResponsiveReactGridLayout>
+  )
+}
+```
+  
+This allows you to easily replace `<WidthProvider>` with your own Provider HOC if you need a more sophisticated logic.
 
 #### Compatibility
 
@@ -175,7 +203,13 @@ verticalCompact: React.PropTypes.bool,
 layout: React.PropTypes.array,
 
 // This allows setting the initial width on the server side.
-initialWidth: React.PropTypes.number,
+width: React.PropTypes.number.isRequired,
+
+// This sets the correct drag positions on the x axis.
+offsetX: React.PropTypes.number.isRequired,
+
+// This sets the correct drag positions on the y axis.
+offsetY: React.PropTypes.number.isRequired,
 
 // Margin between items [x, y] in px.
 margin: React.PropTypes.array,
@@ -311,7 +345,6 @@ will be draggable.
   breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
   cols: 10,
   rowHeight: 150,
-  initialWidth: 1280,
   margin: [10, 10],
   minH: 1,
   minW: 1,

@@ -15,7 +15,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader'}
       ]
     },
     plugins: [

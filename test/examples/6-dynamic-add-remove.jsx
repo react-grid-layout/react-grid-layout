@@ -2,7 +2,9 @@
 var React = require('react');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
+var WidthProvider = require('react-grid-layout').WidthProvider;
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
+ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
@@ -21,7 +23,7 @@ var AddRemoveLayout = React.createClass({
   getInitialState() {
     return {
       items: [0, 1, 2, 3, 4].map(function(i, key, list) {
-        return {i: i, x: i * 2, y: 0, w: 2, h: 2, add: i === list.length - 1};
+        return {i: i.toString(), x: i * 2, y: 0, w: 2, h: 2, add: i === (list.length - 1).toString()};
       }),
       newCounter: 0
     };

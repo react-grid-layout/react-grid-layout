@@ -2,7 +2,9 @@
 var React = require('react');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
+var WidthProvider = require('react-grid-layout').WidthProvider;
 var ReactGridLayout = require('react-grid-layout');
+ReactGridLayout = WidthProvider(ReactGridLayout);
 
 var MessyLayout = React.createClass({
   mixins: [PureRenderMixin],
@@ -38,7 +40,7 @@ var MessyLayout = React.createClass({
     return _.map(new Array(p.items), function(item, i) {
       var w = Math.ceil(Math.random() * 4);
       var y = Math.ceil(Math.random() * 4) + 1;
-      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i};
+      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i.toString()};
     });
   },
 

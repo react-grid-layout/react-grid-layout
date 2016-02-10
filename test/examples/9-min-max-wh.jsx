@@ -2,7 +2,9 @@
 var React = require('react');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
+var WidthProvider = require('react-grid-layout').WidthProvider;
 var ReactGridLayout = require('react-grid-layout');
+ReactGridLayout = WidthProvider(ReactGridLayout);
 
 var MinMaxLayout = React.createClass({
   mixins: [PureRenderMixin],
@@ -43,7 +45,7 @@ var MinMaxLayout = React.createClass({
       var w = _.random(minW, maxW);
       var y = _.random(minH, maxH);
       return {
-        x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i,
+        x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i.toString(),
         minW: minW, maxW: maxW, minH: minH, maxH: maxH
       };
     });

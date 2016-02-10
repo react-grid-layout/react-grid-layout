@@ -49,7 +49,7 @@ export default class ReactGridLayout extends React.Component {
     verticalCompact: React.PropTypes.bool,
 
     // layout is an array of object with the format:
-    // {x: Number, y: Number, w: Number, h: Number, i: Number}
+    // {x: Number, y: Number, w: Number, h: Number, i: String}
     layout: function (props) {
       var layout = props.layout;
       // I hope you're setting the _grid property on the grid items
