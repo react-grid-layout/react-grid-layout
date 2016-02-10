@@ -250,10 +250,18 @@ export default class ReactGridLayout extends React.Component {
 
     // Set state
     this.setState({
-      layout: compact(layout, this.props.verticalCompact),
       activeDrag: null,
       oldDragItem: null
     });
+
+    // Set State and callback, but only if layout changed
+    const newLayout = compact(layout, this.props.verticalCompact);
+    if (!isEqual(newLayout, this.state.layout)) {
+      this.setState({
+        layout: newLayout
+      });
+      this.props.onLayoutChange(this.state.layout);
+    }
   }
 
   onResizeStart(i:string, w:number, h:number, {e, node}: ResizeEvent) {
@@ -292,11 +300,20 @@ export default class ReactGridLayout extends React.Component {
 
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
+    // Set state
     this.setState({
-      layout: compact(layout, this.props.verticalCompact),
       activeDrag: null,
       oldResizeItem: null
     });
+
+    // Set State and callback, but only if layout changed
+    const newLayout = compact(layout, this.props.verticalCompact);
+    if (!isEqual(newLayout, this.state.layout)) {
+      this.setState({
+        layout: newLayout
+      });
+      this.props.onLayoutChange(this.state.layout);
+    }
   }
 
 
