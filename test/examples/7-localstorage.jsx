@@ -28,10 +28,6 @@ var LocalStorageLayout = React.createClass({
     return {layout: ls.layout || []};
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    this._saveToLocalStorage();
-  },
-
   resetLayout() {
     this.setState({layout: []});
   },
@@ -47,8 +43,8 @@ var LocalStorageLayout = React.createClass({
   onLayoutChange(layout) {
     /*eslint no-console: 0*/
     console.log('layout changed', layout);
+    this._saveToLocalStorage();
     this.props.onLayoutChange(layout); // updates status display
-    this.setState({layout: layout});
   },
 
   render() {

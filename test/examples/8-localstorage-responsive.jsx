@@ -5,6 +5,7 @@ var WidthProvider = require('react-grid-layout').WidthProvider;
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
+const originalLayouts = getFromLS('layouts');
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
@@ -12,43 +13,32 @@ var ResponsiveLocalStorageLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   getDefaultProps() {
-    var ls = {};
-    if (global.localStorage) {
-      try {
-        ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-      } catch(e) {/*Ignore*/}
-    }
     return {
       className: "layout",
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
-      rowHeight: 30,
-      layouts: ls.layouts || {}
+      rowHeight: 30
     };
   },
 
   getInitialState() {
-    return {};
-  },
-
-  componentDidUpdate(prevProps, prevState) {
-    this._saveToLocalStorage();
+    return {
+      layouts: JSON.parse(JSON.stringify(originalLayouts))
+    };
   },
 
   resetLayout() {
-    this.setState({layout: []});
+    this.refs.rrgl.setState({
+      layouts: JSON.parse(JSON.stringify(originalLayouts))
+    });
   },
 
   _saveToLocalStorage() {
-    if (global.localStorage) {
-      global.localStorage.setItem('rgl-7', JSON.stringify({
-        layouts: this.state.layouts
-      }));
-    }
+    saveToLS('layouts', this.state.layouts);
   },
 
   onLayoutChange(layout, layouts) {
-    this.props.onLayoutChange(layout);
-    this.setState({layout: layout, layouts: layouts});
+    this._saveToLocalStorage();
+    this.props.onLayoutChange(layout, layouts);
   },
 
   render() {
@@ -56,7 +46,9 @@ var ResponsiveLocalStorageLayout = React.createClass({
       <div>
         <button onClick={this.resetLayout}>Reset Layout</button>
         <ResponsiveReactGridLayout
+            ref="rrgl"
             {...this.props}
+            layouts={this.state.layouts}
             onLayoutChange={this.onLayoutChange}>
           <div key="1" _grid={{w: 2, h: 3, x: 0, y: 0}}><span className="text">1</span></div>
           <div key="2" _grid={{w: 2, h: 3, x: 2, y: 0}}><span className="text">2</span></div>
@@ -70,6 +62,24 @@ var ResponsiveLocalStorageLayout = React.createClass({
 });
 
 module.exports = ResponsiveLocalStorageLayout;
+
+function getFromLS(key) {
+  let ls = {};
+  if (global.localStorage) {
+    try {
+      ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
+    } catch(e) {/*Ignore*/}
+  }
+  return ls[key];
+}
+
+function saveToLS(key, value) {
+  if (global.localStorage) {
+    global.localStorage.setItem('rgl-7', JSON.stringify({
+      [key]: value
+    }));
+  }
+}
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);
