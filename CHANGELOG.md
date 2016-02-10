@@ -5,11 +5,18 @@
 
 0.10.0
 ------
-> Breaking changes: `ListensToWidth` replaced with `WidthProvider` which must wrap 
-`<ResponsiveReactGridLayout>` and `<ReactGridLayout>` to provide width and offset data. See doc for example.
 
-> Breaking changes: Prop `initialWidth` renamed to `width`.
-> Grid Layout keys must be type of string now.
+This long-awaited release provides React 0.14 compatibility and a rewrite of the underlying
+`<Draggable>` functionality.
+
+**Breaking changes:**
+
+- `ListensToWidth` replaced with `WidthProvider` which must wrap
+  `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` to provide width data. See doc for example.
+- Prop `initialWidth` renamed to `width`.
+- Grid Layout keys must be type of string now.
+
+Other changes:
 
 - *Finally* compatible with React 0.14! Big thanks to @menelike for his help.
 - Upgraded to Babel 6.
@@ -85,11 +92,15 @@ Known bugs:
 0.7.0
 -----
 
-> Breaking changes: `ReactGridLayout.props.handle` renamed to `ReactGridLayout.props.draggableHandle`.
+**Breaking changes:**
+
+- `ReactGridLayout.props.handle` renamed to `ReactGridLayout.props.draggableHandle`.
 
 > This version contains a CSS update. This fixes a visual bug where you may see items quickly reset position
   and animate back to their original position on load, when you are using CSS transforms. To fix this bug,
   copy the rules from css/styles.css into your stylesheet.
+
+Other changes:
 
 - Fixed #19 (bad new item placement with css transforms).
 - Fixed some placement inconsistencies while RGL is mounting, with css transforms and percentages.
