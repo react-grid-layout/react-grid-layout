@@ -1,3 +1,16 @@
+0.10.2
+------
+
+- Bugfix: <RGL> would synchronize children with layout if the layout in props didn't match the state;
+  this was meant to be a hook for the developer to supply a new layout. The incorrect check could cause the
+  layout to reset if the parent rerendered. The check is now between the layout in nextProps and props.
+- Bugfix: Fixed a lot of resizing layout bugs; most of the fixes are in react-resizable.
+- Bugfix: Fixed incorrect typecheck on LayoutItem.i.
+- Bugfix: Make onLayoutChange fire appropriately (#155).
+- Bugfix: Fix `<ResponsiveGridLayout>` not properly reverting when sizing the page up (#154).
+- Remove unused `offsetX` and `offsetY` from layouts.
+- Dependency updates.
+
 0.10.1
 ------
 
