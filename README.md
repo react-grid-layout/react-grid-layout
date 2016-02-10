@@ -137,10 +137,10 @@ For the time being, it is not possible to supply responsive mappings via the `_g
 items, but that is coming soon.
 
 #### Providing grid width and offsets
-Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width`, `offsetX` and `offsetY` to calculate 
-positions on drag events. In simple cases a HOC `<WidthProvider>` can be used to automatically determine 
+Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width`, `offsetX` and `offsetY` to calculate
+positions on drag events. In simple cases a HOC `<WidthProvider>` can be used to automatically determine
 all values upon initialization and window resize events.
-  
+
 ```javascript
 var WidthProvider = require('react-grid-layout').WidthProvider;
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
@@ -161,7 +161,7 @@ render: function() {
   )
 }
 ```
-  
+
 This allows you to easily replace `<WidthProvider>` with your own Provider HOC if you need a more sophisticated logic.
 
 #### Compatibility
@@ -236,7 +236,7 @@ listenToWindowResize: React.PropTypes.bool,
 //
 
 // Callback so you can save the layout.
-// Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
+// Calls back with (currentLayout) after every drag or resize stop.
 onLayoutChange: React.PropTypes.func,
 
 //

@@ -74,8 +74,7 @@ export default class ReactGridLayout extends React.Component {
     // Callbacks
     //
 
-    // Callback so you can save the layout.
-    // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
+    // Callback so you can save the layout. Calls after each drag & resize stops.
     onLayoutChange: React.PropTypes.func,
 
     // Calls when drag starts. Callback is of the signature (layout, oldItem, newItem, placeholder, e).
@@ -160,8 +159,7 @@ export default class ReactGridLayout extends React.Component {
                                               nextProps.cols, nextProps.verticalCompact)
       });
       // Call back so we can store the layout
-      // Do it only when a resize/drag is not active, otherwise there are way too many callbacks
-      if (!this.state.activeDrag) this.props.onLayoutChange(this.state.layout);
+      this.props.onLayoutChange(this.state.layout);
     }
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
@@ -251,17 +249,11 @@ export default class ReactGridLayout extends React.Component {
     // Set state
     this.setState({
       activeDrag: null,
+      layout: compact(layout, this.props.verticalCompact),
       oldDragItem: null
     });
 
-    // Set State and callback, but only if layout changed
-    const newLayout = compact(layout, this.props.verticalCompact);
-    if (!isEqual(newLayout, this.state.layout)) {
-      this.setState({
-        layout: newLayout
-      });
-      this.props.onLayoutChange(this.state.layout);
-    }
+    this.props.onLayoutChange(this.state.layout);
   }
 
   onResizeStart(i:string, w:number, h:number, {e, node}: ResizeEvent) {
@@ -303,19 +295,12 @@ export default class ReactGridLayout extends React.Component {
     // Set state
     this.setState({
       activeDrag: null,
+      layout: compact(layout, this.props.verticalCompact),
       oldResizeItem: null
     });
 
-    // Set State and callback, but only if layout changed
-    const newLayout = compact(layout, this.props.verticalCompact);
-    if (!isEqual(newLayout, this.state.layout)) {
-      this.setState({
-        layout: newLayout
-      });
-      this.props.onLayoutChange(this.state.layout);
-    }
+    this.props.onLayoutChange(this.state.layout);
   }
-
 
   /**
    * Create a placeholder object.
