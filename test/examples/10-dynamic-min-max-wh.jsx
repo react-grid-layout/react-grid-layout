@@ -2,7 +2,9 @@
 var React = require('react');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
+var WidthProvider = require('react-grid-layout').WidthProvider;
 var ReactGridLayout = require('react-grid-layout');
+ReactGridLayout = WidthProvider(ReactGridLayout);
 
 /**
  * This layout demonstrates how to use the `onResize` handler to enforce a min/max width and height.
@@ -45,7 +47,7 @@ var DynamicMinMaxLayout = React.createClass({
       var w = _.random(1, 2);
       var h = _.random(1, 3);
       return {
-        x: i * 2 % 12, y: Math.floor(i / 6), w: w, h: h, i: i
+        x: i * 2 % 12, y: Math.floor(i / 6), w: w, h: h, i: i.toString()
       };
     });
   },

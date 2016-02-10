@@ -5,6 +5,11 @@
 
 0.10.0
 ------
+> Breaking changes: `ListensToWidth` replaced with `WidthProvider` which must wrap 
+`<ResponsiveReactGridLayout>` and `<ReactGridLayout>` to provide width and offset data. See doc for example.
+
+> Breaking changes: Prop `initialWidth` renamed to `width`.
+> Grid Layout keys must be type of string now.
 
 - *Finally* compatible with React 0.14! Big thanks to @menelike for his help.
 - Upgraded to Babel 6.
