@@ -1,3 +1,16 @@
+0.10.2
+------
+
+- Bugfix: <RGL> would synchronize children with layout if the layout in props didn't match the state;
+  this was meant to be a hook for the developer to supply a new layout. The incorrect check could cause the
+  layout to reset if the parent rerendered. The check is now between the layout in nextProps and props.
+- Bugfix: Fixed a lot of resizing layout bugs; most of the fixes are in react-resizable.
+- Bugfix: Fixed incorrect typecheck on LayoutItem.i.
+- Bugfix: Make onLayoutChange fire appropriately (#155).
+- Bugfix: Fix `<ResponsiveGridLayout>` not properly reverting when sizing the page up (#154).
+- Remove unused `offsetX` and `offsetY` from layouts.
+- Dependency updates.
+
 0.10.1
 ------
 
@@ -5,11 +18,18 @@
 
 0.10.0
 ------
-> Breaking changes: `ListensToWidth` replaced with `WidthProvider` which must wrap 
-`<ResponsiveReactGridLayout>` and `<ReactGridLayout>` to provide width and offset data. See doc for example.
 
-> Breaking changes: Prop `initialWidth` renamed to `width`.
-> Grid Layout keys must be type of string now.
+This long-awaited release provides React 0.14 compatibility and a rewrite of the underlying
+`<Draggable>` functionality.
+
+**Breaking changes:**
+
+- `ListensToWidth` replaced with `WidthProvider` which must wrap
+  `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` to provide width data. See doc for example.
+- Prop `initialWidth` renamed to `width`.
+- Grid Layout keys must be type of string now.
+
+Other changes:
 
 - *Finally* compatible with React 0.14! Big thanks to @menelike for his help.
 - Upgraded to Babel 6.
@@ -85,11 +105,15 @@ Known bugs:
 0.7.0
 -----
 
-> Breaking changes: `ReactGridLayout.props.handle` renamed to `ReactGridLayout.props.draggableHandle`.
+**Breaking changes:**
+
+- `ReactGridLayout.props.handle` renamed to `ReactGridLayout.props.draggableHandle`.
 
 > This version contains a CSS update. This fixes a visual bug where you may see items quickly reset position
   and animate back to their original position on load, when you are using CSS transforms. To fix this bug,
   copy the rules from css/styles.css into your stylesheet.
+
+Other changes:
 
 - Fixed #19 (bad new item placement with css transforms).
 - Fixed some placement inconsistencies while RGL is mounting, with css transforms and percentages.

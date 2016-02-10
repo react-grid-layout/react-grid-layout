@@ -31,9 +31,11 @@ export default class ReactGridLayout extends React.Component {
     //
     className: React.PropTypes.string,
     style: React.PropTypes.object,
-    width: React.PropTypes.number.isRequired,
-    offsetY: React.PropTypes.number.isRequired,
-    offsetX: React.PropTypes.number.isRequired,
+
+    // This can be set explicitly. If it is not set, it will automatically
+    // be set to the container width. Note that resizes will *not* cause this to adjust.
+    // If you need that behavior, use WidthProvider.
+    width: React.PropTypes.number,
 
     // If true, the container height swells and contracts to fit contents
     autoSize: React.PropTypes.bool,
@@ -153,7 +155,7 @@ export default class ReactGridLayout extends React.Component {
 
   componentWillReceiveProps(nextProps: Object) {
     // Allow parent to set layout directly.
-    if (!isEqual(nextProps.layout, this.state.layout)) {
+    if (!isEqual(nextProps.layout, this.props.layout)) {
       this.setState({
         layout: synchronizeLayoutWithChildren(nextProps.layout, nextProps.children,
                                               nextProps.cols, nextProps.verticalCompact)
@@ -309,7 +311,7 @@ export default class ReactGridLayout extends React.Component {
   placeholder(): ?ReactElement {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
-    const {width, offsetX, offsetY, cols, margin, rowHeight, useCSSTransforms} = this.props;
+    const {width, cols, margin, rowHeight, useCSSTransforms} = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
     return (
@@ -322,8 +324,6 @@ export default class ReactGridLayout extends React.Component {
         isPlaceholder={true}
         className="react-grid-placeholder"
         containerWidth={width}
-        offsetX={offsetX}
-        offsetY={offsetY}
         cols={cols}
         margin={margin}
         rowHeight={rowHeight}
@@ -344,7 +344,7 @@ export default class ReactGridLayout extends React.Component {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
     if (!l) return;
-    const {width, offsetX, offsetY, cols, margin, rowHeight,
+    const {width, cols, margin, rowHeight,
            useCSSTransforms, draggableCancel, draggableHandle} = this.props;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
@@ -354,8 +354,6 @@ export default class ReactGridLayout extends React.Component {
     return (
       <GridItem
         containerWidth={width}
-        offsetX={offsetX}
-        offsetY={offsetY}
         cols={cols}
         margin={margin}
         rowHeight={rowHeight}

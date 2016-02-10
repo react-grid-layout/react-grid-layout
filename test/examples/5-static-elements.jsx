@@ -23,9 +23,9 @@ var StaticElementsLayout = React.createClass({
   render() {
     return (
       <ReactGridLayout className="layout" onLayoutChange={this.onLayoutChange} rowHeight={30}>
-        <div key={"1"} _grid={{x: 0, y: 0, w: 2, h: 3}}><span className="text">1</span></div>
-        <div key={"2"} _grid={{x: 2, y: 0, w: 4, h: 3, static: true}}><span className="text">2 - Static</span></div>
-        <div key={"3"} _grid={{x: 6, y: 0, w: 2, h: 3}}><span className="text">3</span></div>
+        <div key="1" _grid={{x: 0, y: 0, w: 2, h: 3}}><span className="text">1</span></div>
+        <div key="2" _grid={{x: 2, y: 0, w: 4, h: 3, static: true}}><span className="text">2 - Static</span></div>
+        <div key="3" _grid={{x: 6, y: 0, w: 2, h: 3}}><span className="text">3</span></div>
       </ReactGridLayout>
     );
   }

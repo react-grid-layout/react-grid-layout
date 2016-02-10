@@ -15,7 +15,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: {cacheDirectory: true}}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory=true'}
       ]
     },
     plugins: [

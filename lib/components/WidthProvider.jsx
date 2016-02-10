@@ -1,8 +1,9 @@
-// @flow
+// @noflow
+// Intentional; Flow can't handle the bind on L20
 import React from "react";
 import ReactDOM from 'react-dom';
 
-type State = {width: number, offsetY: number, offsetX: number};
+type State = {width: number};
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
@@ -10,27 +11,27 @@ type State = {width: number, offsetY: number, offsetX: number};
 export default (ComposedComponent: ReactClass): ReactClass => class extends React.Component {
 
   state: State = {
-    width: 1280,
-    offsetY: 0,
-    offsetX: 0
+    width: 1280
   };
 
   componentDidMount() {
     const node = ReactDOM.findDOMNode(this);
-    window.addEventListener('resize', () => this.onWindowResize(node));
+    // Bind here so we have the same reference when removing the listener on unmount.
+    this.onWindowResize = this._onWindowResize.bind(this, node);
+
+    window.addEventListener('resize', this.onWindowResize);
     // This is intentional. Once to properly set the breakpoint and resize the elements,
     // and again to compensate for any scrollbar that appeared because of the first step.
-    this.onWindowResize(node);
-    this.onWindowResize(node);
+    this.onWindowResize();
+    this.onWindowResize();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize);
   }
 
-  onWindowResize(node) {
-    const {top, left, width} = node.getBoundingClientRect();
-    this.setState({offsetY: top, offsetX: left, width: width});
+  _onWindowResize(node: HTMLElement, _event: Event) {
+    this.setState({width: node.offsetWidth});
   }
 
   render() {

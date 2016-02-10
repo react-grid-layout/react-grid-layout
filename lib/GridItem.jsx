@@ -108,25 +108,26 @@ export default class GridItem extends React.Component {
    * @param  {Number}  h             H coordinate in grid units.
    * @return {Object}                Object containing coords.
    */
-  calcPosition(x:number, y:number, w:number, h:number): Position {
+  calcPosition(x: number, y: number, w: number, h: number, state: Object = {}): Position {
     const {margin, containerWidth, cols, rowHeight} = this.props;
 
-    const width = containerWidth - margin[0];
+    // E.g. if margin is 10 on each side and container is 600 wide, usable width is 580
+    const rawWidth = containerWidth - (cols + 1) * margin[0]; // The space available for items (without margin)
     const out = {
-      left: Math.round(width * (x / cols) + margin[0]),
-      top: Math.round(rowHeight * y + margin[1]),
-      width: Math.round(width * (w / cols) - margin[0]),
-      height: Math.round(h * rowHeight - margin[1])
+      left:  Math.round(rawWidth * (x / cols)) + (x + 1) * margin[0],
+      width: Math.round(rawWidth * (w / cols)) + (w - 1) * margin[0],
+      top:    Math.round(rowHeight * y + (y + 1 * margin[1])),
+      height: Math.round(rowHeight * h + (h - 1 * margin[1]))
     };
 
-    if (this.state.resizing) {
-      out.width = this.state.resizing.width;
-      out.height = this.state.resizing.height;
+    if (state.resizing) {
+      out.width = state.resizing.width;
+      out.height = state.resizing.height;
     }
 
-    if (this.state.dragging) {
-      out.top = this.state.dragging.top;
-      out.left = this.state.dragging.left;
+    if (state.dragging) {
+      out.top = state.dragging.top;
+      out.left = state.dragging.left;
     }
 
     return out;
@@ -184,7 +185,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} pos Position object with width, height, left, top.
    * @return {Object}     Style object.
    */
-  createStyle(pos:Position): {[key: string]: ?string} {
+  createStyle(pos: Position): {[key: string]: ?string} {
     const {usePercentages, containerWidth, useCSSTransforms} = this.props;
 
     let style = {
@@ -235,7 +236,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable(child:ReactElement, position:Position): ReactElement {
+  mixinResizable(child: ReactElement, position: Position): ReactElement {
     const {cols, x, minW, minH, maxW, maxH} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
@@ -340,7 +341,7 @@ export default class GridItem extends React.Component {
   render(): ReactElement {
     const {x, y, w, h, className, style, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
 
-    const pos = this.calcPosition(x, y, w, h);
+    const pos = this.calcPosition(x, y, w, h, this.state);
     const child = React.Children.only(this.props.children);
 
     // Create the child element. We clone the existing element but modify its className and style.
