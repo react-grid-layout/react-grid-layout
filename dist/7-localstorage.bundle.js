@@ -70,7 +70,7 @@ webpackJsonp([3],[
 	          onLayoutChange: this.onLayoutChange }),
 	        React.createElement(
 	          'div',
-	          { key: "1", _grid: { w: 2, h: 3, x: 0, y: 0 } },
+	          { key: '1', _grid: { w: 2, h: 3, x: 0, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -79,7 +79,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: "2", _grid: { w: 2, h: 3, x: 2, y: 0 } },
+	          { key: '2', _grid: { w: 2, h: 3, x: 2, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -88,7 +88,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: "3", _grid: { w: 2, h: 3, x: 4, y: 0 } },
+	          { key: '3', _grid: { w: 2, h: 3, x: 4, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -97,7 +97,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: "4", _grid: { w: 2, h: 3, x: 6, y: 0 } },
+	          { key: '4', _grid: { w: 2, h: 3, x: 6, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -106,7 +106,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: "5", _grid: { w: 2, h: 3, x: 8, y: 0 } },
+	          { key: '5', _grid: { w: 2, h: 3, x: 8, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },

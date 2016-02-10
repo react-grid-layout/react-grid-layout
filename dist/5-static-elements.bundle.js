@@ -34,7 +34,7 @@ webpackJsonp([5],[
 	      { className: 'layout', onLayoutChange: this.onLayoutChange, rowHeight: 30 },
 	      React.createElement(
 	        'div',
-	        { key: "1", _grid: { x: 0, y: 0, w: 2, h: 3 } },
+	        { key: '1', _grid: { x: 0, y: 0, w: 2, h: 3 } },
 	        React.createElement(
 	          'span',
 	          { className: 'text' },
@@ -43,7 +43,7 @@ webpackJsonp([5],[
 	      ),
 	      React.createElement(
 	        'div',
-	        { key: "2", _grid: { x: 2, y: 0, w: 4, h: 3, static: true } },
+	        { key: '2', _grid: { x: 2, y: 0, w: 4, h: 3, static: true } },
 	        React.createElement(
 	          'span',
 	          { className: 'text' },
@@ -52,7 +52,7 @@ webpackJsonp([5],[
 	      ),
 	      React.createElement(
 	        'div',
-	        { key: "3", _grid: { x: 6, y: 0, w: 2, h: 3 } },
+	        { key: '3', _grid: { x: 6, y: 0, w: 2, h: 3 } },
 	        React.createElement(
 	          'span',
 	          { className: 'text' },
