@@ -4,9 +4,11 @@ webpackJsonp([5],[
 
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
-	var React = __webpack_require__(4);
+	var React = __webpack_require__(5);
 	var PureRenderMixin = __webpack_require__(10);
-	var ReactGridLayout = __webpack_require__(8);
+	var WidthProvider = __webpack_require__(4).WidthProvider;
+	var ReactGridLayout = __webpack_require__(4);
+	ReactGridLayout = WidthProvider(ReactGridLayout);
 
 	/**
 	 * This layout demonstrates how to use static grid elements.
@@ -32,7 +34,7 @@ webpackJsonp([5],[
 	      { className: 'layout', onLayoutChange: this.onLayoutChange, rowHeight: 30 },
 	      React.createElement(
 	        'div',
-	        { key: 1, _grid: { x: 0, y: 0, w: 2, h: 3 } },
+	        { key: "1", _grid: { x: 0, y: 0, w: 2, h: 3 } },
 	        React.createElement(
 	          'span',
 	          { className: 'text' },
@@ -41,7 +43,7 @@ webpackJsonp([5],[
 	      ),
 	      React.createElement(
 	        'div',
-	        { key: 2, _grid: { x: 2, y: 0, w: 4, h: 3, static: true } },
+	        { key: "2", _grid: { x: 2, y: 0, w: 4, h: 3, static: true } },
 	        React.createElement(
 	          'span',
 	          { className: 'text' },
@@ -50,7 +52,7 @@ webpackJsonp([5],[
 	      ),
 	      React.createElement(
 	        'div',
-	        { key: 3, _grid: { x: 6, y: 0, w: 2, h: 3 } },
+	        { key: "3", _grid: { x: 6, y: 0, w: 2, h: 3 } },
 	        React.createElement(
 	          'span',
 	          { className: 'text' },
@@ -66,7 +68,7 @@ webpackJsonp([5],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

@@ -6,10 +6,12 @@ webpackJsonp([8],[
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(4);
+	var React = __webpack_require__(5);
 	var PureRenderMixin = __webpack_require__(10);
 	var _ = __webpack_require__(15);
-	var ReactGridLayout = __webpack_require__(8);
+	var WidthProvider = __webpack_require__(4).WidthProvider;
+	var ReactGridLayout = __webpack_require__(4);
+	ReactGridLayout = WidthProvider(ReactGridLayout);
 
 	var NoDraggingLayout = React.createClass({
 	  displayName: 'NoDraggingLayout',
@@ -53,7 +55,7 @@ webpackJsonp([8],[
 	    var p = this.props;
 	    return _.map(new Array(p.items), function (item, i) {
 	      var y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1;
-	      return { x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i };
+	      return { x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i.toString() };
 	    });
 	  },
 
@@ -77,7 +79,7 @@ webpackJsonp([8],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

@@ -6,10 +6,12 @@ webpackJsonp([11],[
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(4);
+	var React = __webpack_require__(5);
 	var PureRenderMixin = __webpack_require__(10);
 	var _ = __webpack_require__(15);
-	var ReactGridLayout = __webpack_require__(8);
+	var WidthProvider = __webpack_require__(4).WidthProvider;
+	var ReactGridLayout = __webpack_require__(4);
+	ReactGridLayout = WidthProvider(ReactGridLayout);
 
 	/**
 	 * This layout demonstrates how to use the `onResize` handler to enforce a min/max width and height.
@@ -55,7 +57,7 @@ webpackJsonp([11],[
 	      var w = _.random(1, 2);
 	      var h = _.random(1, 3);
 	      return {
-	        x: i * 2 % 12, y: Math.floor(i / 6), w: w, h: h, i: i
+	        x: i * 2 % 12, y: Math.floor(i / 6), w: w, h: h, i: i.toString()
 	      };
 	    });
 	  },
@@ -95,7 +97,7 @@ webpackJsonp([11],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);

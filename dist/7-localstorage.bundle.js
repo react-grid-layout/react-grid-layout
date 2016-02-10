@@ -6,10 +6,11 @@ webpackJsonp([3],[
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(4);
+	var React = __webpack_require__(5);
 	var PureRenderMixin = __webpack_require__(10);
-	var ReactGridLayout = __webpack_require__(8);
-
+	var WidthProvider = __webpack_require__(4).WidthProvider;
+	var ReactGridLayout = __webpack_require__(4);
+	ReactGridLayout = WidthProvider(ReactGridLayout);
 	/**
 	 * This layout demonstrates how to sync to localstorage.
 	 */
@@ -69,7 +70,7 @@ webpackJsonp([3],[
 	          onLayoutChange: this.onLayoutChange }),
 	        React.createElement(
 	          'div',
-	          { key: 1, _grid: { w: 2, h: 3, x: 0, y: 0 } },
+	          { key: "1", _grid: { w: 2, h: 3, x: 0, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -78,7 +79,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: 2, _grid: { w: 2, h: 3, x: 2, y: 0 } },
+	          { key: "2", _grid: { w: 2, h: 3, x: 2, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -87,7 +88,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: 3, _grid: { w: 2, h: 3, x: 4, y: 0 } },
+	          { key: "3", _grid: { w: 2, h: 3, x: 4, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -96,7 +97,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: 4, _grid: { w: 2, h: 3, x: 6, y: 0 } },
+	          { key: "4", _grid: { w: 2, h: 3, x: 6, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -105,7 +106,7 @@ webpackJsonp([3],[
 	        ),
 	        React.createElement(
 	          'div',
-	          { key: 5, _grid: { w: 2, h: 3, x: 8, y: 0 } },
+	          { key: "5", _grid: { w: 2, h: 3, x: 8, y: 0 } },
 	          React.createElement(
 	            'span',
 	            { className: 'text' },
@@ -122,7 +123,7 @@ webpackJsonp([3],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(7)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(8)(module)))
 
 /***/ }
 ]);

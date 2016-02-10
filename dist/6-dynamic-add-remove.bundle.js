@@ -6,10 +6,12 @@ webpackJsonp([4],[
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var React = __webpack_require__(4);
+	var React = __webpack_require__(5);
 	var PureRenderMixin = __webpack_require__(10);
 	var _ = __webpack_require__(15);
-	var ResponsiveReactGridLayout = __webpack_require__(8).Responsive;
+	var WidthProvider = __webpack_require__(4).WidthProvider;
+	var ResponsiveReactGridLayout = __webpack_require__(4).Responsive;
+	ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
 	/**
 	 * This layout demonstrates how to use a grid with a dynamic number of elements.
@@ -29,7 +31,7 @@ webpackJsonp([4],[
 	  getInitialState: function getInitialState() {
 	    return {
 	      items: [0, 1, 2, 3, 4].map(function (i, key, list) {
-	        return { i: i, x: i * 2, y: 0, w: 2, h: 2, add: i === list.length - 1 };
+	        return { i: i.toString(), x: i * 2, y: 0, w: 2, h: 2, add: i === (list.length - 1).toString() };
 	      }),
 	      newCounter: 0
 	    };
@@ -118,7 +120,7 @@ webpackJsonp([4],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }
 ]);
