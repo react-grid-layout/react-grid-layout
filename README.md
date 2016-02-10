@@ -136,10 +136,11 @@ If the largest is provided, RGL will attempt to interpolate the rest.
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
 
-#### Providing grid width and offsets
-Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width`, `offsetX` and `offsetY` to calculate
+#### Providing grid width
+
+Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width` to calculate
 positions on drag events. In simple cases a HOC `<WidthProvider>` can be used to automatically determine
-all values upon initialization and window resize events.
+width upon initialization and window resize events.
 
 ```javascript
 var WidthProvider = require('react-grid-layout').WidthProvider;
@@ -162,10 +163,7 @@ render: function() {
 }
 ```
 
-This allows you to easily replace `<WidthProvider>` with your own Provider HOC if you need a more sophisticated logic.
-
-#### Compatibility
-
+This allows you to easily replace `<WidthProvider>` with your own Provider HOC if you need more sophisticated logic.
 
 
 #### Grid Layout Props
@@ -204,12 +202,6 @@ layout: React.PropTypes.array,
 
 // This allows setting the initial width on the server side.
 width: React.PropTypes.number.isRequired,
-
-// This sets the correct drag positions on the x axis.
-offsetX: React.PropTypes.number.isRequired,
-
-// This sets the correct drag positions on the y axis.
-offsetY: React.PropTypes.number.isRequired,
 
 // Margin between items [x, y] in px.
 margin: React.PropTypes.array,

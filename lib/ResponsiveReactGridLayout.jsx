@@ -17,7 +17,10 @@ type State = {
 
 export default class ResponsiveReactGridLayout extends React.Component {
 
+  // This should only include propTypes needed in this code; RGL itself
+  // will do validation of the rest props passed to it.
   static propTypes = {
+
     //
     // Basic props
     //
@@ -38,9 +41,10 @@ export default class ResponsiveReactGridLayout extends React.Component {
       React.PropTypes.object.isRequired.apply(this, arguments);
       Object.keys(props.layouts).forEach((key) => validateLayout(props.layouts[key], 'layouts.' + key));
     },
+
+    // The width of this component.
+    // Required in this propTypes stanza because generateInitialState() will fail without it.
     width: React.PropTypes.number.isRequired,
-    offsetY: React.PropTypes.number.isRequired,
-    offsetX: React.PropTypes.number.isRequired,
 
     //
     // Callbacks
