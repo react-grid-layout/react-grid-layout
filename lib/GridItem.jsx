@@ -114,10 +114,10 @@ export default class GridItem extends React.Component {
     // E.g. if margin is 10 on each side and container is 600 wide, usable width is 580
     const rawWidth = containerWidth - (cols + 1) * margin[0]; // The space available for items (without margin)
     const out = {
-      left:  Math.round(rawWidth * (x / cols)) + (x + 1) * margin[0],
-      width: Math.round(rawWidth * (w / cols)) + (w - 1) * margin[0],
-      top:    Math.round(rowHeight * y + (y + 1 * margin[1])),
-      height: Math.round(rowHeight * h + (h - 1 * margin[1]))
+      left:  rawWidth * (x / cols) + (x + 1) * margin[0],
+      width: rawWidth * (w / cols) + (w - 1) * margin[0],
+      top:    rowHeight * y + (y + 1 * margin[1]),
+      height: rowHeight * h + (h - 1 * margin[1])
     };
 
     if (state.resizing) {
@@ -130,7 +130,12 @@ export default class GridItem extends React.Component {
       out.left = state.dragging.left;
     }
 
-    return out;
+    return {
+      left:   Math.round(out.left),
+      top:    Math.round(out.top),
+      width:  Math.round(out.width),
+      height: Math.round(out.height)
+    };
   }
 
   /**
