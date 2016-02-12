@@ -1,3 +1,9 @@
+0.10.6
+------
+
+- Bugfix: If both `props.layout` and `props.children.length` change in the same tick,
+  props.layout would be clobbered. See #162
+
 0.10.5
 ------
 
