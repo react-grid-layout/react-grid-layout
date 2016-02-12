@@ -1,3 +1,9 @@
+0.10.3
+------
+
+- Bugfix: Round item positions even if they're currently resizing or dragging (#158, regression of #141)
+- Bugfix: Fix a positioning bug when margins are 0 (#160)
+
 0.10.2
 ------
 
