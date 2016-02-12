@@ -52,6 +52,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 
 - [AWS CloudFront Dashboards](https://aws.amazon.com/blogs/aws/cloudwatch-dashboards-create-use-customized-metrics-views/)
 - [Metabase](http://www.metabase.com/)
+- [HubSpot](http://www.hubspot.com)
 
 *Know of others? Create a PR to let me know!*
 
