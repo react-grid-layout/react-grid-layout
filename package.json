@@ -4,13 +4,12 @@
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js,.jsx lib/ test/; flow",
+    "lint": "make lint",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bash build.sh",
-    "build-example": "webpack --config webpack-examples.config.js; node ./examples/generate.js",
-    "dev": "echo 'Open http://localhost:4002'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base .",
-    "prepublish": "npm run build",
-    "validate": "valiquire ./lib"
+    "build": "make build",
+    "build-example": "make build-example",
+    "dev": "make dev",
+    "prepublish": "make build"
   },
   "repository": {
     "type": "git",
@@ -74,7 +73,6 @@
     "registry": "https://registry.npmjs.org"
   },
   "pre-commit": [
-    "lint",
-    "validate"
+    "lint"
   ]
 }
