@@ -165,21 +165,24 @@ export default class ReactGridLayout extends React.Component {
   }
 
   componentWillReceiveProps(nextProps: Object) {
+    let newLayoutBase;
     // Allow parent to set layout directly.
     if (!isEqual(nextProps.layout, this.props.layout)) {
-      this.setState({
-        layout: synchronizeLayoutWithChildren(nextProps.layout, nextProps.children,
-                                              nextProps.cols, nextProps.verticalCompact)
-      });
-      // Call back so we can store the layout
-      this.props.onLayoutChange(this.state.layout);
+      newLayoutBase = nextProps.layout;
     }
-    // If children change, regenerate the layout.
-    if (nextProps.children.length !== this.props.children.length) {
-      this.setState({
-        layout: synchronizeLayoutWithChildren(this.state.layout, nextProps.children,
-                                              nextProps.cols, nextProps.verticalCompact)
-      });
+    // If children change, also regenerate the layout. Use our state
+    // as the base in case because it may be more up to date than
+    // what is in props.
+    else if (!nextProps.children.length !== this.props.children.length) {
+      newLayoutBase = this.state.layout;
+    }
+
+    // We need to regenerate the layout.
+    if (newLayoutBase) {
+      const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
+                                              nextProps.cols, nextProps.verticalCompact);
+      this.setState({layout: newLayout});
+      this.props.onLayoutChange(newLayout);
     }
   }
 
