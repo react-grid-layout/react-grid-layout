@@ -116,9 +116,13 @@ export default class GridItem extends React.Component {
     const out = {
       left:  rawWidth * (x / cols) + (x + 1) * margin[0],
       width: rawWidth * (w / cols) + (w - 1) * margin[0],
-      top:    rowHeight * y + (y + 1 * margin[1]),
-      height: rowHeight * h + (h - 1 * margin[1])
+      top:    rowHeight * y + (y + 1) * margin[1],
+      height: rowHeight * h + (h - 1) * margin[1]
     };
+    // 0 * Infinity === NaN, which causes problems with resize constriants;
+    // Fix this if it occurs.
+    if (h === Infinity) out.height = Infinity;
+    if (w === Infinity) out.width = Infinity;
 
     if (state.resizing) {
       out.width = state.resizing.width;
