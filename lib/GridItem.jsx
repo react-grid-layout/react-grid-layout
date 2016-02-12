@@ -26,6 +26,7 @@ export default class GridItem extends React.Component {
     containerWidth: PropTypes.number.isRequired,
     rowHeight: PropTypes.number.isRequired,
     margin: PropTypes.array.isRequired,
+    maxRows: PropTypes.number.isRequired,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
