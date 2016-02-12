@@ -177,7 +177,7 @@ export default class ReactGridLayout extends React.Component {
     // If children change, regenerate the layout.
     if (nextProps.children.length !== this.props.children.length) {
       this.setState({
-        layout: synchronizeLayoutWithChildren(this.state.layout, nextProps.children,
+        layout: synchronizeLayoutWithChildren(nextProps.layout, nextProps.children,
                                               nextProps.cols, nextProps.verticalCompact)
       });
     }
