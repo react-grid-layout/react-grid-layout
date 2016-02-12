@@ -1,3 +1,9 @@
+0.10.5
+------
+
+- Bugfix/Enhancement: Margins were causing subtle error in some of the positioning calculations. This has
+  been fixed.
+
 0.10.4
 ------
 
