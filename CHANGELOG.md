@@ -1,3 +1,8 @@
+0.10.4
+------
+
+- Bugfix: Container height was calculated as less than expected due to improper addition of margin.
+
 0.10.3
 ------
 
