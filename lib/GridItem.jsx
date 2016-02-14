@@ -373,6 +373,7 @@ export default class GridItem extends React.Component {
       // React with merge the classNames.
       className: [
         'react-grid-item',
+        child.props.className || '',
         className,
         isDraggable || isPlaceholder ? '' : 'static',
         this.state.resizing ? 'resizing' : '',
