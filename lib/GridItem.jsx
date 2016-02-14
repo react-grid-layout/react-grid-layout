@@ -362,7 +362,7 @@ export default class GridItem extends React.Component {
   }
 
   render(): ReactElement {
-    const {x, y, w, h, className, style, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
+    const {x, y, w, h, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
     const child = React.Children.only(this.props.children);
@@ -374,14 +374,14 @@ export default class GridItem extends React.Component {
       className: [
         'react-grid-item',
         child.props.className || '',
-        className,
+        this.props.className,
         isDraggable || isPlaceholder ? '' : 'static',
         this.state.resizing ? 'resizing' : '',
         this.state.dragging ? 'react-draggable-dragging' : '',
         useCSSTransforms ? 'cssTransforms' : ''
       ].join(' '),
       // We can set the width and height on the child, but unfortunately we can't set the position.
-      style: {style, ...this.createStyle(pos)}
+      style: {...this.props.style, ...child.props.style, ...this.createStyle(pos)}
     });
 
     // Resizable support. This is usually on but the user can toggle it off.
