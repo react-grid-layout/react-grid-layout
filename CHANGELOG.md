@@ -1,3 +1,9 @@
+0.10.7
+------
+
+- Bugfix: `className` and `style` props on grid children were being incorrectly dropped, a holdover
+  from when `cloneWithProps()` used to do this merging for us. They are now merged.
+
 0.10.6
 ------
 
