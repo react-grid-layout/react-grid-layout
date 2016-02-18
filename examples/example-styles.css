@@ -19,6 +19,9 @@ body {
   -webkit-columns: 120px;
   columns: 120px;
 }
+.react-grid-item {
+  box-sizing: border-box;
+}
 .react-grid-item:not(.react-grid-placeholder) {
   background: #ccc;
   border: 1px solid black;

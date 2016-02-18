@@ -27,6 +27,7 @@ export default class GridItem extends React.Component {
     rowHeight: PropTypes.number.isRequired,
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
+    containerPadding: PropTypes.array.isRequired,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -102,8 +103,8 @@ export default class GridItem extends React.Component {
 
   // Helper for generating column width
   calcColWidth(): number {
-    const {margin, containerWidth, cols} = this.props;
-    return (containerWidth - (margin[0] * (cols + 1))) / cols;
+    const {margin, containerPadding, containerWidth, cols} = this.props;
+    return (containerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
 
   /**
@@ -116,14 +117,14 @@ export default class GridItem extends React.Component {
    * @return {Object}                Object containing coords.
    */
   calcPosition(x: number, y: number, w: number, h: number, state: Object = {}): Position {
-    const {margin, rowHeight} = this.props;
+    const {margin, containerPadding, rowHeight} = this.props;
     const colWidth = this.calcColWidth();
 
     // Opposite of calcXY/calcWH
     const out = {
-      left:   colWidth * x + (x + 1) * margin[0],
+      left:   colWidth * x + x * margin[0] + containerPadding[0],
       width:  colWidth * w + (w - 1) * margin[0],
-      top:    rowHeight * y + (y + 1) * margin[1],
+      top:    rowHeight * y + y * margin[1] + containerPadding[1],
       height: rowHeight * h + (h - 1) * margin[1]
     };
     // 0 * Infinity === NaN, which causes problems with resize constriants;
