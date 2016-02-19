@@ -1,3 +1,8 @@
+0.10.8
+------
+
+- Rebuild using [ES2015 Loose Mode](https://babeljs.algolia.com/docs/advanced/loose/).
+
 0.10.7
 ------
 
