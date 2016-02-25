@@ -11,7 +11,8 @@ type State = {width: number};
 export default (ComposedComponent: ReactClass): ReactClass => class extends React.Component {
 
   state: State = {
-    width: 1280
+    // Intentional; Force RRGL to trigger onBreakpointChange() in any case when mounted
+    width: 0
   };
 
   componentDidMount() {
