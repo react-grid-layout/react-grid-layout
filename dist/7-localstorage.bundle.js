@@ -35,9 +35,6 @@ webpackJsonp([3],[
 	    }
 	    return { layout: ls.layout || [] };
 	  },
-	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	    this._saveToLocalStorage();
-	  },
 	  resetLayout: function resetLayout() {
 	    this.setState({ layout: [] });
 	  },
@@ -51,8 +48,8 @@ webpackJsonp([3],[
 	  onLayoutChange: function onLayoutChange(layout) {
 	    /*eslint no-console: 0*/
 	    console.log('layout changed', layout);
+	    this._saveToLocalStorage();
 	    this.props.onLayoutChange(layout); // updates status display
-	    this.setState({ layout: layout });
 	  },
 	  render: function render() {
 	    return React.createElement(

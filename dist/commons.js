@@ -17838,9 +17838,7 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -18170,8 +18168,7 @@
 	 *
 	 * @param  {Array}  initialLayout Layout passed in through props.
 	 * @param  {String} breakpoint    Current responsive breakpoint.
-	 * @param  {Boolean} verticalCompact Whether or not to compact the layout
-	 *   vertically.
+	 * @param  {Boolean} verticalCompact Whether or not to compact the layout vertically.
 	 * @return {Array}                Working layout.
 	 */
 	function synchronizeLayoutWithChildren(initialLayout, children, cols, verticalCompact) {
@@ -21830,13 +21827,9 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(5);
 
@@ -21877,7 +21870,7 @@
 	  function ReactGridLayout(props, context) {
 	    _classCallCheck(this, ReactGridLayout);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReactGridLayout).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
 
 	    _initialiseProps.call(_this);
 
@@ -21885,317 +21878,311 @@
 	    return _this;
 	  }
 
-	  _createClass(ReactGridLayout, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      // Call back with layout on mount. This should be done after correcting the layout width
-	      // to ensure we don't rerender with the wrong width.
-	      this.props.onLayoutChange(this.state.layout);
-	      this.setState({ isMounted: true });
+	  ReactGridLayout.prototype.componentDidMount = function componentDidMount() {
+	    // Call back with layout on mount. This should be done after correcting the layout width
+	    // to ensure we don't rerender with the wrong width.
+	    this.props.onLayoutChange(this.state.layout);
+	    this.setState({ isMounted: true });
+	  };
+
+	  ReactGridLayout.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	    var newLayoutBase = undefined;
+	    // Allow parent to set layout directly.
+	    if (!(0, _lodash2.default)(nextProps.layout, this.props.layout)) {
+	      newLayoutBase = nextProps.layout;
 	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      // Allow parent to set layout directly.
-	      if (!(0, _lodash2.default)(nextProps.layout, this.props.layout)) {
-	        this.setState({
-	          layout: (0, _utils.synchronizeLayoutWithChildren)(nextProps.layout, nextProps.children, nextProps.cols, nextProps.verticalCompact)
-	        });
-	        // Call back so we can store the layout
-	        this.props.onLayoutChange(this.state.layout);
+	    // If children change, also regenerate the layout. Use our state
+	    // as the base in case because it may be more up to date than
+	    // what is in props.
+	    else if (nextProps.children.length !== this.props.children.length) {
+	        newLayoutBase = this.state.layout;
 	      }
-	      // If children change, regenerate the layout.
-	      if (nextProps.children.length !== this.props.children.length) {
-	        this.setState({
-	          layout: (0, _utils.synchronizeLayoutWithChildren)(this.state.layout, nextProps.children, nextProps.cols, nextProps.verticalCompact)
-	        });
-	      }
+
+	    // We need to regenerate the layout.
+	    if (newLayoutBase) {
+	      var newLayout = (0, _utils.synchronizeLayoutWithChildren)(newLayoutBase, nextProps.children, nextProps.cols, nextProps.verticalCompact);
+	      this.setState({ layout: newLayout });
+	      this.props.onLayoutChange(newLayout);
 	    }
+	  };
 
-	    /**
-	     * Calculates a pixel value for the container.
-	     * @return {String} Container height in pixels.
-	     */
-
-	  }, {
-	    key: 'containerHeight',
-	    value: function containerHeight() {
-	      if (!this.props.autoSize) return;
-	      return (0, _utils.bottom)(this.state.layout) * this.props.rowHeight + this.props.margin[1] + 'px';
-	    }
-
-	    /**
-	     * When dragging starts
-	     * @param {String} i Id of the child
-	     * @param {Number} x X position of the move
-	     * @param {Number} y Y position of the move
-	     * @param {Event} e The mousedown event
-	     * @param {Element} node The current dragging DOM element
-	     */
-
-	  }, {
-	    key: 'onDragStart',
-	    value: function onDragStart(i, x, y, _ref) {
-	      var e = _ref.e;
-	      var node = _ref.node;
-	      var layout = this.state.layout;
-
-	      var l = (0, _utils.getLayoutItem)(layout, i);
-	      if (!l) return;
-
-	      this.setState({ oldDragItem: (0, _utils.clone)(l) });
-
-	      this.props.onDragStart(layout, l, l, null, e, node);
-	    }
-
-	    /**
-	     * Each drag movement create a new dragelement and move the element to the dragged location
-	     * @param {String} i Id of the child
-	     * @param {Number} x X position of the move
-	     * @param {Number} y Y position of the move
-	     * @param {Event} e The mousedown event
-	     * @param {Element} node The current dragging DOM element
-	     */
-
-	  }, {
-	    key: 'onDrag',
-	    value: function onDrag(i, x, y, _ref2) {
-	      var e = _ref2.e;
-	      var node = _ref2.node;
-	      var oldDragItem = this.state.oldDragItem;
-	      var layout = this.state.layout;
-
-	      var l = (0, _utils.getLayoutItem)(layout, i);
-	      if (!l) return;
-
-	      // Create placeholder (display only)
-	      var placeholder = {
-	        w: l.w, h: l.h, x: l.x, y: l.y, placeholder: true, i: i
-	      };
-
-	      // Move the element to the dragged location.
-	      layout = (0, _utils.moveElement)(layout, l, x, y, true /* isUserAction */);
-
-	      this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
-
-	      this.setState({
-	        layout: (0, _utils.compact)(layout, this.props.verticalCompact),
-	        activeDrag: placeholder
-	      });
-	    }
-
-	    /**
-	     * When dragging stops, figure out which position the element is closest to and update its x and y.
-	     * @param  {String} i Index of the child.
-	     * @param {Number} x X position of the move
-	     * @param {Number} y Y position of the move
-	     * @param {Event} e The mousedown event
-	     * @param {Element} node The current dragging DOM element
-	     */
-
-	  }, {
-	    key: 'onDragStop',
-	    value: function onDragStop(i, x, y, _ref3) {
-	      var e = _ref3.e;
-	      var node = _ref3.node;
-	      var oldDragItem = this.state.oldDragItem;
-	      var layout = this.state.layout;
-
-	      var l = (0, _utils.getLayoutItem)(layout, i);
-	      if (!l) return;
-
-	      // Move the element here
-	      layout = (0, _utils.moveElement)(layout, l, x, y, true /* isUserAction */);
-
-	      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
-
-	      // Set state
-	      this.setState({
-	        activeDrag: null,
-	        layout: (0, _utils.compact)(layout, this.props.verticalCompact),
-	        oldDragItem: null
-	      });
-
-	      this.props.onLayoutChange(this.state.layout);
-	    }
-	  }, {
-	    key: 'onResizeStart',
-	    value: function onResizeStart(i, w, h, _ref4) {
-	      var e = _ref4.e;
-	      var node = _ref4.node;
-	      var layout = this.state.layout;
-
-	      var l = (0, _utils.getLayoutItem)(layout, i);
-	      if (!l) return;
-
-	      this.setState({ oldResizeItem: (0, _utils.clone)(l) });
-
-	      this.props.onResizeStart(layout, l, l, null, e, node);
-	    }
-	  }, {
-	    key: 'onResize',
-	    value: function onResize(i, w, h, _ref5) {
-	      var e = _ref5.e;
-	      var node = _ref5.node;
-	      var _state = this.state;
-	      var layout = _state.layout;
-	      var oldResizeItem = _state.oldResizeItem;
-
-	      var l = (0, _utils.getLayoutItem)(layout, i);
-	      if (!l) return;
-
-	      // Set new width and height.
-	      l.w = w;
-	      l.h = h;
-
-	      // Create placeholder element (display only)
-	      var placeholder = {
-	        w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
-	      };
-
-	      this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
-
-	      // Re-compact the layout and set the drag placeholder.
-	      this.setState({ layout: (0, _utils.compact)(layout, this.props.verticalCompact), activeDrag: placeholder });
-	    }
-	  }, {
-	    key: 'onResizeStop',
-	    value: function onResizeStop(i, w, h, _ref6) {
-	      var e = _ref6.e;
-	      var node = _ref6.node;
-	      var _state2 = this.state;
-	      var layout = _state2.layout;
-	      var oldResizeItem = _state2.oldResizeItem;
-
-	      var l = (0, _utils.getLayoutItem)(layout, i);
-
-	      this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
-
-	      // Set state
-	      this.setState({
-	        activeDrag: null,
-	        layout: (0, _utils.compact)(layout, this.props.verticalCompact),
-	        oldResizeItem: null
-	      });
-
-	      this.props.onLayoutChange(this.state.layout);
-	    }
-
-	    /**
-	     * Create a placeholder object.
-	     * @return {Element} Placeholder div.
-	     */
-
-	  }, {
-	    key: 'placeholder',
-	    value: function placeholder() {
-	      var activeDrag = this.state.activeDrag;
-
-	      if (!activeDrag) return null;
-	      var _props = this.props;
-	      var width = _props.width;
-	      var cols = _props.cols;
-	      var margin = _props.margin;
-	      var rowHeight = _props.rowHeight;
-	      var useCSSTransforms = _props.useCSSTransforms;
-
-	      // {...this.state.activeDrag} is pretty slow, actually
-
-	      return _react2.default.createElement(
-	        _GridItem2.default,
-	        {
-	          w: activeDrag.w,
-	          h: activeDrag.h,
-	          x: activeDrag.x,
-	          y: activeDrag.y,
-	          i: activeDrag.i,
-	          isPlaceholder: true,
-	          className: 'react-grid-placeholder',
-	          containerWidth: width,
-	          cols: cols,
-	          margin: margin,
-	          rowHeight: rowHeight,
-	          isDraggable: false,
-	          isResizable: false,
-	          useCSSTransforms: useCSSTransforms },
-	        _react2.default.createElement('div', null)
-	      );
-	    }
-
-	    /**
-	     * Given a grid item, set its style attributes & surround in a <Draggable>.
-	     * @param  {Element} child React element.
-	     * @return {Element}       Element wrapped in draggable and properly placed.
-	     */
-
-	  }, {
-	    key: 'processGridItem',
-	    value: function processGridItem(child) {
-	      if (!child.key) return;
-	      var l = (0, _utils.getLayoutItem)(this.state.layout, child.key);
-	      if (!l) return;
-	      var _props2 = this.props;
-	      var width = _props2.width;
-	      var cols = _props2.cols;
-	      var margin = _props2.margin;
-	      var rowHeight = _props2.rowHeight;
-	      var useCSSTransforms = _props2.useCSSTransforms;
-	      var draggableCancel = _props2.draggableCancel;
-	      var draggableHandle = _props2.draggableHandle;
-
-	      // Parse 'static'. Any properties defined directly on the grid item will take precedence.
-
-	      var draggable = l.static || !this.props.isDraggable ? false : true;
-	      var resizable = l.static || !this.props.isResizable ? false : true;
-
-	      return _react2.default.createElement(
-	        _GridItem2.default,
-	        _extends({
-	          containerWidth: width,
-	          cols: cols,
-	          margin: margin,
-	          rowHeight: rowHeight,
-	          cancel: draggableCancel,
-	          handle: draggableHandle,
-	          onDragStop: this.onDragStop,
-	          onDragStart: this.onDragStart,
-	          onDrag: this.onDrag,
-	          onResizeStart: this.onResizeStart,
-	          onResize: this.onResize,
-	          onResizeStop: this.onResizeStop,
-	          isDraggable: draggable,
-	          isResizable: resizable,
-	          useCSSTransforms: useCSSTransforms && this.state.isMounted,
-	          usePercentages: !this.state.isMounted
-	        }, l),
-	        child
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var _props3 = this.props;
-	      var className = _props3.className;
-	      var style = _props3.style;
+	  /**
+	   * Calculates a pixel value for the container.
+	   * @return {String} Container height in pixels.
+	   */
 
 
-	      var mergedClassName = 'react-grid-layout ' + className;
-	      var mergedStyle = _extends({
-	        height: this.containerHeight()
-	      }, style);
+	  ReactGridLayout.prototype.containerHeight = function containerHeight() {
+	    if (!this.props.autoSize) return;
+	    return (0, _utils.bottom)(this.state.layout) * (this.props.rowHeight + this.props.margin[1]) + this.props.margin[1] + 'px';
+	  };
 
-	      return _react2.default.createElement(
-	        'div',
-	        { className: mergedClassName, style: mergedStyle },
-	        _react2.default.Children.map(this.props.children, function (child) {
-	          return _this2.processGridItem(child);
-	        }),
-	        this.placeholder()
-	      );
-	    }
-	  }]);
+	  /**
+	   * When dragging starts
+	   * @param {String} i Id of the child
+	   * @param {Number} x X position of the move
+	   * @param {Number} y Y position of the move
+	   * @param {Event} e The mousedown event
+	   * @param {Element} node The current dragging DOM element
+	   */
+
+
+	  ReactGridLayout.prototype.onDragStart = function onDragStart(i, x, y, _ref) {
+	    var e = _ref.e;
+	    var node = _ref.node;
+	    var layout = this.state.layout;
+
+	    var l = (0, _utils.getLayoutItem)(layout, i);
+	    if (!l) return;
+
+	    this.setState({ oldDragItem: (0, _utils.clone)(l) });
+
+	    this.props.onDragStart(layout, l, l, null, e, node);
+	  };
+
+	  /**
+	   * Each drag movement create a new dragelement and move the element to the dragged location
+	   * @param {String} i Id of the child
+	   * @param {Number} x X position of the move
+	   * @param {Number} y Y position of the move
+	   * @param {Event} e The mousedown event
+	   * @param {Element} node The current dragging DOM element
+	   */
+
+
+	  ReactGridLayout.prototype.onDrag = function onDrag(i, x, y, _ref2) {
+	    var e = _ref2.e;
+	    var node = _ref2.node;
+	    var oldDragItem = this.state.oldDragItem;
+	    var layout = this.state.layout;
+
+	    var l = (0, _utils.getLayoutItem)(layout, i);
+	    if (!l) return;
+
+	    // Create placeholder (display only)
+	    var placeholder = {
+	      w: l.w, h: l.h, x: l.x, y: l.y, placeholder: true, i: i
+	    };
+
+	    // Move the element to the dragged location.
+	    layout = (0, _utils.moveElement)(layout, l, x, y, true /* isUserAction */);
+
+	    this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
+
+	    this.setState({
+	      layout: (0, _utils.compact)(layout, this.props.verticalCompact),
+	      activeDrag: placeholder
+	    });
+	  };
+
+	  /**
+	   * When dragging stops, figure out which position the element is closest to and update its x and y.
+	   * @param  {String} i Index of the child.
+	   * @param {Number} x X position of the move
+	   * @param {Number} y Y position of the move
+	   * @param {Event} e The mousedown event
+	   * @param {Element} node The current dragging DOM element
+	   */
+
+
+	  ReactGridLayout.prototype.onDragStop = function onDragStop(i, x, y, _ref3) {
+	    var e = _ref3.e;
+	    var node = _ref3.node;
+	    var oldDragItem = this.state.oldDragItem;
+	    var layout = this.state.layout;
+
+	    var l = (0, _utils.getLayoutItem)(layout, i);
+	    if (!l) return;
+
+	    // Move the element here
+	    layout = (0, _utils.moveElement)(layout, l, x, y, true /* isUserAction */);
+
+	    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+
+	    // Set state
+	    this.setState({
+	      activeDrag: null,
+	      layout: (0, _utils.compact)(layout, this.props.verticalCompact),
+	      oldDragItem: null
+	    });
+
+	    this.props.onLayoutChange(this.state.layout);
+	  };
+
+	  ReactGridLayout.prototype.onResizeStart = function onResizeStart(i, w, h, _ref4) {
+	    var e = _ref4.e;
+	    var node = _ref4.node;
+	    var layout = this.state.layout;
+
+	    var l = (0, _utils.getLayoutItem)(layout, i);
+	    if (!l) return;
+
+	    this.setState({ oldResizeItem: (0, _utils.clone)(l) });
+
+	    this.props.onResizeStart(layout, l, l, null, e, node);
+	  };
+
+	  ReactGridLayout.prototype.onResize = function onResize(i, w, h, _ref5) {
+	    var e = _ref5.e;
+	    var node = _ref5.node;
+	    var _state = this.state;
+	    var layout = _state.layout;
+	    var oldResizeItem = _state.oldResizeItem;
+
+	    var l = (0, _utils.getLayoutItem)(layout, i);
+	    if (!l) return;
+
+	    // Set new width and height.
+	    l.w = w;
+	    l.h = h;
+
+	    // Create placeholder element (display only)
+	    var placeholder = {
+	      w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
+	    };
+
+	    this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
+
+	    // Re-compact the layout and set the drag placeholder.
+	    this.setState({ layout: (0, _utils.compact)(layout, this.props.verticalCompact), activeDrag: placeholder });
+	  };
+
+	  ReactGridLayout.prototype.onResizeStop = function onResizeStop(i, w, h, _ref6) {
+	    var e = _ref6.e;
+	    var node = _ref6.node;
+	    var _state2 = this.state;
+	    var layout = _state2.layout;
+	    var oldResizeItem = _state2.oldResizeItem;
+
+	    var l = (0, _utils.getLayoutItem)(layout, i);
+
+	    this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
+
+	    // Set state
+	    this.setState({
+	      activeDrag: null,
+	      layout: (0, _utils.compact)(layout, this.props.verticalCompact),
+	      oldResizeItem: null
+	    });
+
+	    this.props.onLayoutChange(this.state.layout);
+	  };
+
+	  /**
+	   * Create a placeholder object.
+	   * @return {Element} Placeholder div.
+	   */
+
+
+	  ReactGridLayout.prototype.placeholder = function placeholder() {
+	    var activeDrag = this.state.activeDrag;
+
+	    if (!activeDrag) return null;
+	    var _props = this.props;
+	    var width = _props.width;
+	    var cols = _props.cols;
+	    var margin = _props.margin;
+	    var rowHeight = _props.rowHeight;
+	    var maxRows = _props.maxRows;
+	    var useCSSTransforms = _props.useCSSTransforms;
+
+	    // {...this.state.activeDrag} is pretty slow, actually
+
+	    return _react2.default.createElement(
+	      _GridItem2.default,
+	      {
+	        w: activeDrag.w,
+	        h: activeDrag.h,
+	        x: activeDrag.x,
+	        y: activeDrag.y,
+	        i: activeDrag.i,
+	        isPlaceholder: true,
+	        className: 'react-grid-placeholder',
+	        containerWidth: width,
+	        cols: cols,
+	        margin: margin,
+	        maxRows: maxRows,
+	        rowHeight: rowHeight,
+	        isDraggable: false,
+	        isResizable: false,
+	        useCSSTransforms: useCSSTransforms },
+	      _react2.default.createElement('div', null)
+	    );
+	  };
+
+	  /**
+	   * Given a grid item, set its style attributes & surround in a <Draggable>.
+	   * @param  {Element} child React element.
+	   * @return {Element}       Element wrapped in draggable and properly placed.
+	   */
+
+
+	  ReactGridLayout.prototype.processGridItem = function processGridItem(child) {
+	    if (!child.key) return;
+	    var l = (0, _utils.getLayoutItem)(this.state.layout, child.key);
+	    if (!l) return;
+	    var _props2 = this.props;
+	    var width = _props2.width;
+	    var cols = _props2.cols;
+	    var margin = _props2.margin;
+	    var rowHeight = _props2.rowHeight;
+	    var maxRows = _props2.maxRows;
+	    var useCSSTransforms = _props2.useCSSTransforms;
+	    var draggableCancel = _props2.draggableCancel;
+	    var draggableHandle = _props2.draggableHandle;
+
+	    // Parse 'static'. Any properties defined directly on the grid item will take precedence.
+
+	    var draggable = l.static || !this.props.isDraggable ? false : true;
+	    var resizable = l.static || !this.props.isResizable ? false : true;
+
+	    return _react2.default.createElement(
+	      _GridItem2.default,
+	      _extends({
+	        containerWidth: width,
+	        cols: cols,
+	        margin: margin,
+	        maxRows: maxRows,
+	        rowHeight: rowHeight,
+	        cancel: draggableCancel,
+	        handle: draggableHandle,
+	        onDragStop: this.onDragStop,
+	        onDragStart: this.onDragStart,
+	        onDrag: this.onDrag,
+	        onResizeStart: this.onResizeStart,
+	        onResize: this.onResize,
+	        onResizeStop: this.onResizeStop,
+	        isDraggable: draggable,
+	        isResizable: resizable,
+	        useCSSTransforms: useCSSTransforms && this.state.isMounted,
+	        usePercentages: !this.state.isMounted
+	      }, l),
+	      child
+	    );
+	  };
+
+	  ReactGridLayout.prototype.render = function render() {
+	    var _this2 = this;
+
+	    var _props3 = this.props;
+	    var className = _props3.className;
+	    var style = _props3.style;
+
+
+	    var mergedClassName = 'react-grid-layout ' + className;
+	    var mergedStyle = _extends({
+	      height: this.containerHeight()
+	    }, style);
+
+	    return _react2.default.createElement(
+	      'div',
+	      { className: mergedClassName, style: mergedStyle },
+	      _react2.default.Children.map(this.props.children, function (child) {
+	        return _this2.processGridItem(child);
+	      }),
+	      this.placeholder()
+	    );
+	  };
 
 	  return ReactGridLayout;
 	}(_react2.default.Component);
@@ -22205,26 +22192,26 @@
 	  //
 	  // Basic props
 	  //
-	  className: _react2.default.PropTypes.string,
-	  style: _react2.default.PropTypes.object,
+	  className: _react.PropTypes.string,
+	  style: _react.PropTypes.object,
 
 	  // This can be set explicitly. If it is not set, it will automatically
 	  // be set to the container width. Note that resizes will *not* cause this to adjust.
 	  // If you need that behavior, use WidthProvider.
-	  width: _react2.default.PropTypes.number,
+	  width: _react.PropTypes.number,
 
 	  // If true, the container height swells and contracts to fit contents
-	  autoSize: _react2.default.PropTypes.bool,
+	  autoSize: _react.PropTypes.bool,
 	  // # of cols.
-	  cols: _react2.default.PropTypes.number,
+	  cols: _react.PropTypes.number,
 
 	  // A selector that will not be draggable.
-	  draggableCancel: _react2.default.PropTypes.string,
+	  draggableCancel: _react.PropTypes.string,
 	  // A selector for the draggable handler
-	  draggableHandle: _react2.default.PropTypes.string,
+	  draggableHandle: _react.PropTypes.string,
 
 	  // If true, the layout will compact vertically
-	  verticalCompact: _react2.default.PropTypes.bool,
+	  verticalCompact: _react.PropTypes.bool,
 
 	  // layout is an array of object with the format:
 	  // {x: Number, y: Number, w: Number, h: Number, i: String}
@@ -22235,39 +22222,49 @@
 	    (0, _utils.validateLayout)(layout, 'layout');
 	  },
 
-	  // margin between items [x, y] in px
-	  margin: _react2.default.PropTypes.array,
+	  //
+	  // Grid Dimensions
+	  //
+
+	  // Margin between items [x, y] in px
+	  margin: _react.PropTypes.arrayOf(_react.PropTypes.number),
 	  // Rows have a static height, but you can change this based on breakpoints if you like
-	  rowHeight: _react2.default.PropTypes.number,
+	  rowHeight: _react.PropTypes.number,
+	  // Default Infinity, but you can specify a max here if you like.
+	  // Note that this isn't fully fleshed out and won't error if you specify a layout that
+	  // extends beyond the row capacity. It will, however, not allow users to drag/resize
+	  // an item past the barrier. They can push items beyond the barrier, though.
+	  // Intentionally not documented for this reason.
+	  maxRows: _react.PropTypes.number,
 
 	  //
 	  // Flags
 	  //
-	  isDraggable: _react2.default.PropTypes.bool,
-	  isResizable: _react2.default.PropTypes.bool,
+	  isDraggable: _react.PropTypes.bool,
+	  isResizable: _react.PropTypes.bool,
 	  // Use CSS transforms instead of top/left
-	  useCSSTransforms: _react2.default.PropTypes.bool,
+	  useCSSTransforms: _react.PropTypes.bool,
 
 	  //
 	  // Callbacks
 	  //
 
 	  // Callback so you can save the layout. Calls after each drag & resize stops.
-	  onLayoutChange: _react2.default.PropTypes.func,
+	  onLayoutChange: _react.PropTypes.func,
 
 	  // Calls when drag starts. Callback is of the signature (layout, oldItem, newItem, placeholder, e).
 	  // All callbacks below have the same signature. 'start' and 'stop' callbacks omit the 'placeholder'.
-	  onDragStart: _react2.default.PropTypes.func,
+	  onDragStart: _react.PropTypes.func,
 	  // Calls on each drag movement.
-	  onDrag: _react2.default.PropTypes.func,
+	  onDrag: _react.PropTypes.func,
 	  // Calls when drag is complete.
-	  onDragStop: _react2.default.PropTypes.func,
+	  onDragStop: _react.PropTypes.func,
 	  //Calls when resize starts.
-	  onResizeStart: _react2.default.PropTypes.func,
+	  onResizeStart: _react.PropTypes.func,
 	  // Calls when resize movement happens.
-	  onResize: _react2.default.PropTypes.func,
+	  onResize: _react.PropTypes.func,
 	  // Calls when resize is complete.
-	  onResizeStop: _react2.default.PropTypes.func,
+	  onResizeStop: _react.PropTypes.func,
 
 	  //
 	  // Other validations
@@ -22275,7 +22272,7 @@
 
 	  // Children must not have duplicate keys.
 	  children: function children(props, propName, _componentName) {
-	    _react2.default.PropTypes.node.apply(this, arguments);
+	    _react.PropTypes.node.apply(this, arguments);
 	    var children = props[propName];
 
 	    // Check children keys for duplicates. Throw if found.
@@ -22292,6 +22289,7 @@
 	  autoSize: true,
 	  cols: 12,
 	  rowHeight: 150,
+	  maxRows: Infinity, // infinite vertical growth
 	  layout: [],
 	  margin: [10, 10],
 	  isDraggable: true,
@@ -22325,9 +22323,7 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 	exports.getBreakpointFromWidth = getBreakpointFromWidth;
 	exports.getColsFromBreakpoint = getColsFromBreakpoint;
 	exports.findOrGenerateResponsiveLayout = findOrGenerateResponsiveLayout;
@@ -24382,7 +24378,7 @@
 	            heightChanged = height !== _this2.state.height;
 	        if (handlerName === 'onResize' && !widthChanged && !heightChanged) return;
 
-	        console.log({ width: width, height: height, slackW: _this2.state.slackW, slackH: _this2.state.slackH });
+	        // Set the appropriate state for this handler.
 
 	        var _runConstraints = _this2.runConstraints(width, height);
 
@@ -24390,10 +24386,6 @@
 
 	        width = _runConstraints2[0];
 	        height = _runConstraints2[1];
-
-	        console.log({ width: width, height: height, slackW: _this2.state.slackW, slackH: _this2.state.slackH });
-
-	        // Set the appropriate state for this handler.
 	        var newState = {};
 	        if (handlerName === 'onResizeStart') {
 	          newState.resizing = true;
@@ -28477,13 +28469,9 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(5);
 
@@ -28511,8 +28499,6 @@
 	  _inherits(GridItem, _React$Component);
 
 	  function GridItem() {
-	    var _Object$getPrototypeO;
-
 	    var _temp, _this, _ret;
 
 	    _classCallCheck(this, GridItem);
@@ -28521,370 +28507,384 @@
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(GridItem)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
 	      resizing: null,
 	      dragging: null,
 	      className: ''
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
-	  _createClass(GridItem, [{
-	    key: 'calcPosition',
+	  // Helper for generating column width
+
+	  GridItem.prototype.calcColWidth = function calcColWidth() {
+	    var _props = this.props;
+	    var margin = _props.margin;
+	    var containerWidth = _props.containerWidth;
+	    var cols = _props.cols;
+
+	    return (containerWidth - margin[0] * (cols + 1)) / cols;
+	  };
+
+	  /**
+	   * Return position on the page given an x, y, w, h.
+	   * left, top, width, height are all in pixels.
+	   * @param  {Number}  x             X coordinate in grid units.
+	   * @param  {Number}  y             Y coordinate in grid units.
+	   * @param  {Number}  w             W coordinate in grid units.
+	   * @param  {Number}  h             H coordinate in grid units.
+	   * @return {Object}                Object containing coords.
+	   */
 
 
-	    /**
-	     * Return position on the page given an x, y, w, h.
-	     * left, top, width, height are all in pixels.
-	     * @param  {Number}  x             X coordinate in grid units.
-	     * @param  {Number}  y             Y coordinate in grid units.
-	     * @param  {Number}  w             W coordinate in grid units.
-	     * @param  {Number}  h             H coordinate in grid units.
-	     * @return {Object}                Object containing coords.
-	     */
-	    value: function calcPosition(x, y, w, h) {
-	      var state = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
-	      var _props = this.props;
-	      var margin = _props.margin;
-	      var containerWidth = _props.containerWidth;
-	      var cols = _props.cols;
-	      var rowHeight = _props.rowHeight;
+	  GridItem.prototype.calcPosition = function calcPosition(x, y, w, h) {
+	    var state = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
+	    var _props2 = this.props;
+	    var margin = _props2.margin;
+	    var rowHeight = _props2.rowHeight;
 
-	      // E.g. if margin is 10 on each side and container is 600 wide, usable width is 580
+	    var colWidth = this.calcColWidth();
 
-	      var rawWidth = containerWidth - (cols + 1) * margin[0]; // The space available for items (without margin)
-	      var out = {
-	        left: Math.round(rawWidth * (x / cols)) + (x + 1) * margin[0],
-	        width: Math.round(rawWidth * (w / cols)) + (w - 1) * margin[0],
-	        top: Math.round(rowHeight * y + (y + 1 * margin[1])),
-	        height: Math.round(rowHeight * h + (h - 1 * margin[1]))
-	      };
+	    // Opposite of calcXY/calcWH
+	    var out = {
+	      left: colWidth * x + (x + 1) * margin[0],
+	      width: colWidth * w + (w - 1) * margin[0],
+	      top: rowHeight * y + (y + 1) * margin[1],
+	      height: rowHeight * h + (h - 1) * margin[1]
+	    };
+	    // 0 * Infinity === NaN, which causes problems with resize constriants;
+	    // Fix this if it occurs.
+	    if (h === Infinity) out.height = Infinity;
+	    if (w === Infinity) out.width = Infinity;
 
-	      if (state.resizing) {
-	        out.width = state.resizing.width;
-	        out.height = state.resizing.height;
+	    if (state.resizing) {
+	      out.width = state.resizing.width;
+	      out.height = state.resizing.height;
+	    }
+
+	    if (state.dragging) {
+	      out.top = state.dragging.top;
+	      out.left = state.dragging.left;
+	    }
+
+	    return {
+	      left: Math.round(out.left),
+	      top: Math.round(out.top),
+	      width: Math.round(out.width),
+	      height: Math.round(out.height)
+	    };
+	  };
+
+	  /**
+	   * Translate x and y coordinates from pixels to grid units.
+	   * @param  {Number} top  Top position (relative to parent) in pixels.
+	   * @param  {Number} left Left position (relative to parent) in pixels.
+	   * @return {Object} x and y in grid units.
+	   */
+
+
+	  GridItem.prototype.calcXY = function calcXY(top, left) {
+	    var _props3 = this.props;
+	    var margin = _props3.margin;
+	    var cols = _props3.cols;
+	    var rowHeight = _props3.rowHeight;
+	    var w = _props3.w;
+	    var h = _props3.h;
+	    var maxRows = _props3.maxRows;
+
+	    var colWidth = this.calcColWidth();
+
+	    // left = colWidth * x + margin * (x + 1)
+	    // l = cx + m(x+1)
+	    // l = cx + mx + m
+	    // l - m = cx + mx
+	    // l - m = x(c + m)
+	    // (l - m) / (c + m) = x
+	    // x = (left - margin) / (coldWidth + margin)
+	    var x = Math.round((left - margin[0]) / (colWidth + margin[0]));
+	    var y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+
+	    // Capping
+	    x = Math.max(Math.min(x, cols - w), 0);
+	    y = Math.max(Math.min(y, maxRows - h), 0);
+
+	    return { x: x, y: y };
+	  };
+
+	  /**
+	   * Given a height and width in pixel values, calculate grid units.
+	   * @param  {Number} height Height in pixels.
+	   * @param  {Number} width  Width in pixels.
+	   * @return {Object} w, h as grid units.
+	   */
+
+
+	  GridItem.prototype.calcWH = function calcWH(_ref) {
+	    var height = _ref.height;
+	    var width = _ref.width;
+	    var _props4 = this.props;
+	    var margin = _props4.margin;
+	    var maxRows = _props4.maxRows;
+	    var cols = _props4.cols;
+	    var rowHeight = _props4.rowHeight;
+	    var x = _props4.x;
+	    var y = _props4.y;
+
+	    var colWidth = this.calcColWidth();
+
+	    // width = colWidth * w - (margin * (w - 1))
+	    // ...
+	    // w = (width + margin) / (colWidth + margin)
+	    var w = Math.round((width + margin[0]) / (colWidth + margin[0]));
+	    var h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+
+	    // Capping
+	    w = Math.max(Math.min(w, cols - x), 0);
+	    h = Math.max(Math.min(h, maxRows - y), 0);
+	    return { w: w, h: h };
+	  };
+
+	  /**
+	   * This is where we set the grid item's absolute placement. It gets a little tricky because we want to do it
+	   * well when server rendering, and the only way to do that properly is to use percentage width/left because
+	   * we don't know exactly what the browser viewport is.
+	   * Unfortunately, CSS Transforms, which are great for performance, break in this instance because a percentage
+	   * left is relative to the item itself, not its container! So we cannot use them on the server rendering pass.
+	   *
+	   * @param  {Object} pos Position object with width, height, left, top.
+	   * @return {Object}     Style object.
+	   */
+
+
+	  GridItem.prototype.createStyle = function createStyle(pos) {
+	    var _props5 = this.props;
+	    var usePercentages = _props5.usePercentages;
+	    var containerWidth = _props5.containerWidth;
+	    var useCSSTransforms = _props5.useCSSTransforms;
+
+
+	    var style = {
+	      width: pos.width + 'px',
+	      height: pos.height + 'px',
+	      left: pos.left + 'px',
+	      top: pos.top + 'px',
+	      position: 'absolute'
+	    };
+
+	    // This is used for server rendering.
+	    if (usePercentages) {
+	      style.left = (0, _utils.perc)(pos.left / containerWidth);
+	      style.width = (0, _utils.perc)(pos.width / containerWidth);
+	    }
+
+	    // CSS Transforms support
+	    if (useCSSTransforms) {
+	      (0, _utils.setTransform)(style, [pos.left, pos.top]);
+	      style.left = null;
+	      style.top = null;
+	    }
+
+	    return style;
+	  };
+
+	  /**
+	   * Mix a Draggable instance into a child.
+	   * @param  {Element} child    Child element.
+	   * @return {Element}          Child wrapped in Draggable.
+	   */
+
+
+	  GridItem.prototype.mixinDraggable = function mixinDraggable(child) {
+	    return _react2.default.createElement(
+	      _reactDraggable.DraggableCore,
+	      {
+	        onStart: this.onDragHandler('onDragStart'),
+	        onDrag: this.onDragHandler('onDrag'),
+	        onStop: this.onDragHandler('onDragStop'),
+	        handle: this.props.handle,
+	        cancel: ".react-resizable-handle " + this.props.cancel },
+	      child
+	    );
+	  };
+
+	  /**
+	   * Mix a Resizable instance into a child.
+	   * @param  {Element} child    Child element.
+	   * @param  {Object} position  Position object (pixel values)
+	   * @return {Element}          Child wrapped in Resizable.
+	   */
+
+
+	  GridItem.prototype.mixinResizable = function mixinResizable(child, position) {
+	    var _props6 = this.props;
+	    var cols = _props6.cols;
+	    var x = _props6.x;
+	    var minW = _props6.minW;
+	    var minH = _props6.minH;
+	    var maxW = _props6.maxW;
+	    var maxH = _props6.maxH;
+
+	    // This is the max possible width - doesn't go to infinity because of the width of the window
+
+	    var maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
+
+	    // Calculate min/max constraints using our min & maxes
+	    var mins = this.calcPosition(0, 0, minW, minH);
+	    var maxes = this.calcPosition(0, 0, maxW, maxH);
+	    var minConstraints = [mins.width, mins.height];
+	    var maxConstraints = [Math.min(maxes.width, maxWidth), Math.min(maxes.height, Infinity)];
+	    return _react2.default.createElement(
+	      _reactResizable.Resizable,
+	      {
+	        width: position.width,
+	        height: position.height,
+	        minConstraints: minConstraints,
+	        maxConstraints: maxConstraints,
+	        onResizeStop: this.onResizeHandler('onResizeStop'),
+	        onResizeStart: this.onResizeHandler('onResizeStart'),
+	        onResize: this.onResizeHandler('onResize') },
+	      child
+	    );
+	  };
+
+	  /**
+	   * Wrapper around drag events to provide more useful data.
+	   * All drag events call the function with the given handler name,
+	   * with the signature (index, x, y).
+	   *
+	   * @param  {String} handlerName Handler name to wrap.
+	   * @return {Function}           Handler function.
+	   */
+
+
+	  GridItem.prototype.onDragHandler = function onDragHandler(handlerName) {
+	    var _this2 = this;
+
+	    return function (e, _ref2) {
+	      var node = _ref2.node;
+	      var position = _ref2.position;
+
+	      if (!_this2.props[handlerName]) return;
+
+	      var newPosition = { top: 0, left: 0 };
+
+	      // Get new XY
+	      switch (handlerName) {
+	        case 'onDragStart':
+	          // ToDo this wont work on nested parents
+	          var parentRect = node.offsetParent.getBoundingClientRect();
+	          var clientRect = node.getBoundingClientRect();
+	          newPosition.top = clientRect.top - parentRect.top;
+	          newPosition.left = clientRect.left - parentRect.left;
+	          _this2.setState({ dragging: newPosition });
+	          break;
+	        case 'onDrag':
+	          if (!_this2.state.dragging) throw new Error('onDrag called before onDragStart.');
+	          newPosition.left = _this2.state.dragging.left + position.deltaX;
+	          newPosition.top = _this2.state.dragging.top + position.deltaY;
+	          _this2.setState({ dragging: newPosition });
+	          break;
+	        case 'onDragStop':
+	          if (!_this2.state.dragging) throw new Error('onDragEnd called before onDragStart.');
+	          newPosition.left = _this2.state.dragging.left;
+	          newPosition.top = _this2.state.dragging.top;
+	          _this2.setState({ dragging: null });
+	          break;
+	        default:
+	          throw new Error('onDragHandler called with unrecognized handlerName: ' + handlerName);
 	      }
 
-	      if (state.dragging) {
-	        out.top = state.dragging.top;
-	        out.left = state.dragging.left;
-	      }
+	      var _calcXY = _this2.calcXY(newPosition.top, newPosition.left);
 
-	      return out;
-	    }
-
-	    /**
-	     * Translate x and y coordinates from pixels to grid units.
-	     * @param  {Number} top  Top position (relative to parent) in pixels.
-	     * @param  {Number} left Left position (relative to parent) in pixels.
-	     * @return {Object} x and y in grid units.
-	     */
-
-	  }, {
-	    key: 'calcXY',
-	    value: function calcXY(top, left) {
-	      var _props2 = this.props;
-	      var margin = _props2.margin;
-	      var containerWidth = _props2.containerWidth;
-	      var cols = _props2.cols;
-	      var rowHeight = _props2.rowHeight;
-	      var w = _props2.w;
+	      var x = _calcXY.x;
+	      var y = _calcXY.y;
 
 
-	      left -= margin[0];
-	      top -= margin[1];
-	      // This is intentional; because so much of the logic on moving boxes up/down relies
-	      // on an exact y position, we only round the x, not the y.
-	      var x = Math.round(left / containerWidth * cols);
-	      var y = Math.floor(top / rowHeight);
-	      x = Math.max(Math.min(x, cols), 0);
-	      y = Math.max(y, 0);
+	      _this2.props[handlerName](_this2.props.i, x, y, { e: e, node: node, newPosition: newPosition });
+	    };
+	  };
 
-	      // Cap x at numCols
-	      x = Math.min(x, cols - w);
-
-	      return { x: x, y: y };
-	    }
-
-	    /**
-	     * Given a height and width in pixel values, calculate grid units.
-	     * @param  {Number} height Height in pixels.
-	     * @param  {Number} width  Width in pixels.
-	     * @return {Object} w, h as grid units.
-	     */
-
-	  }, {
-	    key: 'calcWH',
-	    value: function calcWH(_ref) {
-	      var height = _ref.height;
-	      var width = _ref.width;
-	      var _props3 = this.props;
-	      var margin = _props3.margin;
-	      var containerWidth = _props3.containerWidth;
-	      var cols = _props3.cols;
-	      var rowHeight = _props3.rowHeight;
-	      var x = _props3.x;
+	  /**
+	   * Wrapper around drag events to provide more useful data.
+	   * All drag events call the function with the given handler name,
+	   * with the signature (index, x, y).
+	   *
+	   * @param  {String} handlerName Handler name to wrap.
+	   * @return {Function}           Handler function.
+	   */
 
 
-	      width += margin[0];
-	      height += margin[1];
-	      var w = Math.round(width / containerWidth * cols);
-	      var h = Math.round(height / rowHeight);
-	      w = Math.max(Math.min(w, cols - x), 0);
-	      h = Math.max(h, 0);
-	      return { w: w, h: h };
-	    }
+	  GridItem.prototype.onResizeHandler = function onResizeHandler(handlerName) {
+	    var _this3 = this;
 
-	    /**
-	     * This is where we set the grid item's absolute placement. It gets a little tricky because we want to do it
-	     * well when server rendering, and the only way to do that properly is to use percentage width/left because
-	     * we don't know exactly what the browser viewport is.
-	     * Unfortunately, CSS Transforms, which are great for performance, break in this instance because a percentage
-	     * left is relative to the item itself, not its container! So we cannot use them on the server rendering pass.
-	     *
-	     * @param  {Object} pos Position object with width, height, left, top.
-	     * @return {Object}     Style object.
-	     */
+	    return function (e, _ref3) {
+	      var element = _ref3.element;
+	      var size = _ref3.size;
 
-	  }, {
-	    key: 'createStyle',
-	    value: function createStyle(pos) {
-	      var _props4 = this.props;
-	      var usePercentages = _props4.usePercentages;
-	      var containerWidth = _props4.containerWidth;
-	      var useCSSTransforms = _props4.useCSSTransforms;
-
-
-	      var style = {
-	        width: pos.width + 'px',
-	        height: pos.height + 'px',
-	        left: pos.left + 'px',
-	        top: pos.top + 'px',
-	        position: 'absolute'
-	      };
-
-	      // This is used for server rendering.
-	      if (usePercentages) {
-	        style.left = (0, _utils.perc)(pos.left / containerWidth);
-	        style.width = (0, _utils.perc)(pos.width / containerWidth);
-	      }
-
-	      // CSS Transforms support
-	      if (useCSSTransforms) {
-	        (0, _utils.setTransform)(style, [pos.left, pos.top]);
-	        style.left = null;
-	        style.top = null;
-	      }
-
-	      return style;
-	    }
-
-	    /**
-	     * Mix a Draggable instance into a child.
-	     * @param  {Element} child    Child element.
-	     * @return {Element}          Child wrapped in Draggable.
-	     */
-
-	  }, {
-	    key: 'mixinDraggable',
-	    value: function mixinDraggable(child) {
-	      return _react2.default.createElement(
-	        _reactDraggable.DraggableCore,
-	        {
-	          onStart: this.onDragHandler('onDragStart'),
-	          onDrag: this.onDragHandler('onDrag'),
-	          onStop: this.onDragHandler('onDragStop'),
-	          handle: this.props.handle,
-	          cancel: ".react-resizable-handle " + this.props.cancel },
-	        child
-	      );
-	    }
-
-	    /**
-	     * Mix a Resizable instance into a child.
-	     * @param  {Element} child    Child element.
-	     * @param  {Object} position  Position object (pixel values)
-	     * @return {Element}          Child wrapped in Resizable.
-	     */
-
-	  }, {
-	    key: 'mixinResizable',
-	    value: function mixinResizable(child, position) {
-	      var _props5 = this.props;
-	      var cols = _props5.cols;
-	      var x = _props5.x;
-	      var minW = _props5.minW;
-	      var minH = _props5.minH;
-	      var maxW = _props5.maxW;
-	      var maxH = _props5.maxH;
-
-	      // This is the max possible width - doesn't go to infinity because of the width of the window
-
-	      var maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
-
-	      // Calculate min/max constraints using our min & maxes
-	      var mins = this.calcPosition(0, 0, minW, minH);
-	      var maxes = this.calcPosition(0, 0, maxW, maxH);
-	      var minConstraints = [mins.width, mins.height];
-	      var maxConstraints = [Math.min(maxes.width, maxWidth), Math.min(maxes.height, Infinity)];
-	      return _react2.default.createElement(
-	        _reactResizable.Resizable,
-	        {
-	          width: position.width,
-	          height: position.height,
-	          minConstraints: minConstraints,
-	          maxConstraints: maxConstraints,
-	          onResizeStop: this.onResizeHandler('onResizeStop'),
-	          onResizeStart: this.onResizeHandler('onResizeStart'),
-	          onResize: this.onResizeHandler('onResize') },
-	        child
-	      );
-	    }
-
-	    /**
-	     * Wrapper around drag events to provide more useful data.
-	     * All drag events call the function with the given handler name,
-	     * with the signature (index, x, y).
-	     *
-	     * @param  {String} handlerName Handler name to wrap.
-	     * @return {Function}           Handler function.
-	     */
-
-	  }, {
-	    key: 'onDragHandler',
-	    value: function onDragHandler(handlerName) {
-	      var _this2 = this;
-
-	      return function (e, _ref2) {
-	        var node = _ref2.node;
-	        var position = _ref2.position;
-
-	        if (!_this2.props[handlerName]) return;
-
-	        var newPosition = { top: 0, left: 0 };
-
-	        // Get new XY
-	        switch (handlerName) {
-	          case 'onDragStart':
-	            // ToDo this wont work on nested parents
-	            var parentRect = node.offsetParent.getBoundingClientRect();
-	            var clientRect = node.getBoundingClientRect();
-	            newPosition.top = clientRect.top - parentRect.top;
-	            newPosition.left = clientRect.left - parentRect.left;
-	            _this2.setState({ dragging: newPosition });
-	            break;
-	          case 'onDrag':
-	            if (!_this2.state.dragging) throw new Error('onDrag called before onDragStart.');
-	            newPosition.left = _this2.state.dragging.left + position.deltaX;
-	            newPosition.top = _this2.state.dragging.top + position.deltaY;
-	            _this2.setState({ dragging: newPosition });
-	            break;
-	          case 'onDragStop':
-	            if (!_this2.state.dragging) throw new Error('onDragEnd called before onDragStart.');
-	            newPosition.left = _this2.state.dragging.left;
-	            newPosition.top = _this2.state.dragging.top;
-	            _this2.setState({ dragging: null });
-	            break;
-	          default:
-	            throw new Error('onDragHandler called with unrecognized handlerName: ' + handlerName);
-	        }
-
-	        var _calcXY = _this2.calcXY(newPosition.top, newPosition.left);
-
-	        var x = _calcXY.x;
-	        var y = _calcXY.y;
-
-
-	        _this2.props[handlerName](_this2.props.i, x, y, { e: e, node: node, newPosition: newPosition });
-	      };
-	    }
-
-	    /**
-	     * Wrapper around drag events to provide more useful data.
-	     * All drag events call the function with the given handler name,
-	     * with the signature (index, x, y).
-	     *
-	     * @param  {String} handlerName Handler name to wrap.
-	     * @return {Function}           Handler function.
-	     */
-
-	  }, {
-	    key: 'onResizeHandler',
-	    value: function onResizeHandler(handlerName) {
-	      var _this3 = this;
-
-	      return function (e, _ref3) {
-	        var element = _ref3.element;
-	        var size = _ref3.size;
-
-	        if (!_this3.props[handlerName]) return;
-	        var _props6 = _this3.props;
-	        var cols = _props6.cols;
-	        var x = _props6.x;
-	        var i = _props6.i;
-	        var maxW = _props6.maxW;
-	        var minW = _props6.minW;
-	        var maxH = _props6.maxH;
-	        var minH = _props6.minH;
-
-	        // Get new XY
-
-	        var _calcWH = _this3.calcWH(size);
-
-	        var w = _calcWH.w;
-	        var h = _calcWH.h;
-
-	        // Cap w at numCols
-
-	        w = Math.min(w, cols - x);
-	        // Ensure w is at least 1
-	        w = Math.max(w, 1);
-
-	        // Min/max capping
-	        w = Math.max(Math.min(w, maxW), minW);
-	        h = Math.max(Math.min(h, maxH), minH);
-
-	        _this3.setState({ resizing: handlerName === 'onResizeStop' ? null : size });
-
-	        _this3.props[handlerName](i, w, h, { e: e, element: element, size: size });
-	      };
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props7 = this.props;
+	      if (!_this3.props[handlerName]) return;
+	      var _props7 = _this3.props;
+	      var cols = _props7.cols;
 	      var x = _props7.x;
-	      var y = _props7.y;
-	      var w = _props7.w;
-	      var h = _props7.h;
-	      var className = _props7.className;
-	      var style = _props7.style;
-	      var isDraggable = _props7.isDraggable;
-	      var isPlaceholder = _props7.isPlaceholder;
-	      var isResizable = _props7.isResizable;
-	      var useCSSTransforms = _props7.useCSSTransforms;
+	      var i = _props7.i;
+	      var maxW = _props7.maxW;
+	      var minW = _props7.minW;
+	      var maxH = _props7.maxH;
+	      var minH = _props7.minH;
+
+	      // Get new XY
+
+	      var _calcWH = _this3.calcWH(size);
+
+	      var w = _calcWH.w;
+	      var h = _calcWH.h;
+
+	      // Cap w at numCols
+
+	      w = Math.min(w, cols - x);
+	      // Ensure w is at least 1
+	      w = Math.max(w, 1);
+
+	      // Min/max capping
+	      w = Math.max(Math.min(w, maxW), minW);
+	      h = Math.max(Math.min(h, maxH), minH);
+
+	      _this3.setState({ resizing: handlerName === 'onResizeStop' ? null : size });
+
+	      _this3.props[handlerName](i, w, h, { e: e, element: element, size: size });
+	    };
+	  };
+
+	  GridItem.prototype.render = function render() {
+	    var _props8 = this.props;
+	    var x = _props8.x;
+	    var y = _props8.y;
+	    var w = _props8.w;
+	    var h = _props8.h;
+	    var isDraggable = _props8.isDraggable;
+	    var isPlaceholder = _props8.isPlaceholder;
+	    var isResizable = _props8.isResizable;
+	    var useCSSTransforms = _props8.useCSSTransforms;
 
 
-	      var pos = this.calcPosition(x, y, w, h, this.state);
-	      var child = _react2.default.Children.only(this.props.children);
+	    var pos = this.calcPosition(x, y, w, h, this.state);
+	    var child = _react2.default.Children.only(this.props.children);
 
-	      // Create the child element. We clone the existing element but modify its className and style.
-	      var newChild = _react2.default.cloneElement(child, {
-	        // Munge a classname. Use passed in classnames and resizing.
-	        // React with merge the classNames.
-	        className: ['react-grid-item', className, isDraggable || isPlaceholder ? '' : 'static', this.state.resizing ? 'resizing' : '', this.state.dragging ? 'react-draggable-dragging' : '', useCSSTransforms ? 'cssTransforms' : ''].join(' '),
-	        // We can set the width and height on the child, but unfortunately we can't set the position.
-	        style: _extends({ style: style }, this.createStyle(pos))
-	      });
+	    // Create the child element. We clone the existing element but modify its className and style.
+	    var newChild = _react2.default.cloneElement(child, {
+	      // Munge a classname. Use passed in classnames and resizing.
+	      // React with merge the classNames.
+	      className: ['react-grid-item', child.props.className || '', this.props.className, isDraggable || isPlaceholder ? '' : 'static', this.state.resizing ? 'resizing' : '', this.state.dragging ? 'react-draggable-dragging' : '', useCSSTransforms ? 'cssTransforms' : ''].join(' '),
+	      // We can set the width and height on the child, but unfortunately we can't set the position.
+	      style: _extends({}, this.props.style, child.props.style, this.createStyle(pos))
+	    });
 
-	      // Resizable support. This is usually on but the user can toggle it off.
-	      if (isResizable) newChild = this.mixinResizable(newChild, pos);
+	    // Resizable support. This is usually on but the user can toggle it off.
+	    if (isResizable) newChild = this.mixinResizable(newChild, pos);
 
-	      // Draggable support. This is always on, except for with placeholders.
-	      if (isDraggable) newChild = this.mixinDraggable(newChild);
+	    // Draggable support. This is always on, except for with placeholders.
+	    if (isDraggable) newChild = this.mixinDraggable(newChild);
 
-	      return newChild;
-	    }
-	  }]);
+	    return newChild;
+	  };
 
 	  return GridItem;
 	}(_react2.default.Component);
@@ -28898,6 +28898,7 @@
 	  containerWidth: _react.PropTypes.number.isRequired,
 	  rowHeight: _react.PropTypes.number.isRequired,
 	  margin: _react.PropTypes.array.isRequired,
+	  maxRows: _react.PropTypes.number.isRequired,
 
 	  // These are all in grid units
 	  x: _react.PropTypes.number.isRequired,
@@ -28970,13 +28971,9 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(5);
 
@@ -29010,8 +29007,6 @@
 	  _inherits(ResponsiveReactGridLayout, _React$Component);
 
 	  function ResponsiveReactGridLayout() {
-	    var _Object$getPrototypeO;
-
 	    var _temp, _this, _ret;
 
 	    _classCallCheck(this, ResponsiveReactGridLayout);
@@ -29020,133 +29015,127 @@
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(ResponsiveReactGridLayout)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = _this.generateInitialState(), _temp), _possibleConstructorReturn(_this, _ret);
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = _this.generateInitialState(), _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  // This should only include propTypes needed in this code; RGL itself
 	  // will do validation of the rest props passed to it.
 
 
-	  _createClass(ResponsiveReactGridLayout, [{
-	    key: 'generateInitialState',
-	    value: function generateInitialState() {
-	      var _props = this.props;
-	      var width = _props.width;
-	      var breakpoints = _props.breakpoints;
-	      var layouts = _props.layouts;
-	      var verticalCompact = _props.verticalCompact;
-	      var cols = _props.cols;
+	  ResponsiveReactGridLayout.prototype.generateInitialState = function generateInitialState() {
+	    var _props = this.props;
+	    var width = _props.width;
+	    var breakpoints = _props.breakpoints;
+	    var layouts = _props.layouts;
+	    var verticalCompact = _props.verticalCompact;
+	    var cols = _props.cols;
 
-	      var breakpoint = (0, _responsiveUtils.getBreakpointFromWidth)(breakpoints, width);
-	      var colNo = (0, _responsiveUtils.getColsFromBreakpoint)(breakpoint, cols);
-	      // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
-	      // for this layout.
-	      var initialLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(layouts, breakpoints, breakpoint, breakpoint, colNo, verticalCompact);
+	    var breakpoint = (0, _responsiveUtils.getBreakpointFromWidth)(breakpoints, width);
+	    var colNo = (0, _responsiveUtils.getColsFromBreakpoint)(breakpoint, cols);
+	    // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
+	    // for this layout.
+	    var initialLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(layouts, breakpoints, breakpoint, breakpoint, colNo, verticalCompact);
 
-	      return {
-	        layout: initialLayout,
-	        breakpoint: breakpoint,
-	        cols: colNo
-	      };
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
+	    return {
+	      layout: initialLayout,
+	      breakpoint: breakpoint,
+	      cols: colNo
+	    };
+	  };
 
-	      if (nextProps.width != this.props.width) {
-	        var newBreakpoint = nextProps.breakpoint || (0, _responsiveUtils.getBreakpointFromWidth)(nextProps.breakpoints, nextProps.width);
-	        this.onWidthChange(nextProps.width, newBreakpoint);
-	      }
+	  ResponsiveReactGridLayout.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 
-	      // Allow parent to set breakpoint directly.
-	      if (nextProps.breakpoint !== this.props.breakpoint) {
-	        this.onWidthChange(nextProps.width, nextProps.breakpoint);
-	      }
-
-	      // Allow parent to set layouts directly.
-	      if (!(0, _lodash2.default)(nextProps.layouts, this.props.layouts)) {
-	        var _state = this.state;
-	        var _breakpoint = _state.breakpoint;
-	        var _cols = _state.cols;
-
-	        // Since we're setting an entirely new layout object, we must generate a new responsive layout
-	        // if one does not exist.
-
-	        var newLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(nextProps.layouts, nextProps.breakpoints, _breakpoint, _breakpoint, _cols, nextProps.verticalLayout);
-	        this.setState({ layout: newLayout });
-	      }
+	    if (nextProps.width != this.props.width) {
+	      var newBreakpoint = nextProps.breakpoint || (0, _responsiveUtils.getBreakpointFromWidth)(nextProps.breakpoints, nextProps.width);
+	      this.onWidthChange(nextProps.width, newBreakpoint);
 	    }
 
-	    /**
-	     * When the width changes work through breakpoints and reset state with the new width & breakpoint.
-	     * Width changes are necessary to figure out the widget widths.
-	     */
-
-	  }, {
-	    key: 'onWidthChange',
-	    value: function onWidthChange(width, newBreakpoint) {
-	      var _props2 = this.props;
-	      var breakpoints = _props2.breakpoints;
-	      var verticalLayout = _props2.verticalLayout;
-	      var verticalCompact = _props2.verticalCompact;
-	      var cols = _props2.cols;
-
-
-	      var lastBreakpoint = this.state.breakpoint;
-
-	      // Breakpoint change
-	      if (lastBreakpoint !== newBreakpoint) {
-
-	        // Store the current layout
-	        var layouts = this.props.layouts;
-	        layouts[lastBreakpoint] = JSON.parse(JSON.stringify(this.state.layout));
-
-	        // Find or generate a new one.
-	        var newCols = (0, _responsiveUtils.getColsFromBreakpoint)(newBreakpoint, cols);
-	        var _layout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(layouts, breakpoints, newBreakpoint, lastBreakpoint, newCols, verticalLayout);
-
-	        // This adds missing items.
-	        _layout = (0, _utils.synchronizeLayoutWithChildren)(_layout, this.props.children, newCols, verticalCompact);
-
-	        // Store this new layout as well.
-	        layouts[newBreakpoint] = _layout;
-
-	        // callbacks
-	        this.props.onLayoutChange(_layout, layouts);
-	        this.props.onBreakpointChange(newBreakpoint, newCols);
-	        this.props.onWidthChange(width, this.props.margin, newCols);
-
-	        this.setState({ breakpoint: newBreakpoint, layout: _layout, cols: newCols });
-	      }
+	    // Allow parent to set breakpoint directly.
+	    if (nextProps.breakpoint !== this.props.breakpoint) {
+	      this.onWidthChange(nextProps.width, nextProps.breakpoint);
 	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props3 = this.props;
-	      var breakpoint = _props3.breakpoint;
-	      var breakpoints = _props3.breakpoints;
-	      var cols = _props3.cols;
-	      var layouts = _props3.layouts;
-	      var onBreakpointChange = _props3.onBreakpointChange;
-	      var onLayoutChange = _props3.onLayoutChange;
-	      var onWidthChange = _props3.onWidthChange;
 
-	      var other = _objectWithoutProperties(_props3, ['breakpoint', 'breakpoints', 'cols', 'layouts', 'onBreakpointChange', 'onLayoutChange', 'onWidthChange']);
+	    // Allow parent to set layouts directly.
+	    if (!(0, _lodash2.default)(nextProps.layouts, this.props.layouts)) {
+	      var _state = this.state;
+	      var _breakpoint = _state.breakpoint;
+	      var _cols = _state.cols;
 
-	      // wrap layouts so we do not need to pass layouts to child
+	      // Since we're setting an entirely new layout object, we must generate a new responsive layout
+	      // if one does not exist.
 
-
-	      var onLayoutChangeWrapper = function onLayoutChangeWrapper(layout) {
-	        return onLayoutChange(layout, layouts);
-	      };
-
-	      return _react2.default.createElement(_ReactGridLayout2.default, _extends({}, other, {
-	        onLayoutChange: onLayoutChangeWrapper,
-	        layout: this.state.layout,
-	        cols: this.state.cols
-	      }));
+	      var newLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(nextProps.layouts, nextProps.breakpoints, _breakpoint, _breakpoint, _cols, nextProps.verticalLayout);
+	      this.setState({ layout: newLayout });
 	    }
-	  }]);
+	  };
+
+	  /**
+	   * When the width changes work through breakpoints and reset state with the new width & breakpoint.
+	   * Width changes are necessary to figure out the widget widths.
+	   */
+
+
+	  ResponsiveReactGridLayout.prototype.onWidthChange = function onWidthChange(width, newBreakpoint) {
+	    var _props2 = this.props;
+	    var breakpoints = _props2.breakpoints;
+	    var verticalLayout = _props2.verticalLayout;
+	    var verticalCompact = _props2.verticalCompact;
+	    var cols = _props2.cols;
+
+
+	    var lastBreakpoint = this.state.breakpoint;
+
+	    // Breakpoint change
+	    if (lastBreakpoint !== newBreakpoint) {
+
+	      // Store the current layout
+	      var layouts = this.props.layouts;
+	      layouts[lastBreakpoint] = JSON.parse(JSON.stringify(this.state.layout));
+
+	      // Find or generate a new one.
+	      var newCols = (0, _responsiveUtils.getColsFromBreakpoint)(newBreakpoint, cols);
+	      var _layout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(layouts, breakpoints, newBreakpoint, lastBreakpoint, newCols, verticalLayout);
+
+	      // This adds missing items.
+	      _layout = (0, _utils.synchronizeLayoutWithChildren)(_layout, this.props.children, newCols, verticalCompact);
+
+	      // Store this new layout as well.
+	      layouts[newBreakpoint] = _layout;
+
+	      // callbacks
+	      this.props.onLayoutChange(_layout, layouts);
+	      this.props.onBreakpointChange(newBreakpoint, newCols);
+	      this.props.onWidthChange(width, this.props.margin, newCols);
+
+	      this.setState({ breakpoint: newBreakpoint, layout: _layout, cols: newCols });
+	    }
+	  };
+
+	  ResponsiveReactGridLayout.prototype.render = function render() {
+	    var _props3 = this.props;
+	    var breakpoint = _props3.breakpoint;
+	    var breakpoints = _props3.breakpoints;
+	    var cols = _props3.cols;
+	    var layouts = _props3.layouts;
+	    var onBreakpointChange = _props3.onBreakpointChange;
+	    var onLayoutChange = _props3.onLayoutChange;
+	    var onWidthChange = _props3.onWidthChange;
+
+	    var other = _objectWithoutProperties(_props3, ['breakpoint', 'breakpoints', 'cols', 'layouts', 'onBreakpointChange', 'onLayoutChange', 'onWidthChange']);
+
+	    // wrap layouts so we do not need to pass layouts to child
+
+
+	    var onLayoutChangeWrapper = function onLayoutChangeWrapper(layout) {
+	      return onLayoutChange(layout, layouts);
+	    };
+
+	    return _react2.default.createElement(_ReactGridLayout2.default, _extends({}, other, {
+	      onLayoutChange: onLayoutChangeWrapper,
+	      layout: this.state.layout,
+	      cols: this.state.cols
+	    }));
+	  };
 
 	  return ResponsiveReactGridLayout;
 	}(_react2.default.Component);
@@ -29210,13 +29199,9 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(5);
 
@@ -29245,8 +29230,6 @@
 	    _inherits(_class2, _React$Component);
 
 	    function _class2() {
-	      var _Object$getPrototypeO;
-
 	      var _temp, _this, _ret;
 
 	      _classCallCheck(this, _class2);
@@ -29255,40 +29238,34 @@
 	        args[_key] = arguments[_key];
 	      }
 
-	      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(_class2)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
 	        width: 1280
 	      }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(_class2, [{
-	      key: 'componentDidMount',
-	      value: function componentDidMount() {
-	        var node = _reactDom2.default.findDOMNode(this);
-	        // Bind here so we have the same reference when removing the listener on unmount.
-	        this.onWindowResize = this._onWindowResize.bind(this, node);
+	    _class2.prototype.componentDidMount = function componentDidMount() {
+	      var node = _reactDom2.default.findDOMNode(this);
+	      // Bind here so we have the same reference when removing the listener on unmount.
+	      this.onWindowResize = this._onWindowResize.bind(this, node);
 
-	        window.addEventListener('resize', this.onWindowResize);
-	        // This is intentional. Once to properly set the breakpoint and resize the elements,
-	        // and again to compensate for any scrollbar that appeared because of the first step.
-	        this.onWindowResize();
-	        this.onWindowResize();
-	      }
-	    }, {
-	      key: 'componentWillUnmount',
-	      value: function componentWillUnmount() {
-	        window.removeEventListener('resize', this.onWindowResize);
-	      }
-	    }, {
-	      key: '_onWindowResize',
-	      value: function _onWindowResize(node, _event) {
-	        this.setState({ width: node.offsetWidth });
-	      }
-	    }, {
-	      key: 'render',
-	      value: function render() {
-	        return _react2.default.createElement(ComposedComponent, _extends({}, this.props, this.state));
-	      }
-	    }]);
+	      window.addEventListener('resize', this.onWindowResize);
+	      // This is intentional. Once to properly set the breakpoint and resize the elements,
+	      // and again to compensate for any scrollbar that appeared because of the first step.
+	      this.onWindowResize();
+	      this.onWindowResize();
+	    };
+
+	    _class2.prototype.componentWillUnmount = function componentWillUnmount() {
+	      window.removeEventListener('resize', this.onWindowResize);
+	    };
+
+	    _class2.prototype._onWindowResize = function _onWindowResize(node, _event) {
+	      this.setState({ width: node.offsetWidth });
+	    };
+
+	    _class2.prototype.render = function render() {
+	      return _react2.default.createElement(ComposedComponent, _extends({}, this.props, this.state));
+	    };
 
 	    return _class2;
 	  }(_react2.default.Component);

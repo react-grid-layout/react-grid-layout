@@ -12,6 +12,7 @@ webpackJsonp([2],[
 	var ResponsiveReactGridLayout = __webpack_require__(4).Responsive;
 	ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
+	var originalLayouts = getFromLS('layouts');
 	/**
 	 * This layout demonstrates how to sync multiple responsive layouts to localstorage.
 	 */
@@ -21,38 +22,28 @@ webpackJsonp([2],[
 	  mixins: [PureRenderMixin],
 
 	  getDefaultProps: function getDefaultProps() {
-	    var ls = {};
-	    if (global.localStorage) {
-	      try {
-	        ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-	      } catch (e) {/*Ignore*/}
-	    }
 	    return {
 	      className: "layout",
 	      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-	      rowHeight: 30,
-	      layouts: ls.layouts || {}
+	      rowHeight: 30
 	    };
 	  },
 	  getInitialState: function getInitialState() {
-	    return {};
-	  },
-	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	    this._saveToLocalStorage();
+	    return {
+	      layouts: JSON.parse(JSON.stringify(originalLayouts))
+	    };
 	  },
 	  resetLayout: function resetLayout() {
-	    this.setState({ layout: [] });
+	    this.refs.rrgl.setState({
+	      layouts: JSON.parse(JSON.stringify(originalLayouts))
+	    });
 	  },
 	  _saveToLocalStorage: function _saveToLocalStorage() {
-	    if (global.localStorage) {
-	      global.localStorage.setItem('rgl-7', JSON.stringify({
-	        layouts: this.state.layouts
-	      }));
-	    }
+	    saveToLS('layouts', this.state.layouts);
 	  },
 	  onLayoutChange: function onLayoutChange(layout, layouts) {
-	    this.props.onLayoutChange(layout);
-	    this.setState({ layout: layout, layouts: layouts });
+	    this._saveToLocalStorage();
+	    this.props.onLayoutChange(layout, layouts);
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -65,7 +56,10 @@ webpackJsonp([2],[
 	      ),
 	      React.createElement(
 	        ResponsiveReactGridLayout,
-	        _extends({}, this.props, {
+	        _extends({
+	          ref: 'rrgl'
+	        }, this.props, {
+	          layouts: this.state.layouts,
 	          onLayoutChange: this.onLayoutChange }),
 	        React.createElement(
 	          'div',
@@ -118,6 +112,24 @@ webpackJsonp([2],[
 	});
 
 	module.exports = ResponsiveLocalStorageLayout;
+
+	function getFromLS(key) {
+	  var ls = {};
+	  if (global.localStorage) {
+	    try {
+	      ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
+	    } catch (e) {/*Ignore*/}
+	  }
+	  return ls[key];
+	}
+
+	function saveToLS(key, value) {
+	  if (global.localStorage) {
+	    var _JSON$stringify;
+
+	    global.localStorage.setItem('rgl-7', JSON.stringify((_JSON$stringify = {}, _JSON$stringify[key] = value, _JSON$stringify)));
+	  }
+	}
 
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);

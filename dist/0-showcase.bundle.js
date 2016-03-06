@@ -91,7 +91,7 @@ webpackJsonp([13],[
 	        this.state.currentBreakpoint,
 	        ' (',
 	        this.props.cols[this.state.currentBreakpoint],
-	        'columns)'
+	        ' columns)'
 	      ),
 	      React.createElement(
 	        'button',
