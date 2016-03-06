@@ -1,3 +1,9 @@
+0.10.9
+------
+
+- Bugfix: Typo in children comparison in CWRP. See #169.
+- Bugfix: Missing babel-preset-es2015 in dev.
+
 0.10.8
 ------
 
