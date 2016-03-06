@@ -1,3 +1,43 @@
+0.10.9
+------
+
+- Bugfix: Typo in children comparison in CWRP. See #169.
+- Bugfix: Missing babel-preset-es2015 in dev.
+
+0.10.8
+------
+
+- Rebuild using [ES2015 Loose Mode](https://babeljs.algolia.com/docs/advanced/loose/).
+
+0.10.7
+------
+
+- Bugfix: `className` and `style` props on grid children were being incorrectly dropped, a holdover
+  from when `cloneWithProps()` used to do this merging for us. They are now merged.
+
+0.10.6
+------
+
+- Bugfix: If both `props.layout` and `props.children.length` change in the same tick,
+  props.layout would be clobbered. See #162
+
+0.10.5
+------
+
+- Bugfix/Enhancement: Margins were causing subtle error in some of the positioning calculations. This has
+  been fixed.
+
+0.10.4
+------
+
+- Bugfix: Container height was calculated as less than expected due to improper addition of margin.
+
+0.10.3
+------
+
+- Bugfix: Round item positions even if they're currently resizing or dragging (#158, regression of #141)
+- Bugfix: Fix a positioning bug when margins are 0 (#160)
+
 0.10.2
 ------
 

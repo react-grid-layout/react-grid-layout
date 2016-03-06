@@ -1,17 +1,16 @@
 {
   "name": "react-grid-layout",
-  "version": "0.10.2",
+  "version": "0.10.9",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js,.jsx lib/ test/; flow",
+    "lint": "make lint",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bash build.sh",
-    "build-example": "webpack --config webpack-examples.config.js; node ./examples/generate.js",
+    "build": "make build",
+    "build-example": "make build-example",
     "check-build-example": "bash check-build-example.sh",
-    "dev": "echo 'Open http://localhost:4002'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base .",
-    "prepublish": "echo \"Don't publish this branch!\" && exit 1",
-    "validate": "valiquire ./lib"
+    "dev": "make dev",
+    "prepublish": "echo \"Don't publish this branch!\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -50,6 +49,7 @@
     "babel-plugin-react-transform": "^2.0.0",
     "babel-plugin-typecheck": "^3.6.1",
     "babel-preset-es2015": "^6.5.0",
+    "babel-preset-es2015-loose": "^7.0.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
     "css-loader": "^0.23.1",
@@ -76,7 +76,6 @@
   },
   "precommit": [
     "lint",
-    "check-build-example",
-    "validate"
+    "check-build-example"
   ]
 }

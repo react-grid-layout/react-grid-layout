@@ -48,6 +48,14 @@ If you have a feature request, please add it as an issue or make a pull request.
 1. [Dynamic Minimum and Maximum Width/Height](https://strml.github.io/react-grid-layout/examples/10-dynamic-min-max-wh.html)
 1. [No Vertical Compacting (Free Movement)](https://strml.github.io/react-grid-layout/examples/11-no-vertical-compact.html)
 
+#### Projects based on React-Grid-Layout
+
+- [AWS CloudFront Dashboards](https://aws.amazon.com/blogs/aws/cloudwatch-dashboards-create-use-customized-metrics-views/)
+- [Metabase](http://www.metabase.com/)
+- [HubSpot](http://www.hubspot.com)
+
+*Know of others? Create a PR to let me know!*
+
 #### Features
 
 * 100% React - no jQuery

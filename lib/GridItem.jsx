@@ -26,6 +26,7 @@ export default class GridItem extends React.Component {
     containerWidth: PropTypes.number.isRequired,
     rowHeight: PropTypes.number.isRequired,
     margin: PropTypes.array.isRequired,
+    maxRows: PropTypes.number.isRequired,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -99,6 +100,12 @@ export default class GridItem extends React.Component {
     className: ''
   };
 
+  // Helper for generating column width
+  calcColWidth(): number {
+    const {margin, containerWidth, cols} = this.props;
+    return (containerWidth - (margin[0] * (cols + 1))) / cols;
+  }
+
   /**
    * Return position on the page given an x, y, w, h.
    * left, top, width, height are all in pixels.
@@ -109,16 +116,20 @@ export default class GridItem extends React.Component {
    * @return {Object}                Object containing coords.
    */
   calcPosition(x: number, y: number, w: number, h: number, state: Object = {}): Position {
-    const {margin, containerWidth, cols, rowHeight} = this.props;
+    const {margin, rowHeight} = this.props;
+    const colWidth = this.calcColWidth();
 
-    // E.g. if margin is 10 on each side and container is 600 wide, usable width is 580
-    const rawWidth = containerWidth - (cols + 1) * margin[0]; // The space available for items (without margin)
+    // Opposite of calcXY/calcWH
     const out = {
-      left:  Math.round(rawWidth * (x / cols)) + (x + 1) * margin[0],
-      width: Math.round(rawWidth * (w / cols)) + (w - 1) * margin[0],
-      top:    Math.round(rowHeight * y + (y + 1 * margin[1])),
-      height: Math.round(rowHeight * h + (h - 1 * margin[1]))
+      left:   colWidth * x + (x + 1) * margin[0],
+      width:  colWidth * w + (w - 1) * margin[0],
+      top:    rowHeight * y + (y + 1) * margin[1],
+      height: rowHeight * h + (h - 1) * margin[1]
     };
+    // 0 * Infinity === NaN, which causes problems with resize constriants;
+    // Fix this if it occurs.
+    if (h === Infinity) out.height = Infinity;
+    if (w === Infinity) out.width = Infinity;
 
     if (state.resizing) {
       out.width = state.resizing.width;
@@ -130,7 +141,12 @@ export default class GridItem extends React.Component {
       out.left = state.dragging.left;
     }
 
-    return out;
+    return {
+      left:   Math.round(out.left),
+      top:    Math.round(out.top),
+      width:  Math.round(out.width),
+      height: Math.round(out.height)
+    };
   }
 
   /**
@@ -140,19 +156,22 @@ export default class GridItem extends React.Component {
    * @return {Object} x and y in grid units.
    */
   calcXY(top: number, left: number): {x: number, y: number} {
-    const {margin, containerWidth, cols, rowHeight, w} = this.props;
+    const {margin, cols, rowHeight, w, h, maxRows} = this.props;
+    const colWidth = this.calcColWidth();
 
-    left -= margin[0];
-    top -= margin[1];
-    // This is intentional; because so much of the logic on moving boxes up/down relies
-    // on an exact y position, we only round the x, not the y.
-    let x = Math.round((left / containerWidth) * cols);
-    let y = Math.floor(top / rowHeight);
-    x = Math.max(Math.min(x, cols), 0);
-    y = Math.max(y, 0);
+    // left = colWidth * x + margin * (x + 1)
+    // l = cx + m(x+1)
+    // l = cx + mx + m
+    // l - m = cx + mx
+    // l - m = x(c + m)
+    // (l - m) / (c + m) = x
+    // x = (left - margin) / (coldWidth + margin)
+    let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
+    let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
 
-    // Cap x at numCols
-    x = Math.min(x, cols - w);
+    // Capping
+    x = Math.max(Math.min(x, cols - w), 0);
+    y = Math.max(Math.min(y, maxRows - h), 0);
 
     return {x, y};
   }
@@ -164,14 +183,18 @@ export default class GridItem extends React.Component {
    * @return {Object} w, h as grid units.
    */
   calcWH({height, width}: {height: number, width: number}): {w: number, h: number} {
-    const {margin, containerWidth, cols, rowHeight, x} = this.props;
+    const {margin, maxRows, cols, rowHeight, x, y} = this.props;
+    const colWidth = this.calcColWidth();
 
-    width += margin[0];
-    height += margin[1];
-    let w = Math.round((width / containerWidth) * cols);
-    let h = Math.round(height / rowHeight);
+    // width = colWidth * w - (margin * (w - 1))
+    // ...
+    // w = (width + margin) / (colWidth + margin)
+    let w = Math.round((width + margin[0]) / (colWidth + margin[0]));
+    let h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+
+    // Capping
     w = Math.max(Math.min(w, cols - x), 0);
-    h = Math.max(h, 0);
+    h = Math.max(Math.min(h, maxRows - y), 0);
     return {w, h};
   }
 
@@ -339,7 +362,7 @@ export default class GridItem extends React.Component {
   }
 
   render(): ReactElement {
-    const {x, y, w, h, className, style, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
+    const {x, y, w, h, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
     const child = React.Children.only(this.props.children);
@@ -350,14 +373,15 @@ export default class GridItem extends React.Component {
       // React with merge the classNames.
       className: [
         'react-grid-item',
-        className,
+        child.props.className || '',
+        this.props.className,
         isDraggable || isPlaceholder ? '' : 'static',
         this.state.resizing ? 'resizing' : '',
         this.state.dragging ? 'react-draggable-dragging' : '',
         useCSSTransforms ? 'cssTransforms' : ''
       ].join(' '),
       // We can set the width and height on the child, but unfortunately we can't set the position.
-      style: {style, ...this.createStyle(pos)}
+      style: {...this.props.style, ...child.props.style, ...this.createStyle(pos)}
     });
 
     // Resizable support. This is usually on but the user can toggle it off.
