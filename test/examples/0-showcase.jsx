@@ -74,8 +74,7 @@ var BasicLayout = React.createClass({
   render() {
     return (
       <div>
-        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]}
-          columns)
+        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
         <ResponsiveReactGridLayout
