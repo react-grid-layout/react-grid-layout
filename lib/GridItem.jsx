@@ -240,7 +240,7 @@ export default class GridItem extends React.Component {
    * @param  {Element} child    Child element.
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable(child:ReactElement): ReactElement {
+  mixinDraggable(child: React.Element): React.Element {
     return (
       <DraggableCore
         onStart={this.onDragHandler('onDragStart')}
@@ -259,7 +259,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable(child: ReactElement, position: Position): ReactElement {
+  mixinResizable(child: React.Element, position: Position): React.Element {
     const {cols, x, minW, minH, maxW, maxH} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
@@ -361,7 +361,7 @@ export default class GridItem extends React.Component {
     };
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     const {x, y, w, h, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
