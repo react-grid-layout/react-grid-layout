@@ -71,10 +71,10 @@ export default class GridItem extends React.Component {
     // Flags
     isDraggable: PropTypes.bool.isRequired,
     isResizable: PropTypes.bool.isRequired,
+    static: PropTypes.bool,
 
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
-    isPlaceholder: PropTypes.bool,
 
     // Others
     className: PropTypes.string,
@@ -85,7 +85,6 @@ export default class GridItem extends React.Component {
   };
 
   static defaultProps = {
-    isPlaceholder: false,
     className: '',
     cancel: '',
     minH: 1,
@@ -355,7 +354,7 @@ export default class GridItem extends React.Component {
   }
 
   render(): React.Element {
-    const {x, y, w, h, isDraggable, isPlaceholder, isResizable, useCSSTransforms} = this.props;
+    const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
     const child = React.Children.only(this.props.children);
@@ -368,7 +367,7 @@ export default class GridItem extends React.Component {
         'react-grid-item',
         child.props.className || '',
         this.props.className,
-        isDraggable || isPlaceholder ? '' : 'static',
+        this.props.static ? 'static' : '',
         this.state.resizing ? 'resizing' : '',
         this.state.dragging ? 'react-draggable-dragging' : '',
         useCSSTransforms ? 'cssTransforms' : ''

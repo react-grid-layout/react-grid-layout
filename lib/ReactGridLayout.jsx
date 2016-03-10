@@ -170,6 +170,7 @@ export default class ReactGridLayout extends React.Component {
     if (!isEqual(nextProps.layout, this.props.layout)) {
       newLayoutBase = nextProps.layout;
     }
+
     // If children change, also regenerate the layout. Use our state
     // as the base in case because it may be more up to date than
     // what is in props.
@@ -293,7 +294,7 @@ export default class ReactGridLayout extends React.Component {
 
     // Create placeholder element (display only)
     var placeholder = {
-      w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
+      w: w, h: h, x: l.x, y: l.y, static: true, i: i
     };
 
     this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
@@ -335,7 +336,6 @@ export default class ReactGridLayout extends React.Component {
         x={activeDrag.x}
         y={activeDrag.y}
         i={activeDrag.i}
-        isPlaceholder={true}
         className="react-grid-placeholder"
         containerWidth={width}
         cols={cols}
