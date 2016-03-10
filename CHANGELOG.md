@@ -1,3 +1,24 @@
+0.11.0
+------
+
+This release contains potentially breaking changes so I have updated the minor version (as per semver).
+
+**Breaking Changes**:
+
+- Layout items now have a fixed set of properties. Other properties will *not* be merged into the `<GridItem>`, such
+  as `className`. To set a `className` on a child, set it on the child directly and it will be merged.
+  This allows us to make better assumptions about the layout and use a faster cloning mechanism.
+- Setting individual `handle` and `cancel` selectors per item is no longer supported. If you need this, please
+  open a ticket and let me know your use case.
+
+Other changes:
+
+- Bugfix: `<ResponsiveReactGridLayout>` `onLayoutChange` callback data could still be stale.
+- Bugfix: Range error when building layout solely from `_grid` properties.
+  - This broke a lot of usage and thus `0.10.11` and `0.10.10` have been unpublished.
+- Removed redundant `isPlaceholder` property from `<GridItem>`.
+- README updates to clarify layout/_grid usage.
+
 0.10.11
 -------
 
