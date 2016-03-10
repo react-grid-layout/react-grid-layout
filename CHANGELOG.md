@@ -1,3 +1,9 @@
+0.10.11
+-------
+
+- Bugfix: `layouts` param on `<ResponsiveReactGridLayout>`'s `onLayoutChange` could have stale data
+  for the current breakpoint.
+
 0.10.10
 -------
 
