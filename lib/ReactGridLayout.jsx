@@ -181,7 +181,7 @@ export default class ReactGridLayout extends React.Component {
     // We need to regenerate the layout.
     if (newLayoutBase) {
       const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
-                                              nextProps.cols, nextProps.verticalCompact);
+                                                      nextProps.cols, nextProps.verticalCompact);
       this.setState({layout: newLayout});
       this.props.onLayoutChange(newLayout);
     }
@@ -358,13 +358,13 @@ export default class ReactGridLayout extends React.Component {
   processGridItem(child: React.Element): ?React.Element {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
-    if (!l) return;
-    const {width, cols, margin, rowHeight, maxRows,
+    if (!l) return null;
+    const {width, cols, margin, rowHeight, maxRows, isDraggable, isResizable,
            useCSSTransforms, draggableCancel, draggableHandle} = this.props;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
-    const draggable = Boolean(!l.static && this.props.isDraggable);
-    const resizable = Boolean(!l.static && this.props.isResizable);
+    const draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
+    const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
 
     return (
       <GridItem
@@ -385,7 +385,18 @@ export default class ReactGridLayout extends React.Component {
         isResizable={resizable}
         useCSSTransforms={useCSSTransforms && this.state.isMounted}
         usePercentages={!this.state.isMounted}
-        {...l}>
+
+        w={l.w}
+        h={l.h}
+        x={l.x}
+        y={l.y}
+        i={l.i}
+        minH={l.minH}
+        minW={l.minW}
+        maxH={l.maxH}
+        maxW={l.maxW}
+        static={l.static}
+        >
         {child}
       </GridItem>
     );
