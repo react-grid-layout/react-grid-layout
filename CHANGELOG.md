@@ -1,3 +1,14 @@
+0.10.11
+-------
+
+- Bugfix: `layouts` param on `<ResponsiveReactGridLayout>`'s `onLayoutChange` could have stale data
+  for the current breakpoint.
+
+0.10.10
+-------
+
+- Performance: Prevent V8 deopt in a few methods and add fast layout item cloning.
+
 0.10.9
 ------
 

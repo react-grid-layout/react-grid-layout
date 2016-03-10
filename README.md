@@ -9,8 +9,9 @@
 - [Usage](#usage)
 - [Responsive Usage](#responsive-usage)
 - [Grid Layout Props](#grid-layout-props)
+- [Responsive Grid Layout Props](#responsive-grid-layout-props)
 - [Grid Item Props](#grid-item-props)
-- [Grid Layout Defaults](#grid-layout-defaults)
+- [Grid Item Defaults](#grid-item-defaults)
 - [TODO List](#todo-list)
 
 #### Summary
@@ -80,8 +81,12 @@ Use ReactGridLayout like any other component.
 var ReactGridLayout = require('react-grid-layout');
 //...
 render: function() {
-  // layout is an array of objects, see the demo
-  var layout = getOrGenerateLayout();
+  // layout is an array of objects, see the demo for more complete usage
+  var layout = [
+    {x: 0, y: 0, w: 1, h: 2},
+    {x: 1, y: 0, w: 1, h: 2},
+    {x: 2, y: 0, w: 1, h: 2}
+  ];
   return (
     <ReactGridLayout className="layout" layout={layout}
       cols={12} rowHeight={30}>
@@ -144,7 +149,7 @@ If the largest is provided, RGL will attempt to interpolate the rest.
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
 
-#### Providing grid width
+#### Providing Grid Width
 
 Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width` to calculate
 positions on drag events. In simple cases a HOC `<WidthProvider>` can be used to automatically determine
@@ -306,8 +311,8 @@ You can set minimums and maximums for each dimension. This is for resizing; it o
 is disabled. Errors will be thrown if your mins and maxes overlap incorrectly, or your initial dimensions
 are out of range.
 
-Any GridItem properties defined directly on the layout item will take precedence over globally-set options. For
-example, if the layout has the property `isDraggable: false`, but the grid item has `isDraggable: true`, the item
+Any `<GridItem>` properties defined directly will take precedence over globally-set options. For
+example, if the layout has the property `isDraggable: false`, but the grid item has the prop `isDraggable: true`, the item
 will be draggable.
 
 ```javascript
@@ -328,33 +333,19 @@ will be draggable.
   isDraggable: React.PropTypes.bool,
   // If false, will not be resizable. Overrides `static`.
   isResizable: React.PropTypes.bool,
-
-  className: React.PropTypes.string,
-  // Selector for draggable handle
-  handle: React.PropTypes.string,
-  // Selector for draggable cancel (see react-draggable)
-  cancel: React.PropTypes.string
 }
 ```
 
-#### Grid Layout Defaults
+#### Grid Item Defaults
 
 ```javascript
 {
-  autoSize: true,
-  breakpoints: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
-  cols: 10,
-  rowHeight: 150,
-  margin: [10, 10],
   minH: 1,
   minW: 1,
   maxH: Infinity,
   maxW: Infinity,
   isDraggable: true,
-  isResizable: true,
-  useCSSTransforms: true,
-  listenToWindowResize: true,
-  verticalCompact: true
+  isResizable: true
 }
 ```
 
