@@ -114,6 +114,12 @@ export default class ResponsiveReactGridLayout extends React.Component {
     }
   }
 
+  // wrap layouts so we do not need to pass layouts to child
+  onLayoutChange = (layout) => {
+    this.props.onLayoutChange(layout, this.props.layouts);
+  };
+  onLayoutChange: (layout: Layout) => void;
+
   /**
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
@@ -150,17 +156,14 @@ export default class ResponsiveReactGridLayout extends React.Component {
     }
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     const {breakpoint, breakpoints, cols, layouts, onBreakpointChange,
            onLayoutChange, onWidthChange, ...other} = this.props;
-
-    // wrap layouts so we do not need to pass layouts to child
-    const onLayoutChangeWrapper = layout => onLayoutChange(layout, layouts);
 
     return (
       <ReactGridLayout
         {...other}
-        onLayoutChange={onLayoutChangeWrapper}
+        onLayoutChange={this.onLayoutChange}
         layout={this.state.layout}
         cols={this.state.cols}
       />
