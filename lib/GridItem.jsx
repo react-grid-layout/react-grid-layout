@@ -115,38 +115,31 @@ export default class GridItem extends React.Component {
    * @param  {Number}  h             H coordinate in grid units.
    * @return {Object}                Object containing coords.
    */
-  calcPosition(x: number, y: number, w: number, h: number, state: Object = {}): Position {
+  calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
     const {margin, rowHeight} = this.props;
     const colWidth = this.calcColWidth();
 
-    // Opposite of calcXY/calcWH
     const out = {
-      left:   colWidth * x + (x + 1) * margin[0],
-      width:  colWidth * w + (w - 1) * margin[0],
-      top:    rowHeight * y + (y + 1) * margin[1],
-      height: rowHeight * h + (h - 1) * margin[1]
+      left: Math.round(colWidth * x + (x + 1) * margin[0]),
+      top: Math.round(rowHeight * y + (y + 1) * margin[1]),
+      // 0 * Infinity === NaN, which causes problems with resize constriants;
+      // Fix this if it occurs.
+      // Note we do it here rather than later because Math.round(Infinity) causes deopt
+      width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
+      height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
     };
-    // 0 * Infinity === NaN, which causes problems with resize constriants;
-    // Fix this if it occurs.
-    if (h === Infinity) out.height = Infinity;
-    if (w === Infinity) out.width = Infinity;
 
-    if (state.resizing) {
-      out.width = state.resizing.width;
-      out.height = state.resizing.height;
+    if (state && state.resizing) {
+      out.width = Math.round(state.resizing.width);
+      out.height = Math.round(state.resizing.height);
     }
 
-    if (state.dragging) {
-      out.top = state.dragging.top;
-      out.left = state.dragging.left;
+    if (state && state.dragging) {
+      out.top = Math.round(state.dragging.top);
+      out.left = Math.round(state.dragging.left);
     }
 
-    return {
-      left:   Math.round(out.left),
-      top:    Math.round(out.top),
-      width:  Math.round(out.width),
-      height: Math.round(out.height)
-    };
+    return out;
   }
 
   /**
