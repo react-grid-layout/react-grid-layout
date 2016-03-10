@@ -17843,7 +17843,8 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	exports.bottom = bottom;
-	exports.clone = clone;
+	exports.cloneLayout = cloneLayout;
+	exports.cloneLayoutItem = cloneLayoutItem;
 	exports.collides = collides;
 	exports.compact = compact;
 	exports.compactItem = compactItem;
@@ -17880,15 +17881,20 @@
 	  return max;
 	}
 
-	/**
-	 * Clones a shallow object.
-	 * TODO: This could be made a lot faster if we had a clone method per datatype,
-	 * and just copied the properties over to a new object - this way V8 can optimize far better.
-	 * @param  {Object} obj Object to clone.
-	 * @return {Object}   Cloned object.
-	 */
-	function clone(obj) {
-	  return _extends({}, obj);
+	function cloneLayout(layout) {
+	  var newLayout = Array(layout.length);
+	  for (var _i2 = 0, len = layout.length; _i2 < len; _i2++) {
+	    newLayout[_i2] = cloneLayoutItem(layout[_i2]);
+	  }
+	  return newLayout;
+	}
+
+	// Fast path to cloning, since this is monomorphic
+	function cloneLayoutItem(layoutItem) {
+	  return {
+	    w: layoutItem.w, h: layoutItem.h, x: layoutItem.x, y: layoutItem.y, i: layoutItem.i,
+	    placeholder: Boolean(layoutItem.placeholder), moved: Boolean(layoutItem.moved), static: Boolean(layoutItem.static)
+	  };
 	}
 
 	/**
@@ -17916,13 +17922,14 @@
 	 */
 	function compact(layout, verticalCompact) {
 	  // Statics go in the compareWith array right away so items flow around them.
-	  var compareWith = getStatics(layout),
-	      out = [];
+	  var compareWith = getStatics(layout);
 	  // We go through the items by row and column.
 	  var sorted = sortLayoutItemsByRowCol(layout);
+	  // Holding for new items.
+	  var out = Array(layout.length);
 
-	  for (var _i2 = 0, len = sorted.length; _i2 < len; _i2++) {
-	    var l = sorted[_i2];
+	  for (var _i3 = 0, len = sorted.length; _i3 < len; _i3++) {
+	    var l = sorted[_i3];
 
 	    // Don't move static elements
 	    if (!l.static) {
@@ -17970,8 +17977,8 @@
 	 */
 	function correctBounds(layout, bounds) {
 	  var collidesWith = getStatics(layout);
-	  for (var _i3 = 0, len = layout.length; _i3 < len; _i3++) {
-	    var l = layout[_i3];
+	  for (var _i4 = 0, len = layout.length; _i4 < len; _i4++) {
+	    var l = layout[_i4];
 	    // Overflows right
 	    if (l.x + l.w > bounds.cols) l.x = bounds.cols - l.w;
 	    // Overflows left
@@ -17998,8 +18005,8 @@
 	 * @return {LayoutItem}    Item at ID.
 	 */
 	function getLayoutItem(layout, id) {
-	  for (var _i4 = 0, len = layout.length; _i4 < len; _i4++) {
-	    if (layout[_i4].i === id) return layout[_i4];
+	  for (var _i5 = 0, len = layout.length; _i5 < len; _i5++) {
+	    if (layout[_i5].i === id) return layout[_i5];
 	  }
 	}
 
@@ -18012,15 +18019,15 @@
 	 * @return {Object|undefined}  A colliding layout item, or undefined.
 	 */
 	function getFirstCollision(layout, layoutItem) {
-	  for (var _i5 = 0, len = layout.length; _i5 < len; _i5++) {
-	    if (collides(layout[_i5], layoutItem)) return layout[_i5];
+	  for (var _i6 = 0, len = layout.length; _i6 < len; _i6++) {
+	    if (collides(layout[_i6], layoutItem)) return layout[_i6];
 	  }
 	}
 
 	function getAllCollisions(layout, layoutItem) {
 	  var out = [];
-	  for (var _i6 = 0, len = layout.length; _i6 < len; _i6++) {
-	    if (collides(layout[_i6], layoutItem)) out.push(layout[_i6]);
+	  for (var _i7 = 0, len = layout.length; _i7 < len; _i7++) {
+	    if (collides(layout[_i7], layoutItem)) out.push(layout[_i7]);
 	  }
 	  return out;
 	}
@@ -18032,8 +18039,8 @@
 	 */
 	function getStatics(layout) {
 	  var out = [];
-	  for (var _i7 = 0, len = layout.length; _i7 < len; _i7++) {
-	    if (layout[_i7].static) out.push(layout[_i7]);
+	  for (var _i8 = 0, len = layout.length; _i8 < len; _i8++) {
+	    if (layout[_i8].static) out.push(layout[_i8]);
 	  }
 	  return out;
 	}
@@ -18069,8 +18076,8 @@
 	  var collisions = getAllCollisions(sorted, l);
 
 	  // Move each item that collides away from this element.
-	  for (var _i8 = 0, len = collisions.length; _i8 < len; _i8++) {
-	    var collision = collisions[_i8];
+	  for (var _i9 = 0, len = collisions.length; _i9 < len; _i9++) {
+	    var collision = collisions[_i9];
 	    // console.log('resolving collision between', l.i, 'at', l.y, 'and', collision.i, 'at', collision.y);
 
 	    // Short circuit so we can't infinite loop
@@ -18176,36 +18183,40 @@
 	  if (!Array.isArray(children)) {
 	    children = [children];
 	  }
-	  initialLayout = initialLayout || [];
+	  initialLayout = initialLayout || Array(children.length);
 
 	  // Generate one layout item per child.
-	  var layout = [];
-	  for (var _i9 = 0, len = children.length; _i9 < len; _i9++) {
-	    var child = children[_i9];
+	  var layout = Array(children.length);
+	  for (var _i10 = 0, len = children.length; _i10 < len; _i10++) {
+	    var newItem = undefined;
+	    var child = children[_i10];
+
 	    // Don't overwrite if it already exists.
 	    var exists = getLayoutItem(initialLayout, child.key || "1" /* FIXME satisfies Flow */);
 	    if (exists) {
-	      layout.push(exists);
-	      continue;
-	    }
-	    // New item: attempt to use a layout item from the child, if it exists.
-	    var g = child.props._grid;
-	    if (g) {
-	      if (!isProduction) {
-	        validateLayout([g], 'ReactGridLayout.children');
-	      }
-	      // Validated; add it to the layout. Bottom 'y' possible is the bottom of the layout.
-	      // This allows you to do nice stuff like specify {y: Infinity}
-	      if (verticalCompact) {
-	        // TODO create cloneLayoutItem for speed
-	        layout.push(_extends({}, g, { y: Math.min(bottom(layout), g.y), i: child.key }));
-	      } else {
-	        layout.push(_extends({}, g, { y: g.y, i: child.key }));
-	      }
+	      newItem = exists;
 	    } else {
+	      var g = child.props._grid;
+
+	      // Hey, this item has a _grid property, use it.
+	      if (g) {
+	        if (!isProduction) {
+	          validateLayout([g], 'ReactGridLayout.children');
+	        }
+	        // Validated; add it to the layout. Bottom 'y' possible is the bottom of the layout.
+	        // This allows you to do nice stuff like specify {y: Infinity}
+	        if (verticalCompact) {
+	          newItem = cloneLayoutItem(_extends({}, g, { y: Math.min(bottom(layout), g.y), i: child.key }));
+	        } else {
+	          newItem = cloneLayoutItem(_extends({}, g, { y: g.y, i: child.key }));
+	        }
+	      }
 	      // Nothing provided: ensure this is added to the bottom
-	      layout.push({ w: 1, h: 1, x: 0, y: bottom(layout), i: child.key || "1" });
+	      else {
+	          newItem = cloneLayoutItem({ w: 1, h: 1, x: 0, y: bottom(layout), i: child.key || "1" });
+	        }
 	    }
+	    layout[_i10] = newItem;
 	  }
 
 	  // Correct the layout.
@@ -18226,18 +18237,18 @@
 	  contextName = contextName || "Layout";
 	  var subProps = ['x', 'y', 'w', 'h'];
 	  if (!Array.isArray(layout)) throw new Error(contextName + " must be an array!");
-	  for (var _i10 = 0, len = layout.length; _i10 < len; _i10++) {
-	    var item = layout[_i10];
+	  for (var _i11 = 0, len = layout.length; _i11 < len; _i11++) {
+	    var item = layout[_i11];
 	    for (var j = 0; j < subProps.length; j++) {
 	      if (typeof item[subProps[j]] !== 'number') {
-	        throw new Error('ReactGridLayout: ' + contextName + '[' + _i10 + '].' + subProps[j] + ' must be a number!');
+	        throw new Error('ReactGridLayout: ' + contextName + '[' + _i11 + '].' + subProps[j] + ' must be a number!');
 	      }
 	    }
 	    if (item.i && typeof item.i !== 'string') {
-	      throw new Error('ReactGridLayout: ' + contextName + '[' + _i10 + '].i must be a string!');
+	      throw new Error('ReactGridLayout: ' + contextName + '[' + _i11 + '].i must be a string!');
 	    }
 	    if (item.static !== undefined && typeof item.static !== 'boolean') {
-	      throw new Error('ReactGridLayout: ' + contextName + '[' + _i10 + '].static must be a boolean!');
+	      throw new Error('ReactGridLayout: ' + contextName + '[' + _i11 + '].static must be a boolean!');
 	    }
 	  }
 	}
@@ -21935,7 +21946,7 @@
 	    var l = (0, _utils.getLayoutItem)(layout, i);
 	    if (!l) return;
 
-	    this.setState({ oldDragItem: (0, _utils.clone)(l) });
+	    this.setState({ oldDragItem: (0, _utils.cloneLayoutItem)(l) });
 
 	    this.props.onDragStart(layout, l, l, null, e, node);
 	  };
@@ -22017,7 +22028,7 @@
 	    var l = (0, _utils.getLayoutItem)(layout, i);
 	    if (!l) return;
 
-	    this.setState({ oldResizeItem: (0, _utils.clone)(l) });
+	    this.setState({ oldResizeItem: (0, _utils.cloneLayoutItem)(l) });
 
 	    this.props.onResizeStart(layout, l, l, null, e, node);
 	  };
@@ -22133,8 +22144,8 @@
 
 	    // Parse 'static'. Any properties defined directly on the grid item will take precedence.
 
-	    var draggable = l.static || !this.props.isDraggable ? false : true;
-	    var resizable = l.static || !this.props.isResizable ? false : true;
+	    var draggable = Boolean(!l.static && this.props.isDraggable);
+	    var resizable = Boolean(!l.static && this.props.isResizable);
 
 	    return _react2.default.createElement(
 	      _GridItem2.default,
@@ -22377,7 +22388,7 @@
 	 */
 	function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols, verticalCompact) {
 	  // If it already exists, just return it.
-	  if (layouts[breakpoint]) return layouts[breakpoint];
+	  if (layouts[breakpoint]) return (0, _utils.cloneLayout)(layouts[breakpoint]);
 	  // Find or generate the next layout
 	  var layout = layouts[lastBreakpoint];
 	  var breakpointsSorted = sortBreakpoints(breakpoints);
@@ -22389,7 +22400,7 @@
 	      break;
 	    }
 	  }
-	  layout = JSON.parse(JSON.stringify(layout || [])); // clone layout so we don't modify existing items
+	  layout = (0, _utils.cloneLayout)(layout || []); // clone layout so we don't modify existing items
 	  return (0, _utils.compact)((0, _utils.correctBounds)(layout, { cols: cols }), verticalCompact);
 	}
 
@@ -28536,42 +28547,34 @@
 	   */
 
 
-	  GridItem.prototype.calcPosition = function calcPosition(x, y, w, h) {
-	    var state = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
+	  GridItem.prototype.calcPosition = function calcPosition(x, y, w, h, state) {
 	    var _props2 = this.props;
 	    var margin = _props2.margin;
 	    var rowHeight = _props2.rowHeight;
 
 	    var colWidth = this.calcColWidth();
 
-	    // Opposite of calcXY/calcWH
 	    var out = {
-	      left: colWidth * x + (x + 1) * margin[0],
-	      width: colWidth * w + (w - 1) * margin[0],
-	      top: rowHeight * y + (y + 1) * margin[1],
-	      height: rowHeight * h + (h - 1) * margin[1]
+	      left: Math.round(colWidth * x + (x + 1) * margin[0]),
+	      top: Math.round(rowHeight * y + (y + 1) * margin[1]),
+	      // 0 * Infinity === NaN, which causes problems with resize constriants;
+	      // Fix this if it occurs.
+	      // Note we do it here rather than later because Math.round(Infinity) causes deopt
+	      width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
+	      height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
 	    };
-	    // 0 * Infinity === NaN, which causes problems with resize constriants;
-	    // Fix this if it occurs.
-	    if (h === Infinity) out.height = Infinity;
-	    if (w === Infinity) out.width = Infinity;
 
-	    if (state.resizing) {
-	      out.width = state.resizing.width;
-	      out.height = state.resizing.height;
+	    if (state && state.resizing) {
+	      out.width = Math.round(state.resizing.width);
+	      out.height = Math.round(state.resizing.height);
 	    }
 
-	    if (state.dragging) {
-	      out.top = state.dragging.top;
-	      out.left = state.dragging.left;
+	    if (state && state.dragging) {
+	      out.top = Math.round(state.dragging.top);
+	      out.left = Math.round(state.dragging.left);
 	    }
 
-	    return {
-	      left: Math.round(out.left),
-	      top: Math.round(out.top),
-	      width: Math.round(out.width),
-	      height: Math.round(out.height)
-	    };
+	    return out;
 	  };
 
 	  /**
@@ -29015,7 +29018,9 @@
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = _this.generateInitialState(), _temp), _possibleConstructorReturn(_this, _ret);
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = _this.generateInitialState(), _this.onLayoutChange = function (layout) {
+	      _this.props.onLayoutChange(layout, _this.props.layouts);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  // This should only include propTypes needed in this code; RGL itself
@@ -29069,11 +29074,13 @@
 	    }
 	  };
 
+	  // wrap layouts so we do not need to pass layouts to child
+
+
 	  /**
 	   * When the width changes work through breakpoints and reset state with the new width & breakpoint.
 	   * Width changes are necessary to figure out the widget widths.
 	   */
-
 
 	  ResponsiveReactGridLayout.prototype.onWidthChange = function onWidthChange(width, newBreakpoint) {
 	    var _props2 = this.props;
@@ -29123,15 +29130,8 @@
 
 	    var other = _objectWithoutProperties(_props3, ['breakpoint', 'breakpoints', 'cols', 'layouts', 'onBreakpointChange', 'onLayoutChange', 'onWidthChange']);
 
-	    // wrap layouts so we do not need to pass layouts to child
-
-
-	    var onLayoutChangeWrapper = function onLayoutChangeWrapper(layout) {
-	      return onLayoutChange(layout, layouts);
-	    };
-
 	    return _react2.default.createElement(_ReactGridLayout2.default, _extends({}, other, {
-	      onLayoutChange: onLayoutChangeWrapper,
+	      onLayoutChange: this.onLayoutChange,
 	      layout: this.state.layout,
 	      cols: this.state.cols
 	    }));
