@@ -32,12 +32,12 @@ var ResponsiveLocalStorageLayout = React.createClass({
     });
   },
 
-  _saveToLocalStorage() {
-    saveToLS('layouts', this.state.layouts);
+  _saveToLocalStorage(layouts) {
+    saveToLS('layouts', layouts);
   },
 
   onLayoutChange(layout, layouts) {
-    this._saveToLocalStorage();
+    this._saveToLocalStorage(layouts);
     this.props.onLayoutChange(layout, layouts);
   },
 
@@ -67,7 +67,7 @@ function getFromLS(key) {
   let ls = {};
   if (global.localStorage) {
     try {
-      ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
+      ls = JSON.parse(global.localStorage.getItem('rgl-8')) || {};
     } catch(e) {/*Ignore*/}
   }
   return ls[key];
@@ -75,7 +75,7 @@ function getFromLS(key) {
 
 function saveToLS(key, value) {
   if (global.localStorage) {
-    global.localStorage.setItem('rgl-7', JSON.stringify({
+    global.localStorage.setItem('rgl-8', JSON.stringify({
       [key]: value
     }));
   }
