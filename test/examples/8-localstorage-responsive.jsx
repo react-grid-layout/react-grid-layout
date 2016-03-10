@@ -5,7 +5,7 @@ var WidthProvider = require('react-grid-layout').WidthProvider;
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
-const originalLayouts = getFromLS('layouts');
+const originalLayouts = getFromLS('layouts') || {};
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
@@ -27,17 +27,12 @@ var ResponsiveLocalStorageLayout = React.createClass({
   },
 
   resetLayout() {
-    this.refs.rrgl.setState({
-      layouts: JSON.parse(JSON.stringify(originalLayouts))
-    });
-  },
-
-  _saveToLocalStorage(layouts) {
-    saveToLS('layouts', layouts);
+    this.setState({layouts: {}});
   },
 
   onLayoutChange(layout, layouts) {
-    this._saveToLocalStorage(layouts);
+    saveToLS('layouts', layouts);
+    this.setState({layouts});
     this.props.onLayoutChange(layout, layouts);
   },
 
