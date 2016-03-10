@@ -11,6 +11,8 @@ webpackJsonp([3],[
 	var WidthProvider = __webpack_require__(4).WidthProvider;
 	var ReactGridLayout = __webpack_require__(4);
 	ReactGridLayout = WidthProvider(ReactGridLayout);
+
+	var originalLayout = getFromLS('layout') || [];
 	/**
 	 * This layout demonstrates how to sync to localstorage.
 	 */
@@ -27,28 +29,19 @@ webpackJsonp([3],[
 	    };
 	  },
 	  getInitialState: function getInitialState() {
-	    var ls = {};
-	    if (global.localStorage) {
-	      try {
-	        ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
-	      } catch (e) {/*ignore*/}
-	    }
-	    return { layout: ls.layout || [] };
+	    return {
+	      layout: JSON.parse(JSON.stringify(originalLayout))
+	    };
 	  },
 	  resetLayout: function resetLayout() {
-	    this.setState({ layout: [] });
-	  },
-	  _saveToLocalStorage: function _saveToLocalStorage() {
-	    if (global.localStorage) {
-	      global.localStorage.setItem('rgl-7', JSON.stringify({
-	        layout: this.state.layout
-	      }));
-	    }
+	    this.setState({
+	      layout: []
+	    });
 	  },
 	  onLayoutChange: function onLayoutChange(layout) {
 	    /*eslint no-console: 0*/
-	    console.log('layout changed', layout);
-	    this._saveToLocalStorage();
+	    saveToLS('layout', layout);
+	    this.setState({ layout: layout });
 	    this.props.onLayoutChange(layout); // updates status display
 	  },
 	  render: function render() {
@@ -62,7 +55,9 @@ webpackJsonp([3],[
 	      ),
 	      React.createElement(
 	        ReactGridLayout,
-	        _extends({}, this.props, {
+	        _extends({
+	          ref: 'rgl'
+	        }, this.props, {
 	          layout: this.state.layout,
 	          onLayoutChange: this.onLayoutChange }),
 	        React.createElement(
@@ -114,6 +109,24 @@ webpackJsonp([3],[
 	    );
 	  }
 	});
+
+	function getFromLS(key) {
+	  var ls = {};
+	  if (global.localStorage) {
+	    try {
+	      ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
+	    } catch (e) {/*Ignore*/}
+	  }
+	  return ls[key];
+	}
+
+	function saveToLS(key, value) {
+	  if (global.localStorage) {
+	    var _JSON$stringify;
+
+	    global.localStorage.setItem('rgl-7', JSON.stringify((_JSON$stringify = {}, _JSON$stringify[key] = value, _JSON$stringify)));
+	  }
+	}
 
 	module.exports = LocalStorageLayout;
 

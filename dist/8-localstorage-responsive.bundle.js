@@ -12,7 +12,7 @@ webpackJsonp([2],[
 	var ResponsiveReactGridLayout = __webpack_require__(4).Responsive;
 	ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
-	var originalLayouts = getFromLS('layouts');
+	var originalLayouts = getFromLS('layouts') || {};
 	/**
 	 * This layout demonstrates how to sync multiple responsive layouts to localstorage.
 	 */
@@ -34,15 +34,11 @@ webpackJsonp([2],[
 	    };
 	  },
 	  resetLayout: function resetLayout() {
-	    this.refs.rrgl.setState({
-	      layouts: JSON.parse(JSON.stringify(originalLayouts))
-	    });
-	  },
-	  _saveToLocalStorage: function _saveToLocalStorage() {
-	    saveToLS('layouts', this.state.layouts);
+	    this.setState({ layouts: {} });
 	  },
 	  onLayoutChange: function onLayoutChange(layout, layouts) {
-	    this._saveToLocalStorage();
+	    saveToLS('layouts', layouts);
+	    this.setState({ layouts: layouts });
 	    this.props.onLayoutChange(layout, layouts);
 	  },
 	  render: function render() {
@@ -117,7 +113,7 @@ webpackJsonp([2],[
 	  var ls = {};
 	  if (global.localStorage) {
 	    try {
-	      ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
+	      ls = JSON.parse(global.localStorage.getItem('rgl-8')) || {};
 	    } catch (e) {/*Ignore*/}
 	  }
 	  return ls[key];
@@ -127,7 +123,7 @@ webpackJsonp([2],[
 	  if (global.localStorage) {
 	    var _JSON$stringify;
 
-	    global.localStorage.setItem('rgl-7', JSON.stringify((_JSON$stringify = {}, _JSON$stringify[key] = value, _JSON$stringify)));
+	    global.localStorage.setItem('rgl-8', JSON.stringify((_JSON$stringify = {}, _JSON$stringify[key] = value, _JSON$stringify)));
 	  }
 	}
 

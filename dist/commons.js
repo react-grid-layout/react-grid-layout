@@ -17893,7 +17893,10 @@
 	function cloneLayoutItem(layoutItem) {
 	  return {
 	    w: layoutItem.w, h: layoutItem.h, x: layoutItem.x, y: layoutItem.y, i: layoutItem.i,
-	    placeholder: Boolean(layoutItem.placeholder), moved: Boolean(layoutItem.moved), static: Boolean(layoutItem.static)
+	    minW: layoutItem.minW, maxW: layoutItem.maxW, minH: layoutItem.minH, maxH: layoutItem.maxH,
+	    moved: Boolean(layoutItem.moved), static: Boolean(layoutItem.static),
+	    // These can be null
+	    isDraggable: layoutItem.isDraggable, isResizable: layoutItem.isResizable
 	  };
 	}
 
@@ -18183,10 +18186,10 @@
 	  if (!Array.isArray(children)) {
 	    children = [children];
 	  }
-	  initialLayout = initialLayout || Array(children.length);
+	  initialLayout = initialLayout || [];
 
 	  // Generate one layout item per child.
-	  var layout = Array(children.length);
+	  var layout = [];
 	  for (var _i10 = 0, len = children.length; _i10 < len; _i10++) {
 	    var newItem = undefined;
 	    var child = children[_i10];
@@ -21902,6 +21905,7 @@
 	    if (!(0, _lodash2.default)(nextProps.layout, this.props.layout)) {
 	      newLayoutBase = nextProps.layout;
 	    }
+
 	    // If children change, also regenerate the layout. Use our state
 	    // as the base in case because it may be more up to date than
 	    // what is in props.
@@ -22049,7 +22053,7 @@
 
 	    // Create placeholder element (display only)
 	    var placeholder = {
-	      w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
+	      w: w, h: h, x: l.x, y: l.y, static: true, i: i
 	    };
 
 	    this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
@@ -22107,7 +22111,6 @@
 	        x: activeDrag.x,
 	        y: activeDrag.y,
 	        i: activeDrag.i,
-	        isPlaceholder: true,
 	        className: 'react-grid-placeholder',
 	        containerWidth: width,
 	        cols: cols,
@@ -22131,25 +22134,27 @@
 	  ReactGridLayout.prototype.processGridItem = function processGridItem(child) {
 	    if (!child.key) return;
 	    var l = (0, _utils.getLayoutItem)(this.state.layout, child.key);
-	    if (!l) return;
+	    if (!l) return null;
 	    var _props2 = this.props;
 	    var width = _props2.width;
 	    var cols = _props2.cols;
 	    var margin = _props2.margin;
 	    var rowHeight = _props2.rowHeight;
 	    var maxRows = _props2.maxRows;
+	    var isDraggable = _props2.isDraggable;
+	    var isResizable = _props2.isResizable;
 	    var useCSSTransforms = _props2.useCSSTransforms;
 	    var draggableCancel = _props2.draggableCancel;
 	    var draggableHandle = _props2.draggableHandle;
 
 	    // Parse 'static'. Any properties defined directly on the grid item will take precedence.
 
-	    var draggable = Boolean(!l.static && this.props.isDraggable);
-	    var resizable = Boolean(!l.static && this.props.isResizable);
+	    var draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
+	    var resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
 
 	    return _react2.default.createElement(
 	      _GridItem2.default,
-	      _extends({
+	      {
 	        containerWidth: width,
 	        cols: cols,
 	        margin: margin,
@@ -22166,8 +22171,19 @@
 	        isDraggable: draggable,
 	        isResizable: resizable,
 	        useCSSTransforms: useCSSTransforms && this.state.isMounted,
-	        usePercentages: !this.state.isMounted
-	      }, l),
+	        usePercentages: !this.state.isMounted,
+
+	        w: l.w,
+	        h: l.h,
+	        x: l.x,
+	        y: l.y,
+	        i: l.i,
+	        minH: l.minH,
+	        minW: l.minW,
+	        maxH: l.maxH,
+	        maxW: l.maxW,
+	        'static': l.static
+	      },
 	      child
 	    );
 	  };
@@ -28863,7 +28879,6 @@
 	    var w = _props8.w;
 	    var h = _props8.h;
 	    var isDraggable = _props8.isDraggable;
-	    var isPlaceholder = _props8.isPlaceholder;
 	    var isResizable = _props8.isResizable;
 	    var useCSSTransforms = _props8.useCSSTransforms;
 
@@ -28875,7 +28890,7 @@
 	    var newChild = _react2.default.cloneElement(child, {
 	      // Munge a classname. Use passed in classnames and resizing.
 	      // React with merge the classNames.
-	      className: ['react-grid-item', child.props.className || '', this.props.className, isDraggable || isPlaceholder ? '' : 'static', this.state.resizing ? 'resizing' : '', this.state.dragging ? 'react-draggable-dragging' : '', useCSSTransforms ? 'cssTransforms' : ''].join(' '),
+	      className: ['react-grid-item', child.props.className || '', this.props.className, this.props.static ? 'static' : '', this.state.resizing ? 'resizing' : '', this.state.dragging ? 'react-draggable-dragging' : '', useCSSTransforms ? 'cssTransforms' : ''].join(' '),
 	      // We can set the width and height on the child, but unfortunately we can't set the position.
 	      style: _extends({}, this.props.style, child.props.style, this.createStyle(pos))
 	    });
@@ -28945,10 +28960,10 @@
 	  // Flags
 	  isDraggable: _react.PropTypes.bool.isRequired,
 	  isResizable: _react.PropTypes.bool.isRequired,
+	  static: _react.PropTypes.bool,
 
 	  // Use CSS transforms instead of top/left
 	  useCSSTransforms: _react.PropTypes.bool.isRequired,
-	  isPlaceholder: _react.PropTypes.bool,
 
 	  // Others
 	  className: _react.PropTypes.string,
@@ -28958,7 +28973,6 @@
 	  cancel: _react.PropTypes.string
 	};
 	GridItem.defaultProps = {
-	  isPlaceholder: false,
 	  className: '',
 	  cancel: '',
 	  minH: 1,
@@ -29019,7 +29033,9 @@
 	    }
 
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = _this.generateInitialState(), _this.onLayoutChange = function (layout) {
-	      _this.props.onLayoutChange(layout, _this.props.layouts);
+	      var _extends2;
+
+	      _this.props.onLayoutChange(layout, _extends({}, _this.props.layouts, (_extends2 = {}, _extends2[_this.state.breakpoint] = layout, _extends2)));
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
