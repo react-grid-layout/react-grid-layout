@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout",
-  "version": "0.10.11",
+  "version": "0.11.0",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -47,6 +47,8 @@
     "babel-eslint": "^4.1.8",
     "babel-loader": "^6.x",
     "babel-plugin-react-transform": "^2.0.0",
+    "babel-plugin-transform-react-constant-elements": "^6.5.0",
+    "babel-plugin-transform-react-inline-elements": "^6.6.5",
     "babel-plugin-typecheck": "^3.6.1",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-es2015-loose": "^7.0.0",
