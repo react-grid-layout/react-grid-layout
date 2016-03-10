@@ -6,6 +6,8 @@ webpackJsonp([13],[
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
+
 	var React = __webpack_require__(5);
 	var PureRenderMixin = __webpack_require__(10);
 	var _ = __webpack_require__(15);
@@ -38,20 +40,14 @@ webpackJsonp([13],[
 	  },
 	  generateDOM: function generateDOM() {
 	    return _.map(this.state.layouts.lg, function (l, i) {
-	      return React.createElement(
-	        'div',
-	        { key: i, className: l.static ? 'static' : '' },
-	        l.static ? React.createElement(
-	          'span',
-	          { className: 'text', title: 'This item is static and cannot be removed or resized.' },
-	          'Static - ',
-	          i
-	        ) : React.createElement(
-	          'span',
-	          { className: 'text' },
-	          i
-	        )
-	      );
+	      return _jsx('div', {
+	        className: l.static ? 'static' : ''
+	      }, i, l.static ? _jsx('span', {
+	        className: 'text',
+	        title: 'This item is static and cannot be removed or resized.'
+	      }, void 0, 'Static - ', i) : _jsx('span', {
+	        className: 'text'
+	      }, void 0, i));
 	    });
 	  },
 	  onBreakpointChange: function onBreakpointChange(breakpoint) {
@@ -68,33 +64,17 @@ webpackJsonp([13],[
 	    });
 	  },
 	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        null,
-	        'Current Breakpoint: ',
-	        this.state.currentBreakpoint,
-	        ' (',
-	        this.props.cols[this.state.currentBreakpoint],
-	        ' columns)'
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this.onNewLayout },
-	        'Generate New Layout'
-	      ),
-	      React.createElement(
-	        ResponsiveReactGridLayout,
-	        _extends({}, this.props, {
-	          layouts: this.state.layouts,
-	          onBreakpointChange: this.onBreakpointChange,
-	          onLayoutChange: this.onLayoutChange,
-	          useCSSTransforms: true }),
-	        this.generateDOM()
-	      )
-	    );
+	    return _jsx('div', {}, void 0, _jsx('div', {}, void 0, 'Current Breakpoint: ', this.state.currentBreakpoint, ' (', this.props.cols[this.state.currentBreakpoint], ' columns)'), _jsx('button', {
+	      onClick: this.onNewLayout
+	    }, void 0, 'Generate New Layout'), React.createElement(
+	      ResponsiveReactGridLayout,
+	      _extends({}, this.props, {
+	        layouts: this.state.layouts,
+	        onBreakpointChange: this.onBreakpointChange,
+	        onLayoutChange: this.onLayoutChange,
+	        useCSSTransforms: true }),
+	      this.generateDOM()
+	    ));
 	  }
 	});
 
@@ -117,7 +97,7 @@ webpackJsonp([13],[
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }
 ]);
