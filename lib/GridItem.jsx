@@ -2,7 +2,7 @@
 import React, {PropTypes} from 'react';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
-import {perc, setTransform} from './utils';
+import {perc, setTopLeft, setTransform} from './utils';
 
 import type {CorePosition, Position} from './utils';
 
@@ -203,25 +203,20 @@ export default class GridItem extends React.Component {
   createStyle(pos: Position): {[key: string]: ?string} {
     const {usePercentages, containerWidth, useCSSTransforms} = this.props;
 
-    let style = {
-      width: pos.width + 'px',
-      height: pos.height + 'px',
-      left: pos.left + 'px',
-      top: pos.top + 'px',
-      position: 'absolute'
-    };
-
-    // This is used for server rendering.
-    if (usePercentages) {
-      style.left = perc(pos.left / containerWidth);
-      style.width = perc(pos.width / containerWidth);
-    }
-
-    // CSS Transforms support
+    let style;
+    // CSS Transforms support (default)
     if (useCSSTransforms) {
-      setTransform(style, [pos.left, pos.top]);
-      style.left = null;
-      style.top = null;
+      style = setTransform(pos);
+    }
+    // top,left (slow)
+    else {
+      style = setTopLeft(pos);
+
+      // This is used for server rendering.
+      if (usePercentages) {
+        style.left = perc(pos.left / containerWidth);
+        style.width = perc(pos.width / containerWidth);
+      }
     }
 
     return style;
