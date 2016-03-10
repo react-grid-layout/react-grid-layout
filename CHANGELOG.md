@@ -1,3 +1,8 @@
+0.10.10
+-------
+
+- Performance: Prevent V8 deopt in a few methods and add fast layout item cloning.
+
 0.10.9
 ------
 
