@@ -1,7 +1,7 @@
 // @flow
 import React, {PropTypes} from 'react';
 import isEqual from 'lodash.isequal';
-import {autoBindHandlers, bottom, clone, compact, getLayoutItem, moveElement,
+import {autoBindHandlers, bottom, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
 
@@ -208,7 +208,7 @@ export default class ReactGridLayout extends React.Component {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    this.setState({oldDragItem: clone(l)});
+    this.setState({oldDragItem: cloneLayoutItem(l)});
 
     this.props.onDragStart(layout, l, l, null, e, node);
   }
@@ -277,7 +277,7 @@ export default class ReactGridLayout extends React.Component {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    this.setState({oldResizeItem: clone(l)});
+    this.setState({oldResizeItem: cloneLayoutItem(l)});
 
     this.props.onResizeStart(layout, l, l, null, e, node);
   }
@@ -363,8 +363,8 @@ export default class ReactGridLayout extends React.Component {
            useCSSTransforms, draggableCancel, draggableHandle} = this.props;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
-    const draggable = (l.static || !this.props.isDraggable) ? false : true;
-    const resizable = (l.static || !this.props.isResizable) ? false : true;
+    const draggable = Boolean(!l.static && this.props.isDraggable);
+    const resizable = Boolean(!l.static && this.props.isResizable);
 
     return (
       <GridItem
