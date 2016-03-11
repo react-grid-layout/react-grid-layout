@@ -58,7 +58,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 * Draggable widgets
 * Resizable widgets
 * Static widgets
-* Vertical auto-packing
+* Configurable packing: horizontal, vertical, or off
 * Bounds checking for dragging and resizing
 * Widgets may be added or removed without rebuilding grid
 * Layout can be serialized and restored
@@ -203,8 +203,8 @@ draggableCancel: React.PropTypes.string,
 // A selector for the draggable handler
 draggableHandle: React.PropTypes.string,
 
-// If true, the layout will compact vertically
-verticalCompact: React.PropTypes.bool,
+// Compaction type. Default: 'vertical'
+compactType: React.PropTypes.oneOf(['vertical', 'horizontal']),
 
 // Layout is an array of object with the format:
 // {x: Number, y: Number, w: Number, h: Number}

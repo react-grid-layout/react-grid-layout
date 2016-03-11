@@ -24,8 +24,9 @@ var BasicLayout = React.createClass({
 
   getInitialState() {
     return {
+      compactType: 'vertical',
+      currentBreakpoint: 'lg',
       layouts: {lg: this.props.initialLayout},
-      currentBreakpoint: 'lg'
     };
   },
 
@@ -47,6 +48,13 @@ var BasicLayout = React.createClass({
     });
   },
 
+  onCompactTypeChange() {
+    this.setState({
+      compactType: this.state.compactType === 'horizontal' ? 'vertical' :
+                   this.state.compactType === 'vertical' ? null : 'horizontal'
+    });
+  },
+
   onLayoutChange(layout, layouts) {
     this.props.onLayoutChange(layout, layouts);
   },
@@ -60,14 +68,18 @@ var BasicLayout = React.createClass({
   render() {
     return (
       <div>
-        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
+        <div>
+          Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
+        <div>Compaction type: {_.capitalize(this.state.compactType) || 'No Compaction'}</div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
+        <button onClick={this.onCompactTypeChange}>Change Compaction Type</button>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}
+          compactType={this.state.compactType}
           useCSSTransforms={true}>
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
