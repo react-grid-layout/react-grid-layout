@@ -100,13 +100,15 @@ export default class ResponsiveReactGridLayout extends React.Component<Props<>, 
   state = this.generateInitialState();
 
   generateInitialState(): State {
-    const {width, breakpoints, layouts, verticalCompact, cols} = this.props;
+    const {width, breakpoints, layouts, cols} = this.props;
     const breakpoint = getBreakpointFromWidth(breakpoints, width);
     const colNo = getColsFromBreakpoint(breakpoint, cols);
+    // verticalCompact compatibility, now deprecated
+    const compactType = this.props.verticalCompact === false ? null : this.props.compactType;
     // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
     // for this layout.
     const initialLayout = findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint,
-                                                         breakpoint, colNo, verticalCompact);
+                                                         breakpoint, colNo, compactType);
 
     return {
       layout: initialLayout,
@@ -135,7 +137,7 @@ export default class ResponsiveReactGridLayout extends React.Component<Props<>, 
       // if one does not exist.
       const newLayout = findOrGenerateResponsiveLayout(
         nextProps.layouts, nextProps.breakpoints,
-        breakpoint, breakpoint, cols, nextProps.verticalCompact
+        breakpoint, breakpoint, cols, nextProps.compactType
       );
       this.setState({layout: newLayout});
     }
@@ -151,7 +153,7 @@ export default class ResponsiveReactGridLayout extends React.Component<Props<>, 
    * Width changes are necessary to figure out the widget widths.
    */
   onWidthChange(nextProps: Props<*>) {
-    const {breakpoints, cols, layouts, verticalCompact} = nextProps;
+    const {breakpoints, cols, layouts, compactType} = nextProps;
     const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 
     const lastBreakpoint = this.state.breakpoint;
@@ -164,10 +166,10 @@ export default class ResponsiveReactGridLayout extends React.Component<Props<>, 
       // Find or generate a new layout.
       const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
       let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint,
-                                                  lastBreakpoint, newCols, verticalCompact);
+                                                  lastBreakpoint, newCols, compactType);
 
       // This adds missing items.
-      layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, verticalCompact);
+      layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, compactType);
 
       // Store the new layout.
       layouts[newBreakpoint] = layout;

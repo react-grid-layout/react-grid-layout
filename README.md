@@ -66,7 +66,7 @@ RGL is React-only and does not require jQuery.
 * Draggable widgets
 * Resizable widgets
 * Static widgets
-* Vertical auto-packing
+* Configurable packing: horizontal, vertical, or off
 * Bounds checking for dragging and resizing
 * Widgets may be added or removed without rebuilding grid
 * Layout can be serialized and restored
@@ -250,6 +250,9 @@ draggableHandle: ?string = '',
 
 // If true, the layout will compact vertically
 verticalCompact: ?boolean = true,
+
+// Compaction type.
+compactType: ?('vertical' | 'horizontal') = 'vertical';
 
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}

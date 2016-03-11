@@ -20,6 +20,7 @@ class ShowcaseLayout extends React.Component {
 
   state = {
     currentBreakpoint: 'lg',
+    compactType: 'vertical',
     mounted: false,
     layouts: {lg: this.props.initialLayout},
   };
@@ -46,6 +47,13 @@ class ShowcaseLayout extends React.Component {
     });
   };
 
+  onCompactTypeChange = () => {
+    this.setState({
+      compactType: this.state.compactType === 'horizontal' ? 'vertical' :
+                   this.state.compactType === 'vertical' ? null : 'horizontal'
+    });
+  };
+
   onLayoutChange = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
   };
@@ -59,9 +67,12 @@ class ShowcaseLayout extends React.Component {
   render() {
     return (
       <div>
-        <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
+        <div>
+          Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
+        <div>Compaction type: {_.capitalize(this.state.compactType) || 'No Compaction'}</div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
+        <button onClick={this.onCompactTypeChange}>Change Compaction Type</button>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -71,7 +82,8 @@ class ShowcaseLayout extends React.Component {
           measureBeforeMount={false}
           // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
           // and set `measureBeforeMount={true}`.
-          useCSSTransforms={this.state.mounted}>
+          useCSSTransforms={this.state.mounted}
+          compactType={this.state.compactType}>
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>
