@@ -1,3 +1,9 @@
+0.11.1
+------
+
+- Bugfix: `<ResponsiveReactGridLayout>` was using stale data when synchronizing children with the layout
+  on a breakpoint change.
+
 0.11.0
 ------
 
