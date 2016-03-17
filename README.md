@@ -1,6 +1,6 @@
 # React-Grid-Layout
 
-#### Summary
+![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 
 [**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md)**]
 
