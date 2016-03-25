@@ -85,13 +85,13 @@ var ReactGridLayout = require('react-grid-layout');
 render: function() {
   // layout is an array of objects, see the demo for more complete usage
   var layout = [
-    {x: 0, y: 0, w: 1, h: 2},
-    {x: 1, y: 0, w: 1, h: 2},
-    {x: 2, y: 0, w: 1, h: 2}
+    {x: 0, y: 0, w: 1, h: 2, i: '1'},
+    {x: 1, y: 0, w: 1, h: 2, i: '2'},
+    {x: 2, y: 0, w: 1, h: 2, i: '3'}
   ];
   return (
     <ReactGridLayout className="layout" layout={layout}
-      cols={12} rowHeight={30}>
+      cols={12} rowHeight={30} width={1200}>
       <div key={1}>1</div>
       <div key={2}>2</div>
       <div key={3}>3</div>
@@ -108,7 +108,8 @@ var ReactGridLayout = require('react-grid-layout');
 //...
 render: function() {
   return (
-    <ReactGridLayout className="layout" cols={12} rowHeight={30}>
+    <ReactGridLayout className="layout" cols={12} 
+      rowHeight={30} width={1200}>
       <div key="1" _grid={{x: 0, y: 0, w: 1, h: 2}}>1</div>
       <div key="2" _grid={{x: 1, y: 0, w: 1, h: 2}}>2</div>
       <div key="3" _grid={{x: 2, y: 0, w: 1, h: 2}}>3</div>
@@ -147,6 +148,8 @@ When in responsive mode, you should supply at least one breakpoint via the `layo
 
 When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one.
 If the largest is provided, RGL will attempt to interpolate the rest.
+
+You will also need to provide a `width`, whn using `<ResponsiveReactGridLayout>` it is suggested you use the HOC `<WidthProvider>` as per the instructions below.
 
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
@@ -190,6 +193,10 @@ RGL supports the following properties (see the source for the final word on this
 // Basic props
 //
 
+// This allows setting the initial width on the server side.
+// This is required unless using the HOC <WidthProvider> or similar
+width: React.PropTypes.number.isRequired,
+
 // If true, the container height swells and contracts to fit contents
 autoSize: React.PropTypes.bool,
 
@@ -214,9 +221,6 @@ verticalCompact: React.PropTypes.bool,
 // array objects like so:
 // {i: String, x: Number, y: Number, w: Number, h: Number}
 layout: React.PropTypes.array,
-
-// This allows setting the initial width on the server side.
-width: React.PropTypes.number.isRequired,
 
 // Margin between items [x, y] in px.
 margin: React.PropTypes.array,
@@ -319,6 +323,10 @@ will be draggable.
 
 ```javascript
 {
+
+  // A string corresponding to the component key
+  i: React.PropTypes.string.isRequired,
+
   // These are all in grid units, not pixels
   x: React.PropTypes.number.isRequired,
   y: React.PropTypes.number.isRequired,
