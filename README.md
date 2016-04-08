@@ -171,7 +171,7 @@ When in responsive mode, you should supply at least one breakpoint via the `layo
 When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one.
 If the largest is provided, RGL will attempt to interpolate the rest.
 
-You will also need to provide a `width`, whn using `<ResponsiveReactGridLayout>` it is suggested you use the HOC `<WidthProvider>` as per the instructions below.
+You will also need to provide a `width`, when using `<ResponsiveReactGridLayout>` it is suggested you use the HOC `<WidthProvider>` as per the instructions below.
 
 For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
 items, but that is coming soon.
