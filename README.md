@@ -69,11 +69,12 @@ RGL is React-only and does not require jQuery.
 * Grid Items placed using CSS Transforms
 * Performance: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
 
-|Version         | Compatibility|
-|----------------|--------------|
-| >= 0.10.0      | React 0.14   |
-| 0.8. - 0.9.2   | React 0.13   |
-| < 0.8          | React 0.12   |
+|Version         | Compatibility    |
+|----------------|------------------|
+| >= 0.11.3      | React 0.14 & v15 |
+| >= 0.10.0      | React 0.14       |
+| 0.8. - 0.9.2   | React 0.13       |
+| < 0.8          | React 0.12       |
 
 ## Installation
 
