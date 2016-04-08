@@ -1,3 +1,16 @@
+# Changelog
+
+0.11.3 (Apr 8, 2016)
+------
+
+- Officially support React v15.
+
+0.11.2 (Apr 6, 2016)
+------
+
+- Bugfix: Draggable cancel selectors, see #203 - thanks @RiiD
+- README fixes, thanks @bravo-kernel & @ro-savage
+
 0.11.1
 ------
 
