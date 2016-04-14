@@ -1,5 +1,17 @@
 # Changelog
 
+0.12.0 (Apr 14, 2016)
+------
+
+- `<ReactGridLayout>` will no longer animate so severely on mount. See #212.
+  - If you are using `<WidthProvider>`, you may notice that the container's width still shunts on mount.
+    If you like, you may delay mounting by setting `measureBeforeMount={true}` on the wrapped element. This
+    will eliminate the mounting animation completely.
+  - If you enjoyed the old animation, set `useCSSTransforms={this.state.mounted}` and toggle the mounting
+    flag. See `0-showcase.jsx` for an example.
+- Set more permissive version ranges for `<Draggable>` and `<Resizable>` dependencies, as they are now stable
+  and will only introduce breaking changes on major version ticks.
+
 0.11.3 (Apr 8, 2016)
 ------
 
