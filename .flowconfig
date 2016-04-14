@@ -11,10 +11,10 @@ index.js
 [libs]
 
 [options]
-suppress_comment=.*\\\\s*$FlowFixMe.*
-suppress_comment=.*\\\\s*$FlowBug.*
-suppress_comment=.*\\\\s*$FlowIgnore.*
-suppress_comment=\\(.\\|\n\\)*\\$FlowNewLine.*
-suppress_comment=\\(.\\|\n\\)*\\$FlowIssue
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowBug.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowNewLine.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIssue
 esproposal.class_instance_fields=ignore
 esproposal.class_static_fields=ignore

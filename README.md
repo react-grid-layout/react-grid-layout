@@ -205,6 +205,10 @@ render: function() {
 
 This allows you to easily replace `<WidthProvider>` with your own Provider HOC if you need more sophisticated logic.
 
+`<WidthProvider>` accepts a single prop, `measureBeforeMount`. If `true`, `<WidthProvider>` will measure the
+container's width before mounting children. Use this if you'd like to completely eliminate any resizing animation
+on application/component mount.
+
 
 ### Grid Layout Props
 
