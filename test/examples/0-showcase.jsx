@@ -1,33 +1,31 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var _ = require('lodash');
-var WidthProvider = require('react-grid-layout').WidthProvider;
-var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
-ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
+import React from 'react';
+import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
+import _ from 'lodash';
+import {Responsive, WidthProvider} from 'react-grid-layout';
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-var BasicLayout = React.createClass({
-  mixins: [PureRenderMixin],
+class ShowcaseLayout extends React.Component {
 
-  propTypes: {
+  static propTypes = {
     onLayoutChange: React.PropTypes.func.isRequired
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      className: "layout",
-      rowHeight: 30,
-      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
-      initialLayout: generateLayout()
-    };
-  },
+  static defaultProps = {
+    className: "layout",
+    rowHeight: 30,
+    cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+    initialLayout: generateLayout()
+  };
 
-  getInitialState() {
-    return {
-      layouts: {lg: this.props.initialLayout},
-      currentBreakpoint: 'lg'
-    };
-  },
+  state = {
+    currentBreakpoint: 'lg',
+    mounted: false,
+    layouts: {lg: this.props.initialLayout},
+  };
+
+  componentDidMount() {
+    this.setState({mounted: true});
+  }
 
   generateDOM() {
     return _.map(this.state.layouts.lg, function (l, i) {
@@ -39,23 +37,23 @@ var BasicLayout = React.createClass({
           }
         </div>);
     });
-  },
+  }
 
-  onBreakpointChange(breakpoint) {
+  onBreakpointChange = (breakpoint) => {
     this.setState({
       currentBreakpoint: breakpoint
     });
-  },
+  };
 
-  onLayoutChange(layout, layouts) {
+  onLayoutChange = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
-  },
+  };
 
-  onNewLayout() {
+  onNewLayout = () => {
     this.setState({
       layouts: {lg: generateLayout()}
     });
-  },
+  };
 
   render() {
     return (
@@ -68,13 +66,19 @@ var BasicLayout = React.createClass({
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}
-          useCSSTransforms={true}>
+          // WidthProvider option
+          measureBeforeMount={false}
+          // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
+          // and set `measureBeforeMount={true}`.
+          useCSSTransforms={this.state.mounted}>
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>
     );
   }
-});
+}
+
+module.exports = ShowcaseLayout;
 
 function generateLayout() {
   return _.map(_.range(0, 25), function (item, i) {
@@ -89,8 +93,6 @@ function generateLayout() {
     };
   });
 }
-
-module.exports = BasicLayout;
 
 if (require.main === module) {
   require('../test-hook.jsx')(module.exports);

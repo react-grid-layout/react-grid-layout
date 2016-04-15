@@ -1,6 +1,7 @@
 body {
   background: white;
   padding: 20px;
+  overflow: scroll;
 }
 #content {
   width: 100%;

@@ -9,7 +9,6 @@ import GridItem from './GridItem';
 import type {ResizeEvent, DragEvent, Layout, LayoutItem} from './utils';
 type State = {
   activeDrag: ?LayoutItem,
-  isMounted: boolean,
   layout: Layout,
   oldDragItem: ?LayoutItem,
   oldResizeItem: ?LayoutItem
@@ -145,7 +144,6 @@ export default class ReactGridLayout extends React.Component {
 
   state: State = {
     activeDrag: null,
-    isMounted: false,
     layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
                                           this.props.cols, this.props.verticalCompact),
     oldDragItem: null,
@@ -161,7 +159,6 @@ export default class ReactGridLayout extends React.Component {
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
-    this.setState({isMounted: true});
   }
 
   componentWillReceiveProps(nextProps: Object) {
@@ -365,6 +362,8 @@ export default class ReactGridLayout extends React.Component {
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     const draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
     const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
+    // $FlowIgnore
+    const isBrowser = process.browser;
 
     return (
       <GridItem
@@ -383,8 +382,8 @@ export default class ReactGridLayout extends React.Component {
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
-        useCSSTransforms={useCSSTransforms && this.state.isMounted}
-        usePercentages={!this.state.isMounted}
+        useCSSTransforms={useCSSTransforms && isBrowser}
+        usePercentages={!isBrowser}
 
         w={l.w}
         h={l.h}

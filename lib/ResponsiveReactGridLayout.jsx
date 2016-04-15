@@ -2,7 +2,7 @@
 import React from 'react';
 import isEqual from 'lodash.isequal';
 
-import {synchronizeLayoutWithChildren, validateLayout} from './utils';
+import {cloneLayout, synchronizeLayoutWithChildren, validateLayout} from './utils';
 import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveLayout} from './responsiveUtils';
 import ReactGridLayout from './ReactGridLayout';
 
@@ -90,14 +90,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
   componentWillReceiveProps(nextProps: Object) {
 
-    if (nextProps.width != this.props.width) {
-      const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
-      this.onWidthChange(nextProps.width, newBreakpoint);
-    }
-
-    // Allow parent to set breakpoint directly.
-    if (nextProps.breakpoint !== this.props.breakpoint) {
-      this.onWidthChange(nextProps.width, nextProps.breakpoint);
+    // Allow parent to set width or breakpoint directly.
+    if (nextProps.width != this.props.width || nextProps.breakpoint !== this.props.breakpoint) {
+      this.onWidthChange(nextProps);
     }
 
     // Allow parent to set layouts directly.
@@ -124,8 +119,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(width: number, newBreakpoint: string) {
-    const {breakpoints, verticalLayout, verticalCompact, cols} = this.props;
+  onWidthChange(nextProps: Object) {
+    const {breakpoints, verticalLayout, verticalCompact, cols} = nextProps;
+    const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 
     const lastBreakpoint = this.state.breakpoint;
 
@@ -133,8 +129,8 @@ export default class ResponsiveReactGridLayout extends React.Component {
     if (lastBreakpoint !== newBreakpoint) {
 
       // Store the current layout
-      const layouts = this.props.layouts;
-      layouts[lastBreakpoint] = JSON.parse(JSON.stringify(this.state.layout));
+      const layouts = nextProps.layouts;
+      layouts[lastBreakpoint] = cloneLayout(this.state.layout);
 
       // Find or generate a new one.
       const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
@@ -142,7 +138,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
                                                   lastBreakpoint, newCols, verticalLayout);
 
       // This adds missing items.
-      layout = synchronizeLayoutWithChildren(layout, this.props.children, newCols, verticalCompact);
+      layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, verticalCompact);
 
       // Store this new layout as well.
       layouts[newBreakpoint] = layout;
@@ -150,7 +146,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // callbacks
       this.props.onLayoutChange(layout, layouts);
       this.props.onBreakpointChange(newBreakpoint, newCols);
-      this.props.onWidthChange(width, this.props.margin, newCols);
+      this.props.onWidthChange(nextProps.width, nextProps.margin, newCols);
 
       this.setState({breakpoint: newBreakpoint, layout: layout, cols: newCols});
     }
