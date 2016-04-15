@@ -8,38 +8,65 @@ webpackJsonp([13],[
 
 	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
-	var React = __webpack_require__(5);
-	var PureRenderMixin = __webpack_require__(10);
-	var _ = __webpack_require__(15);
-	var WidthProvider = __webpack_require__(4).WidthProvider;
-	var ResponsiveReactGridLayout = __webpack_require__(4).Responsive;
-	ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
+	var _react = __webpack_require__(4);
 
-	var BasicLayout = React.createClass({
-	  displayName: 'BasicLayout',
+	var _react2 = _interopRequireDefault(_react);
 
-	  mixins: [PureRenderMixin],
+	var _ReactComponentWithPureRenderMixin = __webpack_require__(10);
 
-	  propTypes: {
-	    onLayoutChange: React.PropTypes.func.isRequired
-	  },
+	var _ReactComponentWithPureRenderMixin2 = _interopRequireDefault(_ReactComponentWithPureRenderMixin);
 
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      className: "layout",
-	      rowHeight: 30,
-	      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-	      initialLayout: generateLayout()
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      layouts: { lg: this.props.initialLayout },
-	      currentBreakpoint: 'lg'
-	    };
-	  },
-	  generateDOM: function generateDOM() {
-	    return _.map(this.state.layouts.lg, function (l, i) {
+	var _lodash = __webpack_require__(13);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _reactGridLayout = __webpack_require__(3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
+
+	var ShowcaseLayout = function (_React$Component) {
+	  _inherits(ShowcaseLayout, _React$Component);
+
+	  function ShowcaseLayout() {
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, ShowcaseLayout);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
+	      currentBreakpoint: 'lg',
+	      mounted: false,
+	      layouts: { lg: _this.props.initialLayout }
+	    }, _this.onBreakpointChange = function (breakpoint) {
+	      _this.setState({
+	        currentBreakpoint: breakpoint
+	      });
+	    }, _this.onLayoutChange = function (layout, layouts) {
+	      _this.props.onLayoutChange(layout, layouts);
+	    }, _this.onNewLayout = function () {
+	      _this.setState({
+	        layouts: { lg: generateLayout() }
+	      });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  ShowcaseLayout.prototype.componentDidMount = function componentDidMount() {
+	    this.setState({ mounted: true });
+	  };
+
+	  ShowcaseLayout.prototype.generateDOM = function generateDOM() {
+	    return _lodash2.default.map(this.state.layouts.lg, function (l, i) {
 	      return _jsx('div', {
 	        className: l.static ? 'static' : ''
 	      }, i, l.static ? _jsx('span', {
@@ -49,40 +76,47 @@ webpackJsonp([13],[
 	        className: 'text'
 	      }, void 0, i));
 	    });
-	  },
-	  onBreakpointChange: function onBreakpointChange(breakpoint) {
-	    this.setState({
-	      currentBreakpoint: breakpoint
-	    });
-	  },
-	  onLayoutChange: function onLayoutChange(layout, layouts) {
-	    this.props.onLayoutChange(layout, layouts);
-	  },
-	  onNewLayout: function onNewLayout() {
-	    this.setState({
-	      layouts: { lg: generateLayout() }
-	    });
-	  },
-	  render: function render() {
+	  };
+
+	  ShowcaseLayout.prototype.render = function render() {
 	    return _jsx('div', {}, void 0, _jsx('div', {}, void 0, 'Current Breakpoint: ', this.state.currentBreakpoint, ' (', this.props.cols[this.state.currentBreakpoint], ' columns)'), _jsx('button', {
 	      onClick: this.onNewLayout
-	    }, void 0, 'Generate New Layout'), React.createElement(
+	    }, void 0, 'Generate New Layout'), _react2.default.createElement(
 	      ResponsiveReactGridLayout,
 	      _extends({}, this.props, {
 	        layouts: this.state.layouts,
 	        onBreakpointChange: this.onBreakpointChange,
-	        onLayoutChange: this.onLayoutChange,
-	        useCSSTransforms: true }),
+	        onLayoutChange: this.onLayoutChange
+	        // WidthProvider option
+	        , measureBeforeMount: false
+	        // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
+	        // and set `measureBeforeMount={true}`.
+	        , useCSSTransforms: this.state.mounted }),
 	      this.generateDOM()
 	    ));
-	  }
-	});
+	  };
+
+	  return ShowcaseLayout;
+	}(_react2.default.Component);
+
+	ShowcaseLayout.propTypes = {
+	  onLayoutChange: _react2.default.PropTypes.func.isRequired
+	};
+	ShowcaseLayout.defaultProps = {
+	  className: "layout",
+	  rowHeight: 30,
+	  cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+	  initialLayout: generateLayout()
+	};
+
+
+	module.exports = ShowcaseLayout;
 
 	function generateLayout() {
-	  return _.map(_.range(0, 25), function (item, i) {
+	  return _lodash2.default.map(_lodash2.default.range(0, 25), function (item, i) {
 	    var y = Math.ceil(Math.random() * 4) + 1;
 	    return {
-	      x: _.random(0, 5) * 2 % 12,
+	      x: _lodash2.default.random(0, 5) * 2 % 12,
 	      y: Math.floor(i / 6) * y,
 	      w: 2,
 	      h: y,
@@ -91,8 +125,6 @@ webpackJsonp([13],[
 	    };
 	  });
 	}
-
-	module.exports = BasicLayout;
 
 	if (__webpack_require__.c[0] === module) {
 	  __webpack_require__(9)(module.exports);
