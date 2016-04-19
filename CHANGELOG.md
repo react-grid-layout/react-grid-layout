@@ -1,5 +1,11 @@
 # Changelog
 
+0.12.1 (Apr 19, 2016)
+------
+
+- Bugfix: Don't set `layout` twice on width change. See #217 - thanks @damienleroux
+- Enhancement: Add Flow type comments
+
 0.12.0 (Apr 14, 2016)
 ------
 
