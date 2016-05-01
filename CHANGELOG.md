@@ -1,5 +1,10 @@
 # Changelog
 
+0.12.2 (May 1, 2016)
+------
+
+- Bugfix: Fix warning about undefined `useCSSTransforms` when server-rendering.
+
 0.12.1 (Apr 19, 2016)
 ------
 
