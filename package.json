@@ -9,7 +9,8 @@
     "build": "make build",
     "build-example": "make build-example",
     "dev": "make dev",
-    "prepublish": "make build"
+    "prepublish": "make build",
+    "validate": "npm ls"
   },
   "repository": {
     "type": "git",
