@@ -1,5 +1,11 @@
 # Changelog
 
+0.12.3 (May 3, 2016)
+-----
+
+- Bugfix: Rendering with new `breakpoints`/`cols` does not refresh the layout.
+  Fixes #208 - thanks @damienleroux
+
 0.12.2 (May 1, 2016)
 ------
 
