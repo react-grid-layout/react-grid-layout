@@ -91,7 +91,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
   componentWillReceiveProps(nextProps: Object) {
 
     // Allow parent to set width or breakpoint directly.
-    if (nextProps.width != this.props.width 
+    if (nextProps.width != this.props.width
     || nextProps.breakpoint !== this.props.breakpoint
     || nextProps.breakpoints !== this.props.breakpoints
     || nextProps.cols !== this.props.cols
@@ -128,11 +128,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
     const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 
     const lastBreakpoint = this.state.breakpoint;
-    const lastBreakpoints = this.state.breakpoints;
-    const lastCols = this.state.cols;
-    
+
     // Breakpoint change
-    if (lastBreakpoint !== newBreakpoint || lastBreakpoints !== nextProps.breakpoints || lastCols !== nextProps.cols) {
+    if (lastBreakpoint !== newBreakpoint || this.props.breakpoints !== breakpoints || this.props.cols !== cols) {
 
       // Store the current layout
       const layouts = nextProps.layouts;
