@@ -136,7 +136,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
       // Store the current layout
       const layouts = nextProps.layouts;
-      layouts[lastBreakpoint] = cloneLayout(this.state.layout);
+      layouts[lastBreakpoint] = cloneLayout(layouts[lastBreakpoint]);
 
       // Find or generate a new one.
       const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
