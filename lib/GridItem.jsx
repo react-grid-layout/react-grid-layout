@@ -283,7 +283,7 @@ export default class GridItem extends React.Component {
     return (e:Event, {node, position}: {node: HTMLElement, position: CorePosition}) => {
       if (!this.props[handlerName]) return;
 
-      let newPosition: {top: number, left: number} = {top: 0, left: 0};
+      const newPosition: {top: number, left: number} = {top: 0, left: 0};
 
       // Get new XY
       switch (handlerName) {
