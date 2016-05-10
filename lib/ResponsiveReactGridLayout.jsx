@@ -132,10 +132,10 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     // Breakpoint change
     if (lastBreakpoint !== newBreakpoint || this.props.breakpoints !== breakpoints || this.props.cols !== cols) {
-
-      // Store the current layout
       const layouts = nextProps.layouts;
-      layouts[lastBreakpoint] = cloneLayout(this.state.layout);
+      
+      // save the current layout before any modification
+      var _lastLayout = = cloneLayout(this.state.layout);
 
       // Find or generate a new one.
       const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
@@ -145,6 +145,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // This adds missing items.
       layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, verticalCompact);
 
+      // Store the last layout
+      layouts[lastBreakpoint] = _lastLayout;
+      
       // Store this new layout as well.
       layouts[newBreakpoint] = layout;
 
