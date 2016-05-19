@@ -125,6 +125,7 @@ export default class ReactGridLayout extends React.Component {
   static defaultProps = {
     autoSize: true,
     cols: 12,
+    className: '',
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
     layout: [],
