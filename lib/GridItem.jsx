@@ -4,7 +4,7 @@ import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
 import {perc, setTopLeft, setTransform} from './utils';
 
-import type {CorePosition, Position} from './utils';
+import type {DragCallbackData, Position} from './utils';
 
 type State = {
   resizing: ?{width: number, height: number},
@@ -280,7 +280,7 @@ export default class GridItem extends React.Component {
    * @return {Function}           Handler function.
    */
   onDragHandler(handlerName:string): Function {
-    return (e:Event, {node, position}: {node: HTMLElement, position: CorePosition}) => {
+    return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
       if (!this.props[handlerName]) return;
 
       const newPosition: {top: number, left: number} = {top: 0, left: 0};
@@ -291,14 +291,14 @@ export default class GridItem extends React.Component {
           // ToDo this wont work on nested parents
           const parentRect = node.offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.top = clientRect.top - parentRect.top;
           newPosition.left = clientRect.left - parentRect.left;
+          newPosition.top = clientRect.top - parentRect.top;
           this.setState({dragging: newPosition});
           break;
         case 'onDrag':
           if (!this.state.dragging) throw new Error('onDrag called before onDragStart.');
-          newPosition.left = this.state.dragging.left + position.deltaX;
-          newPosition.top = this.state.dragging.top + position.deltaY;
+          newPosition.left = this.state.dragging.left + deltaX;
+          newPosition.top = this.state.dragging.top + deltaY;
           this.setState({dragging: newPosition});
           break;
         case 'onDragStop':
