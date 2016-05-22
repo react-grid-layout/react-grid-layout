@@ -1,5 +1,11 @@
 # Changelog
 
+0.12.4 (May 22, 2016)
+-----
+
+- Update to React-Draggable v2. Fixes: #241, #239, #24
+  - v2 contains a number of bugfixes & enhancements for touchscreens, multitouch, and scrolling containers.
+
 0.12.3 (May 3, 2016)
 -----
 
