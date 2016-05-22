@@ -1,28 +1,23 @@
-'use strict';
-let React = require('react');
-let ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 require('style!css!../css/styles.css');
 require('style!css!../examples/example-styles.css');
 typeof window !== "undefined" && (window.React = React); // for devtools
 
 module.exports = function(Layout) {
-  let ExampleLayout = React.createClass({
+  class ExampleLayout extends React.Component {
 
-    getInitialState() {
-      return {
-        layout: []
-      };
-    },
+    state = {layout: []};
 
-    onLayoutChange(layout) {
+    onLayoutChange = (layout) => {
       this.setState({layout: layout});
-    },
+    };
 
     stringifyLayout() {
       return this.state.layout.map(function(l) {
         return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
       });
-    },
+    }
 
     render(){
       return (
@@ -37,12 +32,11 @@ module.exports = function(Layout) {
         </div>
       );
     }
-
-  });
+  }
 
   document.addEventListener("DOMContentLoaded", function() {
-    let contentDiv = document.getElementById('content');
-    let gridProps = window.gridProps || {};
+    const contentDiv = document.getElementById('content');
+    const gridProps = window.gridProps || {};
     ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv);
   });
 };

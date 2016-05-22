@@ -4,6 +4,7 @@ import isEqual from 'lodash.isequal';
 import {autoBindHandlers, bottom, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
+const noop = function() {};
 
 // Types
 import type {ResizeEvent, DragEvent, Layout, LayoutItem} from './utils';
@@ -13,7 +14,6 @@ type State = {
   oldDragItem: ?LayoutItem,
   oldResizeItem: ?LayoutItem
 };
-const noop = function() {};
 // End Types
 
 /**
@@ -125,6 +125,7 @@ export default class ReactGridLayout extends React.Component {
   static defaultProps = {
     autoSize: true,
     cols: 12,
+    className: '',
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
     layout: [],
@@ -150,7 +151,7 @@ export default class ReactGridLayout extends React.Component {
     oldResizeItem: null
   };
 
-  constructor(props: Object, context: ?Object): void {
+  constructor(props: typeof ReactGridLayout.prototype.props, context: any): void {
     super(props, context);
     autoBindHandlers(this, ['onDragStart', 'onDrag', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop']);
   }
@@ -161,7 +162,7 @@ export default class ReactGridLayout extends React.Component {
     this.props.onLayoutChange(this.state.layout);
   }
 
-  componentWillReceiveProps(nextProps: Object) {
+  componentWillReceiveProps(nextProps: typeof ReactGridLayout.prototype.props) {
     let newLayoutBase;
     // Allow parent to set layout directly.
     if (!isEqual(nextProps.layout, this.props.layout)) {
@@ -252,7 +253,7 @@ export default class ReactGridLayout extends React.Component {
   onDragStop(i:string, x:number, y:number, {e, node}: DragEvent) {
     const {oldDragItem} = this.state;
     let {layout} = this.state;
-    let l = getLayoutItem(layout, i);
+    const l = getLayoutItem(layout, i);
     if (!l) return;
 
     // Move the element here
@@ -363,7 +364,7 @@ export default class ReactGridLayout extends React.Component {
     const draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
     const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
     // $FlowIgnore
-    const isBrowser = process.browser;
+    const isBrowser = Boolean(process.browser);
 
     return (
       <GridItem

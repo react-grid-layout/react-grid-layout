@@ -1,5 +1,4 @@
 import React from 'react';
-import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 import _ from 'lodash';
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
