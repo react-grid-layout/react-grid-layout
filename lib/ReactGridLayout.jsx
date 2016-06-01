@@ -146,7 +146,7 @@ export default class ReactGridLayout extends React.Component {
   state: State = {
     activeDrag: null,
     layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
-                                          this.props.cols, this.props.verticalCompact),
+                                          this.props.cols, this.props.verticalCompact, this.props.compactItem),
     oldDragItem: null,
     oldResizeItem: null
   };
@@ -179,7 +179,7 @@ export default class ReactGridLayout extends React.Component {
     // We need to regenerate the layout.
     if (newLayoutBase) {
       const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
-                                                      nextProps.cols, nextProps.verticalCompact);
+                                                      nextProps.cols, nextProps.verticalCompact, this.props.compactItem);
       this.setState({layout: newLayout});
       this.props.onLayoutChange(newLayout);
     }
