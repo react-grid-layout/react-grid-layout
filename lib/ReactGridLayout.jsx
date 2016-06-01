@@ -179,7 +179,7 @@ export default class ReactGridLayout extends React.Component {
     // We need to regenerate the layout.
     if (newLayoutBase) {
       const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
-                                                      nextProps.cols, nextProps.verticalCompact, this.props.compactItem);
+                                                      nextProps.cols, nextProps.verticalCompact, nextProps.compactItem);
       this.setState({layout: newLayout});
       this.props.onLayoutChange(newLayout);
     }
