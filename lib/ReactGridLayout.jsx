@@ -237,7 +237,7 @@ export default class ReactGridLayout extends React.Component {
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
-      layout: compact(layout, this.props.verticalCompact),
+      layout: compact(layout, this.props.verticalCompact, this.props.compactItem),
       activeDrag: placeholder
     });
   }
@@ -264,7 +264,7 @@ export default class ReactGridLayout extends React.Component {
     // Set state
     this.setState({
       activeDrag: null,
-      layout: compact(layout, this.props.verticalCompact),
+      layout: compact(layout, this.props.verticalCompact, this.props.compactItem),
       oldDragItem: null
     });
 
@@ -298,7 +298,7 @@ export default class ReactGridLayout extends React.Component {
     this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the layout and set the drag placeholder.
-    this.setState({layout: compact(layout, this.props.verticalCompact), activeDrag: placeholder});
+    this.setState({layout: compact(layout, this.props.verticalCompact, this.props.compactItem), activeDrag: placeholder});
   }
 
   onResizeStop(i:string, w:number, h:number, {e, node}: ResizeEvent) {
@@ -310,7 +310,7 @@ export default class ReactGridLayout extends React.Component {
     // Set state
     this.setState({
       activeDrag: null,
-      layout: compact(layout, this.props.verticalCompact),
+      layout: compact(layout, this.props.verticalCompact, this.props.compactItem),
       oldResizeItem: null
     });
 
