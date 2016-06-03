@@ -1,5 +1,10 @@
 # Changelog
 
+0.12.5 (Jun 3, 2016)
+-----
+
+- Fixes for server rendering checksum failures.
+
 0.12.4 (May 22, 2016)
 -----
 
