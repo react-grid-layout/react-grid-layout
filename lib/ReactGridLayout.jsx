@@ -159,6 +159,7 @@ export default class ReactGridLayout extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({mounted: true});
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
