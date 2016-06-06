@@ -1,5 +1,15 @@
 # Changelog
 
+0.12.6 (Jun 5, 2016)
+-----
+
+- Fix blindingly obvious bug where mounted isn't set to true. Smack forehead.
+
+0.12.5 (Jun 3, 2016)
+-----
+
+- Fixes for server rendering checksum failures.
+
 0.12.4 (May 22, 2016)
 -----
 

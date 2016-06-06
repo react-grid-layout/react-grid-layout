@@ -11,6 +11,7 @@ import type {ResizeEvent, DragEvent, Layout, LayoutItem} from './utils';
 type State = {
   activeDrag: ?LayoutItem,
   layout: Layout,
+  mounted: boolean,
   oldDragItem: ?LayoutItem,
   oldResizeItem: ?LayoutItem
 };
@@ -147,6 +148,7 @@ export default class ReactGridLayout extends React.Component {
     activeDrag: null,
     layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
                                           this.props.cols, this.props.verticalCompact),
+    mounted: false,
     oldDragItem: null,
     oldResizeItem: null
   };
@@ -157,6 +159,7 @@ export default class ReactGridLayout extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({mounted: true});
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
@@ -359,12 +362,11 @@ export default class ReactGridLayout extends React.Component {
     if (!l) return null;
     const {width, cols, margin, rowHeight, maxRows, isDraggable, isResizable,
            useCSSTransforms, draggableCancel, draggableHandle} = this.props;
+    const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     const draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
     const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
-    // $FlowIgnore
-    const isBrowser = Boolean(process.browser);
 
     return (
       <GridItem
@@ -383,8 +385,8 @@ export default class ReactGridLayout extends React.Component {
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
-        useCSSTransforms={useCSSTransforms && isBrowser}
-        usePercentages={!isBrowser}
+        useCSSTransforms={useCSSTransforms && mounted}
+        usePercentages={!mounted}
 
         w={l.w}
         h={l.h}
