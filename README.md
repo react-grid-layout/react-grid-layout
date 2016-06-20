@@ -235,8 +235,13 @@ autoSize: ?boolean = true,
 cols: ?number = 12,
 
 // A selector that will not be draggable.
+// For example: draggableCancel:'.MyNonDraggableAreaClassName'
+// If you forget the leading . it will not work.
 draggableCancel: ?string = '',
+
 // A selector for the draggable handler
+// For example: draggableHandle:'.MyDragHandleClassName'
+// If you forget the leading . it will not work.
 draggableHandle: ?string = '',
 
 // If true, the layout will compact vertically
