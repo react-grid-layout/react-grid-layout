@@ -1,5 +1,10 @@
 # Changelog
 
+0.12.7 (Jun 29, 2016)
+-----
+
+- Prevent extraenous rerenders in `<ResponsiveReactGridLayout>` by using deep equality on layouts.
+
 0.12.6 (Jun 5, 2016)
 -----
 
