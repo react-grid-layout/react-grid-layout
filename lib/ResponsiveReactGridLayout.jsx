@@ -108,7 +108,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // if one does not exist.
       const newLayout = findOrGenerateResponsiveLayout(
         nextProps.layouts, nextProps.breakpoints,
-        breakpoint, breakpoint, cols, nextProps.verticalLayout
+        breakpoint, breakpoint, cols, nextProps.verticalCompact
       );
       this.setState({layout: newLayout});
     }
@@ -125,7 +125,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
    * Width changes are necessary to figure out the widget widths.
    */
   onWidthChange(nextProps: typeof ResponsiveReactGridLayout.prototype.props) {
-    const {breakpoints, verticalLayout, verticalCompact, cols} = nextProps;
+    const {breakpoints, cols, verticalCompact} = nextProps;
     const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 
     const lastBreakpoint = this.state.breakpoint;
@@ -140,7 +140,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // Find or generate a new one.
       const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
       let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint,
-                                                  lastBreakpoint, newCols, verticalLayout);
+                                                  lastBreakpoint, newCols, verticalCompact);
 
       // This adds missing items.
       layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, verticalCompact);
