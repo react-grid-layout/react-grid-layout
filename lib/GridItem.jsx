@@ -38,7 +38,7 @@ export default class GridItem extends React.Component {
     minW: function (props, propName, componentName, location, propFullName) {
       PropTypes.number(props, propName, componentName, location, propFullName);
       const value = props[propName];
-      if (value > props.w || value > props.maxW) return new Error('minWidth bigger than item width/maxWidth');
+      if (value > props.w || value > props.maxW) return new Error('minWidth larger than item width/maxWidth');
     },
     maxW: function (props, propName, componentName, location, propFullName) {
       PropTypes.number(props, propName, componentName, location, propFullName);
@@ -49,7 +49,7 @@ export default class GridItem extends React.Component {
     minH: function (props, propName, componentName, location, propFullName) {
       PropTypes.number(props, propName, componentName, location, propFullName);
       const value = props[propName];
-      if (value > props.h || value > props.maxH) return new Error('minHeight bigger than item height/maxHeight');
+      if (value > props.h || value > props.maxH) return new Error('minHeight larger than item height/maxHeight');
     },
     maxH: function (props, propName, componentName, location, propFullName) {
       PropTypes.number(props, propName, componentName, location, propFullName);
@@ -227,7 +227,7 @@ export default class GridItem extends React.Component {
    * @param  {Element} child    Child element.
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable(child: React.Element): React.Element {
+  mixinDraggable(child: React.Element<any>): React.Element<any> {
     return (
       <DraggableCore
         onStart={this.onDragHandler('onDragStart')}
@@ -246,7 +246,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable(child: React.Element, position: Position): React.Element {
+  mixinResizable(child: React.Element<any>, position: Position): React.Element<any> {
     const {cols, x, minW, minH, maxW, maxH} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
@@ -279,7 +279,7 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onDragHandler(handlerName:string): Function {
+  onDragHandler(handlerName:string) {
     return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
       if (!this.props[handlerName]) return;
 
@@ -325,7 +325,7 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler(handlerName:string): Function {
+  onResizeHandler(handlerName:string) {
     return (e:Event, {element, size}: {element: HTMLElement, size: Position}) => {
       if (!this.props[handlerName]) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
@@ -348,7 +348,7 @@ export default class GridItem extends React.Component {
     };
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);

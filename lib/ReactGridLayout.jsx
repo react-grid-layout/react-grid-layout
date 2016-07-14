@@ -324,7 +324,7 @@ export default class ReactGridLayout extends React.Component {
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder(): ?React.Element {
+  placeholder(): ?React.Element<any> {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
     const {width, cols, margin, rowHeight, maxRows, useCSSTransforms} = this.props;
@@ -356,7 +356,7 @@ export default class ReactGridLayout extends React.Component {
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: React.Element): ?React.Element {
+  processGridItem(child: React.Element<any>): ?React.Element<any> {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
     if (!l) return null;
@@ -404,7 +404,7 @@ export default class ReactGridLayout extends React.Component {
     );
   }
 
-  render(): React.Element {
+  render() {
     const {className, style} = this.props;
 
     const mergedClassName = `react-grid-layout ${className}`;
