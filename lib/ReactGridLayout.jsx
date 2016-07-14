@@ -54,7 +54,7 @@ export default class ReactGridLayout extends React.Component {
     // {x: Number, y: Number, w: Number, h: Number, i: String}
     layout: function (props) {
       var layout = props.layout;
-      // I hope you're setting the _grid property on the grid items
+      // I hope you're setting the data-grid property on the grid items
       if (layout === undefined) return;
       validateLayout(layout, 'layout');
     },

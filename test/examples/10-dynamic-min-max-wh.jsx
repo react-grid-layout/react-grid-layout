@@ -34,7 +34,7 @@ var DynamicMinMaxLayout = React.createClass({
     var layout = this.generateLayout();
     return _.map(layout, function(l) {
       return (
-        <div key={l.i} _grid={l}>
+        <div key={l.i} data-grid={l}>
           <span className="text">{l.i}</span>
         </div>
       );

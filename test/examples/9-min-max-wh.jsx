@@ -29,7 +29,7 @@ var MinMaxLayout = React.createClass({
     return _.map(layout, function(l) {
       var mins = [l.minW, l.minH], maxes = [l.maxW, l.maxH];
       return (
-        <div key={l.i} _grid={l}>
+        <div key={l.i} data-grid={l}>
           <span className="text">{l.i}</span>
           <div className="minMax">{'min:' + mins + ' - max:' + maxes}</div>
         </div>
