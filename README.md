@@ -234,12 +234,12 @@ autoSize: ?boolean = true,
 // Number of columns in this layout.
 cols: ?number = 12,
 
-// A selector that will not be draggable.
+// A CSS selector for tags that will not be draggable.
 // For example: draggableCancel:'.MyNonDraggableAreaClassName'
 // If you forget the leading . it will not work.
 draggableCancel: ?string = '',
 
-// A selector for the draggable handler
+// A CSS selector for tags that will act as the draggable handle.
 // For example: draggableHandle:'.MyDragHandleClassName'
 // If you forget the leading . it will not work.
 draggableHandle: ?string = '',
