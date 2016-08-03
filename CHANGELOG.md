@@ -1,6 +1,6 @@
 # Changelog
 
-Prerelease
+0.13.0 (Aug 3, 2016)
 -----
 
 #### Changed:
@@ -8,6 +8,10 @@ Prerelease
 - Due to a change in React 15.2, passing the `_grid` property on DOM children generates an error.
   To compensate, we now error on the same and suggest using `data-grid` instead. Simply change any use of
   `_grid` to `data-grid`, or add your properties to the layout.
+
+#### Fixes:
+
+- Fix React 15.3 warning re: propTypes.
 
 0.12.7 (Jun 29, 2016)
 -----
