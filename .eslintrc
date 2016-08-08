@@ -24,6 +24,7 @@
       "varsIgnorePattern": "(debug|^_)"
     }],
     "new-cap": 0,
+    "prefer-const": 1,
     "react/jsx-boolean-value": [1, "always"], // forces `var={true}` instead of `var`
     "react/jsx-curly-spacing": [1, "never"], // don't allow `var={ 1 }`
     "react/jsx-no-duplicate-props": 1, // prevent <foo name="bar" name="baz" />

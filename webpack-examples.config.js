@@ -15,13 +15,19 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory=true'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: {
+          cacheDirectory: true,
+          plugins: [
+            'transform-react-inline-elements',
+            'transform-react-constant-elements',
+          ]
+        }}
       ]
     },
     plugins: [
       new webpack.DefinePlugin({
         "process.env": {
-          NODE_ENV: JSON.stringify('development')
+          NODE_ENV: JSON.stringify('production')
         }
       }),
       new webpack.optimize.CommonsChunkPlugin(

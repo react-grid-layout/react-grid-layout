@@ -1,3 +1,128 @@
+# Changelog
+
+0.13.0 (Aug 3, 2016)
+-----
+
+#### Changed:
+
+- Due to a change in React 15.2, passing the `_grid` property on DOM children generates an error.
+  To compensate, we now error on the same and suggest using `data-grid` instead. Simply change any use of
+  `_grid` to `data-grid`, or add your properties to the layout.
+
+#### Fixes:
+
+- Fix React 15.3 warning re: propTypes.
+
+0.12.7 (Jun 29, 2016)
+-----
+
+- Prevent extraenous rerenders in `<ResponsiveReactGridLayout>` by using deep equality on layouts.
+
+0.12.6 (Jun 5, 2016)
+-----
+
+- Fix blindingly obvious bug where mounted isn't set to true. Smack forehead.
+
+0.12.5 (Jun 3, 2016)
+-----
+
+- Fixes for server rendering checksum failures.
+
+0.12.4 (May 22, 2016)
+-----
+
+- Update to React-Draggable v2. Fixes: #241, #239, #24
+  - v2 contains a number of bugfixes & enhancements for touchscreens, multitouch, and scrolling containers.
+
+0.12.3 (May 3, 2016)
+-----
+
+- Bugfix: Rendering with new `breakpoints`/`cols` does not refresh the layout.
+  Fixes #208 - thanks @damienleroux
+
+0.12.2 (May 1, 2016)
+------
+
+- Bugfix: Fix warning about undefined `useCSSTransforms` when server-rendering.
+
+0.12.1 (Apr 19, 2016)
+------
+
+- Bugfix: Don't set `layout` twice on width change. See #217 - thanks @damienleroux
+- Enhancement: Add Flow type comments
+
+0.12.0 (Apr 14, 2016)
+------
+
+- `<ReactGridLayout>` will no longer animate so severely on mount. See #212.
+  - If you are using `<WidthProvider>`, you may notice that the container's width still shunts on mount.
+    If you like, you may delay mounting by setting `measureBeforeMount={true}` on the wrapped element. This
+    will eliminate the mounting animation completely.
+  - If you enjoyed the old animation, set `useCSSTransforms={this.state.mounted}` and toggle the mounting
+    flag. See `0-showcase.jsx` for an example.
+- Set more permissive version ranges for `<Draggable>` and `<Resizable>` dependencies, as they are now stable
+  and will only introduce breaking changes on major version ticks.
+
+0.11.3 (Apr 8, 2016)
+------
+
+- Officially support React v15.
+
+0.11.2 (Apr 6, 2016)
+------
+
+- Bugfix: Draggable cancel selectors, see #203 - thanks @RiiD
+- README fixes, thanks @bravo-kernel & @ro-savage
+
+0.11.1
+------
+
+- Bugfix: `<ResponsiveReactGridLayout>` was using stale data when synchronizing children with the layout
+  on a breakpoint change.
+
+0.11.0
+------
+
+This release contains potentially breaking changes so I have updated the minor version (as per semver).
+
+**Breaking Changes**:
+
+- Layout items now have a fixed set of properties. Other properties will *not* be merged into the `<GridItem>`, such
+  as `className`. To set a `className` on a child, set it on the child directly and it will be merged.
+  This allows us to make better assumptions about the layout and use a faster cloning mechanism.
+- Setting individual `handle` and `cancel` selectors per item is no longer supported. If you need this, please
+  open a ticket and let me know your use case.
+
+Other changes:
+
+- Bugfix: `<ResponsiveReactGridLayout>` `onLayoutChange` callback data could still be stale.
+- Bugfix: Range error when building layout solely from `_grid` properties.
+  - This broke a lot of usage and thus `0.10.11` and `0.10.10` have been unpublished.
+- Removed redundant `isPlaceholder` property from `<GridItem>`.
+- README updates to clarify layout/_grid usage.
+
+0.10.11
+-------
+
+- Bugfix: `layouts` param on `<ResponsiveReactGridLayout>`'s `onLayoutChange` could have stale data
+  for the current breakpoint.
+
+0.10.10
+-------
+
+- Performance: Prevent V8 deopt in a few methods and add fast layout item cloning.
+
+0.10.9
+------
+
+- Bugfix: Typo in children comparison in CWRP. See #169.
+- Bugfix: Missing babel-preset-es2015 in dev.
+
+0.10.8
+------
+
+- Rebuild using [ES2015 Loose Mode](https://babeljs.algolia.com/docs/advanced/loose/).
+
 0.10.7
 ------
 

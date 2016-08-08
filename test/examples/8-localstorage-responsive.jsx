@@ -5,7 +5,7 @@ var WidthProvider = require('react-grid-layout').WidthProvider;
 var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
-const originalLayouts = getFromLS('layouts');
+const originalLayouts = getFromLS('layouts') || {};
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
@@ -27,17 +27,12 @@ var ResponsiveLocalStorageLayout = React.createClass({
   },
 
   resetLayout() {
-    this.refs.rrgl.setState({
-      layouts: JSON.parse(JSON.stringify(originalLayouts))
-    });
-  },
-
-  _saveToLocalStorage() {
-    saveToLS('layouts', this.state.layouts);
+    this.setState({layouts: {}});
   },
 
   onLayoutChange(layout, layouts) {
-    this._saveToLocalStorage();
+    saveToLS('layouts', layouts);
+    this.setState({layouts});
     this.props.onLayoutChange(layout, layouts);
   },
 
@@ -50,11 +45,11 @@ var ResponsiveLocalStorageLayout = React.createClass({
             {...this.props}
             layouts={this.state.layouts}
             onLayoutChange={this.onLayoutChange}>
-          <div key="1" _grid={{w: 2, h: 3, x: 0, y: 0}}><span className="text">1</span></div>
-          <div key="2" _grid={{w: 2, h: 3, x: 2, y: 0}}><span className="text">2</span></div>
-          <div key="3" _grid={{w: 2, h: 3, x: 4, y: 0}}><span className="text">3</span></div>
-          <div key="4" _grid={{w: 2, h: 3, x: 6, y: 0}}><span className="text">4</span></div>
-          <div key="5" _grid={{w: 2, h: 3, x: 8, y: 0}}><span className="text">5</span></div>
+          <div key="1" data-grid={{w: 2, h: 3, x: 0, y: 0}}><span className="text">1</span></div>
+          <div key="2" data-grid={{w: 2, h: 3, x: 2, y: 0}}><span className="text">2</span></div>
+          <div key="3" data-grid={{w: 2, h: 3, x: 4, y: 0}}><span className="text">3</span></div>
+          <div key="4" data-grid={{w: 2, h: 3, x: 6, y: 0}}><span className="text">4</span></div>
+          <div key="5" data-grid={{w: 2, h: 3, x: 8, y: 0}}><span className="text">5</span></div>
         </ResponsiveReactGridLayout>
       </div>
     );
@@ -67,7 +62,7 @@ function getFromLS(key) {
   let ls = {};
   if (global.localStorage) {
     try {
-      ls = JSON.parse(global.localStorage.getItem('rgl-7')) || {};
+      ls = JSON.parse(global.localStorage.getItem('rgl-8')) || {};
     } catch(e) {/*Ignore*/}
   }
   return ls[key];
@@ -75,7 +70,7 @@ function getFromLS(key) {
 
 function saveToLS(key, value) {
   if (global.localStorage) {
-    global.localStorage.setItem('rgl-7', JSON.stringify({
+    global.localStorage.setItem('rgl-8', JSON.stringify({
       [key]: value
     }));
   }

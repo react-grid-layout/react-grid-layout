@@ -3,26 +3,38 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 
-type State = {width: number};
+type State = {
+  mounted: boolean,
+  width: number
+};
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
 export default (ComposedComponent: ReactClass): ReactClass => class extends React.Component {
 
+  static defaultProps = {
+    measureBeforeMount: false
+  };
+
+  static propTypes = {
+    // If true, will not render children until mounted. Useful for getting the exact width before
+    // rendering, to prevent any unsightly resizing.
+    measureBeforeMount: React.PropTypes.bool
+  };
+
   state: State = {
+    mounted: false,
     width: 1280
   };
 
   componentDidMount() {
-    const node = ReactDOM.findDOMNode(this);
-    // Bind here so we have the same reference when removing the listener on unmount.
-    this.onWindowResize = this._onWindowResize.bind(this, node);
+    this.setState({mounted: true});
 
     window.addEventListener('resize', this.onWindowResize);
-    // This is intentional. Once to properly set the breakpoint and resize the elements,
-    // and again to compensate for any scrollbar that appeared because of the first step.
-    this.onWindowResize();
+    // Call to properly set the breakpoint and resize the elements.
+    // Note that if you're doing a full-width element, this can get a little wonky if a scrollbar
+    // appears because of the grid. In that case, fire your own resize event, or set `overflow: scroll` on your body.
     this.onWindowResize();
   }
 
@@ -30,11 +42,13 @@ export default (ComposedComponent: ReactClass): ReactClass => class extends Reac
     window.removeEventListener('resize', this.onWindowResize);
   }
 
-  _onWindowResize(node: HTMLElement, _event: Event) {
-    this.setState({width: node.offsetWidth});
+  onWindowResize = (_event: Event, cb: ?Function) => {
+    const node = ReactDOM.findDOMNode(this);
+    this.setState({width: node.offsetWidth}, cb);
   }
 
   render() {
+    if (this.props.measureBeforeMount && !this.state.mounted) return <div {...this.props} {...this.state} />;
     return <ComposedComponent {...this.props} {...this.state} />;
   }
 };

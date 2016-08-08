@@ -1,6 +1,7 @@
 body {
   background: white;
   padding: 20px;
+  overflow: scroll;
 }
 #content {
   width: 100%;
@@ -48,4 +49,10 @@ body {
 }
 .react-grid-item .add {
   cursor: pointer;
+}
+.react-grid-dragHandleExample{
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
 }

@@ -1,20 +1,20 @@
 // @flow
 import React, {PropTypes} from 'react';
 import isEqual from 'lodash.isequal';
-import {autoBindHandlers, bottom, clone, compact, getLayoutItem, moveElement,
+import {autoBindHandlers, bottom, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
+const noop = function() {};
 
 // Types
 import type {ResizeEvent, DragEvent, Layout, LayoutItem} from './utils';
 type State = {
   activeDrag: ?LayoutItem,
-  isMounted: boolean,
   layout: Layout,
+  mounted: boolean,
   oldDragItem: ?LayoutItem,
   oldResizeItem: ?LayoutItem
 };
-const noop = function() {};
 // End Types
 
 /**
@@ -54,7 +54,7 @@ export default class ReactGridLayout extends React.Component {
     // {x: Number, y: Number, w: Number, h: Number, i: String}
     layout: function (props) {
       var layout = props.layout;
-      // I hope you're setting the _grid property on the grid items
+      // I hope you're setting the data-grid property on the grid items
       if (layout === undefined) return;
       validateLayout(layout, 'layout');
     },
@@ -65,7 +65,7 @@ export default class ReactGridLayout extends React.Component {
 
     // Margin between items [x, y] in px
     margin: PropTypes.arrayOf(PropTypes.number),
-    // padding inside container [x, y] in px
+    // Padding inside the container [x, y] in px
     containerPadding: PropTypes.arrayOf(PropTypes.number),
     // Rows have a static height, but you can change this based on breakpoints if you like
     rowHeight: PropTypes.number,
@@ -128,6 +128,7 @@ export default class ReactGridLayout extends React.Component {
   static defaultProps = {
     autoSize: true,
     cols: 12,
+    className: '',
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
     layout: [],
@@ -147,42 +148,43 @@ export default class ReactGridLayout extends React.Component {
 
   state: State = {
     activeDrag: null,
-    isMounted: false,
     layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
                                           this.props.cols, this.props.verticalCompact),
+    mounted: false,
     oldDragItem: null,
     oldResizeItem: null
   };
 
-  constructor(props: Object, context: ?Object): void {
+  constructor(props: typeof ReactGridLayout.prototype.props, context: any): void {
     super(props, context);
     autoBindHandlers(this, ['onDragStart', 'onDrag', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop']);
   }
 
   componentDidMount() {
+    this.setState({mounted: true});
     // Call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.props.onLayoutChange(this.state.layout);
-    this.setState({isMounted: true});
   }
 
-  componentWillReceiveProps(nextProps: Object) {
+  componentWillReceiveProps(nextProps: typeof ReactGridLayout.prototype.props) {
     let newLayoutBase;
     // Allow parent to set layout directly.
     if (!isEqual(nextProps.layout, this.props.layout)) {
       newLayoutBase = nextProps.layout;
     }
+
     // If children change, also regenerate the layout. Use our state
     // as the base in case because it may be more up to date than
     // what is in props.
-    else if (!nextProps.children.length !== this.props.children.length) {
+    else if (nextProps.children.length !== this.props.children.length) {
       newLayoutBase = this.state.layout;
     }
 
     // We need to regenerate the layout.
     if (newLayoutBase) {
       const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
-                                              nextProps.cols, nextProps.verticalCompact);
+                                                      nextProps.cols, nextProps.verticalCompact);
       this.setState({layout: newLayout});
       this.props.onLayoutChange(newLayout);
     }
@@ -212,7 +214,7 @@ export default class ReactGridLayout extends React.Component {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    this.setState({oldDragItem: clone(l)});
+    this.setState({oldDragItem: cloneLayoutItem(l)});
 
     this.props.onDragStart(layout, l, l, null, e, node);
   }
@@ -258,7 +260,7 @@ export default class ReactGridLayout extends React.Component {
   onDragStop(i:string, x:number, y:number, {e, node}: DragEvent) {
     const {oldDragItem} = this.state;
     let {layout} = this.state;
-    let l = getLayoutItem(layout, i);
+    const l = getLayoutItem(layout, i);
     if (!l) return;
 
     // Move the element here
@@ -281,7 +283,7 @@ export default class ReactGridLayout extends React.Component {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    this.setState({oldResizeItem: clone(l)});
+    this.setState({oldResizeItem: cloneLayoutItem(l)});
 
     this.props.onResizeStart(layout, l, l, null, e, node);
   }
@@ -297,7 +299,7 @@ export default class ReactGridLayout extends React.Component {
 
     // Create placeholder element (display only)
     var placeholder = {
-      w: w, h: h, x: l.x, y: l.y, placeholder: true, i: i
+      w: w, h: h, x: l.x, y: l.y, static: true, i: i
     };
 
     this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
@@ -326,7 +328,7 @@ export default class ReactGridLayout extends React.Component {
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder(): ?ReactElement {
+  placeholder(): ?React.Element<any> {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
     const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms} = this.props;
@@ -339,7 +341,6 @@ export default class ReactGridLayout extends React.Component {
         x={activeDrag.x}
         y={activeDrag.y}
         i={activeDrag.i}
-        isPlaceholder={true}
         className="react-grid-placeholder"
         containerWidth={width}
         cols={cols}
@@ -360,16 +361,18 @@ export default class ReactGridLayout extends React.Component {
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: ReactElement): ?ReactElement {
+  processGridItem(child: React.Element<any>): ?React.Element<any> {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
-    if (!l) return;
-    const {width, cols, margin, containerPadding, rowHeight, maxRows,
-           useCSSTransforms, draggableCancel, draggableHandle} = this.props;
+    if (!l) return null;
+    const {width, cols, margin, containerPadding, rowHeight,
+           maxRows, isDraggable, isResizable, useCSSTransforms,
+           draggableCancel, draggableHandle} = this.props;
+    const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
-    const draggable = (l.static || !this.props.isDraggable) ? false : true;
-    const resizable = (l.static || !this.props.isResizable) ? false : true;
+    const draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
+    const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
 
     return (
       <GridItem
@@ -389,15 +392,26 @@ export default class ReactGridLayout extends React.Component {
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
-        useCSSTransforms={useCSSTransforms && this.state.isMounted}
-        usePercentages={!this.state.isMounted}
-        {...l}>
+        useCSSTransforms={useCSSTransforms && mounted}
+        usePercentages={!mounted}
+
+        w={l.w}
+        h={l.h}
+        x={l.x}
+        y={l.y}
+        i={l.i}
+        minH={l.minH}
+        minW={l.minW}
+        maxH={l.maxH}
+        maxW={l.maxW}
+        static={l.static}
+        >
         {child}
       </GridItem>
     );
   }
 
-  render(): ReactElement {
+  render() {
     const {className, style} = this.props;
 
     const mergedClassName = `react-grid-layout ${className}`;
