@@ -136,8 +136,10 @@ export default class GridItem extends React.Component {
     }
 
     if (state && state.dragging) {
-      out.top = Math.round(state.dragging.top);
-      out.left = Math.round(state.dragging.left);
+      out.top = Math.round(out.top + state.dragging.deltaY);
+      out.left = Math.round(out.left + state.dragging.deltaX);
+      state.dragging.top = out.top;
+      state.dragging.left = out.left;
     }
 
     return out;
@@ -145,27 +147,22 @@ export default class GridItem extends React.Component {
 
   /**
    * Translate x and y coordinates from pixels to grid units.
-   * @param  {Number} top  Top position (relative to parent) in pixels.
-   * @param  {Number} left Left position (relative to parent) in pixels.
+   * @param  {Number} top_delta  Top change in position in pixels.
+   * @param  {Number} left_delta Left change in position in pixels.
+   * @param  {Number} original_x The starting grid x position.
+   * @param  {Number} original_y The starting grid y position.
    * @return {Object} x and y in grid units.
    */
-  calcXY(top: number, left: number): {x: number, y: number} {
+  calcXY(top_delta: number, left_delta: number, original_x: number, original_y: number): {x: number, y: number} {
     const {margin, cols, rowHeight, w, h, maxRows} = this.props;
     const colWidth = this.calcColWidth();
 
-    // left = colWidth * x + margin * (x + 1)
-    // l = cx + m(x+1)
-    // l = cx + mx + m
-    // l - m = cx + mx
-    // l - m = x(c + m)
-    // (l - m) / (c + m) = x
-    // x = (left - margin) / (coldWidth + margin)
-    let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
-    let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+    let x = Math.round(left_delta / colWidth );
+    let y = Math.round(top_delta / rowHeight);
 
     // Capping
-    x = Math.max(Math.min(x, cols - w), 0);
-    y = Math.max(Math.min(y, maxRows - h), 0);
+    x = Math.max(original_x + x, 0);
+    y = Math.max(original_y + y, 0);
 
     return {x, y};
   }
@@ -285,7 +282,7 @@ export default class GridItem extends React.Component {
     return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
       if (!this.props[handlerName]) return;
 
-      const newPosition: {top: number, left: number} = {top: 0, left: 0};
+      const newPosition: {top: number, left: number} = {top: 0, left: 0, deltaX: 0, deltaY: 0};
 
       // Get new XY
       switch (handlerName) {
@@ -295,25 +292,44 @@ export default class GridItem extends React.Component {
           const clientRect = node.getBoundingClientRect();
           newPosition.left = clientRect.left - parentRect.left;
           newPosition.top = clientRect.top - parentRect.top;
+
+          // Set the initial click offset.
+          newPosition.deltaX = 5;
+          newPosition.deltaY = 5;
+          
+          // Store the original position of the title.
+          this.state.original_x = this.props.x;
+          this.state.original_y = this.props.y;
+
           this.setState({dragging: newPosition});
           break;
         case 'onDrag':
           if (!this.state.dragging) throw new Error('onDrag called before onDragStart.');
           newPosition.left = this.state.dragging.left + deltaX;
           newPosition.top = this.state.dragging.top + deltaY;
+          newPosition.deltaX = this.state.dragging.deltaX + deltaX;
+          newPosition.deltaY = this.state.dragging.deltaY + deltaY;
+          
           this.setState({dragging: newPosition});
           break;
         case 'onDragStop':
           if (!this.state.dragging) throw new Error('onDragEnd called before onDragStart.');
           newPosition.left = this.state.dragging.left;
           newPosition.top = this.state.dragging.top;
+          newPosition.deltaX = this.state.dragging.deltaX;
+          newPosition.deltaY = this.state.dragging.deltaY;
           this.setState({dragging: null});
           break;
         default:
           throw new Error('onDragHandler called with unrecognized handlerName: ' + handlerName);
       }
+      // If we haven't set an original_x/y initialize it to the current x,y.
+      if (!this.state.original_x && !this.state.original_y) {
+        this.state.original_x = this.props.x;
+        this.state.original_x = this.props.x; 
+      }
 
-      const {x, y} = this.calcXY(newPosition.top, newPosition.left);
+      const {x, y} = this.calcXY(newPosition.deltaY, newPosition.deltaX, this.state.original_x, this.state.original_y);
 
       this.props[handlerName](this.props.i, x, y, {e, node, newPosition});
     };
@@ -351,7 +367,15 @@ export default class GridItem extends React.Component {
   }
 
   render(): React.Element<any> {
-    const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
+    const {w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
+    var x = this.props.x;
+    var y = this.props.y;
+    
+    // If this grid item is dragging, use the original positions.
+    if (this.state.dragging) {
+      x = this.state.original_x;
+      y = this.state.original_y;
+    }
 
     const pos = this.calcPosition(x, y, w, h, this.state);
     const child = React.Children.only(this.props.children);
