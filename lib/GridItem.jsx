@@ -27,6 +27,7 @@ export default class GridItem extends React.Component {
     rowHeight: PropTypes.number.isRequired,
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
+    containerPadding: PropTypes.array.isRequired,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -103,8 +104,8 @@ export default class GridItem extends React.Component {
 
   // Helper for generating column width
   calcColWidth(): number {
-    const {margin, containerWidth, cols} = this.props;
-    return (containerWidth - (margin[0] * (cols + 1))) / cols;
+    const {margin, containerPadding, containerWidth, cols} = this.props;
+    return (containerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
 
   /**
@@ -117,12 +118,12 @@ export default class GridItem extends React.Component {
    * @return {Object}                Object containing coords.
    */
   calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
-    const {margin, rowHeight} = this.props;
+    const {margin, containerPadding, rowHeight} = this.props;
     const colWidth = this.calcColWidth();
 
     const out = {
-      left: Math.round(colWidth * x + (x + 1) * margin[0]),
-      top: Math.round(rowHeight * y + (y + 1) * margin[1]),
+      left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
+      top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
       // 0 * Infinity === NaN, which causes problems with resize constriants;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt

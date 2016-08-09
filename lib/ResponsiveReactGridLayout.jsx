@@ -57,7 +57,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
     onLayoutChange: React.PropTypes.func,
 
-    // Calls back with (containerWidth, margin, cols)
+    // Calls back with (containerWidth, margin, cols, containerPadding)
     onWidthChange: React.PropTypes.func
   };
 
@@ -151,7 +151,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // callbacks
       this.props.onLayoutChange(layout, layouts);
       this.props.onBreakpointChange(newBreakpoint, newCols);
-      this.props.onWidthChange(nextProps.width, nextProps.margin, newCols);
+      this.props.onWidthChange(nextProps.width, nextProps.margin, newCols, nextProps.containerPadding);
 
       this.setState({breakpoint: newBreakpoint, layout: layout, cols: newCols});
     }

@@ -259,6 +259,9 @@ layout: ?array = null, // If not provided, use data-grid props on children
 // Margin between items [x, y] in px.
 margin: ?[number, number] = [10, 10],
 
+// Padding inside the container [x, y] in px
+containerPadding: ?[number, number] = margin,
+
 // Rows have a static height, but you can change this based on breakpoints
 // if you like.
 rowHeight: ?number = 150,
@@ -330,7 +333,7 @@ onBreakpointChange: (newBreakpoint: string, newCols: number) => void,
 onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints]: Layout}) => void,
 
 // Callback when the width changes, so you can modify the layout as needed.
-onWidthChange: (containerWidth: number, margin: [number, number], cols: number) => void;
+onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void;
 
 ```
 
