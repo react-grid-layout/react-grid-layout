@@ -54,7 +54,7 @@ export default class ReactGridLayout extends React.Component {
     // {x: Number, y: Number, w: Number, h: Number, i: String}
     layout: function (props) {
       var layout = props.layout;
-      // I hope you're setting the _grid property on the grid items
+      // I hope you're setting the data-grid property on the grid items
       if (layout === undefined) return;
       validateLayout(layout, 'layout');
     },
@@ -65,6 +65,8 @@ export default class ReactGridLayout extends React.Component {
 
     // Margin between items [x, y] in px
     margin: PropTypes.arrayOf(PropTypes.number),
+    // Padding inside the container [x, y] in px
+    containerPadding: PropTypes.arrayOf(PropTypes.number),
     // Rows have a static height, but you can change this based on breakpoints if you like
     rowHeight: PropTypes.number,
     // Default Infinity, but you can specify a max here if you like.
@@ -194,7 +196,9 @@ export default class ReactGridLayout extends React.Component {
    */
   containerHeight() {
     if (!this.props.autoSize) return;
-    return bottom(this.state.layout) * (this.props.rowHeight + this.props.margin[1]) + this.props.margin[1] + 'px';
+    const nbRow = bottom(this.state.layout);
+    const containerPaddingY = this.props.containerPadding ? this.props.containerPadding[1] : this.props.margin[1];
+    return nbRow * this.props.rowHeight + (nbRow - 1) * this.props.margin[1] + containerPaddingY * 2 + 'px';
   }
 
   /**
@@ -324,10 +328,10 @@ export default class ReactGridLayout extends React.Component {
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder(): ?React.Element {
+  placeholder(): ?React.Element<any> {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
-    const {width, cols, margin, rowHeight, maxRows, useCSSTransforms} = this.props;
+    const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms} = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
     return (
@@ -341,6 +345,7 @@ export default class ReactGridLayout extends React.Component {
         containerWidth={width}
         cols={cols}
         margin={margin}
+        containerPadding={containerPadding || margin}
         maxRows={maxRows}
         rowHeight={rowHeight}
         isDraggable={false}
@@ -356,12 +361,13 @@ export default class ReactGridLayout extends React.Component {
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: React.Element): ?React.Element {
+  processGridItem(child: React.Element<any>): ?React.Element<any> {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
     if (!l) return null;
-    const {width, cols, margin, rowHeight, maxRows, isDraggable, isResizable,
-           useCSSTransforms, draggableCancel, draggableHandle} = this.props;
+    const {width, cols, margin, containerPadding, rowHeight,
+           maxRows, isDraggable, isResizable, useCSSTransforms,
+           draggableCancel, draggableHandle} = this.props;
     const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
@@ -373,6 +379,7 @@ export default class ReactGridLayout extends React.Component {
         containerWidth={width}
         cols={cols}
         margin={margin}
+        containerPadding={containerPadding || margin}
         maxRows={maxRows}
         rowHeight={rowHeight}
         cancel={draggableCancel}
@@ -404,7 +411,7 @@ export default class ReactGridLayout extends React.Component {
     );
   }
 
-  render(): React.Element {
+  render() {
     const {className, style} = this.props;
 
     const mergedClassName = `react-grid-layout ${className}`;

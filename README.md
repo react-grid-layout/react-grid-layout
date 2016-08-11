@@ -52,6 +52,7 @@ RGL is React-only and does not require jQuery.
 - [Metabase](http://www.metabase.com/)
 - [HubSpot](http://www.hubspot.com)
 - [ComNetViz](http://www.grotto-networking.com/ComNetViz/ComNetViz.html)
+- [Stoplight](https://app.stoplight.io)
 
 *Know of others? Create a PR to let me know!*
 
@@ -133,9 +134,9 @@ var MyFirstGrid = React.createClass({
   render: function () {
     return (
       <ReactGridLayout className="layout" cols={12} rowHeight={30} width={1200}>
-        <div key="a" _grid={{x: 0, y: 0, w: 1, h: 2, static: true}}>a</div>
-        <div key="b" _grid={{x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4}}>b</div>
-        <div key="c" _grid={{x: 4, y: 0, w: 1, h: 2}}>c</div>
+        <div key="a" data-grid={{x: 0, y: 0, w: 1, h: 2, static: true}}>a</div>
+        <div key="b" data-grid={{x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4}}>b</div>
+        <div key="c" data-grid={{x: 4, y: 0, w: 1, h: 2}}>c</div>
       </ReactGridLayout>
     )
   }
@@ -176,7 +177,7 @@ If the largest is provided, RGL will attempt to interpolate the rest.
 You will also need to provide a `width`, when using `<ResponsiveReactGridLayout>` it is suggested you use the HOC
 `WidthProvider` as per the instructions below.
 
-For the time being, it is not possible to supply responsive mappings via the `_grid` property on individual
+For the time being, it is not possible to supply responsive mappings via the `data-grid` property on individual
 items, but that is coming soon.
 
 ### Providing Grid Width
@@ -234,9 +235,14 @@ autoSize: ?boolean = true,
 // Number of columns in this layout.
 cols: ?number = 12,
 
-// A selector that will not be draggable.
+// A CSS selector for tags that will not be draggable.
+// For example: draggableCancel:'.MyNonDraggableAreaClassName'
+// If you forget the leading . it will not work.
 draggableCancel: ?string = '',
-// A selector for the draggable handler
+
+// A CSS selector for tags that will act as the draggable handle.
+// For example: draggableHandle:'.MyDragHandleClassName'
+// If you forget the leading . it will not work.
 draggableHandle: ?string = '',
 
 // If true, the layout will compact vertically
@@ -248,10 +254,13 @@ verticalCompact: ?boolean = true,
 // If you choose to use custom keys, you can specify that key in the layout
 // array objects like so:
 // {i: string, x: number, y: number, w: number, h: number}
-layout: ?array = null, // If not provided, use _grid props on children
+layout: ?array = null, // If not provided, use data-grid props on children
 
 // Margin between items [x, y] in px.
 margin: ?[number, number] = [10, 10],
+
+// Padding inside the container [x, y] in px
+containerPadding: ?[number, number] = margin,
 
 // Rows have a static height, but you can change this based on breakpoints
 // if you like.
@@ -324,14 +333,14 @@ onBreakpointChange: (newBreakpoint: string, newCols: number) => void,
 onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints]: Layout}) => void,
 
 // Callback when the width changes, so you can modify the layout as needed.
-onWidthChange: (containerWidth: number, margin: [number, number], cols: number) => void;
+onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void;
 
 ```
 
 ### Grid Item Props
 
 RGL supports the following properties on grid items or layout items. When initializing a grid,
-build a layout array (as in the first example above), or attach this object as the `_grid` property
+build a layout array (as in the first example above), or attach this object as the `data-grid` property
 to each of your child elements (as in the second example).
 
 Note that if a grid item is provided but incomplete (missing one of `x, y, w, or h`), an error
@@ -385,7 +394,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 - [x] Live grid packing while dragging
 - [x] Resizable grid items
 - [x] Layouts per responsive breakpoint
-- [x] Define grid attributes on children themselves (`_grid` key)
+- [x] Define grid attributes on children themselves (`data-grid` key)
 - [x] Static elements
 - [x] Persistent id per item for predictable localstorage restores, even when # items changes
 - [x] Min/max w/h per item

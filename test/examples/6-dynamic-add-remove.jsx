@@ -38,7 +38,7 @@ var AddRemoveLayout = React.createClass({
     };
     var i = el.add ? '+' : el.i;
     return (
-      <div key={i} _grid={el}>
+      <div key={i} data-grid={el}>
         {el.add ?
           <span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>
         : <span className="text">{i}</span>}
