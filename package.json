@@ -34,7 +34,6 @@
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
     "lodash.isequal": "^4.0.0",
-    "react-addons-shallow-compare": "^15.3.0",
     "react-draggable": "^2.1.1",
     "react-resizable": "^1.4.0"
   },

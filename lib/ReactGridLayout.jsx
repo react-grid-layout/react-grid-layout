@@ -4,7 +4,6 @@ import isEqual from 'lodash.isequal';
 import {autoBindHandlers, bottom, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
-import shallowCompare from 'react-addons-shallow-compare';
 const noop = function() {};
 
 // Types
@@ -177,7 +176,7 @@ export default class ReactGridLayout extends React.Component {
     // If children change, also regenerate the layout. Use our state
     // as the base in case because it may be more up to date than
     // what is in props.
-    else if (!shallowCompare(this.props.children, nextProps.children)) {
+    else if (nextProps.children.length !== this.props.children.length) {
       newLayoutBase = this.state.layout;
     }
 
