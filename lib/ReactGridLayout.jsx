@@ -111,7 +111,6 @@ export default class ReactGridLayout extends React.Component {
 
     // Children must not have duplicate keys.
     children: function (props, propName, _componentName) {
-      PropTypes.node.apply(this, arguments);
       var children = props[propName];
 
       // Check children keys for duplicates. Throw if found.

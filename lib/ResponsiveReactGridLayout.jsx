@@ -7,6 +7,7 @@ import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveL
 import ReactGridLayout from './ReactGridLayout';
 
 const noop = function(){};
+const type = (obj) => Object.prototype.toString.call(obj);
 
 import type {Layout} from './utils';
 type State = {
@@ -37,9 +38,16 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     // layouts is an object mapping breakpoints to layouts.
     // e.g. {lg: Layout, md: Layout, ...}
-    layouts: function (props) {
-      React.PropTypes.object.isRequired.apply(this, arguments);
-      Object.keys(props.layouts).forEach((key) => validateLayout(props.layouts[key], 'layouts.' + key));
+    layouts(props, propName) {
+      if (type(props[propName]) !== '[object Object]') {
+        throw new Error('Layout property must be an object. Received: ' + type(props[propName]));
+      }
+      Object.keys(props[propName]).forEach((key) => {
+        if (!(key in props.breakpoints)) {
+          throw new Error('Each key in layouts must align with a key in breakpoints.');
+        }
+        validateLayout(props.layouts[key], 'layouts.' + key);
+      });
     },
 
     // The width of this component.
