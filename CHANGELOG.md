@@ -1,5 +1,12 @@
 # Changelog
 
+0.13.1 (Aug 16, 2016)
+-----
+
+#### Fixes:
+
+- Fix remaining `propTypes` warnings.
+
 0.13.0 (Aug 3, 2016)
 -----
 
