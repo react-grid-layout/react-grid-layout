@@ -59,6 +59,7 @@ export default class GridItem extends React.Component {
       if (typeof value !== 'number') return new Error('maxHeight not Number');
       if (value < props.h || value < props.minH) return new Error('maxHeight smaller than item height/minHeight');
     },
+    aspectRatio: PropTypes.number,
 
     // ID is nice to have for callbacks
     i: PropTypes.string.isRequired,
@@ -70,10 +71,12 @@ export default class GridItem extends React.Component {
     onResizeStop: PropTypes.func,
     onResizeStart: PropTypes.func,
     onResize: PropTypes.func,
+    changeWH: PropTypes.func,
 
     // Flags
     isDraggable: PropTypes.bool.isRequired,
     isResizable: PropTypes.bool.isRequired,
+    isSaveAspectRatio: PropTypes.bool.isRequired,
     static: PropTypes.bool,
 
     // Use CSS transforms instead of top/left
@@ -93,7 +96,9 @@ export default class GridItem extends React.Component {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    aspectRatio: 0,
+    isSaveAspectRatio: false
   };
 
   state: State = {
@@ -285,7 +290,6 @@ export default class GridItem extends React.Component {
   onDragHandler(handlerName:string) {
     return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
       if (!this.props[handlerName]) return;
-
       const newPosition: {top: number, left: number} = {top: 0, left: 0};
 
       // Get new XY
@@ -332,7 +336,10 @@ export default class GridItem extends React.Component {
     return (e:Event, {element, size}: {element: HTMLElement, size: Position}) => {
       if (!this.props[handlerName]) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
-
+      // calc size with save aspect ratio
+      if (this.props.isSaveAspectRatio && this.props.aspectRatio !== 0) {
+        size = this.calcSizeWithAspectRatio(size);
+      }
       // Get new XY
       let {w, h} = this.calcWH(size);
 
@@ -349,6 +356,47 @@ export default class GridItem extends React.Component {
 
       this.props[handlerName](i, w, h, {e, element, size});
     };
+  }
+
+  /**
+   * Given a height and width in pixel values, calculate height
+   * and width in pixel values ​​with preserving the aspect ratio.
+   * @param  {Number} height Height in pixels.
+   * @param  {Number} width  Width in pixels. coords
+   * @return {Object}        Object containing height, width in
+   *                         pixels with preserving the aspect ratio.
+   */
+  calcSizeWithAspectRatio({height, width}: {height: number, width: number}) {
+    const {cols, x, y} = this.props;
+    let maxWidth = this.calcWidth(cols - x);
+    let maxHeight = maxWidth * this.props.aspectRatio;
+
+    if (width >= maxWidth || height >= maxHeight) {
+      return {
+        width: maxWidth,
+        height: maxHeight
+      }
+    } else {
+      let newHeight = width * this.props.aspectRatio;
+      let newWidth = height / this.props.aspectRatio;
+      if (newHeight > height) {
+        height = newHeight;
+      } else {
+        width = newWidth;
+      }
+    }
+    return {width, height}
+  }
+
+  /**
+   * Return width in pixel value given an w in grid units.
+   * @param  {Number}  w             W coordinate in grid units.
+   * @return {Number}                Width in pixel.
+   */
+  calcWidth(w: number) {
+    const {margin} = this.props;
+    const colWidth = this.calcColWidth();
+    return (w === Infinity) ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
   }
 
   render(): React.Element<any> {
