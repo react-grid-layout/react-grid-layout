@@ -100,7 +100,7 @@ Use ReactGridLayout like any other component. The following example below will
 produce a grid with three items where:
 
 - users will not be able to drag or resize item `a`
-- item `b` will restricted to a minimum width of 2 grid blocks and a maximum width of 4 grid blocks
+- item `b` will be restricted to a minimum width of 2 grid blocks and a maximum width of 4 grid blocks
 - users will be able to freely drag and resize item `c`
 
 ```javascript
