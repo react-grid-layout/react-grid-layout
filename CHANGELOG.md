@@ -1,5 +1,18 @@
 # Changelog
 
+0.13.2 (Aug 31, 2016)
+-----
+
+#### Fixes:
+
+- Diffing children in order to regenerate the layout now diffs the `key` props and their order.
+  - This will catch more changes, such as sorting, addition, and removal.
+- Only pass `className` and `style` to WidthProvider. Other props were not intended to be supported.
+  - I'm aware this could be a breaking change if you were relying on this bad behavior. If so, please
+    use your own `WidthProvider`-style HOC.
+- `babel-plugin-transform-flow-comments` had limited support for defining types like transpiled classes.
+  - This has been updated to instead copy source to `.js.flow` files, which preserves all type information.
+
 0.13.1 (Aug 16, 2016)
 -----
 
