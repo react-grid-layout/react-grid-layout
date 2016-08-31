@@ -48,7 +48,10 @@ export default (ComposedComponent: ReactClass): ReactClass => class extends Reac
   }
 
   render() {
-    if (this.props.measureBeforeMount && !this.state.mounted) return <div {...this.props} {...this.state} />;
+    if (this.props.measureBeforeMount && !this.state.mounted) {
+      return <div className={this.props.className} style={this.props.style} />;
+    }
+
     return <ComposedComponent {...this.props} {...this.state} />;
   }
 };
