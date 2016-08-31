@@ -1,5 +1,12 @@
 # Changelog
 
+0.13.3 (Aug 31, 2016)
+-----
+
+#### Fixes:
+
+- Fixed `lodash.isequal` import, which was ruined by case-insensitive HFS+ *shakes fist*
+
 0.13.2 (Aug 31, 2016)
 -----
 
