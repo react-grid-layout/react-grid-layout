@@ -1,5 +1,12 @@
 # Changelog
 
+0.13.5 (Sep 9, 2016)
+-----
+
+#### Fixes:
+
+- Fixed a few Flow typing errors in `WidthProvider`.
+
 0.13.4 (Sep 9, 2016)
 -----
 
