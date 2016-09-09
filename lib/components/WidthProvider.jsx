@@ -9,7 +9,8 @@ type State = {
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-export default (ComposedComponent: ReactClass<any>): ReactClass<any> => class extends React.Component {
+type ProviderT = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
+const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component {
 
   static defaultProps = {
     measureBeforeMount: false
@@ -42,10 +43,10 @@ export default (ComposedComponent: ReactClass<any>): ReactClass<any> => class ex
     window.removeEventListener('resize', this.onWindowResize);
   }
 
-  onWindowResize = (_event: Event, cb: ?Function) => {
+  onWindowResize = (_event: ?Event) => {
     if (!this.mounted) return;
     const node = ReactDOM.findDOMNode(this);
-    this.setState({width: node.offsetWidth}, cb);
+    this.setState({width: node.offsetWidth});
   }
 
   render() {
@@ -56,3 +57,5 @@ export default (ComposedComponent: ReactClass<any>): ReactClass<any> => class ex
     return <ComposedComponent {...this.props} {...this.state} />;
   }
 };
+
+export default WidthProvider;
