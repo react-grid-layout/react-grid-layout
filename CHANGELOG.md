@@ -1,5 +1,14 @@
 # Changelog
 
+0.13.4 (Sep 9, 2016)
+-----
+
+#### Fixes:
+
+- Fixed potential call to `ReactDOM.findDOMNode(this)` after unmount of `WidthProvider`.
+- Fixed an issue where layout items using `data-grid` could rearrange on mount depending on how they were ordered.
+  - See [#342](https://github.com/STRML/react-grid-layout/pull/342) for reference.
+
 0.13.3 (Aug 31, 2016)
 -----
 
