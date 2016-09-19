@@ -367,8 +367,9 @@ export default class GridItem extends React.Component {
    *                         pixels with preserving the aspect ratio.
    */
   calcSizeWithAspectRatio({height, width}: {height: number, width: number}) {
-    const {cols, x, y} = this.props;
-    let maxWidth = this.calcWidth(cols - x);
+    const {cols, x, y, maxW} = this.props;
+    let resizeMaxW = (cols - x > maxW) ? maxW : cols - x;
+    let maxWidth = this.calcWidth(resizeMaxW);
     let maxHeight = maxWidth * this.props.aspectRatio;
 
     if (width >= maxWidth || height >= maxHeight) {
