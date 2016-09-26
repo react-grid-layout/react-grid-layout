@@ -328,8 +328,8 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler(handlerName:string) {
-    return (e:Event, {element, size}: {element: HTMLElement, size: Position}) => {
+  onResizeHandler(handlerName: string) {
+    return (e:Event, {node, size}: {node: HTMLElement, size: Position}) => {
       if (!this.props[handlerName]) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
 
@@ -347,7 +347,7 @@ export default class GridItem extends React.Component {
 
       this.setState({resizing: handlerName === 'onResizeStop' ? null : size});
 
-      this.props[handlerName](i, w, h, {e, element, size});
+      this.props[handlerName](i, w, h, {e, node, size});
     };
   }
 
