@@ -1,5 +1,12 @@
 # Changelog
 
+0.13.6 (Sep 26, 2016)
+-----
+
+#### Fixes:
+
+- Fixed missing HTMLElement in `onResize*` callbacks.
+
 0.13.5 (Sep 9, 2016)
 -----
 
