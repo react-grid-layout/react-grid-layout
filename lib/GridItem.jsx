@@ -360,7 +360,7 @@ export default class GridItem extends React.Component {
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
       // Munge a classname. Use passed in classnames and resizing.
-      // React with merge the classNames.
+      // React will merge the classNames.
       className: [
         'react-grid-item',
         child.props.className || '',
