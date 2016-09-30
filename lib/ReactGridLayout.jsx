@@ -274,7 +274,7 @@ export default class ReactGridLayout extends React.Component {
       oldDragItem: null
     });
 
-    this.props.onLayoutChange(this.state.layout);
+    if (!isEqual(oldDragItem, l)) this.props.onLayoutChange(this.state.layout);
   }
 
   onResizeStart(i:string, w:number, h:number, {e, node}: ResizeEvent) {
