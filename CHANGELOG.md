@@ -1,5 +1,15 @@
 # Changelog
 
+0.13.7 (Oct 3, 2016)
+-----
+
+#### Fixes:
+
+- Fixed an error during layout sync if children was a keyed fragment or had nested arrays.
+- Fixed `onLayoutChange` being called when layout didn't change.
+- Fixed some issues with input layout items being modified in-place rather than cloned.
+- Minor typos.
+
 0.13.6 (Sep 26, 2016)
 -----
 
