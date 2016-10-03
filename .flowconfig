@@ -9,6 +9,7 @@
 index.js
 
 [libs]
+interfaces/
 
 [options]
 suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*

@@ -1,0 +1,6 @@
+--timeout 30000
+--slow 10000
+-R spec
+--compilers js:babel-core/register
+--colors
+-r jsdom-global/register

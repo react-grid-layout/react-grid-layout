@@ -55,6 +55,9 @@ lint:
 	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
 	@$(BIN)/valiquire $(LIB)
 
+test:
+	@env NODE_ENV=test $(BIN)/mocha ./test/spec/*.js
+
 release-patch: build
 	@$(call release,patch)
 

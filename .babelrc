@@ -3,5 +3,12 @@
     "es2015-loose",
     "stage-1",
     "react"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "espower"
+      ]
+    }
+  }
 }
