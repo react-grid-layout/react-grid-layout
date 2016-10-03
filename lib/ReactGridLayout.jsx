@@ -13,6 +13,7 @@ type State = {
   layout: Layout,
   mounted: boolean,
   oldDragItem: ?LayoutItem,
+  oldLayout: ?Layout,
   oldResizeItem: ?LayoutItem
 };
 // End Types
@@ -151,22 +152,23 @@ export default class ReactGridLayout extends React.Component {
                                           this.props.cols, this.props.verticalCompact),
     mounted: false,
     oldDragItem: null,
-    oldResizeItem: null
+    oldLayout: null,
+    oldResizeItem: null,
   };
 
-  constructor(props: typeof ReactGridLayout.prototype.props, context: any): void {
+  constructor(props: $PropertyType<ReactGridLayout, 'props'>, context: any): void {
     super(props, context);
     autoBindHandlers(this, ['onDragStart', 'onDrag', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop']);
   }
 
   componentDidMount() {
     this.setState({mounted: true});
-    // Call back with layout on mount. This should be done after correcting the layout width
+    // Possibly call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
-    this.props.onLayoutChange(this.state.layout);
+    this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
   }
 
-  componentWillReceiveProps(nextProps: typeof ReactGridLayout.prototype.props) {
+  componentWillReceiveProps(nextProps: $PropertyType<ReactGridLayout, 'props'>) {
     let newLayoutBase;
     // Allow parent to set layout directly.
     if (!isEqual(nextProps.layout, this.props.layout)) {
@@ -184,8 +186,9 @@ export default class ReactGridLayout extends React.Component {
     if (newLayoutBase) {
       const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
                                                       nextProps.cols, nextProps.verticalCompact);
+      const oldLayout = this.state.layout;
       this.setState({layout: newLayout});
-      this.props.onLayoutChange(newLayout);
+      this.onLayoutMaybeChanged(newLayout, oldLayout);
     }
   }
 
@@ -213,7 +216,7 @@ export default class ReactGridLayout extends React.Component {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    this.setState({oldDragItem: cloneLayoutItem(l)});
+    this.setState({oldDragItem: cloneLayoutItem(l), oldLayout: this.state.layout});
 
     this.props.onDragStart(layout, l, l, null, e, node);
   }
@@ -268,13 +271,23 @@ export default class ReactGridLayout extends React.Component {
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
+    const newLayout = compact(layout, this.props.verticalCompact);
+    const {oldLayout} = this.state;
     this.setState({
       activeDrag: null,
-      layout: compact(layout, this.props.verticalCompact),
-      oldDragItem: null
+      layout: newLayout,
+      oldDragItem: null,
+      oldLayout: null,
     });
 
-    if (!isEqual(oldDragItem, l)) this.props.onLayoutChange(this.state.layout);
+    this.onLayoutMaybeChanged(newLayout, oldLayout);
+  }
+
+  onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
+    if (!oldLayout) oldLayout = this.state.layout;
+    if (!isEqual(oldLayout, newLayout)) {
+      this.props.onLayoutChange(newLayout);
+    }
   }
 
   onResizeStart(i:string, w:number, h:number, {e, node}: ResizeEvent) {
@@ -282,7 +295,10 @@ export default class ReactGridLayout extends React.Component {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    this.setState({oldResizeItem: cloneLayoutItem(l)});
+    this.setState({
+      oldResizeItem: cloneLayoutItem(l),
+      oldLayout: this.state.layout
+    });
 
     this.props.onResizeStart(layout, l, l, null, e, node);
   }
@@ -304,7 +320,10 @@ export default class ReactGridLayout extends React.Component {
     this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the layout and set the drag placeholder.
-    this.setState({layout: compact(layout, this.props.verticalCompact), activeDrag: placeholder});
+    this.setState({
+      layout: compact(layout, this.props.verticalCompact),
+      activeDrag: placeholder
+    });
   }
 
   onResizeStop(i:string, w:number, h:number, {e, node}: ResizeEvent) {
@@ -314,13 +333,16 @@ export default class ReactGridLayout extends React.Component {
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     // Set state
+    const newLayout = compact(layout, this.props.verticalCompact);
+    const {oldLayout} = this.state;
     this.setState({
       activeDrag: null,
-      layout: compact(layout, this.props.verticalCompact),
-      oldResizeItem: null
+      layout: newLayout,
+      oldResizeItem: null,
+      oldLayout: null
     });
 
-    this.props.onLayoutChange(this.state.layout);
+    this.onLayoutMaybeChanged(newLayout, oldLayout);
   }
 
   /**
