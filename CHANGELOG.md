@@ -1,5 +1,13 @@
 # Changelog
 
+0.13.9 (Oct 13, 2016)
+-----
+
+#### Fixes:
+
+- Fixed sorting of layout items, which could be different in IE if two items have the same x & y coordinate.
+  - See [#369](https://github.com/STRML/react-grid-layout/issues/369).
+
 0.13.8 (Oct 13, 2016)
 -----
 
