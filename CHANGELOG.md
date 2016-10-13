@@ -1,5 +1,13 @@
 # Changelog
 
+0.13.8 (Oct 13, 2016)
+-----
+
+#### Fixes:
+
+- Fixed breakage introduced in `0.13.7` when items are added without a layout or `data-grid` property.
+  - See [#368](https://github.com/STRML/react-grid-layout/issues/368).
+
 0.13.7 (Oct 3, 2016)
 -----
 
