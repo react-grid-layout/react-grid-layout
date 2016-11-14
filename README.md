@@ -14,7 +14,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md)**]
+[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](http://www.webpackbin.com/VymTE3zWG)**]
 
 ## Table of Contents
 
@@ -385,6 +385,9 @@ will be draggable.
 ## Contribute
 
 If you have a feature request, please add it as an issue or make a pull request.
+
+If you have a bug to report, please reproduce the bug in [WebpackBin](http://www.webpackbin.com/VymTE3zWG) to help
+us easily isolate it.
 
 ## TODO List
 
