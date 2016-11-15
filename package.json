@@ -9,7 +9,7 @@
     "clean-build": "if exist build rd /q /s build 2>nul",
     "clean-dist": "if exist dist rd /q /s dist 2>nul",
     "clean": "npm run clean-build && npm run clean-dist",
-    "build-js": "babel --stage 0 --out-dir ./build ./lib",
+    "build-js": "babel --stage 0 --out-dir ./build",
     "build": "make build",
     "build-example": "make build-example",
     "dev": "make dev",
