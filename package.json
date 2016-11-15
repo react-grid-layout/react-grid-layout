@@ -1,41 +1,16 @@
 {
-  "name": "react-grid-layout",
-  "version": "0.13.9",
+  "name": "heidi-grid-layout",
+  "version": "0.13.901",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
-    "lint": "make lint",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "clean-build": "if exist build rd /q /s build 2>nul",
     "clean-dist": "if exist dist rd /q /s dist 2>nul",
     "clean": "npm run clean-build && npm run clean-dist",
     "build-js": "babel --stage 0 --out-dir ./build ./lib",
-    "build": "make build",
-    "build-example": "make build-example",
-    "dev": "make dev",
-    "prepublish": "npm run clean && npm run build-js",
-    "validate": "npm ls"
+    "build": "npm run clean && npm run build-js",
+    "prepublish": "npm run clean && npm run build-js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:STRML/react-grid-layout.git"
-  },
-  "keywords": [
-    "react",
-    "grid",
-    "drag",
-    "draggable",
-    "resize",
-    "resizable",
-    "fluid",
-    "responsive"
-  ],
-  "author": "Samuel Reed <samuel.trace.reed@gmail.com> (http://strml.net/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/STRML/react-grid-layout/issues"
-  },
-  "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
     "lodash.isequal": "^4.0.0",
     "react-draggable": "^2.1.1",
@@ -76,9 +51,6 @@
     "valiquire": "^0.3.0",
     "webpack": "^1.12.13",
     "webpack-dev-server": "^1.14.1"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
   },
   "pre-commit": [
     "lint"
