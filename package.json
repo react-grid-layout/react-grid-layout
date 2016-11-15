@@ -10,7 +10,7 @@
     "clean-dist": "if exist dist rd /q /s dist 2>nul",
     "clean": "npm run clean-build && npm run clean-dist",
     "build-js": "babel --stage 0 --out-dir ./build ./lib",
-    "build": "npm run prepublish",
+    "build": "make build",
     "build-example": "make build-example",
     "dev": "make dev",
     "prepublish": "npm run clean && npm run build-js",
