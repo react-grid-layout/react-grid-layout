@@ -14,7 +14,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md)**]
+[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](http://www.webpackbin.com/VymTE3zWG)**]
 
 ## Table of Contents
 
@@ -53,6 +53,7 @@ RGL is React-only and does not require jQuery.
 - [HubSpot](http://www.hubspot.com)
 - [ComNetViz](http://www.grotto-networking.com/ComNetViz/ComNetViz.html)
 - [Stoplight](https://app.stoplight.io)
+- [Reflect](https://reflect.io)
 
 *Know of others? Create a PR to let me know!*
 
@@ -100,7 +101,7 @@ Use ReactGridLayout like any other component. The following example below will
 produce a grid with three items where:
 
 - users will not be able to drag or resize item `a`
-- item `b` will restricted to a minimum width of 2 grid blocks and a maximum width of 4 grid blocks
+- item `b` will be restricted to a minimum width of 2 grid blocks and a maximum width of 4 grid blocks
 - users will be able to freely drag and resize item `c`
 
 ```javascript
@@ -384,6 +385,9 @@ will be draggable.
 ## Contribute
 
 If you have a feature request, please add it as an issue or make a pull request.
+
+If you have a bug to report, please reproduce the bug in [WebpackBin](http://www.webpackbin.com/VymTE3zWG) to help
+us easily isolate it.
 
 ## TODO List
 

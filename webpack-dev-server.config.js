@@ -43,7 +43,7 @@ module.exports = {
       }),
     ],
     debug: true,
-    devtool: "#cheap-module-source-map",
+    devtool: "eval",
     publicPath: '/examples/',
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],

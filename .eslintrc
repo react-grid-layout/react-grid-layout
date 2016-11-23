@@ -45,6 +45,7 @@
   "globals": {
     // For Flow
     "ReactElement",
-    "ReactClass"
+    "ReactClass",
+    "$PropertyType"
   }
 }

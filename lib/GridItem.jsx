@@ -129,7 +129,7 @@ export default class GridItem extends React.Component {
     const out = {
       left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
       top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
-      // 0 * Infinity === NaN, which causes problems with resize constriants;
+      // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
       width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
@@ -332,8 +332,8 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler(handlerName:string) {
-    return (e:Event, {element, size}: {element: HTMLElement, size: Position}) => {
+  onResizeHandler(handlerName: string) {
+    return (e:Event, {node, size}: {node: HTMLElement, size: Position}) => {
       if (!this.props[handlerName]) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
       // calc size with save aspect ratio
@@ -354,7 +354,7 @@ export default class GridItem extends React.Component {
 
       this.setState({resizing: handlerName === 'onResizeStop' ? null : size});
 
-      this.props[handlerName](i, w, h, {e, element, size});
+      this.props[handlerName](i, w, h, {e, node, size});
     };
   }
 
@@ -409,7 +409,7 @@ export default class GridItem extends React.Component {
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
       // Munge a classname. Use passed in classnames and resizing.
-      // React with merge the classNames.
+      // React will merge the classNames.
       className: [
         'react-grid-item',
         child.props.className || '',
