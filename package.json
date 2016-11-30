@@ -57,7 +57,7 @@
     "css-loader": "^0.23.1",
     "ejs": "^2.4.1",
     "eslint": "^1.10.3",
-    "eslint-plugin-react": "^3.16.1",
+    "eslint-plugin-react": "^6.7.1",
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.6.5",
     "jsxhint": "^0.15.1",
