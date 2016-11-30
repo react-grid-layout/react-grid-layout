@@ -170,17 +170,24 @@ export default class ReactGridLayout extends React.Component {
 
   componentWillReceiveProps(nextProps: $PropertyType<ReactGridLayout, 'props'>) {
     let newLayoutBase;
+    /*########## ORIGINAL CODE START ##########*/
     // Allow parent to set layout directly.
-    if (!isEqual(nextProps.layout, this.props.layout)) {
-      newLayoutBase = nextProps.layout;
-    }
+    /*if (!isEqual(nextProps.layout, this.props.layout)) {
+     newLayoutBase = nextProps.layout;
+     }
 
-    // If children change, also regenerate the layout. Use our state
-    // as the base in case because it may be more up to date than
-    // what is in props.
-    else if (!childrenEqual(this.props.children, nextProps.children)) {
-      newLayoutBase = this.state.layout;
-    }
+     // If children change, also regenerate the layout. Use our state
+     // as the base in case because it may be more up to date than
+     // what is in props.
+     else if (!childrenEqual(this.props.children, nextProps.children)) {
+     newLayoutBase = this.state.layout;
+     }*/
+    /*########## ORIGINAL CODE END ##########*/
+
+    /*########## EDITED CODE START ##########*/
+    // set the new layout every time so it is rendered properly even if you only click on a draggable item
+    newLayoutBase = nextProps.layout;
+    /*########## EDITED CODE END ##########*/
 
     // We need to regenerate the layout.
     if (newLayoutBase) {
@@ -268,11 +275,22 @@ export default class ReactGridLayout extends React.Component {
     // Move the element here
     layout = moveElement(layout, l, x, y, true /* isUserAction */);
 
-    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    /*########## ORIGINAL CODE START ##########*/
+    /* this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+     // Set state
+     const newLayout = compact(layout, this.props.verticalCompact);
 
+     const {oldLayout} = this.state;*/
+    /*########## ORIGINAL CODE END ##########*/
+
+    /*########## EDITED CODE START ##########*/
+    // compact items before callback is triggered to properly compute the empty space
     // Set state
     const newLayout = compact(layout, this.props.verticalCompact);
+    this.props.onDragStop(newLayout, oldDragItem, l, null, e, node);
     const {oldLayout} = this.state;
+    /*########## EDITED CODE END ##########*/
+
     this.setState({
       activeDrag: null,
       layout: newLayout,
