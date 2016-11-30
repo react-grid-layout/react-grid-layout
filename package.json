@@ -70,8 +70,8 @@
     "react-transform-hmr": "^1.0.2",
     "style-loader": "^0.13.0",
     "valiquire": "^0.3.0",
-    "webpack": "^1.12.13",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
