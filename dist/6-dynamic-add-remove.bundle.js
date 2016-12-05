@@ -47,7 +47,7 @@ webpackJsonp([4],[
 	    };
 	    var i = el.add ? '+' : el.i;
 	    return _jsx('div', {
-	      _grid: el
+	      'data-grid': el
 	    }, i, el.add ? _jsx('span', {
 	      className: 'add text',
 	      onClick: this.onAddItem,

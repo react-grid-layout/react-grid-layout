@@ -39,7 +39,7 @@ webpackJsonp([1],[
 	      var mins = [l.minW, l.minH],
 	          maxes = [l.maxW, l.maxH];
 	      return _jsx('div', {
-	        _grid: l
+	        'data-grid': l
 	      }, l.i, _jsx('span', {
 	        className: 'text'
 	      }, void 0, l.i), _jsx('div', {

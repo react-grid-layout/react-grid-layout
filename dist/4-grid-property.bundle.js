@@ -37,7 +37,7 @@ webpackJsonp([6],[
 	    var layout = this.generateLayout();
 	    return _.map(_.range(this.props.items), function (i) {
 	      return _jsx('div', {
-	        _grid: layout[i]
+	        'data-grid': layout[i]
 	      }, i, _jsx('span', {
 	        className: 'text'
 	      }, void 0, i));

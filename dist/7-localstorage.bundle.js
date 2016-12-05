@@ -57,27 +57,27 @@ webpackJsonp([3],[
 	        layout: this.state.layout,
 	        onLayoutChange: this.onLayoutChange }),
 	      _jsx('div', {
-	        _grid: { w: 2, h: 3, x: 0, y: 0 }
+	        'data-grid': { w: 2, h: 3, x: 0, y: 0 }
 	      }, '1', _jsx('span', {
 	        className: 'text'
 	      }, void 0, '1')),
 	      _jsx('div', {
-	        _grid: { w: 2, h: 3, x: 2, y: 0 }
+	        'data-grid': { w: 2, h: 3, x: 2, y: 0 }
 	      }, '2', _jsx('span', {
 	        className: 'text'
 	      }, void 0, '2')),
 	      _jsx('div', {
-	        _grid: { w: 2, h: 3, x: 4, y: 0 }
+	        'data-grid': { w: 2, h: 3, x: 4, y: 0 }
 	      }, '3', _jsx('span', {
 	        className: 'text'
 	      }, void 0, '3')),
 	      _jsx('div', {
-	        _grid: { w: 2, h: 3, x: 6, y: 0 }
+	        'data-grid': { w: 2, h: 3, x: 6, y: 0 }
 	      }, '4', _jsx('span', {
 	        className: 'text'
 	      }, void 0, '4')),
 	      _jsx('div', {
-	        _grid: { w: 2, h: 3, x: 8, y: 0 }
+	        'data-grid': { w: 2, h: 3, x: 8, y: 0 }
 	      }, '5', _jsx('span', {
 	        className: 'text'
 	      }, void 0, '5'))

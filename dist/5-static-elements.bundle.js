@@ -36,18 +36,24 @@ webpackJsonp([5],[
 	      onLayoutChange: this.onLayoutChange,
 	      rowHeight: 30
 	    }, void 0, _jsx('div', {
-	      _grid: { x: 0, y: 0, w: 2, h: 3 }
+	      'data-grid': { x: 0, y: 0, w: 2, h: 3 }
 	    }, '1', _jsx('span', {
 	      className: 'text'
 	    }, void 0, '1')), _jsx('div', {
-	      _grid: { x: 2, y: 0, w: 4, h: 3, static: true }
+	      'data-grid': { x: 2, y: 0, w: 4, h: 3, static: true }
 	    }, '2', _jsx('span', {
 	      className: 'text'
 	    }, void 0, '2 - Static')), _jsx('div', {
-	      _grid: { x: 6, y: 0, w: 2, h: 3 }
+	      'data-grid': { x: 6, y: 0, w: 2, h: 3 }
 	    }, '3', _jsx('span', {
 	      className: 'text'
-	    }, void 0, '3')));
+	    }, void 0, '3')), _jsx('div', {
+	      'data-grid': { x: 8, y: 0, w: 4, h: 3, draggableHandle: '.react-grid-dragHandleExample' }
+	    }, '4', _jsx('span', {
+	      className: 'text'
+	    }, void 0, '4 - Draggable with Handle', _jsx('hr', {}), _jsx('hr', {}), _jsx('span', {
+	      className: 'react-grid-dragHandleExample'
+	    }, void 0, '[DRAG HERE]'), _jsx('hr', {}), _jsx('hr', {}))));
 	  }
 	});
 
