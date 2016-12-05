@@ -27,6 +27,7 @@ export default class GridItem extends React.Component {
     rowHeight: PropTypes.number.isRequired,
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
+    containerPadding: PropTypes.array.isRequired,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -35,25 +36,27 @@ export default class GridItem extends React.Component {
     h: PropTypes.number.isRequired,
 
     // All optional
-    minW: function (props, propName, componentName, location, propFullName) {
-      PropTypes.number(props, propName, componentName, location, propFullName);
+    minW: function (props, propName, componentName) {
       const value = props[propName];
-      if (value > props.w || value > props.maxW) return new Error('minWidth bigger than item width/maxWidth');
+      if (typeof value !== 'number') return new Error('minWidth not Number');
+      if (value > props.w || value > props.maxW) return new Error('minWidth larger than item width/maxWidth');
     },
-    maxW: function (props, propName, componentName, location, propFullName) {
-      PropTypes.number(props, propName, componentName, location, propFullName);
-      const value = props[propName];
-      if (value < props.w || value < props.minW) return new Error('maxWidth smaller than item width/minWidth');
 
-    },
-    minH: function (props, propName, componentName, location, propFullName) {
-      PropTypes.number(props, propName, componentName, location, propFullName);
+    maxW: function (props, propName, componentName) {
       const value = props[propName];
-      if (value > props.h || value > props.maxH) return new Error('minHeight bigger than item height/maxHeight');
+      if (typeof value !== 'number') return new Error('maxWidth not Number');
+      if (value < props.w || value < props.minW) return new Error('maxWidth smaller than item width/minWidth');
     },
-    maxH: function (props, propName, componentName, location, propFullName) {
-      PropTypes.number(props, propName, componentName, location, propFullName);
+
+    minH: function (props, propName, componentName) {
       const value = props[propName];
+      if (typeof value !== 'number') return new Error('minHeight not Number');
+      if (value > props.h || value > props.maxH) return new Error('minHeight larger than item height/maxHeight');
+    },
+
+    maxH: function (props, propName, componentName) {
+      const value = props[propName];
+      if (typeof value !== 'number') return new Error('maxHeight not Number');
       if (value < props.h || value < props.minH) return new Error('maxHeight smaller than item height/minHeight');
     },
 
@@ -101,8 +104,8 @@ export default class GridItem extends React.Component {
 
   // Helper for generating column width
   calcColWidth(): number {
-    const {margin, containerWidth, cols} = this.props;
-    return (containerWidth - (margin[0] * (cols + 1))) / cols;
+    const {margin, containerPadding, containerWidth, cols} = this.props;
+    return (containerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
 
   /**
@@ -115,13 +118,13 @@ export default class GridItem extends React.Component {
    * @return {Object}                Object containing coords.
    */
   calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
-    const {margin, rowHeight} = this.props;
+    const {margin, containerPadding, rowHeight} = this.props;
     const colWidth = this.calcColWidth();
 
     const out = {
-      left: Math.round(colWidth * x + (x + 1) * margin[0]),
-      top: Math.round(rowHeight * y + (y + 1) * margin[1]),
-      // 0 * Infinity === NaN, which causes problems with resize constriants;
+      left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
+      top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
+      // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
       width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
@@ -227,7 +230,7 @@ export default class GridItem extends React.Component {
    * @param  {Element} child    Child element.
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable(child: React.Element): React.Element {
+  mixinDraggable(child: React.Element<any>): React.Element<any> {
     return (
       <DraggableCore
         onStart={this.onDragHandler('onDragStart')}
@@ -246,7 +249,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable(child: React.Element, position: Position): React.Element {
+  mixinResizable(child: React.Element<any>, position: Position): React.Element<any> {
     const {cols, x, minW, minH, maxW, maxH} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
@@ -279,7 +282,7 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onDragHandler(handlerName:string): Function {
+  onDragHandler(handlerName:string) {
     return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
       if (!this.props[handlerName]) return;
 
@@ -287,7 +290,7 @@ export default class GridItem extends React.Component {
 
       // Get new XY
       switch (handlerName) {
-        case 'onDragStart':
+        case 'onDragStart': {
           // ToDo this wont work on nested parents
           const parentRect = node.offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
@@ -295,6 +298,7 @@ export default class GridItem extends React.Component {
           newPosition.top = clientRect.top - parentRect.top;
           this.setState({dragging: newPosition});
           break;
+        }
         case 'onDrag':
           if (!this.state.dragging) throw new Error('onDrag called before onDragStart.');
           newPosition.left = this.state.dragging.left + deltaX;
@@ -325,8 +329,8 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler(handlerName:string): Function {
-    return (e:Event, {element, size}: {element: HTMLElement, size: Position}) => {
+  onResizeHandler(handlerName: string) {
+    return (e:Event, {node, size}: {node: HTMLElement, size: Position}) => {
       if (!this.props[handlerName]) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
 
@@ -344,11 +348,11 @@ export default class GridItem extends React.Component {
 
       this.setState({resizing: handlerName === 'onResizeStop' ? null : size});
 
-      this.props[handlerName](i, w, h, {e, element, size});
+      this.props[handlerName](i, w, h, {e, node, size});
     };
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
@@ -357,7 +361,7 @@ export default class GridItem extends React.Component {
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
       // Munge a classname. Use passed in classnames and resizing.
-      // React with merge the classNames.
+      // React will merge the classNames.
       className: [
         'react-grid-item',
         child.props.className || '',

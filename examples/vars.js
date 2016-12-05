@@ -41,7 +41,7 @@ module.exports = [
     title: 'Grid Item Properties',
     source: 'grid-property',
     paragraphs: [
-      'This demo uses a layout assigned on the grid items themselves as the <code>_grid</code> property.',
+      'This demo uses a layout assigned on the grid items themselves as the <code>data-grid</code> property.',
     ]
   },
   {

@@ -1,17 +1,16 @@
-// @noflow
-// Intentional; Flow can't handle the bind on L20
+// @flow
 import React from "react";
 import ReactDOM from 'react-dom';
 
 type State = {
-  mounted: boolean,
   width: number
 };
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-export default (ComposedComponent: ReactClass): ReactClass => class extends React.Component {
+type ProviderT = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
+const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component {
 
   static defaultProps = {
     measureBeforeMount: false
@@ -24,12 +23,13 @@ export default (ComposedComponent: ReactClass): ReactClass => class extends Reac
   };
 
   state: State = {
-    mounted: false,
     width: 1280
   };
 
+  mounted: boolean = false;
+
   componentDidMount() {
-    this.setState({mounted: true});
+    this.mounted = true;
 
     window.addEventListener('resize', this.onWindowResize);
     // Call to properly set the breakpoint and resize the elements.
@@ -39,16 +39,23 @@ export default (ComposedComponent: ReactClass): ReactClass => class extends Reac
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     window.removeEventListener('resize', this.onWindowResize);
   }
 
-  onWindowResize = (_event: Event, cb: ?Function) => {
+  onWindowResize = (_event: ?Event) => {
+    if (!this.mounted) return;
     const node = ReactDOM.findDOMNode(this);
-    this.setState({width: node.offsetWidth}, cb);
+    this.setState({width: node.offsetWidth});
   }
 
   render() {
-    if (this.props.measureBeforeMount && !this.state.mounted) return <div {...this.props} {...this.state} />;
+    if (this.props.measureBeforeMount && !this.mounted) {
+      return <div className={this.props.className} style={this.props.style} />;
+    }
+
     return <ComposedComponent {...this.props} {...this.state} />;
   }
 };
+
+export default WidthProvider;
