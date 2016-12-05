@@ -290,7 +290,7 @@ export default class GridItem extends React.Component {
 
       // Get new XY
       switch (handlerName) {
-        case 'onDragStart':
+        case 'onDragStart': {
           // ToDo this wont work on nested parents
           const parentRect = node.offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
@@ -298,6 +298,7 @@ export default class GridItem extends React.Component {
           newPosition.top = clientRect.top - parentRect.top;
           this.setState({dragging: newPosition});
           break;
+        }
         case 'onDrag':
           if (!this.state.dragging) throw new Error('onDrag called before onDragStart.');
           newPosition.left = this.state.dragging.left + deltaX;
