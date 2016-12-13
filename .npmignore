@@ -3,6 +3,5 @@ examples/
 dist/
 yarn.lock
 .github
-*.config.js
 *.sh
 *.*.json
