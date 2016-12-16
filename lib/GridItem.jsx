@@ -73,6 +73,8 @@ export default class GridItem extends React.Component<Props, State> {
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
     containerPadding: PropTypes.array.isRequired,
+    lockedRatio: PropTypes.number.isRequired,
+    fontSizeRatio: PropTypes.number.isRequired,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -140,6 +142,8 @@ export default class GridItem extends React.Component<Props, State> {
     minW: 1,
     maxH: Infinity,
     maxW: Infinity,
+    lockedRatio: 0,
+    fontSizeRatio: 1 / 20,
   };
 
   state: State = {
@@ -164,18 +168,27 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object}                Object containing coords.
    */
   calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
-    const {margin, containerPadding, rowHeight} = this.props;
+    const {margin, containerPadding, rowHeight, lockedRatio} = this.props;
     const colWidth = this.calcColWidth();
 
-    const out = {
-      left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
-      top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
+    const out = {};
+
+    if (lockedRatio) {
+      const relativeRowHeight = colWidth / lockedRatio;
+      const relativeColumnWidth = relativeRowHeight * lockedRatio;
+      out.left = Math.round((relativeColumnWidth + margin[0]) * x + containerPadding[0]);
+      out.top = Math.round((relativeRowHeight + margin[1]) * y + containerPadding[1]);
+      out.width = w === Infinity ? w : Math.round(relativeColumnWidth * w + Math.max(0, w - 1) * margin[0]);
+      out.height = h === Infinity ? h : Math.round(relativeRowHeight * h + Math.max(0, h - 1) * margin[1]);
+    } else {
+      out.left = Math.round((colWidth + margin[0]) * x + containerPadding[0]);
+      out.top = Math.round((rowHeight + margin[1]) * y + containerPadding[1]);
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-      height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
-    };
+      out.width = w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
+      out.height = h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
+    }
 
     if (state && state.resizing) {
       out.width = Math.round(state.resizing.width);
@@ -197,18 +210,28 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object} x and y in grid units.
    */
   calcXY(top: number, left: number): {x: number, y: number} {
-    const {margin, cols, rowHeight, w, h, maxRows} = this.props;
+    const {margin, cols, rowHeight, w, h, maxRows, lockedRatio} = this.props;
     const colWidth = this.calcColWidth();
 
-    // left = colWidth * x + margin * (x + 1)
-    // l = cx + m(x+1)
-    // l = cx + mx + m
-    // l - m = cx + mx
-    // l - m = x(c + m)
-    // (l - m) / (c + m) = x
-    // x = (left - margin) / (coldWidth + margin)
-    let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
-    let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+    let x;
+    let y;
+
+    if (lockedRatio) {
+      const relativeRowHeight = colWidth / lockedRatio;
+      const relativeColumnWidth = relativeRowHeight * lockedRatio;
+      x = Math.round((left - margin[0]) / (relativeColumnWidth + margin[0]));
+      y = Math.round((top - margin[1]) / (relativeRowHeight + margin[1]));
+    } else {
+      // left = colWidth * x + margin * (x + 1)
+      // l = cx + m(x+1)
+      // l = cx + mx + m
+      // l - m = cx + mx
+      // l - m = x(c + m)
+      // (l - m) / (c + m) = x
+      // x = (left - margin) / (coldWidth + margin)
+      x = Math.round((left - margin[0]) / (colWidth + margin[0]));
+      y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+    }
 
     // Capping
     x = Math.max(Math.min(x, cols - w), 0);
@@ -224,14 +247,24 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object} w, h as grid units.
    */
   calcWH({height, width}: {height: number, width: number}): {w: number, h: number} {
-    const {margin, maxRows, cols, rowHeight, x, y} = this.props;
+    const {margin, maxRows, cols, rowHeight, x, y, lockedRatio} = this.props;
     const colWidth = this.calcColWidth();
 
-    // width = colWidth * w - (margin * (w - 1))
-    // ...
-    // w = (width + margin) / (colWidth + margin)
-    let w = Math.round((width + margin[0]) / (colWidth + margin[0]));
-    let h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+    let w;
+    let h;
+
+    if (lockedRatio) {
+      const relativeRowHeight = colWidth / lockedRatio;
+      const relativeColumnWidth = relativeRowHeight * lockedRatio;
+      w = Math.round((width + margin[0]) / (relativeColumnWidth + margin[0]));
+      h = Math.round((height + margin[1]) / (relativeRowHeight + margin[1]));
+    } else {
+      // width = colWidth * w - (margin * (w - 1))
+      // ...
+      // w = (width + margin) / (colWidth + margin)
+      w = Math.round((width + margin[0]) / (colWidth + margin[0]));
+      h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+    }
 
     // Capping
     w = Math.max(Math.min(w, cols - x), 0);
@@ -250,7 +283,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object}     Style object.
    */
   createStyle(pos: Position): {[key: string]: ?string} {
-    const {usePercentages, containerWidth, useCSSTransforms} = this.props;
+    const {usePercentages, containerWidth, useCSSTransforms, lockedRatio, fontSizeRatio} = this.props;
 
     let style;
     // CSS Transforms support (default)
@@ -266,6 +299,9 @@ export default class GridItem extends React.Component<Props, State> {
         style.left = perc(pos.left / containerWidth);
         style.width = perc(pos.width / containerWidth);
       }
+    }
+    if (lockedRatio) {
+      style.fontSize = `${Math.round(Math.min(pos.width, pos.height) * fontSizeRatio)}px`;
     }
 
     return style;
