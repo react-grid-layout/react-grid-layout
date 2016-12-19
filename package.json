@@ -52,7 +52,6 @@
     "babel-plugin-transform-react-inline-elements": "^6.6.5",
     "babel-plugin-typecheck": "^3.6.1",
     "babel-preset-es2015": "^6.5.0",
-    "babel-preset-es2015-loose": "^8.0.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
     "css-loader": "^0.26.1",
