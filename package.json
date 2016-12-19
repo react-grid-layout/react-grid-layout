@@ -1,7 +1,7 @@
 {
-  "name": "react-grid-layout",
+  "name": "react-grid-layout-stateless",
   "version": "0.13.9",
-  "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
+  "description": "A draggable and resizable grid layout with responsive breakpoints, for React, with isStateless prop added to store layout not in state, but in external source of trooth",
   "main": "index.js",
   "scripts": {
     "lint": "make lint",
@@ -27,6 +27,7 @@
     "responsive"
   ],
   "author": "Samuel Reed <samuel.trace.reed@gmail.com> (http://strml.net/)",
+  "contributors": [{"name":"Anton Tokmakov", "email": "calmburst@gmail.com"}],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/STRML/react-grid-layout/issues"
@@ -54,10 +55,10 @@
     "babel-preset-es2015-loose": "^8.0.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
-    "css-loader": "^0.26.1",
+    "css-loader": "^0.26.0",
     "ejs": "^2.4.1",
-    "eslint": "^3.11.1",
-    "eslint-plugin-react": "^6.8.0",
+    "eslint": "^3.10.2",
+    "eslint-plugin-react": "^6.7.1",
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.6.5",
     "jsxhint": "^0.15.1",
