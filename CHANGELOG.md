@@ -1,5 +1,14 @@
 # Changelog
 
+0.13.10 (Unreleased)
+-----
+
+#### Features:
+
+- New test suite - thanks @nikolas
+- Dev Dependency updates
+- Committed yarn.lock
+
 0.13.9 (Oct 13, 2016)
 -----
 
