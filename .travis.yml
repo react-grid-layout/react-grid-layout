@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "6"
 script:
-  - make build
+  - make build test

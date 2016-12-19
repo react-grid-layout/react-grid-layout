@@ -55,6 +55,9 @@ lint:
 	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
 	@$(BIN)/valiquire $(LIB)
 
+test:
+	@$(BIN)/jest
+
 release-patch: build
 	@$(call release,patch)
 
