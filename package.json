@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
-    "lodash.isequal": "^4.0.0",
+    "lodash.isequal": "^4.4.0",
     "react-draggable": "^2.1.1",
     "react-resizable": "^1.4.0"
   },
@@ -62,7 +62,7 @@
     "imports-loader": "^0.7.0",
     "jest-cli": "^18.0.0",
     "jsxhint": "^0.15.1",
-    "lodash": "^4.3.0",
+    "lodash": "^4.17.2",
     "pre-commit": "^1.1.2",
     "precommit-hook": "^3.0.0",
     "react": "^15.0.0",
