@@ -330,6 +330,12 @@ cols: ?Object = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
 layouts: {[key: $Keys<breakpoints>]: Layout}
 
 //
+// Ref
+//
+// Ref for React Grid in Responsivbe Grid Layout.
+reactGridRef: (reactGrid : ReactGrid) => void,
+
+//
 // Callbacks
 //
 
