@@ -19,6 +19,7 @@ class ShowcaseLayout extends React.Component {
   state = {
     currentBreakpoint: 'lg',
     mounted: false,
+    compactOnResize: false,
     layouts: {lg: this.props.initialLayout},
   };
 
@@ -61,14 +62,20 @@ class ShowcaseLayout extends React.Component {
     });
   };
 
+  onCompactOnResizeChange = () => {
+    this.setState({ compactOnResize: !this.state.compactOnResize });
+  } 
+
   render() {
     return (
       <div>
         <div>Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
         <div>Compaction type: {_.capitalize(this.state.compactType) || 'No Compaction'}</div>
+        <div>Compact on resize: {this.state.compactOnResize ? 'True' : 'False'}</div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
         <button onClick={this.onCompactTypeChange}>Change Compaction Type</button>
+        <button onClick={this.onCompactOnResizeChange}>Change CompactOnResize</button>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -78,8 +85,10 @@ class ShowcaseLayout extends React.Component {
           measureBeforeMount={false}
           // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
           // and set `measureBeforeMount={true}`.
+          useCSSTransforms={this.state.mounted}
           compactType={this.state.compactType}
-          useCSSTransforms={this.state.mounted}>
+          compactOnResize={this.state.compactOnResize}
+        >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>

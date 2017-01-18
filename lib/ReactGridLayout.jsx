@@ -58,6 +58,8 @@ export default class ReactGridLayout extends React.Component {
     },
     // Choose vertical or hotizontal compaction
     compactType: PropTypes.oneOf(['vertical', 'horizontal']),
+    // Enable/disable compact while resize item.
+    compactOnResize: PropTypes.bool,
 
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number, i: String}
@@ -145,6 +147,7 @@ export default class ReactGridLayout extends React.Component {
     isResizable: true,
     useCSSTransforms: true,
     compactType: 'vertical',
+    compactOnResize: true,
     onLayoutChange: noop,
     onDragStart: noop,
     onDrag: noop,
@@ -285,10 +288,11 @@ export default class ReactGridLayout extends React.Component {
     // Move the element here
     layout = moveElement(layout, l, x, y, true /* isUserAction */, this.compactType(), cols);
 
-    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
-
     // Set state
     const newLayout = compact(layout, this.compactType(), cols);
+
+    this.props.onDragStop(newLayout, oldDragItem, l, null, e, node);
+
     const {oldLayout} = this.state;
     this.setState({
       activeDrag: null,
@@ -322,7 +326,7 @@ export default class ReactGridLayout extends React.Component {
 
   onResize(i:string, w:number, h:number, {e, node}: ResizeEvent) {
     const {layout, oldResizeItem} = this.state;
-    const {cols} = this.props;
+    const {cols, compactOnResize} = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -336,12 +340,14 @@ export default class ReactGridLayout extends React.Component {
     };
 
     this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
+    // Set the drag placeholder.
+    const state = {activeDrag: placeholder};
+    if (compactOnResize) {
+      // Re-compact the layout.
+      state.layout = compact(layout, this.compactType(), cols);
+    }
 
-    // Re-compact the layout and set the drag placeholder.
-    this.setState({
-      layout: compact(layout, this.compactType(), cols),
-      activeDrag: placeholder
-    });
+    this.setState(state);
   }
 
   onResizeStop(i:string, w:number, h:number, {e, node}: ResizeEvent) {

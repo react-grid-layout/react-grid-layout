@@ -55,6 +55,12 @@ export default class ResponsiveReactGridLayout extends React.Component {
     width: React.PropTypes.number.isRequired,
 
     //
+    // Ref
+    //
+    // Ref for React Grid in Responsivbe Grid Layout.
+    reactGridRef: React.PropTypes.func,
+
+    //
     // Callbacks
     //
 
@@ -166,11 +172,12 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
   render() {
     const {breakpoint, breakpoints, cols, layouts, onBreakpointChange,
-           onLayoutChange, onWidthChange, ...other} = this.props;
+           onLayoutChange, onWidthChange, reactGridRef, ...other} = this.props;
 
     return (
       <ReactGridLayout
         {...other}
+        ref={reactGridRef}
         onLayoutChange={this.onLayoutChange}
         layout={this.state.layout}
         cols={this.state.cols}
