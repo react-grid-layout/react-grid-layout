@@ -380,6 +380,10 @@ will be draggable.
   isDraggable: ?boolean = true,
   // If false, will not be resizable. Overrides `static`.
   isResizable: ?boolean = true
+
+  // A CSS selector for tags that will act as the draggable handle of this item.
+  // It overrides the draggableHandle.
+  handle: ?string
 }
 ```
 
