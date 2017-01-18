@@ -253,6 +253,9 @@ draggableHandle: ?string = '',
 // Compaction type. Can be: 'vertical', 'horizontal'.
 compactType: ?string = 'vertical',
 
+// Enable/disable compact while resize item.
+compactOnResize: ?bool = true,
+
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}
 // The index into the layout must match the key used on each item component.
