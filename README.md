@@ -247,8 +247,11 @@ draggableCancel: ?string = '',
 // If you forget the leading . it will not work.
 draggableHandle: ?string = '',
 
-// If true, the layout will compact vertically
-verticalCompact: ?boolean = true,
+// DEPRECATED If true, the layout will compact vertically
+// verticalCompact: ?boolean = true,
+
+// Compaction type. Can be: 'vertical', 'horizontal'.
+compactType: ?string = 'vertical',
 
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}
