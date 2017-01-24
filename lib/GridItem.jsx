@@ -368,6 +368,7 @@ export default class GridItem extends React.Component {
         this.props.className,
         this.props.static ? 'static' : '',
         this.state.resizing ? 'resizing' : '',
+        isDraggable ? 'react-draggable' : '',
         this.state.dragging ? 'react-draggable-dragging' : '',
         useCSSTransforms ? 'cssTransforms' : ''
       ].join(' '),
