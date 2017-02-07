@@ -291,7 +291,8 @@ export default class GridItem extends React.Component {
       // Get new XY
       switch (handlerName) {
         case 'onDragStart': {
-          // ToDo this wont work on nested parents
+          // Stops bubbling to allow nested grid dragging
+          e.stopPropagation();
           const parentRect = node.offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
           newPosition.left = clientRect.left - parentRect.left;
