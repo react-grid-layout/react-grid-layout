@@ -60,6 +60,8 @@ export default class ReactGridLayout extends React.Component {
     compactType: PropTypes.oneOf(['vertical', 'horizontal']),
     // Enable/disable compact while resize item.
     compactOnResize: PropTypes.bool,
+    // Proportion to resize and item. If resize item reached it grows.
+    resizeProportion: PropTypes.number,
 
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number, i: String}
@@ -148,6 +150,7 @@ export default class ReactGridLayout extends React.Component {
     useCSSTransforms: true,
     compactType: 'vertical',
     compactOnResize: true,
+    resizeProportion: 0.5,
     onLayoutChange: noop,
     onDragStart: noop,
     onDrag: noop,
@@ -291,17 +294,17 @@ export default class ReactGridLayout extends React.Component {
     // Set state
     const newLayout = compact(layout, this.compactType(), cols);
 
-    this.props.onDragStop(newLayout, oldDragItem, l, null, e, node);
-
     const {oldLayout} = this.state;
     this.setState({
       activeDrag: null,
       layout: newLayout,
       oldDragItem: null,
       oldLayout: null,
+    }, () => {
+      this.props.onDragStop(newLayout, oldDragItem, l, null, e, node);
+      this.onLayoutMaybeChanged(newLayout, oldLayout);
     });
 
-    this.onLayoutMaybeChanged(newLayout, oldLayout);
   }
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
@@ -413,7 +416,7 @@ export default class ReactGridLayout extends React.Component {
     if (!l) return null;
     const {width, cols, margin, containerPadding, rowHeight,
            maxRows, isDraggable, isResizable, useCSSTransforms,
-           draggableCancel, draggableHandle} = this.props;
+           draggableCancel, draggableHandle, resizeProportion} = this.props;
     const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
@@ -440,7 +443,7 @@ export default class ReactGridLayout extends React.Component {
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
 
-        handle={draggableHandle || l.handle}
+        handle={l.handle || draggableHandle}
         w={l.w}
         h={l.h}
         x={l.x}
@@ -451,6 +454,7 @@ export default class ReactGridLayout extends React.Component {
         maxH={l.maxH}
         maxW={l.maxW}
         static={l.static}
+        resizeProportion={l.resizeProportion || resizeProportion}
         >
         {child}
       </GridItem>

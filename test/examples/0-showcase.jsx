@@ -14,6 +14,7 @@ class ShowcaseLayout extends React.Component {
     rowHeight: 30,
     cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
     initialLayout: generateLayout()
+    resizeProportion: 0.1,
   };
 
   state = {

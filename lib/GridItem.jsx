@@ -93,7 +93,8 @@ export default class GridItem extends React.Component {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    resizeProportion: 0.5,
   };
 
   state: State = {
@@ -178,14 +179,16 @@ export default class GridItem extends React.Component {
    * @return {Object} w, h as grid units.
    */
   calcWH({height, width}: {height: number, width: number}): {w: number, h: number} {
-    const {margin, maxRows, cols, rowHeight, x, y} = this.props;
+    const {margin, maxRows, cols, rowHeight, x, y, resizeProportion} = this.props;
     const colWidth = this.calcColWidth();
 
     // width = colWidth * w - (margin * (w - 1))
     // ...
     // w = (width + margin) / (colWidth + margin)
-    let w = Math.round((width + margin[0]) / (colWidth + margin[0]));
-    let h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+    const widthProportion = (width + margin[0]) / (colWidth + margin[0]);
+    const heightProportion = (height + margin[1]) / (rowHeight + margin[1]);
+    let w = Math.trunc(widthProportion) + (widthProportion % 1 > resizeProportion ? 1 :0 );
+    let h = Math.trunc(heightProportion) + (heightProportion % 1 > resizeProportion ? 1 :0 );
 
     // Capping
     w = Math.max(Math.min(w, cols - x), 0);
