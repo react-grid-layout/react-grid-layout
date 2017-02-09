@@ -257,6 +257,10 @@ compactType: ?string = 'vertical',
 // Enable/disable compact while resize item.
 compactOnResize: ?bool = true,
 
+// Delegates compact method. It should return the compacted layout. Options has activeDrag item in drag events.
+// Method called when onDrag, onDragStop, onResize, onResizeStop.
+customCompact: (layout: Layout, compactType: CompactType, cols: number, options: object) => compactLayout: Layout,
+
 // Minimun proportion to change size.
 resizeProportion: ?number = 0.5,
 
