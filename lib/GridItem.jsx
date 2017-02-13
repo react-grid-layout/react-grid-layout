@@ -3,6 +3,7 @@ import React, {PropTypes} from 'react';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
 import {perc, setTopLeft, setTransform} from './utils';
+import classNames from 'classnames';
 
 import type {DragCallbackData, Position} from './utils';
 
@@ -360,17 +361,13 @@ export default class GridItem extends React.Component {
 
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
-      // Munge a classname. Use passed in classnames and resizing.
-      // React will merge the classNames.
-      className: [
-        'react-grid-item',
-        child.props.className || '',
-        this.props.className,
-        this.props.static ? 'static' : '',
-        this.state.resizing ? 'resizing' : '',
-        this.state.dragging ? 'react-draggable-dragging' : '',
-        useCSSTransforms ? 'cssTransforms' : ''
-      ].join(' '),
+      className: classNames('react-grid-item', child.props.className, this.props.className, {
+        static: this.props.static,
+        resizing: this.state.resizing,
+        'react-draggable': isDraggable,
+        'react-draggable-dragging': this.state.dragging,
+        cssTransforms: useCSSTransforms
+      }),
       // We can set the width and height on the child, but unfortunately we can't set the position.
       style: {...this.props.style, ...child.props.style, ...this.createStyle(pos)}
     });
