@@ -1,6 +1,6 @@
 # Changelog
 
-0.13.10 (Unreleased)
+0.14.0 (Feb 13, 2017)
 -----
 
 #### Features:
@@ -8,6 +8,7 @@
 - New test suite - thanks @nikolas
 - Dev Dependency updates
 - Committed yarn.lock
+- Added `react-draggable` classname to draggable grid items.
 
 0.13.9 (Oct 13, 2016)
 -----
