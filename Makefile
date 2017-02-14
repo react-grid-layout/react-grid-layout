@@ -51,7 +51,7 @@ copy-flow:
 
 # FIXME flow is usually global
 lint:
-	flow
+	./node_modules/.bin/flow
 	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
 	@$(BIN)/valiquire $(LIB)
 
