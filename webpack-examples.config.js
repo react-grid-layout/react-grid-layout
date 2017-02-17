@@ -30,13 +30,12 @@ module.exports = {
           NODE_ENV: JSON.stringify('production')
         }
       }),
-      new webpack.optimize.CommonsChunkPlugin(
-        "commons", "commons.js"),
-      new webpack.optimize.OccurenceOrderPlugin(),
-      new webpack.optimize.DedupePlugin()
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'commons', filename: 'commons.js'
+      })
     ],
     resolve: {
-      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
+      extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
       alias: {'react-grid-layout': __dirname + '/index-dev.js'}
     }
 };
