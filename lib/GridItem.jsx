@@ -363,9 +363,9 @@ export default class GridItem extends React.Component {
     let newChild = React.cloneElement(child, {
       className: classNames('react-grid-item', child.props.className, this.props.className, {
         static: this.props.static,
-        resizing: this.state.resizing,
+        resizing: Boolean(this.state.resizing),
         'react-draggable': isDraggable,
-        'react-draggable-dragging': this.state.dragging,
+        'react-draggable-dragging': Boolean(this.state.dragging),
         cssTransforms: useCSSTransforms
       }),
       // We can set the width and height on the child, but unfortunately we can't set the position.
