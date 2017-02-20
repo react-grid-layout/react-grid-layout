@@ -1,5 +1,13 @@
 # Changelog
 
+0.14.1 (Feb 20, 2017)
+----
+
+#### Fixes:
+
+- Fixed a minor Flow type issue when a `classnames` typedef is present.
+- Fixed a scoping issue when running `make build-example`.
+
 0.14.0 (Feb 13, 2017)
 -----
 
