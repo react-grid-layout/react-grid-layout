@@ -28,7 +28,7 @@ var GridPropertyLayout = React.createClass({
     // Generate items with properties from the layout, rather than pass the layout directly
     var layout = this.generateLayout();
     return _.map(_.range(this.props.items), function(i) {
-      return (<div key={i} _grid={layout[i]}><span className="text">{i}</span></div>);
+      return (<div key={i} data-grid={layout[i]}><span className="text">{i}</span></div>);
     });
   },
 

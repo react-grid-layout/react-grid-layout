@@ -2,3 +2,12 @@ lib/
 test/
 examples/
 dist/
+yarn.lock
+.github
+*.config.js
+Makefile
+*.sh
+*.*.json
+__tests__/
+index-dev.js
+index.html
