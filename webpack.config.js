@@ -41,7 +41,7 @@ module.exports = {
       }
     }),
     // Compress, but don't print warnings to console
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
+    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}, sourceMap: true})
   ],
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".jsx"]
