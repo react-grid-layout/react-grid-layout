@@ -1,5 +1,17 @@
 # Changelog
 
+0.14.2 (Feb 22, 2017)
+----
+
+#### Fixes:
+
+- Fixed use of `MSTranform` for IE. Thanks @dvoaviarison (#499)
+- Fix generation of source maps, which was temporarily broken by the webpack 2 upgrade.
+
+#### Internal:
+
+- Update development dependencies and babel version.
+
 0.14.1 (Feb 20, 2017)
 ----
 
