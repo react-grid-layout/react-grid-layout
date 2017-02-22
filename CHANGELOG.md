@@ -1,5 +1,12 @@
 # Changelog
 
+0.14.3 (Feb 22, 2017)
+----
+
+#### Fixes:
+
+- Reverted #499; `msTransform` is indeed correct. See [discussion](https://github.com/STRML/react-grid-layout/pull/499#issuecomment-281703069).
+
 0.14.2 (Feb 22, 2017)
 ----
 
