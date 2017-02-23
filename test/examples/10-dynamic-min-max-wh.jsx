@@ -21,6 +21,7 @@ var DynamicMinMaxLayout = React.createClass({
       isResizable: true,
       items: 20,
       rowHeight: 30,
+      onLayoutChange: function() {},
       cols: 12,
     };
   },
