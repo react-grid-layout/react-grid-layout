@@ -16,10 +16,10 @@
     <li><a href="https://github.com/STRML/react-grid-layout">View project on GitHub</a></li>
     <li><a href="https://github.com/STRML/react-grid-layout/blob/master/test/examples/<%= index %>-<%= source %>.jsx">View this example's source</a></li>
     <% if (previous) { %>
-      <li><a href="<%= index - 1 %>-<%= previous.source %>.html">View the previous example: "<%= previous.title %>"</a></li>
+      <li><a href="<%= index - 1 %>-<%= previous.source %>.html"><b>⇠</b> View the previous example: "<%= previous.title %>"</a></li>
     <% } -%>
     <% if (next) { %>
-      <li><a href="<%= index + 1 %>-<%= next.source %>.html">View the next example: "<%= next.title %>"</a></li>
+      <li><a href="<%= index + 1 %>-<%= next.source %>.html"><b>⇢ </b>View the next example: "<%= next.title %>"</a></li>
     <% } -%>
     </ul>
     <div id="content"></div>
