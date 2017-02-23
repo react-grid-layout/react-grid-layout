@@ -8,3 +8,6 @@ yarn.lock
 Makefile
 *.sh
 *.*.json
+__tests__/
+index-dev.js
+index.html

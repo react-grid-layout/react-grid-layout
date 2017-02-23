@@ -16,7 +16,8 @@ var ResponsiveLocalStorageLayout = React.createClass({
     return {
       className: "layout",
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
-      rowHeight: 30
+      rowHeight: 30,
+      onLayoutChange: function() {},
     };
   },
 

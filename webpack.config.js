@@ -40,12 +40,10 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     // Compress, but don't print warnings to console
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
+    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}, sourceMap: true})
   ],
   resolve: {
-    extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
+    extensions: [".webpack.js", ".web.js", ".js", ".jsx"]
   }
 };

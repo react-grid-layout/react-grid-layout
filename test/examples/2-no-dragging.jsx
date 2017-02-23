@@ -20,7 +20,8 @@ var NoDraggingLayout = React.createClass({
       isResizable: false,
       items: 50,
       cols: 12,
-      rowHeight: 30
+      rowHeight: 30,
+      onLayoutChange: function() {},
     };
   },
 

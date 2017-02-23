@@ -1,6 +1,7 @@
 // @flow
 import React, {PropTypes} from 'react';
 import isEqual from 'lodash.isequal';
+import classNames from 'classnames';
 import {autoBindHandlers, bottom, childrenEqual, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
@@ -435,14 +436,13 @@ export default class ReactGridLayout extends React.Component {
   render() {
     const {className, style} = this.props;
 
-    const mergedClassName = `react-grid-layout ${className}`;
     const mergedStyle = {
       height: this.containerHeight(),
       ...style
     };
 
     return (
-      <div className={mergedClassName} style={mergedStyle}>
+      <div className={classNames('react-grid-layout', className)} style={mergedStyle}>
         {React.Children.map(this.props.children, (child) => this.processGridItem(child))}
         {this.placeholder()}
       </div>

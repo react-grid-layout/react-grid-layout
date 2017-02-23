@@ -1,5 +1,6 @@
 # React-Grid-Layout
 
+[![travis build](https://travis-ci.org/STRML/react-grid-layout.svg?branch=master)](https://travis-ci.org/STRML/react-grid-layout)
 [![npm package](https://img.shields.io/npm/v/react-grid-layout.svg?style=flat-square)](https://www.npmjs.org/package/react-grid-layout)
 [![npm downloads](https://img.shields.io/npm/dt/react-grid-layout.svg?maxAge=2592000)]()
 
@@ -14,7 +15,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](http://www.webpackbin.com/VymTE3zWG)**]
+[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](http://www.webpackbin.com/EJF48h_rz)**]
 
 ## Table of Contents
 

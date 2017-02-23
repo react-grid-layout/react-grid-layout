@@ -163,8 +163,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
   }
 
   render() {
-    const {breakpoint, breakpoints, cols, layouts, onBreakpointChange,
-           onLayoutChange, onWidthChange, ...other} = this.props;
+    // eslint-disable-next-line no-unused-vars
+    const {breakpoint, breakpoints, cols, layouts, onBreakpointChange, onLayoutChange, onWidthChange,
+      ...other} = this.props;
 
     return (
       <ReactGridLayout

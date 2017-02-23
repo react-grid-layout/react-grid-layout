@@ -18,6 +18,7 @@ var MessyLayout = React.createClass({
       className: "layout",
       items: 20,
       rowHeight: 30,
+      onLayoutChange: function() {},
       cols: 12
     };
   },

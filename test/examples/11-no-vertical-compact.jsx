@@ -19,6 +19,7 @@ var NoCompactingLayout = React.createClass({
       items: 50,
       cols: 12,
       rowHeight: 30,
+      onLayoutChange: function() {},
       // This turns off compaction so you can place items wherever.
       verticalCompact: false
     };
