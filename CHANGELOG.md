@@ -1,5 +1,16 @@
 # Changelog
 
+0.14.4 (Mar 9, 2017)
+----
+
+#### Fixes:
+
+- Typecheck in `WidthProvider` to satisfy Flow (and technically, this could be a Text node)
+
+##### Dev:
+
+- Update Flow
+
 0.14.3 (Feb 22, 2017)
 ----
 
