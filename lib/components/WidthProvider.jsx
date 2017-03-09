@@ -45,8 +45,8 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
 
   onWindowResize = (_event: ?Event) => {
     if (!this.mounted) return;
-    const node = ReactDOM.findDOMNode(this);
-    this.setState({width: node.offsetWidth});
+    const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
+    if (node instanceof HTMLElement) this.setState({width: node.offsetWidth});
   }
 
   render() {
