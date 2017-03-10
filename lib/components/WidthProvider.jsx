@@ -13,13 +13,15 @@ type ProviderT = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
 const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component {
 
   static defaultProps = {
-    measureBeforeMount: false
+    measureBeforeMount: false,
+    resize: false
   };
 
   static propTypes = {
     // If true, will not render children until mounted. Useful for getting the exact width before
     // rendering, to prevent any unsightly resizing.
-    measureBeforeMount: React.PropTypes.bool
+    measureBeforeMount: React.PropTypes.bool,
+    resize: React.PropTypes.bool
   };
 
   state: State = {
@@ -41,6 +43,12 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
   componentWillUnmount() {
     this.mounted = false;
     window.removeEventListener('resize', this.onWindowResize);
+  }
+  
+  componentWillReceiveProps(newProps){
+    if (newProps.resize){
+      this.onWindowResize();
+    }
   }
 
   onWindowResize = (_event: ?Event) => {
