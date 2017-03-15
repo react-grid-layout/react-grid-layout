@@ -96,6 +96,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.onWidthChange(this.props);
+  }
   componentWillReceiveProps(nextProps: Object) {
 
     // Allow parent to set width or breakpoint directly.
