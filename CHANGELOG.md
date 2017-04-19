@@ -1,5 +1,10 @@
 # Changelog
 
+0.14.6 (Apr 19, 2017)
+----
+
+- Fixed a bad publish (connectivity issue).
+
 0.14.5 (Apr 19, 2017)
 ----
 
