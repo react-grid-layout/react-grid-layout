@@ -1,5 +1,10 @@
 # Changelog
 
+0.14.5 (Apr 19, 2017)
+----
+
+- Moved to `prop-types` package to avoid React.PropTypes deprecation in 15.5. Thanks @inverts!
+
 0.14.4 (Mar 9, 2017)
 ----
 
