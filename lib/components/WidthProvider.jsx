@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 type State = {
@@ -19,7 +20,7 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
   static propTypes = {
     // If true, will not render children until mounted. Useful for getting the exact width before
     // rendering, to prevent any unsightly resizing.
-    measureBeforeMount: React.PropTypes.bool
+    measureBeforeMount: PropTypes.bool
   };
 
   state: State = {

@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 
 import {cloneLayout, synchronizeLayoutWithChildren, validateLayout} from './utils';
@@ -28,13 +29,13 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     // Optional, but if you are managing width yourself you may want to set the breakpoint
     // yourself as well.
-    breakpoint: React.PropTypes.string,
+    breakpoint: PropTypes.string,
 
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
-    breakpoints: React.PropTypes.object,
+    breakpoints: PropTypes.object,
 
     // # of cols. This is a breakpoint -> cols map
-    cols: React.PropTypes.object,
+    cols: PropTypes.object,
 
     // layouts is an object mapping breakpoints to layouts.
     // e.g. {lg: Layout, md: Layout, ...}
@@ -52,21 +53,21 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     // The width of this component.
     // Required in this propTypes stanza because generateInitialState() will fail without it.
-    width: React.PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
 
     //
     // Callbacks
     //
 
     // Calls back with breakpoint and new # cols
-    onBreakpointChange: React.PropTypes.func,
+    onBreakpointChange: PropTypes.func,
 
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
-    onLayoutChange: React.PropTypes.func,
+    onLayoutChange: PropTypes.func,
 
     // Calls back with (containerWidth, margin, cols, containerPadding)
-    onWidthChange: React.PropTypes.func
+    onWidthChange: PropTypes.func
   };
 
   static defaultProps = {
