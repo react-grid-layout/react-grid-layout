@@ -1,5 +1,5 @@
 [version]
-0.41.0
+0.44.1
 
 [ignore]
 .*/node_modules/react/.*
