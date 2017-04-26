@@ -130,5 +130,12 @@ module.exports = [
     paragraphs: [
       "This demonstrates how to implement a toolbox to add and remove widgets."
     ]
+  },
+  {
+    title: "Bounded",
+    source: "bounded",
+    paragraphs: [
+      "Try dragging the elements around. They can only be moved within grid."
+    ]
   }
 ];

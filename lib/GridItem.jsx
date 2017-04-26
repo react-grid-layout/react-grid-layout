@@ -38,6 +38,7 @@ type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  isBounded: boolean,
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
@@ -132,6 +133,7 @@ export default class GridItem extends React.Component<Props, State> {
     // Flags
     isDraggable: PropTypes.bool.isRequired,
     isResizable: PropTypes.bool.isRequired,
+    isBounded: PropTypes.bool.isRequired,
     static: PropTypes.bool,
 
     // Use CSS transforms instead of top/left
@@ -170,6 +172,26 @@ export default class GridItem extends React.Component<Props, State> {
   }
 
   /**
+   * Calculate grid item width
+   * @param  {Number} w        W coordinate in grid units
+   * @param  {Number} colWidth Column width in pixels
+   * @return {Number} Item width in pixels
+   */
+  calcWidth(w: number, colWidth: number): number {
+    return Math.round(colWidth * w + Math.max(0, w - 1) * this.props.margin[0]);
+  }
+
+  /**
+   * Calculate grid item height
+   * @param  {Number} h H coordinate in grid units
+   * @return {Number} Item height in pixels
+   */
+  calcHeight(h: number): number {
+    const { rowHeight, margin } = this.props;
+    return Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
+  }
+
+  /**
    * Return position on the page given an x, y, w, h.
    * left, top, width, height are all in pixels.
    * @param  {Number}  x             X coordinate in grid units.
@@ -194,14 +216,8 @@ export default class GridItem extends React.Component<Props, State> {
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      width:
-        w === Infinity
-          ? w
-          : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-      height:
-        h === Infinity
-          ? h
-          : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
+      width: w === Infinity ? w : this.calcWidth(w, colWidth),
+      height: h === Infinity ? h : this.calcHeight(h)
     };
 
     if (state && state.resizing) {
@@ -393,13 +409,36 @@ export default class GridItem extends React.Component<Props, State> {
           this.setState({ dragging: newPosition });
           break;
         }
-        case "onDrag":
+        case "onDrag": {
           if (!this.state.dragging)
             throw new Error("onDrag called before onDragStart.");
-          newPosition.left = this.state.dragging.left + deltaX;
-          newPosition.top = this.state.dragging.top + deltaY;
+          let top = this.state.dragging.top + deltaY;
+          let left = this.state.dragging.left + deltaX;
+
+          const { isBounded, w, h, containerWidth } = this.props;
+
+          if (isBounded) {
+            const { offsetParent } = node;
+
+            if (offsetParent) {
+              const bottomBoundary =
+                offsetParent.clientHeight - this.calcHeight(h);
+              if (top > bottomBoundary) top = bottomBoundary;
+              if (top < 0) top = 0;
+
+              const rightBoundary =
+                containerWidth - this.calcWidth(w, this.calcColWidth());
+              if (left > rightBoundary) left = rightBoundary;
+              if (left < 0) left = 0;
+            }
+          }
+
+          newPosition.left = left;
+          newPosition.top = top;
+
           this.setState({ dragging: newPosition });
           break;
+        }
         case "onDragStop":
           if (!this.state.dragging)
             throw new Error("onDragEnd called before onDragStart.");
