@@ -4387,7 +4387,7 @@ react-draggable@^2.1.0:
 
 react-draggable@^2.2.6:
   version "2.2.6"
-  resolved "https://artifactory.palantir.build:443/artifactory/api/npm/all-npm/react-draggable/-/react-draggable-2.2.6.tgz#3a806e10f2da6babfea4136be6510e89b0d76901"
+  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-2.2.6.tgz#3a806e10f2da6babfea4136be6510e89b0d76901"
   dependencies:
     classnames "^2.2.5"
 
