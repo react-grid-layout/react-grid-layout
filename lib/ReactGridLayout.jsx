@@ -394,8 +394,8 @@ export default class ReactGridLayout extends React.Component {
     const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
-    const draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
-    const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
+      const draggable = Boolean(l.isDraggable || l.static || isDraggable);
+      const resizable = Boolean(l.isResizable || l.static || isResizable);
 
     return (
       <GridItem
