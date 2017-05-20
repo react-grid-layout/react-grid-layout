@@ -276,6 +276,13 @@ export default class GridItem extends React.Component {
     );
   }
 
+  getBodyScale() {
+    const regExp = /scale\(([^)]+)\)/;
+    const bodyTransform = document && document.body ? document.body.style.transform : '';
+    const matches = regExp.exec(bodyTransform);
+    return matches ? matches[1] : 1;
+  }
+
   /**
    * Wrapper around drag events to provide more useful data.
    * All drag events call the function with the given handler name,
@@ -290,21 +297,24 @@ export default class GridItem extends React.Component {
 
       const newPosition: {top: number, left: number} = {top: 0, left: 0};
 
+      // Determine the scale we should be using while dragging the element
+      const scale = this.getBodyScale();
+
       // Get new XY
       switch (handlerName) {
         case 'onDragStart': {
           // ToDo this wont work on nested parents
           const parentRect = node.offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.left = clientRect.left - parentRect.left;
-          newPosition.top = clientRect.top - parentRect.top;
+          newPosition.left = (clientRect.left - parentRect.left) / scale;
+          newPosition.top = (clientRect.top - parentRect.top) / scale;
           this.setState({dragging: newPosition});
           break;
         }
         case 'onDrag':
           if (!this.state.dragging) throw new Error('onDrag called before onDragStart.');
-          newPosition.left = this.state.dragging.left + deltaX;
-          newPosition.top = this.state.dragging.top + deltaY;
+          newPosition.left = this.state.dragging.left + deltaX / scale;
+          newPosition.top = this.state.dragging.top + deltaY / scale;
           this.setState({dragging: newPosition});
           break;
         case 'onDragStop':
