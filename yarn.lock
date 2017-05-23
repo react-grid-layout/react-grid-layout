@@ -2113,6 +2113,12 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
+eslint-plugin-mocha@^4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-4.11.0.tgz#91193a2f55e20a5e35974054a0089d30198ee578"
+  dependencies:
+    ramda "^0.24.1"
+
 eslint-plugin-react@^7.4.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.4.0.tgz#300a95861b9729c087d362dd64abcc351a74364a"
@@ -4778,6 +4784,10 @@ querystringify@0.0.x:
 querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
+
+ramda@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
 
 randomatic@^1.1.3:
   version "1.1.7"
