@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import classNames from 'classnames';
 import {autoBindHandlers, bottom, childrenEqual, cloneLayoutItem, compact, getLayoutItem, moveElement,
-  synchronizeLayoutWithChildren, validateLayout} from './utils';
+  synchronizeLayoutWithChildren, validateLayout, getFirstCollision} from './utils';
 import GridItem from './GridItem';
 const noop = function() {};
 
@@ -84,6 +84,8 @@ export default class ReactGridLayout extends React.Component {
     //
     isDraggable: PropTypes.bool,
     isResizable: PropTypes.bool,
+    // Enable or disable grid rearrangement when dragging/resizing an element.
+    isRearrangeable: PropTypes.bool,
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool,
 
@@ -137,6 +139,7 @@ export default class ReactGridLayout extends React.Component {
     margin: [10, 10],
     isDraggable: true,
     isResizable: true,
+    isRearrangeable: true,
     useCSSTransforms: true,
     verticalCompact: true,
     onLayoutChange: noop,
@@ -233,6 +236,7 @@ export default class ReactGridLayout extends React.Component {
    */
   onDrag(i:string, x:number, y:number, {e, node}: DragEvent) {
     const {oldDragItem} = this.state;
+    const {isRearrangeable} = this.props;
     let {layout} = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -243,7 +247,7 @@ export default class ReactGridLayout extends React.Component {
     };
 
     // Move the element to the dragged location.
-    layout = moveElement(layout, l, x, y, true /* isUserAction */);
+    layout = moveElement(layout, l, x, y, true /* isUserAction */, isRearrangeable);
 
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
@@ -263,12 +267,13 @@ export default class ReactGridLayout extends React.Component {
    */
   onDragStop(i:string, x:number, y:number, {e, node}: DragEvent) {
     const {oldDragItem} = this.state;
+    const {isRearrangeable} = this.props;
     let {layout} = this.state;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
     // Move the element here
-    layout = moveElement(layout, l, x, y, true /* isUserAction */);
+    layout = moveElement(layout, l, x, y, true /* isUserAction */, isRearrangeable);
 
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
@@ -307,12 +312,21 @@ export default class ReactGridLayout extends React.Component {
 
   onResize(i:string, w:number, h:number, {e, node}: ResizeEvent) {
     const {layout, oldResizeItem} = this.state;
+    const {isRearrangeable} = this.props;
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
     // Set new width and height.
+    const old = {w: l.w, h: l.h};
     l.w = w;
     l.h = h;
+
+    // Short circuit if there is a collision in no rearrangement mode.
+    if (!isRearrangeable && getFirstCollision(layout, l)) {
+      l.w = old.w;
+      l.h = old.h;
+      return;
+    }
 
     // Create placeholder element (display only)
     var placeholder = {
