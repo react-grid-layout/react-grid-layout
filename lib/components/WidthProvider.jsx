@@ -24,7 +24,8 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
   };
 
   state: State = {
-    width: 1280
+    // Intentional; Force RRGL to trigger onBreakpointChange() in any case when mounted
+    width: 0
   };
 
   mounted: boolean = false;
