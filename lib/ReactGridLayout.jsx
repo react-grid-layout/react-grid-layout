@@ -353,7 +353,7 @@ export default class ReactGridLayout extends React.Component {
    */
   placeholder(): ?React.Element<any> {
     const {activeDrag} = this.state;
-    if (!activeDrag) return null;
+    if (!activeDrag || this.props.disablePlaceHolder) return null;
     const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms} = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
