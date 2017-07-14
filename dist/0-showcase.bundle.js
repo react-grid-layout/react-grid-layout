@@ -1,6 +1,6 @@
 webpackJsonp([12],{
 
-/***/ 191:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13,6 +13,10 @@ var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" &
 var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(14);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _lodash = __webpack_require__(11);
 
@@ -98,7 +102,7 @@ var ShowcaseLayout = function (_React$Component) {
 }(_react2.default.Component);
 
 ShowcaseLayout.propTypes = {
-  onLayoutChange: _react2.default.PropTypes.func.isRequired
+  onLayoutChange: _propTypes2.default.func.isRequired
 };
 ShowcaseLayout.defaultProps = {
   className: "layout",
@@ -132,4 +136,4 @@ if (__webpack_require__.c[__webpack_require__.s] === module) {
 
 /***/ })
 
-},[191]);
+},[97]);

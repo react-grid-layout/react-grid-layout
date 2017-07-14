@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 196:
+/***/ 102:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11,6 +11,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 var React = __webpack_require__(2);
+var PropTypes = __webpack_require__(14);
 var PureRenderMixin = __webpack_require__(3);
 var _ = __webpack_require__(11);
 var WidthProvider = __webpack_require__(0).WidthProvider;
@@ -23,7 +24,7 @@ var NoDraggingLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
-    onLayoutChange: React.PropTypes.func.isRequired
+    onLayoutChange: PropTypes.func.isRequired
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -167,4 +168,4 @@ module.exports = shallowCompare;
 
 /***/ })
 
-},[196]);
+},[102]);
