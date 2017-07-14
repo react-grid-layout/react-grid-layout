@@ -1,5 +1,32 @@
 # Changelog
 
+0.14.7 (Jul 14, 2017)
+----
+
+- Fixed a dragging bug when the grid container is scrollable. Thanks @chultquist.
+  - Ref: https://github.com/STRML/react-grid-layout/pull/555
+
+0.14.6 (Apr 19, 2017)
+----
+
+- Fixed a bad publish (connectivity issue).
+
+0.14.5 (Apr 19, 2017)
+----
+
+- Moved to `prop-types` package to avoid React.PropTypes deprecation in 15.5. Thanks @inverts!
+
+0.14.4 (Mar 9, 2017)
+----
+
+#### Fixes:
+
+- Typecheck in `WidthProvider` to satisfy Flow (and technically, this could be a Text node)
+
+##### Dev:
+
+- Update Flow
+
 0.14.3 (Feb 22, 2017)
 ----
 
