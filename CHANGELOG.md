@@ -1,5 +1,11 @@
 # Changelog
 
+0.14.7 (Jul 14, 2017)
+----
+
+- Fixed a dragging bug when the grid container is scrollable. Thanks @chultquist.
+  - Ref: https://github.com/STRML/react-grid-layout/pull/555
+
 0.14.6 (Apr 19, 2017)
 ----
 
