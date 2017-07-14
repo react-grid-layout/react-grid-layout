@@ -296,8 +296,8 @@ export default class GridItem extends React.Component {
           // ToDo this wont work on nested parents
           const parentRect = node.offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.left = clientRect.left - parentRect.left;
-          newPosition.top = clientRect.top - parentRect.top;
+          newPosition.left = clientRect.left - parentRect.left + node.offsetParent.scrollLeft;
+          newPosition.top = clientRect.top - parentRect.top + node.offsetParent.scrollTop;
           this.setState({dragging: newPosition});
           break;
         }
