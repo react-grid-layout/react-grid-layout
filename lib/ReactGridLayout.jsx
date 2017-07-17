@@ -84,6 +84,7 @@ export default class ReactGridLayout extends React.Component {
     //
     isDraggable: PropTypes.bool,
     isResizable: PropTypes.bool,
+    static: PropTypes.bool,
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool,
 
@@ -137,6 +138,7 @@ export default class ReactGridLayout extends React.Component {
     margin: [10, 10],
     isDraggable: true,
     isResizable: true,
+    static: false,
     useCSSTransforms: true,
     verticalCompact: true,
     onLayoutChange: noop,
@@ -413,8 +415,8 @@ export default class ReactGridLayout extends React.Component {
         onResizeStart={this.onResizeStart}
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
-        isDraggable={draggable}
-        isResizable={resizable}
+        isDraggable={draggable && !this.props.static}
+        isResizable={resizable && !this.props.static}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
 
@@ -427,8 +429,7 @@ export default class ReactGridLayout extends React.Component {
         minW={l.minW}
         maxH={l.maxH}
         maxW={l.maxW}
-        static={l.static}
-        >
+        static={l.static && this.props.static}>
         {child}
       </GridItem>
     );
