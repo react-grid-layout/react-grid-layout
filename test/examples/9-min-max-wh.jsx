@@ -13,8 +13,8 @@ var MinMaxLayout = React.createClass({
     return {
       isDraggable: true,
       isResizable: true,
-      items: 20,
-      rowHeight: 30,
+      items: 144,
+      rowHeight: 24,
       onLayoutChange: function() {},
       cols: 12,
     };
@@ -32,7 +32,7 @@ var MinMaxLayout = React.createClass({
       return (
         <div key={l.i} data-grid={l}>
           <span className="text">{l.i}</span>
-          <div className="minMax">{'min:' + mins + ' - max:' + maxes}</div>
+         
         </div>
       );
     });
@@ -41,12 +41,12 @@ var MinMaxLayout = React.createClass({
   generateLayout() {
     var p = this.props;
     return _.map(new Array(p.items), function(item, i) {
-      var minW = _.random(1, 6), minH = _.random(1, 6);
-      var maxW = _.random(minW, 6), maxH = _.random(minH, 6);
-      var w = _.random(minW, maxW);
-      var y = _.random(minH, maxH);
+      var minW = 1, minH = 2;
+      var maxW = 1, maxH = 2;
+      var w = 1;
+      var y = 2;
       return {
-        x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i.toString(),
+        x: i % 12, y: Math.floor(i / 12), w: w, h: y, i: i.toString(),
         minW: minW, maxW: maxW, minH: minH, maxH: maxH
       };
     });

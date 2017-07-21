@@ -4,13 +4,7 @@
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
-    "lint": "make lint",
-    "test": "make test",
-    "build": "make build",
-    "build-example": "make build-example",
-    "dev": "make dev",
-    "prepublishOnly": "make build",
-    "validate": "npm ls"
+    "start": "webpack-dev-server --hot"
   },
   "repository": {
     "type": "git",

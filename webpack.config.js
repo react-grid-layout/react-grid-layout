@@ -1,49 +1,53 @@
+const path = require('path');
 var webpack = require("webpack");
 
-// Builds bundle usable <script>. Includes RGL and all deps, excluding React.
 module.exports = {
-  context: __dirname,
-  entry: {
-    "react-grid-layout": "./index-dev.js"
-  },
-  output: {
-    path: __dirname + "/dist",
-    filename: "[name].min.js",
-    libraryTarget: "umd",
-    library: "ReactGridLayout"
-  },
-  devtool: "source-map",
-  externals: {
-    "react": {
-      "commonjs": "react",
-      "commonjs2": "react",
-      "amd": "react",
-      // React dep should be available as window.React, not window.react
-      "root": "React"
+    context: __dirname,
+    entry: "./test/dev-hook.jsx",
+    output: {
+        path: '/',
+        filename: "bundle.js",
+        sourceMapFilename: "[file].map",
     },
-    "react-dom": {
-      "commonjs": "react-dom",
-      "commonjs2": "react-dom",
-      "amd": "react-dom",
-      // React dep should be available as window.React, not window.react
-      "root": "ReactDOM"
-    }
-  },
-  module: {
-    loaders: [
-      {test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader"}
-    ]
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
+    module: {
+      loaders: [
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader',
+          query: {
+            cacheDirectory: true,
+            plugins: [
+              ['react-transform',
+                {
+                  transforms: [
+                    {
+                      transform: 'react-transform-hmr',
+                      imports: ['react'],
+                      locals: ['module']
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        "process.env": {
+          NODE_ENV: JSON.stringify('development')
+        }
+      }),
+    ],
+    devtool: "eval",
+    devServer: {
+        publicPath: '/',
+        compress: true,
+        port: 4002
+    },
+    resolve: {
+      extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
+      alias: {
+        'react-grid-layout': path.join(__dirname, '/index-dev.js')
       }
-    }),
-    // Compress, but don't print warnings to console
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}, sourceMap: true})
-  ],
-  resolve: {
-    extensions: [".webpack.js", ".web.js", ".js", ".jsx"]
-  }
+    }
 };
