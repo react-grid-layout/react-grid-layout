@@ -1,9 +1,9 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var WidthProvider = require('react-grid-layout').WidthProvider;
-var ReactGridLayout = require('react-grid-layout');
-ReactGridLayout = WidthProvider(ReactGridLayout);
+'use strict'
+var React = require('react')
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin')
+var WidthProvider = require('react-grid-layout').WidthProvider
+var ReactGridLayout = require('react-grid-layout')
+ReactGridLayout = WidthProvider(ReactGridLayout)
 
 /**
  * This layout demonstrates how to use static grid elements.
@@ -13,11 +13,11 @@ var StaticElementsLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   getInitialState() {
-    return {};
+    return {}
   },
 
   onLayoutChange: function(layout) {
-    this.props.onLayoutChange(layout);
+    this.props.onLayoutChange(layout)
   },
 
   render() {
@@ -34,12 +34,12 @@ var StaticElementsLayout = React.createClass({
           </span>
         </div>
       </ReactGridLayout>
-    );
+    )
   }
-});
+})
 
-module.exports = StaticElementsLayout;
+module.exports = StaticElementsLayout
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require('../test-hook.jsx')(module.exports)
 }

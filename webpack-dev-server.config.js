@@ -1,5 +1,5 @@
-const path = require('path');
-var webpack = require("webpack");
+const path = require('path')
+const webpack = require("webpack")
 
 module.exports = {
     context: __dirname,
@@ -50,4 +50,4 @@ module.exports = {
         'react-grid-layout': path.join(__dirname, '/index-dev.js')
       }
     }
-};
+}

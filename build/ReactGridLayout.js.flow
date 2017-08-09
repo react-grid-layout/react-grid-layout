@@ -12,10 +12,10 @@ const noop = function() {};
 import type {ResizeEvent, DragEvent, Layout, LayoutItem} from './utils';
 type State = {
   activeDrag: ?LayoutItem,
-  layout: Layout,
+  layout,
   mounted: boolean,
   oldDragItem: ?LayoutItem,
-  oldLayout: ?Layout,
+  oldLayout,
   oldResizeItem: ?LayoutItem
 };
 // End Types
@@ -54,7 +54,7 @@ export default class ReactGridLayout extends React.Component {
     verticalCompact: PropTypes.bool,
 
     // layout is an array of object with the format:
-    // {x: Number, y: Number, w: Number, h: Number, i: String}
+    // {x, y, w, h, i: String}
     layout: function (props) {
       var layout = props.layout;
       // I hope you're setting the data-grid property on the grid items
@@ -150,7 +150,7 @@ export default class ReactGridLayout extends React.Component {
     onResizeStop: noop
   };
 
-  state: State = {
+  state= {
     activeDrag: null,
     layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
                                           this.props.cols, this.props.verticalCompact),
@@ -215,7 +215,7 @@ export default class ReactGridLayout extends React.Component {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDragStart(i:string, x:number, y:number, {e, node}: DragEvent) {
+  onDragStart(i, x, y, {e, node}: DragEvent) {
     const {layout} = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -233,7 +233,7 @@ export default class ReactGridLayout extends React.Component {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDrag(i:string, x:number, y:number, {e, node}: DragEvent) {
+  onDrag(i, x, y, {e, node}: DragEvent) {
     const {oldDragItem} = this.state;
     let {layout} = this.state;
     var l = getLayoutItem(layout, i);
@@ -263,7 +263,7 @@ export default class ReactGridLayout extends React.Component {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDragStop(i:string, x:number, y:number, {e, node}: DragEvent) {
+  onDragStop(i, x, y, {e, node}: DragEvent) {
     const {oldDragItem} = this.state;
     let {layout} = this.state;
     const l = getLayoutItem(layout, i);
@@ -287,14 +287,14 @@ export default class ReactGridLayout extends React.Component {
     this.onLayoutMaybeChanged(newLayout, oldLayout);
   }
 
-  onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
+  onLayoutMaybeChanged(newLayout, oldLayout) {
     if (!oldLayout) oldLayout = this.state.layout;
     if (!isEqual(oldLayout, newLayout)) {
       this.props.onLayoutChange(newLayout);
     }
   }
 
-  onResizeStart(i:string, w:number, h:number, {e, node}: ResizeEvent) {
+  onResizeStart(i, w, h, {e, node}) {
     const {layout} = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -307,7 +307,7 @@ export default class ReactGridLayout extends React.Component {
     this.props.onResizeStart(layout, l, l, null, e, node);
   }
 
-  onResize(i:string, w:number, h:number, {e, node}: ResizeEvent) {
+  onResize(i, w, h, {e, node}) {
     const {layout, oldResizeItem} = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -330,7 +330,7 @@ export default class ReactGridLayout extends React.Component {
     });
   }
 
-  onResizeStop(i:string, w:number, h:number, {e, node}: ResizeEvent) {
+  onResizeStop(i, w, h, {e, node}) {
     const {layout, oldResizeItem} = this.state;
     var l = getLayoutItem(layout, i);
 
@@ -386,7 +386,7 @@ export default class ReactGridLayout extends React.Component {
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: React.Element<any>): ?React.Element<any> {
+  processGridItem(child): ?React.Element<any> {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, child.key);
     if (!l) return null;

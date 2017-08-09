@@ -1,23 +1,23 @@
 // @flow
 import isEqual from 'lodash.isequal';
 import React from 'react';
-export type LayoutItemRequired = {w: number, h: number, x: number, y: number, i: string};
+export type LayoutItemRequired = {w, h, x, y, i: string};
 export type LayoutItem = LayoutItemRequired &
-                         {minW?: number, minH?: number, maxW?: number, maxH?: number,
+                         {minW?, minH?, maxW?, maxH?,
                           moved?: boolean, static?: boolean,
                           isDraggable?: ?boolean, isResizable?: ?boolean};
 export type Layout = Array<LayoutItem>;
-export type Position = {left: number, top: number, width: number, height: number};
+export type Position = {left, top, width, height};
 export type DragCallbackData = {
   node: HTMLElement,
-  x: number, y: number,
-  deltaX: number, deltaY: number,
-  lastX: number, lastY: number
+  x, y,
+  deltaX, deltaY,
+  lastX, lastY
 };
 export type DragEvent = {e: Event} & DragCallbackData;
-export type Size = {width: number, height: number};
+export type Size = {width, height};
 export type ResizeEvent = {e: Event, node: HTMLElement, size: Size};
-export type ReactChildren = React.Element<any>[] | React.Element<any> | {[key: string] : React.Element<any>};
+export type ReactChildren = React.Element<any>[] | React.Element<any> | {[key: string] };
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -27,7 +27,7 @@ const isProduction = process.env.NODE_ENV === 'production';
  * @param  {Array} layout Layout array.
  * @return {Number}       Bottom coordinate.
  */
-export function bottom(layout: Layout): number {
+export function bottom(layout) {
   let max = 0, bottomY;
   for (let i = 0, len = layout.length; i < len; i++) {
     bottomY = layout[i].y + layout[i].h;
@@ -36,7 +36,7 @@ export function bottom(layout: Layout): number {
   return max;
 }
 
-export function cloneLayout(layout: Layout): Layout {
+export function cloneLayout(layout) {
   const newLayout = Array(layout.length);
   for (let i = 0, len = layout.length; i < len; i++) {
     newLayout[i] = cloneLayoutItem(layout[i]);
@@ -59,7 +59,7 @@ export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
  * Comparing React `children` is a bit difficult. This is a good way to compare them.
  * This will catch differences in keys, order, and length.
  */
-export function childrenEqual(a: ReactChildren, b: ReactChildren): boolean {
+export function childrenEqual(a, b): boolean {
   return isEqual(React.Children.map(a, c => c.key), React.Children.map(b, c => c.key));
 }
 
@@ -84,7 +84,7 @@ export function collides(l1: LayoutItem, l2: LayoutItem): boolean {
  *   vertically.
  * @return {Array}       Compacted Layout.
  */
-export function compact(layout: Layout, verticalCompact: boolean): Layout {
+export function compact(layout, verticalCompact: boolean) {
   // Statics go in the compareWith array right away so items flow around them.
   const compareWith = getStatics(layout);
   // We go through the items by row and column.
@@ -117,7 +117,7 @@ export function compact(layout: Layout, verticalCompact: boolean): Layout {
 /**
  * Compact an item in the layout.
  */
-export function compactItem(compareWith: Layout, l: LayoutItem, verticalCompact: boolean): LayoutItem {
+export function compactItem(compareWith, l: LayoutItem, verticalCompact: boolean): LayoutItem {
   if (verticalCompact) {
     // Bottom 'y' possible is the bottom of the layout.
     // This allows you to do nice stuff like specify {y: Infinity}
@@ -144,7 +144,7 @@ export function compactItem(compareWith: Layout, l: LayoutItem, verticalCompact:
  * @param  {Array} layout Layout array.
  * @param  {Number} bounds Number of columns.
  */
-export function correctBounds(layout: Layout, bounds: {cols: number}): Layout {
+export function correctBounds(layout, bounds: {cols}) {
   const collidesWith = getStatics(layout);
   for (let i = 0, len = layout.length; i < len; i++) {
     const l = layout[i];
@@ -174,7 +174,7 @@ export function correctBounds(layout: Layout, bounds: {cols: number}): Layout {
  * @param  {String} id     ID
  * @return {LayoutItem}    Item at ID.
  */
-export function getLayoutItem(layout: Layout, id: string): ?LayoutItem {
+export function getLayoutItem(layout, id: string): ?LayoutItem {
   for (let i = 0, len = layout.length; i < len; i++) {
     if (layout[i].i === id) return layout[i];
   }
@@ -188,13 +188,13 @@ export function getLayoutItem(layout: Layout, id: string): ?LayoutItem {
  * @param  {Object} layoutItem Layout item.
  * @return {Object|undefined}  A colliding layout item, or undefined.
  */
-export function getFirstCollision(layout: Layout, layoutItem: LayoutItem): ?LayoutItem {
+export function getFirstCollision(layout, layoutItem: LayoutItem): ?LayoutItem {
   for (let i = 0, len = layout.length; i < len; i++) {
     if (collides(layout[i], layoutItem)) return layout[i];
   }
 }
 
-export function getAllCollisions(layout: Layout, layoutItem: LayoutItem): Array<LayoutItem> {
+export function getAllCollisions(layout, layoutItem: LayoutItem): Array<LayoutItem> {
   return layout.filter((l) => collides(l, layoutItem));
 }
 
@@ -203,7 +203,7 @@ export function getAllCollisions(layout: Layout, layoutItem: LayoutItem): Array<
  * @param  {Array} layout Array of layout objects.
  * @return {Array}        Array of static layout items..
  */
-export function getStatics(layout: Layout): Array<LayoutItem> {
+export function getStatics(layout): Array<LayoutItem> {
   return layout.filter((l) => l.static);
 }
 
@@ -217,7 +217,7 @@ export function getStatics(layout: Layout): Array<LayoutItem> {
  * @param  {Boolean}    [isUserAction] If true, designates that the item we're moving is
  *                                     being dragged/resized by the user.
  */
-export function moveElement(layout: Layout, l: LayoutItem, x: ?number, y: ?number, isUserAction: ?boolean): Layout {
+export function moveElement(layout, l: LayoutItem, x: ?number, y: ?number, isUserAction: ?boolean) {
   if (l.static) return layout;
 
   // Short-circuit if nothing to do.
@@ -269,8 +269,8 @@ export function moveElement(layout: Layout, l: LayoutItem, x: ?number, y: ?numbe
  * @param  {Boolean} [isUserAction]  If true, designates that the item we're moving is being dragged/resized
  *                                   by the user.
  */
-export function moveElementAwayFromCollision(layout: Layout, collidesWith: LayoutItem,
-                                             itemToMove: LayoutItem, isUserAction: ?boolean): Layout {
+export function moveElementAwayFromCollision(layout, collidesWith: LayoutItem,
+                                             itemToMove: LayoutItem, isUserAction: ?boolean) {
 
   // If there is enough space above the collision to put this element, move it there.
   // We only do this on the main collision as this can get funky in cascades and cause
@@ -301,7 +301,7 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
  * @param  {Number} num Any number
  * @return {String}     That number as a percentage.
  */
-export function perc(num: number): string {
+export function perc(num): string {
   return num * 100 + '%';
 }
 
@@ -336,7 +336,7 @@ export function setTopLeft({top, left, width, height}: Position): Object {
  * @return {Array} Array of layout objects.
  * @return {Array}        Layout, sorted static items first.
  */
-export function sortLayoutItemsByRowCol(layout: Layout): Layout {
+export function sortLayoutItemsByRowCol(layout) {
   return [].concat(layout).sort(function(a, b) {
     if (a.y > b.y || (a.y === b.y && a.x > b.x)) {
       return 1;
@@ -357,13 +357,13 @@ export function sortLayoutItemsByRowCol(layout: Layout): Layout {
  * @param  {Boolean} verticalCompact Whether or not to compact the layout vertically.
  * @return {Array}                Working layout.
  */
-export function synchronizeLayoutWithChildren(initialLayout: Layout, children: ReactChildren,
-                                              cols: number, verticalCompact: boolean): Layout {
+export function synchronizeLayoutWithChildren(initialLayout, children,
+                                              cols, verticalCompact: boolean) {
   initialLayout = initialLayout || [];
 
   // Generate one layout item per child.
-  let layout: Layout = [];
-  React.Children.forEach(children, (child: React.Element<any>, i: number) => {
+  let layout = [];
+  React.Children.forEach(children, (child, i) => {
     // Don't overwrite if it already exists.
     const exists = getLayoutItem(initialLayout, child.key || "1" /* FIXME satisfies Flow */);
     if (exists) {
@@ -403,7 +403,7 @@ export function synchronizeLayoutWithChildren(initialLayout: Layout, children: R
  * @param  {String} [contextName] Context name for errors.
  * @throw  {Error}                Validation error.
  */
-export function validateLayout(layout: Layout, contextName: string): void {
+export function validateLayout(layout, contextName: string): void {
   contextName = contextName || "Layout";
   const subProps = ['x', 'y', 'w', 'h'];
   if (!Array.isArray(layout)) throw new Error(contextName + " must be an array!");
