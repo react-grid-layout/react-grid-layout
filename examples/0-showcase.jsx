@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import {Responsive, WidthProvider} from 'react-grid-layout';
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+import React from 'react'
+import PropTypes from 'prop-types'
+import _ from 'lodash'
+import {Responsive, WidthProvider} from 'react-grid-layout'
+const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
 class ShowcaseLayout extends React.Component {
 
@@ -25,7 +25,7 @@ class ShowcaseLayout extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({mounted: true});
+    this.setState({mounted: true})
   }
 
   generateDOM() {
@@ -33,27 +33,27 @@ class ShowcaseLayout extends React.Component {
       return (
         <div key={i} className={l.static ? 'static' : ''}>
           {l.static ?
-            <span className="text" title="This item is static and cannot be removed or resized.">Static - {i}</span>
-            : <span className="text">{i}</span>
+            <span className="text" title="This item is static and cannot be removed or resized.">Static - {i}</span> :
+            <span className="text">{i}</span>
           }
-        </div>);
-    });
+        </div>)
+    })
   }
 
   onBreakpointChange = (breakpoint) => {
     this.setState({
       currentBreakpoint: breakpoint
-    });
+    })
   };
 
   onLayoutChange = (layout, layouts) => {
-    this.props.onLayoutChange(layout, layouts);
+    this.props.onLayoutChange(layout, layouts)
   };
 
   onNewLayout = () => {
     this.setState({
-      layouts: {lg: generateLayout()}
-    });
+      layouts: {lg: generateLayout(), md: generateLayout()}
+    })
   };
 
   render() {
@@ -75,15 +75,15 @@ class ShowcaseLayout extends React.Component {
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>
-    );
+    )
   }
 }
 
-module.exports = ShowcaseLayout;
+module.exports = ShowcaseLayout
 
 function generateLayout() {
   return _.map(_.range(0, 25), function (item, i) {
-    var y = Math.ceil(Math.random() * 4) + 1;
+    var y = Math.ceil(Math.random() * 4) + 1
     return {
       x: _.random(0, 5) * 2 % 12,
       y: Math.floor(i / 6) * y,
@@ -91,10 +91,10 @@ function generateLayout() {
       h: y,
       i: i.toString(),
       static: Math.random() < 0.05
-    };
-  });
+    }
+  })
 }
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require('../test-hook.jsx')(module.exports)
 }

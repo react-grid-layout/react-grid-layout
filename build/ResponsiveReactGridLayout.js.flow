@@ -12,9 +12,9 @@ const type = (obj) => Object.prototype.toString.call(obj);
 
 import type {Layout} from './utils';
 type State = {
-  layout: Layout,
+  layout,
   breakpoint: string,
-  cols: number
+  cols
 };
 
 export default class ResponsiveReactGridLayout extends React.Component {
@@ -38,7 +38,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     cols: PropTypes.object,
 
     // layouts is an object mapping breakpoints to layouts.
-    // e.g. {lg: Layout, md: Layout, ...}
+    // e.g. {lg, md, ...}
     layouts(props, propName) {
       if (type(props[propName]) !== '[object Object]') {
         throw new Error('Layout property must be an object. Received: ' + type(props[propName]));
@@ -81,9 +81,9 @@ export default class ResponsiveReactGridLayout extends React.Component {
     static: false
   };
 
-  state: State = this.generateInitialState();
+  state= this.generateInitialState();
 
-  generateInitialState(): State {
+  generateInitialState(){
     const {width, breakpoints, layouts, verticalCompact, cols} = this.props;
     const breakpoint = getBreakpointFromWidth(breakpoints, width);
     const colNo = getColsFromBreakpoint(breakpoint, cols);
@@ -126,7 +126,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
   }
 
   // wrap layouts so we do not need to pass layouts to child
-  onLayoutChange = (layout: Layout) => {
+  onLayoutChange = (layout) => {
     this.props.onLayoutChange(layout, {...this.props.layouts, [this.state.breakpoint]: layout});
   };
 
@@ -146,7 +146,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
       if (!(lastBreakpoint in layouts)) layouts[lastBreakpoint] = cloneLayout(this.state.layout);
 
       // Find or generate a new layout.
-      const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
+      const newCols = getColsFromBreakpoint(newBreakpoint, cols);
       let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint,
                                                   lastBreakpoint, newCols, verticalCompact);
 

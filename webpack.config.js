@@ -1,4 +1,4 @@
-var webpack = require("webpack");
+var webpack = require("webpack")
 
 // Builds bundle usable <script>. Includes RGL and all deps, excluding React.
 module.exports = {
@@ -14,19 +14,19 @@ module.exports = {
   },
   devtool: "source-map",
   externals: {
-    "react": {
-      "commonjs": "react",
-      "commonjs2": "react",
-      "amd": "react",
+    react: {
+      commonjs: "react",
+      commonjs2: "react",
+      amd: "react",
       // React dep should be available as window.React, not window.react
-      "root": "React"
+      root: "React"
     },
     "react-dom": {
-      "commonjs": "react-dom",
-      "commonjs2": "react-dom",
-      "amd": "react-dom",
+      commonjs: "react-dom",
+      commonjs2: "react-dom",
+      amd: "react-dom",
       // React dep should be available as window.React, not window.react
-      "root": "ReactDOM"
+      root: "ReactDOM"
     }
   },
   module: {
@@ -46,4 +46,4 @@ module.exports = {
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".jsx"]
   }
-};
+}

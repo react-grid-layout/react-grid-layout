@@ -33,8 +33,8 @@ build-js:
 	@$(BIN)/babel --stage 0 --out-dir $(BUILD) $(LIB)
 
 build-example:
-	@$(BIN)/webpack --config webpack-examples.config.js
-	node ./examples/generate.js
+	@$(BIN)/webpack --config webpack-examples.config.js --watch
+	#node ./examples/generate.js
 
 # Copy original source as `.js.flow` for use with flow
 copy-flow:

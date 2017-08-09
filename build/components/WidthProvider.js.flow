@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 type State = {
-  width: number
+  width
 };
 
 /*
@@ -23,7 +23,7 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
     measureBeforeMount: PropTypes.bool
   };
 
-  state: State = {
+  state= {
     width: 1280
   };
 

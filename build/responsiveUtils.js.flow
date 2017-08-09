@@ -3,9 +3,9 @@
 import {cloneLayout, compact, correctBounds} from './utils';
 
 import type {Layout} from './utils';
-export type ResponsiveLayout = {lg?: Layout, md?: Layout, sm?: Layout, xs?: Layout, xxs?: Layout};
+export type ResponsiveLayout = {lg?, md?, sm?, xs?, xxs?};
 type Breakpoint = string;
-type Breakpoints = {lg?: number, md?: number, sm?: number, xs?: number, xxs?: number};
+type Breakpoints = {lg?, md?, sm?, xs?, xxs?};
 
 /**
  * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
@@ -14,7 +14,7 @@ type Breakpoints = {lg?: number, md?: number, sm?: number, xs?: number, xxs?: nu
  * @param  {Number} width Screen width.
  * @return {String}       Highest breakpoint that is less than width.
  */
-export function getBreakpointFromWidth(breakpoints: Breakpoints, width: number): Breakpoint {
+export function getBreakpointFromWidth(breakpoints: Breakpoints, width): Breakpoint {
   const sorted = sortBreakpoints(breakpoints);
   let matching = sorted[0];
   for (let i = 1, len = sorted.length; i < len; i++) {
@@ -31,7 +31,7 @@ export function getBreakpointFromWidth(breakpoints: Breakpoints, width: number):
  * @param  {Object} cols       Map of breakpoints to cols.
  * @return {Number}            Number of cols.
  */
-export function getColsFromBreakpoint(breakpoint: Breakpoint, cols: Breakpoints): number {
+export function getColsFromBreakpoint(breakpoint: Breakpoint, cols: Breakpoints) {
   if (!cols[breakpoint]) {
     throw new Error("ResponsiveReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
   }
@@ -54,7 +54,7 @@ export function getColsFromBreakpoint(breakpoint: Breakpoint, cols: Breakpoints)
  */
 export function findOrGenerateResponsiveLayout(layouts: ResponsiveLayout, breakpoints: Breakpoints,
                                                breakpoint: Breakpoint, lastBreakpoint: Breakpoint,
-                                               cols: number, verticalCompact: boolean): Layout {
+                                               cols, verticalCompact: boolean) {
   // If it already exists, just return it.
   if (layouts[breakpoint]) return cloneLayout(layouts[breakpoint]);
   // Find or generate the next layout

@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-require('style-loader!css-loader!../css/styles.css');
-require('style-loader!css-loader!../examples/example-styles.css');
-typeof window !== "undefined" && (window.React = React); // for devtools
+import React from 'react'
+import ReactDOM from 'react-dom'
+require('style-loader!css-loader!../css/styles.css')
+require('style-loader!css-loader!../examples/example-styles.css')
+typeof window !== "undefined" && (window.React = React) // for devtools
 
 module.exports = function(Layout) {
   class ExampleLayout extends React.Component {
@@ -10,13 +10,13 @@ module.exports = function(Layout) {
     state = {layout: []};
 
     onLayoutChange = (layout) => {
-      this.setState({layout: layout});
+      this.setState({layout: layout})
     };
 
     stringifyLayout() {
       return this.state.layout.map(function(l) {
-        return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
-      });
+        return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>
+      })
     }
 
     render(){
@@ -28,16 +28,16 @@ module.exports = function(Layout) {
               {this.stringifyLayout()}
             </div>
           </div>
-          <Layout onLayoutChange={this.onLayoutChange} />
+          <Layout onLayoutChange={this.onLayoutChange}/>
         </div>
-      );
+      )
     }
   }
 
   document.addEventListener("DOMContentLoaded", function() {
-    const contentDiv = document.getElementById('content');
-    const gridProps = window.gridProps || {};
-    ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv);
-  });
-};
+    const contentDiv = document.getElementById('content')
+    const gridProps = window.gridProps || {}
+    ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv)
+  })
+}
 

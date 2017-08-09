@@ -1,52 +1,52 @@
-'use strict';
-var webpack = require('webpack');
-var fs = require('fs');
+'use strict'
+const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-// Builds example bundles
 module.exports = {
     context: __dirname,
-    entry: {
-      commons: ["lodash"],
-    },
+    entry: ['./examples/app.jsx'],
     output: {
-        path: __dirname + "/dist",
-        filename: "[name].bundle.js",
+        path: __dirname + "/dist/",
+        publicPath:  "/examples/",
+        filename: "example.js",
         sourceMapFilename: "[file].map",
     },
     module: {
-      loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: {
-          cacheDirectory: true,
-          plugins: [
-            'transform-react-inline-elements',
-            'transform-react-constant-elements',
-          ]
-        }}
-      ]
+        loaders: [
+            {
+                enforce: 'pre',
+                test: /.jsx?$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader',
+                options: {fix: true}
+            },
+            {
+                test: /.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                options: {
+                    presets: ['es2015', 'stage-0', 'react'],
+                    plugins: [
+                        'transform-react-inline-elements',
+                        'transform-react-constant-elements'
+                    ]
+                }
+            }
+        ]
     },
     plugins: [
-      new webpack.DefinePlugin({
-        "process.env": {
-          NODE_ENV: JSON.stringify('production')
-        }
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'commons', filename: 'commons.js'
-      })
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new CopyWebpackPlugin([{
+            from: './examples/index.html',
+            to: 'dist/index.html'
+        }])
     ],
     resolve: {
-      extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
-      alias: {'react-grid-layout': __dirname + '/index-dev.js'}
+        extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
+        alias: {'react-grid-layout': __dirname + '/index-dev.js'}
     }
-};
-
-// Load all entry points
-var files = fs.readdirSync(__dirname + '/test/examples').filter(function(element, index, array){
-    return element.match(/^.+\.jsx$/);
-});
-
-for(var idx in files){
-    var file = files[idx];
-    var module_name = file.replace(/\.jsx$/,'');
-    module.exports.entry[module_name] = './test/examples/' + file;
 }

@@ -1,10 +1,10 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var _ = require('lodash');
-var WidthProvider = require('react-grid-layout').WidthProvider;
-var ReactGridLayout = require('react-grid-layout');
-ReactGridLayout = WidthProvider(ReactGridLayout);
+'use strict'
+var React = require('react')
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin')
+var _ = require('lodash')
+var WidthProvider = require('react-grid-layout').WidthProvider
+var ReactGridLayout = require('react-grid-layout')
+ReactGridLayout = WidthProvider(ReactGridLayout)
 
 /**
  * This layout demonstrates how to use the `onResize` handler to enforce a min/max width and height.
@@ -23,38 +23,38 @@ var DynamicMinMaxLayout = React.createClass({
       rowHeight: 30,
       onLayoutChange: function() {},
       cols: 12,
-    };
+    }
   },
 
   getInitialState() {
-    return {};
+    return {}
   },
 
   generateDOM() {
     // Generate items with properties from the layout, rather than pass the layout directly
-    var layout = this.generateLayout();
+    var layout = this.generateLayout()
     return _.map(layout, function(l) {
       return (
         <div key={l.i} data-grid={l}>
           <span className="text">{l.i}</span>
         </div>
-      );
-    });
+      )
+    })
   },
 
   generateLayout() {
-    var p = this.props;
+    var p = this.props
     return _.map(new Array(p.items), function(item, i) {
-      var w = _.random(1, 2);
-      var h = _.random(1, 3);
+      var w = _.random(1, 2)
+      var h = _.random(1, 3)
       return {
         x: i * 2 % 12, y: Math.floor(i / 6), w: w, h: h, i: i.toString()
-      };
-    });
+      }
+    })
   },
 
   onLayoutChange: function(layout) {
-    this.props.onLayoutChange(layout);
+    this.props.onLayoutChange(layout)
   },
 
   onResize: function(layout, oldLayoutItem, layoutItem, placeholder, e) {
@@ -62,13 +62,13 @@ var DynamicMinMaxLayout = React.createClass({
     // You can modify `layoutItem` to enforce constraints.
 
     if (layoutItem.h < 3 && layoutItem.w > 2) {
-      layoutItem.w = 2;
-      placeholder.w = 2;
+      layoutItem.w = 2
+      placeholder.w = 2
     }
 
     if (layoutItem.h >= 3 && layoutItem.w < 2) {
-      layoutItem.w = 2;
-      placeholder.w = 2;
+      layoutItem.w = 2
+      placeholder.w = 2
     }
   },
 
@@ -78,12 +78,12 @@ var DynamicMinMaxLayout = React.createClass({
           {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>
-    );
+    )
   }
-});
+})
 
-module.exports = DynamicMinMaxLayout;
+module.exports = DynamicMinMaxLayout
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require('../test-hook.jsx')(module.exports)
 }

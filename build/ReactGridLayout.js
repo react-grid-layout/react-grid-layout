@@ -435,7 +435,7 @@ ReactGridLayout.propTypes = {
   verticalCompact: _propTypes2.default.bool,
 
   // layout is an array of object with the format:
-  // {x: Number, y: Number, w: Number, h: Number, i: String}
+  // {x, y, w, h, i: String}
   layout: function layout(props) {
     var layout = props.layout;
     // I hope you're setting the data-grid property on the grid items

@@ -229,7 +229,7 @@ RGL supports the following properties (see the source for the final word on this
 
 // This allows setting the initial width on the server side.
 // This is required unless using the HOC <WidthProvider> or similar
-width: number,
+width,
 
 // If true, the container height swells and contracts to fit contents
 autoSize: ?boolean = true,
@@ -251,11 +251,11 @@ draggableHandle: ?string = '',
 verticalCompact: ?boolean = true,
 
 // Layout is an array of object with the format:
-// {x: number, y: number, w: number, h: number}
+// {x, y, w, h}
 // The index into the layout must match the key used on each item component.
 // If you choose to use custom keys, you can specify that key in the layout
 // array objects like so:
-// {i: string, x: number, y: number, w: number, h: number}
+// {i: string, x, y, w, h}
 layout: ?array = null, // If not provided, use data-grid props on children
 
 // Margin between items [x, y] in px.
@@ -283,13 +283,13 @@ useCSSTransforms: ?boolean = true,
 
 // Callback so you can save the layout.
 // Calls back with (currentLayout) after every drag or resize stop.
-onLayoutChange: (layout: Layout) => void,
+onLayoutChange: (layout) => void,
 
 //
 // All callbacks below have signature (layout, oldItem, newItem, placeholder, e, element).
 // 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
 //
-type ItemCallback = (layout: Layout, oldItem: LayoutItem, newItem: LayoutItem,
+type ItemCallback = (layout, oldItem: LayoutItem, newItem: LayoutItem,
                      placeholder: LayoutItem, e: MouseEvent, element: HTMLElement) => void;
 
 // Calls when drag starts.
@@ -314,28 +314,28 @@ The new properties and changes are:
 ```javascript
 // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
 // Breakpoint names are arbitrary but must match in the cols and layouts objects.
-breakpoints: ?Object = {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
+breakpoints = {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
 
 // # of cols. This is a breakpoint -> cols map, e.g. {lg: 12, md: 10, ...}
-cols: ?Object = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+cols = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
 
 // layouts is an object mapping breakpoints to layouts.
-// e.g. {lg: Layout, md: Layout, ...}
-layouts: {[key: $Keys<breakpoints>]: Layout}
+// e.g. {lg, md, ...}
+layouts: {[key: $Keys<breakpoints>]}
 
 //
 // Callbacks
 //
 
 // Calls back with breakpoint and new # cols
-onBreakpointChange: (newBreakpoint: string, newCols: number) => void,
+onBreakpointChange: (newBreakpoint: string, newCols) => void,
 
 // Callback so you can save the layout.
 // AllLayouts are keyed by breakpoint.
-onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints>]: Layout}) => void,
+onLayoutChange: (currentLayout, allLayouts: {[key: $Keys<breakpoints>]}) => void,
 
 // Callback when the width changes, so you can modify the layout as needed.
-onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void;
+onWidthChange: (containerWidth, margin: [number, number], cols, containerPadding: [number, number]) => void;
 
 ```
 
@@ -365,10 +365,10 @@ will be draggable.
   i: string,
 
   // These are all in grid units, not pixels
-  x: number,
-  y: number,
-  w: number,
-  h: number,
+  x,
+  y,
+  w,
+  h,
   minW: ?number = 0,
   maxW: ?number = Infinity,
   minH: ?number = 0,

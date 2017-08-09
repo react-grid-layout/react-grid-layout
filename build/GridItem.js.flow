@@ -9,8 +9,8 @@ import classNames from 'classnames';
 import type {DragCallbackData, Position} from './utils';
 
 type State = {
-  resizing: ?{width: number, height: number},
-  dragging: ?{top: number, left: number},
+  resizing: ?{width, height},
+  dragging: ?{top, left},
   className: string
 };
 
@@ -98,14 +98,14 @@ export default class GridItem extends React.Component {
     maxW: Infinity
   };
 
-  state: State = {
+  state= {
     resizing: null,
     dragging: null,
     className: ''
   };
 
   // Helper for generating column width
-  calcColWidth(): number {
+  calcColWidth() {
     const {margin, containerPadding, containerWidth, cols} = this.props;
     return (containerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
@@ -119,7 +119,7 @@ export default class GridItem extends React.Component {
    * @param  {Number}  h             H coordinate in grid units.
    * @return {Object}                Object containing coords.
    */
-  calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
+  calcPosition(x, y, w, h, state) {
     const {margin, containerPadding, rowHeight} = this.props;
     const colWidth = this.calcColWidth();
 
@@ -152,7 +152,7 @@ export default class GridItem extends React.Component {
    * @param  {Number} left Left position (relative to parent) in pixels.
    * @return {Object} x and y in grid units.
    */
-  calcXY(top: number, left: number): {x: number, y: number} {
+  calcXY(top, left): {x, y} {
     const {margin, cols, rowHeight, w, h, maxRows} = this.props;
     const colWidth = this.calcColWidth();
 
@@ -179,7 +179,7 @@ export default class GridItem extends React.Component {
    * @param  {Number} width  Width in pixels.
    * @return {Object} w, h as grid units.
    */
-  calcWH({height, width}: {height: number, width: number}): {w: number, h: number} {
+  calcWH({height, width}: {height, width}): {w, h} {
     const {margin, maxRows, cols, rowHeight, x, y} = this.props;
     const colWidth = this.calcColWidth();
 
@@ -205,7 +205,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} pos Position object with width, height, left, top.
    * @return {Object}     Style object.
    */
-  createStyle(pos: Position): {[key: string]: ?string} {
+  createStyle(pos) {
     const {usePercentages, containerWidth, useCSSTransforms} = this.props;
 
     let style;
@@ -232,7 +232,7 @@ export default class GridItem extends React.Component {
    * @param  {Element} child    Child element.
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable(child: React.Element<any>): React.Element<any> {
+  mixinDraggable(child) {
     return (
       <DraggableCore
         onStart={this.onDragHandler('onDragStart')}
@@ -251,7 +251,7 @@ export default class GridItem extends React.Component {
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable(child: React.Element<any>, position: Position): React.Element<any> {
+  mixinResizable(child, position) {
     const {cols, x, minW, minH, maxW, maxH} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
@@ -284,11 +284,11 @@ export default class GridItem extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onDragHandler(handlerName:string) {
-    return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
+  onDragHandler(handlerName) {
+    return (e, {node, deltaX, deltaY}) => {
       if (!this.props[handlerName]) return;
 
-      const newPosition: {top: number, left: number} = {top: 0, left: 0};
+      const newPosition: {top, left} = {top: 0, left: 0};
 
       // Get new XY
       switch (handlerName) {
@@ -332,7 +332,7 @@ export default class GridItem extends React.Component {
    * @return {Function}           Handler function.
    */
   onResizeHandler(handlerName: string) {
-    return (e:Event, {node, size}: {node: HTMLElement, size: Position}) => {
+    return (e, {node, size}: {node: HTMLElement, size}) => {
       if (!this.props[handlerName]) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
 
@@ -354,7 +354,7 @@ export default class GridItem extends React.Component {
     };
   }
 
-  render(): React.Element<any> {
+  render() {
     const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
