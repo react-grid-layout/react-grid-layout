@@ -31,26 +31,42 @@ export default class GridItem extends React.Component {
         // All optional
         minW: function (props, propName) {
             const value = props[propName]
-            if (typeof value !== 'number') return new Error('minWidth not Number')
-            if (value > props.w || value > props.maxW) return new Error('minWidth larger than item width/maxWidth')
+            if (typeof value !== 'number') {
+                return new Error('minWidth not Number')
+            }
+            if (value > props.w || value > props.maxW) {
+                return new Error('minWidth larger than item width/maxWidth')
+            }
         },
 
         maxW: function (props, propName) {
             const value = props[propName]
-            if (typeof value !== 'number') return new Error('maxWidth not Number')
-            if (value < props.w || value < props.minW) return new Error('maxWidth smaller than item width/minWidth')
+            if (typeof value !== 'number') {
+                return new Error('maxWidth not Number')
+            }
+            if (value < props.w || value < props.minW) {
+                return new Error('maxWidth smaller than item width/minWidth')
+            }
         },
 
         minH: function (props, propName) {
             const value = props[propName]
-            if (typeof value !== 'number') return new Error('minHeight not Number')
-            if (value > props.h || value > props.maxH) return new Error('minHeight larger than item height/maxHeight')
+            if (typeof value !== 'number') {
+                return new Error('minHeight not Number')
+            }
+            if (value > props.h || value > props.maxH) {
+                return new Error('minHeight larger than item height/maxHeight')
+            }
         },
 
         maxH: function (props, propName) {
             const value = props[propName]
-            if (typeof value !== 'number') return new Error('maxHeight not Number')
-            if (value < props.h || value < props.minH) return new Error('maxHeight smaller than item height/minHeight')
+            if (typeof value !== 'number') {
+                return new Error('maxHeight not Number')
+            }
+            if (value < props.h || value < props.minH) {
+                return new Error('maxHeight smaller than item height/minHeight')
+            }
         },
 
         // ID is nice to have for callbacks
@@ -115,10 +131,14 @@ export default class GridItem extends React.Component {
         })
 
         // Resizable support. This is usually on but the user can toggle it off.
-        if (isResizable) newChild = this.mixinResizable(newChild, pos)
+        if (isResizable) {
+            newChild = this.mixinResizable(newChild, pos)
+        }
 
         // Draggable support. This is always on, except for with placeholders.
-        if (isDraggable) newChild = this.mixinDraggable(newChild)
+        if (isDraggable) {
+            newChild = this.mixinDraggable(newChild)
+        }
 
         return newChild
     }
@@ -305,7 +325,9 @@ export default class GridItem extends React.Component {
      */
     onDragHandler(handlerName) {
         return (e, {node, deltaX, deltaY}) => {
-            if (!this.props[handlerName]) return
+            if (!this.props[handlerName]) {
+                return
+            }
 
             const newPosition = {top: 0, left: 0}
 
@@ -321,13 +343,17 @@ export default class GridItem extends React.Component {
                     break
                 }
                 case 'onDrag':
-                    if (!this.state.dragging) throw new Error('onDrag called before onDragStart.')
+                    if (!this.state.dragging) {
+                        throw new Error('onDrag called before onDragStart.')
+                    }
                     newPosition.left = this.state.dragging.left + deltaX
                     newPosition.top = this.state.dragging.top + deltaY
                     this.setState({dragging: newPosition})
                     break
                 case 'onDragStop':
-                    if (!this.state.dragging) throw new Error('onDragEnd called before onDragStart.')
+                    if (!this.state.dragging) {
+                        throw new Error('onDragEnd called before onDragStart.')
+                    }
                     newPosition.left = this.state.dragging.left
                     newPosition.top = this.state.dragging.top
                     this.setState({dragging: null})
@@ -350,9 +376,11 @@ export default class GridItem extends React.Component {
      * @param  {String} handlerName Handler name to wrap.
      * @return {Function}           Handler function.
      */
-    onResizeHandler(handlerName: string) {
+    onResizeHandler(handlerName) {
         return (e, {node, size}) => {
-            if (!this.props[handlerName]) return
+            if (!this.props[handlerName]) {
+                return
+            }
             const {cols, x, i, maxW, minW, maxH, minH} = this.props
 
             // Get new XY

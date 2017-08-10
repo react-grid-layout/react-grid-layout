@@ -15,14 +15,6 @@ export default class ResponsiveReactGridLayout extends React.Component {
     // will do validation of the rest props passed to it.
     static propTypes = {
 
-        //
-        // Basic props
-        //
-
-        // Optional, but if you are managing width yourself you may want to set the breakpoint
-        // yourself as well.
-        breakpoint: PropTypes.string,
-
         // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
         breakpoints: PropTypes.object,
 
@@ -80,8 +72,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
         if (nextProps.width != this.props.width ||
             nextProps.breakpoint !== this.props.breakpoint ||
             !isEqual(nextProps.breakpoints, this.props.breakpoints) ||
-            !isEqual(nextProps.cols, this.props.cols)
-        ) {
+            !isEqual(nextProps.cols, this.props.cols)) {
             this.onWidthChange(nextProps)
         }
 
@@ -107,11 +98,11 @@ export default class ResponsiveReactGridLayout extends React.Component {
         } = this.props
 
         return (
-            <ReactGridLayout
-                {...other}
-                onLayoutChange={this.onLayoutChange}
-                layout={this.state.layout}
-                cols={this.state.cols}/>
+            <ReactGridLayout {...other}
+                             breakpoint={this.state.breakpoint}
+                             onLayoutChange={this.onLayoutChange}
+                             layout={this.state.layout}
+                             cols={this.state.cols}/>
         )
     }
 
@@ -140,16 +131,21 @@ export default class ResponsiveReactGridLayout extends React.Component {
      * When the width changes work through breakpoints and reset state with the new width & breakpoint.
      * Width changes are necessary to figure out the widget widths.
      */
-    onWidthChange(nextProps: typeof ResponsiveReactGridLayout.prototype.props) {
+    onWidthChange(nextProps) {
         const {breakpoints, cols, layouts, verticalCompact} = nextProps
         const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width)
 
         const lastBreakpoint = this.state.breakpoint
 
         // Breakpoint change
-        if (lastBreakpoint !== newBreakpoint || this.props.breakpoints !== breakpoints || this.props.cols !== cols) {
+        const isBreakPointChanged = lastBreakpoint !== newBreakpoint || this.props.breakpoints !== breakpoints ||
+            this.props.cols !== cols
+
+        if (isBreakPointChanged) {
             // Preserve the current layout if the current breakpoint is not present in the next layouts.
-            if (!(lastBreakpoint in layouts)) layouts[lastBreakpoint] = cloneLayout(this.state.layout)
+            if (!(lastBreakpoint in layouts)) {
+                layouts[lastBreakpoint] = cloneLayout(this.state.layout)
+            }
 
             // Find or generate a new layout.
             const newCols = getColsFromBreakpoint(newBreakpoint, cols)

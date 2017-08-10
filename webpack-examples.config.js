@@ -8,9 +8,9 @@ module.exports = {
     output: {
         path: __dirname + "/dist/",
         publicPath:  "/examples/",
-        filename: "example.js",
-        sourceMapFilename: "[file].map",
+        filename: "example.js"
     },
+    devtool: "source-map",
     module: {
         loaders: [
             {

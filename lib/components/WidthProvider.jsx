@@ -40,15 +40,19 @@ const WidthProvider = (ComposedComponent) => class extends React.Component {
     }
 
     onWindowResize = () => {
-        if (!this.mounted) return
+        if (!this.mounted) {
+            return
+        }
         const node = ReactDOM.findDOMNode(this) // Flow casts this to Text | Element
-        if (node instanceof HTMLElement) this.setState({width: node.offsetWidth})
+        if (node instanceof HTMLElement) {
+            this.setState({width: node.offsetWidth})
+        }
     }
 
     render() {
         if (this.props.measureBeforeMount && !this.mounted) {
             return (<div className={this.props.className}
-                        style={this.props.style}/>)
+                         style={this.props.style}/>)
         }
 
         return <ComposedComponent {...this.props} {...this.state}/>

@@ -26,6 +26,7 @@ export default class ReactGridLayout extends React.Component {
         // be set to the container width. Note that resizes will *not* cause this to adjust.
         // If you need that behavior, use WidthProvider.
         width: PropTypes.number,
+        breakpoint: PropTypes.string,
 
         // If true, the container height swells and contracts to fit contents
         autoSize: PropTypes.bool,
@@ -41,11 +42,13 @@ export default class ReactGridLayout extends React.Component {
         verticalCompact: PropTypes.bool,
 
         // layout is an array of object with the format:
-        // {x, y, w, h, i: String}
+        // {x, y, w, h, i}
         layout: function (props) {
             var layout = props.layout
             // I hope you're setting the data-grid property on the grid items
-            if (layout === undefined) return
+            if (layout === undefined) {
+                return
+            }
             validateLayout(layout, 'layout')
         },
 
@@ -117,6 +120,7 @@ export default class ReactGridLayout extends React.Component {
 
     static defaultProps = {
         autoSize: true,
+        breakpoint: '',
         cols: 12,
         className: '',
         rowHeight: 150,
@@ -137,7 +141,7 @@ export default class ReactGridLayout extends React.Component {
         onResizeStop: noop
     };
 
-    constructor(props: $PropertyType<ReactGridLayout, 'props'>, context: any): void {
+    constructor(props, context): void {
         super(props, context)
         autoBindHandlers(this, ['onDragStart', 'onDrag', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop'])
     }
@@ -145,7 +149,7 @@ export default class ReactGridLayout extends React.Component {
     state = {
         activeDrag: null,
         layout: synchronizeLayoutWithChildren(this.props.layout, this.props.children,
-            this.props.cols, this.props.verticalCompact),
+            this.props.cols, this.props.verticalCompact, this.props.breakpoint),
         mounted: false,
         oldDragItem: null,
         oldLayout: null,
@@ -159,7 +163,7 @@ export default class ReactGridLayout extends React.Component {
         this.onLayoutMaybeChanged(this.state.layout, this.props.layout)
     }
 
-    componentWillReceiveProps(nextProps: $PropertyType<ReactGridLayout, 'props'>) {
+    componentWillReceiveProps(nextProps) {
         let newLayoutBase
         // Allow parent to set layout directly.
         if (!isEqual(nextProps.layout, this.props.layout)) {
@@ -176,7 +180,7 @@ export default class ReactGridLayout extends React.Component {
         // We need to regenerate the layout.
         if (newLayoutBase) {
             const newLayout = synchronizeLayoutWithChildren(newLayoutBase, nextProps.children,
-                nextProps.cols, nextProps.verticalCompact)
+                nextProps.cols, nextProps.verticalCompact, this.props.breakpoint)
             const oldLayout = this.state.layout
             this.setState({layout: newLayout})
             this.onLayoutMaybeChanged(newLayout, oldLayout)
@@ -194,7 +198,8 @@ export default class ReactGridLayout extends React.Component {
         return (
             <div className={classNames('react-grid-layout', className)}
                  style={mergedStyle}>
-                {React.Children.map(this.props.children, (child) => this.processGridItem(child))}
+                {React.Children.map(this.props.children,
+                    (child) => this.processGridItem(child))}
                 {this.placeholder()}
             </div>
         )
@@ -205,7 +210,9 @@ export default class ReactGridLayout extends React.Component {
      * @return {String} Container height in pixels.
      */
     containerHeight() {
-        if (!this.props.autoSize) return
+        if (!this.props.autoSize) {
+            return
+        }
         const nbRow = bottom(this.state.layout)
         const containerPaddingY = this.props.containerPadding ? this.props.containerPadding[1] : this.props.margin[1]
         return nbRow * this.props.rowHeight + (nbRow - 1) * this.props.margin[1] + containerPaddingY * 2 + 'px'
@@ -222,7 +229,9 @@ export default class ReactGridLayout extends React.Component {
     onDragStart(i, x, y, {e, node}) {
         const {layout} = this.state
         var l = getLayoutItem(layout, i)
-        if (!l) return
+        if (!l) {
+            return
+        }
 
         this.setState({oldDragItem: cloneLayoutItem(l), oldLayout: this.state.layout})
 
@@ -241,7 +250,9 @@ export default class ReactGridLayout extends React.Component {
         const {oldDragItem} = this.state
         let {layout} = this.state
         var l = getLayoutItem(layout, i)
-        if (!l) return
+        if (!l) {
+            return
+        }
 
         // Create placeholder (display only)
         var placeholder = {
@@ -271,7 +282,9 @@ export default class ReactGridLayout extends React.Component {
         const {oldDragItem} = this.state
         let {layout} = this.state
         const l = getLayoutItem(layout, i)
-        if (!l) return
+        if (!l) {
+            return
+        }
 
         // Move the element here
         layout = moveElement(layout, l, x, y, true /* isUserAction */)
@@ -292,7 +305,9 @@ export default class ReactGridLayout extends React.Component {
     }
 
     onLayoutMaybeChanged(newLayout, oldLayout) {
-        if (!oldLayout) oldLayout = this.state.layout
+        if (!oldLayout) {
+            oldLayout = this.state.layout
+        }
         if (!isEqual(oldLayout, newLayout)) {
             this.props.onLayoutChange(newLayout)
         }
@@ -301,7 +316,9 @@ export default class ReactGridLayout extends React.Component {
     onResizeStart(i, w, h, {e, node}) {
         const {layout} = this.state
         var l = getLayoutItem(layout, i)
-        if (!l) return
+        if (!l) {
+            return
+        }
 
         this.setState({
             oldResizeItem: cloneLayoutItem(l),
@@ -314,7 +331,9 @@ export default class ReactGridLayout extends React.Component {
     onResize(i, w, h, {e, node}) {
         const {layout, oldResizeItem} = this.state
         var l = getLayoutItem(layout, i)
-        if (!l) return
+        if (!l) {
+            return
+        }
 
         // Set new width and height.
         l.w = w
@@ -359,7 +378,9 @@ export default class ReactGridLayout extends React.Component {
      */
     placeholder(): ?React.Element<any> {
         const {activeDrag} = this.state
-        if (!activeDrag) return null
+        if (!activeDrag) {
+            return null
+        }
         const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms} = this.props
 
         // {...this.state.activeDrag} is pretty slow, actually
@@ -391,9 +412,13 @@ export default class ReactGridLayout extends React.Component {
      * @return {Element}       Element wrapped in draggable and properly placed.
      */
     processGridItem(child): ?React.Element<any> {
-        if (!child.key) return
+        if (!child.key) {
+            return
+        }
         const l = getLayoutItem(this.state.layout, child.key)
-        if (!l) return null
+        if (!l) {
+            return null
+        }
         const {
             width, cols, margin, containerPadding, rowHeight,
             maxRows, isDraggable, isResizable, useCSSTransforms,
