@@ -120,7 +120,7 @@ export default class ReactGridLayout extends React.Component {
       var keys = {};
       React.Children.forEach(children, function (child) {
         if (keys[child.key]) {
-          throw new Error("Duplicate child key found! This will cause problems in ReactGridLayout.");
+          throw new Error("Duplicate child key \"" + child.key + "\" found! This will cause problems in ReactGridLayout.");
         }
         keys[child.key] = true;
       });
