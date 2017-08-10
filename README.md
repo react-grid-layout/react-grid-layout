@@ -179,9 +179,6 @@ If the largest is provided, RGL will attempt to interpolate the rest.
 You will also need to provide a `width`, when using `<ResponsiveReactGridLayout>` it is suggested you use the HOC
 `WidthProvider` as per the instructions below.
 
-For the time being, it is not possible to supply responsive mappings via the `data-grid` property on individual
-items, but that is coming soon.
-
 ### Providing Grid Width
 
 Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width` to calculate

@@ -3,28 +3,6 @@
     "aviarc"
   ],
   "globals": {
-    "window": true,
-    "module": true
-    //    "document": true,
-    //    "Promise": true,
-    //    "fetch": true,
-    //    "setTimeout": true,
-    //    "setInterval": true,
-    //    "clearInterval": true,
-    //    "describe": true,
-    //    "beforeEach": true,
-    //    "afterEach": true,
-    //    "it": true,
-    //    "DOMParser": true,
-    //    "__dirname": true,
-    //    "process": true,
-    //    "require": true,
-    //    "System": true,
-    //    "Buffer": true,
-    //    "FileReader": true,
-    //    "URL": true,
-    //    "global": true,
-    //    "arguments": true
   },
   "rules": {
     "max-lines": [
