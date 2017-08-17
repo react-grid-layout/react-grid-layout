@@ -171,49 +171,35 @@ render: function() {
 }
 ```
 
-When in responsive mode, you should supply at least one breakpoint via the `layouts` property.
-
-When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one.
-If the largest is provided, RGL will attempt to interpolate the rest.
-
-You will also need to provide a `width`, when using `<ResponsiveReactGridLayout>` it is suggested you use the HOC
-`WidthProvider` as per the instructions below.
-
-### Providing Grid Width
-
-Both `<ResponsiveReactGridLayout>` and `<ReactGridLayout>` take `width` to calculate
-positions on drag events. In simple cases a HOC `WidthProvider` can be used to automatically determine
-width upon initialization and window resize events.
+or
 
 ```javascript
-import {Responsive, WidthProvider} from 'react-grid-layout';
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
-
+var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
 //...
-render() {
-  // {lg: layout1, md: layout2, ...}
+render: function() {
   var layouts = getLayoutsFromSomewhere();
   return (
-    <ResponsiveReactGridLayout className="layout" layouts={layouts}
-      breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
-      cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
-      <div key={"1"}>1</div>
-      <div key={"2"}>2</div>
-      <div key={"3"}>3</div>
+    <ResponsiveReactGridLayout className="layout"
+                               breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
+                               cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
+      <div key={"1"}
+           data-grid={{xxs: {w: 4, h: 4, x: 0, y: 0},
+                       xs: {w: 4, h: 4, x: 0, y: 0},
+                       sm: {w: 8, h: 8, x: 0, y: 0},
+                       md: {w: 10, h: 12, x: 0, y: 0},
+                       lg: {w: 12, h: 2, x: 0, y: 0}}}>1</div>
+      ...
     </ResponsiveReactGridLayout>
   )
 }
 ```
 
-This allows you to easily replace `WidthProvider` with your own Provider HOC if you need more sophisticated logic.
 
-`WidthProvider` accepts a single prop, `measureBeforeMount`. If `true`, `WidthProvider` will measure the
-container's width before mounting children. Use this if you'd like to completely eliminate any resizing animation
-on application/component mount.
+When in responsive mode, you should supply at least one breakpoint via the `layouts` property.
 
-Have a more complicated layout? `WidthProvider` [is very simple](/lib/components/WidthProvider.jsx) and only
-listens to window `'resize'` events. If you need more power and flexibility, try the
-[SizeMe React HOC](https://github.com/ctrlplusb/react-sizeme) as an alternative to WidthProvider.
+When using `layouts`, it is best to supply as many breakpoints as possible, especially the largest one.
+If the largest is provided, RGL will attempt to interpolate the rest.
+
 
 ### Grid Layout Props
 
@@ -226,7 +212,7 @@ RGL supports the following properties (see the source for the final word on this
 
 // This allows setting the initial width on the server side.
 // This is required unless using the HOC <WidthProvider> or similar
-width,
+width: number,
 
 // If true, the container height swells and contracts to fit contents
 autoSize: ?boolean = true,
@@ -248,11 +234,11 @@ draggableHandle: ?string = '',
 verticalCompact: ?boolean = true,
 
 // Layout is an array of object with the format:
-// {x, y, w, h}
+// {x: number, y: number, w: number, h: number}
 // The index into the layout must match the key used on each item component.
 // If you choose to use custom keys, you can specify that key in the layout
 // array objects like so:
-// {i: string, x, y, w, h}
+// {i: string, x: number, y: number, w: number, h: number}
 layout: ?array = null, // If not provided, use data-grid props on children
 
 // Margin between items [x, y] in px.
@@ -280,13 +266,13 @@ useCSSTransforms: ?boolean = true,
 
 // Callback so you can save the layout.
 // Calls back with (currentLayout) after every drag or resize stop.
-onLayoutChange: (layout) => void,
+onLayoutChange: (layout: Layout) => void,
 
 //
 // All callbacks below have signature (layout, oldItem, newItem, placeholder, e, element).
 // 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
 //
-type ItemCallback = (layout, oldItem: LayoutItem, newItem: LayoutItem,
+type ItemCallback = (layout: Layout, oldItem: LayoutItem, newItem: LayoutItem,
                      placeholder: LayoutItem, e: MouseEvent, element: HTMLElement) => void;
 
 // Calls when drag starts.
@@ -311,28 +297,28 @@ The new properties and changes are:
 ```javascript
 // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
 // Breakpoint names are arbitrary but must match in the cols and layouts objects.
-breakpoints = {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
+breakpoints: ?Object = {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
 
 // # of cols. This is a breakpoint -> cols map, e.g. {lg: 12, md: 10, ...}
-cols = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+cols: ?Object = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
 
 // layouts is an object mapping breakpoints to layouts.
-// e.g. {lg, md, ...}
-layouts: {[key: $Keys<breakpoints>]}
+// e.g. {lg: Layout, md: Layout, ...}
+layouts: {[key: $Keys<breakpoints>]: Layout}
 
 //
 // Callbacks
 //
 
 // Calls back with breakpoint and new # cols
-onBreakpointChange: (newBreakpoint: string, newCols) => void,
+onBreakpointChange: (newBreakpoint: string, newCols: number) => void,
 
 // Callback so you can save the layout.
 // AllLayouts are keyed by breakpoint.
-onLayoutChange: (currentLayout, allLayouts: {[key: $Keys<breakpoints>]}) => void,
+onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints>]: Layout}) => void,
 
 // Callback when the width changes, so you can modify the layout as needed.
-onWidthChange: (containerWidth, margin: [number, number], cols, containerPadding: [number, number]) => void;
+onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void;
 
 ```
 
@@ -362,10 +348,10 @@ will be draggable.
   i: string,
 
   // These are all in grid units, not pixels
-  x,
-  y,
-  w,
-  h,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
   minW: ?number = 0,
   maxW: ?number = Infinity,
   minH: ?number = 0,
