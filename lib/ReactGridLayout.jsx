@@ -24,7 +24,7 @@ export default class ReactGridLayout extends React.Component {
 
         // This can be set explicitly. If it is not set, it will automatically
         // be set to the container width. Note that resizes will *not* cause this to adjust.
-        // If you need that behavior, use WidthProvider.
+        // If you need that behavior, use AutoSizeLayout.
         width: PropTypes.number,
         breakpoint: PropTypes.string,
 
@@ -141,7 +141,7 @@ export default class ReactGridLayout extends React.Component {
         onResizeStop: noop
     };
 
-    constructor(props, context): void {
+    constructor(props, context) {
         super(props, context)
         autoBindHandlers(this, ['onDragStart', 'onDrag', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop'])
     }
@@ -347,8 +347,9 @@ export default class ReactGridLayout extends React.Component {
         this.props.onResize(layout, oldResizeItem, l, placeholder, e, node)
 
         // Re-compact the layout and set the drag placeholder.
+        const newLayout = compact(layout, this.props.verticalCompact)
         this.setState({
-            layout: compact(layout, this.props.verticalCompact),
+            layout: newLayout,
             activeDrag: placeholder
         })
     }
@@ -376,7 +377,7 @@ export default class ReactGridLayout extends React.Component {
      * Create a placeholder object.
      * @return {Element} Placeholder div.
      */
-    placeholder(): ?React.Element<any> {
+    placeholder() {
         const {activeDrag} = this.state
         if (!activeDrag) {
             return null
@@ -385,22 +386,21 @@ export default class ReactGridLayout extends React.Component {
 
         // {...this.state.activeDrag} is pretty slow, actually
         return (
-            <GridItem
-                w={activeDrag.w}
-                h={activeDrag.h}
-                x={activeDrag.x}
-                y={activeDrag.y}
-                i={activeDrag.i}
-                className="react-grid-placeholder"
-                containerWidth={width}
-                cols={cols}
-                margin={margin}
-                containerPadding={containerPadding || margin}
-                maxRows={maxRows}
-                rowHeight={rowHeight}
-                isDraggable={false}
-                isResizable={false}
-                useCSSTransforms={useCSSTransforms}>
+            <GridItem w={activeDrag.w}
+                      h={activeDrag.h}
+                      x={activeDrag.x}
+                      y={activeDrag.y}
+                      i={activeDrag.i}
+                      className="react-grid-placeholder"
+                      containerWidth={width}
+                      cols={cols}
+                      margin={margin}
+                      containerPadding={containerPadding || margin}
+                      maxRows={maxRows}
+                      rowHeight={rowHeight}
+                      isDraggable={false}
+                      isResizable={false}
+                      useCSSTransforms={useCSSTransforms}>
                 <div/>
             </GridItem>
         )
@@ -411,7 +411,7 @@ export default class ReactGridLayout extends React.Component {
      * @param  {Element} child React element.
      * @return {Element}       Element wrapped in draggable and properly placed.
      */
-    processGridItem(child): ?React.Element<any> {
+    processGridItem(child) {
         if (!child.key) {
             return
         }
@@ -431,36 +431,35 @@ export default class ReactGridLayout extends React.Component {
         const resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null))
 
         return (
-            <GridItem
-                containerWidth={width}
-                cols={cols}
-                margin={margin}
-                containerPadding={containerPadding || margin}
-                maxRows={maxRows}
-                rowHeight={rowHeight}
-                cancel={draggableCancel}
-                handle={draggableHandle}
-                onDragStop={this.onDragStop}
-                onDragStart={this.onDragStart}
-                onDrag={this.onDrag}
-                onResizeStart={this.onResizeStart}
-                onResize={this.onResize}
-                onResizeStop={this.onResizeStop}
-                isDraggable={draggable && !this.props.static}
-                isResizable={resizable && !this.props.static}
-                useCSSTransforms={useCSSTransforms && mounted}
-                usePercentages={!mounted}
+            <GridItem containerWidth={width}
+                      cols={cols}
+                      margin={margin}
+                      containerPadding={containerPadding || margin}
+                      maxRows={maxRows}
+                      rowHeight={rowHeight}
+                      cancel={draggableCancel}
+                      handle={draggableHandle}
+                      onDragStop={this.onDragStop}
+                      onDragStart={this.onDragStart}
+                      onDrag={this.onDrag}
+                      onResizeStart={this.onResizeStart}
+                      onResize={this.onResize}
+                      onResizeStop={this.onResizeStop}
+                      isDraggable={draggable && !this.props.static}
+                      isResizable={resizable && !this.props.static}
+                      useCSSTransforms={useCSSTransforms && mounted}
+                      usePercentages={!mounted}
 
-                w={l.w}
-                h={l.h}
-                x={l.x}
-                y={l.y}
-                i={l.i}
-                minH={l.minH}
-                minW={l.minW}
-                maxH={l.maxH}
-                maxW={l.maxW}
-                static={l.static && this.props.static}>
+                      w={l.w}
+                      h={l.h}
+                      x={l.x}
+                      y={l.y}
+                      i={l.i}
+                      minH={l.minH}
+                      minW={l.minW}
+                      maxH={l.maxH}
+                      maxW={l.maxW}
+                      static={l.static && this.props.static}>
                 {child}
             </GridItem>
         )

@@ -1,12 +1,14 @@
-'use strict';
+"use strict";
 
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.getBreakpointFromWidth = getBreakpointFromWidth;
 exports.getColsFromBreakpoint = getColsFromBreakpoint;
 exports.findOrGenerateResponsiveLayout = findOrGenerateResponsiveLayout;
 exports.sortBreakpoints = sortBreakpoints;
 
-var _utils = require('./utils');
+var _utils = require("./utils");
 
 /**
  * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
@@ -16,13 +18,15 @@ var _utils = require('./utils');
  * @return {String}       Highest breakpoint that is less than width.
  */
 function getBreakpointFromWidth(breakpoints, width) {
-  var sorted = sortBreakpoints(breakpoints);
-  var matching = sorted[0];
-  for (var i = 1, len = sorted.length; i < len; i++) {
-    var breakpointName = sorted[i];
-    if (width > breakpoints[breakpointName]) matching = breakpointName;
-  }
-  return matching;
+    var sorted = sortBreakpoints(breakpoints);
+    var matching = sorted[0];
+    for (var i = 1, len = sorted.length; i < len; i++) {
+        var breakpointName = sorted[i];
+        if (width > breakpoints[breakpointName]) {
+            matching = breakpointName;
+        }
+    }
+    return matching;
 }
 
 /**
@@ -31,13 +35,11 @@ function getBreakpointFromWidth(breakpoints, width) {
  * @param  {Object} cols       Map of breakpoints to cols.
  * @return {Number}            Number of cols.
  */
-
-
 function getColsFromBreakpoint(breakpoint, cols) {
-  if (!cols[breakpoint]) {
-    throw new Error("ResponsiveReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
-  }
-  return cols[breakpoint];
+    if (!cols[breakpoint]) {
+        throw new Error("ResponsiveReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
+    }
+    return cols[breakpoint];
 }
 
 /**
@@ -48,28 +50,30 @@ function getColsFromBreakpoint(breakpoint, cols) {
  * @param  {Object} layouts     Existing layouts.
  * @param  {Array} breakpoints All breakpoints.
  * @param  {String} breakpoint New breakpoint.
- * @param  {String} breakpoint Last breakpoint (for fallback).
+ * @param  {String} lastBreakpoint Last breakpoint (for fallback).
  * @param  {Number} cols       Column count at new breakpoint.
  * @param  {Boolean} verticalCompact Whether or not to compact the layout
  *   vertically.
  * @return {Array}             New layout.
  */
 function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols, verticalCompact) {
-  // If it already exists, just return it.
-  if (layouts[breakpoint]) return (0, _utils.cloneLayout)(layouts[breakpoint]);
-  // Find or generate the next layout
-  var layout = layouts[lastBreakpoint];
-  var breakpointsSorted = sortBreakpoints(breakpoints);
-  var breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
-  for (var i = 0, len = breakpointsAbove.length; i < len; i++) {
-    var b = breakpointsAbove[i];
-    if (layouts[b]) {
-      layout = layouts[b];
-      break;
+    // If it already exists, just return it.
+    if (layouts[breakpoint]) {
+        return (0, _utils.cloneLayout)(layouts[breakpoint]);
     }
-  }
-  layout = (0, _utils.cloneLayout)(layout || []); // clone layout so we don't modify existing items
-  return (0, _utils.compact)((0, _utils.correctBounds)(layout, { cols: cols }), verticalCompact);
+    // Find or generate the next layout
+    var layout = layouts[lastBreakpoint];
+    var breakpointsSorted = sortBreakpoints(breakpoints);
+    var breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
+    for (var i = 0, len = breakpointsAbove.length; i < len; i++) {
+        var b = breakpointsAbove[i];
+        if (layouts[b]) {
+            layout = layouts[b];
+            break;
+        }
+    }
+    layout = (0, _utils.cloneLayout)(layout || []); // clone layout so we don't modify existing items
+    return (0, _utils.compact)((0, _utils.correctBounds)(layout, { cols: cols }), verticalCompact);
 }
 
 /**
@@ -80,8 +84,8 @@ function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBr
  * @return {Array}              Sorted breakpoints.
  */
 function sortBreakpoints(breakpoints) {
-  var keys = Object.keys(breakpoints);
-  return keys.sort(function (a, b) {
-    return breakpoints[a] - breakpoints[b];
-  });
+    var keys = Object.keys(breakpoints);
+    return keys.sort(function (a, b) {
+        return breakpoints[a] - breakpoints[b];
+    });
 }

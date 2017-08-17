@@ -218,20 +218,20 @@ export default class GridItem extends React.Component {
      * @param  {Number} width  Width in pixels.
      * @return {Object} w, h as grid units.
      */
-    calcWH(height, width) {
+    calculateSize({height, width}) {
         const {margin, maxRows, cols, rowHeight, x, y} = this.props
         const colWidth = this.calcColWidth()
 
         // width = colWidth * w - (margin * (w - 1))
         // ...
         // w = (width + margin) / (colWidth + margin)
-        let w = Math.round((width + margin[0]) / (colWidth + margin[0]))
-        let h = Math.round((height + margin[1]) / (rowHeight + margin[1]))
+        let newWidth = Math.round((width + margin[0]) / (colWidth + margin[0]))
+        let newHeight = Math.round((height + margin[1]) / (rowHeight + margin[1]))
 
         // Capping
-        w = Math.max(Math.min(w, cols - x), 0)
-        h = Math.max(Math.min(h, maxRows - y), 0)
-        return {w, h}
+        newWidth = Math.max(Math.min(newWidth, cols - x), 0)
+        newHeight = Math.max(Math.min(newHeight, maxRows - y), 0)
+        return {width: newWidth, height: newHeight}
     }
 
     /**
@@ -302,14 +302,13 @@ export default class GridItem extends React.Component {
         const minConstraints = [mins.width, mins.height]
         const maxConstraints = [Math.min(maxes.width, maxWidth), Math.min(maxes.height, Infinity)]
         return (
-            <Resizable
-                width={position.width}
-                height={position.height}
-                minConstraints={minConstraints}
-                maxConstraints={maxConstraints}
-                onResizeStop={this.onResizeHandler('onResizeStop')}
-                onResizeStart={this.onResizeHandler('onResizeStart')}
-                onResize={this.onResizeHandler('onResize')}>
+            <Resizable width={position.width}
+                       height={position.height}
+                       minConstraints={minConstraints}
+                       maxConstraints={maxConstraints}
+                       onResizeStop={this.onResizeHandler('onResizeStop')}
+                       onResizeStart={this.onResizeHandler('onResizeStart')}
+                       onResize={this.onResizeHandler('onResize')}>
                 {child}
             </Resizable>
         )
@@ -384,20 +383,20 @@ export default class GridItem extends React.Component {
             const {cols, x, i, maxW, minW, maxH, minH} = this.props
 
             // Get new XY
-            let {w, h} = this.calcWH(size)
+            let {width, height} = this.calculateSize(size)
 
             // Cap w at numCols
-            w = Math.min(w, cols - x)
+            width = Math.min(width, cols - x)
             // Ensure w is at least 1
-            w = Math.max(w, 1)
+            width = Math.max(width, 1)
 
             // Min/max capping
-            w = Math.max(Math.min(w, maxW), minW)
-            h = Math.max(Math.min(h, maxH), minH)
+            width = Math.max(Math.min(width, maxW), minW)
+            height = Math.max(Math.min(height, maxH), minH)
 
             this.setState({resizing: handlerName === 'onResizeStop' ? null : size})
 
-            this.props[handlerName](i, w, h, {e, node, size})
+            this.props[handlerName](i, width, height, {e, node, size})
         }
     }
 
