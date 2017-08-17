@@ -396,9 +396,8 @@ var ReactGridLayout = (_temp = _class = function (_React$Component) {
                 draggableHandle = _props3.draggableHandle;
             var mounted = this.state.mounted;
 
-            console.log('reactgridlayout width', width);
-
             // Parse 'static'. Any properties defined directly on the grid item will take precedence.
+
             var draggable = Boolean(!l.static && isDraggable && (l.isDraggable || l.isDraggable == null));
             var resizable = Boolean(!l.static && isResizable && (l.isResizable || l.isResizable == null));
 
