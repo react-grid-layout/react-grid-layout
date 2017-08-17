@@ -28,7 +28,8 @@ module.exports = {
                     presets: ['es2015', 'stage-0', 'react'],
                     plugins: [
                         'transform-react-inline-elements',
-                        'transform-react-constant-elements'
+                        'transform-react-constant-elements',
+                        'transform-decorators-legacy'
                     ]
                 }
             }
