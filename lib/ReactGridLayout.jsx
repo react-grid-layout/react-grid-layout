@@ -124,7 +124,10 @@ export default class ReactGridLayout extends React.Component {
         }
         keys[child.key] = true;
       });
-    }
+    },
+
+    // Defines the unit to use
+    unit: PropTypes.string
   };
 
   static defaultProps = {
@@ -145,7 +148,8 @@ export default class ReactGridLayout extends React.Component {
     onDragStop: noop,
     onResizeStart: noop,
     onResize: noop,
-    onResizeStop: noop
+    onResizeStop: noop,
+    unit: 'px'
   };
 
   state: State = {
@@ -202,7 +206,7 @@ export default class ReactGridLayout extends React.Component {
     if (!this.props.autoSize) return;
     const nbRow = bottom(this.state.layout);
     const containerPaddingY = this.props.containerPadding ? this.props.containerPadding[1] : this.props.margin[1];
-    return nbRow * this.props.rowHeight + (nbRow - 1) * this.props.margin[1] + containerPaddingY * 2 + 'px';
+    return nbRow * this.props.rowHeight + (nbRow - 1) * this.props.margin[1] + containerPaddingY * 2 + this.props.unit;
   }
 
   /**
@@ -354,7 +358,7 @@ export default class ReactGridLayout extends React.Component {
   placeholder(): ?React.Element<any> {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
-    const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms} = this.props;
+    const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms, unit} = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
     return (
@@ -373,7 +377,8 @@ export default class ReactGridLayout extends React.Component {
         rowHeight={rowHeight}
         isDraggable={false}
         isResizable={false}
-        useCSSTransforms={useCSSTransforms}>
+        useCSSTransforms={useCSSTransforms}
+        unit={unit}>
         <div />
       </GridItem>
     );
@@ -390,7 +395,7 @@ export default class ReactGridLayout extends React.Component {
     if (!l) return null;
     const {width, cols, margin, containerPadding, rowHeight,
            maxRows, isDraggable, isResizable, useCSSTransforms,
-           draggableCancel, draggableHandle} = this.props;
+           draggableCancel, draggableHandle, unit} = this.props;
     const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
@@ -428,6 +433,7 @@ export default class ReactGridLayout extends React.Component {
         maxH={l.maxH}
         maxW={l.maxW}
         static={l.static}
+        unit={unit}
         >
         {child}
       </GridItem>

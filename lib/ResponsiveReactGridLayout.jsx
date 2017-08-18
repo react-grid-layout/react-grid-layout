@@ -67,7 +67,10 @@ export default class ResponsiveReactGridLayout extends React.Component {
     onLayoutChange: PropTypes.func,
 
     // Calls back with (containerWidth, margin, cols, containerPadding)
-    onWidthChange: PropTypes.func
+    onWidthChange: PropTypes.func,
+
+    // Defines the unit to use
+    unit: PropTypes.string
   };
 
   static defaultProps = {
@@ -77,6 +80,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     onBreakpointChange: noop,
     onLayoutChange: noop,
     onWidthChange: noop,
+    unit: 'px'
   };
 
   state: State = this.generateInitialState();

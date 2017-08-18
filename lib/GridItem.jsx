@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
-import {perc, setTopLeft, setTransform} from './utils';
+import {perc, setTopLeft, setTransform, isUnitRelative, getViewportWidth} from './utils';
 import classNames from 'classnames';
 
 import type {DragCallbackData, Position} from './utils';
@@ -86,7 +86,10 @@ export default class GridItem extends React.Component {
     // Selector for draggable handle
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
-    cancel: PropTypes.string
+    cancel: PropTypes.string,
+
+    // Defines the unit to use
+    unit: PropTypes.string
   };
 
   static defaultProps = {
@@ -95,7 +98,8 @@ export default class GridItem extends React.Component {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    unit: 'px'
   };
 
   state: State = {
@@ -106,8 +110,15 @@ export default class GridItem extends React.Component {
 
   // Helper for generating column width
   calcColWidth(): number {
-    const {margin, containerPadding, containerWidth, cols} = this.props;
-    return (containerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
+    const {margin, containerPadding, cols, containerWidth, unit} = this.props;
+
+    let relatedContainerWidth = containerWidth;
+    // If relative to viewport, calculate the colWidth based on a relative containerWidth
+    if (isUnitRelative(unit)) {
+      const viewPortWidth = getViewportWidth();
+      relatedContainerWidth = containerWidth*100/viewPortWidth;
+    }
+    return (relatedContainerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
 
   /**
@@ -120,27 +131,38 @@ export default class GridItem extends React.Component {
    * @return {Object}                Object containing coords.
    */
   calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
-    const {margin, containerPadding, rowHeight} = this.props;
+    const {margin, containerPadding, rowHeight, unit} = this.props;
     const colWidth = this.calcColWidth();
+    const viewPortWidth = getViewportWidth();
 
     const out = {
-      left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
-      top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
+      left: (colWidth + margin[0]) * x + containerPadding[0],
+      top: (rowHeight + margin[1]) * y + containerPadding[1],
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
-      // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-      height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
+      // Note we do it here rather than later because Infinity) causes deopt
+      width: w === Infinity ? w : colWidth * w + Math.max(0, w - 1) * margin[0],
+      height: h === Infinity ? h : rowHeight * h + Math.max(0, h - 1) * margin[1]
     };
 
     if (state && state.resizing) {
-      out.width = Math.round(state.resizing.width);
-      out.height = Math.round(state.resizing.height);
+      out.width = state.resizing.width;
+      out.height = state.resizing.height;
+      // If relative to viewport, calculate from px to its relative value
+      if (isUnitRelative(unit)) {
+        out.width = (out.width * 100 / viewPortWidth);
+        out.height = (out.height * 100 / viewPortWidth);
+      }
     }
 
     if (state && state.dragging) {
-      out.top = Math.round(state.dragging.top);
-      out.left = Math.round(state.dragging.left);
+      out.top = state.dragging.top;
+      out.left = state.dragging.left;
+      // If relative to viewport, calculate from px to its relative value
+      if (isUnitRelative(unit)) {
+        out.top = (out.top * 100 / viewPortWidth);
+        out.left = (out.left * 100 / viewPortWidth);
+      }
     }
 
     return out;
@@ -153,8 +175,15 @@ export default class GridItem extends React.Component {
    * @return {Object} x and y in grid units.
    */
   calcXY(top: number, left: number): {x: number, y: number} {
-    const {margin, cols, rowHeight, w, h, maxRows} = this.props;
+    const {margin, cols, rowHeight, w, h, maxRows, unit} = this.props;
     const colWidth = this.calcColWidth();
+    const viewPortWidth = getViewportWidth();
+
+    // If relative to viewport, calculate from px to its relative value
+    if (isUnitRelative(unit)) {
+      left = (left * 100 / viewPortWidth);
+      top = (top * 100 / viewPortWidth);
+    }
 
     // left = colWidth * x + margin * (x + 1)
     // l = cx + m(x+1)
@@ -211,11 +240,11 @@ export default class GridItem extends React.Component {
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos);
+      style = setTransform(pos, this.props.unit);
     }
     // top,left (slow)
     else {
-      style = setTopLeft(pos);
+      style = setTopLeft(pos, this.props.unit);
 
       // This is used for server rendering.
       if (usePercentages) {
