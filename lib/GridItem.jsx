@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
-import {perc, setTopLeft, setTransform, isUnitRelative, getViewportWidth} from './utils';
+import {perc, setTopLeft, setTransform, isUnitRelative, getViewportSize} from './utils';
 import classNames from 'classnames';
 
 import type {DragCallbackData, Position} from './utils';
@@ -30,6 +30,9 @@ export default class GridItem extends React.Component {
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
     containerPadding: PropTypes.array.isRequired,
+
+    // Defines the unit to use (using vw, vh will size elements relatively)
+    unit: PropTypes.string,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -86,20 +89,17 @@ export default class GridItem extends React.Component {
     // Selector for draggable handle
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
-    cancel: PropTypes.string,
-
-    // Defines the unit to use
-    unit: PropTypes.string
+    cancel: PropTypes.string
   };
 
   static defaultProps = {
     className: '',
+    unit: 'px',
     cancel: '',
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity,
-    unit: 'px'
+    maxW: Infinity
   };
 
   state: State = {
@@ -115,8 +115,8 @@ export default class GridItem extends React.Component {
     let relatedContainerWidth = containerWidth;
     // If relative to viewport, calculate the colWidth based on a relative containerWidth
     if (isUnitRelative(unit)) {
-      const viewPortWidth = getViewportWidth();
-      relatedContainerWidth = containerWidth*100/viewPortWidth;
+      const viewPortSize = getViewportSize(unit);
+      relatedContainerWidth = containerWidth*100/viewPortSize;
     }
     return (relatedContainerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
@@ -133,7 +133,7 @@ export default class GridItem extends React.Component {
   calcPosition(x: number, y: number, w: number, h: number, state: ?Object): Position {
     const {margin, containerPadding, rowHeight, unit} = this.props;
     const colWidth = this.calcColWidth();
-    const viewPortWidth = getViewportWidth();
+    const viewPortSize = getViewportSize(unit);
 
     const out = {
       left: (colWidth + margin[0]) * x + containerPadding[0],
@@ -148,11 +148,6 @@ export default class GridItem extends React.Component {
     if (state && state.resizing) {
       out.width = state.resizing.width;
       out.height = state.resizing.height;
-      // If relative to viewport, calculate from px to its relative value
-      if (isUnitRelative(unit)) {
-        out.width = (out.width * 100 / viewPortWidth);
-        out.height = (out.height * 100 / viewPortWidth);
-      }
     }
 
     if (state && state.dragging) {
@@ -160,8 +155,8 @@ export default class GridItem extends React.Component {
       out.left = state.dragging.left;
       // If relative to viewport, calculate from px to its relative value
       if (isUnitRelative(unit)) {
-        out.top = (out.top * 100 / viewPortWidth);
-        out.left = (out.left * 100 / viewPortWidth);
+        out.top = (out.top * 100 / viewPortSize);
+        out.left = (out.left * 100 / viewPortSize);
       }
     }
 
@@ -177,12 +172,12 @@ export default class GridItem extends React.Component {
   calcXY(top: number, left: number): {x: number, y: number} {
     const {margin, cols, rowHeight, w, h, maxRows, unit} = this.props;
     const colWidth = this.calcColWidth();
-    const viewPortWidth = getViewportWidth();
+    const viewPortSize = getViewportSize(unit);
 
     // If relative to viewport, calculate from px to its relative value
     if (isUnitRelative(unit)) {
-      left = (left * 100 / viewPortWidth);
-      top = (top * 100 / viewPortWidth);
+      left = (left * 100 / viewPortSize);
+      top = (top * 100 / viewPortSize);
     }
 
     // left = colWidth * x + margin * (x + 1)
@@ -281,16 +276,36 @@ export default class GridItem extends React.Component {
    * @return {Element}          Child wrapped in Resizable.
    */
   mixinResizable(child: React.Element<any>, position: Position): React.Element<any> {
-    const {cols, x, minW, minH, maxW, maxH} = this.props;
+    const {cols, x, minW, minH, maxW, maxH, unit} = this.props;
+    const viewPortSize = getViewportSize(unit);
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
+    let maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
+
+    // If relative to viewport, calculate from px to its relative value
+    if (isUnitRelative(unit)) {
+      maxWidth = maxWidth * viewPortSize / 100;
+    }
 
     // Calculate min/max constraints using our min & maxes
     const mins = this.calcPosition(0, 0, minW, minH);
+    if (isUnitRelative(unit)) {
+      mins.width = mins.width * viewPortSize / 100;
+      mins.height = mins.height * viewPortSize / 100;
+    }
     const maxes = this.calcPosition(0, 0, maxW, maxH);
+    if (isUnitRelative(unit)) {
+      maxes.width = maxes.width * viewPortSize / 100;
+      maxes.height = maxes.height * viewPortSize / 100;
+    }
     const minConstraints = [mins.width, mins.height];
     const maxConstraints = [Math.min(maxes.width, maxWidth), Math.min(maxes.height, Infinity)];
+
+    if (isUnitRelative(unit)) {
+      position.width = position.width * viewPortSize / 100;
+      position.height = position.height * viewPortSize / 100;
+    }
+
     return (
       <Resizable
         width={position.width}
@@ -363,7 +378,14 @@ export default class GridItem extends React.Component {
   onResizeHandler(handlerName: string) {
     return (e:Event, {node, size}: {node: HTMLElement, size: Position}) => {
       if (!this.props[handlerName]) return;
-      const {cols, x, i, maxW, minW, maxH, minH} = this.props;
+      const {cols, x, i, maxW, minW, maxH, minH, unit} = this.props;
+      const viewPortSize = getViewportSize(unit);
+
+      // If relative to viewport, calculate from px to its relative value
+      if (isUnitRelative(unit)) {
+        size.width = (size.width * 100 / viewPortSize);
+        size.height = (size.height * 100 / viewPortSize);
+      }
 
       // Get new XY
       let {w, h} = this.calcWH(size);

@@ -79,6 +79,9 @@ export default class ReactGridLayout extends React.Component {
     // Intentionally not documented for this reason.
     maxRows: PropTypes.number,
 
+    // Defines the unit to use (using vw, vh will size elements relatively)
+    unit: PropTypes.string,
+
     //
     // Flags
     //
@@ -124,10 +127,7 @@ export default class ReactGridLayout extends React.Component {
         }
         keys[child.key] = true;
       });
-    },
-
-    // Defines the unit to use
-    unit: PropTypes.string
+    }
   };
 
   static defaultProps = {
@@ -136,6 +136,7 @@ export default class ReactGridLayout extends React.Component {
     className: '',
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
+    unit: 'px',
     layout: [],
     margin: [10, 10],
     isDraggable: true,
@@ -148,8 +149,7 @@ export default class ReactGridLayout extends React.Component {
     onDragStop: noop,
     onResizeStart: noop,
     onResize: noop,
-    onResizeStop: noop,
-    unit: 'px'
+    onResizeStop: noop
   };
 
   state: State = {

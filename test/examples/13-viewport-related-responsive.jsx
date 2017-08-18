@@ -34,7 +34,7 @@ var ViewportRelatedResponsiveLayout = React.createClass({
     var i = el.i;
     return (
       <div key={i} data-grid={el}>
-        <span className="text">{i}</span>
+        <span className="text viewport-related">{i}</span>
       </div>
     );
   },

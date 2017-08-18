@@ -36,7 +36,7 @@ var ViewportRelatedLayout = React.createClass({
 
   generateDOM() {
     return _.map(_.range(this.props.items), function(i) {
-      return (<div key={i}><span className="text">{i}</span></div>);
+      return (<div key={i}><span className="text viewport-related">{i}</span></div>);
     });
   },
 
