@@ -116,7 +116,7 @@ export default class GridItem extends React.Component {
     // If relative to viewport, calculate the colWidth based on a relative containerWidth
     if (isUnitRelative(unit)) {
       const viewPortSize = getViewportSize(unit);
-      relatedContainerWidth = containerWidth*100/viewPortSize;
+      relatedContainerWidth = containerWidth * 100 / viewPortSize;
     }
     return (relatedContainerWidth - (margin[0] * (cols - 1)) - (containerPadding[0] * 2)) / cols;
   }
