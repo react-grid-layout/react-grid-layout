@@ -1,5 +1,10 @@
 # Changelog
 
+0.14.11 (Aug 21, 2017)
+----
+
+- Pass mouse events to div - wrapper.
+
 0.14.7 (Jul 14, 2017)
 ----
 
