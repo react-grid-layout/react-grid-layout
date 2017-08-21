@@ -1,5 +1,12 @@
 # Changelog
 
+0.15.0 (Aug 21, 2017)
+----
+
+- Package upgrades, including Webpack 3
+- Flow typedef upgrades for the 0.53 rework
+- Add faulty key value in duplicate key error message (#602)
+
 0.14.7 (Jul 14, 2017)
 ----
 
