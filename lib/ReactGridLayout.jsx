@@ -428,6 +428,8 @@ export default class ReactGridLayout extends React.Component {
         maxH={l.maxH}
         maxW={l.maxW}
         static={l.static}
+        isSaveAspectRatio={l.isSaveAspectRatio}
+        aspectRatio={l.aspectRatio}
         >
         {child}
       </GridItem>
