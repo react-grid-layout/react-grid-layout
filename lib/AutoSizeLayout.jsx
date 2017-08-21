@@ -21,10 +21,6 @@ export default class AutoSizeLayout extends React.Component {
         minConstraints: PropTypes.array,
         maxConstraints: PropTypes.array
     }
-    static defaultProps = {
-        onDrop: () => {
-        }
-    }
 
     state = {
         width: this.props.containerWidth,
