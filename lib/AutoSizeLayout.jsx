@@ -21,6 +21,10 @@ export default class AutoSizeLayout extends React.Component {
         minConstraints: PropTypes.array,
         maxConstraints: PropTypes.array
     }
+    static defaultProps = {
+        onDrop: () => {
+        }
+    }
 
     state = {
         width: this.props.containerWidth,
@@ -50,8 +54,7 @@ export default class AutoSizeLayout extends React.Component {
             <ResponsiveReactGridLayout {...this.props}
                                        width={this.state.width}
                                        height={this.state.height}
-                                       initialWidth={this.props.width}
-                                       onMouseDown={() => alert('grid')}>
+                                       initialWidth={this.props.width}>
                 {this.props.children}
             </ResponsiveReactGridLayout>
 

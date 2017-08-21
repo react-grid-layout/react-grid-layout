@@ -188,7 +188,12 @@ export default class ReactGridLayout extends React.Component {
     }
 
     render() {
-        const {className, style} = this.props
+        const {
+            containerWidth, containerHeight, minConstraints, maxConstraints, rowHeight, updateDimensions,
+            initialWidth, breakpoint, onLayoutChange, layout, autoSize, maxRows, margin, isDraggable, isResizable,
+            useCSSTransforms, verticalCompact, onDragStop, onResizeStart, onResize, onResizeStop, className, style,
+            ...other
+        } = this.props
 
         const mergedStyle = {
             height: this.containerHeight(),
@@ -196,11 +201,13 @@ export default class ReactGridLayout extends React.Component {
         }
 
         return (
-            <div className={classNames('react-grid-layout', className)}
+            <div {...other}
+                 className={classNames('react-grid-layout', className)}
                  style={mergedStyle}>
-                {React.Children.map(this.props.children,
-                    (child) => this.processGridItem(child))}
-                {this.placeholder()}
+
+                {React.Children.map(this.props.children, (child) => this.processGridItem(child))}
+
+                {this.renderPreview()}
             </div>
         )
     }
@@ -377,7 +384,7 @@ export default class ReactGridLayout extends React.Component {
      * Create a placeholder object.
      * @return {Element} Placeholder div.
      */
-    placeholder() {
+    renderPreview() {
         const {activeDrag} = this.state
         if (!activeDrag) {
             return null
