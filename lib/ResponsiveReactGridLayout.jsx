@@ -82,13 +82,16 @@ export default class ResponsiveReactGridLayout extends React.Component {
   state: State = this.generateInitialState();
 
   generateInitialState(): State {
-    const {width, breakpoints, layouts, verticalCompact, cols} = this.props;
+    const {width, breakpoints, layouts, cols} = this.props;
     const breakpoint = getBreakpointFromWidth(breakpoints, width);
     const colNo = getColsFromBreakpoint(breakpoint, cols);
+    // verticalCompact compatibility, now deprecated
+    const compactOption = this.props.verticalCompact === false ? null : this.props.compactOption;
+
     // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
     // for this layout.
     const initialLayout = findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint,
-                                                         breakpoint, colNo, verticalCompact);
+                                                         breakpoint, colNo, compactOption);
 
     return {
       layout: initialLayout,
