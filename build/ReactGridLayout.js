@@ -37,6 +37,8 @@ var _GridItem2 = _interopRequireDefault(_GridItem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -100,20 +102,45 @@ var ReactGridLayout = (_temp = _class = function (_React$Component) {
             var _this2 = this;
 
             var _props = this.props,
+                containerWidth = _props.containerWidth,
+                containerHeight = _props.containerHeight,
+                minConstraints = _props.minConstraints,
+                maxConstraints = _props.maxConstraints,
+                rowHeight = _props.rowHeight,
+                updateDimensions = _props.updateDimensions,
+                initialWidth = _props.initialWidth,
+                breakpoint = _props.breakpoint,
+                onLayoutChange = _props.onLayoutChange,
+                layout = _props.layout,
+                autoSize = _props.autoSize,
+                maxRows = _props.maxRows,
+                margin = _props.margin,
+                isDraggable = _props.isDraggable,
+                isResizable = _props.isResizable,
+                useCSSTransforms = _props.useCSSTransforms,
+                verticalCompact = _props.verticalCompact,
+                onDragStop = _props.onDragStop,
+                onResizeStart = _props.onResizeStart,
+                onResize = _props.onResize,
+                onResizeStop = _props.onResizeStop,
                 className = _props.className,
-                style = _props.style;
-
+                style = _props.style,
+                other = _objectWithoutProperties(_props, ['containerWidth', 'containerHeight', 'minConstraints', 'maxConstraints', 'rowHeight', 'updateDimensions', 'initialWidth', 'breakpoint', 'onLayoutChange', 'layout', 'autoSize', 'maxRows', 'margin', 'isDraggable', 'isResizable', 'useCSSTransforms', 'verticalCompact', 'onDragStop', 'onResizeStart', 'onResize', 'onResizeStop', 'className', 'style']);
 
             var mergedStyle = _extends({
                 height: this.containerHeight()
             }, style);
 
-            return _jsx('div', {
-                className: (0, _classnames2.default)('react-grid-layout', className),
-                style: mergedStyle
-            }, void 0, _react2.default.Children.map(this.props.children, function (child) {
-                return _this2.processGridItem(child);
-            }), this.placeholder());
+            return _react2.default.createElement(
+                'div',
+                _extends({}, other, {
+                    className: (0, _classnames2.default)('react-grid-layout', className),
+                    style: mergedStyle }),
+                _react2.default.Children.map(this.props.children, function (child) {
+                    return _this2.processGridItem(child);
+                }),
+                this.renderPreview()
+            );
         }
 
         /**
@@ -329,8 +356,8 @@ var ReactGridLayout = (_temp = _class = function (_React$Component) {
          */
 
     }, {
-        key: 'placeholder',
-        value: function placeholder() {
+        key: 'renderPreview',
+        value: function renderPreview() {
             var activeDrag = this.state.activeDrag;
 
             if (!activeDrag) {

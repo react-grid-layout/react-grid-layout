@@ -82,10 +82,7 @@ var AutoSizeLayout = (_dec = (0, _reactDimensions2.default)({
                 _extends({}, _this.props, {
                     width: _this.state.width,
                     height: _this.state.height,
-                    initialWidth: _this.props.width,
-                    onMouseDown: function onMouseDown() {
-                        return alert('grid');
-                    } }),
+                    initialWidth: _this.props.width }),
                 _this.props.children
             ));
         }, _this.onResize = function (event, data) {
