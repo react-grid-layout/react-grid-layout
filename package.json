@@ -36,7 +36,7 @@
     "classnames": "^2.2.5",
     "lodash.isequal": "^4.0.0",
     "prop-types": "^15.5.8",
-    "react-draggable": "^2.2.6",
+    "react-draggable": "^2.2.6 || ^3.0.1",
     "react-resizable": "^1.4.0"
   },
   "peerDependencies": {
@@ -61,7 +61,7 @@
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
     "exports-loader": "^0.6.4",
-    "flow-bin": "^0.44.2",
+    "flow-bin": "^0.53.1",
     "imports-loader": "^0.7.1",
     "jest-cli": "^19.0.2",
     "jsxhint": "^0.15.1",

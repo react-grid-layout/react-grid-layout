@@ -1,23 +1,41 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 
 import {cloneLayout, synchronizeLayoutWithChildren, validateLayout} from './utils';
 import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveLayout} from './responsiveUtils';
 import ReactGridLayout from './ReactGridLayout';
+import type {Props as RGLProps} from './ReactGridLayout';
+import type {Layout} from './utils';
 
 const noop = function(){};
 const type = (obj) => Object.prototype.toString.call(obj);
 
-import type {Layout} from './utils';
 type State = {
   layout: Layout,
   breakpoint: string,
   cols: number
 };
 
-export default class ResponsiveReactGridLayout extends React.Component {
+type Props<Breakpoint: string = string> = {
+  ...$Exact<RGLProps>,
+
+  // Responsive config
+  breakpoint: Breakpoint,
+  breakpoints: {[key: Breakpoint]: number},
+  cols: {[key: Breakpoint]: number},
+  layouts: {[key: Breakpoint]: Layout},
+  width: number,
+
+  // Callbacks
+  onBreakpointChange: (Breakpoint, cols: number) => void,
+  onLayoutChange: (Layout, {[key: Breakpoint]: Layout}) => void,
+  onWidthChange:
+    (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void
+};
+
+export default class ResponsiveReactGridLayout extends React.Component<Props<>, State> {
 
   // This should only include propTypes needed in this code; RGL itself
   // will do validation of the rest props passed to it.
@@ -79,7 +97,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     onWidthChange: noop,
   };
 
-  state: State = this.generateInitialState();
+  state = this.generateInitialState();
 
   generateInitialState(): State {
     const {width, breakpoints, layouts, verticalCompact, cols} = this.props;
@@ -97,7 +115,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps: Object) {
+  componentWillReceiveProps(nextProps: Props<*>) {
 
     // Allow parent to set width or breakpoint directly.
     if (
@@ -132,7 +150,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(nextProps: typeof ResponsiveReactGridLayout.prototype.props) {
+  onWidthChange(nextProps: Props<*>) {
     const {breakpoints, cols, layouts, verticalCompact} = nextProps;
     const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 

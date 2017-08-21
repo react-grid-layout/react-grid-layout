@@ -1,7 +1,13 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+
+type Props = {
+  className?: string,
+  measureBeforeMount: boolean,
+  style?: Object,
+};
 
 type State = {
   width: number
@@ -10,8 +16,8 @@ type State = {
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-type ProviderT = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
-const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component {
+type ProviderT = (ComposedComponent: React.ComponentType<any>) => React.ComponentType<any>;
+const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component<Props, State> {
 
   static defaultProps = {
     measureBeforeMount: false

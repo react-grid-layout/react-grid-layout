@@ -1,12 +1,15 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
 import {perc, setTopLeft, setTransform} from './utils';
 import classNames from 'classnames';
 
-import type {DragCallbackData, Position} from './utils';
+import type {ReactDraggableCallbackData, GridDragEvent, GridResizeEvent, Position, Size} from './utils';
+
+type PartialPosition = {top: number, left: number};
+type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (i: string, w: number, h: number, Data) => void;
 
 type State = {
   resizing: ?{width: number, height: number},
@@ -14,10 +17,49 @@ type State = {
   className: string
 };
 
+type Props = {
+  children: React.Element<any>,
+  cols: number,
+  containerWidth: number,
+  margin: [number, number],
+  containerPadding: [number, number],
+  rowHeight: number,
+  maxRows: number,
+  isDraggable: boolean,
+  isResizable: boolean,
+  static?: boolean,
+  useCSSTransforms?: boolean,
+  usePercentages?: boolean,
+
+  className: string,
+  style?: Object,
+  // Draggability
+  cancel: string,
+  handle: string,
+
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+
+  minW: number,
+  maxW: number,
+  minH: number,
+  maxH: number,
+  i: string,
+
+  onDrag?: GridItemCallback<GridDragEvent>,
+  onDragStart?: GridItemCallback<GridDragEvent>,
+  onDragStop?: GridItemCallback<GridDragEvent>,
+  onResize?: GridItemCallback<GridResizeEvent>,
+  onResizeStart?: GridItemCallback<GridResizeEvent>,
+  onResizeStop?: GridItemCallback<GridResizeEvent>,
+};
+
 /**
  * An individual item within a ReactGridLayout.
  */
-export default class GridItem extends React.Component {
+export default class GridItem extends React.Component<Props, State> {
 
   static propTypes = {
     // Children must be only a single element
@@ -92,10 +134,11 @@ export default class GridItem extends React.Component {
   static defaultProps = {
     className: '',
     cancel: '',
+    handle: '',
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
   };
 
   state: State = {
@@ -285,10 +328,11 @@ export default class GridItem extends React.Component {
    * @return {Function}           Handler function.
    */
   onDragHandler(handlerName:string) {
-    return (e:Event, {node, deltaX, deltaY}: DragCallbackData) => {
-      if (!this.props[handlerName]) return;
+    return (e:Event, {node, deltaX, deltaY}: ReactDraggableCallbackData) => {
+      const handler = this.props[handlerName];
+      if (!handler) return;
 
-      const newPosition: {top: number, left: number} = {top: 0, left: 0};
+      const newPosition: PartialPosition = {top: 0, left: 0};
 
       // Get new XY
       switch (handlerName) {
@@ -319,7 +363,7 @@ export default class GridItem extends React.Component {
 
       const {x, y} = this.calcXY(newPosition.top, newPosition.left);
 
-      this.props[handlerName](this.props.i, x, y, {e, node, newPosition});
+      handler.call(this, this.props.i, x, y, {e, node, newPosition});
     };
   }
 
@@ -333,7 +377,8 @@ export default class GridItem extends React.Component {
    */
   onResizeHandler(handlerName: string) {
     return (e:Event, {node, size}: {node: HTMLElement, size: Position}) => {
-      if (!this.props[handlerName]) return;
+      const handler = this.props[handlerName];
+      if (!handler) return;
       const {cols, x, i, maxW, minW, maxH, minH} = this.props;
 
       // Get new XY
@@ -350,11 +395,11 @@ export default class GridItem extends React.Component {
 
       this.setState({resizing: handlerName === 'onResizeStop' ? null : size});
 
-      this.props[handlerName](i, w, h, {e, node, size});
+      handler.call(this, i, w, h, {e, node, size});
     };
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
