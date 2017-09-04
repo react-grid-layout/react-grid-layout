@@ -55,6 +55,7 @@ RGL is React-only and does not require jQuery.
 - [ComNetViz](http://www.grotto-networking.com/ComNetViz/ComNetViz.html)
 - [Stoplight](https://app.stoplight.io)
 - [Reflect](https://reflect.io)
+- [ez-Dashing](https://github.com/ylacaute/ez-Dashing)
 
 *Know of others? Create a PR to let me know!*
 
