@@ -1,5 +1,12 @@
 # Changelog
 
+
+0.15.2 (Sep 5, 2017)
+----
+
+- Fix missed `import *`
+- Dependency updates
+
 0.15.1 (Sep 5, 2017)
 ----
 
