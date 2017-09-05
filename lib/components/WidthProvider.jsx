@@ -1,7 +1,8 @@
 // @flow
-import * as React from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import type {ComponentType as ReactComponentType} from 'react';
 
 type Props = {
   className?: string,
@@ -16,7 +17,7 @@ type State = {
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-type ProviderT = (ComposedComponent: React.ComponentType<any>) => React.ComponentType<any>;
+type ProviderT = (ComposedComponent: ReactComponentType<any>) => ReactComponentType<any>;
 const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component<Props, State> {
 
   static defaultProps = {

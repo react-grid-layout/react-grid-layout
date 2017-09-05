@@ -1,12 +1,13 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
 import {perc, setTopLeft, setTransform} from './utils';
 import classNames from 'classnames';
+import type {Element as ReactElement, Node as ReactNode} from 'react';
 
-import type {ReactDraggableCallbackData, GridDragEvent, GridResizeEvent, Position, Size} from './utils';
+import type {ReactDraggableCallbackData, GridDragEvent, GridResizeEvent, Position} from './utils';
 
 type PartialPosition = {top: number, left: number};
 type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (i: string, w: number, h: number, Data) => void;
@@ -18,7 +19,7 @@ type State = {
 };
 
 type Props = {
-  children: React.Element<any>,
+  children: ReactElement<any>,
   cols: number,
   containerWidth: number,
   margin: [number, number],
@@ -275,7 +276,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Element} child    Child element.
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable(child: React.Element<any>): React.Element<any> {
+  mixinDraggable(child: ReactElement<any>): ReactElement<any> {
     return (
       <DraggableCore
         onStart={this.onDragHandler('onDragStart')}
@@ -294,7 +295,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} position  Position object (pixel values)
    * @return {Element}          Child wrapped in Resizable.
    */
-  mixinResizable(child: React.Element<any>, position: Position): React.Element<any> {
+  mixinResizable(child: ReactElement<any>, position: Position): ReactElement<any> {
     const {cols, x, minW, minH, maxW, maxH} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
@@ -399,7 +400,7 @@ export default class GridItem extends React.Component<Props, State> {
     };
   }
 
-  render(): React.Node {
+  render(): ReactNode {
     const {x, y, w, h, isDraggable, isResizable, useCSSTransforms} = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
