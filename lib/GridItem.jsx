@@ -72,6 +72,7 @@ export default class GridItem extends React.Component<Props, State> {
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
     containerPadding: PropTypes.array.isRequired,
+    resizableAxis: PropTypes.string,
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -295,7 +296,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Element}          Child wrapped in Resizable.
    */
   mixinResizable(child: React.Element<any>, position: Position): React.Element<any> {
-    const {cols, x, minW, minH, maxW, maxH} = this.props;
+    const {cols, x, minW, minH, maxW, maxH, resizableAxis} = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
     const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
@@ -311,6 +312,7 @@ export default class GridItem extends React.Component<Props, State> {
         height={position.height}
         minConstraints={minConstraints}
         maxConstraints={maxConstraints}
+        axis={resizableAxis}
         onResizeStop={this.onResizeHandler('onResizeStop')}
         onResizeStart={this.onResizeHandler('onResizeStart')}
         onResize={this.onResizeHandler('onResize')}>

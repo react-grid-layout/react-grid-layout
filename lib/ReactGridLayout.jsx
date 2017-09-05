@@ -142,6 +142,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Other validations
     //
 
+    // Axis for resizing (see react-resizable)
+    resizableAxis: PropTypes.string,
+
     // Children must not have duplicate keys.
     children: function (props, propName, _componentName) {
       var children = props[propName];
@@ -175,7 +178,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     onDragStop: noop,
     onResizeStart: noop,
     onResize: noop,
-    onResizeStop: noop
+    onResizeStop: noop,
+    resizableAxis: 'both'
   };
 
   state: State = {
@@ -420,7 +424,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (!l) return null;
     const {width, cols, margin, containerPadding, rowHeight,
            maxRows, isDraggable, isResizable, useCSSTransforms,
-           draggableCancel, draggableHandle} = this.props;
+           draggableCancel, draggableHandle, resizableAxis} = this.props;
     const {mounted} = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
@@ -458,6 +462,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         maxH={l.maxH}
         maxW={l.maxW}
         static={l.static}
+        resizableAxis={resizableAxis}
         >
         {child}
       </GridItem>

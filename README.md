@@ -269,6 +269,9 @@ containerPadding: ?[number, number] = margin,
 // if you like.
 rowHeight: ?number = 150,
 
+// Specify which axis to resize on: ['both', 'x', 'y', 'none']
+resizableAxis: ?string = 'both',
+
 //
 // Flags
 //
