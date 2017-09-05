@@ -10,7 +10,8 @@
     "build-example": "make build-example",
     "dev": "make dev",
     "prepublishOnly": "make build",
-    "validate": "npm ls"
+    "validate": "npm ls",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",

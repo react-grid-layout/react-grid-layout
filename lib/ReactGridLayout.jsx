@@ -1,11 +1,12 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import classNames from 'classnames';
 import {autoBindHandlers, bottom, childrenEqual, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
+import type {ChildrenArray as ReactChildrenArray, Element as ReactElement} from 'react';
 const noop = function() {};
 
 // Types
@@ -45,7 +46,7 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
-  children: React.ChildrenArray<React.Element<any>>,
+  children: ReactChildrenArray<ReactElement<any>>,
 };
 // End Types
 
@@ -380,7 +381,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder(): ?React.Element<any> {
+  placeholder(): ?ReactElement<any> {
     const {activeDrag} = this.state;
     if (!activeDrag) return null;
     const {width, cols, margin, containerPadding, rowHeight, maxRows, useCSSTransforms} = this.props;
@@ -413,7 +414,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: React.Element<any>): ?React.Element<any> {
+  processGridItem(child: ReactElement<any>): ?ReactElement<any> {
     if (!child.key) return;
     const l = getLayoutItem(this.state.layout, String(child.key));
     if (!l) return null;
