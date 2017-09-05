@@ -1,5 +1,11 @@
 # Changelog
 
+0.15.1 (Sep 5, 2017)
+----
+
+- Fix React PropTypes & createClass warnings
+  - See https://github.com/facebook/react/issues/10583
+
 0.15.0 (Aug 21, 2017)
 ----
 
