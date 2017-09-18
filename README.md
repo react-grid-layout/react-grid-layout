@@ -119,9 +119,9 @@ var MyFirstGrid = React.createClass({
     ];
     return (
       <ReactGridLayout className="layout" layout={layout} cols={12} rowHeight={30} width={1200}>
-        <div key={'a'}>a</div>
-        <div key={'b'}>b</div>
-        <div key={'c'}>c</div>
+        <div key="a">a</div>
+        <div key="b">b</div>
+        <div key="c">c</div>
       </ReactGridLayout>
     )
   }
@@ -164,9 +164,9 @@ render: function() {
     <ResponsiveReactGridLayout className="layout" layouts={layouts}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
-      <div key={"1"}>1</div>
-      <div key={"2"}>2</div>
-      <div key={"3"}>3</div>
+      <div key="1">1</div>
+      <div key="2">2</div>
+      <div key="3">3</div>
     </ResponsiveReactGridLayout>
   )
 }
@@ -201,9 +201,9 @@ render() {
     <ResponsiveReactGridLayout className="layout" layouts={layouts}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
-      <div key={"1"}>1</div>
-      <div key={"2"}>2</div>
-      <div key={"3"}>3</div>
+      <div key="1">1</div>
+      <div key="2">2</div>
+      <div key="3">3</div>
     </ResponsiveReactGridLayout>
   )
 }
