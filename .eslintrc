@@ -1,4 +1,10 @@
 {
+  "env": {
+    "amd": true,
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
   "extends": [
     "aviarc"
   ],

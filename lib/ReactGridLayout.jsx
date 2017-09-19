@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props,react/no-did-mount-set-state,no-unused-vars,react/prop-types,eqeqeq */
 import React from 'react'
 import PropTypes from 'prop-types'
 import isEqual from 'lodash.isequal'
@@ -104,14 +105,14 @@ export default class ReactGridLayout extends React.Component {
         //
 
         // Children must not have duplicate keys.
-        children: function (props, propName, _componentName) {
+        children: function (props, propName) {
             var children = props[propName]
 
             // Check children keys for duplicates. Throw if found.
             var keys = {}
             React.Children.forEach(children, function (child) {
                 if (keys[child.key]) {
-                    throw new Error("Duplicate child key found! This will cause problems in ReactGridLayout.")
+                    throw new Error('Duplicate child key found! This will cause problems in ReactGridLayout.')
                 }
                 keys[child.key] = true
             })
@@ -153,7 +154,7 @@ export default class ReactGridLayout extends React.Component {
         mounted: false,
         oldDragItem: null,
         oldLayout: null,
-        oldResizeItem: null,
+        oldResizeItem: null
     };
 
     componentDidMount() {
@@ -305,7 +306,7 @@ export default class ReactGridLayout extends React.Component {
             activeDrag: null,
             layout: newLayout,
             oldDragItem: null,
-            oldLayout: null,
+            oldLayout: null
         })
 
         this.onLayoutMaybeChanged(newLayout, oldLayout)
