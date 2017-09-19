@@ -130,7 +130,6 @@ export default class GridItem extends React.Component {
                 cssTransforms: useCSSTransforms
             }),
             // We can set the width and height on the child, but unfortunately we can't set the position.
-// eslint-disable-next-line react/prop-types
             style: {...this.props.style, ...child.props.style, ...this.createStyle(pos)}
         })
 
