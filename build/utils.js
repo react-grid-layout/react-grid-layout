@@ -434,7 +434,7 @@ function synchronizeLayoutWithChildren(initialLayout, children, cols, verticalCo
     var layout = [];
     _react2.default.Children.forEach(children, function (child, i) {
         // Don't overwrite if it already exists.
-        var exists = getLayoutItem(initialLayout, child.key || "1");
+        var exists = getLayoutItem(initialLayout, child.key || '1');
         if (exists) {
             layout[i] = cloneLayoutItem(exists);
         } else {
@@ -448,7 +448,7 @@ function synchronizeLayoutWithChildren(initialLayout, children, cols, verticalCo
                 layout[i] = cloneLayoutItem(_extends({}, grid, { i: child.key }));
             } else {
                 // Nothing provided: ensure this is added to the bottom
-                layout[i] = cloneLayoutItem({ w: 1, h: 1, x: 0, y: bottom(layout), i: child.key || "1" });
+                layout[i] = cloneLayoutItem({ w: 1, h: 1, x: 0, y: bottom(layout), i: child.key || '1' });
             }
         }
     });
@@ -468,10 +468,10 @@ function synchronizeLayoutWithChildren(initialLayout, children, cols, verticalCo
  * @throw  {Error}                Validation error.
  */
 function validateLayout(layout, contextName) {
-    contextName = contextName || "Layout";
+    contextName = contextName || 'Layout';
     var subProps = ['x', 'y', 'w', 'h'];
     if (!Array.isArray(layout)) {
-        throw new Error(contextName + " must be an array!");
+        throw new Error(contextName + ' must be an array!');
     }
     for (var i = 0, len = layout.length; i < len; i++) {
         var item = layout[i];

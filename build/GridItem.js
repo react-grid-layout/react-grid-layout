@@ -11,7 +11,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _class, _temp2;
+var _class, _temp2; /* eslint-disable react/require-default-props,react/prop-types */
+
 
 var _react = require('react');
 
@@ -286,7 +287,7 @@ var GridItem = (_temp2 = _class = function (_React$Component) {
                 onDrag: this.onDragHandler('onDrag'),
                 onStop: this.onDragHandler('onDragStop'),
                 handle: this.props.handle,
-                cancel: ".react-resizable-handle" + (this.props.cancel ? "," + this.props.cancel : "")
+                cancel: '.react-resizable-handle' + (this.props.cancel ? ',' + this.props.cancel : '')
             }, void 0, child);
         }
 
@@ -521,6 +522,7 @@ var GridItem = (_temp2 = _class = function (_React$Component) {
     // Flags
     isDraggable: _propTypes2.default.bool.isRequired,
     isResizable: _propTypes2.default.bool.isRequired,
+    // eslint-disable-next-line react/require-default-props
     static: _propTypes2.default.bool,
 
     // Use CSS transforms instead of top/left
@@ -529,6 +531,7 @@ var GridItem = (_temp2 = _class = function (_React$Component) {
     // Others
     className: _propTypes2.default.string,
     // Selector for draggable handle
+    // eslint-disable-next-line react/require-default-props
     handle: _propTypes2.default.string,
     // Selector for draggable cancel (see react-draggable)
     cancel: _propTypes2.default.string

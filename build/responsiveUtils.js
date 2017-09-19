@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -8,7 +8,7 @@ exports.getColsFromBreakpoint = getColsFromBreakpoint;
 exports.findOrGenerateResponsiveLayout = findOrGenerateResponsiveLayout;
 exports.sortBreakpoints = sortBreakpoints;
 
-var _utils = require("./utils");
+var _utils = require('./utils');
 
 /**
  * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
@@ -37,7 +37,7 @@ function getBreakpointFromWidth(breakpoints, width) {
  */
 function getColsFromBreakpoint(breakpoint, cols) {
     if (!cols[breakpoint]) {
-        throw new Error("ResponsiveReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
+        throw new Error('ResponsiveReactGridLayout: `cols` entry for breakpoint ' + breakpoint + ' is missing!');
     }
     return cols[breakpoint];
 }
