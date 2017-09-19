@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props,react/prop-types */
 import React from 'react'
 import PropTypes from 'prop-types'
 import {DraggableCore} from 'react-draggable'
@@ -83,6 +84,7 @@ export default class GridItem extends React.Component {
         // Flags
         isDraggable: PropTypes.bool.isRequired,
         isResizable: PropTypes.bool.isRequired,
+// eslint-disable-next-line react/require-default-props
         static: PropTypes.bool,
 
         // Use CSS transforms instead of top/left
@@ -91,6 +93,7 @@ export default class GridItem extends React.Component {
         // Others
         className: PropTypes.string,
         // Selector for draggable handle
+// eslint-disable-next-line react/require-default-props
         handle: PropTypes.string,
         // Selector for draggable cancel (see react-draggable)
         cancel: PropTypes.string
@@ -127,6 +130,7 @@ export default class GridItem extends React.Component {
                 cssTransforms: useCSSTransforms
             }),
             // We can set the width and height on the child, but unfortunately we can't set the position.
+// eslint-disable-next-line react/prop-types
             style: {...this.props.style, ...child.props.style, ...this.createStyle(pos)}
         })
 
@@ -278,7 +282,7 @@ export default class GridItem extends React.Component {
                 onDrag={this.onDragHandler('onDrag')}
                 onStop={this.onDragHandler('onDragStop')}
                 handle={this.props.handle}
-                cancel={".react-resizable-handle" + (this.props.cancel ? "," + this.props.cancel : "")}>
+                cancel={'.react-resizable-handle' + (this.props.cancel ? ',' + this.props.cancel : '')}>
                 {child}
             </DraggableCore>
         )

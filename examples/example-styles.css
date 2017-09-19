@@ -59,7 +59,7 @@ body {
 }
 
 .react-grid-item .add {
-    cursor: pointer;
+    cursor: pointer
 }
 
 .react-grid-dragHandleExample {
@@ -80,6 +80,8 @@ li b {
 }
 
 .react-resizable-handle {
+    top: unset !important;
+    left: unset !important;
     position: absolute;
     width: 20px;
     height: 20px;
