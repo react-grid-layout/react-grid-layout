@@ -1,5 +1,11 @@
 # Changelog
 
+0.14.12 (Sep 19, 2017)
+----
+
+-Update resizable and draggable.
+
+
 0.14.11 (Aug 21, 2017)
 ----
 
