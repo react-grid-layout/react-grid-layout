@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -6,12 +7,13 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 class ShowcaseLayout extends React.Component {
 
   static propTypes = {
-    onLayoutChange: React.PropTypes.func.isRequired
+    onLayoutChange: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     className: "layout",
     rowHeight: 30,
+    onLayoutChange: function() {},
     cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
     initialLayout: generateLayout()
   };

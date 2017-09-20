@@ -1,14 +1,11 @@
+const path = require('path');
 var webpack = require("webpack");
 
 module.exports = {
     context: __dirname,
-    entry: [
-      "webpack-dev-server/client?http://localhost:4002",
-      "webpack/hot/dev-server",
-      "./test/dev-hook.jsx",
-    ],
+    entry: "./test/dev-hook.jsx",
     output: {
-        path: __dirname + "/dist",
+        path: '/',
         filename: "bundle.js",
         sourceMapFilename: "[file].map",
     },
@@ -35,20 +32,22 @@ module.exports = {
       ]
     },
     plugins: [
-      new webpack.optimize.DedupePlugin(),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify('development')
         }
       }),
     ],
-    debug: true,
     devtool: "eval",
-    publicPath: '/examples/',
+    devServer: {
+        publicPath: '/',
+        compress: true,
+        port: 4002
+    },
     resolve: {
-      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
+      extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
       alias: {
-        'react-grid-layout': __dirname + '/index-dev.js'
+        'react-grid-layout': path.join(__dirname, '/index-dev.js')
       }
     }
 };

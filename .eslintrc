@@ -31,7 +31,7 @@
     "react/jsx-no-undef": 2, // warn when using undefined components (why is this not default?)
     "react/jsx-uses-react": 1, // marks `React` as consumed by any jsx el (squelched unused)
     "react/jsx-uses-vars": 1, // marks any vars in jsx as used
-    "react/wrap-multilines": 1, // require parens around multiline jsx
+    "react/jsx-wrap-multilines": 1, // require parens around multiline jsx
     "semi": [1, "always"]
   },
   env: {
@@ -44,8 +44,7 @@
   },
   "globals": {
     // For Flow
-    "ReactElement",
-    "ReactClass",
-    "$PropertyType"
+    "$PropertyType",
+    "$Exact"
   }
 }

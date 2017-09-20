@@ -1,5 +1,6 @@
 'use strict';
 var React = require('react');
+var PropTypes = require('prop-types');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
 var WidthProvider = require('react-grid-layout').WidthProvider;
@@ -10,7 +11,7 @@ var NoCompactingLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
-    onLayoutChange: React.PropTypes.func.isRequired
+    onLayoutChange: PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -19,6 +20,7 @@ var NoCompactingLayout = React.createClass({
       items: 50,
       cols: 12,
       rowHeight: 30,
+      onLayoutChange: function() {},
       // This turns off compaction so you can place items wherever.
       verticalCompact: false
     };

@@ -1,5 +1,6 @@
 'use strict';
 var React = require('react');
+var PropTypes = require('prop-types');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
 var WidthProvider = require('react-grid-layout').WidthProvider;
@@ -11,7 +12,7 @@ var BasicLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
-    onLayoutChange: React.PropTypes.func.isRequired
+    onLayoutChange: PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -19,6 +20,7 @@ var BasicLayout = React.createClass({
       className: "layout",
       items: 20,
       rowHeight: 30,
+      onLayoutChange: function() {},
       cols: 12
     };
   },

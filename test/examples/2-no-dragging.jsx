@@ -1,5 +1,6 @@
 'use strict';
 var React = require('react');
+var PropTypes = require('prop-types');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var _ = require('lodash');
 var WidthProvider = require('react-grid-layout').WidthProvider;
@@ -10,7 +11,7 @@ var NoDraggingLayout = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
-    onLayoutChange: React.PropTypes.func.isRequired
+    onLayoutChange: PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -20,7 +21,8 @@ var NoDraggingLayout = React.createClass({
       isResizable: false,
       items: 50,
       cols: 12,
-      rowHeight: 30
+      rowHeight: 30,
+      onLayoutChange: function() {},
     };
   },
 
