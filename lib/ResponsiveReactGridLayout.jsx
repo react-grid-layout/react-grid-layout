@@ -116,11 +116,11 @@ export default class ResponsiveReactGridLayout extends React.Component {
         const colNo = getColsFromBreakpoint(breakpoint, cols)
         // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
         // for this layout.
-        const initialLayout = findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint,
+        const layout = findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint,
             breakpoint, colNo, verticalCompact)
 
         return {
-            layout: initialLayout,
+            layout,
             breakpoint,
             cols: colNo,
             width
@@ -162,8 +162,8 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
         // Find or generate a new layout.
         const newCols = getColsFromBreakpoint(newBreakpoint, cols)
-        let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint,
-            lastBreakpoint, newCols, verticalCompact)
+        let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint, lastBreakpoint, newCols,
+            verticalCompact)
 
         // This adds missing items.
         layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, verticalCompact, newBreakpoint)

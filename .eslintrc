@@ -11,6 +11,7 @@
   "globals": {
   },
   "rules": {
+    "react/no-multi-comp": "off",
     "max-lines": [
       "error",
       {
