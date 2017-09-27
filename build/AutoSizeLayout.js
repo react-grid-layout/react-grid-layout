@@ -66,9 +66,9 @@ var AutoSizeLayout = (_dec = (0, _reactDimensions2.default)({
             width: _this.props.containerWidth,
             height: _this.props.containerHeight
         }, _this.componentDidMount = function () {
-            return window.addEventListener("resize", _this.onBrowserResize);
+            return window.addEventListener('resize', _this.onBrowserResize);
         }, _this.componentWillUnmount = function () {
-            return window.removeEventListener("resize", _this.onBrowserResize);
+            return window.removeEventListener('resize', _this.onBrowserResize);
         }, _this.render = function () {
             return _jsx(_reactResizable.ResizableBox, {
                 width: _this.props.width || _this.props.containerWidth,
@@ -87,7 +87,7 @@ var AutoSizeLayout = (_dec = (0, _reactDimensions2.default)({
             ));
         }, _this.onResize = function (event, data) {
             return _this.setState({ width: data.size.width, height: data.size.height });
-        }, _this.onBrowserResize = function (event) {
+        }, _this.onBrowserResize = function () {
             return _this.setState({ width: _this.props.containerWidth, height: _this.props.containerHeight });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -102,9 +102,23 @@ var AutoSizeLayout = (_dec = (0, _reactDimensions2.default)({
     }]);
 
     return AutoSizeLayout;
-}(_react2.default.Component), _class2.propTypes = {
+}(_react2.default.Component), _class2.defaultProps = {
+    width: 0,
+    height: 0,
+    minConstraints: undefined,
+    maxConstraints: undefined,
+    containerWidth: undefined,
+    containerHeight: undefined,
+    children: undefined,
+    onMouseDown: function onMouseDown() {}
+}, _class2.propTypes = {
     width: _propTypes2.default.number,
+    height: _propTypes2.default.number,
+    containerWidth: _propTypes2.default.number,
+    containerHeight: _propTypes2.default.number,
     minConstraints: _propTypes2.default.array,
-    maxConstraints: _propTypes2.default.array
+    maxConstraints: _propTypes2.default.array,
+    onMouseDown: _propTypes2.default.func,
+    children: _propTypes2.default.element
 }, _temp2)) || _class);
 exports.default = AutoSizeLayout;

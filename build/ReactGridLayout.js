@@ -11,7 +11,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _class, _temp, _initialiseProps;
+var _class, _temp, _initialiseProps; /* eslint-disable react/require-default-props,react/no-did-mount-set-state,no-unused-vars,react/prop-types,eqeqeq */
+
 
 var _react = require('react');
 
@@ -551,14 +552,14 @@ var ReactGridLayout = (_temp = _class = function (_React$Component) {
     //
 
     // Children must not have duplicate keys.
-    children: function children(props, propName, _componentName) {
+    children: function children(props, propName) {
         var children = props[propName];
 
         // Check children keys for duplicates. Throw if found.
         var keys = {};
         _react2.default.Children.forEach(children, function (child) {
             if (keys[child.key]) {
-                throw new Error("Duplicate child key found! This will cause problems in ReactGridLayout.");
+                throw new Error('Duplicate child key found! This will cause problems in ReactGridLayout.');
             }
             keys[child.key] = true;
         });
