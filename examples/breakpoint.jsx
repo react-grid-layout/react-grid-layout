@@ -16,7 +16,7 @@ export default class Breakpoint extends React.Component {
                 xxs: {w: 4, h: 2, x: 0, y: 0},
                 xs: {w: 4, h: 2, x: 0, y: 0},
                 sm: {w: 3, h: 2, x: 0, y: 0},
-                md: {w: 4, h: 2, x: 0, y: 0},
+                md: {w: 4, h: 1, x: 0, y: 0},
                 lg: {w: 12, h: 2, x: 0, y: 0}
             }
         }, {
@@ -25,7 +25,7 @@ export default class Breakpoint extends React.Component {
                 xxs: {w: 4, h: 2, x: 0, y: 0},
                 xs: {w: 4, h: 2, x: 0, y: 0},
                 sm: {w: 3, h: 2, x: 0, y: 0},
-                md: {w: 4, h: 2, x: 0, y: 0},
+                md: {w: 4, h: 1, x: 0, y: 0},
                 lg: {w: 12, h: 2, x: 0, y: 0}
             }
         }]

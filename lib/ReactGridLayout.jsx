@@ -99,11 +99,6 @@ export default class ReactGridLayout extends React.Component {
         onResize: PropTypes.func,
         // Calls when resize is complete.
         onResizeStop: PropTypes.func,
-
-        //
-        // Other validations
-        //
-
         // Children must not have duplicate keys.
         children: function (props, propName) {
             var children = props[propName]
@@ -313,10 +308,7 @@ export default class ReactGridLayout extends React.Component {
     }
 
     onLayoutMaybeChanged(newLayout, oldLayout) {
-        if (!oldLayout) {
-            oldLayout = this.state.layout
-        }
-        if (!isEqual(oldLayout, newLayout)) {
+        if (!isEqual(oldLayout || this.state.layout, newLayout)) {
             this.props.onLayoutChange(newLayout)
         }
     }
