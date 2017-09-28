@@ -1,42 +1,39 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var _ = require('lodash');
-var WidthProvider = require('react-grid-layout').WidthProvider;
-var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
-ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
+import React from 'react';
+import { WidthProvider, Responsive } from 'react-grid-layout';
+import _ from 'lodash';
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-var AddRemoveLayout = React.createClass({
-  mixins: [PureRenderMixin],
+class AddRemoveLayout extends React.PureComponent {
+  static defaultProps = {
+    className: "layout",
+    cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+    rowHeight: 100
+  };
 
-  getDefaultProps() {
-    return {
-      className: "layout",
-      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
-      rowHeight: 100
-    };
-  },
+  constructor(props) {
+    super(props);
 
-  getInitialState() {
-    return {
+    this.state = {
       items: [0, 1, 2, 3, 4].map(function(i, key, list) {
         return {i: i.toString(), x: i * 2, y: 0, w: 2, h: 2, add: i === (list.length - 1).toString()};
       }),
       newCounter: 0
     };
-  },
+
+    this.onAddItem = this.onAddItem.bind(this);
+  }
 
   createElement(el) {
-    var removeStyle = {
+    const removeStyle = {
       position: 'absolute',
       right: '2px',
       top: 0,
       cursor: 'pointer'
     };
-    var i = el.add ? '+' : el.i;
+    const i = el.add ? '+' : el.i;
     return (
       <div key={i} data-grid={el}>
         {el.add ?
@@ -45,7 +42,7 @@ var AddRemoveLayout = React.createClass({
         <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(this, i)}>x</span>
       </div>
     );
-  },
+  }
 
   onAddItem() {
     /*eslint no-console: 0*/
@@ -62,7 +59,7 @@ var AddRemoveLayout = React.createClass({
       // Increment the counter to ensure key is always unique.
       newCounter: this.state.newCounter + 1
     });
-  },
+  }
 
   // We're using the cols coming back from this to calculate where to add new items.
   onBreakpointChange(breakpoint, cols) {
@@ -70,17 +67,17 @@ var AddRemoveLayout = React.createClass({
       breakpoint: breakpoint,
       cols: cols
     });
-  },
+  }
 
   onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
     this.setState({layout: layout});
-  },
+  }
 
   onRemoveItem(i) {
     console.log('removing', i);
     this.setState({items: _.reject(this.state.items, {i: i})});
-  },
+  }
 
   render() {
     return (
@@ -88,12 +85,12 @@ var AddRemoveLayout = React.createClass({
         <button onClick={this.onAddItem}>Add Item</button>
         <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange}
             {...this.props}>
-          {_.map(this.state.items, this.createElement)}
+          {_.map(this.state.items, (el) => this.createElement(el))}
         </ResponsiveReactGridLayout>
       </div>
     );
   }
-});
+}
 
 module.exports = AddRemoveLayout;
 

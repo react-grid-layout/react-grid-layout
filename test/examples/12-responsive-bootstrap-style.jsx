@@ -1,32 +1,24 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var ResponsiveReactGridLayout = require('react-grid-layout').Responsive;
+import React from 'react';
+import { WidthProvider, Responsive } from 'react-grid-layout';
+
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 /**
  * This example illustrates how to let grid items lay themselves out with a bootstrap-style specification.
  */
-var BootstrapStyleLayout = React.createClass({
-  mixins: [PureRenderMixin],
-
-  getDefaultProps() {
-    return {
+class BootstrapStyleLayout extends React.PureComponent {
+  static defaultProps = {
       isDraggable: true,
       isResizable: true,
       items: 20,
       rowHeight: 30,
       onLayoutChange: function() {},
       cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
-    };
-  },
+  }
 
-  getInitialState() {
-    return {};
-  },
-
-  onLayoutChange: function(layout) {
+  onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
-  },
+  }
 
   render() {
     return (
@@ -36,7 +28,7 @@ var BootstrapStyleLayout = React.createClass({
       </ResponsiveReactGridLayout>
     );
   }
-});
+}
 
 module.exports = BootstrapStyleLayout;
 
