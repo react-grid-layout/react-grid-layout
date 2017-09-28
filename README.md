@@ -274,6 +274,8 @@ rowHeight: ?number = 150,
 //
 isDraggable: ?boolean = true,
 isResizable: ?boolean = true,
+// Enable or disable grid rearrangement when dragging/resizing an element.
+isRearrangeable: ?boolean = true,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
