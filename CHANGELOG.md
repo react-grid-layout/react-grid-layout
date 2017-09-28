@@ -1,5 +1,10 @@
 # Changelog
 
+0.14.13 (Sep 19, 2017)
+----
+
+-Fix layout updates are not saved when the user changes the view from the one breakpoint to another.
+
 0.14.12 (Sep 19, 2017)
 ----
 
