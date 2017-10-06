@@ -48,10 +48,10 @@ class ShowcaseLayout extends React.Component {
   };
 
   onCompactTypeChange = () => {
-    this.setState({
-      compactType: this.state.compactType === 'horizontal' ? 'vertical' :
-                   this.state.compactType === 'vertical' ? null : 'horizontal'
-    });
+    const {compactType: oldCompactType} = this.state;
+    const compactType = oldCompactType === 'horizontal' ? 'vertical' :
+                        oldCompactType === 'vertical' ? null : 'horizontal';
+    this.setState({compactType});
   };
 
   onLayoutChange = (layout, layouts) => {
@@ -83,7 +83,9 @@ class ShowcaseLayout extends React.Component {
           // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
           // and set `measureBeforeMount={true}`.
           useCSSTransforms={this.state.mounted}
-          compactType={this.state.compactType}>
+          compactType={this.state.compactType}
+          preventCollision={!this.state.compactType}
+          >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>
