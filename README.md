@@ -278,6 +278,10 @@ isResizable: ?boolean = true,
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
 
+// If true, grid items won't change position when being
+// dragged over.
+preventCollision: ?boolean = false;
+
 //
 // Callbacks
 //
