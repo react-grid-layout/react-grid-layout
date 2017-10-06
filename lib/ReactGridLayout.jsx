@@ -179,10 +179,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     margin: [10, 10],
     isDraggable: true,
     isResizable: true,
-    isRearrangeable: true,
     useCSSTransforms: true,
     verticalCompact: true,
     compactType: 'vertical',
+    preventCollision: false,
     onLayoutChange: noop,
     onDragStart: noop,
     onDrag: noop,
@@ -284,7 +284,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    */
   onDrag(i:string, x:number, y:number, {e, node}: GridDragEvent) {
     const {oldDragItem} = this.state;
-    const {isRearrangeable} = this.props;
     let {layout} = this.state;
     const {cols} = this.props;
     var l = getLayoutItem(layout, i);
@@ -317,7 +316,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    */
   onDragStop(i:string, x:number, y:number, {e, node}: GridDragEvent) {
     const {oldDragItem} = this.state;
-    const {isRearrangeable} = this.props;
     let {layout} = this.state;
     const {cols, preventCollision} = this.props;
     const l = getLayoutItem(layout, i);
