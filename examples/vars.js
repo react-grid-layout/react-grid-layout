@@ -108,11 +108,12 @@ module.exports = [
     ]
   },
   {
-    title: 'No Rearrangement',
-    source: 'no-rearrangement',
+    title: 'Prevent Collision',
+    source: 'prevent-collision',
     paragraphs: [
       'You may want to turn off rearrangement so items don\'t move arround when dragging. Set the ' +
-      'property `isRearrangeable` to `false` to achieve this effect. It\'s particulary usefull with `verticalCompact` setted to `false`.'
+      'property `preventCollision` to `true` to achieve this effect. ' +
+      'It\'s particularly useful with `verticalCompact` set to `false`.'
     ]
   },
 ];
