@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getBreakpointFromWidth = getBreakpointFromWidth;
 exports.getColsFromBreakpoint = getColsFromBreakpoint;
-exports.findOrGenerateResponsiveLayout = findOrGenerateResponsiveLayout;
+exports.getResponsiveLayout = getResponsiveLayout;
 exports.sortBreakpoints = sortBreakpoints;
 
 var _utils = require('./utils');
@@ -56,7 +56,7 @@ function getColsFromBreakpoint(breakpoint, cols) {
  *   vertically.
  * @return {Array}             New layout.
  */
-function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols, verticalCompact) {
+function getResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols, verticalCompact) {
     // If it already exists, just return it.
     if (layouts[breakpoint]) {
         return (0, _utils.cloneLayout)(layouts[breakpoint]);

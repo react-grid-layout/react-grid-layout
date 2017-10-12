@@ -266,10 +266,7 @@ var ReactGridLayout = (_temp = _class = function (_React$Component) {
     }, {
         key: 'onLayoutMaybeChanged',
         value: function onLayoutMaybeChanged(newLayout, oldLayout) {
-            if (!oldLayout) {
-                oldLayout = this.state.layout;
-            }
-            if (!(0, _lodash2.default)(oldLayout, newLayout)) {
+            if (!(0, _lodash2.default)(oldLayout || this.state.layout, newLayout)) {
                 this.props.onLayoutChange(newLayout);
             }
         }
@@ -546,11 +543,6 @@ var ReactGridLayout = (_temp = _class = function (_React$Component) {
     onResize: _propTypes2.default.func,
     // Calls when resize is complete.
     onResizeStop: _propTypes2.default.func,
-
-    //
-    // Other validations
-    //
-
     // Children must not have duplicate keys.
     children: function children(props, propName) {
         var children = props[propName];

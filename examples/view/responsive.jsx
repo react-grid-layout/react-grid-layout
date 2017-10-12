@@ -9,7 +9,8 @@ export default class Example extends React.Component {
     static defaultProps = {}
 
     state = {
-        initialHeight: 500
+        initialHeight: 500,
+        width: 500
     }
 
     render = () =>
@@ -26,7 +27,7 @@ export default class Example extends React.Component {
         this.setState({width: data.size.width})
 
     renderGridLayout = () =>
-        <ResponsiveReactGridLayout width={this.state.width}//width
+        <ResponsiveReactGridLayout width={this.state.width}
                                    cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}
                                    rowHeight={30}>
 
