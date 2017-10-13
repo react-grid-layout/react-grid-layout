@@ -24,6 +24,7 @@ class AddRemoveLayout extends React.PureComponent {
     };
 
     this.onAddItem = this.onAddItem.bind(this);
+    this.onBreakpointChange = this.onBreakpointChange.bind(this);
   }
 
   createElement(el) {

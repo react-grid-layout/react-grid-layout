@@ -15,7 +15,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](http://www.webpackbin.com/EJF48h_rz)**]
+[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](https://www.webpackbin.com/bins/-Kvr2qCxorvGMgVMxkmI)**]
 
 ## Table of Contents
 
@@ -66,7 +66,7 @@ RGL is React-only and does not require jQuery.
 * Draggable widgets
 * Resizable widgets
 * Static widgets
-* Vertical auto-packing
+* Configurable packing: horizontal, vertical, or off
 * Bounds checking for dragging and resizing
 * Widgets may be added or removed without rebuilding grid
 * Layout can be serialized and restored
@@ -251,6 +251,9 @@ draggableHandle: ?string = '',
 // If true, the layout will compact vertically
 verticalCompact: ?boolean = true,
 
+// Compaction type.
+compactType: ?('vertical' | 'horizontal') = 'vertical';
+
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}
 // The index into the layout must match the key used on each item component.
@@ -277,6 +280,10 @@ isResizable: ?boolean = true,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
+
+// If true, grid items won't change position when being
+// dragged over.
+preventCollision: ?boolean = false;
 
 //
 // Callbacks

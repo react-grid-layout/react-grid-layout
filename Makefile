@@ -57,13 +57,13 @@ lint:
 test:
 	@$(BIN)/jest
 
-release-patch: build
+release-patch: build lint test
 	@$(call release,patch)
 
-release-minor: build
+release-minor: build lint test
 	@$(call release,minor)
 
-release-major: build
+release-major: build lint test
 	@$(call release,major)
 
 publish:
