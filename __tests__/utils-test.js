@@ -1,4 +1,4 @@
-import {bottom, collides, validateLayout, moveElement} from '../lib/utils.js';
+import {bottom, collides, validateLayout, moveElement, compact} from '../lib/utils.js';
 
 describe('bottom', () => {
   it('Handles an empty layout as input', () => {
@@ -56,6 +56,7 @@ describe('moveElement', () => {
       true, true // isUserAction, preventCollision
     )).toEqual([{x: 0, y: 1, w: 1, h: 1, moved: false}, {x: 1, y: 2, w: 1, h: 1, moved: false}]);
   });
+
   it('Does change layout when colliding in rearrangement mode', () => {
     const layout = [{x: 0, y: 0, w: 1, h: 1, moved: false}, {x: 1, y: 0, w: 1, h: 1, moved: false}];
     const layoutItem = layout[0];
@@ -66,4 +67,67 @@ describe('moveElement', () => {
       'vertical', 2 // compactType, cols
     )).toEqual([{x: 1, y: 0, w: 1, h: 1, moved: true}, {x: 1, y: 1, w: 1, h: 1, moved: true}]);
   });
+
+  it('Does move elements out of the way without causing panel jumps', () => {
+    const layout = [
+      {x: 0, y: 0,  w: 1,  h: 10, moved: false, i: 'A'},
+      {x: 0, y: 11, w: 10, h: 1,  moved: false, i: 'B'},
+      {x: 0, y: 12, w: 1,  h: 1,  moved: false, i: 'C'},
+    ];
+    // move A down slightly so it collides C will can cause C to jump above B
+    // this test will check that that does not happen
+    const layoutItem = layout[0];
+    expect(moveElement(
+      layout, layoutItem,
+      0, 2, // x, y
+      true, false, // isUserAction, preventCollision
+      'vertical', 10 // compactType, cols
+    )).toEqual([
+      {x: 0, y: 2,  w: 1,  h: 10, moved: true, i: 'A'},
+      {x: 0, y: 12, w: 10, h: 1,  moved: true, i: 'B'},
+      {x: 0, y: 13, w: 1,  h: 1,  moved: true, i: 'C'},
+    ]);
+  });
 });
+
+describe('compact vertical', () => {
+  it('Removes empty vertical space above item', () => {
+    const layout = [{x: 0, y: 1, w: 1, h: 1}];
+    expect(compact(layout, 'vertical', 10)).toMatchObject([{x: 0, y: 0, w: 1, h: 1}]);
+  });
+
+  it('Resolve collision by moving item further down in array', () => {
+    const layout = [
+      {x: 0, y: 0, w: 1, h: 5, i: '1'},
+      {x: 0, y: 1, w: 1, h: 1, i: '2'}
+    ];
+    expect(compact(layout, 'vertical', 10)).toMatchObject([
+      {x: 0, y: 0, w: 1, h: 5},
+      {x: 0, y: 5, w: 1, h: 1}
+    ]);
+  });
+
+  it('Handles recurisive collision by moving new collisions out of the way before moving item down', () => {
+    const layout = [
+      {x: 0, y: 0, w: 2,  h: 5, i: '1'},
+      {x: 0, y: 0, w: 10, h: 1, i: '2'},
+      {x: 5, y: 1, w: 1,  h: 1, i: '3'},
+      {x: 5, y: 2, w: 1,  h: 1, i: '4'}
+    ];
+    expect(compact(layout, 'vertical', 10)).toMatchObject([
+      {x: 0, y: 0, w: 2,  h: 5, i: '1'},
+      {x: 0, y: 5, w: 10, h: 1, i: '2'},
+      {x: 5, y: 6, w: 1,  h: 1, i: '3'},
+      {x: 5, y: 7, w: 1,  h: 1, i: '4'},
+    ]);
+  });
+});
+
+describe('compact horizontal', () => {
+  it('compact horizontal should remove empty horizontal space to left of item', () => {
+    const layout = [{x: 5, y: 5, w: 1, h: 1}];
+    expect(compact(layout, 'horizontal', 10)).toMatchObject([{x: 0, y: 0, w: 1, h: 1}]);
+  });
+});
+
+
