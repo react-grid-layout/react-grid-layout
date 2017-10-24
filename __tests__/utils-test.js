@@ -1,4 +1,4 @@
-import {bottom, collides, validateLayout, moveElement, compact} from '../lib/utils.js';
+import {bottom, collides, validateLayout, moveElement, compact, sortLayoutItemsByRowCol} from '../lib/utils.js';
 
 describe('bottom', () => {
   it('Handles an empty layout as input', () => {
@@ -10,6 +10,21 @@ describe('bottom', () => {
       {x: 0, y: 1, w: 1, h: 1},
       {x: 1, y: 2, w: 1, h: 1}
     ])).toBe(3);
+  });
+});
+
+describe('sortLayoutItemsByRowCol', () => {
+  it('should sort by top to bottom right', () => {
+    const layout = [
+      {x: 1, y: 1, w: 1, h: 1, i: "2" },
+      {x: 1, y: 0, w: 1, h: 1, i: "1" },
+      {x: 0, y: 1, w: 2, h: 2, i: "3" }
+    ];
+    expect(sortLayoutItemsByRowCol(layout)).toMatchObject([
+      {x: 1, y: 0, w: 1, h: 1, i: "1" },
+      {x: 0, y: 1, w: 2, h: 2, i: "3" },
+      {x: 1, y: 1, w: 1, h: 1, i: "2" },
+    ]);
   });
 });
 
@@ -104,9 +119,9 @@ describe('moveElement', () => {
       true, false, // isUserAction, preventCollision
       'vertical', 2 // compactType, cols
     )).toEqual([
-      {x: 1, y: 0, w: 1, h: 1, i: "1" },
-      {x: 1, y: 1, w: 1, h: 1, i: "2" },
-      {x: 0, y: 2, w: 2, h: 2, i: "3" }
+      {x: 1, y: 0, w: 1, h: 1, i: "1", moved: true },
+      {x: 1, y: 1, w: 1, h: 1, i: "2", moved: true },
+      {x: 0, y: 2, w: 2, h: 2, i: "3", moved: true }
     ]);
   });
 
@@ -163,19 +178,6 @@ describe('compact vertical', () => {
       {x: 5, y: 6, w: 1,  h: 1, i: '3'},
       {x: 5, y: 7, w: 1,  h: 1, i: '4'},
       {x: 5, y: 3, w: 1,  h: 1, i: '5', static: true}
-    ]);
-  });
-
-  it('replicate test example case 13', () => {
-    const layout = [
-      {x: 1, y: 0, w: 1, h: 1, i: "1" },
-      {x: 1, y: 1, w: 1, h: 1, i: "2" },
-      {x: 0, y: 1, w: 2, h: 2, i: "3" }
-    ];
-    expect(compact(layout, 'vertical', 2)).toMatchObject([
-      {x: 1, y: 0, w: 1, h: 1, i: "1" },
-      {x: 1, y: 1, w: 1, h: 1, i: "2" },
-      {x: 0, y: 2, w: 2, h: 2, i: "3" }
     ]);
   });
 
