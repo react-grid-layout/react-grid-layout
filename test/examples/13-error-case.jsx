@@ -57,7 +57,7 @@ class BasicLayout extends React.PureComponent {
                 h: 2,
                 i: "3"
             }
-        ]
+        ];
     }
 
     onLayoutChange(layout) {

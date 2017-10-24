@@ -89,6 +89,27 @@ describe('moveElement', () => {
     ]);
   });
 
+  it('Does move elements out of the way without causing panel jumps when compaction is vertical (example case 13)', () => {
+    const layout = [
+      {x: 0, y: 0, w: 1, h: 1, i: "1" },
+      {x: 1, y: 0, w: 1, h: 1, i: "2" },
+      {x: 0, y: 1, w: 2, h: 2, i: "3" }
+    ]
+    // move A down slightly so it collides C will can cause C to jump above B
+    // this test will check that that does not happen
+    const layoutItem = layout[0];
+    expect(moveElement(
+      layout, layoutItem,
+      1, 0, // x, y
+      true, false, // isUserAction, preventCollision
+      'vertical', 2 // compactType, cols
+    )).toEqual([
+      {x: 1, y: 0, w: 1, h: 1, i: "1" },
+      {x: 1, y: 1, w: 1, h: 1, i: "2" },
+      {x: 0, y: 2, w: 2, h: 2, i: "3" }
+    ]);
+  });
+
   it('Does move elements out of the way without causing panel jumps when compaction is horizontal', () => {
     const layout = [
       {y: 0, x: 0,  h: 1,  w: 10, moved: false, i: 'A'},
@@ -144,6 +165,20 @@ describe('compact vertical', () => {
       {x: 5, y: 3, w: 1,  h: 1, i: '5', static: true}
     ]);
   });
+
+  it('replicate test example case 13', () => {
+    const layout = [
+      {x: 1, y: 0, w: 1, h: 1, i: "1" },
+      {x: 1, y: 1, w: 1, h: 1, i: "2" },
+      {x: 0, y: 1, w: 2, h: 2, i: "3" }
+    ];
+    expect(compact(layout, 'vertical', 2)).toMatchObject([
+      {x: 1, y: 0, w: 1, h: 1, i: "1" },
+      {x: 1, y: 1, w: 1, h: 1, i: "2" },
+      {x: 0, y: 2, w: 2, h: 2, i: "3" }
+    ]);
+  });
+
 });
 
 describe('compact horizontal', () => {
