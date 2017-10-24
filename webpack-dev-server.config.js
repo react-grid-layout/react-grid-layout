@@ -5,7 +5,7 @@ module.exports = {
     context: __dirname,
     entry: "./test/dev-hook.jsx",
     output: {
-        path: path.join(__dirname, "dist"),
+        path: '/',
         filename: "bundle.js",
         sourceMapFilename: "[file].map",
     },
@@ -40,7 +40,7 @@ module.exports = {
     ],
     devtool: "eval",
     devServer: {
-        publicPath: '/examples/',
+        publicPath: '/',
         compress: true,
         port: 4002
     },

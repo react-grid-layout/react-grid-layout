@@ -1,8 +1,9 @@
+[version]
+0.55.0
+
 [ignore]
-.*/node_modules/react/.*
-.*/node_modules/babel.*
-.*/node_modules/fbjs/.*
 .*test
+/build
 
 [include]
 ./lib
@@ -17,5 +18,5 @@ suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowBug.*
 suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
 suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowNewLine.*
 suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIssue
-esproposal.class_instance_fields=ignore
-esproposal.class_static_fields=ignore
+esproposal.class_instance_fields=enable
+esproposal.class_static_fields=enable

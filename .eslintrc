@@ -44,8 +44,7 @@
   },
   "globals": {
     // For Flow
-    "ReactElement",
-    "ReactClass",
-    "$PropertyType"
+    "$PropertyType",
+    "$Exact"
   }
 }

@@ -1,22 +1,41 @@
 // @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 
 import {cloneLayout, synchronizeLayoutWithChildren, validateLayout} from './utils';
 import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveLayout} from './responsiveUtils';
 import ReactGridLayout from './ReactGridLayout';
+import type {Props as RGLProps} from './ReactGridLayout';
+import type {Layout} from './utils';
 
 const noop = function(){};
 const type = (obj) => Object.prototype.toString.call(obj);
 
-import type {Layout} from './utils';
 type State = {
   layout: Layout,
   breakpoint: string,
   cols: number
 };
 
-export default class ResponsiveReactGridLayout extends React.Component {
+type Props<Breakpoint: string = string> = {
+  ...$Exact<RGLProps>,
+
+  // Responsive config
+  breakpoint: Breakpoint,
+  breakpoints: {[key: Breakpoint]: number},
+  cols: {[key: Breakpoint]: number},
+  layouts: {[key: Breakpoint]: Layout},
+  width: number,
+
+  // Callbacks
+  onBreakpointChange: (Breakpoint, cols: number) => void,
+  onLayoutChange: (Layout, {[key: Breakpoint]: Layout}) => void,
+  onWidthChange:
+    (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void
+};
+
+export default class ResponsiveReactGridLayout extends React.Component<Props<>, State> {
 
   // This should only include propTypes needed in this code; RGL itself
   // will do validation of the rest props passed to it.
@@ -28,13 +47,13 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     // Optional, but if you are managing width yourself you may want to set the breakpoint
     // yourself as well.
-    breakpoint: React.PropTypes.string,
+    breakpoint: PropTypes.string,
 
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
-    breakpoints: React.PropTypes.object,
+    breakpoints: PropTypes.object,
 
     // # of cols. This is a breakpoint -> cols map
-    cols: React.PropTypes.object,
+    cols: PropTypes.object,
 
     // layouts is an object mapping breakpoints to layouts.
     // e.g. {lg: Layout, md: Layout, ...}
@@ -52,21 +71,21 @@ export default class ResponsiveReactGridLayout extends React.Component {
 
     // The width of this component.
     // Required in this propTypes stanza because generateInitialState() will fail without it.
-    width: React.PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
 
     //
     // Callbacks
     //
 
     // Calls back with breakpoint and new # cols
-    onBreakpointChange: React.PropTypes.func,
+    onBreakpointChange: PropTypes.func,
 
     // Callback so you can save the layout.
     // Calls back with (currentLayout, allLayouts). allLayouts are keyed by breakpoint.
-    onLayoutChange: React.PropTypes.func,
+    onLayoutChange: PropTypes.func,
 
     // Calls back with (containerWidth, margin, cols, containerPadding)
-    onWidthChange: React.PropTypes.func
+    onWidthChange: PropTypes.func
   };
 
   static defaultProps = {
@@ -78,16 +97,18 @@ export default class ResponsiveReactGridLayout extends React.Component {
     onWidthChange: noop,
   };
 
-  state: State = this.generateInitialState();
+  state = this.generateInitialState();
 
   generateInitialState(): State {
-    const {width, breakpoints, layouts, verticalCompact, cols} = this.props;
+    const {width, breakpoints, layouts, cols} = this.props;
     const breakpoint = getBreakpointFromWidth(breakpoints, width);
     const colNo = getColsFromBreakpoint(breakpoint, cols);
+    // verticalCompact compatibility, now deprecated
+    const compactType = this.props.verticalCompact === false ? null : this.props.compactType;
     // Get the initial layout. This can tricky; we try to generate one however possible if one doesn't exist
     // for this layout.
     const initialLayout = findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint,
-                                                         breakpoint, colNo, verticalCompact);
+                                                         breakpoint, colNo, compactType);
 
     return {
       layout: initialLayout,
@@ -96,7 +117,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps: Object) {
+  componentWillReceiveProps(nextProps: Props<*>) {
 
     // Allow parent to set width or breakpoint directly.
     if (
@@ -116,7 +137,7 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // if one does not exist.
       const newLayout = findOrGenerateResponsiveLayout(
         nextProps.layouts, nextProps.breakpoints,
-        breakpoint, breakpoint, cols, nextProps.verticalCompact
+        breakpoint, breakpoint, cols, nextProps.compactType
       );
       this.setState({layout: newLayout});
     }
@@ -131,8 +152,8 @@ export default class ResponsiveReactGridLayout extends React.Component {
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(nextProps: typeof ResponsiveReactGridLayout.prototype.props) {
-    const {breakpoints, cols, layouts, verticalCompact} = nextProps;
+  onWidthChange(nextProps: Props<*>) {
+    const {breakpoints, cols, layouts, compactType} = nextProps;
     const newBreakpoint = nextProps.breakpoint || getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 
     const lastBreakpoint = this.state.breakpoint;
@@ -145,10 +166,10 @@ export default class ResponsiveReactGridLayout extends React.Component {
       // Find or generate a new layout.
       const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
       let layout = findOrGenerateResponsiveLayout(layouts, breakpoints, newBreakpoint,
-                                                  lastBreakpoint, newCols, verticalCompact);
+                                                  lastBreakpoint, newCols, compactType);
 
       // This adds missing items.
-      layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, verticalCompact);
+      layout = synchronizeLayoutWithChildren(layout, nextProps.children, newCols, compactType);
 
       // Store the new layout.
       layouts[newBreakpoint] = layout;

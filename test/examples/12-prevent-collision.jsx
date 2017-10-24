@@ -18,6 +18,8 @@ class NoCompactingLayout extends React.PureComponent {
     onLayoutChange: function() {},
     // This turns off compaction so you can place items wherever.
     verticalCompact: false,
+    // This turns off rearrangement so items will not be pushed arround.
+    preventCollision: true
   };
 
   constructor(props) {

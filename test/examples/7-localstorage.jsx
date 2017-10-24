@@ -1,43 +1,44 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var WidthProvider = require('react-grid-layout').WidthProvider;
-var ReactGridLayout = require('react-grid-layout');
-ReactGridLayout = WidthProvider(ReactGridLayout);
+import React from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import RGL, { WidthProvider } from 'react-grid-layout';
 
+const ReactGridLayout = WidthProvider(RGL);
 const originalLayout = getFromLS('layout') || [];
 /**
  * This layout demonstrates how to sync to localstorage.
  */
-var LocalStorageLayout = React.createClass({
-  mixins: [PureRenderMixin],
+class LocalStorageLayout extends React.PureComponent {
+  static defaultProps = {
+    className: "layout",
+    cols: 12,
+    rowHeight: 30,
+    onLayoutChange: function() {},
+  };
 
-  getDefaultProps() {
-    return {
-      className: "layout",
-      cols: 12,
-      rowHeight: 30
-    };
-  },
+  constructor(props) {
+    super(props);
 
-  getInitialState() {
-    return {
+    this.state = {
       layout: JSON.parse(JSON.stringify(originalLayout))
     };
-  },
+
+    this.onLayoutChange = this.onLayoutChange.bind(this);
+    this.resetLayout = this.resetLayout.bind(this);
+  }
 
   resetLayout() {
     this.setState({
       layout: []
     });
-  },
+  }
 
   onLayoutChange(layout) {
     /*eslint no-console: 0*/
     saveToLS('layout', layout);
     this.setState({layout});
     this.props.onLayoutChange(layout); // updates status display
-  },
+  }
 
   render() {
     return (
@@ -57,7 +58,7 @@ var LocalStorageLayout = React.createClass({
       </div>
     );
   }
-});
+}
 
 function getFromLS(key) {
   let ls = {};

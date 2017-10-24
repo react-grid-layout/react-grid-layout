@@ -1,6 +1,14 @@
 // @flow
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import type {ComponentType as ReactComponentType} from 'react';
+
+type Props = {
+  className?: string,
+  measureBeforeMount: boolean,
+  style?: Object,
+};
 
 type State = {
   width: number
@@ -9,8 +17,8 @@ type State = {
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-type ProviderT = (ComposedComponent: ReactClass<any>) => ReactClass<any>;
-const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component {
+type ProviderT = (ComposedComponent: ReactComponentType<any>) => ReactComponentType<any>;
+const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Component<Props, State> {
 
   static defaultProps = {
     measureBeforeMount: false
@@ -19,7 +27,7 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
   static propTypes = {
     // If true, will not render children until mounted. Useful for getting the exact width before
     // rendering, to prevent any unsightly resizing.
-    measureBeforeMount: React.PropTypes.bool
+    measureBeforeMount: PropTypes.bool
   };
 
   state: State = {
@@ -45,8 +53,8 @@ const WidthProvider: ProviderT = (ComposedComponent) => class extends React.Comp
 
   onWindowResize = (_event: ?Event) => {
     if (!this.mounted) return;
-    const node = ReactDOM.findDOMNode(this);
-    this.setState({width: node.offsetWidth});
+    const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
+    if (node instanceof HTMLElement) this.setState({width: node.offsetWidth});
   }
 
   render() {
