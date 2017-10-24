@@ -116,4 +116,11 @@ module.exports = [
       'It\'s particularly useful with `verticalCompact` set to `false`.'
     ]
   },
+    {
+        title: 'Error Case',
+        source: 'error-case',
+        paragraphs: [
+            'When I drag 1 over 2 I would never expect it to move below 3'
+        ]
+    },
 ];
