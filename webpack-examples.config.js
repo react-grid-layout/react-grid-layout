@@ -32,7 +32,8 @@ module.exports = {
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'commons', filename: 'commons.js'
-      })
+      }),
+      new webpack.optimize.UglifyJsPlugin(),
     ],
     resolve: {
       extensions: [".webpack.js", ".web.js", ".js", ".jsx"],

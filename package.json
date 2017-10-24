@@ -8,8 +8,9 @@
     "test": "make test",
     "build": "make build",
     "build-example": "make build-example",
+    "check-build-example": "bash check-build-example.sh",
     "dev": "make dev",
-    "prepublishOnly": "make build",
+    "prepublish": "echo \"Don't publish this branch!\" && exit 1",
     "validate": "npm ls",
     "flow": "flow"
   },
@@ -78,7 +79,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "pre-commit": [
-    "lint"
+  "precommit": [
+    "lint",
+    "check-build-example"
   ]
 }
