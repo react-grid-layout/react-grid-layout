@@ -133,13 +133,15 @@ describe('compact vertical', () => {
       {x: 0, y: 0, w: 2,  h: 5, i: '1'},
       {x: 0, y: 0, w: 10, h: 1, i: '2'},
       {x: 5, y: 1, w: 1,  h: 1, i: '3'},
-      {x: 5, y: 2, w: 1,  h: 1, i: '4'}
+      {x: 5, y: 2, w: 1,  h: 1, i: '4'},
+      {x: 5, y: 3, w: 1,  h: 1, i: '5', static: true}
     ];
     expect(compact(layout, 'vertical', 10)).toMatchObject([
       {x: 0, y: 0, w: 2,  h: 5, i: '1'},
       {x: 0, y: 5, w: 10, h: 1, i: '2'},
       {x: 5, y: 6, w: 1,  h: 1, i: '3'},
       {x: 5, y: 7, w: 1,  h: 1, i: '4'},
+      {x: 5, y: 3, w: 1,  h: 1, i: '5', static: true}
     ]);
   });
 });
@@ -166,13 +168,15 @@ describe('compact horizontal', () => {
       {y: 0, x: 0, h: 2,  w: 5, i: '1'},
       {y: 0, x: 0, h: 10, w: 1, i: '2'},
       {y: 5, x: 1, h: 1,  w: 1, i: '3'},
-      {y: 5, x: 2, h: 1,  w: 1, i: '4'}
+      {y: 5, x: 2, h: 1,  w: 1, i: '4'},
+      {y: 5, x: 2, h: 1,  w: 1, i: '5', static: true}
     ];
     expect(compact(layout, 'horizontal', 10)).toMatchObject([
       {y: 0, x: 0, h: 2,  w: 5, i: '1'},
       {y: 0, x: 5, h: 10, w: 1, i: '2'},
       {y: 5, x: 6, h: 1,  w: 1, i: '3'},
       {y: 5, x: 7, h: 1,  w: 1, i: '4'},
+      {y: 5, x: 2, h: 1,  w: 1, i: '5', static: true}
     ]);
   });
 });
