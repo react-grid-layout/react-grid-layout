@@ -116,4 +116,14 @@ module.exports = [
       'It\'s particularly useful with `verticalCompact` set to `false`.'
     ]
   },
+	{
+    title: 'Fixed Sizes',
+    source: 'fixed-grid',
+    paragraphs: [
+      'In this layout type, all elements have a fixed sizes in pixels, they won\'t resize as the window size change.' +
+			'To obtain best results, try to set your rowHeight and colWidth to match the smallest item size you have' +
+			'So if your smallest item is {w:256, h:160, x:0, y:0}, your colWidth should be 256, and your rowHeight 160.' +
+			'Alternatively, you can achieve different behaviour by using multiples of these values.'
+    ]
+  },
 ];
