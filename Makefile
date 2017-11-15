@@ -36,6 +36,9 @@ build-example:
 	@$(BIN)/webpack --config webpack-examples.config.js
 	node ./examples/generate.js
 
+view-example: build-example
+	@$(BIN)/opener examples/0-showcase.html
+
 # Copy original source as `.js.flow` for use with flow
 copy-flow:
 	# Create tmpdir & copy
