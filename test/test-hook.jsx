@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 require('style-loader!css-loader!../css/styles.css');
 require('style-loader!css-loader!../examples/example-styles.css');
+require('style-loader!css-loader!../examples/example-styles-rwd.css');
 typeof window !== "undefined" && (window.React = React); // for devtools
 
 module.exports = function(Layout) {
@@ -40,4 +41,3 @@ module.exports = function(Layout) {
     ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv);
   });
 };
-
