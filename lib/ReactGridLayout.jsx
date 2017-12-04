@@ -32,7 +32,7 @@ export type Props = {
   compactType: ?('horizontal' | 'vertical'),
   layout: Layout,
   margin: [number, number],
-  containerPadding: [number, number],
+  containerPadding: [number, number] | null,
   rowHeight: number,
   maxRows: number,
   isDraggable: boolean,
@@ -83,7 +83,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     draggableHandle: PropTypes.string,
 
     // Deprecated
-    verticalCompact: function(props) {
+    verticalCompact: function(props: Props) {
       if (props.verticalCompact === false && process.env.NODE_ENV !== 'production') {
         console.warn( // eslint-disable-line no-console
           '`verticalCompact` on <ReactGridLayout> is deprecated and will be removed soon. ' +
@@ -95,7 +95,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number, i: String}
-    layout: function (props) {
+    layout: function (props: Props) {
       var layout = props.layout;
       // I hope you're setting the data-grid property on the grid items
       if (layout === undefined) return;
@@ -155,7 +155,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     //
 
     // Children must not have duplicate keys.
-    children: function (props, propName, _componentName) {
+    children: function (props: Props, propName: string) {
       var children = props[propName];
 
       // Check children keys for duplicates. Throw if found.
@@ -173,6 +173,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     autoSize: true,
     cols: 12,
     className: '',
+    style: {},
+    draggableHandle: '',
+    draggableCancel: '',
+    containerPadding: null,
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
     layout: [],
