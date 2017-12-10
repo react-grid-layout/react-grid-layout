@@ -81,25 +81,25 @@ export default class GridItem extends React.Component<Props, State> {
     h: PropTypes.number.isRequired,
 
     // All optional
-    minW: function (props, propName) {
+    minW: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== 'number') return new Error('minWidth not Number');
       if (value > props.w || value > props.maxW) return new Error('minWidth larger than item width/maxWidth');
     },
 
-    maxW: function (props, propName) {
+    maxW: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== 'number') return new Error('maxWidth not Number');
       if (value < props.w || value < props.minW) return new Error('maxWidth smaller than item width/minWidth');
     },
 
-    minH: function (props, propName) {
+    minH: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== 'number') return new Error('minHeight not Number');
       if (value > props.h || value > props.maxH) return new Error('minHeight larger than item height/maxHeight');
     },
 
-    maxH: function (props, propName) {
+    maxH: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== 'number') return new Error('maxHeight not Number');
       if (value < props.h || value < props.minH) return new Error('maxHeight smaller than item height/minHeight');

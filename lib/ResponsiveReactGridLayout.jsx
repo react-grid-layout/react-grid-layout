@@ -32,7 +32,7 @@ type Props<Breakpoint: string = string> = {
   onBreakpointChange: (Breakpoint, cols: number) => void,
   onLayoutChange: (Layout, {[key: Breakpoint]: Layout}) => void,
   onWidthChange:
-    (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void
+    (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number] | null) => void
 };
 
 export default class ResponsiveReactGridLayout extends React.Component<Props<>, State> {
@@ -57,7 +57,7 @@ export default class ResponsiveReactGridLayout extends React.Component<Props<>, 
 
     // layouts is an object mapping breakpoints to layouts.
     // e.g. {lg: Layout, md: Layout, ...}
-    layouts(props, propName) {
+    layouts(props: Props<>, propName: string) {
       if (type(props[propName]) !== '[object Object]') {
         throw new Error('Layout property must be an object. Received: ' + type(props[propName]));
       }
