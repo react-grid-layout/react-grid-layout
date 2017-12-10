@@ -1,9 +1,9 @@
 [version]
-0.59.0
+0.61.0
 
 [ignore]
 .*test
-/build
+./build
 
 [include]
 ./lib

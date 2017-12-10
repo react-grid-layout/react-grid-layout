@@ -338,11 +338,13 @@ export default class GridItem extends React.Component<Props, State> {
       // Get new XY
       switch (handlerName) {
         case 'onDragStart': {
-          // ToDo this wont work on nested parents
-          const parentRect = node.offsetParent.getBoundingClientRect();
+          // TODO: this wont work on nested parents
+          const {offsetParent} = node;
+          if (!offsetParent) return;
+          const parentRect = offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.left = clientRect.left - parentRect.left + node.offsetParent.scrollLeft;
-          newPosition.top = clientRect.top - parentRect.top + node.offsetParent.scrollTop;
+          newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
+          newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
           this.setState({dragging: newPosition});
           break;
         }
