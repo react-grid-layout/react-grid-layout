@@ -1,5 +1,18 @@
 # Changelog
 
+0.16.1 (Dec 10, 2017)
+----
+
+- Flow def upgrades (thanks @TrySound)
+- DevDep upgrades
+- Fixed WebpackBin demo
+- Addl test cases (thanks @torkelo)
+
+0.16.0 (Oct 6, 2017)
+----
+
+- Added horizontal compaction option, `compactType` (thanks @Rhjulskov)
+- Added `preventCollision` option for static grids (thanks @EmrysMyrddin)
 
 0.15.2 (Sep 5, 2017)
 ----
