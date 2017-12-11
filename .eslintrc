@@ -14,7 +14,7 @@
     "dot-notation": 0,
     "jsx-quotes": [1, "prefer-double"], // use double quotes in jsx
     "no-alert": 2,
-    "no-console": 2,
+    "no-console": 0,
     "no-debugger": 2,
     "no-use-before-define": [1, "nofunc"],
     "no-underscore-dangle": 0,

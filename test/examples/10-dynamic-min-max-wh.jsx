@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -18,8 +18,8 @@ class DynamicMinMaxLayout extends React.PureComponent {
     items: 20,
     rowHeight: 30,
     onLayoutChange: function() {},
-    cols: 12,
-  }
+    cols: 12
+  };
 
   generateDOM() {
     // Generate items with properties from the layout, rather than pass the layout directly
@@ -39,7 +39,11 @@ class DynamicMinMaxLayout extends React.PureComponent {
       const w = _.random(1, 2);
       const h = _.random(1, 3);
       return {
-        x: i * 2 % 12, y: Math.floor(i / 6), w: w, h: h, i: i.toString()
+        x: (i * 2) % 12,
+        y: Math.floor(i / 6),
+        w: w,
+        h: h,
+        i: i.toString()
       };
     });
   }
@@ -65,8 +69,11 @@ class DynamicMinMaxLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout onLayoutChange={this.onLayoutChange} onResize={this.onResize}
-          {...this.props}>
+      <ReactGridLayout
+        onLayoutChange={this.onLayoutChange}
+        onResize={this.onResize}
+        {...this.props}
+      >
         {this.generateDOM()}
       </ReactGridLayout>
     );
@@ -76,5 +83,5 @@ class DynamicMinMaxLayout extends React.PureComponent {
 module.exports = DynamicMinMaxLayout;
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }

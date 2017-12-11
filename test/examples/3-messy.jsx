@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
-
 
 class MessyLayout extends React.PureComponent {
   static propTypes = {
@@ -28,7 +27,11 @@ class MessyLayout extends React.PureComponent {
 
   generateDOM() {
     return _.map(_.range(this.props.items), function(i) {
-      return (<div key={i}><span className="text">{i}</span></div>);
+      return (
+        <div key={i}>
+          <span className="text">{i}</span>
+        </div>
+      );
     });
   }
 
@@ -37,7 +40,13 @@ class MessyLayout extends React.PureComponent {
     return _.map(new Array(p.items), function(item, i) {
       const w = Math.ceil(Math.random() * 4);
       const y = Math.ceil(Math.random() * 4) + 1;
-      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i.toString()};
+      return {
+        x: (i * 2) % 12,
+        y: Math.floor(i / 6) * y,
+        w: w,
+        h: y,
+        i: i.toString()
+      };
     });
   }
 
@@ -47,8 +56,11 @@ class MessyLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout layout={this.state.layout} onLayoutChange={this.onLayoutChange}
-          {...this.props}>
+      <ReactGridLayout
+        layout={this.state.layout}
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
         {this.generateDOM()}
       </ReactGridLayout>
     );
@@ -58,5 +70,5 @@ class MessyLayout extends React.PureComponent {
 module.exports = MessyLayout;
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }
