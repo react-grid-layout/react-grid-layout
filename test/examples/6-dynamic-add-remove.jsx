@@ -1,6 +1,6 @@
-import React from 'react';
-import { WidthProvider, Responsive } from 'react-grid-layout';
-import _ from 'lodash';
+import React from "react";
+import { WidthProvider, Responsive } from "react-grid-layout";
+import _ from "lodash";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 /**
@@ -9,7 +9,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 class AddRemoveLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
-    cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     rowHeight: 100
   };
 
@@ -18,7 +18,14 @@ class AddRemoveLayout extends React.PureComponent {
 
     this.state = {
       items: [0, 1, 2, 3, 4].map(function(i, key, list) {
-        return {i: i.toString(), x: i * 2, y: 0, w: 2, h: 2, add: i === (list.length - 1).toString()};
+        return {
+          i: i.toString(),
+          x: i * 2,
+          y: 0,
+          w: 2,
+          h: 2,
+          add: i === (list.length - 1).toString()
+        };
       }),
       newCounter: 0
     };
@@ -29,30 +36,44 @@ class AddRemoveLayout extends React.PureComponent {
 
   createElement(el) {
     const removeStyle = {
-      position: 'absolute',
-      right: '2px',
+      position: "absolute",
+      right: "2px",
       top: 0,
-      cursor: 'pointer'
+      cursor: "pointer"
     };
-    const i = el.add ? '+' : el.i;
+    const i = el.add ? "+" : el.i;
     return (
       <div key={i} data-grid={el}>
-        {el.add ?
-          <span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>
-        : <span className="text">{i}</span>}
-        <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(this, i)}>x</span>
+        {el.add ? (
+          <span
+            className="add text"
+            onClick={this.onAddItem}
+            title="You can add an item by clicking here, too."
+          >
+            Add +
+          </span>
+        ) : (
+          <span className="text">{i}</span>
+        )}
+        <span
+          className="remove"
+          style={removeStyle}
+          onClick={this.onRemoveItem.bind(this, i)}
+        >
+          x
+        </span>
       </div>
     );
   }
 
   onAddItem() {
     /*eslint no-console: 0*/
-    console.log('adding', 'n' + this.state.newCounter);
+    console.log("adding", "n" + this.state.newCounter);
     this.setState({
       // Add a new item. It must have a unique key!
       items: this.state.items.concat({
-        i: 'n' + this.state.newCounter,
-        x: this.state.items.length * 2 % (this.state.cols || 12),
+        i: "n" + this.state.newCounter,
+        x: (this.state.items.length * 2) % (this.state.cols || 12),
         y: Infinity, // puts it at the bottom
         w: 2,
         h: 2
@@ -72,21 +93,24 @@ class AddRemoveLayout extends React.PureComponent {
 
   onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
-    this.setState({layout: layout});
+    this.setState({ layout: layout });
   }
 
   onRemoveItem(i) {
-    console.log('removing', i);
-    this.setState({items: _.reject(this.state.items, {i: i})});
+    console.log("removing", i);
+    this.setState({ items: _.reject(this.state.items, { i: i }) });
   }
 
   render() {
     return (
       <div>
         <button onClick={this.onAddItem}>Add Item</button>
-        <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange}
-            {...this.props}>
-          {_.map(this.state.items, (el) => this.createElement(el))}
+        <ResponsiveReactGridLayout
+          onLayoutChange={this.onLayoutChange}
+          onBreakpointChange={this.onBreakpointChange}
+          {...this.props}
+        >
+          {_.map(this.state.items, el => this.createElement(el))}
         </ResponsiveReactGridLayout>
       </div>
     );
@@ -96,5 +120,5 @@ class AddRemoveLayout extends React.PureComponent {
 module.exports = AddRemoveLayout;
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }
