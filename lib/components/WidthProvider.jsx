@@ -21,7 +21,7 @@ type ProviderT = (
   ComposedComponent: ReactComponentType<any>
 ) => ReactComponentType<any>;
 const WidthProvider: ProviderT = ComposedComponent =>
-  class WidthProvided extends React.Component<Props, State> {
+  class WidthProvider extends React.Component<Props, State> {
     static defaultProps = {
       measureBeforeMount: false
     };
