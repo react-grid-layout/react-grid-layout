@@ -21,7 +21,7 @@ type ProviderT = (
   ComposedComponent: ReactComponentType<any>
 ) => ReactComponentType<any>;
 const WidthProvider: ProviderT = ComposedComponent =>
-  class extends React.Component<Props, State> {
+  class WidthProvided extends React.Component<Props, State> {
     static defaultProps = {
       measureBeforeMount: false
     };
@@ -53,8 +53,9 @@ const WidthProvider: ProviderT = ComposedComponent =>
       window.removeEventListener("resize", this.onWindowResize);
     }
 
-    onWindowResize = (_event: ?Event) => {
+    onWindowResize = () => {
       if (!this.mounted) return;
+      // eslint-disable-next-line
       const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });
