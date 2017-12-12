@@ -1,0 +1,24 @@
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "flowtype"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:flowtype/recommended"
+  ],
+  "rules": {
+    "no-console": 0,
+    "no-use-before-define": [2, "nofunc"],
+    "prefer-const": 2,
+    "react/jsx-boolean-value": [2, "always"]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  }
+}

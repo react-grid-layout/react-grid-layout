@@ -1,4 +1,5 @@
 // @flow
+/* eslint-env jest */
 
 import {
   bottom,

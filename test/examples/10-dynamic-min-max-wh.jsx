@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
@@ -52,7 +51,7 @@ class DynamicMinMaxLayout extends React.PureComponent {
     this.props.onLayoutChange(layout);
   }
 
-  onResize(layout, oldLayoutItem, layoutItem, placeholder, e) {
+  onResize(layout, oldLayoutItem, layoutItem, placeholder) {
     // `oldLayoutItem` contains the state of the item before the resize.
     // You can modify `layoutItem` to enforce constraints.
 

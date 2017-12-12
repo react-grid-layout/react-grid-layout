@@ -240,7 +240,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
   }
 
   render() {
-    // eslint-disable-next-line no-unused-vars
+    /* eslint-disable no-unused-vars */
     const {
       breakpoint,
       breakpoints,
@@ -251,6 +251,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       onWidthChange,
       ...other
     } = this.props;
+    /* eslint-enable no-unused-vars */
 
     return (
       <ReactGridLayout
