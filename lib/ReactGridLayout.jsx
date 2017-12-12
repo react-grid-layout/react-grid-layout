@@ -609,18 +609,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   render() {
     const { className, style } = this.props;
 
+    const mergedClassName = classNames("react-grid-layout", className);
     const mergedStyle = {
       height: this.containerHeight(),
       ...style
     };
 
     return (
-      <div
-        className={classNames("react-grid-layout", className)}
-        style={mergedStyle}
-      >
-        {// $FlowIgnore: Appears to think map calls back w/array
-        React.Children.map(this.props.children, child =>
+      <div className={mergedClassName} style={mergedStyle}>
+        {React.Children.map(this.props.children, child =>
           this.processGridItem(child)
         )}
         {this.placeholder()}
