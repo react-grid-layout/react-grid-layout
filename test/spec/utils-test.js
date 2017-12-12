@@ -1,4 +1,5 @@
 // @flow
+
 import {
   bottom,
   collides,
@@ -7,7 +8,11 @@ import {
   compact,
   sortLayoutItemsByRowCol
 } from "../../lib/utils.js";
+/*:: import type { Layout } from "../../lib/utils.js"; */
 import assert from "power-assert";
+
+/*:: declare function describe(name: string, fn: Function): void; */
+/*:: declare function it(name: string, fn: Function): void; */
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
@@ -16,7 +21,10 @@ describe("bottom", () => {
 
   it("Returns the bottom coordinate of the layout", () => {
     assert(
-      bottom([{ x: 0, y: 1, w: 1, h: 1 }, { x: 1, y: 2, w: 1, h: 1 }]) === 3
+      bottom([
+        { i: "1", x: 0, y: 1, w: 1, h: 1 },
+        { i: "2", x: 1, y: 2, w: 1, h: 1 }
+      ]) === 3
     );
   });
 });
@@ -39,10 +47,16 @@ describe("sortLayoutItemsByRowCol", () => {
 describe("collides", () => {
   it("Returns whether the layout items collide", () => {
     assert(
-      collides({ x: 0, y: 1, w: 1, h: 1 }, { x: 1, y: 2, w: 1, h: 1 }) === false
+      collides(
+        { i: "1", x: 0, y: 1, w: 1, h: 1 },
+        { i: "2", x: 1, y: 2, w: 1, h: 1 }
+      ) === false
     );
     assert(
-      collides({ x: 0, y: 1, w: 1, h: 1 }, { x: 0, y: 1, w: 1, h: 1 }) === true
+      collides(
+        { i: "1", x: 0, y: 1, w: 1, h: 1 },
+        { i: "2", x: 0, y: 1, w: 1, h: 1 }
+      ) === true
     );
   });
 });
@@ -52,11 +66,18 @@ describe("validateLayout", () => {
     validateLayout([]);
   });
   it("Validates a populated layout", () => {
-    validateLayout([{ x: 0, y: 1, w: 1, h: 1 }, { x: 1, y: 2, w: 1, h: 1 }]);
+    validateLayout([
+      { i: "1", x: 0, y: 1, w: 1, h: 1 },
+      { i: "2", x: 1, y: 2, w: 1, h: 1 }
+    ]);
   });
   it("Throws errors on invalid input", () => {
     assert.throws(() => {
-      validateLayout([{ x: 0, y: 1, w: 1, h: 1 }, { x: 1, y: 2, w: 1 }]);
+      // $FlowFixMe: dynamic check
+      validateLayout([
+        { i: "1", x: 0, y: 1, w: 1, h: 1 },
+        { i: "2", x: 1, y: 2, w: 1 }
+      ]);
     }, /layout\[1\]\.h must be a number!/i);
   });
 });
@@ -64,8 +85,8 @@ describe("validateLayout", () => {
 describe("moveElement", () => {
   it("Does not change layout when colliding on no rearrangement mode", () => {
     const layout = [
-      { x: 0, y: 1, w: 1, h: 1, moved: false },
-      { x: 1, y: 2, w: 1, h: 1, moved: false }
+      { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
+      { i: "2", x: 1, y: 2, w: 1, h: 1, moved: false }
     ];
     const layoutItem = layout[0];
     assert.deepEqual(
@@ -75,19 +96,21 @@ describe("moveElement", () => {
         1,
         2, // x, y
         true,
-        true // isUserAction, preventCollision
+        true, // isUserAction, preventCollision
+        null,
+        2
       ),
       [
-        { x: 0, y: 1, w: 1, h: 1, moved: false },
-        { x: 1, y: 2, w: 1, h: 1, moved: false }
+        { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
+        { i: "2", x: 1, y: 2, w: 1, h: 1, moved: false }
       ]
     );
   });
 
   it("Does change layout when colliding in rearrangement mode", () => {
     const layout = [
-      { x: 0, y: 0, w: 1, h: 1, moved: false },
-      { x: 1, y: 0, w: 1, h: 1, moved: false }
+      { i: "1", x: 0, y: 0, w: 1, h: 1, moved: false },
+      { i: "2", x: 1, y: 0, w: 1, h: 1, moved: false }
     ];
     const layoutItem = layout[0];
     assert.deepEqual(
@@ -102,8 +125,8 @@ describe("moveElement", () => {
         2 // compactType, cols
       ),
       [
-        { x: 1, y: 0, w: 1, h: 1, moved: true },
-        { x: 1, y: 1, w: 1, h: 1, moved: true }
+        { i: "1", x: 1, y: 0, w: 1, h: 1, moved: true },
+        { i: "2", x: 1, y: 1, w: 1, h: 1, moved: true }
       ]
     );
   });
@@ -223,9 +246,9 @@ describe("moveElement", () => {
 
 describe("compact vertical", () => {
   it("Removes empty vertical space above item", () => {
-    const layout = [{ x: 0, y: 1, w: 1, h: 1 }];
+    const layout = [{ i: "1", x: 0, y: 1, w: 1, h: 1 }];
     assert.deepEqual(compact(layout, "vertical", 10), [
-      { x: 0, y: 0, w: 1, h: 1, moved: false }
+      { i: "1", x: 0, y: 0, w: 1, h: 1, moved: false }
     ]);
   });
 
@@ -260,9 +283,9 @@ describe("compact vertical", () => {
 
 describe("compact horizontal", () => {
   it("compact horizontal should remove empty horizontal space to left of item", () => {
-    const layout = [{ x: 5, y: 5, w: 1, h: 1 }];
+    const layout = [{ i: "1", x: 5, y: 5, w: 1, h: 1 }];
     assert.deepEqual(compact(layout, "horizontal", 10), [
-      { x: 0, y: 0, w: 1, h: 1, moved: false }
+      { i: "1", x: 0, y: 0, w: 1, h: 1, moved: false }
     ]);
   });
 
