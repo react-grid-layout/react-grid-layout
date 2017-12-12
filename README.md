@@ -411,5 +411,5 @@ us easily isolate it.
 - [x] Static elements
 - [x] Persistent id per item for predictable localstorage restores, even when # items changes
 - [x] Min/max w/h per item
-- [ ] Resizable handles on other corners
+- [x] Resizable handles on other corners
 - [ ] Configurable w/h per breakpoint
