@@ -111,44 +111,48 @@ class AddRemoveLayout extends React.PureComponent {
   }
 
   dragPlaceholder(event, { node, newPosition }) {
-    const containerRect = this.container.getBoundingClientRect();
-    const left = event.clientX - containerRect.left;
-    const top = event.clientY - containerRect.top;
-    if (left < 0 || top < 0) {
-      this.dragApi.value.dragOut({
-        event,
-        position: {
-          left,
-          top
-        }
-      });
-    } else {
-      this.dragApi.value.dragIn({
-        i: "n" + this.state.newCounter,
-        w: 2,
-        h: 2,
-        event,
-        node,
-        position: {
-          left,
-          top
-        }
-      });
+    if (this.dragApi.value) {
+      const containerRect = this.container.getBoundingClientRect();
+      const left = event.clientX - containerRect.left;
+      const top = event.clientY - containerRect.top;
+      if (left < 0 || top < 0) {
+        this.dragApi.value.dragOut({
+          event,
+          position: {
+            left,
+            top
+          }
+        });
+      } else {
+        this.dragApi.value.dragIn({
+          i: "n" + this.state.newCounter,
+          w: 2,
+          h: 2,
+          event,
+          node,
+          position: {
+            left,
+            top
+          }
+        });
+      }
     }
   }
 
   stopPlaceholder(event, { node }) {
-    const containerRect = this.container.getBoundingClientRect();
-    this.dragApi.value.stop({
-      event,
-      position: {
-        left: event.clientX - containerRect.left,
-        top: event.clientY - containerRect.top
-      }
-    });
-    this.setState(state => ({
-      newCounter: state.newCounter + 1
-    }));
+    if (this.dragApi.value) {
+      const containerRect = this.container.getBoundingClientRect();
+      this.dragApi.value.stop({
+        event,
+        position: {
+          left: event.clientX - containerRect.left,
+          top: event.clientY - containerRect.top
+        }
+      });
+      this.setState(state => ({
+        newCounter: state.newCounter + 1
+      }));
+    }
   }
 
   render() {

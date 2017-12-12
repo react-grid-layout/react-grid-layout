@@ -260,8 +260,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   componentDidMount() {
     let dragInfo = null;
 
-    this.props.dragApiRef.mounted = true;
-
     this.props.dragApiRef.value = {
       dragIn: ({ i, w, h, node, event, position }) => {
         dragInfo = { i, w, h, node };
