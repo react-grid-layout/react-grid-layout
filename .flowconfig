@@ -2,7 +2,6 @@
 0.61.0
 
 [ignore]
-.*/node_modules/jsxhint/.*
 
 [include]
 

@@ -66,7 +66,6 @@
     "husky": "^0.14.3",
     "imports-loader": "^0.7.1",
     "jest-cli": "^21.2.1",
-    "jsxhint": "^0.15.1",
     "lint-staged": "^6.0.0",
     "lodash": "^4.3.0",
     "opener": "^1.4.3",
