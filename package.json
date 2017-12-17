@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout",
-  "version": "0.16.0",
+  "version": "0.16.2",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "dev": "make dev",
     "prepublish": "echo \"Don't publish this branch!\" && exit 1",
     "validate": "npm ls",
-    "flow": "flow"
+    "flow": "flow",
+    "precommit": "lint-staged && make lint"
   },
   "repository": {
     "type": "git",
@@ -45,7 +46,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
-    "babel-eslint": "^8.0.2",
+    "babel-eslint": "^8.0.3",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-espower": "^2.3.2",
@@ -58,27 +59,28 @@
     "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.7",
     "ejs": "^2.4.1",
-    "eslint": "^4.11.0",
+    "eslint": "^4.13.0",
+    "eslint-plugin-flowtype": "^2.40.1",
     "eslint-plugin-mocha": "^4.11.0",
-    "eslint-plugin-react": "^7.4.0",
+    "eslint-plugin-react": "^7.5.1",
     "exports-loader": "^0.6.4",
-    "flow-bin": "^0.59.0",
+    "flow-bin": "^0.61.0",
+    "husky": "^0.14.3",
     "imports-loader": "^0.7.1",
     "jest-cli": "^21.2.1",
-    "jsxhint": "^0.15.1",
+    "lint-staged": "^6.0.0",
     "lodash": "^4.3.0",
     "opener": "^1.4.3",
     "power-assert": "^1.4.4",
-    "pre-commit": "^1.1.2",
-    "precommit-hook": "^3.0.0",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "prettier": "^1.9.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-hot-loader": "^1.3.0",
     "react-transform-hmr": "^1.0.2",
     "style-loader": "^0.19.0",
     "valiquire": "^0.3.0",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -90,6 +92,16 @@
   "jest": {
     "testMatch": [
       "<rootDir>/test/spec/*.js"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.css": [
+      "prettier --write",
+      "git add"
     ]
   }
 }

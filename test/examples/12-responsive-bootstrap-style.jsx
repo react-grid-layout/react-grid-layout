@@ -1,5 +1,5 @@
-import React from 'react';
-import { WidthProvider, Responsive } from 'react-grid-layout';
+import React from "react";
+import { WidthProvider, Responsive } from "react-grid-layout";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -8,13 +8,13 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
  */
 class BootstrapStyleLayout extends React.PureComponent {
   static defaultProps = {
-      isDraggable: true,
-      isResizable: true,
-      items: 20,
-      rowHeight: 30,
-      onLayoutChange: function() {},
-      cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
-  }
+    isDraggable: true,
+    isResizable: true,
+    items: 20,
+    rowHeight: 30,
+    onLayoutChange: function() {},
+    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }
+  };
 
   onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
@@ -22,9 +22,18 @@ class BootstrapStyleLayout extends React.PureComponent {
 
   render() {
     return (
-      <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange}
-          {...this.props}>
-        <div data-grid={{w: {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}, h: {lg: 4, xxs: 3}}}>0</div>
+      <ResponsiveReactGridLayout
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
+        <div
+          data-grid={{
+            w: { lg: 6, md: 5, sm: 3, xs: 4, xxs: 2 },
+            h: { lg: 4, xxs: 3 }
+          }}
+        >
+          0
+        </div>
       </ResponsiveReactGridLayout>
     );
   }
@@ -33,5 +42,5 @@ class BootstrapStyleLayout extends React.PureComponent {
 module.exports = BootstrapStyleLayout;
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }

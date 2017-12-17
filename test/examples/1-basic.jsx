@@ -1,17 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import React from "react";
+import _ from "lodash";
+import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-
 class BasicLayout extends React.PureComponent {
-
-  static propTypes = {
-    onLayoutChange: PropTypes.func.isRequired
-  };
-
   static defaultProps = {
     className: "layout",
     items: 20,
@@ -29,15 +22,25 @@ class BasicLayout extends React.PureComponent {
 
   generateDOM() {
     return _.map(_.range(this.props.items), function(i) {
-      return (<div key={i}><span className="text">{i}</span></div>);
+      return (
+        <div key={i}>
+          <span className="text">{i}</span>
+        </div>
+      );
     });
   }
 
   generateLayout() {
     const p = this.props;
     return _.map(new Array(p.items), function(item, i) {
-      const y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1;
-      return {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i.toString()};
+      const y = _.result(p, "y") || Math.ceil(Math.random() * 4) + 1;
+      return {
+        x: (i * 2) % 12,
+        y: Math.floor(i / 6) * y,
+        w: 2,
+        h: y,
+        i: i.toString()
+      };
     });
   }
 
@@ -47,8 +50,11 @@ class BasicLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout layout={this.state.layout} onLayoutChange={this.onLayoutChange}
-          {...this.props}>
+      <ReactGridLayout
+        layout={this.state.layout}
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
         {this.generateDOM()}
       </ReactGridLayout>
     );
@@ -58,5 +64,5 @@ class BasicLayout extends React.PureComponent {
 module.exports = BasicLayout;
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }

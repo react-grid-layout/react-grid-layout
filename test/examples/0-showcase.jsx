@@ -1,57 +1,60 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import {Responsive, WidthProvider} from 'react-grid-layout';
+import React from "react";
+import _ from "lodash";
+import { Responsive, WidthProvider } from "react-grid-layout";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class ShowcaseLayout extends React.Component {
-
-  static propTypes = {
-    onLayoutChange: PropTypes.func.isRequired
-  };
-
   static defaultProps = {
     className: "layout",
     rowHeight: 30,
     onLayoutChange: function() {},
-    cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     initialLayout: generateLayout()
   };
 
   state = {
-    currentBreakpoint: 'lg',
-    compactType: 'vertical',
+    currentBreakpoint: "lg",
+    compactType: "vertical",
     mounted: false,
-    layouts: {lg: this.props.initialLayout},
+    layouts: { lg: this.props.initialLayout }
   };
 
   componentDidMount() {
-    this.setState({mounted: true});
+    this.setState({ mounted: true });
   }
 
   generateDOM() {
-    return _.map(this.state.layouts.lg, function (l, i) {
+    return _.map(this.state.layouts.lg, function(l, i) {
       return (
-        <div key={i} className={l.static ? 'static' : ''}>
-          {l.static ?
-            <span className="text" title="This item is static and cannot be removed or resized.">Static - {i}</span>
-            : <span className="text">{i}</span>
-          }
-        </div>);
+        <div key={i} className={l.static ? "static" : ""}>
+          {l.static ? (
+            <span
+              className="text"
+              title="This item is static and cannot be removed or resized."
+            >
+              Static - {i}
+            </span>
+          ) : (
+            <span className="text">{i}</span>
+          )}
+        </div>
+      );
     });
   }
 
-  onBreakpointChange = (breakpoint) => {
+  onBreakpointChange = breakpoint => {
     this.setState({
       currentBreakpoint: breakpoint
     });
   };
 
   onCompactTypeChange = () => {
-    const {compactType: oldCompactType} = this.state;
-    const compactType = oldCompactType === 'horizontal' ? 'vertical' :
-                        oldCompactType === 'vertical' ? null : 'horizontal';
-    this.setState({compactType});
+    const { compactType: oldCompactType } = this.state;
+    const compactType =
+      oldCompactType === "horizontal"
+        ? "vertical"
+        : oldCompactType === "vertical" ? null : "horizontal";
+    this.setState({ compactType });
   };
 
   onLayoutChange = (layout, layouts) => {
@@ -60,7 +63,7 @@ class ShowcaseLayout extends React.Component {
 
   onNewLayout = () => {
     this.setState({
-      layouts: {lg: generateLayout()}
+      layouts: { lg: generateLayout() }
     });
   };
 
@@ -68,11 +71,19 @@ class ShowcaseLayout extends React.Component {
     return (
       <div>
         <div>
-          Current Breakpoint: {this.state.currentBreakpoint} ({this.props.cols[this.state.currentBreakpoint]} columns)
+          Current Breakpoint: {this.state.currentBreakpoint} ({
+            this.props.cols[this.state.currentBreakpoint]
+          }{" "}
+          columns)
         </div>
-        <div>Compaction type: {_.capitalize(this.state.compactType) || 'No Compaction'}</div>
+        <div>
+          Compaction type:{" "}
+          {_.capitalize(this.state.compactType) || "No Compaction"}
+        </div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
-        <button onClick={this.onCompactTypeChange}>Change Compaction Type</button>
+        <button onClick={this.onCompactTypeChange}>
+          Change Compaction Type
+        </button>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -85,7 +96,7 @@ class ShowcaseLayout extends React.Component {
           useCSSTransforms={this.state.mounted}
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
-          >
+        >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
       </div>
@@ -96,10 +107,10 @@ class ShowcaseLayout extends React.Component {
 module.exports = ShowcaseLayout;
 
 function generateLayout() {
-  return _.map(_.range(0, 25), function (item, i) {
+  return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
-      x: _.random(0, 5) * 2 % 12,
+      x: (_.random(0, 5) * 2) % 12,
       y: Math.floor(i / 6) * y,
       w: 2,
       h: y,
@@ -110,5 +121,5 @@ function generateLayout() {
 }
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }
