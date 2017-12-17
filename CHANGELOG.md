@@ -1,5 +1,13 @@
 # Changelog
 
+0.16.2 (Dec 17, 2017)
+----
+
+- Fix `onLayoutChange` not firing properly due to regression introduced in 0.16.1
+  - Ref: https://github.com/STRML/react-grid-layout/issues/683
+- Simpler resize corner CSS (thanks @TrySound)
+- Reformat code with Prettier & simplify lint configs (thanks @TrySound)
+
 0.16.1 (Dec 10, 2017)
 ----
 
