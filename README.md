@@ -46,10 +46,11 @@ RGL is React-only and does not require jQuery.
 1. [Dynamic Minimum and Maximum Width/Height](https://strml.github.io/react-grid-layout/examples/10-dynamic-min-max-wh.html)
 1. [No Vertical Compacting (Free Movement)](https://strml.github.io/react-grid-layout/examples/11-no-vertical-compact.html)
 
-#### Projects based on React-Grid-Layout
+#### Projects Using React-Grid-Layout
 
 - [BitMEX](https://www.bitmex.com/)
 - [AWS CloudFront Dashboards](https://aws.amazon.com/blogs/aws/cloudwatch-dashboards-create-use-customized-metrics-views/)
+- [Grafana](https://grafana.com/)
 - [Metabase](http://www.metabase.com/)
 - [HubSpot](http://www.hubspot.com)
 - [ComNetViz](http://www.grotto-networking.com/ComNetViz/ComNetViz.html)
