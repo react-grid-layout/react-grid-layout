@@ -8,4 +8,8 @@
 [libs]
 interfaces/
 
+[lints]
+sketchy-null=error
+
 [options]
+experimental.const_params=true
