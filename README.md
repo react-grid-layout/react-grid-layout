@@ -1,6 +1,7 @@
 # React-Grid-Layout
 
 [![travis build](https://travis-ci.org/STRML/react-grid-layout.svg?branch=master)](https://travis-ci.org/STRML/react-grid-layout)
+[![CDNJS](https://img.shields.io/cdnjs/v/react-grid-layout.svg)](https://cdnjs.com/libraries/react-grid-layout)
 [![npm package](https://img.shields.io/npm/v/react-grid-layout.svg?style=flat-square)](https://www.npmjs.org/package/react-grid-layout)
 [![npm downloads](https://img.shields.io/npm/dt/react-grid-layout.svg?maxAge=2592000)]()
 
