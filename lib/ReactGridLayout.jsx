@@ -331,7 +331,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       oldLayout: this.state.layout
     });
 
-    this.props.onDragStart(layout, l, l, null, e, node);
+    return this.props.onDragStart(layout, l, l, null, e, node);
   }
 
   /**
