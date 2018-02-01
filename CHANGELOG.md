@@ -1,5 +1,12 @@
 # Changelog
 
+0.16.3 (Jan 31, 2018)
+----
+
+- Fix overriding of `onStart` behaviour (#707, thanks @ersel)
+- Fixed Flow type of WidthProvider
+- Devdep updates
+
 0.16.2 (Dec 17, 2017)
 ----
 
