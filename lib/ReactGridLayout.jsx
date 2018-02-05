@@ -43,7 +43,7 @@ type State = {
 
 export type Props = {
   className: string,
-  style: CSSStyleDeclaration,
+  style: Object,
   width: number,
   autoSize: boolean,
   cols: number,

@@ -7,7 +7,7 @@ import type { ComponentType as ReactComponentType } from "react";
 type WPProps = {
   className?: string,
   measureBeforeMount: boolean,
-  style?: CSSStyleDeclaration
+  style?: Object
 };
 
 type WPState = {
