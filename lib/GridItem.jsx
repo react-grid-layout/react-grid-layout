@@ -43,7 +43,7 @@ type Props = {
   usePercentages?: boolean,
 
   className: string,
-  style?: Object,
+  style?: CSSStyleDeclaration,
   // Draggability
   cancel: string,
   handle: string,

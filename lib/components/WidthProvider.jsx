@@ -7,7 +7,7 @@ import type { ComponentType as ReactComponentType } from "react";
 type Props = {
   className?: string,
   measureBeforeMount: boolean,
-  style?: Object
+  style?: CSSStyleDeclaration
 };
 
 type State = {
