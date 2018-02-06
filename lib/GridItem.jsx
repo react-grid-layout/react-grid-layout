@@ -39,8 +39,8 @@ type Props = {
   isDraggable: boolean,
   isResizable: boolean,
   static?: boolean,
-  useCSSTransforms?: boolean,
-  usePercentages?: boolean,
+  useCSSTransforms: boolean,
+  usePercentages: boolean,
 
   className: string,
   style?: Object,
@@ -152,7 +152,9 @@ export default class GridItem extends React.Component<Props, State> {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    useCSSTransforms: false,
+    usePercentages: false
   };
 
   state: State = {

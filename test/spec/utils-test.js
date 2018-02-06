@@ -23,7 +23,6 @@ function stripArray(arr) {
 }
 
 function stripObject(obj) {
-  obj = Object.assign({}, obj);
   return Object.keys(obj).reduce((memo, key) => {
     if (obj[key] != null) memo[key] = obj[key];
     return memo;
@@ -31,7 +30,7 @@ function stripObject(obj) {
 }
 
 function assertDeepEqualStrip(obj1, obj2) {
-  assert.deepEqual(stripArray(obj1), stripArray(obj2));
+  assert.deepEqual(stripArray(obj1), obj2);
 }
 //
 // Specs

@@ -308,8 +308,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
-  compactType(props: ?Object): CompactType {
-    if (!props) props = this.props;
+  compactType(props: Object = this.props): CompactType {
     return props.verticalCompact === false ? null : props.compactType;
   }
 
@@ -423,8 +422,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.onLayoutMaybeChanged(newLayout, oldLayout);
   }
 
-  onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
-    if (!oldLayout) oldLayout = this.state.layout;
+  onLayoutMaybeChanged(
+    newLayout: Layout,
+    oldLayout: ?Layout = this.state.layout
+  ) {
     if (!isEqual(oldLayout, newLayout)) {
       this.props.onLayoutChange(newLayout);
     }
@@ -544,7 +545,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
   processGridItem(child: ReactElement<any>): ?ReactElement<any> {
-    if (!child.key) return;
+    if (child.key === null) return;
     const l = getLayoutItem(this.state.layout, String(child.key));
     if (!l) return null;
     const {
@@ -564,10 +565,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     const draggable = Boolean(
-      !l.static && isDraggable && (l.isDraggable || l.isDraggable == null)
+      l.static !== true &&
+        isDraggable &&
+        (l.isDraggable === true || l.isDraggable == null)
     );
     const resizable = Boolean(
-      !l.static && isResizable && (l.isResizable || l.isResizable == null)
+      l.static !== true &&
+        isResizable &&
+        (l.isResizable === true || l.isResizable == null)
     );
 
     return (
