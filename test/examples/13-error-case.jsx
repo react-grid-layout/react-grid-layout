@@ -1,18 +1,15 @@
 import React from "react";
-import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class NoCompactingLayout extends React.PureComponent {
+class BasicLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
-    items: 50,
-    cols: 12,
-    rowHeight: 30,
+    items: 3,
+    rowHeight: 100,
     onLayoutChange: function() {},
-    // This turns off compaction so you can place items wherever.
-    verticalCompact: false
+    cols: 2
   };
 
   constructor(props) {
@@ -23,27 +20,43 @@ class NoCompactingLayout extends React.PureComponent {
   }
 
   generateDOM() {
-    return _.map(_.range(this.props.items), function(i) {
-      return (
-        <div key={i}>
-          <span className="text">{i}</span>
-        </div>
-      );
-    });
+    return [
+      <div key={"1"}>
+        <span className="text">{"1"}</span>
+      </div>,
+      <div key={"2"}>
+        <span className="text">{"2"}</span>
+      </div>,
+      <div key={"3"}>
+        <span className="text">{"3"}</span>
+      </div>
+    ];
   }
 
   generateLayout() {
-    const p = this.props;
-    return _.map(new Array(p.items), function(item, i) {
-      const y = _.result(p, "y") || Math.ceil(Math.random() * 4) + 1;
-      return {
-        x: (i * 2) % 12,
-        y: Math.floor(i / 6) * y,
+    return [
+      {
+        x: 0,
+        y: 0,
+        w: 1,
+        h: 1,
+        i: "1"
+      },
+      {
+        x: 1,
+        y: 0,
+        w: 1,
+        h: 1,
+        i: "2"
+      },
+      {
+        x: 0,
+        y: 1,
         w: 2,
-        h: y,
-        i: i.toString()
-      };
-    });
+        h: 2,
+        i: "3"
+      }
+    ];
   }
 
   onLayoutChange(layout) {
@@ -63,7 +76,7 @@ class NoCompactingLayout extends React.PureComponent {
   }
 }
 
-module.exports = NoCompactingLayout;
+module.exports = BasicLayout;
 
 if (require.main === module) {
   require("../test-hook.jsx")(module.exports);

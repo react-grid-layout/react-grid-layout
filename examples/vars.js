@@ -5,7 +5,7 @@ module.exports = [
     title: 'Showcase',
     source: 'showcase',
     paragraphs: [
-      'React-Grid-Layout is the only grid layout system for React. It features auto-packing, draggable and resizable ' +
+      'React-Grid-Layout is a grid layout system for React. It features auto-packing, draggable and resizable ' +
         'widgets, static widgets, a fluid layout, and separate layouts per responsive breakpoint.',
       'Try it out! Drag some boxes around, resize them, and resize the window to see the responsive breakpoints.'
     ]
@@ -105,6 +105,23 @@ module.exports = [
     paragraphs: [
       'You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the ' +
       'property `verticalCompact` to `false` to achieve this effect.'
+    ]
+  },
+  {
+    title: 'Prevent Collision',
+    source: 'prevent-collision',
+    paragraphs: [
+      'You may want to turn off rearrangement so items don\'t move arround when dragging. Set the ' +
+      'property `preventCollision` to `true` to achieve this effect. ' +
+      'It\'s particularly useful with `verticalCompact` set to `false`.'
+    ]
+  },
+  {
+    title: 'Error Case',
+    source: 'error-case',
+    paragraphs: [
+      'This is an extra test case for a collision bug fixed in November 2017. When you drag 1 over 2, it should not ' +
+      'move over 3.'
     ]
   },
 ];

@@ -1,5 +1,59 @@
 # Changelog
 
+0.16.3 (Jan 31, 2018)
+----
+
+- Fix overriding of `onStart` behaviour (#707, thanks @ersel)
+- Fixed Flow type of WidthProvider
+- Devdep updates
+
+0.16.2 (Dec 17, 2017)
+----
+
+- Fix `onLayoutChange` not firing properly due to regression introduced in 0.16.1
+  - Ref: https://github.com/STRML/react-grid-layout/issues/683
+- Simpler resize corner CSS (thanks @TrySound)
+- Reformat code with Prettier & simplify lint configs (thanks @TrySound)
+
+0.16.1 (Dec 10, 2017)
+----
+
+- Flow def upgrades (thanks @TrySound)
+- DevDep upgrades
+- Fixed WebpackBin demo
+- Addl test cases (thanks @torkelo)
+
+0.16.0 (Oct 6, 2017)
+----
+
+- Added horizontal compaction option, `compactType` (thanks @Rhjulskov)
+- Added `preventCollision` option for static grids (thanks @EmrysMyrddin)
+
+0.15.2 (Sep 5, 2017)
+----
+
+- Fix missed `import *`
+- Dependency updates
+
+0.15.1 (Sep 5, 2017)
+----
+
+- Fix React PropTypes & createClass warnings
+  - See https://github.com/facebook/react/issues/10583
+
+0.15.0 (Aug 21, 2017)
+----
+
+- Package upgrades, including Webpack 3
+- Flow typedef upgrades for the 0.53 rework
+- Add faulty key value in duplicate key error message (#602)
+
+0.14.7 (Jul 14, 2017)
+----
+
+- Fixed a dragging bug when the grid container is scrollable. Thanks @chultquist.
+  - Ref: https://github.com/STRML/react-grid-layout/pull/555
+
 0.14.6 (Apr 19, 2017)
 ----
 

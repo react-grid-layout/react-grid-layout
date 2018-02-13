@@ -1,73 +1,72 @@
-'use strict';
-var React = require('react');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var _ = require('lodash');
-var WidthProvider = require('react-grid-layout').WidthProvider;
-var ReactGridLayout = require('react-grid-layout');
-ReactGridLayout = WidthProvider(ReactGridLayout);
+import React from "react";
+import _ from "lodash";
+import RGL, { WidthProvider } from "react-grid-layout";
 
-var MinMaxLayout = React.createClass({
-  mixins: [PureRenderMixin],
+const ReactGridLayout = WidthProvider(RGL);
 
-  getDefaultProps() {
-    return {
-      isDraggable: true,
-      isResizable: true,
-      items: 20,
-      rowHeight: 30,
-      onLayoutChange: function() {},
-      cols: 12,
-    };
-  },
-
-  getInitialState() {
-    return {};
-  },
+class MinMaxLayout extends React.PureComponent {
+  static defaultProps = {
+    isDraggable: true,
+    isResizable: true,
+    items: 20,
+    rowHeight: 30,
+    onLayoutChange: function() {},
+    cols: 12
+  };
 
   generateDOM() {
     // Generate items with properties from the layout, rather than pass the layout directly
-    var layout = this.generateLayout();
+    const layout = this.generateLayout();
     return _.map(layout, function(l) {
-      var mins = [l.minW, l.minH], maxes = [l.maxW, l.maxH];
+      const mins = [l.minW, l.minH],
+        maxes = [l.maxW, l.maxH];
       return (
         <div key={l.i} data-grid={l}>
           <span className="text">{l.i}</span>
-          <div className="minMax">{'min:' + mins + ' - max:' + maxes}</div>
+          <div className="minMax">{"min:" + mins + " - max:" + maxes}</div>
         </div>
       );
     });
-  },
+  }
 
   generateLayout() {
-    var p = this.props;
+    const p = this.props;
     return _.map(new Array(p.items), function(item, i) {
-      var minW = _.random(1, 6), minH = _.random(1, 6);
-      var maxW = _.random(minW, 6), maxH = _.random(minH, 6);
-      var w = _.random(minW, maxW);
-      var y = _.random(minH, maxH);
+      const minW = _.random(1, 6),
+        minH = _.random(1, 6);
+      const maxW = _.random(minW, 6),
+        maxH = _.random(minH, 6);
+      const w = _.random(minW, maxW);
+      const y = _.random(minH, maxH);
       return {
-        x: i * 2 % 12, y: Math.floor(i / 6) * y, w: w, h: y, i: i.toString(),
-        minW: minW, maxW: maxW, minH: minH, maxH: maxH
+        x: (i * 2) % 12,
+        y: Math.floor(i / 6) * y,
+        w,
+        h: y,
+        i: i.toString(),
+        minW,
+        maxW,
+        minH,
+        maxH
       };
     });
-  },
+  }
 
-  onLayoutChange: function(layout) {
+  onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
-  },
+  }
 
   render() {
     return (
-      <ReactGridLayout onLayoutChange={this.onLayoutChange}
-          {...this.props}>
+      <ReactGridLayout onLayoutChange={this.onLayoutChange} {...this.props}>
         {this.generateDOM()}
       </ReactGridLayout>
     );
   }
-});
+}
 
 module.exports = MinMaxLayout;
 
 if (require.main === module) {
-  require('../test-hook.jsx')(module.exports);
+  require("../test-hook.jsx")(module.exports);
 }
