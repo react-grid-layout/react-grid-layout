@@ -544,7 +544,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
   processGridItem(child: ReactElement<any>): ?ReactElement<any> {
-    if (!child.key) return;
+    if (!child || !child.key) return;
     const l = getLayoutItem(this.state.layout, String(child.key));
     if (!l) return null;
     const {
