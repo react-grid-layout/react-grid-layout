@@ -13,7 +13,7 @@ import {
   moveElement,
   synchronizeLayoutWithChildren,
   validateLayout,
-  getFirstCollision,
+  getAllCollisions,
   noop
 } from "./utils";
 import GridItem from "./GridItem";
@@ -449,19 +449,57 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
-    // Short circuit if there is a collision in no rearrangement mode.
-    if (preventCollision && getFirstCollision(layout, { ...l, w, h })) {
-      return;
+    let adjustedW = w;
+    let adjustedH = h;
+
+    // Something like quad tree should be used
+    // to find collisions faster
+    if (preventCollision) {
+      const { i: lId, x: lX, y: lY } = l;
+      const collisions = getAllCollisions(layout, { ...l, w, h }).filter(
+        layoutItem => {
+          return layoutItem.i !== lId;
+        }
+      );
+
+      if (collisions.length > 0) {
+        // adjust w && h to maximum allowed space
+        const collisionsInfo = collisions.reduce(
+          (memo, layoutItem) => {
+            if (layoutItem.x > lX) {
+              memo.x.push(layoutItem.x);
+            }
+            if (layoutItem.y > lY) {
+              memo.y.push(layoutItem.y);
+            }
+            return memo;
+          },
+          {
+            x: [],
+            y: []
+          }
+        );
+
+        collisionsInfo.x.sort();
+        collisionsInfo.y.sort();
+
+        if (collisionsInfo.x.length > 0) {
+          adjustedW = collisionsInfo.x[0] - l.x;
+        }
+        if (collisionsInfo.y.length > 0) {
+          adjustedH = collisionsInfo.y[0] - l.y;
+        }
+      }
     }
 
     // Set new width and height.
-    l.w = w;
-    l.h = h;
+    l.w = adjustedW;
+    l.h = adjustedH;
 
     // Create placeholder element (display only)
     var placeholder = {
-      w: w,
-      h: h,
+      w: adjustedW,
+      h: adjustedH,
       x: l.x,
       y: l.y,
       static: true,
