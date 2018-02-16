@@ -446,60 +446,40 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
     const { layout, oldResizeItem } = this.state;
     const { cols, preventCollision } = this.props;
-    var l = getLayoutItem(layout, i);
+    const l: ?LayoutItem = getLayoutItem(layout, i);
     if (!l) return;
-
-    let adjustedW = w;
-    let adjustedH = h;
 
     // Something like quad tree should be used
     // to find collisions faster
+    let hasCollisions;
     if (preventCollision) {
-      const { i: lId, x: lX, y: lY } = l;
-      const collisions = getAllCollisions(layout, { ...l, w, h }).filter(
-        layoutItem => {
-          return layoutItem.i !== lId;
-        }
-      );
+      const collisions = getAllCollisions(layout, { ...l, w, h }).filter((layoutItem) => layoutItem.i !== l.i);
+      hasCollisions = collisions.length > 0;
 
-      if (collisions.length > 0) {
+      // If we're colliding, we need adjust the placeholder.
+      if (hasCollisions) {
         // adjust w && h to maximum allowed space
-        const collisionsInfo = collisions.reduce(
-          (memo, layoutItem) => {
-            if (layoutItem.x > lX) {
-              memo.x.push(layoutItem.x);
-            }
-            if (layoutItem.y > lY) {
-              memo.y.push(layoutItem.y);
-            }
-            return memo;
-          },
-          {
-            x: [],
-            y: []
-          }
-        );
+        let leastX = Infinity, leastY = Infinity;
+        collisions.forEach((layoutItem) => {
+          if (layoutItem.x > l.x) leastX = Math.min(leastX, layoutItem.x);
+          if (layoutItem.y > l.y) leastY = Math.min(leastY, layoutItem.y);
+        });
 
-        collisionsInfo.x.sort();
-        collisionsInfo.y.sort();
-
-        if (collisionsInfo.x.length > 0) {
-          adjustedW = collisionsInfo.x[0] - l.x;
-        }
-        if (collisionsInfo.y.length > 0) {
-          adjustedH = collisionsInfo.y[0] - l.y;
-        }
+        if (Number.isFinite(leastX)) l.w = leastX - l.x;
+        if (Number.isFinite(leastY)) l.h = leastY - l.y;
       }
     }
 
-    // Set new width and height.
-    l.w = adjustedW;
-    l.h = adjustedH;
+    if (!hasCollisions) {
+      // Set new width and height.
+      l.w = w;
+      l.h = h;
+    }
 
     // Create placeholder element (display only)
     var placeholder = {
-      w: adjustedW,
-      h: adjustedH,
+      w: l.w,
+      h: l.h,
       x: l.x,
       y: l.y,
       static: true,
