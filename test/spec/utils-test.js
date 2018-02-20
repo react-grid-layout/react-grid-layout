@@ -265,6 +265,36 @@ describe("moveElement", () => {
       ]
     );
   });
+
+  it("Moves one element to another should cause moving down panels below when compaction is vertical", () => {
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 1, i: "A" },
+      { x: 2, y: 0, w: 2, h: 1, i: "B" },
+      { x: 0, y: 1, w: 1, h: 1, i: "C" },
+      { x: 1, y: 1, w: 3, h: 1, i: "D" }
+    ];
+    // move B left slightly so it collides with A; can cause C to jump above A
+    // this test will check that that does not happen
+    const itemB = layout[1];
+    assert.deepEqual(
+      moveElement(
+        layout,
+        itemB,
+        1,
+        0, // x, y
+        true,
+        false, // isUserAction, preventCollision
+        "vertical",
+        4 // compactType, cols
+      ),
+      [
+        { x: 0, y: 1, w: 2, h: 1, i: "A", moved: true },
+        { x: 1, y: 0, w: 2, h: 1, i: "B", moved: true },
+        { x: 0, y: 2, w: 1, h: 1, i: "C", moved: true },
+        { x: 1, y: 2, w: 3, h: 1, i: "D", moved: true }
+      ]
+    );
+  });
 });
 
 describe("compact vertical", () => {
