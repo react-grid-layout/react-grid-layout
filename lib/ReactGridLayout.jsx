@@ -177,6 +177,11 @@ export default class ReactGridLayout extends React.Component {
       newLayoutBase = nextProps.layout;
     }
 
+    // When props are out of sync with the state
+    else if (!isEqual(nextProps.layout, this.state.layout)) {
+      newLayoutBase = nextProps.layout;
+    }
+
     // If children change, also regenerate the layout. Use our state
     // as the base in case because it may be more up to date than
     // what is in props.
