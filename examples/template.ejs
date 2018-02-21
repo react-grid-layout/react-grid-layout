@@ -1,20 +1,19 @@
 <!--
   <%= banner %>
 -->
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <script src="<%= base %>/dist/commons.js"></script>
     <script src="<%= base %>/dist/<%= index %>-<%= source %>.bundle.js"></script>
     <title>RGL Example <%= index %> - <%= title %></title>
   </head>
   <body>
     <h3>React-Grid-Layout Demo <%= index %> - <%= title %></h3>
-    <% for(var i = 0; i < paragraphs.length; i++) { -%>
-       <p><%- paragraphs[i] %></p>
-    <% } -%>
     <ul>
-    <li><a href="https://github.com/STRML/react-grid-layout">View project on GitHub</a></li>
-    <li><a href="https://github.com/STRML/react-grid-layout/blob/master/test/examples/<%= index %>-<%= source %>.jsx">View this example's source</a></li>
+      <li><a href="https://github.com/STRML/react-grid-layout">View project on GitHub</a></li>
+      <li><a href="https://github.com/STRML/react-grid-layout/blob/master/test/examples/<%= index %>-<%= source %>.jsx">View this example's source</a></li>
     <% if (previous) { %>
       <li><a href="<%= index - 1 %>-<%= previous.source %>.html"><b>⇠</b> View the previous example: "<%= previous.title %>"</a></li>
     <% } -%>
@@ -22,6 +21,9 @@
       <li><a href="<%= index + 1 %>-<%= next.source %>.html"><b>⇢ </b>View the next example: "<%= next.title %>"</a></li>
     <% } -%>
     </ul>
+    <% for(var i = 0; i < paragraphs.length; i++) { -%>
+       <p><%- paragraphs[i] %></p>
+    <% } -%>
     <div id="content"></div>
   </body>
 </html>
