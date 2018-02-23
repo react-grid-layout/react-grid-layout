@@ -6,6 +6,7 @@ import classNames from "classnames";
 import {
   autoBindHandlers,
   bottom,
+  nodesCollide,
   childrenEqual,
   cloneLayoutItem,
   compact,
@@ -38,7 +39,8 @@ type State = {
   mounted: boolean,
   oldDragItem: ?LayoutItem,
   oldLayout: ?Layout,
-  oldResizeItem: ?LayoutItem
+  oldResizeItem: ?LayoutItem,
+  draggingOverToolbox: boolean
 };
 
 export type Props = {
@@ -58,6 +60,7 @@ export type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  toolbox: ReactElement<any>,
   preventCollision: boolean,
   useCSSTransforms: boolean,
 
@@ -69,6 +72,7 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
+  onPutItem: EventCallback,
   children: ReactChildrenArray<ReactElement<any>>
 };
 // End Types
@@ -196,7 +200,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         }
         keys[child.key] = true;
       });
-    }
+    },
+
+    toolbox: PropTypes.element
   };
 
   static defaultProps = {
@@ -238,8 +244,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     mounted: false,
     oldDragItem: null,
     oldLayout: null,
-    oldResizeItem: null
+    oldResizeItem: null,
+    draggingOverToolbox: false
   };
+
+  toolboxRef: ?HTMLDivElement = null;
 
   constructor(props: Props, context: any): void {
     super(props, context);
@@ -372,6 +381,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols
     );
 
+    if (this.toolboxRef) {
+      let draggingOverToolbox = false;
+      if (nodesCollide(node, this.toolboxRef)) {
+        placeholder = null;
+        draggingOverToolbox = true;
+      }
+      this.setState({ draggingOverToolbox });
+    }
+
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
@@ -408,6 +426,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols
     );
 
+    if (this.toolboxRef) {
+      if (nodesCollide(node, this.toolboxRef)) {
+        layout = layout.filter(({ i }) => i !== l.i);
+        if (this.props.onPutItem) {
+          this.props.onPutItem(layout, oldDragItem, l, null, e, node);
+        }
+      }
+    }
+
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
@@ -417,7 +444,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       layout: newLayout,
       oldDragItem: null,
-      oldLayout: null
+      oldLayout: null,
+      draggingOverToolbox: false
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
@@ -453,14 +481,17 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // to find collisions faster
     let hasCollisions;
     if (preventCollision) {
-      const collisions = getAllCollisions(layout, { ...l, w, h }).filter((layoutItem) => layoutItem.i !== l.i);
+      const collisions = getAllCollisions(layout, { ...l, w, h }).filter(
+        layoutItem => layoutItem.i !== l.i
+      );
       hasCollisions = collisions.length > 0;
 
       // If we're colliding, we need adjust the placeholder.
       if (hasCollisions) {
         // adjust w && h to maximum allowed space
-        let leastX = Infinity, leastY = Infinity;
-        collisions.forEach((layoutItem) => {
+        let leastX = Infinity,
+          leastY = Infinity;
+        collisions.forEach(layoutItem => {
           if (layoutItem.x > l.x) leastX = Math.min(leastX, layoutItem.x);
           if (layoutItem.y > l.y) leastY = Math.min(leastY, layoutItem.y);
         });
@@ -625,20 +656,35 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   render() {
-    const { className, style } = this.props;
-
-    const mergedClassName = classNames("react-grid-layout", className);
-    const mergedStyle = {
-      height: this.containerHeight(),
-      ...style
-    };
+    const mergedClassName = classNames(
+      "react-grid-layout",
+      this.props.className
+    );
 
     return (
-      <div className={mergedClassName} style={mergedStyle}>
-        {React.Children.map(this.props.children, child =>
-          this.processGridItem(child)
-        )}
-        {this.placeholder()}
+      <div className={mergedClassName} style={this.props.style}>
+        {this.props.toolbox ? (
+          <div
+            className={classNames("react-grid-layout__toolbox", {
+              "is-active": this.state.draggingOverToolbox
+            })}
+            ref={elem => (this.toolboxRef = elem)}
+          >
+            {this.props.toolbox}
+          </div>
+        ) : null}
+        <div
+          className="react-grid-layout__grid-items"
+          style={{
+            position: "relative",
+            height: this.containerHeight()
+          }}
+        >
+          {React.Children.map(this.props.children, child =>
+            this.processGridItem(child)
+          )}
+          {this.placeholder()}
+        </div>
       </div>
     );
   }

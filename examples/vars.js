@@ -124,4 +124,11 @@ module.exports = [
       'move over 3.'
     ]
   },
+  {
+    title: 'Toolbox',
+    source: 'toolbox',
+    paragraphs: [
+      'This includes an interactive toolbox. Try dragging widgets into it!'
+    ]
+  },
 ];
