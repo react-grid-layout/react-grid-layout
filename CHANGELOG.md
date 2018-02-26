@@ -1,5 +1,17 @@
 # Changelog
 
+0.16.5 (Feb 26, 2018)
+----
+
+- Minor fix to `isUserAction` on certain types of compaction cascades (#714, #720, #729)
+
+0.16.4 (Feb 15, 2018)
+----
+
+- Skip null items in processGridItem (#578)
+- Resize is broken for grids with preventCollision: true, fixes #655 (#656)
+- Minor refactoring
+
 0.16.3 (Jan 31, 2018)
 ----
 
