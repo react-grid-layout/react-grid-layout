@@ -61,15 +61,19 @@ li b {
   line-height: 14px;
 }
 
-.react-grid-layout__toolbox {
+.toolbox {
   background-color: #dfd;
   width: 100%;
   height: 120px;
   overflow: scroll;
 }
 
-.react-grid-layout__toolbox.is-active {
-  background-color: #fdd;
+.hide-button {
+  cursor: pointer;
+  position: absolute;
+  font-size: 20px;
+  top: 0px;
+  right: 5px;
 }
 
 .toolbox__title {

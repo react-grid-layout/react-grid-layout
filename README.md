@@ -76,7 +76,6 @@ RGL is React-only and does not require jQuery.
 * Responsive breakpoints
 * Separate layouts per responsive breakpoint
 * Grid Items placed using CSS Transforms
-* Interactive toolbox for additional widgets
 * Performance: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
 
 |Version         | Compatibility    |

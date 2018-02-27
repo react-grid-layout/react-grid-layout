@@ -6,7 +6,6 @@ import classNames from "classnames";
 import {
   autoBindHandlers,
   bottom,
-  nodesCollide,
   childrenEqual,
   cloneLayoutItem,
   compact,
@@ -39,8 +38,7 @@ type State = {
   mounted: boolean,
   oldDragItem: ?LayoutItem,
   oldLayout: ?Layout,
-  oldResizeItem: ?LayoutItem,
-  draggingOverToolbox: boolean
+  oldResizeItem: ?LayoutItem
 };
 
 export type Props = {
@@ -60,7 +58,6 @@ export type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
-  toolbox: ReactElement<any>,
   preventCollision: boolean,
   useCSSTransforms: boolean,
 
@@ -72,7 +69,6 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
-  onRemoveItem: EventCallback,
   children: ReactChildrenArray<ReactElement<any>>
 };
 // End Types
@@ -200,9 +196,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         }
         keys[child.key] = true;
       });
-    },
-
-    toolbox: PropTypes.element
+    }
   };
 
   static defaultProps = {
@@ -244,11 +238,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     mounted: false,
     oldDragItem: null,
     oldLayout: null,
-    oldResizeItem: null,
-    draggingOverToolbox: false
+    oldResizeItem: null
   };
-
-  toolboxRef: ?HTMLDivElement = null;
 
   constructor(props: Props, context: any): void {
     super(props, context);
@@ -381,15 +372,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols
     );
 
-    if (this.toolboxRef) {
-      let draggingOverToolbox = false;
-      if (nodesCollide(node, this.toolboxRef)) {
-        placeholder = null;
-        draggingOverToolbox = true;
-      }
-      this.setState({ draggingOverToolbox });
-    }
-
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
@@ -426,15 +408,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols
     );
 
-    if (this.toolboxRef) {
-      if (nodesCollide(node, this.toolboxRef)) {
-        layout = layout.filter(({ i }) => i !== l.i);
-        if (this.props.onRemoveItem) {
-          this.props.onRemoveItem(layout, oldDragItem, l, null, e, node);
-        }
-      }
-    }
-
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
@@ -444,8 +417,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       layout: newLayout,
       oldDragItem: null,
-      oldLayout: null,
-      draggingOverToolbox: false
+      oldLayout: null
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
@@ -656,35 +628,20 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   render() {
-    const mergedClassName = classNames(
-      "react-grid-layout",
-      this.props.className
-    );
+    const { className, style } = this.props;
+
+    const mergedClassName = classNames("react-grid-layout", className);
+    const mergedStyle = {
+      height: this.containerHeight(),
+      ...style
+    };
 
     return (
-      <div className={mergedClassName} style={this.props.style}>
-        {this.props.toolbox ? (
-          <div
-            className={classNames("react-grid-layout__toolbox", {
-              "is-active": this.state.draggingOverToolbox
-            })}
-            ref={elem => (this.toolboxRef = elem)}
-          >
-            {this.props.toolbox}
-          </div>
-        ) : null}
-        <div
-          className="react-grid-layout__grid-items"
-          style={{
-            position: "relative",
-            height: this.containerHeight()
-          }}
-        >
-          {React.Children.map(this.props.children, child =>
-            this.processGridItem(child)
-          )}
-          {this.placeholder()}
-        </div>
+      <div className={mergedClassName} style={mergedStyle}>
+        {React.Children.map(this.props.children, child =>
+          this.processGridItem(child)
+        )}
+        {this.placeholder()}
       </div>
     );
   }
