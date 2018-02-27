@@ -72,7 +72,7 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
-  onPutItem: EventCallback,
+  onRemoveItem: EventCallback,
   children: ReactChildrenArray<ReactElement<any>>
 };
 // End Types
@@ -429,8 +429,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (this.toolboxRef) {
       if (nodesCollide(node, this.toolboxRef)) {
         layout = layout.filter(({ i }) => i !== l.i);
-        if (this.props.onPutItem) {
-          this.props.onPutItem(layout, oldDragItem, l, null, e, node);
+        if (this.props.onRemoveItem) {
+          this.props.onRemoveItem(layout, oldDragItem, l, null, e, node);
         }
       }
     }

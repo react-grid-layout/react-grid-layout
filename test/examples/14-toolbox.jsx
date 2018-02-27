@@ -48,7 +48,7 @@ class ShowcaseLayout extends React.Component {
     compactType: "vertical",
     mounted: false,
     layouts: { lg: this.props.initialLayout },
-    toolbox: []
+    toolbox: { lg: [] },
   };
 
   componentDidMount() {
@@ -56,7 +56,7 @@ class ShowcaseLayout extends React.Component {
   }
 
   generateDOM() {
-    return _.map(this.state.layouts.lg, function(l) {
+    return _.map(this.state.layouts[this.state.currentBreakpoint], function(l) {
       return (
         <div key={l.i} className={l.static ? "static" : ""}>
           {l.static ? (
@@ -75,9 +75,13 @@ class ShowcaseLayout extends React.Component {
   }
 
   onBreakpointChange = breakpoint => {
-    this.setState({
-      currentBreakpoint: breakpoint
-    });
+    this.setState((prevState) => ({
+      currentBreakpoint: breakpoint,
+      toolbox: {
+        ...prevState.toolbox,
+        [breakpoint]: prevState.toolbox[breakpoint] || prevState.toolbox[prevState.currentBreakpoint] || []
+      }
+    }));
   };
 
   onCompactTypeChange = () => {
@@ -91,12 +95,13 @@ class ShowcaseLayout extends React.Component {
 
   onTakeItem = item => {
     this.setState(prevState => ({
-      toolbox: prevState.toolbox.filter(({ i }) => i !== item.i),
+      toolbox: {
+        ...prevState.toolbox,
+        [prevState.currentBreakpoint]: prevState.toolbox[prevState.currentBreakpoint].filter(({ i }) => i !== item.i)
+      },
       layouts: {
         ...prevState.layouts,
-        [prevState.currentBreakpoint]: prevState.layouts[
-          prevState.currentBreakpoint
-        ].concat([item])
+        [prevState.currentBreakpoint]: [...prevState.layouts[prevState.currentBreakpoint], item]
       }
     }));
   };
@@ -104,7 +109,14 @@ class ShowcaseLayout extends React.Component {
   onPutItem = (layout, oldDragItem) => {
     this.setState(prevState => {
       return {
-        toolbox: prevState.toolbox.concat([oldDragItem])
+        toolbox: {
+          ...prevState.toolbox,
+          [prevState.currentBreakpoint]: [...(prevState.toolbox[prevState.currentBreakpoint] || []), oldDragItem],
+        },
+        layouts: {
+          ...prevState.layouts,
+          [prevState.currentBreakpoint]: layout
+        }
       };
     });
   };
@@ -143,9 +155,9 @@ class ShowcaseLayout extends React.Component {
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           toolbox={
-            <ToolBox items={this.state.toolbox} onTakeItem={this.onTakeItem} />
+            <ToolBox items={this.state.toolbox[this.state.currentBreakpoint] || []} onTakeItem={this.onTakeItem} />
           }
-          onPutItem={this.onPutItem}
+          onRemoveItem={this.onPutItem}
           onLayoutChange={this.onLayoutChange}
           // WidthProvider option
           measureBeforeMount={false}
