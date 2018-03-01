@@ -266,7 +266,9 @@ describe("moveElement", () => {
     );
   });
 
-  it("Moves one element to another should cause moving down panels below when compaction is vertical", () => {
+  it("Moves one element to another should cause moving down panels, vert compact, example 1", () => {
+    // | A | B |
+    // |C|  D  |
     const layout = [
       { x: 0, y: 0, w: 2, h: 1, i: "A" },
       { x: 2, y: 0, w: 2, h: 1, i: "B" },
@@ -292,6 +294,38 @@ describe("moveElement", () => {
         { x: 1, y: 0, w: 2, h: 1, i: "B", moved: true },
         { x: 0, y: 2, w: 1, h: 1, i: "C", moved: true },
         { x: 1, y: 2, w: 3, h: 1, i: "D", moved: true }
+      ]
+    );
+  });
+
+  it.only("Moves one element to another should cause moving down panels, vert compact, example 2", () => {
+    // | A |
+    // |B|C|
+    //   | |
+    //
+    // Moving C above A should not move B above A
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 1, i: "A" },
+      { x: 0, y: 1, w: 1, h: 1, i: "B" },
+      { x: 1, y: 1, w: 1, h: 2, i: "C" }
+    ];
+    // Move C up.
+    const itemB = layout[2];
+    assert.deepEqual(
+      moveElement(
+        layout,
+        itemB,
+        1,
+        0, // x, y
+        true,
+        false, // isUserAction, preventCollision
+        "vertical",
+        4 // compactType, cols
+      ),
+      [
+        { x: 0, y: 2, w: 2, h: 1, i: "A", moved: true },
+        { x: 0, y: 3, w: 1, h: 1, i: "B", moved: true },
+        { x: 1, y: 0, w: 1, h: 2, i: "C", moved: true }
       ]
     );
   });
