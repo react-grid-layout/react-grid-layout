@@ -33,6 +33,18 @@ function stripObject(obj) {
 function assertDeepEqualStrip(obj1, obj2) {
   assert.deepEqual(stripArray(obj1), stripArray(obj2));
 }
+
+function assertSubset(arr1, arr2) {
+  // strip a before comparing to b
+  const arr1Stripped = arr1.map((el, i) => {
+    const other = arr2[i];
+    return Object.keys(el).reduce((memo, key) => {
+      if (key in other) memo[key] = el[key];
+      return memo;
+    }, {})
+  });
+  assert.deepEqual(arr1Stripped, arr2);
+}
 //
 // Specs
 //
@@ -106,6 +118,13 @@ describe("validateLayout", () => {
 });
 
 describe("moveElement", () => {
+  function compactAndMove(layout, layoutItem, x, y, isUserAction, preventCollision, compactType, cols) {
+    return compact(
+      moveElement(layout, layoutItem, x, y, isUserAction, preventCollision, compactType, cols),
+      compactType, cols
+    );
+  }
+
   it("Does not change layout when colliding on no rearrangement mode", () => {
     const layout = [
       { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
@@ -116,12 +135,9 @@ describe("moveElement", () => {
       moveElement(
         layout,
         layoutItem,
-        1,
-        2, // x, y
-        true,
-        true, // isUserAction, preventCollision
-        null,
-        2
+        1, 2, // x, y
+        true, true, // isUserAction, preventCollision
+        null, 2, // compactType, cols
       ),
       [
         { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
@@ -140,12 +156,9 @@ describe("moveElement", () => {
       moveElement(
         layout,
         layoutItem,
-        1,
-        0, // x, y
-        true,
-        false, // isUserAction, preventCollision
-        "vertical",
-        2 // compactType, cols
+        1, 0, // x, y
+        true, false, // isUserAction, preventCollision
+        "vertical", 2, // compactType, cols
       ),
       [
         { i: "1", x: 1, y: 0, w: 1, h: 1, moved: true },
@@ -156,56 +169,50 @@ describe("moveElement", () => {
 
   it("Moves elements out of the way without causing panel jumps when compaction is vertical", () => {
     const layout = [
-      { x: 0, y: 0, w: 1, h: 10, moved: false, i: "A" },
-      { x: 0, y: 10, w: 1, h: 1, moved: false, i: "B" },
-      { x: 0, y: 11, w: 1, h: 1, moved: false, i: "C" }
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
     ];
     // move A down slightly so it collides with C; can cause C to jump above B.
     // We instead want B to jump above A (it has the room)
     const itemA = layout[0];
-    assert.deepEqual(
-      moveElement(
+    assertSubset(
+      compactAndMove(
         layout,
         itemA,
-        0,
-        1, // x, y
-        true,
-        false, // isUserAction, preventCollision
-        "vertical",
-        10 // compactType, cols
+        0, 1, // x, y
+        true, false, // isUserAction, preventCollision
+        "vertical", 10 // compactType, cols
       ),
       [
-        { x: 0, y: 1, w: 1, h: 10, moved: true, i: "A" },
-        { x: 0, y: 0, w: 1, h: 1, moved: true, i: "B" },
-        { x: 0, y: 11, w: 1, h: 1, moved: false, i: "C" }
+        { x: 0, y: 1, w: 1, h: 10, i: "A" },
+        { x: 0, y: 0, w: 1, h: 1, i: "B" },
+        { x: 0, y: 11, w: 1, h: 1,  i: "C" }
       ]
     );
   });
 
   it("Calculates the correct collision when moving large object far", () => {
     const layout = [
-      { x: 0, y: 0, w: 1, h: 10, moved: false, i: "A" },
-      { x: 0, y: 10, w: 1, h: 1, moved: false, i: "B" },
-      { x: 0, y: 11, w: 1, h: 1, moved: false, i: "C" }
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
     ];
     // Move A down by 2. This should move B above, but since we don't compact in between,
     // C should move below.
     const itemA = layout[0];
-    assert.deepEqual(
+    assertSubset(
       moveElement(
         layout,
         itemA,
-        0,
-        2, // x, y
-        true,
-        false, // isUserAction, preventCollision
-        "vertical",
-        10 // compactType, cols
+        0, 2, // x, y
+        true, false, // isUserAction, preventCollision
+        "vertical", 10, // compactType, cols
       ),
       [
-        { x: 0, y: 2, w: 1, h: 10, moved: true, i: "A" },
-        { x: 0, y: 1, w: 1, h: 1, moved: true, i: "B" },
-        { x: 0, y: 12, w: 1, h: 1, moved: true, i: "C" }
+        { x: 0, y: 2, w: 1, h: 10, i: "A" },
+        { x: 0, y: 1, w: 1, h: 1, i: "B" },
+        { x: 0, y: 12, w: 1, h: 1, i: "C" }
       ]
     );
   });
@@ -223,12 +230,9 @@ describe("moveElement", () => {
       moveElement(
         layout,
         itemA,
-        1,
-        0, // x, y
-        true,
-        false, // isUserAction, preventCollision
-        "vertical",
-        2 // compactType, cols
+        1, 0, // x, y
+        true, false, // isUserAction, preventCollision
+        "vertical", 2, // compactType, cols
       ),
       [
         { x: 1, y: 0, w: 1, h: 1, i: "A", moved: true },
@@ -240,9 +244,9 @@ describe("moveElement", () => {
 
   it("Moves elements out of the way without causing panel jumps when compaction is horizontal", () => {
     const layout = [
-      { y: 0, x: 0, h: 1, w: 10, moved: false, i: "A" },
-      { y: 0, x: 11, h: 1, w: 1, moved: false, i: "B" },
-      { y: 0, x: 12, h: 1, w: 1, moved: false, i: "C" }
+      { y: 0, x: 0, h: 1, w: 10, i: "A" },
+      { y: 0, x: 11, h: 1, w: 1, i: "B" },
+      { y: 0, x: 12, h: 1, w: 1, i: "C" }
     ];
     // move A over slightly so it collides with C; can cause C to jump left of B
     // this test will check that that does not happen
@@ -251,22 +255,21 @@ describe("moveElement", () => {
       moveElement(
         layout,
         itemA,
-        2,
-        0, // x, y
-        true,
-        false, // isUserAction, preventCollision
-        "horizontal",
-        10 // compactType, cols
+        2, 0, // x, y
+        true, false, // isUserAction, preventCollision
+        "horizontal", 10, // compactType, cols
       ),
       [
         { y: 0, x: 2, h: 1, w: 10, moved: true, i: "A" },
         { y: 0, x: 1, h: 1, w: 1, moved: true, i: "B" },
-        { y: 0, x: 12, h: 1, w: 1, moved: false, i: "C" }
+        { y: 0, x: 12, h: 1, w: 1, i: "C" }
       ]
     );
   });
 
-  it("Moves one element to another should cause moving down panels below when compaction is vertical", () => {
+  it("Moves one element to another should cause moving down panels, vert compact, example 1", () => {
+    // | A | B |
+    // |C|  D  |
     const layout = [
       { x: 0, y: 0, w: 2, h: 1, i: "A" },
       { x: 2, y: 0, w: 2, h: 1, i: "B" },
@@ -276,22 +279,48 @@ describe("moveElement", () => {
     // move B left slightly so it collides with A; can cause C to jump above A
     // this test will check that that does not happen
     const itemB = layout[1];
-    assert.deepEqual(
-      moveElement(
+    assertSubset(
+      compactAndMove(
         layout,
         itemB,
-        1,
-        0, // x, y
-        true,
-        false, // isUserAction, preventCollision
-        "vertical",
-        4 // compactType, cols
+        1, 0, // x, y
+        true, false, // isUserAction, preventCollision
+        "vertical", 4, // compactType, cols
       ),
       [
-        { x: 0, y: 1, w: 2, h: 1, i: "A", moved: true },
-        { x: 1, y: 0, w: 2, h: 1, i: "B", moved: true },
-        { x: 0, y: 2, w: 1, h: 1, i: "C", moved: true },
-        { x: 1, y: 2, w: 3, h: 1, i: "D", moved: true }
+        { x: 0, y: 1, w: 2, h: 1, i: "A" },
+        { x: 1, y: 0, w: 2, h: 1, i: "B" },
+        { x: 0, y: 2, w: 1, h: 1, i: "C" },
+        { x: 1, y: 2, w: 3, h: 1, i: "D" }
+      ]
+    );
+  });
+
+  it("Moves one element to another should cause moving down panels, vert compact, example 2", () => {
+    // | A |
+    // |B|C|
+    //   | |
+    //
+    // Moving C above A should not move B above A
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 1, i: "A" },
+      { x: 0, y: 1, w: 1, h: 1, i: "B" },
+      { x: 1, y: 1, w: 1, h: 2, i: "C" }
+    ];
+    // Move C up.
+    const itemB = layout[2];
+    assertSubset(
+      compactAndMove(
+        layout,
+        itemB,
+        1, 0, // x, y
+        true, false, // isUserAction, preventCollision
+        "vertical", 4, // compactType, cols
+      ),
+      [
+        { x: 0, y: 2, w: 2, h: 1, i: "A" },
+        { x: 0, y: 3, w: 1, h: 1, i: "B" },
+        { x: 1, y: 0, w: 1, h: 2, i: "C" }
       ]
     );
   });
