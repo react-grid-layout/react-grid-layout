@@ -346,7 +346,10 @@ onBreakpointChange: (newBreakpoint: string, newCols: number) => void,
 onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints>]: Layout}) => void,
 
 // Callback when the width changes, so you can modify the layout as needed.
-onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void;
+onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void,
+
+// Callback when the initial state has been set
+onInit: State => void;
 
 ```
 
