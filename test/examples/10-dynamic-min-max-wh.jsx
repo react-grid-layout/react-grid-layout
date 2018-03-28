@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
-const ReactGridLayout = WidthProvider(RGL);
+const GridLayout = WidthProvider(RGL);
 
 /**
  * This layout demonstrates how to use the `onResize` handler to enforce a min/max width and height.
@@ -68,13 +68,13 @@ class DynamicMinMaxLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout
+      <GridLayout
         onLayoutChange={this.onLayoutChange}
         onResize={this.onResize}
         {...this.props}
       >
         {this.generateDOM()}
-      </ReactGridLayout>
+      </GridLayout>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 
-const ReactGridLayout = WidthProvider(RGL);
+const GridLayout = WidthProvider(RGL);
 const originalLayout = getFromLS("layout") || [];
 /**
  * This layout demonstrates how to sync to localstorage.
@@ -42,7 +42,7 @@ class LocalStorageLayout extends React.PureComponent {
     return (
       <div>
         <button onClick={this.resetLayout}>Reset Layout</button>
-        <ReactGridLayout
+        <GridLayout
           {...this.props}
           layout={this.state.layout}
           onLayoutChange={this.onLayoutChange}
@@ -62,7 +62,7 @@ class LocalStorageLayout extends React.PureComponent {
           <div key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0 }}>
             <span className="text">5</span>
           </div>
-        </ReactGridLayout>
+        </GridLayout>
       </div>
     );
   }

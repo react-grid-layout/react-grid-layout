@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 class ShowcaseLayout extends React.Component {
   static defaultProps = {
@@ -84,7 +84,7 @@ class ShowcaseLayout extends React.Component {
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
         </button>
-        <ResponsiveReactGridLayout
+        <ResponsiveGridLayout
           {...this.props}
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
@@ -98,7 +98,7 @@ class ShowcaseLayout extends React.Component {
           preventCollision={!this.state.compactType}
         >
           {this.generateDOM()}
-        </ResponsiveReactGridLayout>
+        </ResponsiveGridLayout>
       </div>
     );
   }

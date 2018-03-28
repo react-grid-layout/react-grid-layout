@@ -1,7 +1,7 @@
 import React from "react";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
@@ -105,13 +105,13 @@ class AddRemoveLayout extends React.PureComponent {
     return (
       <div>
         <button onClick={this.onAddItem}>Add Item</button>
-        <ResponsiveReactGridLayout
+        <ResponsiveGridLayout
           onLayoutChange={this.onLayoutChange}
           onBreakpointChange={this.onBreakpointChange}
           {...this.props}
         >
           {_.map(this.state.items, el => this.createElement(el))}
-        </ResponsiveReactGridLayout>
+        </ResponsiveGridLayout>
       </div>
     );
   }

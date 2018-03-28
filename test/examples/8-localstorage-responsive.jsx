@@ -1,7 +1,7 @@
 import React from "react";
 import { WidthProvider, Responsive } from "react-grid-layout";
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || {};
 
 /**
@@ -37,7 +37,7 @@ class ResponsiveLocalStorageLayout extends React.PureComponent {
     return (
       <div>
         <button onClick={() => this.resetLayout()}>Reset Layout</button>
-        <ResponsiveReactGridLayout
+        <ResponsiveGridLayout
           className="layout"
           cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
           rowHeight={30}
@@ -61,7 +61,7 @@ class ResponsiveLocalStorageLayout extends React.PureComponent {
           <div key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0, minW: 2, minH: 3 }}>
             <span className="text">5</span>
           </div>
-        </ResponsiveReactGridLayout>
+        </ResponsiveGridLayout>
       </div>
     );
   }
