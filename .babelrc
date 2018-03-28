@@ -1,7 +1,10 @@
 {
   "presets": [
-    ["es2015", {"loose": true}],
-    "stage-1",
+    ["env", {"loose": true}],
+    "stage-2",
     "react"
+  ],
+  "plugins": [
+    ["transform-runtime", { "polyfill": false, "useBuiltIns": true }]
   ]
 }
