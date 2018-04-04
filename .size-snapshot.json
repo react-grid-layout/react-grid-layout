@@ -3,5 +3,10 @@
     "bundled": 262612,
     "minified": 79494,
     "gzipped": 22019
+  },
+  "dist/react-grid-layout.min.js": {
+    "bundled": 238795,
+    "minified": 72302,
+    "gzipped": 20828
   }
 }
