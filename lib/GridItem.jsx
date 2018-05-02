@@ -1,5 +1,6 @@
 // @flow
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {DraggableCore} from 'react-draggable';
 import {Resizable} from 'react-resizable';
 import {perc, setTopLeft, setTransform} from './utils';
