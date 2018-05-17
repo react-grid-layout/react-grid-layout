@@ -322,7 +322,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
-        enableUserSelectHack: {this.props.draggableOptions ? this.props.draggableOptions.enableUserSelectHack : undefined}
+        {...this.props.draggableOptions}
       >
         {child}
       </DraggableCore>
