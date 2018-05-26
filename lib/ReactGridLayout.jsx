@@ -1,9 +1,10 @@
 // @flow
-import React, {PropTypes} from 'react';
+import React from 'react';
 import isEqual from 'lodash.isequal';
 import {autoBindHandlers, bottom, childrenEqual, cloneLayoutItem, compact, getLayoutItem, moveElement,
   synchronizeLayoutWithChildren, validateLayout} from './utils';
 import GridItem from './GridItem';
+import PropTypes from 'prop-types';
 const noop = function() {};
 
 // Types
