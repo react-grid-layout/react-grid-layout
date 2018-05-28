@@ -50,7 +50,6 @@ RGL is React-only and does not require jQuery.
 1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
 
-
 #### Projects Using React-Grid-Layout
 
 - [BitMEX](https://www.bitmex.com/)
