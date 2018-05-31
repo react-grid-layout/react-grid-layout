@@ -2,14 +2,14 @@
 // flow-typed version: 94e9f7e0a4/classnames_v2.x.x/flow_>=v0.28.x
 
 type $npm$classnames$Classes =
-  string |
-  {[className: string]: ?boolean } |
-  Array<string> |
-  void |
-  null
+  | string
+  | { [className: string]: ?boolean }
+  | Array<string>
+  | void
+  | null;
 
-declare module 'classnames' {
-  declare function exports(
+declare module "classnames" {
+  declare module.exports: (
     ...classes: Array<$npm$classnames$Classes>
-  ): string;
+  ) => string;
 }
