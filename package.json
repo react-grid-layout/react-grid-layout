@@ -1,5 +1,5 @@
 {
-  "name": "jx-react-grid-layout",
+  "name": "jx-grid-layout-react",
   "version": "0.13.13",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React. Customized fork.",
   "main": "index.js",
