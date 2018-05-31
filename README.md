@@ -409,6 +409,11 @@ If you have a feature request, please add it as an issue or make a pull request.
 If you have a bug to report, please reproduce the bug in [WebpackBin](http://www.webpackbin.com/VymTE3zWG) to help
 us easily isolate it.
 
+### Setting up development environment
+Run the following commands to build and run the examples locally.
+* `npm install`
+* `npm run dev`
+
 ## TODO List
 
 - [x] Basic grid layout
