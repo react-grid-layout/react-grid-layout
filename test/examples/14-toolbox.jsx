@@ -3,6 +3,37 @@ import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
+class ToolBoxItem extends React.Component {
+  render() {
+    return (
+      <div
+        className="toolbox__items__item"
+        onClick={this.props.onTakeItem.bind(undefined, this.props.item)}
+      >
+        {this.props.item.i}
+      </div>
+    );
+  }
+}
+class ToolBox extends React.Component {
+  render() {
+    return (
+      <div className="toolbox">
+        <span className="toolbox__title">Toolbox</span>
+        <div className="toolbox__items">
+          {this.props.items.map(item => (
+            <ToolBoxItem
+              key={item.i}
+              item={item}
+              onTakeItem={this.props.onTakeItem}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
 class ShowcaseLayout extends React.Component {
   static defaultProps = {
     className: "layout",
@@ -16,7 +47,8 @@ class ShowcaseLayout extends React.Component {
     currentBreakpoint: "lg",
     compactType: "vertical",
     mounted: false,
-    layouts: { lg: this.props.initialLayout }
+    layouts: { lg: this.props.initialLayout },
+    toolbox: { lg: [] }
   };
 
   componentDidMount() {
@@ -24,18 +56,21 @@ class ShowcaseLayout extends React.Component {
   }
 
   generateDOM() {
-    return _.map(this.state.layouts.lg, function(l, i) {
+    return _.map(this.state.layouts[this.state.currentBreakpoint], l => {
       return (
-        <div key={i} className={l.static ? "static" : ""}>
+        <div key={l.i} className={l.static ? "static" : ""}>
+          <div className="hide-button" onClick={this.onPutItem.bind(this, l)}>
+            &times;
+          </div>
           {l.static ? (
             <span
               className="text"
               title="This item is static and cannot be removed or resized."
             >
-              Static - {i}
+              Static - {l.i}
             </span>
           ) : (
-            <span className="text">{i}</span>
+            <span className="text">{l.i}</span>
           )}
         </div>
       );
@@ -43,9 +78,16 @@ class ShowcaseLayout extends React.Component {
   }
 
   onBreakpointChange = breakpoint => {
-    this.setState({
-      currentBreakpoint: breakpoint
-    });
+    this.setState(prevState => ({
+      currentBreakpoint: breakpoint,
+      toolbox: {
+        ...prevState.toolbox,
+        [breakpoint]:
+          prevState.toolbox[breakpoint] ||
+          prevState.toolbox[prevState.currentBreakpoint] ||
+          []
+      }
+    }));
   };
 
   onCompactTypeChange = () => {
@@ -57,8 +99,47 @@ class ShowcaseLayout extends React.Component {
     this.setState({ compactType });
   };
 
+  onTakeItem = item => {
+    this.setState(prevState => ({
+      toolbox: {
+        ...prevState.toolbox,
+        [prevState.currentBreakpoint]: prevState.toolbox[
+          prevState.currentBreakpoint
+        ].filter(({ i }) => i !== item.i)
+      },
+      layouts: {
+        ...prevState.layouts,
+        [prevState.currentBreakpoint]: [
+          ...prevState.layouts[prevState.currentBreakpoint],
+          item
+        ]
+      }
+    }));
+  };
+
+  onPutItem = item => {
+    this.setState(prevState => {
+      return {
+        toolbox: {
+          ...prevState.toolbox,
+          [prevState.currentBreakpoint]: [
+            ...(prevState.toolbox[prevState.currentBreakpoint] || []),
+            item
+          ]
+        },
+        layouts: {
+          ...prevState.layouts,
+          [prevState.currentBreakpoint]: prevState.layouts[
+            prevState.currentBreakpoint
+          ].filter(({ i }) => i !== item.i)
+        }
+      };
+    });
+  };
+
   onLayoutChange = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
+    this.setState({ layouts });
   };
 
   onNewLayout = () => {
@@ -84,6 +165,12 @@ class ShowcaseLayout extends React.Component {
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
         </button>
+
+        <ToolBox
+          items={this.state.toolbox[this.state.currentBreakpoint] || []}
+          onTakeItem={this.onTakeItem}
+        />
+
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}

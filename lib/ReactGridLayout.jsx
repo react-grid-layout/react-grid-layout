@@ -400,7 +400,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       oldLayout: this.state.layout
     });
 
-    this.props.onDragStart(layout, l, l, null, e, node);
+    return this.props.onDragStart(layout, l, l, null, e, node);
   }
 
   /**
@@ -516,22 +516,43 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
     const { layout, oldResizeItem } = this.state;
     const { cols, preventCollision } = this.props;
-    var l = getLayoutItem(layout, i);
+    const l: ?LayoutItem = getLayoutItem(layout, i);
     if (!l) return;
 
-    // Short circuit if there is a collision in no rearrangement mode.
-    if (preventCollision && getFirstCollision(layout, { ...l, w, h })) {
-      return;
+    // Something like quad tree should be used
+    // to find collisions faster
+    let hasCollisions;
+    if (preventCollision) {
+      const collisions = getAllCollisions(layout, { ...l, w, h }).filter(
+        layoutItem => layoutItem.i !== l.i
+      );
+      hasCollisions = collisions.length > 0;
+
+      // If we're colliding, we need adjust the placeholder.
+      if (hasCollisions) {
+        // adjust w && h to maximum allowed space
+        let leastX = Infinity,
+          leastY = Infinity;
+        collisions.forEach(layoutItem => {
+          if (layoutItem.x > l.x) leastX = Math.min(leastX, layoutItem.x);
+          if (layoutItem.y > l.y) leastY = Math.min(leastY, layoutItem.y);
+        });
+
+        if (Number.isFinite(leastX)) l.w = leastX - l.x;
+        if (Number.isFinite(leastY)) l.h = leastY - l.y;
+      }
     }
 
-    // Set new width and height.
-    l.w = w;
-    l.h = h;
+    if (!hasCollisions) {
+      // Set new width and height.
+      l.w = w;
+      l.h = h;
+    }
 
     // Create placeholder element (display only)
     var placeholder = {
-      w: w,
-      h: h,
+      w: l.w,
+      h: l.h,
       x: l.x,
       y: l.y,
       static: true,
@@ -614,7 +635,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
   processGridItem(child: ReactElement<any>): ?ReactElement<any> {
-    if (!child.key) return;
+    if (!child || !child.key) return;
     const l = getLayoutItem(this.state.layout, String(child.key));
     if (!l) return null;
     const {
@@ -679,18 +700,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   render() {
     const { className, style } = this.props;
 
+    const mergedClassName = classNames("react-grid-layout", className);
     const mergedStyle = {
       height: this.containerHeight(),
       ...style
     };
 
     return (
-      <div
-        className={classNames("react-grid-layout", className)}
-        style={mergedStyle}
-      >
-        {// $FlowIgnore: Appears to think map calls back w/array
-        React.Children.map(this.props.children, child =>
+      <div className={mergedClassName} style={mergedStyle}>
+        {React.Children.map(this.props.children, child =>
           this.processGridItem(child)
         )}
         {this.placeholder()}

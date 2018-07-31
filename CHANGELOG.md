@@ -1,5 +1,46 @@
 # Changelog
 
+0.16.6 (Mar 8, 2018)
+----
+
+- Fixed collision issue where items below could rearrange on a move.
+  - The root cause was "teleportation", or practically the same bug that leads to Pac-Man going through
+    ghosts now and then. If a large element moves up by a few grid units, the space it vacates can suddenly
+    become occupiable by an element below it. Rather than the collision happening properly, they exchange spaces
+    atomically. The fix is to move items down one grid unit at a time to ensure
+    this rearrangement does not happen.
+  - Thanks @torkelo for your hard work on this for Grafana 5, which I very unfortunately managed to break
+    when refactoring for 0.16.1.
+  - Ref: #650, #739
+- Added a "Toolbox" demo (thanks @jhob)
+
+0.16.5 (Feb 26, 2018)
+----
+
+- Minor fix to `isUserAction` on certain types of compaction cascades (#714, #720, #729)
+
+0.16.4 (Feb 15, 2018)
+----
+
+- Skip null items in processGridItem (#578)
+- Resize is broken for grids with preventCollision: true, fixes #655 (#656)
+- Minor refactoring
+
+0.16.3 (Jan 31, 2018)
+----
+
+- Fix overriding of `onStart` behaviour (#707, thanks @ersel)
+- Fixed Flow type of WidthProvider
+- Devdep updates
+
+0.16.2 (Dec 17, 2017)
+----
+
+- Fix `onLayoutChange` not firing properly due to regression introduced in 0.16.1
+  - Ref: https://github.com/STRML/react-grid-layout/issues/683
+- Simpler resize corner CSS (thanks @TrySound)
+- Reformat code with Prettier & simplify lint configs (thanks @TrySound)
+
 0.16.1 (Dec 10, 2017)
 ----
 

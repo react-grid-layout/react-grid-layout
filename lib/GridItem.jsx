@@ -433,7 +433,7 @@ export default class GridItem extends React.Component<Props, State> {
 
       const { x, y } = calcXY(newPosition.top, newPosition.left, this.props);
 
-      handler.call(this, this.props.i, x, y, { e, node, newPosition });
+      return handler.call(this, this.props.i, x, y, { e, node, newPosition });
     };
   }
 

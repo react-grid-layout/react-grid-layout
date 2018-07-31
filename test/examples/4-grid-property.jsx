@@ -1,15 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
 class GridPropertyLayout extends React.PureComponent {
-  static propTypes = {
-    onLayoutChange: PropTypes.func.isRequired
-  };
-
   static defaultProps = {
     isDraggable: true,
     isResizable: true,
