@@ -25,7 +25,9 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
 type State = {
   resizing: ?{ width: number, height: number },
   dragging: ?{ top: number, left: number },
-  className: string
+  className: string,
+  horizonNum: number,
+  verticalNum: number
 };
 
 type Props = {
@@ -41,6 +43,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
+  minConstraints?: [number, number],
 
   className: string,
   style?: Object,
@@ -82,6 +85,7 @@ export default class GridItem extends React.Component<Props, State> {
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
     containerPadding: PropTypes.array.isRequired,
+    minConstraints: PropTypes.arrayOf(PropTypes.number),
 
     // These are all in grid units
     x: PropTypes.number.isRequired,
@@ -158,7 +162,9 @@ export default class GridItem extends React.Component<Props, State> {
   state: State = {
     resizing: null,
     dragging: null,
-    className: ""
+    className: "",
+    horizonNum: 0,
+    verticalNum: 0
   };
 
   // Helper for generating column width
@@ -257,19 +263,95 @@ export default class GridItem extends React.Component<Props, State> {
     height: number,
     width: number
   }): { w: number, h: number } {
-    const { margin, maxRows, cols, rowHeight, x, y } = this.props;
+    const {
+      margin,
+      maxRows,
+      cols,
+      rowHeight,
+      x,
+      y,
+      minConstraints
+    } = this.props;
     const colWidth = this.calcColWidth();
+    const [horizon, vertical] =
+      minConstraints || this.calcConstraints().minConstraints;
 
     // width = colWidth * w - (margin * (w - 1))
     // ...
     // w = (width + margin) / (colWidth + margin)
-    let w = Math.round((width + margin[0]) / (colWidth + margin[0]));
-    let h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+    const gridW = width + margin[0];
+    const colW = colWidth + margin[0];
+    let w = Math.round(gridW / colW);
+    const remainderWidth = gridW % colW;
+
+    // 余数大于上一个余数  表示向右拖拽 并且 拖拽大于horizon
+    if (remainderWidth > this.state.horizonNum && remainderWidth > horizon) {
+      w = Math.ceil(gridW / colW);
+    }
+    // 余数小于上一个余数  表示向左拖拽 并且 拖拽大于20
+    if (
+      remainderWidth < this.state.horizonNum &&
+      remainderWidth < colWidth - horizon
+    ) {
+      w = Math.floor(gridW / colW);
+    }
+    // 上一个余数
+    this.setState({
+      horizonNum: remainderWidth
+    });
+
+    const gridH = height + margin[1];
+    const rowH = rowHeight + margin[1];
+    let h = Math.round(gridH / rowH);
+    const remainderHeight = gridH % rowH;
+
+    // 余数大于上一个余数  表示向下拖拽 并且 拖拽大于vertical
+    if (
+      remainderHeight > this.state.verticalNum &&
+      remainderHeight > vertical
+    ) {
+      h = Math.ceil(gridH / rowH);
+    }
+    // 余数小于上一个余数  表示向上拖拽 并且 拖拽大于vertical
+    if (
+      remainderHeight < this.state.verticalNum &&
+      remainderHeight < rowHeight - vertical
+    ) {
+      h = Math.floor(gridH / rowH);
+    }
+    // 上一个余数
+    this.setState({
+      verticalNum: remainderHeight
+    });
 
     // Capping
     w = Math.max(Math.min(w, cols - x), 0);
     h = Math.max(Math.min(h, maxRows - y), 0);
     return { w, h };
+  }
+
+  calcConstraints(): {
+    minConstraints: [number, number],
+    maxConstraints: [number, number]
+  } {
+    const { cols, x, minW, minH, maxW, maxH } = this.props;
+
+    // This is the max possible width - doesn't go to infinity because of the width of the window
+    const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
+
+    // Calculate min/max constraints using our min & maxes
+    const mins = this.calcPosition(0, 0, minW, minH);
+    const maxes = this.calcPosition(0, 0, maxW, maxH);
+    const minConstraints = [mins.width, mins.height];
+    const maxConstraints = [
+      Math.min(maxes.width, maxWidth),
+      Math.min(maxes.height, Infinity)
+    ];
+
+    return {
+      minConstraints,
+      maxConstraints
+    };
   }
 
   /**
@@ -335,25 +417,14 @@ export default class GridItem extends React.Component<Props, State> {
     child: ReactElement<any>,
     position: Position
   ): ReactElement<any> {
-    const { cols, x, minW, minH, maxW, maxH } = this.props;
+    const constraints = this.calcConstraints();
 
-    // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
-
-    // Calculate min/max constraints using our min & maxes
-    const mins = this.calcPosition(0, 0, minW, minH);
-    const maxes = this.calcPosition(0, 0, maxW, maxH);
-    const minConstraints = [mins.width, mins.height];
-    const maxConstraints = [
-      Math.min(maxes.width, maxWidth),
-      Math.min(maxes.height, Infinity)
-    ];
     return (
       <Resizable
         width={position.width}
         height={position.height}
-        minConstraints={minConstraints}
-        maxConstraints={maxConstraints}
+        minConstraints={constraints.minConstraints}
+        maxConstraints={constraints.maxConstraints}
         onResizeStop={this.onResizeHandler("onResizeStop")}
         onResizeStart={this.onResizeHandler("onResizeStart")}
         onResize={this.onResizeHandler("onResize")}

@@ -60,6 +60,7 @@ export type Props = {
   isResizable: boolean,
   preventCollision: boolean,
   useCSSTransforms: boolean,
+  minConstraints?: [number, number],
 
   // Callbacks
   onLayoutChange: Layout => void,
@@ -144,6 +145,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // an item past the barrier. They can push items beyond the barrier, though.
     // Intentionally not documented for this reason.
     maxRows: PropTypes.number,
+    // min constraint when resizing in px
+    minConstraints: PropTypes.arrayOf(PropTypes.number),
 
     //
     // Flags
@@ -532,7 +535,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       containerPadding,
       rowHeight,
       maxRows,
-      useCSSTransforms
+      useCSSTransforms,
+      minConstraints
     } = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
@@ -553,6 +557,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isDraggable={false}
         isResizable={false}
         useCSSTransforms={useCSSTransforms}
+        minConstraints={minConstraints}
       >
         <div />
       </GridItem>
@@ -579,7 +584,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isResizable,
       useCSSTransforms,
       draggableCancel,
-      draggableHandle
+      draggableHandle,
+      minConstraints
     } = this.props;
     const { mounted } = this.state;
 
@@ -621,6 +627,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         maxH={l.maxH}
         maxW={l.maxW}
         static={l.static}
+        minConstraints={minConstraints}
       >
         {child}
       </GridItem>
