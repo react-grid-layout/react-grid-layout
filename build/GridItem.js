@@ -104,7 +104,9 @@ var GridItem = (function(_React$Component) {
       (_this.state = {
         resizing: null,
         dragging: null,
-        className: ""
+        className: "",
+        horizonNum: 0,
+        verticalNum: 0
       }),
       _temp)),
       _possibleConstructorReturn(_this, _ret)
@@ -238,16 +240,47 @@ var GridItem = (function(_React$Component) {
     var gridW = width + margin[0];
     var colW = colWidth + margin[0];
     var w = Math.round(gridW / colW);
-    if (gridW - colW * w >= horizon) {
+    var remainderWidth = gridW % colW;
+
+    // 余数大于上一个余数  表示向右拖拽 并且 拖拽大于horizon
+    if (remainderWidth > this.state.horizonNum && remainderWidth > horizon) {
       w = Math.ceil(gridW / colW);
     }
+    // 余数小于上一个余数  表示向左拖拽 并且 拖拽大于20
+    if (
+      remainderWidth < this.state.horizonNum &&
+      remainderWidth < colWidth - horizon
+    ) {
+      w = Math.floor(gridW / colW);
+    }
+    // 上一个余数
+    this.setState({
+      horizonNum: remainderWidth
+    });
 
     var gridH = height + margin[1];
     var rowH = rowHeight + margin[1];
     var h = Math.round(gridH / rowH);
-    if (gridH - rowH * h >= vertical) {
-      h = Math.ceil(gridW / rowH);
+    var remainderHeight = gridH % rowH;
+
+    // 余数大于上一个余数  表示向下拖拽 并且 拖拽大于vertical
+    if (
+      remainderHeight > this.state.verticalNum &&
+      remainderHeight > vertical
+    ) {
+      h = Math.ceil(gridH / rowH);
     }
+    // 余数小于上一个余数  表示向上拖拽 并且 拖拽大于vertical
+    if (
+      remainderHeight < this.state.verticalNum &&
+      remainderHeight < rowHeight - vertical
+    ) {
+      h = Math.floor(gridH / rowH);
+    }
+    // 上一个余数
+    this.setState({
+      verticalNum: remainderHeight
+    });
 
     // Capping
     w = Math.max(Math.min(w, cols - x), 0);
