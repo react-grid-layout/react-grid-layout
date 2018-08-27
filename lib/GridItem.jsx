@@ -25,7 +25,9 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
 type State = {
   resizing: ?{ width: number, height: number },
   dragging: ?{ top: number, left: number },
-  className: string
+  className: string,
+  horizonNum: number,
+  verticalNum: number
 };
 
 type Props = {
@@ -160,7 +162,9 @@ export default class GridItem extends React.Component<Props, State> {
   state: State = {
     resizing: null,
     dragging: null,
-    className: ""
+    className: "",
+    horizonNum: 0,
+    verticalNum: 0
   };
 
   // Helper for generating column width
@@ -278,16 +282,47 @@ export default class GridItem extends React.Component<Props, State> {
     const gridW = width + margin[0];
     const colW = colWidth + margin[0];
     let w = Math.round(gridW / colW);
-    if (gridW - colW * w >= horizon) {
+    const remainderWidth = gridW % colW;
+
+    // 余数大于上一个余数  表示向右拖拽 并且 拖拽大于horizon
+    if (remainderWidth > this.state.horizonNum && remainderWidth > horizon) {
       w = Math.ceil(gridW / colW);
     }
+    // 余数小于上一个余数  表示向左拖拽 并且 拖拽大于20
+    if (
+      remainderWidth < this.state.horizonNum &&
+      remainderWidth < colWidth - horizon
+    ) {
+      w = Math.floor(gridW / colW);
+    }
+    // 上一个余数
+    this.setState({
+      horizonNum: remainderWidth
+    });
 
     const gridH = height + margin[1];
     const rowH = rowHeight + margin[1];
     let h = Math.round(gridH / rowH);
-    if (gridH - rowH * h >= vertical) {
-      h = Math.ceil(gridW / rowH);
+    const remainderHeight = gridH % rowH;
+
+    // 余数大于上一个余数  表示向下拖拽 并且 拖拽大于vertical
+    if (
+      remainderHeight > this.state.verticalNum &&
+      remainderHeight > vertical
+    ) {
+      h = Math.ceil(gridH / rowH);
     }
+    // 余数小于上一个余数  表示向上拖拽 并且 拖拽大于vertical
+    if (
+      remainderHeight < this.state.verticalNum &&
+      remainderHeight < rowHeight - vertical
+    ) {
+      h = Math.floor(gridH / rowH);
+    }
+    // 上一个余数
+    this.setState({
+      verticalNum: remainderHeight
+    });
 
     // Capping
     w = Math.max(Math.min(w, cols - x), 0);
