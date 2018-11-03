@@ -379,6 +379,7 @@ export default class GridItem extends React.Component<Props, State> {
   onDragHandler(handlerName: string) {
     return (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
       const handler = this.props[handlerName];
+      const { transformDirection } = this.props;
       if (!handler) return;
 
       const newPosition: PartialPosition = { top: 0, left: 0 };
@@ -391,8 +392,17 @@ export default class GridItem extends React.Component<Props, State> {
           if (!offsetParent) return;
           const parentRect = offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.left =
-            clientRect.left - parentRect.left + offsetParent.scrollLeft;
+          if (transformDirection === "rtl") {
+            newPosition.left = -(
+              clientRect.right -
+              parentRect.right -
+              offsetParent.scrollLeft
+            );
+          } else {
+            newPosition.left =
+              clientRect.left - parentRect.left + offsetParent.scrollLeft;
+          }
+
           newPosition.top =
             clientRect.top - parentRect.top + offsetParent.scrollTop;
           this.setState({ dragging: newPosition });
@@ -401,7 +411,9 @@ export default class GridItem extends React.Component<Props, State> {
         case "onDrag":
           if (!this.state.dragging)
             throw new Error("onDrag called before onDragStart.");
-          newPosition.left = this.state.dragging.left + deltaX;
+          newPosition.left =
+            this.state.dragging.left +
+            (transformDirection === "rtl" ? -deltaX : deltaX);
           newPosition.top = this.state.dragging.top + deltaY;
           this.setState({ dragging: newPosition });
           break;
