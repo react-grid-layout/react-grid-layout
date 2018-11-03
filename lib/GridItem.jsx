@@ -41,6 +41,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
+  transformDirection?: string,
 
   className: string,
   style?: Object,
@@ -136,6 +137,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
+    transformDirection: PropTypes.string,
 
     // Others
     className: PropTypes.string,
@@ -282,16 +284,19 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} pos Position object with width, height, left, top.
    * @return {Object}     Style object.
    */
-  createStyle(pos: Position): { [key: string]: ?string } {
+  createStyle(
+    pos: Position,
+    transformDirection: ?string
+  ): { [key: string]: ?string } {
     const { usePercentages, containerWidth, useCSSTransforms } = this.props;
 
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos);
+      style = setTransform(pos, transformDirection);
     } else {
       // top,left (slow)
-      style = setTopLeft(pos);
+      style = setTopLeft(pos, transformDirection);
 
       // This is used for server rendering.
       if (usePercentages) {
@@ -462,7 +467,8 @@ export default class GridItem extends React.Component<Props, State> {
       h,
       isDraggable,
       isResizable,
-      useCSSTransforms
+      useCSSTransforms,
+      transformDirection
     } = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
@@ -486,7 +492,7 @@ export default class GridItem extends React.Component<Props, State> {
       style: {
         ...this.props.style,
         ...child.props.style,
-        ...this.createStyle(pos)
+        ...this.createStyle(pos, transformDirection)
       }
     });
 
