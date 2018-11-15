@@ -26,7 +26,7 @@ install link:
 
 # Build browser module
 dist/%.min.js: $(LIB) $(BIN)
-	@$(BIN)/webpack
+	@$(BIN)/rollup -c
 
 # find/exec is more cross-platform compatible than `rename`
 build-js:
