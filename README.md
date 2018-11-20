@@ -62,6 +62,7 @@ RGL is React-only and does not require jQuery.
 - [Reflect](https://reflect.io)
 - [ez-Dashing](https://github.com/ylacaute/ez-Dashing)
 - [Kibana](https://www.elastic.co/products/kibana)
+- [Chronograf](https://github.com/influxdata/chronograf)
 
 *Know of others? Create a PR to let me know!*
 
