@@ -41,7 +41,6 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
-  hideOnDrag: boolean,
 
   className: string,
   style?: Object,
@@ -153,8 +152,7 @@ export default class GridItem extends React.Component<Props, State> {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity,
-    hideOnDrag: false
+    maxW: Infinity
   };
 
   state: State = {
@@ -464,8 +462,7 @@ export default class GridItem extends React.Component<Props, State> {
       h,
       isDraggable,
       isResizable,
-      useCSSTransforms,
-      hideOnDrag
+      useCSSTransforms
     } = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);

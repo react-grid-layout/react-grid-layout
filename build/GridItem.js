@@ -222,6 +222,7 @@ var GridItem = function (_React$Component) {
     return _react2.default.createElement(
       _reactDraggable.DraggableCore,
       {
+        disabled: this.state.dragging && this.props.hideOnDrag ? true : false,
         onStart: this.onDragHandler("onDragStart"),
         onDrag: this.onDragHandler("onDrag"),
         onStop: this.onDragHandler("onDragStop"),
@@ -401,6 +402,9 @@ var GridItem = function (_React$Component) {
     var pos = this.calcPosition(x, y, w, h, this.state);
     var child = _react2.default.Children.only(this.props.children);
 
+    // Add style to hide child on drag
+    var hide = this.state.dragging && hideOnDrag ? { display: 'none' } : {};
+
     // Create the child element. We clone the existing element but modify its className and style.
     var newChild = _react2.default.cloneElement(child, {
       className: (0, _classnames2.default)("react-grid-item", child.props.className, this.props.className, {
@@ -411,7 +415,7 @@ var GridItem = function (_React$Component) {
         cssTransforms: useCSSTransforms
       }),
       // We can set the width and height on the child, but unfortunately we can't set the position.
-      style: _extends({}, this.props.style, child.props.style, this.createStyle(pos))
+      style: _extends({}, hide, this.props.style, child.props.style, this.createStyle(pos))
     });
 
     // Resizable support. This is usually on but the user can toggle it off.

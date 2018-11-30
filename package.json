@@ -15,7 +15,6 @@
     "flow": "flow",
     "precommit": "make build",
     "precommit-bak": "lint-staged && make lint"
-
   },
   "repository": {
     "type": "git",
