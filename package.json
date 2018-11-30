@@ -13,7 +13,8 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "flow": "flow",
-    "precommit": "lint-staged && make lint"
+    "precommit": "lint-staged && make lint",
+    "postinstall": "make build"
   },
   "repository": {
     "type": "git",
