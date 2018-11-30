@@ -13,7 +13,9 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "flow": "flow",
-    "precommit": "lint-staged && make lint"
+    "precommit": "make build",
+    "precommit-bak": "lint-staged && make lint"
+
   },
   "repository": {
     "type": "git",

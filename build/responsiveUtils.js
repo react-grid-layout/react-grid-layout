@@ -32,10 +32,13 @@ function getBreakpointFromWidth(breakpoints, width) {
  * @return {Number}            Number of cols.
  */
 
-
 function getColsFromBreakpoint(breakpoint, cols) {
   if (!cols[breakpoint]) {
-    throw new Error("ResponsiveReactGridLayout: `cols` entry for breakpoint " + breakpoint + " is missing!");
+    throw new Error(
+      "ResponsiveReactGridLayout: `cols` entry for breakpoint " +
+        breakpoint +
+        " is missing!"
+    );
   }
   return cols[breakpoint];
 }
@@ -54,13 +57,22 @@ function getColsFromBreakpoint(breakpoint, cols) {
  *   vertically.
  * @return {Array}             New layout.
  */
-function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBreakpoint, cols, compactType) {
+function findOrGenerateResponsiveLayout(
+  layouts,
+  breakpoints,
+  breakpoint,
+  lastBreakpoint,
+  cols,
+  compactType
+) {
   // If it already exists, just return it.
   if (layouts[breakpoint]) return (0, _utils.cloneLayout)(layouts[breakpoint]);
   // Find or generate the next layout
   var layout = layouts[lastBreakpoint];
   var breakpointsSorted = sortBreakpoints(breakpoints);
-  var breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
+  var breakpointsAbove = breakpointsSorted.slice(
+    breakpointsSorted.indexOf(breakpoint)
+  );
   for (var i = 0, len = breakpointsAbove.length; i < len; i++) {
     var b = breakpointsAbove[i];
     if (layouts[b]) {
@@ -69,7 +81,11 @@ function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBr
     }
   }
   layout = (0, _utils.cloneLayout)(layout || []); // clone layout so we don't modify existing items
-  return (0, _utils.compact)((0, _utils.correctBounds)(layout, { cols: cols }), compactType, cols);
+  return (0, _utils.compact)(
+    (0, _utils.correctBounds)(layout, { cols: cols }),
+    compactType,
+    cols
+  );
 }
 
 /**
@@ -81,7 +97,7 @@ function findOrGenerateResponsiveLayout(layouts, breakpoints, breakpoint, lastBr
  */
 function sortBreakpoints(breakpoints) {
   var keys = Object.keys(breakpoints);
-  return keys.sort(function (a, b) {
+  return keys.sort(function(a, b) {
     return breakpoints[a] - breakpoints[b];
   });
 }
