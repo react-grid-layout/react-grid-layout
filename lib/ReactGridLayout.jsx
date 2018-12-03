@@ -614,7 +614,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           i={gap.i}
           containerWidth={width}
           className="react-grid-gap"
-          style={{display: (activeDrag) ? 'none' : null, height: 'inherit'}}
+          style={{display: (activeDrag) ? 'none' : null }}
           cols={cols}
           margin={margin}
           containerPadding={containerPadding || margin}
