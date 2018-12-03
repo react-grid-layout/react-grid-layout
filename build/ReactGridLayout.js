@@ -413,7 +413,7 @@ var ReactGridLayout = function (_React$Component) {
           i: gap.i,
           containerWidth: width,
           className: "react-grid-gap",
-          style: { display: activeDrag ? 'none' : null, height: 'inherit' },
+          style: { display: activeDrag ? 'none' : null },
           cols: cols,
           margin: margin,
           containerPadding: containerPadding || margin,
