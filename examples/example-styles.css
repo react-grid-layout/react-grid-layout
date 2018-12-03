@@ -23,7 +23,7 @@ body {
 .react-grid-item {
   box-sizing: border-box;
 }
-.react-grid-item:not(.react-grid-placeholder) {
+.react-grid-item:not(.react-grid-placeholder):not(.react-grid-gap) {
   background: #ccc;
   border: 1px solid black;
 }

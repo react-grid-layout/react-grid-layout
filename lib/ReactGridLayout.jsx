@@ -603,7 +603,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       gapRenderFunction,
     } = this.props;
     const { layout, activeDrag } = this.state;
-    const addGaps = getOnlyGaps(layout, activeDrag)
+    const addGaps = getOnlyGaps(layout, activeDrag);
     return addGaps.map((gap) => {
         return <GridItem
           key={gap.i}
@@ -613,7 +613,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           y={gap.y}
           i={gap.i}
           containerWidth={width}
-          style={{display: (activeDrag) ? 'none' : null}}
+          className="react-grid-gap"
+          style={{display: (activeDrag) ? 'none' : null, height: 'inherit'}}
           cols={cols}
           margin={margin}
           containerPadding={containerPadding || margin}
@@ -623,7 +624,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           isResizable={false}
           useCSSTransforms={useCSSTransforms}
         >
-          {gapRenderFunction(gap)}
+        <div key={gap.i}>
+            {gapRenderFunction(gap)}
+        </div>
         </GridItem>
     });
   }

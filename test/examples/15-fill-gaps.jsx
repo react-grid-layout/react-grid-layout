@@ -1,6 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class FillGapsLayout extends React.Component {
@@ -93,7 +94,9 @@ class FillGapsLayout extends React.Component {
           fillGaps={true}
           lastRowGap={true}
           gapRenderFunction={(gap) => {
-              return <div style={{backgroundColor: 'blue'}}>{gap.key}</div>
+              return (
+                  <div style={{ height: 'inherit', backgroundColor: 'green' }}>{gap.i}</div>
+              );
           }}
           // WidthProvider option
           measureBeforeMount={false}

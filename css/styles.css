@@ -19,7 +19,10 @@
   z-index: 3;
   will-change: transform;
 }
-
+.react-grid-item.react-grid-gap{
+    width: inherit;
+    height: inherit;
+}
 .react-grid-item.react-grid-placeholder {
   background: red;
   opacity: 0.2;
