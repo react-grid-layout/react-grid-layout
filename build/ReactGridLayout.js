@@ -412,7 +412,8 @@ var ReactGridLayout = function (_React$Component) {
           y: gap.y,
           i: gap.i,
           containerWidth: width,
-          style: { display: activeDrag ? 'none' : null },
+          className: "react-grid-gap",
+          style: { display: activeDrag ? 'none' : null, height: 'inherit' },
           cols: cols,
           margin: margin,
           containerPadding: containerPadding || margin,
@@ -422,7 +423,11 @@ var ReactGridLayout = function (_React$Component) {
           isResizable: false,
           useCSSTransforms: useCSSTransforms
         },
-        gapRenderFunction(gap)
+        _react2.default.createElement(
+          "div",
+          { key: gap.i },
+          gapRenderFunction(gap)
+        )
       );
     });
   };
