@@ -222,7 +222,6 @@ var GridItem = function (_React$Component) {
     return _react2.default.createElement(
       _reactDraggable.DraggableCore,
       {
-        disabled: this.state.dragging && this.props.hideOnDrag ? true : false,
         onStart: this.onDragHandler("onDragStart"),
         onDrag: this.onDragHandler("onDrag"),
         onStop: this.onDragHandler("onDragStop"),
@@ -395,15 +394,11 @@ var GridItem = function (_React$Component) {
         h = _props8.h,
         isDraggable = _props8.isDraggable,
         isResizable = _props8.isResizable,
-        useCSSTransforms = _props8.useCSSTransforms,
-        hideOnDrag = _props8.hideOnDrag;
+        useCSSTransforms = _props8.useCSSTransforms;
 
 
     var pos = this.calcPosition(x, y, w, h, this.state);
     var child = _react2.default.Children.only(this.props.children);
-
-    // Add style to hide child on drag
-    var hide = this.state.dragging && hideOnDrag ? { display: 'none' } : {};
 
     // Create the child element. We clone the existing element but modify its className and style.
     var newChild = _react2.default.cloneElement(child, {
@@ -415,7 +410,7 @@ var GridItem = function (_React$Component) {
         cssTransforms: useCSSTransforms
       }),
       // We can set the width and height on the child, but unfortunately we can't set the position.
-      style: _extends({}, hide, this.props.style, child.props.style, this.createStyle(pos))
+      style: _extends({}, this.props.style, child.props.style, this.createStyle(pos))
     });
 
     // Resizable support. This is usually on but the user can toggle it off.
@@ -506,7 +501,6 @@ GridItem.defaultProps = {
   minH: 1,
   minW: 1,
   maxH: Infinity,
-  maxW: Infinity,
-  hideOnDrag: false
+  maxW: Infinity
 };
 exports.default = GridItem;

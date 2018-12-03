@@ -11,7 +11,7 @@ import {
   compact,
   getLayoutItem,
   moveElement,
-  fillGaps,
+  fillInGaps,
   filterOutGaps,
   getOnlyGaps,
   synchronizeLayoutWithChildren,
@@ -64,7 +64,10 @@ export type Props = {
   preventCollision: boolean,
   useCSSTransforms: boolean,
 
-  gapRenderFunction: Function,
+  // Gap props
+  fillGaps: boolean,                // fill empty spaces in grid with gapRenderFunction
+  lastRowGap: boolean,              // should there be a last row "gap"
+  gapRenderFunction: Function,      // the render function for the gap element
 
   // Callbacks
   onLayoutChange: Layout => void,
@@ -150,6 +153,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Intentionally not documented for this reason.
     maxRows: PropTypes.number,
 
+    // Gap props
+    fillGaps: PropTypes.bool,           // fill empty spaces in grid with gapRenderFunction
+    lastRowGap: PropTypes.bool,         // should there be a last row "gap"
+    gapRenderFunction: PropTypes.func,  // the render function for the gap element
+
     //
     // Flags
     //
@@ -159,8 +167,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     preventCollision: PropTypes.bool,
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool,
-
-    gapRenderFunction: PropTypes.func,
 
     //
     // Callbacks
@@ -216,6 +222,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     containerPadding: null,
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
+
+    fillGaps: false,           // fill empty spaces in grid with gapRenderFunction
+    lastRowGap: false,            // should there be a last row "gap"
+    gapRenderFunction: noop,   // the render function for the gap element
+
     layout: [],
     margin: [10, 10],
     isDraggable: true,
@@ -235,13 +246,19 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   state: State = {
     activeDrag: null,
-    layout: fillGaps(synchronizeLayoutWithChildren(
+    layout: (this.props.fillGaps) ? fillInGaps(synchronizeLayoutWithChildren(
       this.props.layout,
       this.props.children,
       this.props.cols,
       // Legacy support for verticalCompact: false
       this.compactType()
-    ), this.props.cols),
+  ), this.props.cols, this.props.lastRowGap) : synchronizeLayoutWithChildren(
+      this.props.layout,
+      this.props.children,
+      this.props.cols,
+      // Legacy support for verticalCompact: false
+      this.compactType()
+    ),
     mounted: false,
     oldDragItem: null,
     oldLayout: null,
@@ -292,7 +309,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         this.compactType(nextProps)
       );
       const oldLayout = this.state.layout;
-      this.setState({ layout: fillGaps(filterOutGaps(newLayout, true), nextProps.cols) });
+      // When we get new griditems, we want to make sure there are no gaps stored in it
+      const tempLayout = (nextProps.fillGaps) ? fillInGaps(newLayout, nextProps.cols, nextProps.lastRowGap) : newLayout
+      this.setState({ layout: tempLayout });
       this.onLayoutMaybeChanged(newLayout, oldLayout);
     }
   }
@@ -352,7 +371,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onDrag(i: string, x: number, y: number, { e, node }: GridDragEvent) {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols } = this.props;
+    const { cols, fillGaps } = this.props;
     var l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -367,7 +386,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     };
 
     // Move the element to the dragged location.
-    const dragging = true;
     const isUserAction = true;
     layout = moveElement(
       layout,
@@ -378,10 +396,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       this.props.preventCollision,
       this.compactType(),
       cols,
-      dragging
     );
-    const tempLayout = filterOutGaps(layout, true);
-    // const tempLayout = layout.filter((l) => l.addPlaceholder || l.hideOnDrag);
+    // if you are filling gaps and want to hide them on drag, filter gaps out
+    const tempLayout = (fillGaps) ? filterOutGaps(layout, true) : layout;
     this.props.onDrag(tempLayout, oldDragItem, l, placeholder, e, node);
     this.setState({
       layout: compact(tempLayout, this.compactType(), cols),
@@ -400,11 +417,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onDragStop(i: string, x: number, y: number, { e, node }: GridDragEvent) {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, preventCollision } = this.props;
+    const { cols, preventCollision, fillGaps, lastRowGap } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
-    const dragging = false;
     // Move the element here
     const isUserAction = true;
     layout = moveElement(
@@ -415,18 +431,17 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isUserAction,
       preventCollision,
       this.compactType(),
-      cols,
-      dragging
+      cols
     );
 
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
-    const newLayout = compact(layout, this.compactType(), cols);
+    const newLayout = (fillGaps) ?  fillInGaps(layout, cols, lastRowGap) : layout;
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
-      layout: fillGaps(newLayout, cols, true),
+      layout: compact(newLayout, this.compactType(), cols),
       oldDragItem: null,
       oldLayout: null
     });
@@ -456,7 +471,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
     const { layout, oldResizeItem } = this.state;
-    const { cols, preventCollision } = this.props;
+    const { cols, preventCollision, fillGaps } = this.props;
     const l: ?LayoutItem = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -501,7 +516,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     };
 
     this.props.onResize(layout, oldResizeItem, l, placeholder, e, node);
-    const tempLayout = filterOutGaps(layout, true);
+
+    const tempLayout = (fillGaps) ? filterOutGaps(layout, true) : layout;
     // Re-compact the layout and set the drag placeholder.
     this.setState({
       layout: compact(tempLayout, this.compactType(), cols),
@@ -511,17 +527,18 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onResizeStop(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
     const { layout, oldResizeItem } = this.state;
-    const { cols } = this.props;
+    const { cols, fillGaps, lastRowGap } = this.props;
     var l = getLayoutItem(layout, i);
 
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     // Set state
-    const newLayout = compact(layout, this.compactType(), cols);
+
+    const newLayout = (fillGaps) ?  fillInGaps(layout, cols, lastRowGap) : layout;
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
-      layout: fillGaps(newLayout, cols, true),
+      layout: compact(newLayout, this.compactType(), cols),
       oldResizeItem: null,
       oldLayout: null
     });
@@ -571,10 +588,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   /**
-   * Create an add placeholder object.
+   * Fill all gaps with gapRenderFunction output
    * @return {Element} Placeholder div.
    */
-  addPlaceholders(): ?ReactElement<any> {
+  addGaps(): ?ReactElement<any> {
     const {
       width,
       cols,
@@ -586,8 +603,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       gapRenderFunction,
     } = this.props;
     const { layout, activeDrag } = this.state;
-    const addPlaceholders = getOnlyGaps(layout, activeDrag)
-    return addPlaceholders.map((gap) => {
+    const addGaps = getOnlyGaps(layout, activeDrag)
+    return addGaps.map((gap) => {
         return <GridItem
           key={gap.i}
           w={gap.w}
@@ -595,9 +612,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           x={gap.x}
           y={gap.y}
           i={gap.i}
-          style={{ backgroundColor: 'red', width: '100%', height: '100%' }}
-          // className="react-grid-placeholder"
           containerWidth={width}
+          style={{display: (activeDrag) ? 'none' : null}}
           cols={cols}
           margin={margin}
           containerPadding={containerPadding || margin}
@@ -621,9 +637,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (!child || !child.key) return;
     const l = getLayoutItem(this.state.layout, String(child.key));
     if (!l) return null;
-    // if hideOnDrag don't render
-    const { activeDrag } = this.state;
-    if (activeDrag && l.hideOnDrag) return null;
     const {
       width,
       cols,
@@ -685,7 +698,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   render() {
-    const { className, style } = this.props;
+    const { className, style, fillGaps } = this.props;
 
     const mergedClassName = classNames("react-grid-layout", className);
     const mergedStyle = {
@@ -699,7 +712,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         this.processGridItem(child)
       )}
       {this.placeholder()}
-      {this.addPlaceholders(this.props.children)}
+      {fillGaps && this.addGaps(this.props.children)}
       </div>
     );
   }

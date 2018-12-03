@@ -27,6 +27,9 @@ exports.sortLayoutItemsByRowCol = sortLayoutItemsByRowCol;
 exports.sortLayoutItemsByColRow = sortLayoutItemsByColRow;
 exports.synchronizeLayoutWithChildren = synchronizeLayoutWithChildren;
 exports.validateLayout = validateLayout;
+exports.filterOutGaps = filterOutGaps;
+exports.getOnlyGaps = getOnlyGaps;
+exports.fillGaps = fillGaps;
 exports.autoBindHandlers = autoBindHandlers;
 
 var _lodash = require("lodash.isequal");
@@ -83,7 +86,9 @@ function cloneLayoutItem(layoutItem) {
     static: Boolean(layoutItem.static),
     // These can be null
     isDraggable: layoutItem.isDraggable,
-    isResizable: layoutItem.isResizable
+    isResizable: layoutItem.isResizable,
+    lastRow: layoutItem.lastRow,
+    hideOnDrag: layoutItem.hideOnDrag
   };
 }
 
@@ -120,7 +125,7 @@ function collides(l1, l2) {
  *   vertically.
  * @return {Array}       Compacted Layout.
  */
-function compact(layout, compactType, cols) {
+function compact(layout, compactType, cols, dragging) {
   // Statics go in the compareWith array right away so items flow around them.
   var compareWith = getStatics(layout);
   // We go through the items by row and column.
@@ -299,7 +304,7 @@ function getStatics(layout) {
  * @param  {Number}     [x]               X position in grid units.
  * @param  {Number}     [y]               Y position in grid units.
  */
-function moveElement(layout, l, x, y, isUserAction, preventCollision, compactType, cols) {
+function moveElement(layout, l, x, y, isUserAction, preventCollision, compactType, cols, dragging) {
   if (l.static) return layout;
 
   // Short-circuit if nothing to do.
@@ -318,10 +323,13 @@ function moveElement(layout, l, x, y, isUserAction, preventCollision, compactTyp
   // When doing this comparison, we have to sort the items we compare with
   // to ensure, in the case of multiple collisions, that we're getting the
   // nearest collision.
-  var sorted = sortLayoutItems(layout, compactType);
+  var sorted = sortLayoutItems(layout, compactType).filter(function (item) {
+    return dragging && !item.hideOnDrag;
+  });
   var movingUp = compactType === "vertical" && typeof y === 'number' ? oldY >= y : compactType === "horizontal" && typeof x === 'number' ? oldX >= x : false;
   if (movingUp) sorted = sorted.reverse();
   var collisions = getAllCollisions(sorted, l);
+  // const collisions = getAllCollisions(sorted, l).filter((item) => dragging && !item.hideOnDrag);
 
   // There was a collision; abort
   if (preventCollision && collisions.length) {
@@ -337,6 +345,8 @@ function moveElement(layout, l, x, y, isUserAction, preventCollision, compactTyp
     var collision = collisions[_i8];
     log("Resolving collision between " + l.i + " at [" + l.x + "," + l.y + "] and " + collision.i + " at [" + collision.x + "," + collision.y + "]");
 
+    // Handle hideOnDrag
+    if (collision.hideOnDrag && dragging) continue;
     // Short circuit so we can't infinite loop
     if (collision.moved) continue;
 
@@ -545,6 +555,111 @@ function validateLayout(layout) {
       throw new Error("ReactGridLayout: " + contextName + "[" + _i9 + "].static must be a boolean!");
     }
   }
+}
+function filterOutGaps(arr) {
+  var lastRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (lastRow) return arr.filter(function (item) {
+    return !item.i.includes('gap') || item.lastRow;
+  });
+  return arr.filter(function (item) {
+    return !item.i.includes('gap') || !item.lastRow;
+  });
+}
+function getOnlyGaps(arr) {
+  var lastRowOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (lastRowOnly) return arr.filter(function (item) {
+    return item.lastRow;
+  });
+  return arr.filter(function (item) {
+    return item.i.includes('gap') || item.lastRow;
+  });
+}
+function fillGaps(arr, columnCount, noLastRow) {
+  var rows = {};
+  var maxY = 0;
+  var y = void 0;
+  arr.forEach(function (config) {
+    for (_config = config, y = _config.y, _config; y < config.y + config.h; y++) {
+      var _config;
+
+      // eslint-disable-line no-plusplus
+      if (rows[y]) rows[y].push(config);else rows[y] = [config];
+    }
+    if (maxY < y) maxY = y;
+  });
+  var emptySpaces = [];
+  var emptyRows = 0;
+  var gapNumber = 0;
+  for (y = 0; y < maxY; y++) {
+    // eslint-disable-line no-plusplus
+    if (rows[y]) {
+      var _w = 0;
+
+      var _loop = function _loop(_x4) {
+        // eslint-disable-line no-plusplus
+        if (rows[y].find(function (config) {
+          return config.x <= _x4 && config.x + config.w > _x4;
+        })) {
+          // if a card fills the area
+          if (_w > 0) {
+            emptySpaces.push({
+              x: _x4 - _w,
+              y: y - emptyRows,
+              w: _w,
+              h: 1,
+              i: "gap-" + gapNumber,
+              addPlaceholder: true,
+              isDraggable: false,
+              isResizable: false
+            });
+            gapNumber++;
+            _w = 0;
+          }
+        } else {
+          // no card fills the area
+          _w++; // eslint-disable-line no-plusplus
+        }
+      };
+
+      for (var _x4 = 0; _x4 < columnCount; _x4++) {
+        _loop(_x4);
+      }
+      if (_w > 0) {
+        emptySpaces.push({
+          x: columnCount - _w,
+          y: y - emptyRows,
+          w: _w,
+          h: 1,
+          i: "gap-" + gapNumber,
+          addPlaceholder: true,
+          placeholder: true,
+          isDraggable: false,
+          isResizable: false
+        });
+        gapNumber++;
+      }
+    } else {
+      emptyRows--; // eslint-disable-line no-plusplus
+    }
+  }
+  var maxYIndex = arr.length > 0 ? Math.max.apply(Math, arr.map(function (o) {
+    return o.y;
+  })) + 1 : 0;
+
+  !noLastRow && emptySpaces.push({
+    w: columnCount,
+    x: 0,
+    y: maxYIndex,
+    h: 1,
+    i: 'last-row',
+    addPlaceholder: true,
+    lastRow: true,
+    isDraggable: false,
+    isResizable: false
+  });
+  return [].concat(arr, emptySpaces);
 }
 
 // Flow can't really figure this out, so we just use Object
