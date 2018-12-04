@@ -152,7 +152,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       !isEqual(nextProps.cols, this.props.cols)
     ) {
       this.onWidthChange(nextProps);
-    } else if (!isEqual(nextProps.layouts, this.props.layouts)) {
+    } else if (!isEqual(nextProps.layouts, this.props.layouts) || !isEqual(nextProps.children, this.props.children)) {
       // Allow parent to set layouts directly.
       const { breakpoint, cols } = this.state;
       // Since we're setting an entirely new layout object, we must generate a new responsive layout

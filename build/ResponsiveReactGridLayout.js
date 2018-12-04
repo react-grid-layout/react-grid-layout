@@ -87,7 +87,7 @@ var ResponsiveReactGridLayout = function (_React$Component) {
     // Allow parent to set width or breakpoint directly.
     if (nextProps.width != this.props.width || nextProps.breakpoint !== this.props.breakpoint || !(0, _lodash2.default)(nextProps.breakpoints, this.props.breakpoints) || !(0, _lodash2.default)(nextProps.cols, this.props.cols)) {
       this.onWidthChange(nextProps);
-    } else if (!(0, _lodash2.default)(nextProps.layouts, this.props.layouts)) {
+    } else if (!(0, _lodash2.default)(nextProps.layouts, this.props.layouts) || !(0, _lodash2.default)(nextProps.children, this.props.children)) {
       // Allow parent to set layouts directly.
       var _state = this.state,
           _breakpoint = _state.breakpoint,
