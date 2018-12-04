@@ -3,7 +3,6 @@
   transition: height 200ms ease;
 }
 .react-grid-item {
-  z-index: 1;
   transition: all 200ms ease;
   transition-property: left, top;
 }
@@ -19,9 +18,6 @@
   transition: none;
   z-index: 3;
   will-change: transform;
-}
-.react-grid-gap {
-    z-index: 0;
 }
 .react-grid-item.react-grid-gap{
     width: inherit;

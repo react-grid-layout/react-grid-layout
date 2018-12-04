@@ -83,7 +83,6 @@ var ResponsiveReactGridLayout = function (_React$Component) {
   };
 
   ResponsiveReactGridLayout.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-    console.log('In responsive!!!');
     // Allow parent to set width or breakpoint directly.
     if (nextProps.width != this.props.width || nextProps.breakpoint !== this.props.breakpoint || !(0, _lodash2.default)(nextProps.breakpoints, this.props.breakpoints) || !(0, _lodash2.default)(nextProps.cols, this.props.cols)) {
       this.onWidthChange(nextProps);
