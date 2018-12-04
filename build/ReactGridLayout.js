@@ -222,7 +222,8 @@ var ReactGridLayout = function (_React$Component) {
   ReactGridLayout.prototype.onLayoutMaybeChanged = function onLayoutMaybeChanged(newLayout, oldLayout) {
     if (!oldLayout) oldLayout = this.state.layout;
     if (!(0, _lodash2.default)(oldLayout, newLayout)) {
-      this.props.onLayoutChange(newLayout);
+      var _layout = this.props.fillGaps ? (0, _utils.filterOutGaps)(newLayout) : newLayout;
+      this.props.onLayoutChange(_layout);
     }
   };
 
