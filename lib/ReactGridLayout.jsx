@@ -455,7 +455,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const previousLayout = this.props.fillGaps ? filterOutGaps(oldLayout) : oldLayout;
     const nextLayout = this.props.fillGaps ? filterOutGaps(newLayout) : newLayout
     if (!isEqual(previousLayout, nextLayout)) {
-        console.log('layout changes')
       this.props.onLayoutChange(nextLayout);
     }
   }

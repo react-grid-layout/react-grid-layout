@@ -67,7 +67,6 @@ var ReactGridLayout = function (_React$Component) {
     var newLayoutBase = void 0;
     // Legacy support for compactType
     // Allow parent to set layout directly.
-    console.log('REACT GRID LAYOUT', nextProps.layout, this.props.layout);
     if (!(0, _lodash2.default)(nextProps.layout, this.props.layout) || nextProps.compactType !== this.props.compactType) {
       newLayoutBase = nextProps.layout;
     } else if (!(0, _utils.childrenEqual)(this.props.children, nextProps.children)) {
@@ -206,13 +205,14 @@ var ReactGridLayout = function (_React$Component) {
 
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
-    // Set state
-    var newLayout = fillGaps ? (0, _utils.fillInGaps)(layout, cols, lastRowGap) : layout;
+    // Set state    compact(newLayout, this.compactType(), cols)
+    var compactedLayout = (0, _utils.compact)(layout, this.compactType(), cols);
+    var newLayout = fillGaps ? (0, _utils.fillInGaps)(compactedLayout, cols, lastRowGap) : compactedLayout;
     var oldLayout = this.state.oldLayout;
 
     this.setState({
       activeDrag: null,
-      layout: (0, _utils.compact)(newLayout, this.compactType(), cols),
+      layout: newLayout,
       oldDragItem: null,
       oldLayout: null
     });
@@ -222,9 +222,11 @@ var ReactGridLayout = function (_React$Component) {
 
   ReactGridLayout.prototype.onLayoutMaybeChanged = function onLayoutMaybeChanged(newLayout, oldLayout) {
     if (!oldLayout) oldLayout = this.state.layout;
-    if (!(0, _lodash2.default)(oldLayout, newLayout)) {
-      var _layout = this.props.fillGaps ? (0, _utils.filterOutGaps)(newLayout) : newLayout;
-      this.props.onLayoutChange(_layout);
+    var previousLayout = this.props.fillGaps ? (0, _utils.filterOutGaps)(oldLayout) : oldLayout;
+    var nextLayout = this.props.fillGaps ? (0, _utils.filterOutGaps)(newLayout) : newLayout;
+    if (!(0, _lodash2.default)(previousLayout, nextLayout)) {
+      console.log('layout changes');
+      this.props.onLayoutChange(nextLayout);
     }
   };
 
@@ -324,13 +326,13 @@ var ReactGridLayout = function (_React$Component) {
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     // Set state
-
-    var newLayout = fillGaps ? (0, _utils.fillInGaps)(layout, cols, lastRowGap) : layout;
+    var compactedLayout = (0, _utils.compact)(layout, this.compactType(), cols);
+    var newLayout = fillGaps ? (0, _utils.fillInGaps)(compactedLayout, cols, lastRowGap) : compactedLayout;
     var oldLayout = this.state.oldLayout;
 
     this.setState({
       activeDrag: null,
-      layout: (0, _utils.compact)(newLayout, this.compactType(), cols),
+      layout: newLayout,
       oldResizeItem: null,
       oldLayout: null
     });
