@@ -554,18 +554,18 @@ function validateLayout(layout) {
 /**
  * Filters out the gap items
  *
- * @param  {Array}  layout        Array of layout items.
- * @param  {Boolean} lastRow      Do you want to ignore the lastRow when filtering
- * @throw  {Array}                The gap-less layout
+ * @param  {Array}  layout              Array of layout items.
+ * @param  {Boolean} ignoreLastRow      Do you want to ignore the lastRow when filtering
+ * @throw  {Array}                      The gap-less layout
  */
 function filterOutGaps(layout) {
-  var lastRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var ignoreLastRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-  if (lastRow) return layout.filter(function (item) {
+  if (ignoreLastRow) return layout.filter(function (item) {
     return !item.gap || item.lastRow;
   });
   return layout.filter(function (item) {
-    return !item.gap || !item.lastRow;
+    return !item.gap || !item.gap && !item.lastRow;
   });
 }
 
@@ -583,7 +583,7 @@ function getOnlyGaps(layout) {
     return item.lastRow;
   });
   return layout.filter(function (item) {
-    return item.gap || item.lastRow;
+    return item.gap || item.gap && item.lastRow;
   });
 }
 

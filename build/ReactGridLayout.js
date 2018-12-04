@@ -67,6 +67,7 @@ var ReactGridLayout = function (_React$Component) {
     var newLayoutBase = void 0;
     // Legacy support for compactType
     // Allow parent to set layout directly.
+    console.log('REACT GRID LAYOUT', nextProps.layout, this.props.layout);
     if (!(0, _lodash2.default)(nextProps.layout, this.props.layout) || nextProps.compactType !== this.props.compactType) {
       newLayoutBase = nextProps.layout;
     } else if (!(0, _utils.childrenEqual)(this.props.children, nextProps.children)) {
@@ -83,7 +84,7 @@ var ReactGridLayout = function (_React$Component) {
       // When we get new griditems, we want to make sure there are no gaps stored in it
       var tempLayout = nextProps.fillGaps ? (0, _utils.fillInGaps)(newLayout, nextProps.cols, nextProps.lastRowGap) : newLayout;
       this.setState({ layout: tempLayout });
-      this.onLayoutMaybeChanged(newLayout, _oldLayout);
+      this.onLayoutMaybeChanged(tempLayout, _oldLayout);
     }
   };
 

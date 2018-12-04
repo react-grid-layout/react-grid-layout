@@ -288,6 +288,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     let newLayoutBase;
     // Legacy support for compactType
     // Allow parent to set layout directly.
+    console.log('REACT GRID LAYOUT', nextProps.layout, this.props.layout)
     if (
       !isEqual(nextProps.layout, this.props.layout) ||
       nextProps.compactType !== this.props.compactType
@@ -312,7 +313,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       // When we get new griditems, we want to make sure there are no gaps stored in it
       const tempLayout = (nextProps.fillGaps) ? fillInGaps(newLayout, nextProps.cols, nextProps.lastRowGap) : newLayout
       this.setState({ layout: tempLayout });
-      this.onLayoutMaybeChanged(newLayout, oldLayout);
+      this.onLayoutMaybeChanged(tempLayout, oldLayout);
     }
   }
 
