@@ -286,6 +286,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     let newLayoutBase;
+    console.log('In grid layout!!!');
     // Legacy support for compactType
     // Allow parent to set layout directly.
     if (

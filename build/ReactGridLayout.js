@@ -65,6 +65,7 @@ var ReactGridLayout = function (_React$Component) {
 
   ReactGridLayout.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
     var newLayoutBase = void 0;
+    console.log('In grid layout!!!');
     // Legacy support for compactType
     // Allow parent to set layout directly.
     if (!(0, _lodash2.default)(nextProps.layout, this.props.layout) || nextProps.compactType !== this.props.compactType) {
@@ -225,7 +226,6 @@ var ReactGridLayout = function (_React$Component) {
     var previousLayout = this.props.fillGaps ? (0, _utils.filterOutGaps)(oldLayout) : oldLayout;
     var nextLayout = this.props.fillGaps ? (0, _utils.filterOutGaps)(newLayout) : newLayout;
     if (!(0, _lodash2.default)(previousLayout, nextLayout)) {
-      console.log('layout changes');
       this.props.onLayoutChange(nextLayout);
     }
   };

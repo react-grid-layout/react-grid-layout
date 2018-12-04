@@ -92,9 +92,9 @@ var ResponsiveReactGridLayout = function (_React$Component) {
           _breakpoint = _state.breakpoint,
           _cols = _state.cols;
 
+      console.log('In responsive!!!');
       // Since we're setting an entirely new layout object, we must generate a new responsive layout
       // if one does not exist.
-
       var newLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(nextProps.layouts, nextProps.breakpoints, _breakpoint, _breakpoint, _cols, nextProps.compactType);
       this.setState({ layout: newLayout });
     }
