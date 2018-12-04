@@ -288,7 +288,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     let newLayoutBase;
     // Legacy support for compactType
     // Allow parent to set layout directly.
-    console.log('REACT GRID LAYOUT', nextProps.layout, this.props.layout)
     if (
       !isEqual(nextProps.layout, this.props.layout) ||
       nextProps.compactType !== this.props.compactType
@@ -437,12 +436,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
-    // Set state
-    const newLayout = (fillGaps) ?  fillInGaps(layout, cols, lastRowGap) : layout;
+    // Set state    compact(newLayout, this.compactType(), cols)
+    const compactedLayout = compact(layout, this.compactType(), cols);
+    const newLayout = (fillGaps) ?  fillInGaps(compactedLayout, cols, lastRowGap) : compactedLayout;
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
-      layout: compact(newLayout, this.compactType(), cols),
+      layout: newLayout,
       oldDragItem: null,
       oldLayout: null
     });
@@ -452,9 +452,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
-    if (!isEqual(oldLayout, newLayout)) {
-      const layout = this.props.fillGaps ? filterOutGaps(newLayout) : newLayout
-      this.props.onLayoutChange(layout);
+    const previousLayout = this.props.fillGaps ? filterOutGaps(oldLayout) : oldLayout;
+    const nextLayout = this.props.fillGaps ? filterOutGaps(newLayout) : newLayout
+    if (!isEqual(previousLayout, nextLayout)) {
+        console.log('layout changes')
+      this.props.onLayoutChange(nextLayout);
     }
   }
 
@@ -535,12 +537,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     // Set state
-
-    const newLayout = (fillGaps) ?  fillInGaps(layout, cols, lastRowGap) : layout;
+    const compactedLayout = compact(layout, this.compactType(), cols);
+    const newLayout = (fillGaps) ?  fillInGaps(compactedLayout, cols, lastRowGap) : compactedLayout;
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
-      layout: compact(newLayout, this.compactType(), cols),
+      layout: newLayout,
       oldResizeItem: null,
       oldLayout: null
     });
