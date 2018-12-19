@@ -51,3 +51,7 @@
   border-right: 2px solid rgba(0, 0, 0, 0.4);
   border-bottom: 2px solid rgba(0, 0, 0, 0.4);
 }
+
+.react-resizable-hide > .react-resizable-handle {
+  display: none;
+}
