@@ -406,7 +406,7 @@ will be draggable.
 
 If you have a feature request, please add it as an issue or make a pull request.
 
-If you have a bug to report, please reproduce the bug in [WebpackBin](http://www.webpackbin.com/VymTE3zWG) to help
+If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js) to help
 us easily isolate it.
 
 ## TODO List
