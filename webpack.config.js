@@ -2,6 +2,10 @@ var webpack = require("webpack");
 
 // Builds bundle usable <script>. Includes RGL and all deps, excluding React.
 module.exports = {
+  mode: 'production',
+  optimization: {
+    minimize: true
+  },
   context: __dirname,
   entry: {
     "react-grid-layout": "./index-dev.js"
@@ -30,7 +34,7 @@ module.exports = {
     }
   },
   module: {
-    loaders: [
+    rules: [
       {test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader"}
     ]
   },
@@ -40,8 +44,6 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
-    // Compress, but don't print warnings to console
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}, sourceMap: true}),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   resolve: {
