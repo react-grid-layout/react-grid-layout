@@ -86,7 +86,8 @@
   "jest": {
     "testMatch": [
       "<rootDir>/test/spec/*.js"
-    ]
+    ],
+    "testURL": "http://localhost"
   },
   "lint-staged": {
     "*.{js,jsx}": [
