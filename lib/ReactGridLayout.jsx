@@ -60,6 +60,7 @@ export type Props = {
   isResizable: boolean,
   preventCollision: boolean,
   useCSSTransforms: boolean,
+  transformDirection: string,
 
   // Callbacks
   onLayoutChange: Layout => void,
@@ -154,6 +155,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     preventCollision: PropTypes.bool,
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool,
+    transformDirection: PropTypes.string,
 
     //
     // Callbacks
@@ -578,6 +580,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isDraggable,
       isResizable,
       useCSSTransforms,
+      transformDirection,
       draggableCancel,
       draggableHandle
     } = this.props;
@@ -610,6 +613,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isDraggable={draggable}
         isResizable={resizable}
         useCSSTransforms={useCSSTransforms && mounted}
+        transformDirection={transformDirection}
         usePercentages={!mounted}
         w={l.w}
         h={l.h}

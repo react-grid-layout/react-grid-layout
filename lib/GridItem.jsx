@@ -28,6 +28,8 @@ type State = {
   className: string
 };
 
+type Direction = 'ltr' | 'rtl';
+
 type Props = {
   children: ReactElement<any>,
   cols: number,
@@ -41,6 +43,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
+  transformDirection?: ?Direction,
 
   className: string,
   style?: Object,
@@ -136,6 +139,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
+    transformDirection: PropTypes.string,
 
     // Others
     className: PropTypes.string,
@@ -152,7 +156,8 @@ export default class GridItem extends React.Component<Props, State> {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    transformDirection: 'ltr'
   };
 
   state: State = {
@@ -282,16 +287,19 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} pos Position object with width, height, left, top.
    * @return {Object}     Style object.
    */
-  createStyle(pos: Position): { [key: string]: ?string } {
+  createStyle(
+    pos: Position,
+    transformDirection: ?Direction
+  ): { [key: string]: ?string } {
     const { usePercentages, containerWidth, useCSSTransforms } = this.props;
 
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos);
+      style = setTransform(pos, transformDirection);
     } else {
       // top,left (slow)
-      style = setTopLeft(pos);
+      style = setTopLeft(pos, transformDirection);
 
       // This is used for server rendering.
       if (usePercentages) {
@@ -374,6 +382,7 @@ export default class GridItem extends React.Component<Props, State> {
   onDragHandler(handlerName: string) {
     return (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
       const handler = this.props[handlerName];
+      const { transformDirection } = this.props;
       if (!handler) return;
 
       const newPosition: PartialPosition = { top: 0, left: 0 };
@@ -386,8 +395,17 @@ export default class GridItem extends React.Component<Props, State> {
           if (!offsetParent) return;
           const parentRect = offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.left =
-            clientRect.left - parentRect.left + offsetParent.scrollLeft;
+          if (transformDirection === "rtl") {
+            newPosition.left = -(
+              clientRect.right -
+              parentRect.right -
+              offsetParent.scrollLeft
+            );
+          } else {
+            newPosition.left =
+              clientRect.left - parentRect.left + offsetParent.scrollLeft;
+          }
+
           newPosition.top =
             clientRect.top - parentRect.top + offsetParent.scrollTop;
           this.setState({ dragging: newPosition });
@@ -396,7 +414,9 @@ export default class GridItem extends React.Component<Props, State> {
         case "onDrag":
           if (!this.state.dragging)
             throw new Error("onDrag called before onDragStart.");
-          newPosition.left = this.state.dragging.left + deltaX;
+          newPosition.left =
+            this.state.dragging.left +
+            (transformDirection === "rtl" ? -deltaX : deltaX);
           newPosition.top = this.state.dragging.top + deltaY;
           this.setState({ dragging: newPosition });
           break;
@@ -462,7 +482,8 @@ export default class GridItem extends React.Component<Props, State> {
       h,
       isDraggable,
       isResizable,
-      useCSSTransforms
+      useCSSTransforms,
+      transformDirection
     } = this.props;
 
     const pos = this.calcPosition(x, y, w, h, this.state);
@@ -472,6 +493,7 @@ export default class GridItem extends React.Component<Props, State> {
     let newChild = React.cloneElement(child, {
       className: classNames(
         "react-grid-item",
+        transformDirection,
         child.props.className,
         this.props.className,
         {
@@ -486,7 +508,7 @@ export default class GridItem extends React.Component<Props, State> {
       style: {
         ...this.props.style,
         ...child.props.style,
-        ...this.createStyle(pos)
+        ...this.createStyle(pos, transformDirection)
       }
     });
 
