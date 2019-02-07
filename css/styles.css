@@ -37,17 +37,29 @@
   width: 20px;
   height: 20px;
   bottom: 0;
+}
+.react-grid-item.ltr > .react-resizable-handle{
   right: 0;
   cursor: se-resize;
+}
+.react-grid-item.rtl > .react-resizable-handle{
+  left: 0;
+  cursor: sw-resize;
 }
 
 .react-grid-item > .react-resizable-handle::after {
   content: "";
   position: absolute;
-  right: 3px;
   bottom: 3px;
   width: 5px;
   height: 5px;
-  border-right: 2px solid rgba(0, 0, 0, 0.4);
   border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+}
+.react-grid-item.ltr > .react-resizable-handle::after {
+  border-right: 2px solid rgba(0, 0, 0, 0.4);
+  right: 3px;
+}
+.react-grid-item.rtl > .react-resizable-handle::after {
+  border-left: 2px solid rgba(0, 0, 0, 0.4);
+  left: 3px;
 }

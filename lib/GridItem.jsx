@@ -493,6 +493,7 @@ export default class GridItem extends React.Component<Props, State> {
     let newChild = React.cloneElement(child, {
       className: classNames(
         "react-grid-item",
+        transformDirection,
         child.props.className,
         this.props.className,
         {
