@@ -28,6 +28,8 @@ type State = {
   className: string
 };
 
+type Direction = 'ltr' | 'rtl';
+
 type Props = {
   children: ReactElement<any>,
   cols: number,
@@ -41,7 +43,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
-  transformDirection?: string,
+  transformDirection?: ?Direction,
 
   className: string,
   style?: Object,
@@ -154,7 +156,8 @@ export default class GridItem extends React.Component<Props, State> {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    transformDirection: 'ltr'
   };
 
   state: State = {
@@ -286,7 +289,7 @@ export default class GridItem extends React.Component<Props, State> {
    */
   createStyle(
     pos: Position,
-    transformDirection: ?string
+    transformDirection: ?Direction
   ): { [key: string]: ?string } {
     const { usePercentages, containerWidth, useCSSTransforms } = this.props;
 
