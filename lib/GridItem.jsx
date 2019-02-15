@@ -14,7 +14,12 @@ import type {
   Position
 } from "./utils";
 
-type PartialPosition = { top: number, left: number };
+type PartialPosition = {
+  top: number,
+  left: number,
+  scaleX: number,
+  scaleY: number
+};
 type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
   i: string,
   w: number,
@@ -376,7 +381,12 @@ export default class GridItem extends React.Component<Props, State> {
       const handler = this.props[handlerName];
       if (!handler) return;
 
-      const newPosition: PartialPosition = { top: 0, left: 0 };
+      const newPosition: PartialPosition = {
+        top: 0,
+        left: 0,
+        scaleX: 1.0,
+        scaleY: 1.0
+      };
 
       // Get new XY
       switch (handlerName) {
@@ -384,20 +394,44 @@ export default class GridItem extends React.Component<Props, State> {
           // TODO: this wont work on nested parents
           const { offsetParent } = node;
           if (!offsetParent) return;
+
+          var elm = offsetParent;
+          var scaleX = 1.0,
+            scaleY = 1.0;
+          while (elm) {
+            const transform = getComputedStyle(elm).transform;
+            const values = transform.match(/\d+(?:\.\d+)?/g);
+            if (values !== null ? values.length >= 4 : false) {
+              const fX = parseFloat(values[0]);
+              const fY = parseFloat(values[3]);
+              if (!isNaN(fX) && !isNaN(fY)) {
+                scaleX *= fX;
+                scaleY *= fY;
+              }
+            }
+            elm = elm.offsetParent;
+          }
           const parentRect = offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
           newPosition.left =
-            clientRect.left - parentRect.left + offsetParent.scrollLeft;
+            (clientRect.left - parentRect.left + offsetParent.scrollLeft) /
+            scaleX;
           newPosition.top =
-            clientRect.top - parentRect.top + offsetParent.scrollTop;
+            (clientRect.top - parentRect.top + offsetParent.scrollTop) / scaleY;
+          newPosition.scaleX = scaleX;
+          newPosition.scaleY = scaleY;
           this.setState({ dragging: newPosition });
           break;
         }
         case "onDrag":
           if (!this.state.dragging)
             throw new Error("onDrag called before onDragStart.");
-          newPosition.left = this.state.dragging.left + deltaX;
-          newPosition.top = this.state.dragging.top + deltaY;
+          newPosition.left =
+            this.state.dragging.left + deltaX / this.state.dragging.scaleX;
+          newPosition.top =
+            this.state.dragging.top + deltaY / this.state.dragging.scaleY;
+          newPosition.scaleX = this.state.dragging.scaleX;
+          newPosition.scaleY = this.state.dragging.scaleY;
           this.setState({ dragging: newPosition });
           break;
         case "onDragStop":
