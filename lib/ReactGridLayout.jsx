@@ -49,6 +49,7 @@ export type Props = {
   cols: number,
   draggableCancel: string,
   draggableHandle: string,
+  draggableOptions?: Object,
   verticalCompact: boolean,
   compactType: ?("horizontal" | "vertical"),
   layout: Layout,
@@ -102,6 +103,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     draggableCancel: PropTypes.string,
     // A selector for the draggable handler
     draggableHandle: PropTypes.string,
+    //options for react-draggable
+    draggableOptions: PropTypes.object,
 
     // Deprecated
     verticalCompact: function(props: Props) {
@@ -579,7 +582,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isResizable,
       useCSSTransforms,
       draggableCancel,
-      draggableHandle
+      draggableHandle,
+      draggableOptions
     } = this.props;
     const { mounted } = this.state;
 
@@ -601,6 +605,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         rowHeight={rowHeight}
         cancel={draggableCancel}
         handle={draggableHandle}
+        draggableOptions={draggableOptions}
         onDragStop={this.onDragStop}
         onDragStart={this.onDragStart}
         onDrag={this.onDrag}

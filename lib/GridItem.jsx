@@ -47,6 +47,7 @@ type Props = {
   // Draggability
   cancel: string,
   handle: string,
+  draggableOptions?: Object,
 
   x: number,
   y: number,
@@ -142,7 +143,9 @@ export default class GridItem extends React.Component<Props, State> {
     // Selector for draggable handle
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
-    cancel: PropTypes.string
+    cancel: PropTypes.string,
+    // options for react-draggable
+    draggableOptions: PropTypes.object
   };
 
   static defaultProps = {
@@ -319,6 +322,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
+        {...this.props.draggableOptions}
       >
         {child}
       </DraggableCore>
