@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 class ToolBoxItem extends React.Component {
   render() {
@@ -171,7 +171,7 @@ class ShowcaseLayout extends React.Component {
           onTakeItem={this.onTakeItem}
         />
 
-        <ResponsiveReactGridLayout
+        <ResponsiveGridLayout
           {...this.props}
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
@@ -185,7 +185,7 @@ class ShowcaseLayout extends React.Component {
           preventCollision={!this.state.compactType}
         >
           {this.generateDOM()}
-        </ResponsiveReactGridLayout>
+        </ResponsiveGridLayout>
       </div>
     );
   }

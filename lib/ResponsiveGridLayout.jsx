@@ -14,8 +14,8 @@ import {
   getColsFromBreakpoint,
   findOrGenerateResponsiveLayout
 } from "./responsiveUtils";
-import ReactGridLayout from "./ReactGridLayout";
-import type { Props as RGLProps } from "./ReactGridLayout";
+import ReactGridLayout from "./GridLayout";
+import type { Props as RGLProps } from "./GridLayout";
 import type { Layout } from "./utils";
 
 const type = obj => Object.prototype.toString.call(obj);

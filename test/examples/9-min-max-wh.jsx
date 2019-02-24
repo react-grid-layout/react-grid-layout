@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
-const ReactGridLayout = WidthProvider(RGL);
+const GridLayout = WidthProvider(RGL);
 
 class MinMaxLayout extends React.PureComponent {
   static defaultProps = {
@@ -58,9 +58,9 @@ class MinMaxLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout onLayoutChange={this.onLayoutChange} {...this.props}>
+      <GridLayout onLayoutChange={this.onLayoutChange} {...this.props}>
         {this.generateDOM()}
-      </ReactGridLayout>
+      </GridLayout>
     );
   }
 }

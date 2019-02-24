@@ -1,7 +1,7 @@
 import React from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 
-const ReactGridLayout = WidthProvider(RGL);
+const GridLayout = WidthProvider(RGL);
 
 /**
  * This layout demonstrates how to use static grid elements.
@@ -20,7 +20,7 @@ class StaticElementsLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout
+      <GridLayout
         className="layout"
         onLayoutChange={this.onLayoutChange}
         rowHeight={30}
@@ -53,7 +53,7 @@ class StaticElementsLayout extends React.PureComponent {
             <hr />
           </span>
         </div>
-      </ReactGridLayout>
+      </GridLayout>
     );
   }
 }

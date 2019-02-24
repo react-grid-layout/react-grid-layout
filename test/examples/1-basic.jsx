@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
-const ReactGridLayout = WidthProvider(RGL);
+const GridLayout = WidthProvider(RGL);
 
 class BasicLayout extends React.PureComponent {
   static defaultProps = {
@@ -50,13 +50,13 @@ class BasicLayout extends React.PureComponent {
 
   render() {
     return (
-      <ReactGridLayout
+      <GridLayout
         layout={this.state.layout}
         onLayoutChange={this.onLayoutChange}
         {...this.props}
       >
         {this.generateDOM()}
-      </ReactGridLayout>
+      </GridLayout>
     );
   }
 }
