@@ -700,18 +700,16 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     //  -----      -----       -----
     //  | _ r      l _ r       l _ |
     //  | b br    bl b br     bl b |
-    if (hasPrevX && hasNextX) {
-      if (agrees(bl, id) && agrees(l, id)) {
-        return shouldFill = false;
-      }
-    }
     return shouldFill = true;
-  } else if (y === endY - 1) {
+  } else if (y === endY) {
     // if we are at the bottom of the section
     //  | t tr
     //  | _ r
     //  -----
     if (!hasPrevX && hasNextX) {
+      if (agrees(t, id) && agrees(tr, id) && !agrees(r, id)) {
+        return shouldFill = false;
+      }
       return shouldFill = true;
     } else if (!hasNextX && hasPrevX) {
       // tl t |
@@ -729,6 +727,8 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
       //  -----
       if (agrees(tl, id) && !agrees(t, id) && agrees(l, id)) {
         return shouldFill = false;
+      } else if (agrees(t, id) && agrees(tr, id) && !agrees(r, id)) {
+        return shouldFill = false;
       }
       return shouldFill = true;
     }
@@ -737,6 +737,9 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // | t tr
     // | _ r
     // | b br
+    if (agrees(t, id) && agrees(tr, id) && !agrees(r, id)) {
+      return shouldFill = false;
+    }
     return shouldFill = true;
   } else if (x === endX - 1) {
     // if we are at the right of the section
@@ -756,16 +759,16 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // tl t tr
     //  l _ r
     // bl b br
-    if (!agrees(t, id) && agrees(l, id) && agrees(tl, id)) {
+    if (agrees(l, id) && agrees(tl, id) && agrees(t, id)) {
+      return shouldFill = true;
+    } else if (agrees(l, id) && agrees(bl, id) && agrees(t, id)) {
+      return shouldFill = true;
+    } else if (!agrees(t, id) && agrees(l, id) && agrees(tl, id)) {
       return shouldFill = false;
-    } else if (!agrees(t, id) && agrees(l, id) && agrees(bl, id)) {
+    } else if (agrees(l, id) && agrees(bl, id) && !agrees(b, id)) {
       return shouldFill = false;
     } else if (agrees(tl, id) && agrees(t, id)) {
       return shouldFill = false;
-    } else if (!agrees(tl, id) && agrees(t, id) && agrees(l, id)) {
-      return shouldFill = true;
-    } else if (agrees(tl, id) && agrees(t, id) && agrees(l, id)) {
-      return shouldFill = true;
     }
     shouldFill = true;
   }
