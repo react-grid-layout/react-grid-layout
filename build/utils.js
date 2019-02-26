@@ -641,11 +641,14 @@ function agrees(cell, gapId) {
   return false;
 }
 
-function shouldFillCell(matrix, id, x, y, nextX, nextY, prevX, prevY, endX, startY, endY) {
+function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, startY, endY) {
+  var id = gap.i;
   var hasPrevX = prevX !== null;
   var hasPrevY = prevY !== null;
   var hasNextX = nextX !== null && nextX < endX;
   var hasNextY = nextY !== null && nextY < endY;
+  if (hasNextX) gap.w = gap.w + 1;
+  if (hasNextY) gap.h = gap.h + 1;
   // * 1. Get adjacent cells
   // tl t tr
   //  l _ r
@@ -755,22 +758,49 @@ function scan(matrix, gap, x, y, endX, startY, endY) {
     var prevY = y !== 0 ? y - 1 : null;
     var nextX = x < endX ? x + 1 : null;
     var nextY = y < endY ? y + 1 : null;
-    if (shouldFillCell(matrix, gap.i, x, y, nextX, nextY, prevX, prevY, endX, startY, endY)) {
+    if (shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, startY, endY)) {
       //
       matrix[y][x] = gap.i;
-      if (nextX !== null) {
-        // if we can keep going right
-        scan(matrix, gap, nextX, y, endX, startY, endY); // scan right
-      }
       if (nextY !== null && y !== endY) {
         // if we can keep doing down
         scan(matrix, gap, x, nextY, endX, startY, endY); // scan down
       }
-    } else {
+      if (nextX !== null) {
+        // if we can keep going right
+        scan(matrix, gap, nextX, y, endX, startY, endY); // scan right
+      }
       return gap;
     }
   }
 }
+
+function generateGaps(matrix) {
+  var gapDict = {};
+  for (var _h = 0; _h < matrix.length; _h++) {
+    // *  Row section
+    for (var _w = 0; _w < matrix[_h].length; _w++) {
+      // * Cell loop -- Go through all cells in the row
+      if (matrix[_h][_w].includes('gap-')) {
+        if (!gapDict[matrix[_h][_w]]) {
+          gapDict[matrix[_h][_w]] = {
+            i: matrix[_h][_w],
+            x: _w,
+            y: _h,
+            w: 1,
+            h: 1,
+            gap: true
+          };
+        }
+        var gap = gapDict[matrix[_h][_w]];
+        gap.w = _w - gap.x + 1;
+        gap.h = _h - gap.y + 1;
+        gapDict[matrix[_h][_w]] = gap;
+      }
+    }
+  }
+  return Object.values(gapDict);
+}
+
 /**
  * Fills in all gaps (empty spaces) in the grid layout
  *
@@ -797,29 +827,29 @@ function fillInGaps(layout, columnCount, lastRow) {
     maxY = cardMaxCoord > maxY ? card.y + card.h : maxY;
     return card;
   });
-  var maxSection = !(maxY / heightUnits % 0) ? Math.round(maxY / heightUnits + 1) : Math.round(maxY / heightUnits);
+  var maxSection = !(maxY / heightUnits % 0) ? Math.round(maxY / heightUnits) : Math.round(maxY / heightUnits) + 1;
   var matrix = generateMatrix(layout, { x: columnCount, y: maxSection * heightUnits }); // * 2. Create a new matrix with a Y of maxY and an X of columnCount
   // * 3. Fill matrix gaps
-  for (var section = 1; section <= maxSection; section++) {
+  for (var section = 0; section < maxSection; section++) {
     // w by h section. we will split it in "rows" of heightUnits [i.e. the default card height is 4, so we will fill in 4 h sections]
-    var startingY = section === 1 ? 0 : heightUnits * (section - 1);
-    var endingY = heightUnits * section;
+    var startingY = heightUnits * section;
+    var endingY = heightUnits * (section + 1);
     for (var _y = startingY; _y < endingY; _y++) {
       // *  Row section
       for (var _x5 = 0; _x5 < columnCount; _x5++) {
         // * Cell loop -- Go through all cells in the row
         if (matrix[_y][_x5] === null) {
           // If the cell is empty
-          gaps.push(scan(matrix, { i: "g-" + gaps.length, x: _x5, y: _y, w: 1, h: 1 }, _x5, _y, columnCount, startingY, endingY)); // Recursively grow into the largest shape
+          gaps.push(scan(matrix, { i: "gap-" + gaps.length, x: _x5, y: _y, w: 1, h: 1 }, _x5, _y, columnCount, startingY, endingY)); // Recursively grow into the largest shape
         }
       }
     }
   }
   printMatrix(matrix);
-  // console.log({gaps})
-  gaps = [];
+  gaps = generateGaps(matrix);
+  console.log({ gaps: gaps });
   // If lastRow is true, add lastRow
-  lastRow && gaps.push(_extends({ w: columnCount, x: 0, y: maxY, h: heightUnits, i: 'gap-last-row', lastRow: true }, gapConfig));
+  lastRow && gaps.push(_extends({ w: columnCount, x: 0, y: matrix.length, h: heightUnits, i: 'gap-last-row', lastRow: true }, gapConfig));
   return [].concat(cardsInLayout, gaps); // Merge the layouts
 }
 
