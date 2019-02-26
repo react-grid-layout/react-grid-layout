@@ -9,7 +9,7 @@ class FillGapsLayout extends React.Component {
     className: "layout",
     rowHeight: 200,
     onLayoutChange: function() {},
-    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+    cols: { lg: 4, md: 3, sm:2, xs: 1, xxs: 1 },
     initialLayout: generateLayout()
   };
 
@@ -90,6 +90,7 @@ class FillGapsLayout extends React.Component {
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}
+          heightUnits={3}
           // Gap props
           fillGaps={true}
           lastRowGap={true}
@@ -116,16 +117,30 @@ class FillGapsLayout extends React.Component {
 module.exports = FillGapsLayout;
 
 function generateLayout() {
-  return _.map(_.range(0, 10), function(item, i) {
+  return _.map(_.range(0, 4), function(item, i) {
+    // const gridHeight = 12;
+    // const gridWidth = 4;
+    // const y = _.random(0, gridHeight);
+    // const x = _.random(0, gridWidth)
+    // const w = _.random(0, x - gridWidth)
+    // const h = _.random(0, y - gridHeight)
+    // // var placeholder = _.sample([true, false]);
+    // return {
+    //   x,
+    //   y,
+    //   w,
+    //   h,
+    //   i: i.toString(),
+    // };
     var y = Math.ceil(Math.random() * 4) + 1;
-    // var placeholder = _.sample([true, false]);
     return {
-      x: (_.random(0, 5) * 2) % 12,
+      x: (_.random(0, 4)) % 6,
       y: Math.floor(i / 6) * y,
-      w: 2,
-      h: 1,
+      w: 1,
+      h: 2,
       i: i.toString(),
     };
+
   });
 }
 
