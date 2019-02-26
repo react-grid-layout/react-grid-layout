@@ -81,7 +81,7 @@ var ReactGridLayout = function (_React$Component) {
       var newLayout = (0, _utils.synchronizeLayoutWithChildren)(newLayoutBase, nextProps.children, nextProps.cols, this.compactType(nextProps));
       var _oldLayout = this.state.layout;
       // When we get new griditems, we want to make sure there are no gaps stored in it
-      var tempLayout = nextProps.fillGaps ? (0, _utils.fillInGaps)(newLayout, nextProps.cols, nextProps.lastRowGap) : newLayout;
+      var tempLayout = nextProps.fillGaps ? (0, _utils.fillInGaps)(newLayout, nextProps.cols, nextProps.lastRowGap, nextProps.heightUnits) : newLayout;
       this.setState({ layout: tempLayout });
       this.onLayoutMaybeChanged(tempLayout, _oldLayout);
     }
@@ -194,7 +194,8 @@ var ReactGridLayout = function (_React$Component) {
         cols = _props2.cols,
         preventCollision = _props2.preventCollision,
         fillGaps = _props2.fillGaps,
-        lastRowGap = _props2.lastRowGap;
+        lastRowGap = _props2.lastRowGap,
+        heightUnits = _props2.heightUnits;
 
     var l = (0, _utils.getLayoutItem)(layout, i);
     if (!l) return;
@@ -207,7 +208,7 @@ var ReactGridLayout = function (_React$Component) {
 
     // Set state    compact(newLayout, this.compactType(), cols)
     var compactedLayout = (0, _utils.compact)(layout, this.compactType(), cols);
-    var newLayout = fillGaps ? (0, _utils.fillInGaps)(compactedLayout, cols, lastRowGap) : compactedLayout;
+    var newLayout = fillGaps ? (0, _utils.fillInGaps)(compactedLayout, cols, lastRowGap, heightUnits) : compactedLayout;
     var oldLayout = this.state.oldLayout;
 
     this.setState({
@@ -318,7 +319,8 @@ var ReactGridLayout = function (_React$Component) {
     var _props4 = this.props,
         cols = _props4.cols,
         fillGaps = _props4.fillGaps,
-        lastRowGap = _props4.lastRowGap;
+        lastRowGap = _props4.lastRowGap,
+        heightUnits = _props4.heightUnits;
 
     var l = (0, _utils.getLayoutItem)(layout, i);
 
@@ -326,7 +328,7 @@ var ReactGridLayout = function (_React$Component) {
 
     // Set state
     var compactedLayout = (0, _utils.compact)(layout, this.compactType(), cols);
-    var newLayout = fillGaps ? (0, _utils.fillInGaps)(compactedLayout, cols, lastRowGap) : compactedLayout;
+    var newLayout = fillGaps ? (0, _utils.fillInGaps)(compactedLayout, cols, lastRowGap, heightUnits) : compactedLayout;
     var oldLayout = this.state.oldLayout;
 
     this.setState({
@@ -660,7 +662,7 @@ ReactGridLayout.defaultProps = {
   fillGaps: false, // fill empty spaces in grid with gapRenderFunction
   lastRowGap: false, // should there be a last row "gap"
   gapRenderFunction: _utils.noop, // the render function for the gap element
-
+  heightUnits: 1,
   layout: [],
   margin: [10, 10],
   isDraggable: true,
@@ -683,7 +685,7 @@ var _initialiseProps = function _initialiseProps() {
     activeDrag: null,
     layout: this.props.fillGaps ? (0, _utils.fillInGaps)((0, _utils.synchronizeLayoutWithChildren)(this.props.layout, this.props.children, this.props.cols,
     // Legacy support for verticalCompact: false
-    this.compactType()), this.props.cols, this.props.lastRowGap) : (0, _utils.synchronizeLayoutWithChildren)(this.props.layout, this.props.children, this.props.cols,
+    this.compactType()), this.props.cols, this.props.lastRowGap, this.props.heightUnits) : (0, _utils.synchronizeLayoutWithChildren)(this.props.layout, this.props.children, this.props.cols,
     // Legacy support for verticalCompact: false
     this.compactType()),
     mounted: false,
