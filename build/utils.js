@@ -671,8 +671,8 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
   var id = gap.i;
   var hasPrevX = prevX !== null;
   var hasPrevY = prevY !== null;
-  var hasNextX = nextX !== null && nextX < endX;
-  var hasNextY = nextY !== null && nextY < endY;
+  var hasNextX = nextX !== null;
+  var hasNextY = nextY !== null;
   // * 1. Get adjacent cells
   // tl t tr
   //  l _ r
@@ -697,37 +697,29 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
   // * 2. Check the rules to maintain right angle corners
   if (y === startY) {
     // if we are at the top of the section
-    if (!hasPrevX) {
-      //  -----
-      //  | _ r
-      //  | b br
-      return shouldFill = true;
-    } else if (!hasNextX) {
-      //  -----
-      //  l _ |
-      // bl b |
-      return shouldFill = true;
-    } else {
-      //  -----
-      //  l _ r
-      // bl b br
-      if (agrees(bl, id) || agrees(l, id)) {
+    //  -----      -----       -----
+    //  | _ r      l _ r       l _ |
+    //  | b br    bl b br     bl b |
+    if (hasPrevX && hasNextX) {
+      if (agrees(bl, id) && agrees(l, id)) {
         return shouldFill = false;
       }
-      return shouldFill = true;
     }
-  } else if (y === endY) {
+    return shouldFill = true;
+  } else if (y === endY - 1) {
     // if we are at the bottom of the section
+    //  | t tr
+    //  | _ r
+    //  -----
     if (!hasPrevX && hasNextX) {
-      //  | t tr
-      //  | _ r
-      //  -----
       return shouldFill = true;
     } else if (!hasNextX && hasPrevX) {
       // tl t |
       //  l _ |
       //  -----
       if (agrees(tl, id) && !agrees(t, id) && agrees(l, id)) {
+        return shouldFill = false;
+      } else if (agrees(tl, id) && agrees(t, id) && !agrees(l, id)) {
         return shouldFill = false;
       }
       return shouldFill = true;
@@ -745,9 +737,7 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // | t tr
     // | _ r
     // | b br
-    // if(agrees(t, id) || agrees(r, id)) {
     return shouldFill = true;
-    // }
   } else if (x === endX - 1) {
     // if we are at the right of the section
     // tl t |
@@ -768,7 +758,9 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // bl b br
     if (!agrees(t, id) && agrees(l, id) && agrees(tl, id)) {
       return shouldFill = false;
-    } else if (agrees(tr, id) && agrees(t, id)) {
+    } else if (!agrees(t, id) && agrees(l, id) && agrees(bl, id)) {
+      return shouldFill = false;
+    } else if (agrees(tl, id) && agrees(t, id)) {
       return shouldFill = false;
     } else if (!agrees(tl, id) && agrees(t, id) && agrees(l, id)) {
       return shouldFill = true;
@@ -777,7 +769,6 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     }
     shouldFill = true;
   }
-
   return shouldFill;
 }
 
@@ -838,13 +829,12 @@ function fillInGaps(layout, columnCount, lastRow) {
       // * Cell loop -- Go through all cells in the row
       if (matrix[_y][_x5] === null) {
         // If the cell is empty
-        gaps.push(scan(matrix, { i: "gap-" + gaps.length, x: _x5, y: _y, w: 1, h: 1 }, _x5, _y, columnCount, _y, maxY - 1, heightUnits)); // Recursively grow into the largest shape
+        gaps.push(scan(matrix, { i: "gap-" + gaps.length, x: _x5, y: _y, w: 1, h: 1 }, _x5, _y, columnCount, 0, maxY - 1, heightUnits)); // Recursively grow into the largest shape
       }
     }
   }
-  printMatrix(matrix);
+  // printMatrix(matrix)
   gaps = generateGaps(matrix);
-  console.log({ gaps: gaps });
   // If lastRow is true, add lastRow
   lastRow && gaps.push(_extends({ w: columnCount, x: 0, y: matrix.length, h: heightUnits, i: 'gap-last-row', lastRow: true }, gapConfig));
   return [].concat(cardsInLayout, gaps); // Merge the layouts
