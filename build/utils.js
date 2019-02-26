@@ -633,6 +633,32 @@ function printMatrix(matrix) {
     }));
   });
 }
+function generateGaps(matrix) {
+  var gapDict = {};
+  for (var _h = 0; _h < matrix.length; _h++) {
+    // *  Row section
+    for (var _w = 0; _w < matrix[_h].length; _w++) {
+      // * Cell loop -- Go through all cells in the row
+      if (matrix[_h][_w].includes('gap-')) {
+        if (!gapDict[matrix[_h][_w]]) {
+          gapDict[matrix[_h][_w]] = {
+            i: matrix[_h][_w],
+            x: _w,
+            y: _h,
+            w: 1,
+            h: 1,
+            gap: true
+          };
+        }
+        var gap = gapDict[matrix[_h][_w]];
+        gap.w = _w - gap.x + 1;
+        gap.h = _h - gap.y + 1;
+        gapDict[matrix[_h][_w]] = gap;
+      }
+    }
+  }
+  return Object.values(gapDict);
+}
 
 function agrees(cell, gapId) {
   if (cell === undefined || cell === null) return false; // if the cell is undefined
@@ -647,8 +673,6 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
   var hasPrevY = prevY !== null;
   var hasNextX = nextX !== null && nextX < endX;
   var hasNextY = nextY !== null && nextY < endY;
-  if (hasNextX) gap.w = gap.w + 1;
-  if (hasNextY) gap.h = gap.h + 1;
   // * 1. Get adjacent cells
   // tl t tr
   //  l _ r
@@ -687,10 +711,10 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
       //  -----
       //  l _ r
       // bl b br
+      if (agrees(bl, id) || agrees(l, id)) {
+        return shouldFill = false;
+      }
       return shouldFill = true;
-      // if(agrees(l, id) || agrees(r, id)) {
-
-      // }
     }
   } else if (y === endY) {
     // if we are at the bottom of the section
@@ -724,12 +748,16 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // if(agrees(t, id) || agrees(r, id)) {
     return shouldFill = true;
     // }
-  } else if (x === endX) {
+  } else if (x === endX - 1) {
     // if we are at the right of the section
     // tl t |
     //  l _ |
     // bl b |
-    if (agrees(tl, id) && !agrees(t, id) && agrees(l, id)) {
+    if (agrees(tl, id) && !agrees(l, id)) {
+      return shouldFill = false;
+    } else if (agrees(tl, id) && agrees(t, id) && !agrees(l, id)) {
+      return shouldFill = false;
+    } else if (agrees(tl, id) && !agrees(t, id) && agrees(l, id)) {
       return shouldFill = false;
     }
     return shouldFill = true;
@@ -740,7 +768,9 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // bl b br
     if (!agrees(t, id) && agrees(l, id) && agrees(tl, id)) {
       return shouldFill = false;
-    } else if (!agrees(tl, id) && (agrees(t, id) || agrees(l, id))) {
+    } else if (agrees(tr, id) && agrees(t, id)) {
+      return shouldFill = false;
+    } else if (!agrees(tl, id) && agrees(t, id) && agrees(l, id)) {
       return shouldFill = true;
     } else if (agrees(tl, id) && agrees(t, id) && agrees(l, id)) {
       return shouldFill = true;
@@ -751,8 +781,8 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
   return shouldFill;
 }
 
-function scan(matrix, gap, x, y, endX, startY, endY) {
-  if (x <= endX && y < endY && matrix[y][x] === null) {
+function scan(matrix, gap, x, y, endX, startY, endY, heightUnits) {
+  if (x < endX && y <= endY && y - gap.y < heightUnits && matrix[y][x] === null) {
     // * if the current cell is a gap
     var prevX = x !== 0 ? x - 1 : null;
     var prevY = y !== 0 ? y - 1 : null;
@@ -763,42 +793,15 @@ function scan(matrix, gap, x, y, endX, startY, endY) {
       matrix[y][x] = gap.i;
       if (nextY !== null && y !== endY) {
         // if we can keep doing down
-        scan(matrix, gap, x, nextY, endX, startY, endY); // scan down
+        scan(matrix, gap, x, nextY, endX, startY, endY, heightUnits); // scan down
       }
       if (nextX !== null) {
         // if we can keep going right
-        scan(matrix, gap, nextX, y, endX, startY, endY); // scan right
+        scan(matrix, gap, nextX, y, endX, startY, endY, heightUnits); // scan right
       }
       return gap;
     }
   }
-}
-
-function generateGaps(matrix) {
-  var gapDict = {};
-  for (var _h = 0; _h < matrix.length; _h++) {
-    // *  Row section
-    for (var _w = 0; _w < matrix[_h].length; _w++) {
-      // * Cell loop -- Go through all cells in the row
-      if (matrix[_h][_w].includes('gap-')) {
-        if (!gapDict[matrix[_h][_w]]) {
-          gapDict[matrix[_h][_w]] = {
-            i: matrix[_h][_w],
-            x: _w,
-            y: _h,
-            w: 1,
-            h: 1,
-            gap: true
-          };
-        }
-        var gap = gapDict[matrix[_h][_w]];
-        gap.w = _w - gap.x + 1;
-        gap.h = _h - gap.y + 1;
-        gapDict[matrix[_h][_w]] = gap;
-      }
-    }
-  }
-  return Object.values(gapDict);
 }
 
 /**
@@ -816,10 +819,9 @@ function fillInGaps(layout, columnCount, lastRow) {
     gap: true,
     isDraggable: false,
     isResizable: false
-  };
-  var gaps = [];
-  // * 1. Get mxY
-  var maxY = 0;
+
+    // * 1. Get mxY
+  };var maxY = 0;
   var cardsInLayout = layout.filter(function (l) {
     return !l.gap;
   }).map(function (card) {
@@ -827,21 +829,16 @@ function fillInGaps(layout, columnCount, lastRow) {
     maxY = cardMaxCoord > maxY ? card.y + card.h : maxY;
     return card;
   });
-  var maxSection = !(maxY / heightUnits % 0) ? Math.round(maxY / heightUnits) : Math.round(maxY / heightUnits) + 1;
-  var matrix = generateMatrix(layout, { x: columnCount, y: maxSection * heightUnits }); // * 2. Create a new matrix with a Y of maxY and an X of columnCount
+  var matrix = generateMatrix(layout, { x: columnCount, y: maxY }); // * 2. Create a new matrix with a Y of maxY and an X of columnCount
   // * 3. Fill matrix gaps
-  for (var section = 0; section < maxSection; section++) {
-    // w by h section. we will split it in "rows" of heightUnits [i.e. the default card height is 4, so we will fill in 4 h sections]
-    var startingY = heightUnits * section;
-    var endingY = heightUnits * (section + 1);
-    for (var _y = startingY; _y < endingY; _y++) {
-      // *  Row section
-      for (var _x5 = 0; _x5 < columnCount; _x5++) {
-        // * Cell loop -- Go through all cells in the row
-        if (matrix[_y][_x5] === null) {
-          // If the cell is empty
-          gaps.push(scan(matrix, { i: "gap-" + gaps.length, x: _x5, y: _y, w: 1, h: 1 }, _x5, _y, columnCount, startingY, endingY)); // Recursively grow into the largest shape
-        }
+  var gaps = [];
+  for (var _y = 0; _y < matrix.length; _y++) {
+    // *  Row section
+    for (var _x5 = 0; _x5 < matrix[_y].length; _x5++) {
+      // * Cell loop -- Go through all cells in the row
+      if (matrix[_y][_x5] === null) {
+        // If the cell is empty
+        gaps.push(scan(matrix, { i: "gap-" + gaps.length, x: _x5, y: _y, w: 1, h: 1 }, _x5, _y, columnCount, _y, maxY - 1, heightUnits)); // Recursively grow into the largest shape
       }
     }
   }
