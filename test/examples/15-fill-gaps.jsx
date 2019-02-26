@@ -90,7 +90,7 @@ class FillGapsLayout extends React.Component {
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}
-          heightUnits={4}
+          heightUnits={3}
           // Gap props
           fillGaps={true}
           lastRowGap={true}
@@ -119,11 +119,13 @@ module.exports = FillGapsLayout;
 function generateLayout() {
   return _.map(_.range(0, 4), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
+    const minH = Math.ceil(1);
+    const maxH = Math.floor(3);
     return {
       x: (_.random(0, 4)) % 6,
       y: Math.floor(i / 6) * y,
       w: 1,
-      h: 2,
+      h: Math.floor(Math.random() * (maxH - minH)) + minH,
       i: i.toString(),
     };
 
