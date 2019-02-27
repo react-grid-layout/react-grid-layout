@@ -661,7 +661,7 @@ function generateGaps(matrix) {
 }
 
 function agrees(cell, gapId) {
-  if (cell === undefined || cell === null) return false; // if the cell is undefined
+  if (cell === undefined) return false; // if the cell is undefined
   // if the adjacent cell is null or matches the gapId
   if (cell === gapId || cell === null) return true;
   return false;
@@ -739,6 +739,8 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // | b br
     if (agrees(t, id) && agrees(tr, id) && !agrees(r, id)) {
       return shouldFill = false;
+    } else if (agrees(t, id) && agrees(r, id) && !agrees(tr, id)) {
+      return shouldFill = false;
     }
     return shouldFill = true;
   } else if (x === endX - 1) {
@@ -752,6 +754,8 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
       return shouldFill = false;
     } else if (agrees(tl, id) && !agrees(t, id) && agrees(l, id)) {
       return shouldFill = false;
+    } else if (!agrees(tl, id) && agrees(t, id) && agrees(l, id)) {
+      return shouldFill = false;
     }
     return shouldFill = true;
   } else {
@@ -761,9 +765,10 @@ function shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, sta
     // bl b br
     if (agrees(l, id) && agrees(tl, id) && agrees(t, id)) {
       return shouldFill = true;
-    } else if (agrees(l, id) && agrees(bl, id) && agrees(t, id)) {
+    } else if (agrees(l, id) && agrees(bl, id) && agrees(b, id) && !agrees(tl, id)) {
       return shouldFill = true;
-    } else if (!agrees(t, id) && agrees(l, id) && agrees(tl, id)) {
+    }
+    if (!agrees(t, id) && agrees(l, id) && agrees(tl, id)) {
       return shouldFill = false;
     } else if (agrees(l, id) && agrees(bl, id) && !agrees(b, id)) {
       return shouldFill = false;
@@ -785,7 +790,7 @@ function scan(matrix, gap, x, y, endX, startY, endY, heightUnits) {
     if (shouldFillCell(matrix, gap, x, y, nextX, nextY, prevX, prevY, endX, startY, endY)) {
       //
       matrix[y][x] = gap.i;
-      if (nextY !== null && y !== endY) {
+      if (nextY !== null) {
         // if we can keep doing down
         scan(matrix, gap, x, nextY, endX, startY, endY, heightUnits); // scan down
       }
