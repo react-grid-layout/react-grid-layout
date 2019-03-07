@@ -222,8 +222,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
       layouts[newBreakpoint] = layout;
 
       // callbacks
-      this.props.onLayoutChange(layout, layouts);
       this.props.onBreakpointChange(newBreakpoint, newCols);
+      this.props.onLayoutChange(layout, layouts);
 
       this.setState({
         breakpoint: newBreakpoint,
