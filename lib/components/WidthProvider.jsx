@@ -11,7 +11,8 @@ type WPProps = {
 };
 
 type WPState = {
-  width: number
+  width: number,
+  viewportWidth: number
 };
 
 /*
@@ -35,7 +36,8 @@ export default function WidthProvider<
     };
 
     state = {
-      width: 1280
+      width: 1280,
+      viewportWidth: 1280
     };
 
     mounted: boolean = false;
@@ -59,8 +61,12 @@ export default function WidthProvider<
       if (!this.mounted) return;
       // eslint-disable-next-line
       const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
-      if (node instanceof HTMLElement)
+      if (node instanceof HTMLElement) {
         this.setState({ width: node.offsetWidth });
+      }
+      if (typeof window !== "undefined") {
+        this.setState({ viewportWidth: window.innerWidth });
+      }
     };
 
     render() {

@@ -35,6 +35,7 @@ type Props<Breakpoint: string = string> = {
   cols: { [key: Breakpoint]: number },
   layouts: { [key: Breakpoint]: Layout },
   width: number,
+  viewportWidth: number,
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -146,6 +147,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     // Allow parent to set width or breakpoint directly.
     if (
       nextProps.width != this.props.width ||
+      nextProps.viewportWidth != this.props.viewportWidth ||
       nextProps.breakpoint !== this.props.breakpoint ||
       !isEqual(nextProps.breakpoints, this.props.breakpoints) ||
       !isEqual(nextProps.cols, this.props.cols)
@@ -182,10 +184,16 @@ export default class ResponsiveReactGridLayout extends React.Component<
    * Width changes are necessary to figure out the widget widths.
    */
   onWidthChange(nextProps: Props<*>) {
-    const { breakpoints, cols, layouts, compactType } = nextProps;
+    const {
+      breakpoints,
+      cols,
+      layouts,
+      compactType,
+      viewportWidth
+    } = nextProps;
     const newBreakpoint =
       nextProps.breakpoint ||
-      getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
+      getBreakpointFromWidth(nextProps.breakpoints, viewportWidth);
 
     const lastBreakpoint = this.state.breakpoint;
     const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
