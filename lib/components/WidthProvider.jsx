@@ -7,7 +7,8 @@ import type { ComponentType as ReactComponentType } from "react";
 type WPProps = {
   className?: string,
   measureBeforeMount: boolean,
-  style?: Object
+  style?: Object,
+  breakpointFromViewport: boolean
 };
 
 type WPState = {
@@ -26,13 +27,15 @@ export default function WidthProvider<
 ): ReactComponentType<ComposedProps> {
   return class WidthProvider extends React.Component<ComposedProps, WPState> {
     static defaultProps = {
-      measureBeforeMount: false
+      measureBeforeMount: false,
+      breakpointFromViewport: false
     };
 
     static propTypes = {
       // If true, will not render children until mounted. Useful for getting the exact width before
       // rendering, to prevent any unsightly resizing.
-      measureBeforeMount: PropTypes.bool
+      measureBeforeMount: PropTypes.bool,
+      breakpointFromViewport: PropTypes.bool
     };
 
     state = {
@@ -64,7 +67,7 @@ export default function WidthProvider<
       if (node instanceof HTMLElement) {
         this.setState({ width: node.offsetWidth });
       }
-      if (typeof window !== "undefined") {
+      if (this.props.breakpointFromViewport && typeof window !== "undefined") {
         this.setState({ viewportWidth: window.innerWidth });
       }
     };

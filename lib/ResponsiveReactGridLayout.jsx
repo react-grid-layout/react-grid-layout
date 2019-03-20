@@ -36,6 +36,7 @@ type Props<Breakpoint: string = string> = {
   layouts: { [key: Breakpoint]: Layout },
   width: number,
   viewportWidth: number,
+  breakpointFromViewport: boolean,
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -92,6 +93,12 @@ export default class ResponsiveReactGridLayout extends React.Component<
     // Required in this propTypes stanza because generateInitialState() will fail without it.
     width: PropTypes.number.isRequired,
 
+    // The width of the viewport
+    viewportWidth: PropTypes.number,
+
+    // Take width of viewport to handle correct breakpoint
+    breakpointFromViewport: PropTypes.bool.isRequired,
+
     //
     // Callbacks
     //
@@ -119,8 +126,16 @@ export default class ResponsiveReactGridLayout extends React.Component<
   state = this.generateInitialState();
 
   generateInitialState(): State {
-    const { width, breakpoints, layouts, cols } = this.props;
-    const breakpoint = getBreakpointFromWidth(breakpoints, width);
+    const {
+      breakpointFromViewport,
+      breakpoints,
+      layouts,
+      cols,
+      viewportWidth,
+      width
+    } = this.props;
+    const widthForBreakpoint = breakpointFromViewport ? viewportWidth : width;
+    const breakpoint = getBreakpointFromWidth(breakpoints, widthForBreakpoint);
     const colNo = getColsFromBreakpoint(breakpoint, cols);
     // verticalCompact compatibility, now deprecated
     const compactType =
@@ -185,15 +200,18 @@ export default class ResponsiveReactGridLayout extends React.Component<
    */
   onWidthChange(nextProps: Props<*>) {
     const {
+      breakpointFromViewport,
       breakpoints,
       cols,
       layouts,
       compactType,
-      viewportWidth
+      viewportWidth,
+      width
     } = nextProps;
+    const widthForBreakpoint = breakpointFromViewport ? viewportWidth : width;
     const newBreakpoint =
       nextProps.breakpoint ||
-      getBreakpointFromWidth(nextProps.breakpoints, viewportWidth);
+      getBreakpointFromWidth(nextProps.breakpoints, widthForBreakpoint);
 
     const lastBreakpoint = this.state.breakpoint;
     const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
