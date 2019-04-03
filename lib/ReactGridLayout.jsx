@@ -1,12 +1,11 @@
 // @flow
 import React from "react";
 import PropTypes from "prop-types";
-import isEqual from "lodash.isequal";
 import classNames from "classnames";
 import {
   autoBindHandlers,
   bottom,
-  childrenEqual,
+  compareLayouts,
   cloneLayoutItem,
   compact,
   getLayoutItem,
@@ -260,34 +259,25 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    let newLayoutBase;
-    // Legacy support for compactType
-    // Allow parent to set layout directly.
-    if (
-      !isEqual(nextProps.layout, this.props.layout) ||
-      nextProps.compactType !== this.props.compactType
-    ) {
-      newLayoutBase = nextProps.layout;
-    } else if (!childrenEqual(this.props.children, nextProps.children)) {
-      // If children change, also regenerate the layout. Use our state
-      // as the base in case because it may be more up to date than
-      // what is in props.
-      newLayoutBase = this.state.layout;
+  static getDerivedStateFromProps(props: Props, state: State) {
+    // Dragging -- update the layout
+    if (state.activeDrag) {
+      return { layout: state.layout };
     }
 
-    // We need to regenerate the layout.
-    if (newLayoutBase) {
+    // Received a new layout in props -- update the layout
+    if (!compareLayouts(props.layout, state.layout)) {
       const newLayout = synchronizeLayoutWithChildren(
-        newLayoutBase,
-        nextProps.children,
-        nextProps.cols,
-        this.compactType(nextProps)
+        props.layout,
+        props.children,
+        props.cols,
+        props.verticalCompact === false ? null : props.compactType
       );
-      const oldLayout = this.state.layout;
-      this.setState({ layout: newLayout });
-      this.onLayoutMaybeChanged(newLayout, oldLayout);
+      return { layout: newLayout };
     }
+
+    // Noting to update
+    return null;
   }
 
   /**
@@ -425,7 +415,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
-    if (!isEqual(oldLayout, newLayout)) {
+    if (!compareLayouts(oldLayout, newLayout)) {
       this.props.onLayoutChange(newLayout);
     }
   }

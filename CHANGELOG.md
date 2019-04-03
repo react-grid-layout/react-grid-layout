@@ -1,5 +1,13 @@
 # Changelog
 
+0.16.7
+----
+- Removed soon to be deprecated react lifecycle method for `ReactGridLayout`. `ResponsiveReactGridLayout` still needs to be updated.
+  - Replaced `componentWillReceiveProps` with `getDerivedStateFromProps`
+- Added `compareLayouts` function for better layout comparison logic.
+  - Only compares values that are kept in the state. 
+
+
 0.16.6 (Mar 8, 2018)
 ----
 
