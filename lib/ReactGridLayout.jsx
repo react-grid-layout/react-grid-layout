@@ -412,7 +412,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Set state
     const newLayout = compact(layout, this.compactType(), cols);
-    const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
       layout: newLayout,
@@ -420,7 +419,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       oldLayout: null
     });
 
-    this.onLayoutMaybeChanged(newLayout, oldLayout);
+    if(!isEqual(oldDragItem, l)) {
+      this.props.onLayoutChange(newLayout);
+    }
   }
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
@@ -507,7 +508,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Set state
     const newLayout = compact(layout, this.compactType(), cols);
-    const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
       layout: newLayout,
@@ -515,7 +515,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       oldLayout: null
     });
 
-    this.onLayoutMaybeChanged(newLayout, oldLayout);
+    if(!isEqual(oldDragItem, l)) {
+      this.props.onLayoutChange(newLayout);
+    }
   }
 
   /**
