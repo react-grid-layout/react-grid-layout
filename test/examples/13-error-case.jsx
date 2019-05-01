@@ -1,14 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
 class BasicLayout extends React.PureComponent {
-  static propTypes = {
-    onLayoutChange: PropTypes.func.isRequired
-  };
-
   static defaultProps = {
     className: "layout",
     items: 3,

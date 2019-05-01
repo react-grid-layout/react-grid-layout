@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
@@ -45,7 +43,6 @@ class LocalStorageLayout extends React.PureComponent {
       <div>
         <button onClick={this.resetLayout}>Reset Layout</button>
         <ReactGridLayout
-          ref="rgl"
           {...this.props}
           layout={this.state.layout}
           onLayoutChange={this.onLayoutChange}

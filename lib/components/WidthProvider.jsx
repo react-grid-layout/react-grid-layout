@@ -4,24 +4,26 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import type { ComponentType as ReactComponentType } from "react";
 
-type Props = {
+type WPProps = {
   className?: string,
   measureBeforeMount: boolean,
   style?: Object
 };
 
-type State = {
+type WPState = {
   width: number
 };
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
-type ProviderT = (
-  ComposedComponent: ReactComponentType<any>
-) => ReactComponentType<any>;
-const WidthProvider: ProviderT = ComposedComponent =>
-  class extends React.Component<Props, State> {
+export default function WidthProvider<
+  Props,
+  ComposedProps: { ...Props, ...WPProps }
+>(
+  ComposedComponent: ReactComponentType<Props>
+): ReactComponentType<ComposedProps> {
+  return class WidthProvider extends React.Component<ComposedProps, WPState> {
     static defaultProps = {
       measureBeforeMount: false
     };
@@ -32,7 +34,7 @@ const WidthProvider: ProviderT = ComposedComponent =>
       measureBeforeMount: PropTypes.bool
     };
 
-    state: State = {
+    state = {
       width: 1280
     };
 
@@ -53,22 +55,23 @@ const WidthProvider: ProviderT = ComposedComponent =>
       window.removeEventListener("resize", this.onWindowResize);
     }
 
-    onWindowResize = (_event: ?Event) => {
+    onWindowResize = () => {
       if (!this.mounted) return;
+      // eslint-disable-next-line
       const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });
     };
 
     render() {
-      if (this.props.measureBeforeMount && !this.mounted) {
+      const { measureBeforeMount, ...rest } = this.props;
+      if (measureBeforeMount && !this.mounted) {
         return (
           <div className={this.props.className} style={this.props.style} />
         );
       }
 
-      return <ComposedComponent {...this.props} {...this.state} />;
+      return <ComposedComponent {...rest} {...this.state} />;
     }
   };
-
-export default WidthProvider;
+}

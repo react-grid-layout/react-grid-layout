@@ -188,6 +188,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
 
     const lastBreakpoint = this.state.breakpoint;
+    const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
 
     // Breakpoint change
     if (
@@ -200,7 +201,6 @@ export default class ResponsiveReactGridLayout extends React.Component<
         layouts[lastBreakpoint] = cloneLayout(this.state.layout);
 
       // Find or generate a new layout.
-      const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
       let layout = findOrGenerateResponsiveLayout(
         layouts,
         breakpoints,
@@ -224,12 +224,6 @@ export default class ResponsiveReactGridLayout extends React.Component<
       // callbacks
       this.props.onLayoutChange(layout, layouts);
       this.props.onBreakpointChange(newBreakpoint, newCols);
-      this.props.onWidthChange(
-        nextProps.width,
-        nextProps.margin,
-        newCols,
-        nextProps.containerPadding
-      );
 
       this.setState({
         breakpoint: newBreakpoint,
@@ -237,10 +231,17 @@ export default class ResponsiveReactGridLayout extends React.Component<
         cols: newCols
       });
     }
+    //call onWidthChange on every change of width, not only on breakpoint changes
+    this.props.onWidthChange(
+      nextProps.width,
+      nextProps.margin,
+      newCols,
+      nextProps.containerPadding
+    );
   }
 
   render() {
-    // eslint-disable-next-line no-unused-vars
+    /* eslint-disable no-unused-vars */
     const {
       breakpoint,
       breakpoints,
@@ -251,6 +252,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       onWidthChange,
       ...other
     } = this.props;
+    /* eslint-enable no-unused-vars */
 
     return (
       <ReactGridLayout
