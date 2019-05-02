@@ -709,18 +709,7 @@ function fillInGaps(layout, columnCount, lastRow) {
     return card;
   });
   var matrix = generateMatrix(layout, { x: columnCount, y: maxY }); // * 2. Create a new matrix with a Y of maxY and an X of columnCount
-  console.log('MATRIX', JSON.stringify(matrix));
-  // * 3. Fill matrix gaps
-  // let gaps = [];
-  //   for (let y = 0; y < matrix.length; y++) {             // *  Row section
-  //     for (let x = 0; x < matrix[y].length; x++) {                // * Cell loop -- Go through all cells in the row
-  //       if (matrix[y][x] === null) {                         // If the cell is empty
-  //         gaps.push(scan(matrix, { i: `gap-${gaps.length}`, x, y, w: 1, h: 1,}, x, y, columnCount, 0, maxY - 1, heightUnits))  // Recursively grow into the largest shape
-  //       }
-  //     }
-  //   }
-  // // printMatrix(matrix)
-  // gaps = generateGaps(matrix);
+
   var gaps = [];
   for (var _y3 = 0; _y3 < matrix.length; _y3++) {
     // *  Row section
@@ -731,7 +720,7 @@ function fillInGaps(layout, columnCount, lastRow) {
       }
     }
   }
-  console.log('GAPS', gaps);
+
   // If lastRow is true, add lastRow
   lastRow && gaps.push(_extends({ w: columnCount, x: 0, y: matrix.length, h: heightUnits, i: 'gap-last-row', lastRow: true }, gapConfig));
   return [].concat(cardsInLayout, gaps); // Merge the layouts
