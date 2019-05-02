@@ -629,7 +629,7 @@ Object.size = function (obj) {
 function calculateHeightScore(matrix, initialX, y, dx) {
   var hScore = 1;
   if (initialX === 0) {
-    if (y === matrix.length - 1) hScore++;
+    // if (y === matrix.length - 1) hScore++;
   } else {
     if (y === matrix.length - 1) {
       if (!(matrix[y][initialX - 1] === null || matrix[y][initialX - 1].includes('gap'))) hScore++;
@@ -638,7 +638,7 @@ function calculateHeightScore(matrix, initialX, y, dx) {
     }
   }
   if (initialX + dx === matrix[y].length) {
-    if (y === matrix.length - 1) hScore++;
+    // if (y === matrix.length - 1) hScore++;
   } else {
     if (y === matrix.length - 1) {
       if (!(matrix[y][initialX + dx] === null || matrix[y][initialX + dx].includes('gap'))) hScore++;
@@ -672,7 +672,7 @@ function generateGap(matrix, initialY, initialX, i, heightUnits) {
   // use the 'best' height that we calculated
   console.log(initialX, initialY, w, heightScores);
   h = heightScores.reduce(function (bestIndex, cur, i) {
-    return heightScores[bestIndex] >= cur ? bestIndex : i;
+    return heightScores[bestIndex] > cur ? bestIndex : i;
   });
 
   for (var _y2 = initialY; _y2 < initialY + h; _y2++) {
