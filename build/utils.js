@@ -670,7 +670,6 @@ function generateGap(matrix, initialY, initialX, i, heightUnits) {
     if (h === heightUnits) break;
   }
   // use the 'best' height that we calculated
-  console.log(initialX, initialY, w, heightScores);
   h = heightScores.reduce(function (bestIndex, cur, i) {
     return heightScores[bestIndex] > cur ? bestIndex : i;
   });
