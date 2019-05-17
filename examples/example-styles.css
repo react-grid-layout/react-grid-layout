@@ -85,6 +85,7 @@ li b {
 }
 .toolbox__items__item {
   display: inline-block;
+  z-index: 2;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
@@ -94,4 +95,7 @@ li b {
   margin: 5px;
   border: 1px solid black;
   background-color: #ddd;
+}
+.toolbox__items__item.react-draggable-dragging {
+  position: absolute;
 }

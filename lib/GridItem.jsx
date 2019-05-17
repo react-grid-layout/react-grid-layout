@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
@@ -25,7 +26,8 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
 type State = {
   resizing: ?{ width: number, height: number },
   dragging: ?{ top: number, left: number },
-  className: string
+  className: string,
+  handedOffDrag: boolean
 };
 
 type Props = {
@@ -158,7 +160,8 @@ export default class GridItem extends React.Component<Props, State> {
   state: State = {
     resizing: null,
     dragging: null,
-    className: ""
+    className: "",
+    handedOffDrag: false
   };
 
   // Helper for generating column width
@@ -319,6 +322,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
+        ref="draggable"
       >
         {child}
       </DraggableCore>
@@ -390,6 +394,7 @@ export default class GridItem extends React.Component<Props, State> {
             clientRect.left - parentRect.left + offsetParent.scrollLeft;
           newPosition.top =
             clientRect.top - parentRect.top + offsetParent.scrollTop;
+          this.state.dragging = newPosition;
           this.setState({ dragging: newPosition });
           break;
         }
@@ -398,6 +403,7 @@ export default class GridItem extends React.Component<Props, State> {
             throw new Error("onDrag called before onDragStart.");
           newPosition.left = this.state.dragging.left + deltaX;
           newPosition.top = this.state.dragging.top + deltaY;
+          this.state.dragging = newPosition;
           this.setState({ dragging: newPosition });
           break;
         case "onDragStop":
@@ -414,8 +420,15 @@ export default class GridItem extends React.Component<Props, State> {
       }
 
       const { x, y } = this.calcXY(newPosition.top, newPosition.left);
+      const animatePlaceholder =
+        this.props.continueDrag == null || this.state.handedOffDrag;
 
-      return handler.call(this, this.props.i, x, y, { e, node, newPosition });
+      return handler.call(this, this.props.i, x, y, {
+        e,
+        node,
+        newPosition,
+        animatePlaceholder
+      });
     };
   }
 
@@ -479,7 +492,9 @@ export default class GridItem extends React.Component<Props, State> {
           resizing: Boolean(this.state.resizing),
           "react-draggable": isDraggable,
           "react-draggable-dragging": Boolean(this.state.dragging),
-          cssTransforms: useCSSTransforms
+          cssTransforms:
+            useCSSTransforms &&
+            (!this.props.continueDrag || this.state.handedOffDrag)
         }
       ),
       // We can set the width and height on the child, but unfortunately we can't set the position.
@@ -497,5 +512,56 @@ export default class GridItem extends React.Component<Props, State> {
     if (isDraggable) newChild = this.mixinDraggable(newChild);
 
     return newChild;
+  }
+
+  componentDidMount() {
+    if (this.props.continueDrag) {
+      let draggableElement = ReactDOM.findDOMNode(this.refs.draggable);
+      let boundingRect = draggableElement.getBoundingClientRect();
+      if (this.props.continueDrag.type === "mousemove") {
+        let new_event = {
+          type: this.props.continueDrag.type,
+          button: this.props.continueDrag.button,
+          target: draggableElement,
+          clientX: boundingRect.left,
+          clientY: boundingRect.top
+        };
+        // Start drag as if it's in the auto-placed position
+        this.refs.draggable.onMouseDown(new_event);
+      } else if (this.props.continueDrag.type === "touchmove") {
+        let new_event = {
+          type: this.props.continueDrag.type,
+          target: draggableElement,
+          targetTouches: [
+            new Touch({
+              identifier: this.props.continueDrag.targetTouches[0].identifier,
+              target: draggableElement,
+              clientX: boundingRect.left,
+              clientY: boundingRect.top
+            })
+          ]
+        };
+        // Start drag as if it's in the auto-placed position
+        this.refs.draggable.onTouchStart(new_event);
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.continueDrag && !this.state.handedOffDrag) {
+      let draggableElement = ReactDOM.findDOMNode(this.refs.draggable);
+      // Move the draggable back to where mouse was
+      let new_event = {
+        type: this.props.continueDrag.type,
+        button: this.props.continueDrag.button,
+        target: draggableElement,
+        clientX: this.props.continueDrag.clientX,
+        clientY: this.props.continueDrag.clientY,
+        targetTouches: this.props.continueDrag.targetTouches,
+        preventDefault: function() {}
+      };
+      this.refs.draggable.handleDrag(new_event);
+      this.setState({ handedOffDrag: true });
+    }
   }
 }

@@ -2,16 +2,48 @@ import React from "react";
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+import Draggable, { DraggableData } from "react-draggable";
+import ReactDOM from "react-dom";
 
 class ToolBoxItem extends React.Component {
+  state = {
+    dragging: false
+  };
+
+  handleClick(e: Event) {
+    if (!this.state.dragging) {
+      this.props.onTakeItem(this.props.item);
+    } else {
+      this.setState({ dragging: false });
+    }
+  }
+
+  handleDrag(e: Event, data: DraggableData) {
+    this.setState({
+      dragging: true
+    });
+    if (this.props.checkBounds(e, data)) {
+      this.props.onDragInItem(e, data, this.props.item);
+    }
+  }
+
   render() {
+    // Note: removing this Draggable element via onTakeItem sometimes causes react warning in debug mode
+    // Not an actual leak per https://github.com/mzabriskie/react-draggable/issues/390
+    // However this may be causing touch version to break
     return (
-      <div
-        className="toolbox__items__item"
-        onClick={this.props.onTakeItem.bind(undefined, this.props.item)}
+      <Draggable
+        onDrag={this.handleDrag.bind(this)}
+        position={{ x: 0, y: 0 }}
+        bounds="body"
       >
-        {this.props.item.i}
-      </div>
+        <div
+          className="toolbox__items__item"
+          onClick={this.handleClick.bind(this)}
+        >
+          {this.props.item.i}
+        </div>
+      </Draggable>
     );
   }
 }
@@ -25,6 +57,8 @@ class ToolBox extends React.Component {
             <ToolBoxItem
               key={item.i}
               item={item}
+              checkBounds={this.props.checkBounds}
+              onDragInItem={this.props.onDragInItem}
               onTakeItem={this.props.onTakeItem}
             />
           ))}
@@ -95,7 +129,9 @@ class ShowcaseLayout extends React.Component {
     const compactType =
       oldCompactType === "horizontal"
         ? "vertical"
-        : oldCompactType === "vertical" ? null : "horizontal";
+        : oldCompactType === "vertical"
+        ? null
+        : "horizontal";
     this.setState({ compactType });
   };
 
@@ -148,14 +184,30 @@ class ShowcaseLayout extends React.Component {
     });
   };
 
+  checkBounds(e: Event, data: DraggableData) {
+    let x = data.node.getBoundingClientRect().left;
+    let y = data.node.getBoundingClientRect().top;
+    let box = ReactDOM.findDOMNode(this.refs.grid).getBoundingClientRect();
+
+    return (
+      box.left < x &&
+      x < box.left + box.width &&
+      box.top < y &&
+      y < box.top + box.height
+    );
+  }
+
+  onDragInItem(e: Event, data: DraggableData, item) {
+    item.continueDrag = e;
+    this.onTakeItem(item);
+  }
+
   render() {
     return (
       <div>
         <div>
-          Current Breakpoint: {this.state.currentBreakpoint} ({
-            this.props.cols[this.state.currentBreakpoint]
-          }{" "}
-          columns)
+          Current Breakpoint: {this.state.currentBreakpoint} (
+          {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
         <div>
           Compaction type:{" "}
@@ -169,6 +221,8 @@ class ShowcaseLayout extends React.Component {
         <ToolBox
           items={this.state.toolbox[this.state.currentBreakpoint] || []}
           onTakeItem={this.onTakeItem}
+          checkBounds={this.checkBounds.bind(this)}
+          onDragInItem={this.onDragInItem.bind(this)}
         />
 
         <ResponsiveReactGridLayout
@@ -183,6 +237,7 @@ class ShowcaseLayout extends React.Component {
           useCSSTransforms={this.state.mounted}
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
+          ref="grid"
         >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>

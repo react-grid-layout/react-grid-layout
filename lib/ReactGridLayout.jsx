@@ -342,12 +342,24 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDrag(i: string, x: number, y: number, { e, node }: GridDragEvent) {
+  onDrag(
+    i: string,
+    x: number,
+    y: number,
+    { e, node, newPosition, animatePlaceholder }: GridDragEvent
+  ) {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
     const { cols } = this.props;
     var l = getLayoutItem(layout, i);
     if (!l) return;
+
+    let showPlaceholder;
+    if (typeof animatePlaceholder != "undefined" && !animatePlaceholder) {
+      showPlaceholder = false;
+    } else {
+      showPlaceholder = true;
+    }
 
     // Create placeholder (display only)
     var placeholder = {
@@ -356,6 +368,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       x: l.x,
       y: l.y,
       placeholder: true,
+      animatePlaceholder: animatePlaceholder,
       i: i
     };
 
@@ -376,7 +389,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.setState({
       layout: compact(layout, this.compactType(), cols),
-      activeDrag: placeholder
+      activeDrag: placeholder,
+      showPlaceholder: showPlaceholder
     });
   }
 
@@ -535,6 +549,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       useCSSTransforms
     } = this.props;
 
+    if (!this.state.showPlaceholder) {
+      return null;
+    }
+
     // {...this.state.activeDrag} is pretty slow, actually
     return (
       <GridItem
@@ -611,6 +629,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isResizable={resizable}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
+        continueDrag={l.continueDrag}
         w={l.w}
         h={l.h}
         x={l.x}
