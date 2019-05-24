@@ -12,13 +12,13 @@ MIN_MAP = $(DIST)/react-grid-layout.min.js.map
 .PHONY: test dev lint build clean install link
 
 
-build: clean build-js $(MIN)
+build: build-js $(MIN)
 
 clean:
 	rm -rf $(BUILD) $(DIST)
 
 dev:
-	@$(BIN)/webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --open --content-base .
+	webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --open --content-base .
 
 # Allows usage of `make install`, `make link`
 install link:
@@ -33,11 +33,11 @@ build-js:
 	@$(BIN)/babel --stage 0 --out-dir $(BUILD) $(LIB)
 
 build-example:
-	@$(BIN)/webpack --config webpack-examples.config.js
+	webpack --config webpack-examples.config.js
 	node ./examples/generate.js
 
 view-example: build-example
-	@$(BIN)/opener examples/0-showcase.html
+	opener examples/0-showcase.html
 
 
 # FIXME flow is usually global
