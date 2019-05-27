@@ -93,7 +93,7 @@ class AddRemoveLayout extends React.PureComponent {
   // We're using the cols coming back from this to calculate where to add new items.
   onBreakpointChange(breakpoint, cols) {
     this.setState({
-      breakpoint: breakpoint,
+      currentBreakpoint: breakpoint,
       cols: cols
     });
   }

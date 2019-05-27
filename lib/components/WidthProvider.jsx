@@ -9,6 +9,10 @@ type WPProps = {
   style?: Object
 };
 
+type ref = {
+  current: any
+};
+
 /*
  * A simple HOC that provides facility for listening to container resizes.
  */
@@ -21,13 +25,14 @@ function WidthProvider<Props, ComposedProps: { ...Props, ...WPProps }>(
     style,
     ...rest
   }: ComposedProps) => {
-    const currentRef = useRef(null);
+    const currentRef: ref = useRef({ current: null });
     const [width, setWidth]: [number, Function] = useState(() => 1280);
     const [mounted, setMounted]: [boolean, Function] = useState(() => false);
 
     const onWindowResize = () => {
       if (!mounted) return;
-      if (!currentRef.current || !currentRef.current.clientWidth) return;
+      if (!currentRef || !currentRef.current || !currentRef.current.clientWidth)
+        return;
       setWidth(currentRef.current.clientWidth);
     };
 
@@ -43,13 +48,14 @@ function WidthProvider<Props, ComposedProps: { ...Props, ...WPProps }>(
         setMounted(false);
         window.removeEventListener("resize", onWindowResize);
       };
-    }, []);
+    });
 
     if (measureBeforeMount && !mounted) {
       return <div className={className} style={style} />;
     }
 
     return (
+      // $FlowFixMe
       <div ref={currentRef}>
         <ComposedComponent {...rest} width={width} />
       </div>

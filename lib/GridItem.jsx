@@ -110,6 +110,7 @@ const GridItem = ({
     onResizeStop
   };
 
+  // State
   const [resizing, setResizing]: [Resizing, Function] = useState(() => null);
   const [dragging, setDragging]: [Dragging, Function] = useState(() => null);
 

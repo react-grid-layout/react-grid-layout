@@ -2,7 +2,6 @@
 import React, { useState, useEffect, memo } from "react";
 import PropTypes from "prop-types";
 import isEqual from "lodash.isequal";
-
 import {
   cloneLayout,
   synchronizeLayoutWithChildren,
@@ -88,15 +87,7 @@ const ResponsiveReactGridLayout = ({
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  const onWidthChangeHandle = (
-    breakpoints,
-    breakpoint,
-    cols,
-    layouts,
-    compactType,
-    width,
-    rest
-  ) => {
+  const onWidthChangeHandle = () => {
     const newBreakpoint =
       breakpoint || getBreakpointFromWidth(breakpoints, width);
 
@@ -150,7 +141,7 @@ const ResponsiveReactGridLayout = ({
       breakpoints,
       localBreakpoint,
       localBreakpoint,
-      cols,
+      cols[localBreakpoint],
       compactType
     );
 
@@ -158,15 +149,7 @@ const ResponsiveReactGridLayout = ({
   }, [layouts, breakpoint, cols]);
 
   useEffect(() => {
-    onWidthChangeHandle(
-      breakpoints,
-      breakpoint,
-      cols,
-      layouts,
-      compactType,
-      width,
-      rest
-    );
+    onWidthChangeHandle();
   }, [width]);
 
   return (
@@ -174,7 +157,7 @@ const ResponsiveReactGridLayout = ({
       {...rest}
       width={width}
       onLayoutChange={onLayoutChangeHandle}
-      layout={localLayout}
+      layout={layouts[localBreakpoint]}
       cols={localCols}
     />
   );
@@ -243,6 +226,7 @@ ResponsiveReactGridLayout.propTypes = {
   onWidthChange: PropTypes.func
 };
 
+// $FlowFixMe
 const arePropsEqual = (prevProps: Props<>, nextProps: Props<>): boolean =>
   childrenEqual(prevProps.children, nextProps.children) &&
   isEqual(nextProps.breakpoints, prevProps.breakpoints) &&

@@ -66,7 +66,6 @@ export type Props = {
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
  */
-
 const ReactGridLayout = ({
   className,
   style,
@@ -97,10 +96,8 @@ const ReactGridLayout = ({
 }: Props) => {
   const compactTypeHandler = (
     verticalCompact: boolean,
-    compactType: "horizontal" | "vertical"
-  ): CompactType => {
-    return verticalCompact === false ? null : compactType;
-  };
+    compactType: ?"horizontal" | "vertical"
+  ): CompactType => (verticalCompact === false ? null : compactType);
 
   // State
   const [activeDrag, setActiveDrag]: [?LayoutItem, Function] = useState(
@@ -123,7 +120,6 @@ const ReactGridLayout = ({
   const [oldResizeItem, setOldResizeItem]: [?LayoutItem, Function] = useState(
     () => null
   );
-  const [oldChildren, setOldChildren] = useState(children);
 
   const onLayoutMaybeChanged = (newLayout: Layout, oldLayout: ?Layout) => {
     if (!oldLayout) oldLayout = localLayout;
@@ -461,8 +457,6 @@ const ReactGridLayout = ({
 
   useEffect(() => {
     setMounted(true);
-
-    onLayoutMaybeChanged(localLayout, layout);
   }, []);
 
   useEffect(() => {
@@ -477,26 +471,9 @@ const ReactGridLayout = ({
     onLayoutMaybeChanged(newLayout, oldLayout);
   }, [layout, compactType]);
 
-  // useEffect(() => {
-  //   // If children change, also regenerate the layout. Use our state
-  //   // as the base in case because it may be more up to date than
-  //   // what is in props.
-  //   if (!childrenEqual(oldChildren, children) &&
-  //     isEqual(layout, oldLayout)) {
-  //     const newLayout = synchronizeLayoutWithChildren(
-  //       localLayout,
-  //       children,
-  //       cols,
-  //       compactTypeHandler(verticalCompact, compactType)
-  //     );
-  //     setOldChildren(children)
-  //     onLayoutMaybeChanged(newLayout, oldLayout);
-  //   }
-  // }, [children])
-
   return (
     <div className={mergedClassName} style={mergedStyle}>
-      {children.map(child => processGridItem(child))}
+      {React.Children.map(children, child => processGridItem(child))}
       {placeholder()}
     </div>
   );
@@ -647,12 +624,12 @@ ReactGridLayout.propTypes = {
   }
 };
 
-const arePropsEqual = (prevProps: Props<>, nextProps: Props<>): boolean => {
-  return (
-    isEqual(nextProps.layout, prevProps.layout) &&
-    nextProps.compactType === prevProps.compactType &&
-    childrenEqual(prevProps.children, nextProps.children)
-  );
-};
+// $FlowFixMe
+const arePropsEqual = (prevProps: Props<>, nextProps: Props<>): boolean =>
+  isEqual(nextProps.layout, prevProps.layout) &&
+  nextProps.compactType === prevProps.compactType &&
+  childrenEqual(prevProps.children, nextProps.children) &&
+  nextProps.width === prevProps.width;
 
+// $FlowFixMe
 export default memo(ReactGridLayout, arePropsEqual);
