@@ -60,7 +60,7 @@ export default function WidthProvider<
       // eslint-disable-next-line
       const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
-        this.setState({ width: node.offsetWidth });
+        setTimeout(this.setState({ width: node.offsetWidth }), 0);
     };
 
     render() {
