@@ -63,6 +63,7 @@ RGL is React-only and does not require jQuery.
 - [ez-Dashing](https://github.com/ylacaute/ez-Dashing)
 - [Kibana](https://www.elastic.co/products/kibana)
 - [Graphext](https://graphext.com/)
+- [Monday](https://support.monday.com/hc/en-us/articles/360002187819-What-are-the-Dashboards-)
 
 *Know of others? Create a PR to let me know!*
 
