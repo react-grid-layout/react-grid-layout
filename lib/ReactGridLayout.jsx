@@ -260,6 +260,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
   }
 
+  // eslint-disable-next-line
   componentWillReceiveProps(nextProps: Props) {
     let newLayoutBase;
     // Legacy support for compactType

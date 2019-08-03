@@ -142,6 +142,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     };
   }
 
+  // eslint-disable-next-line
   componentWillReceiveProps(nextProps: Props<*>) {
     // Allow parent to set width or breakpoint directly.
     if (

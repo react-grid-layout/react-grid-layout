@@ -42,7 +42,7 @@ view-example: build-example
 
 # FIXME flow is usually global
 lint:
-	./node_modules/.bin/flow
+	@$(BIN)/flow
 	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
 	@$(BIN)/valiquire $(LIB)
 
