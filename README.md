@@ -49,6 +49,7 @@ RGL is React-only and does not require jQuery.
 1. [Prevent Collision](https://strml.github.io/react-grid-layout/examples/12-prevent-collision.html)
 1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
+1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/16-drag-from-outside.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -284,6 +285,14 @@ containerPadding: ?[number, number] = margin,
 // if you like.
 rowHeight: ?number = 150,
 
+// Configuration of a dropping element. Dropping element is a "virtual" element 
+// which appears when you drag over some element from outside.
+// It can be changed by passing specific parameters:
+//  i - id of an element
+//  w - width of an element
+//  h - height of an element
+droppingItem?: { i: string, w: number, h: number }
+
 //
 // Flags
 //
@@ -296,6 +305,12 @@ useCSSTransforms: ?boolean = true,
 // If true, grid items won't change position when being
 // dragged over.
 preventCollision: ?boolean = false;
+
+// If true, droppable elements (with "droppable" attribute) 
+// can be dropped on the grid. It triggers "onDrop" callback
+// with position and event object as parameters. 
+// It can be useful for dropping an element in a specific position
+isDroppable: ?boolean = false
 
 //
 // Callbacks
@@ -323,7 +338,9 @@ onResizeStart: ItemCallback,
 // Calls when resize movement happens.
 onResize: ItemCallback,
 // Calls when resize is complete.
-onResizeStop: ItemCallback
+onResizeStop: ItemCallback,
+// Calls when some element has been dropped
+onDrop: (elemParams: { x: number, y: number, e: Event }) => void
 ```
 
 ### Responsive Grid Layout Props
