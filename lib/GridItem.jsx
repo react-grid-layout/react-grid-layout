@@ -171,11 +171,17 @@ export default class GridItem extends React.Component<Props, State> {
 
   currentNode: HTMLElement;
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { droppingPosition } = nextProps;
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.droppingPosition && prevProps.droppingPosition) {
+      this.moveDroppingItem(prevProps);
+    }
+  }
+
+  moveDroppingItem(prevProps: Props) {
+    const { droppingPosition } = this.props;
     const { dragging } = this.state;
 
-    if (!droppingPosition || !this.props.droppingPosition) {
+    if (!droppingPosition || !prevProps.droppingPosition) {
       return;
     }
 
@@ -184,20 +190,21 @@ export default class GridItem extends React.Component<Props, State> {
       this.currentNode = ((ReactDOM.findDOMNode(this): any): HTMLElement);
     }
 
+    const shouldDrag =
+      (dragging && droppingPosition.x !== prevProps.droppingPosition.x) ||
+      droppingPosition.y !== prevProps.droppingPosition.y;
+
     if (!dragging) {
-      this.onDragHandler("onDragStart")(droppingPosition.e, {
+      this.onDragStart(droppingPosition.e, {
         node: this.currentNode,
         deltaX: droppingPosition.x,
         deltaY: droppingPosition.y
       });
-    } else if (
-      (dragging && droppingPosition.x !== this.props.droppingPosition.x) ||
-      droppingPosition.y !== this.props.droppingPosition.y
-    ) {
+    } else if (shouldDrag) {
       const deltaX = droppingPosition.x - dragging.left;
       const deltaY = droppingPosition.y - dragging.top;
 
-      this.onDragHandler("onDrag")(droppingPosition.e, {
+      this.onDrag(droppingPosition.e, {
         node: this.currentNode,
         deltaX,
         deltaY
@@ -355,9 +362,9 @@ export default class GridItem extends React.Component<Props, State> {
   mixinDraggable(child: ReactElement<any>): ReactElement<any> {
     return (
       <DraggableCore
-        onStart={this.onDragHandler("onDragStart")}
-        onDrag={this.onDragHandler("onDrag")}
-        onStop={this.onDragHandler("onDragStop")}
+        onStart={this.onDragStart}
+        onDrag={this.onDrag}
+        onStop={this.onDragStop}
         handle={this.props.handle}
         cancel={
           ".react-resizable-handle" +
@@ -398,9 +405,9 @@ export default class GridItem extends React.Component<Props, State> {
         height={position.height}
         minConstraints={minConstraints}
         maxConstraints={maxConstraints}
-        onResizeStop={this.onResizeHandler("onResizeStop")}
-        onResizeStart={this.onResizeHandler("onResizeStart")}
-        onResize={this.onResizeHandler("onResize")}
+        onResizeStop={this.onResizeStop}
+        onResizeStart={this.onResizeStart}
+        onResize={this.onResize}
       >
         {child}
       </Resizable>
@@ -408,60 +415,128 @@ export default class GridItem extends React.Component<Props, State> {
   }
 
   /**
-   * Wrapper around drag events to provide more useful data.
-   * All drag events call the function with the given handler name,
-   * with the signature (index, x, y).
-   *
-   * @param  {String} handlerName Handler name to wrap.
-   * @return {Function}           Handler function.
+   * onDragStart event handler
+   * @param  {Event}  e             event data
+   * @param  {Object} callbackData  an object with node, delta and position information
    */
-  onDragHandler(handlerName: string) {
-    return (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
-      const handler = this.props[handlerName];
-      if (!handler) return;
+  onDragStart = (e: Event, { node }: ReactDraggableCallbackData) => {
+    if (!this.props.onDragStart) return;
 
-      const newPosition: PartialPosition = { top: 0, left: 0 };
+    const newPosition: PartialPosition = { top: 0, left: 0 };
 
-      // Get new XY
-      switch (handlerName) {
-        case "onDragStart": {
-          // TODO: this wont work on nested parents
-          const { offsetParent } = node;
-          if (!offsetParent) return;
-          const parentRect = offsetParent.getBoundingClientRect();
-          const clientRect = node.getBoundingClientRect();
-          newPosition.left =
-            clientRect.left - parentRect.left + offsetParent.scrollLeft;
-          newPosition.top =
-            clientRect.top - parentRect.top + offsetParent.scrollTop;
-          this.setState({ dragging: newPosition });
-          break;
-        }
-        case "onDrag":
-          if (!this.state.dragging)
-            throw new Error("onDrag called before onDragStart.");
-          newPosition.left = this.state.dragging.left + deltaX;
-          newPosition.top = this.state.dragging.top + deltaY;
-          this.setState({ dragging: newPosition });
-          break;
-        case "onDragStop":
-          if (!this.state.dragging)
-            throw new Error("onDragEnd called before onDragStart.");
-          newPosition.left = this.state.dragging.left;
-          newPosition.top = this.state.dragging.top;
-          this.setState({ dragging: null });
-          break;
-        default:
-          throw new Error(
-            "onDragHandler called with unrecognized handlerName: " + handlerName
-          );
-      }
+    // TODO: this wont work on nested parents
+    const { offsetParent } = node;
+    if (!offsetParent) return;
+    const parentRect = offsetParent.getBoundingClientRect();
+    const clientRect = node.getBoundingClientRect();
+    newPosition.left =
+      clientRect.left - parentRect.left + offsetParent.scrollLeft;
+    newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
+    this.setState({ dragging: newPosition });
 
-      const { x, y } = this.calcXY(newPosition.top, newPosition.left);
+    const { x, y } = this.calcXY(newPosition.top, newPosition.left);
 
-      return handler.call(this, this.props.i, x, y, { e, node, newPosition });
-    };
-  }
+    return (
+      this.props.onDragStart &&
+      this.props.onDragStart.call(this, this.props.i, x, y, {
+        e,
+        node,
+        newPosition
+      })
+    );
+  };
+
+  /**
+   * onDrag event handler
+   * @param  {Event}  e             event data
+   * @param  {Object} callbackData  an object with node, delta and position information
+   */
+  onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
+    if (!this.props.onDrag) return;
+
+    const newPosition: PartialPosition = { top: 0, left: 0 };
+
+    if (!this.state.dragging)
+      throw new Error("onDrag called before onDragStart.");
+    newPosition.left = this.state.dragging.left + deltaX;
+    newPosition.top = this.state.dragging.top + deltaY;
+    this.setState({ dragging: newPosition });
+
+    const { x, y } = this.calcXY(newPosition.top, newPosition.left);
+
+    return (
+      this.props.onDrag &&
+      this.props.onDrag.call(this, this.props.i, x, y, {
+        e,
+        node,
+        newPosition
+      })
+    );
+  };
+
+  /**
+   * onDragStop event handler
+   * @param  {Event}  e             event data
+   * @param  {Object} callbackData  an object with node, delta and position information
+   */
+  onDragStop = (e: Event, { node }: ReactDraggableCallbackData) => {
+    if (!this.props.onDragStop) return;
+
+    const newPosition: PartialPosition = { top: 0, left: 0 };
+
+    if (!this.state.dragging)
+      throw new Error("onDragEnd called before onDragStart.");
+    newPosition.left = this.state.dragging.left;
+    newPosition.top = this.state.dragging.top;
+    this.setState({ dragging: null });
+
+    const { x, y } = this.calcXY(newPosition.top, newPosition.left);
+
+    return (
+      this.props.onDragStop &&
+      this.props.onDragStop.call(this, this.props.i, x, y, {
+        e,
+        node,
+        newPosition
+      })
+    );
+  };
+
+  /**
+   * onResizeStop event handler
+   * @param  {Event}  e             event data
+   * @param  {Object} callbackData  an object with node and size information
+   */
+  onResizeStop = (
+    e: Event,
+    callbackData: { node: HTMLElement, size: Position }
+  ) => {
+    this.onResizeHandler(e, callbackData, "onResizeStop");
+  };
+
+  /**
+   * onResizeStart event handler
+   * @param  {Event}  e             event data
+   * @param  {Object} callbackData  an object with node and size information
+   */
+  onResizeStart = (
+    e: Event,
+    callbackData: { node: HTMLElement, size: Position }
+  ) => {
+    this.onResizeHandler(e, callbackData, "onResizeStart");
+  };
+
+  /**
+   * onResize event handler
+   * @param  {Event}  e             event data
+   * @param  {Object} callbackData  an object with node and size information
+   */
+  onResize = (
+    e: Event,
+    callbackData: { node: HTMLElement, size: Position }
+  ) => {
+    this.onResizeHandler(e, callbackData, "onResize");
+  };
 
   /**
    * Wrapper around drag events to provide more useful data.
@@ -471,31 +546,30 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  onResizeHandler(handlerName: string) {
-    return (
-      e: Event,
-      { node, size }: { node: HTMLElement, size: Position }
-    ) => {
-      const handler = this.props[handlerName];
-      if (!handler) return;
-      const { cols, x, i, maxW, minW, maxH, minH } = this.props;
+  onResizeHandler(
+    e: Event,
+    { node, size }: { node: HTMLElement, size: Position },
+    handlerName: string
+  ) {
+    const handler = this.props[handlerName];
+    if (!handler) return;
+    const { cols, x, i, maxW, minW, maxH, minH } = this.props;
 
-      // Get new XY
-      let { w, h } = this.calcWH(size);
+    // Get new XY
+    let { w, h } = this.calcWH(size);
 
-      // Cap w at numCols
-      w = Math.min(w, cols - x);
-      // Ensure w is at least 1
-      w = Math.max(w, 1);
+    // Cap w at numCols
+    w = Math.min(w, cols - x);
+    // Ensure w is at least 1
+    w = Math.max(w, 1);
 
-      // Min/max capping
-      w = Math.max(Math.min(w, maxW), minW);
-      h = Math.max(Math.min(h, maxH), minH);
+    // Min/max capping
+    w = Math.max(Math.min(w, maxW), minW);
+    h = Math.max(Math.min(h, maxH), minH);
 
-      this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
+    this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
 
-      handler.call(this, i, w, h, { e, node, size });
-    };
+    handler.call(this, i, w, h, { e, node, size });
   }
 
   render(): ReactNode {
