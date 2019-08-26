@@ -64,7 +64,8 @@ type Props = {
   onDragStop?: GridItemCallback<GridDragEvent>,
   onResize?: GridItemCallback<GridResizeEvent>,
   onResizeStart?: GridItemCallback<GridResizeEvent>,
-  onResizeStop?: GridItemCallback<GridResizeEvent>
+  onResizeStop?: GridItemCallback<GridResizeEvent>,
+  resizeHandles?: ?Array<"s" | "w" | "e" | "n" | "sw" | "nw" | "se" | "ne">
 };
 
 /**
@@ -205,8 +206,13 @@ export default class GridItem extends React.Component<Props, State> {
     };
 
     if (state && state.resizing) {
+      const oldWidth = out.width;
       out.width = Math.round(state.resizing.width);
       out.height = Math.round(state.resizing.height);
+      if (this.state.leftResize) {
+        const offset = oldWidth - out.width;
+        out.left += offset;
+      }
     }
 
     if (state && state.dragging) {
@@ -250,26 +256,28 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Number} width  Width in pixels.
    * @return {Object} w, h as grid units.
    */
-  calcWH({
+  calcNewDimensions({
     height,
     width
   }: {
     height: number,
     width: number
-  }): { w: number, h: number } {
-    const { margin, maxRows, cols, rowHeight, x, y } = this.props;
+  }): { w: number, h: number, x: number, y: number } {
+    const { margin, rowHeight } = this.props;
+    let { x, y, w } = this.props;
     const colWidth = this.calcColWidth();
+    const oldW = w;
 
     // width = colWidth * w - (margin * (w - 1))
     // ...
     // w = (width + margin) / (colWidth + margin)
-    let w = Math.round((width + margin[0]) / (colWidth + margin[0]));
-    let h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+    w = Math.round((width + margin[0]) / (colWidth + margin[0]));
+    const h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
+    // Calculate X if we
 
-    // Capping
-    w = Math.max(Math.min(w, cols - x), 0);
-    h = Math.max(Math.min(h, maxRows - y), 0);
-    return { w, h };
+    x = this.state.leftResize ? x + (oldW - w) : x;
+
+    return { w, h, x, y };
   }
 
   /**
@@ -344,10 +352,8 @@ export default class GridItem extends React.Component<Props, State> {
     const mins = this.calcPosition(0, 0, minW, minH);
     const maxes = this.calcPosition(0, 0, maxW, maxH);
     const minConstraints = [mins.width, mins.height];
-    const maxConstraints = [
-      Math.min(maxes.width, maxWidth),
-      Math.min(maxes.height, Infinity)
-    ];
+    const maxConstraints = [maxes.width, Math.min(maxes.height, Infinity)];
+
     return (
       <Resizable
         width={position.width}
@@ -357,6 +363,7 @@ export default class GridItem extends React.Component<Props, State> {
         onResizeStop={this.onResizeHandler("onResizeStop")}
         onResizeStart={this.onResizeHandler("onResizeStart")}
         onResize={this.onResizeHandler("onResize")}
+        resizeHandles={this.props.resizeHandles || ["se"]}
       >
         {child}
       </Resizable>
@@ -430,14 +437,18 @@ export default class GridItem extends React.Component<Props, State> {
   onResizeHandler(handlerName: string) {
     return (
       e: Event,
-      { node, size }: { node: HTMLElement, size: Position }
+      {
+        node,
+        size,
+        inverted
+      }: { node: HTMLElement, size: Position, inverted: boolean }
     ) => {
       const handler = this.props[handlerName];
       if (!handler) return;
-      const { cols, x, i, maxW, minW, maxH, minH } = this.props;
+      const { cols, i, maxW, minW, maxH, minH } = this.props;
 
-      // Get new XY
-      let { w, h } = this.calcWH(size);
+      // Get new WHXY
+      let { w, h, x, y } = this.calcNewDimensions(size);
 
       // Cap w at numCols
       w = Math.min(w, cols - x);
@@ -448,9 +459,14 @@ export default class GridItem extends React.Component<Props, State> {
       w = Math.max(Math.min(w, maxW), minW);
       h = Math.max(Math.min(h, maxH), minH);
 
-      this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
+      let leftResize = !!inverted;
 
-      handler.call(this, i, w, h, { e, node, size });
+      this.setState({
+        resizing: handlerName === "onResizeStop" ? null : size,
+        leftResize
+      });
+
+      handler.call(this, i, w, h, x, y, { e, node, size, leftResize });
     };
   }
 
