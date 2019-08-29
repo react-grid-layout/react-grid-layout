@@ -41,6 +41,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
+  transformScale: number,
 
   className: string,
   style?: Object,
@@ -136,6 +137,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
+    transformScale: PropTypes.number,
 
     // Others
     className: PropTypes.string,
@@ -152,7 +154,8 @@ export default class GridItem extends React.Component<Props, State> {
     minH: 1,
     minW: 1,
     maxH: Infinity,
-    maxW: Infinity
+    maxW: Infinity,
+    transformScale: 1
   };
 
   state: State = {
@@ -386,18 +389,22 @@ export default class GridItem extends React.Component<Props, State> {
           if (!offsetParent) return;
           const parentRect = offsetParent.getBoundingClientRect();
           const clientRect = node.getBoundingClientRect();
-          newPosition.left =
-            clientRect.left - parentRect.left + offsetParent.scrollLeft;
-          newPosition.top =
-            clientRect.top - parentRect.top + offsetParent.scrollTop;
+          const cLeft = clientRect.left / this.props.transformScale;
+          const pLeft = parentRect.left / this.props.transformScale;
+          const cTop = clientRect.top / this.props.transformScale;
+          const pTop = parentRect.top / this.props.transformScale;
+          newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
+          newPosition.top = cTop - pTop + offsetParent.scrollTop;
           this.setState({ dragging: newPosition });
           break;
         }
         case "onDrag":
           if (!this.state.dragging)
             throw new Error("onDrag called before onDragStart.");
-          newPosition.left = this.state.dragging.left + deltaX;
-          newPosition.top = this.state.dragging.top + deltaY;
+          newPosition.left =
+            this.state.dragging.left + deltaX / this.props.transformScale;
+          newPosition.top =
+            this.state.dragging.top + deltaY / this.props.transformScale;
           this.setState({ dragging: newPosition });
           break;
         case "onDragStop":
