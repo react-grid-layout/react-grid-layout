@@ -53,7 +53,9 @@ class ShowcaseLayout extends React.Component {
     const compactType =
       oldCompactType === "horizontal"
         ? "vertical"
-        : oldCompactType === "vertical" ? null : "horizontal";
+        : oldCompactType === "vertical"
+        ? null
+        : "horizontal";
     this.setState({ compactType });
   };
 
@@ -69,12 +71,13 @@ class ShowcaseLayout extends React.Component {
 
   render() {
     return (
-      <div>
+      <div
+        id="test-dom"
+        style={{ transform: "scale(0.4)", transformOrigin: "top left" }}
+      >
         <div>
-          Current Breakpoint: {this.state.currentBreakpoint} ({
-            this.props.cols[this.state.currentBreakpoint]
-          }{" "}
-          columns)
+          Current Breakpoint: {this.state.currentBreakpoint} (
+          {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
         <div>
           Compaction type:{" "}
@@ -94,6 +97,7 @@ class ShowcaseLayout extends React.Component {
           // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
           // and set `measureBeforeMount={true}`.
           useCSSTransforms={this.state.mounted}
+          transformScale={0.4}
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
         >
