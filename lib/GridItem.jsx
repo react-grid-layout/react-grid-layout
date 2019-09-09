@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
@@ -11,6 +12,7 @@ import type {
   ReactDraggableCallbackData,
   GridDragEvent,
   GridResizeEvent,
+  DroppingPosition,
   Position
 } from "./utils";
 
@@ -41,6 +43,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
+  droppingPosition?: DroppingPosition,
 
   className: string,
   style?: Object,
@@ -142,7 +145,12 @@ export default class GridItem extends React.Component<Props, State> {
     // Selector for draggable handle
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
-    cancel: PropTypes.string
+    cancel: PropTypes.string,
+    // Current position of a dropping element
+    droppingPosition: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired
+    })
   };
 
   static defaultProps = {
@@ -160,6 +168,42 @@ export default class GridItem extends React.Component<Props, State> {
     dragging: null,
     className: ""
   };
+
+  currentNode: HTMLElement;
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { droppingPosition } = nextProps;
+    const { dragging } = this.state;
+
+    if (!droppingPosition || !this.props.droppingPosition) {
+      return;
+    }
+
+    if (!this.currentNode) {
+      // eslint-disable-next-line react/no-find-dom-node
+      this.currentNode = ((ReactDOM.findDOMNode(this): any): HTMLElement);
+    }
+
+    if (!dragging) {
+      this.onDragHandler("onDragStart")(droppingPosition.e, {
+        node: this.currentNode,
+        deltaX: droppingPosition.x,
+        deltaY: droppingPosition.y
+      });
+    } else if (
+      (dragging && droppingPosition.x !== this.props.droppingPosition.x) ||
+      droppingPosition.y !== this.props.droppingPosition.y
+    ) {
+      const deltaX = droppingPosition.x - dragging.left;
+      const deltaY = droppingPosition.y - dragging.top;
+
+      this.onDragHandler("onDrag")(droppingPosition.e, {
+        node: this.currentNode,
+        deltaX,
+        deltaY
+      });
+    }
+  }
 
   // Helper for generating column width
   calcColWidth(): number {
@@ -462,6 +506,7 @@ export default class GridItem extends React.Component<Props, State> {
       h,
       isDraggable,
       isResizable,
+      droppingPosition,
       useCSSTransforms
     } = this.props;
 
@@ -479,6 +524,7 @@ export default class GridItem extends React.Component<Props, State> {
           resizing: Boolean(this.state.resizing),
           "react-draggable": isDraggable,
           "react-draggable-dragging": Boolean(this.state.dragging),
+          dropping: Boolean(droppingPosition),
           cssTransforms: useCSSTransforms
         }
       ),
