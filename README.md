@@ -292,6 +292,9 @@ isResizable: ?boolean = true,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
+// parent layout transform scale
+// If react-grid-layout dom's parent dom has transform scale, you should specify that key
+transformScale: ?number = 1,
 
 // If true, grid items won't change position when being
 // dragged over.
