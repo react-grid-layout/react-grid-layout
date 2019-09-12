@@ -28,7 +28,9 @@ import type {
   CompactType,
   GridResizeEvent,
   GridDragEvent,
+  DragOverEvent,
   Layout,
+  DroppingPosition,
   LayoutItem
 } from "./utils";
 
@@ -38,7 +40,9 @@ type State = {
   mounted: boolean,
   oldDragItem: ?LayoutItem,
   oldLayout: ?Layout,
-  oldResizeItem: ?LayoutItem
+  oldResizeItem: ?LayoutItem,
+  droppingDOMNode: ?ReactElement<any>,
+  droppingPosition?: DroppingPosition
 };
 
 export type Props = {
@@ -58,9 +62,11 @@ export type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  isDroppable: boolean,
   preventCollision: boolean,
   useCSSTransforms: boolean,
   transformScale: number,
+  droppingItem: $Shape<LayoutItem>,
 
   // Callbacks
   onLayoutChange: Layout => void,
@@ -70,6 +76,12 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
+  onDrop: (itemPosition: {
+    x: number,
+    y: number,
+    w: number,
+    h: number
+  }) => void,
   children: ReactChildrenArray<ReactElement<any>>
 };
 // End Types
@@ -157,6 +169,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     useCSSTransforms: PropTypes.bool,
     // parent layout transform scale
     transformScale: PropTypes.number,
+    // If true, an external element can trigger onDrop callback with a specific grid position as a parameter
+    isDroppable: PropTypes.bool,
 
     //
     // Callbacks
@@ -178,10 +192,18 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     onResize: PropTypes.func,
     // Calls when resize is complete.
     onResizeStop: PropTypes.func,
+    // Calls when some element is dropped.
+    onDrop: PropTypes.func,
 
     //
     // Other validations
     //
+
+    droppingItem: PropTypes.shape({
+      i: PropTypes.string.isRequired,
+      w: PropTypes.number.isRequired,
+      h: PropTypes.number.isRequired
+    }),
 
     // Children must not have duplicate keys.
     children: function(props: Props, propName: string) {
@@ -216,18 +238,25 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     margin: [10, 10],
     isDraggable: true,
     isResizable: true,
+    isDroppable: false,
     useCSSTransforms: true,
     transformScale: 1,
     verticalCompact: true,
     compactType: "vertical",
     preventCollision: false,
+    droppingItem: {
+      i: "__dropping-elem__",
+      h: 1,
+      w: 1
+    },
     onLayoutChange: noop,
     onDragStart: noop,
     onDrag: noop,
     onDragStop: noop,
     onResizeStart: noop,
     onResize: noop,
-    onResizeStop: noop
+    onResizeStop: noop,
+    onDrop: noop
   };
 
   state: State = {
@@ -242,7 +271,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     mounted: false,
     oldDragItem: null,
     oldLayout: null,
-    oldResizeItem: null
+    oldResizeItem: null,
+    droppingDOMNode: null
   };
 
   constructor(props: Props, context: any): void {
@@ -570,7 +600,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param  {Element} child React element.
    * @return {Element}       Element wrapped in draggable and properly placed.
    */
-  processGridItem(child: ReactElement<any>): ?ReactElement<any> {
+  processGridItem(
+    child: ReactElement<any>,
+    isDroppingItem?: boolean
+  ): ?ReactElement<any> {
     if (!child || !child.key) return;
     const l = getLayoutItem(this.state.layout, String(child.key));
     if (!l) return null;
@@ -588,7 +621,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       draggableCancel,
       draggableHandle
     } = this.props;
-    const { mounted } = this.state;
+    const { mounted, droppingPosition } = this.state;
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     const draggable = Boolean(
@@ -629,14 +662,68 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         maxH={l.maxH}
         maxW={l.maxW}
         static={l.static}
+        droppingPosition={isDroppingItem ? droppingPosition : undefined}
       >
         {child}
       </GridItem>
     );
   }
 
+  onDragOver = (e: DragOverEvent) => {
+    const { droppingItem } = this.props;
+    const { layout } = this.state;
+    const { layerX, layerY } = e.nativeEvent;
+    const droppingPosition = { x: layerX, y: layerY, e };
+
+    if (!this.state.droppingDOMNode) {
+      this.setState({
+        droppingDOMNode: <div key={droppingItem.i} />,
+        droppingPosition,
+        layout: [
+          ...layout,
+          {
+            ...droppingItem,
+            x: 0,
+            y: 0,
+            static: false,
+            isDraggable: true
+          }
+        ]
+      });
+    } else if (this.state.droppingPosition) {
+      const shouldUpdatePosition =
+        this.state.droppingPosition.x != layerX ||
+        this.state.droppingPosition.y != layerY;
+      shouldUpdatePosition && this.setState({ droppingPosition });
+    }
+
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  onDrop = () => {
+    const { droppingItem, cols } = this.props;
+    const { layout } = this.state;
+
+    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
+    const newLayout = compact(
+      layout.filter(l => l.i !== droppingItem.i),
+      this.compactType(),
+      cols
+    );
+
+    this.setState({
+      layout: newLayout,
+      droppingDOMNode: null,
+      activeDrag: null,
+      droppingPosition: undefined
+    });
+
+    this.props.onDrop({ x, y, w, h });
+  };
+
   render() {
-    const { className, style } = this.props;
+    const { className, style, isDroppable } = this.props;
 
     const mergedClassName = classNames("react-grid-layout", className);
     const mergedStyle = {
@@ -645,10 +732,18 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     };
 
     return (
-      <div className={mergedClassName} style={mergedStyle}>
+      <div
+        className={mergedClassName}
+        style={mergedStyle}
+        onDrop={isDroppable && this.onDrop}
+        onDragOver={isDroppable && this.onDragOver}
+      >
         {React.Children.map(this.props.children, child =>
           this.processGridItem(child)
         )}
+        {isDroppable &&
+          this.state.droppingDOMNode &&
+          this.processGridItem(this.state.droppingDOMNode, true)}
         {this.placeholder()}
       </div>
     );
