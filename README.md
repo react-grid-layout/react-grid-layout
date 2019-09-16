@@ -302,7 +302,9 @@ isResizable: ?boolean = true,
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
 // parent layout transform scale
-// If react-grid-layout dom's parent dom has transform scale, you should specify that key
+// if parent DOM node of ResponsiveReactGridLayout or ReactGridLayout has transform scale
+// drag GridItem will get wrong position
+// specify that key to fix it
 transformScale: ?number = 1,
 
 // If true, grid items won't change position when being
