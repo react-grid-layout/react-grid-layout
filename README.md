@@ -49,7 +49,7 @@ RGL is React-only and does not require jQuery.
 1. [Prevent Collision](https://strml.github.io/react-grid-layout/examples/12-prevent-collision.html)
 1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
-1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/16-drag-from-outside.html)
+1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html)
 
 #### Projects Using React-Grid-Layout
 
