@@ -1,7 +1,7 @@
 webpackJsonp(
-  [16],
+  [8],
   {
-    19: function(t, e, o) {
+    44: function(t, e, o) {
       "use strict";
       (function(t) {
         function e(t) {
@@ -89,17 +89,17 @@ webpackJsonp(
             };
           })(),
           u = o(0),
-          p = e(u),
-          l = o(4),
-          f = e(l),
+          l = e(u),
+          p = o(4),
+          f = e(p),
           h = o(2),
           y = (0, h.WidthProvider)(h.Responsive),
           d = (function(t) {
             function e() {
               var o, r, s;
               n(this, e);
-              for (var c = arguments.length, u = Array(c), p = 0; p < c; p++)
-                u[p] = arguments[p];
+              for (var c = arguments.length, u = Array(c), l = 0; l < c; l++)
+                u[l] = arguments[l];
               return (
                 (o = r = a(this, t.call.apply(t, [this].concat(u)))),
                 (r.state = {
@@ -174,7 +174,8 @@ webpackJsonp(
                     this.state.currentBreakpoint,
                     " (",
                     this.props.cols[this.state.currentBreakpoint],
-                    " columns)"
+                    " ",
+                    "columns)"
                   ),
                   c(
                     "div",
@@ -197,7 +198,17 @@ webpackJsonp(
                     void 0,
                     "Change Compaction Type"
                   ),
-                  p.default.createElement(
+                  c(
+                    "div",
+                    {
+                      className: "droppable-element",
+                      draggable: !0,
+                      unselectable: "on"
+                    },
+                    void 0,
+                    "Droppable Element"
+                  ),
+                  l.default.createElement(
                     y,
                     s({}, this.props, {
                       layouts: this.state.layouts,
@@ -207,7 +218,8 @@ webpackJsonp(
                       measureBeforeMount: !1,
                       useCSSTransforms: this.state.mounted,
                       compactType: this.state.compactType,
-                      preventCollision: !this.state.compactType
+                      preventCollision: !this.state.compactType,
+                      isDroppable: !0
                     }),
                     this.generateDOM()
                   )
@@ -215,7 +227,7 @@ webpackJsonp(
               }),
               e
             );
-          })(p.default.Component);
+          })(l.default.Component);
         (d.defaultProps = {
           className: "layout",
           rowHeight: 30,
@@ -228,5 +240,5 @@ webpackJsonp(
       }.call(e, o(1)(t)));
     }
   },
-  [19]
+  [44]
 );

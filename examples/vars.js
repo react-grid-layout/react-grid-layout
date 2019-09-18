@@ -130,5 +130,14 @@ module.exports = [
     paragraphs: [
       "This demonstrates how to implement a toolbox to add and remove widgets."
     ]
+  },
+  {
+    title: "Drag From Outside",
+    source: "drag-from-outside",
+    paragraphs: [
+      "This demo shows what happens when an item is added from outside of the grid.",
+      "Once you drop the item within the grid you'll get its coordinates/properties and can perform actions with " +
+        "it accordingly."
+    ]
   }
 ];

@@ -16,7 +16,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [WebpackBin Editable demo](https://www.webpackbin.com/bins/-Kvr2qCxorvGMgVMxkmI)**]
+[**[Demo](https://strml.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js)**]
 
 ## Table of Contents
 
@@ -46,6 +46,10 @@ RGL is React-only and does not require jQuery.
 1. [Minimum and Maximum Width/Height](https://strml.github.io/react-grid-layout/examples/9-min-max-wh.html)
 1. [Dynamic Minimum and Maximum Width/Height](https://strml.github.io/react-grid-layout/examples/10-dynamic-min-max-wh.html)
 1. [No Vertical Compacting (Free Movement)](https://strml.github.io/react-grid-layout/examples/11-no-vertical-compact.html)
+1. [Prevent Collision](https://strml.github.io/react-grid-layout/examples/12-prevent-collision.html)
+1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
+1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
+1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -59,6 +63,7 @@ RGL is React-only and does not require jQuery.
 - [Reflect](https://reflect.io)
 - [ez-Dashing](https://github.com/ylacaute/ez-Dashing)
 - [Kibana](https://www.elastic.co/products/kibana)
+- [Graphext](https://graphext.com/)
 
 *Know of others? Create a PR to let me know!*
 
@@ -280,6 +285,14 @@ containerPadding: ?[number, number] = margin,
 // if you like.
 rowHeight: ?number = 150,
 
+// Configuration of a dropping element. Dropping element is a "virtual" element 
+// which appears when you drag over some element from outside.
+// It can be changed by passing specific parameters:
+//  i - id of an element
+//  w - width of an element
+//  h - height of an element
+droppingItem?: { i: string, w: number, h: number }
+
 //
 // Flags
 //
@@ -292,6 +305,12 @@ useCSSTransforms: ?boolean = true,
 // If true, grid items won't change position when being
 // dragged over.
 preventCollision: ?boolean = false;
+
+// If true, droppable elements (with "droppable" attribute) 
+// can be dropped on the grid. It triggers "onDrop" callback
+// with position and event object as parameters. 
+// It can be useful for dropping an element in a specific position
+isDroppable: ?boolean = false
 
 //
 // Callbacks
@@ -319,7 +338,9 @@ onResizeStart: ItemCallback,
 // Calls when resize movement happens.
 onResize: ItemCallback,
 // Calls when resize is complete.
-onResizeStop: ItemCallback
+onResizeStop: ItemCallback,
+// Calls when some element has been dropped
+onDrop: (elemParams: { x: number, y: number, e: Event }) => void
 ```
 
 ### Responsive Grid Layout Props
@@ -403,7 +424,7 @@ will be draggable.
 
 If you have a feature request, please add it as an issue or make a pull request.
 
-If you have a bug to report, please reproduce the bug in [WebpackBin](http://www.webpackbin.com/VymTE3zWG) to help
+If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js) to help
 us easily isolate it.
 
 ## TODO List

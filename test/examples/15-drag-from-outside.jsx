@@ -88,6 +88,9 @@ class ShowcaseLayout extends React.Component {
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
         </button>
+        <div className="droppable-element" draggable={true} unselectable="on">
+          Droppable Element
+        </div>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -101,6 +104,7 @@ class ShowcaseLayout extends React.Component {
           useCSSTransforms={this.state.mounted}
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
+          isDroppable={true}
         >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>

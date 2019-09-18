@@ -1,7 +1,7 @@
 webpackJsonp(
-  [8],
+  [9],
   {
-    52: function(t, o, e) {
+    43: function(t, o, e) {
       "use strict";
       (function(t) {
         function o(t) {
@@ -180,7 +180,9 @@ webpackJsonp(
                     o =
                       "horizontal" === t
                         ? "vertical"
-                        : "vertical" === t ? null : "horizontal";
+                        : "vertical" === t
+                        ? null
+                        : "horizontal";
                   a.setState({ compactType: o });
                 }),
                 (a.onTakeItem = function(t) {
@@ -361,5 +363,5 @@ webpackJsonp(
       }.call(o, e(1)(t)));
     }
   },
-  [52]
+  [43]
 );
