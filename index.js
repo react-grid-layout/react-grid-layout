@@ -1,4 +1,5 @@
 module.exports = require('./build/ReactGridLayout').default;
+module.exports.default = module.exports;
 module.exports.utils = require('./build/utils');
 module.exports.Responsive = require('./build/ResponsiveReactGridLayout').default;
 module.exports.Responsive.utils = require('./build/responsiveUtils');
