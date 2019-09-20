@@ -301,6 +301,9 @@ isResizable: ?boolean = true,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
+// If parent DOM node of ResponsiveReactGridLayout or ReactGridLayout has "transform: scale(n)" css property,
+// we should set scale coefficient to avoid render artefacts while dragging.
+transformScale: ?number = 1,
 
 // If true, grid items won't change position when being
 // dragged over.
