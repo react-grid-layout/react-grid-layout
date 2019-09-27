@@ -40,4 +40,6 @@ module.exports = function(Layout) {
     const gridProps = window.gridProps || {};
     ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv);
   });
+
+  return ExampleLayout;
 };

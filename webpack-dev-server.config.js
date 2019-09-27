@@ -1,5 +1,6 @@
+"use strict";
 const path = require("path");
-var webpack = require("webpack");
+const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -19,18 +20,7 @@ module.exports = {
         query: {
           cacheDirectory: true,
           plugins: [
-            [
-              "react-transform",
-              {
-                transforms: [
-                  {
-                    transform: "react-transform-hmr",
-                    imports: ["react"],
-                    locals: ["module"]
-                  }
-                ]
-              }
-            ]
+            ['react-hot-loader/babel']
           ]
         }
       }
