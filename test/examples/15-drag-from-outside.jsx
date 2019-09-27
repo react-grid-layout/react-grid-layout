@@ -53,7 +53,9 @@ class ShowcaseLayout extends React.Component {
     const compactType =
       oldCompactType === "horizontal"
         ? "vertical"
-        : oldCompactType === "vertical" ? null : "horizontal";
+        : oldCompactType === "vertical"
+        ? null
+        : "horizontal";
     this.setState({ compactType });
   };
 
@@ -75,10 +77,8 @@ class ShowcaseLayout extends React.Component {
     return (
       <div>
         <div>
-          Current Breakpoint: {this.state.currentBreakpoint} ({
-            this.props.cols[this.state.currentBreakpoint]
-          }{" "}
-          columns)
+          Current Breakpoint: {this.state.currentBreakpoint} (
+          {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
         <div>
           Compaction type:{" "}
