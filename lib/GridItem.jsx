@@ -150,6 +150,7 @@ export default class GridItem extends React.Component<Props, State> {
     cancel: PropTypes.string,
     // Current position of a dropping element
     droppingPosition: PropTypes.shape({
+      e: PropTypes.object.isRequired,
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     })
