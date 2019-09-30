@@ -36,8 +36,8 @@ type Props<Breakpoint: string = string> = {
   cols: { [key: Breakpoint]: number },
   layouts: { [key: Breakpoint]: Layout },
   width: number,
-  margin: { [key: Breakpoint]: [number, number] },
-  containerPadding: { [key: Breakpoint]: [number, number] },
+  margin: { [key: Breakpoint]: [number, number] } | [number, number],
+  containerPadding: { [key: Breakpoint]: [number, number] } | [number, number],
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -73,11 +73,15 @@ export default class ResponsiveReactGridLayout extends React.Component<
 
     // # of margin. This is a breakpoint -> margin map
     // e.g. { lg: [5, 5], md: [10, 10], sm: [15, 15] }
-    margin: PropTypes.object,
+    // Margin between items [x, y] in px
+    // e.g. [10, 10]
+    margin: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 
     // # of containerPadding. This is a breakpoint -> containerPadding map
     // e.g. { lg: [5, 5], md: [10, 10], sm: [15, 15] }
-    containerPadding: PropTypes.object,
+    // Padding inside the container [x, y] in px
+    // e.g. [10, 10]
+    containerPadding: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 
     // layouts is an object mapping breakpoints to layouts.
     // e.g. {lg: Layout, md: Layout, ...}
@@ -256,14 +260,31 @@ export default class ResponsiveReactGridLayout extends React.Component<
         cols: newCols
       });
     }
+    const margin = this.getMarginPaddingValue(nextProps.margin, newBreakpoint);
+    const containerPadding = this.getMarginPaddingValue(
+      nextProps.containerPadding,
+      newBreakpoint
+    );
+
     //call onWidthChange on every change of width, not only on breakpoint changes
     this.props.onWidthChange(
       nextProps.width,
-      nextProps.margin[newBreakpoint],
+      margin,
       newCols,
-      nextProps.containerPadding[newBreakpoint]
+      containerPadding
     );
   }
+
+  /**
+   * Get a value of margin or containerPadding.
+   *
+   * @param  {Array | Object} param Margin | containerPadding, e.g. [10, 10] | {lg: [10, 10], ...}.
+   * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
+   * @return {Array}
+   */
+  getMarginPaddingValue = (param: any, breakpoint: string) => {
+    return Array.isArray(param) ? param : param[breakpoint];
+  };
 
   render() {
     /* eslint-disable no-unused-vars */
@@ -284,8 +305,11 @@ export default class ResponsiveReactGridLayout extends React.Component<
     return (
       <ReactGridLayout
         {...other}
-        margin={margin[this.state.breakpoint]}
-        containerPadding={containerPadding[this.state.breakpoint]}
+        margin={this.getMarginPaddingValue(margin, this.state.breakpoint)}
+        containerPadding={this.getMarginPaddingValue(
+          containerPadding,
+          this.state.breakpoint
+        )}
         onLayoutChange={this.onLayoutChange}
         layout={this.state.layout}
         cols={this.state.cols}
