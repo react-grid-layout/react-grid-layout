@@ -20,6 +20,18 @@ import type { Layout } from "./utils";
 
 const type = obj => Object.prototype.toString.call(obj);
 
+/**
+ * Get a value of margin or containerPadding.
+ *
+ * @param  {Array | Object} param Margin | containerPadding, e.g. [10, 10] | {lg: [10, 10], ...}.
+ * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
+ * @return {Array}
+ */
+
+function getIndentationValue(param: any, breakpoint: string) {
+  return Array.isArray(param) ? param : param[breakpoint];
+}
+
 type State = {
   layout: Layout,
   breakpoint: string,
@@ -254,8 +266,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
         cols: newCols
       });
     }
-    const margin = this.getMarginPaddingValue(nextProps.margin, newBreakpoint);
-    const containerPadding = this.getMarginPaddingValue(
+    const margin = getIndentationValue(nextProps.margin, newBreakpoint);
+    const containerPadding = getIndentationValue(
       nextProps.containerPadding,
       newBreakpoint
     );
@@ -268,17 +280,6 @@ export default class ResponsiveReactGridLayout extends React.Component<
       containerPadding
     );
   }
-
-  /**
-   * Get a value of margin or containerPadding.
-   *
-   * @param  {Array | Object} param Margin | containerPadding, e.g. [10, 10] | {lg: [10, 10], ...}.
-   * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
-   * @return {Array}
-   */
-  getMarginPaddingValue = (param: any, breakpoint: string) => {
-    return Array.isArray(param) ? param : param[breakpoint];
-  };
 
   render() {
     /* eslint-disable no-unused-vars */
@@ -299,8 +300,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
     return (
       <ReactGridLayout
         {...other}
-        margin={this.getMarginPaddingValue(margin, this.state.breakpoint)}
-        containerPadding={this.getMarginPaddingValue(
+        margin={getIndentationValue(margin, this.state.breakpoint)}
+        containerPadding={getIndentationValue(
           containerPadding,
           this.state.breakpoint
         )}
