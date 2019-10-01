@@ -28,7 +28,10 @@ const type = obj => Object.prototype.toString.call(obj);
  * @return {Array}
  */
 
-function getIndentationValue(param: any, breakpoint: string) {
+function getIndentationValue(
+  param: { [key: string]: [number, number] } | [number, number],
+  breakpoint: string
+) {
   return Array.isArray(param) ? param : param[breakpoint];
 }
 
@@ -266,6 +269,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
         cols: newCols
       });
     }
+
     const margin = getIndentationValue(nextProps.margin, newBreakpoint);
     const containerPadding = getIndentationValue(
       nextProps.containerPadding,
