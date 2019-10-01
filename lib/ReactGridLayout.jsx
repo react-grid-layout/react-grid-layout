@@ -28,13 +28,13 @@ import type {
   CompactType,
   GridResizeEvent,
   GridDragEvent,
-  DragOverEvent,
   Layout,
   DroppingPosition,
   LayoutItem
 } from "./utils";
 
 type State = {
+  id: string,
   activeDrag: ?LayoutItem,
   layout: Layout,
   mounted: boolean,
@@ -80,11 +80,12 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
-  onDrop: (itemPosition: {
+  onDrop: (dropEvent: {
     x: number,
     y: number,
     w: number,
-    h: number
+    h: number,
+    dataTransfer: Object
   }) => void,
   children: ReactChildrenArray<ReactElement<any>>
 };
@@ -94,6 +95,16 @@ const compactType = (props: Props): CompactType => {
   const { verticalCompact, compactType } = props || {};
 
   return verticalCompact === false ? null : compactType;
+};
+
+// https://gist.github.com/gordonbrander/2230317
+const generateID = (): string => {
+  return (
+    "_" +
+    Math.random()
+      .toString(36)
+      .substr(2, 9)
+  );
 };
 
 /**
@@ -270,6 +281,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   };
 
   state: State = {
+    id: "reactGrid" + generateID(),
     activeDrag: null,
     layout: synchronizeLayoutWithChildren(
       this.props.layout,
@@ -303,6 +315,17 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Possibly call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
+
+    // Add drag & drop events manually on the created DOM, rather than using react's event model.  This may
+    // help avoid conflicts.
+    (document.getElementById(this.state.id): any).ondrop = this.props
+      .isDroppable
+      ? this.onDrop
+      : noop;
+    (document.getElementById(this.state.id): any).ondragover = this.props
+      .isDroppable
+      ? this.onDragOver
+      : noop;
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -698,10 +721,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
-  onDragOver = (e: DragOverEvent) => {
+  onDragOver = (e: any) => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
-    const { layerX, layerY } = e.nativeEvent;
+    const { layerX, layerY } = e;
     const droppingPosition = { x: layerX, y: layerY, e };
 
     if (!this.state.droppingDOMNode) {
@@ -730,7 +753,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     e.preventDefault();
   };
 
-  onDrop = () => {
+  onDrop = (evt: any) => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;
 
@@ -748,7 +771,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       droppingPosition: undefined
     });
 
-    this.props.onDrop({ x, y, w, h });
+    var dataTransfer = evt.dataTransfer;
+
+    this.props.onDrop({ x, y, w, h, dataTransfer });
   };
 
   render() {
@@ -761,12 +786,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     };
 
     return (
-      <div
-        className={mergedClassName}
-        style={mergedStyle}
-        onDrop={isDroppable ? this.onDrop : noop}
-        onDragOver={isDroppable ? this.onDragOver : noop}
-      >
+      <div id={this.state.id} className={mergedClassName} style={mergedStyle}>
         {React.Children.map(this.props.children, child =>
           this.processGridItem(child)
         )}
