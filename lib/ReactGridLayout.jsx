@@ -469,8 +469,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       compactType(this.props),
       cols
     );
-
-    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    if (this.state.activeDrag) {
+      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    }
 
     // Set state
     const newLayout = compact(layout, compactType(this.props), cols);
