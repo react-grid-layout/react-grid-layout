@@ -45,6 +45,7 @@ type Props = {
   usePercentages?: boolean,
   transformScale: number,
   droppingPosition?: DroppingPosition,
+  enableUserSelectHack?: boolean,
 
   className: string,
   style?: Object,
@@ -153,7 +154,9 @@ export default class GridItem extends React.Component<Props, State> {
       e: PropTypes.object.isRequired,
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
-    })
+    }),
+
+    enableUserSelectHack: PropTypes.bool
   };
 
   static defaultProps = {
@@ -364,6 +367,8 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Element}          Child wrapped in Draggable.
    */
   mixinDraggable(child: ReactElement<any>): ReactElement<any> {
+    const { enableUserSelectHack } = this.props;
+
     return (
       <DraggableCore
         onStart={this.onDragStart}
@@ -374,6 +379,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
+        enableUserSelectHack={enableUserSelectHack}
       >
         {child}
       </DraggableCore>
@@ -390,7 +396,15 @@ export default class GridItem extends React.Component<Props, State> {
     child: ReactElement<any>,
     position: Position
   ): ReactElement<any> {
-    const { cols, x, minW, minH, maxW, maxH } = this.props;
+    const {
+      cols,
+      x,
+      minW,
+      minH,
+      maxW,
+      maxH,
+      enableUserSelectHack
+    } = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
     const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
@@ -412,6 +426,9 @@ export default class GridItem extends React.Component<Props, State> {
         onResizeStop={this.onResizeStop}
         onResizeStart={this.onResizeStart}
         onResize={this.onResize}
+        draggableOpts={{
+          enableUserSelectHack
+        }}
       >
         {child}
       </Resizable>
