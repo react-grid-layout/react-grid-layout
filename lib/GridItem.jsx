@@ -7,6 +7,7 @@ import { Resizable } from "react-resizable";
 import { perc, setTopLeft, setTransform } from "./utils";
 import { calcPosition, calcXY, calcWH } from "./calculateUtils";
 import classNames from "classnames";
+import isEqual from "lodash.isequal";
 import type { Element as ReactElement, Node as ReactNode } from "react";
 
 import type {
@@ -177,6 +178,27 @@ export default class GridItem extends React.Component<Props, State> {
   };
 
   currentNode: HTMLElement;
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    const oldPosition = this.calcPosition(
+      this.props.x,
+      this.props.y,
+      this.props.w,
+      this.props.h,
+      this.state
+    );
+    const newPosition = this.calcPosition(
+      nextProps.x,
+      nextProps.y,
+      nextProps.w,
+      nextProps.h,
+      nextState
+    );
+    return (
+      !isEqual(oldPosition, newPosition) ||
+      !isEqual(this.props.useCSSTransforms, nextProps.useCSSTransforms)
+    );
+  }
 
   componentDidUpdate(prevProps: Props) {
     this.moveDroppingItem(prevProps);

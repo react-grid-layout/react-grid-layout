@@ -7,7 +7,8 @@ import {
   validateLayout,
   moveElement,
   compact,
-  sortLayoutItemsByRowCol
+  sortLayoutItemsByRowCol,
+  pick
 } from "../../lib/utils.js";
 /*:: import type { Layout } from "../../lib/utils.js"; */
 
@@ -415,3 +416,38 @@ describe("compact horizontal", () => {
     ]);
   });
 });
+
+describe('pick', () => {
+  const pickedObj = {
+    key1: 'value1',
+    key2: 'value2',
+    key3: 'value3',
+    key4: 'value4',
+    key5: 'value5'
+  };
+
+  it('picks certain keys from an object and creates a new one from those keys', () => {
+    const pickedKeys = ['key2', 'key5'];
+    const equalsObj = {
+      key2: 'value2',
+      key5: 'value5',
+    };
+
+    expect(pick(pickedKeys, pickedObj)).toEqual(equalsObj);
+  });
+
+  it('excludes a specific key from an object and creates a new object without this key', () => {
+    const includedKeys = ['key3', 'key1'];
+    const excludedKey = 'key2';
+
+    expect(pick(includedKeys, pickedObj)[excludedKey]).toBeUndefined();
+  });
+
+  it('picks certain keys from the object and creates a new object with these keys and checks for the presence of these keys', () => {
+    const includedKeys = ['key3', 'key1'];
+    const includedKey = 'key3';
+    const includedValue = 'value3';
+
+    expect(pick(includedKeys, pickedObj)[includedKey]).toBe(includedValue);
+  });
+})
