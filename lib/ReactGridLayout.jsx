@@ -96,6 +96,9 @@ const compactType = (props: Props): CompactType => {
   return verticalCompact === false ? null : compactType;
 };
 
+const layoutClassName = "react-grid-layout";
+const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
  */
@@ -700,6 +703,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   onDragOver = (e: DragOverEvent) => {
+    // we should ignore events from layout's children in Firefox
+    // to avoid unpredictable jumping of a dropping placeholder
+    if (
+      isFirefox &&
+      !e.nativeEvent.target.className.includes(layoutClassName)
+    ) {
+      return false;
+    }
+
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { layerX, layerY } = e.nativeEvent;
@@ -755,7 +767,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   render() {
     const { className, style, isDroppable } = this.props;
 
-    const mergedClassName = classNames("react-grid-layout", className);
+    const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
       height: this.containerHeight(),
       ...style
