@@ -43,6 +43,7 @@
     "react-resizable": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.6.3",
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-transform-flow-comments": "^7.6.0",
