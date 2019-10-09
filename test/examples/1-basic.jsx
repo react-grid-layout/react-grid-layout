@@ -61,6 +61,6 @@ export default class BasicLayout extends React.PureComponent {
   }
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(BasicLayout);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("test/test-hook.jsx").then((fn) => fn.default(BasicLayout));
 }

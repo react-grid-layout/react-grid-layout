@@ -37,7 +37,9 @@ module.exports = {
   devServer: {
     publicPath: "/",
     compress: true,
-    port: 4002
+    port: 4002,
+    open: true,
+    contentBase: '.',
   },
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".jsx"],

@@ -21,9 +21,9 @@ module.exports = {
     }
   },
   output: {
-      path: __dirname + "/dist",
-      filename: "[name].js",
-      sourceMapFilename: "[file].map",
+    path: __dirname + "/dist",
+    filename: "[name].js",
+    sourceMapFilename: "[file].map",
   },
   module: {
     rules: [
@@ -35,12 +35,21 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
+        NODE_ENV: JSON.stringify("production"),
+        // sigil to load self into #content
+        STATIC_EXAMPLES: JSON.stringify(true),
+      },
     })
   ],
+  devServer: {
+    port: 4002,
+    open: true,
+    openPage: 'examples/0-showcase.html',
+    contentBase: '.',
+    publicPath: '/examples/'
+  },
   resolve: {
-    extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
+    extensions: [".js", ".jsx"],
     alias: { "react-grid-layout": __dirname + "/index-dev.js" }
   }
 };

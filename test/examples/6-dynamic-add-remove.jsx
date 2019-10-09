@@ -117,6 +117,6 @@ export default class AddRemoveLayout extends React.PureComponent {
   }
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(AddRemoveLayout);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("test/test-hook.jsx").then((fn) => fn.default(AddRemoveLayout));
 }

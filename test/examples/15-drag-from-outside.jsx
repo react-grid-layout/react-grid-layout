@@ -136,6 +136,6 @@ function generateLayout() {
   });
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(DragFromOutsideLayout);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("test/test-hook.jsx").then((fn) => fn.default(DragFromOutsideLayout));
 }

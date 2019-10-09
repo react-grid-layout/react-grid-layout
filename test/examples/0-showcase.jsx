@@ -123,6 +123,6 @@ function generateLayout() {
   });
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(ShowcaseLayout);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then((fn) => fn.default(ShowcaseLayout));
 }

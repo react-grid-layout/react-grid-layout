@@ -35,11 +35,16 @@ export default function makeLayout(Layout) {
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
+  function run() {
     const contentDiv = document.getElementById("content");
     const gridProps = window.gridProps || {};
     ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv);
-  });
+  }
+  if (!document.getElementById("content")) {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
 
   return ExampleLayout;
 }

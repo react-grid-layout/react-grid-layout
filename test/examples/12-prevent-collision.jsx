@@ -65,6 +65,6 @@ export default class NoCollisionLayout extends React.PureComponent {
   }
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(NoCollisionLayout);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("test/test-hook.jsx").then((fn) => fn.default(NoCollisionLayout));
 }

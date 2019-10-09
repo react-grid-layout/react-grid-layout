@@ -79,6 +79,6 @@ const ReactGridLayout = WidthProvider(RGL);
   }
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(DynamicMinMaxLayout);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("test/test-hook.jsx").then((fn) => fn.default(DynamicMinMaxLayout));
 }
