@@ -63,7 +63,7 @@
     "eslint-plugin-react": "^7.6.1",
     "exports-loader": "^0.7.0",
     "flow-bin": "^0.107.0",
-    "husky": "^0.14.3",
+    "husky": "^3.0.8",
     "imports-loader": "^0.7.1",
     "jest-cli": "^22.3.0",
     "lint-staged": "^6.1.0",
