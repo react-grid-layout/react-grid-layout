@@ -52,6 +52,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "babel-plugin-espower": "^3.0.1",
     "css-loader": "^3.2.0",
     "ejs": "^2.7.1",
     "eslint": "^6.4.0",
