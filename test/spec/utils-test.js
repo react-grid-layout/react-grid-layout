@@ -13,7 +13,10 @@ import {
 
 /*:: declare function describe(name: string, fn: Function): void; */
 /*:: declare function it(name: string, fn: Function): void; */
-/*:: declare function expect(any): any; */
+/*:: declare var expect: {
+  (any): any,
+  objectContaining(params: any): any
+}; */
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
@@ -398,14 +401,14 @@ describe("compact horizontal", () => {
   it("Handles recursive collision by moving new collisions out of the way before moving item to the right", () => {
     const layout = [
       { y: 0, x: 0, h: 2, w: 5, i: "1" },
-      { y: 0, x: 0, h: 10, w: 1, i: "2" },
+      { y: 1, x: 0, h: 10, w: 1, i: "2" },
       { y: 5, x: 1, h: 1, w: 1, i: "3" },
       { y: 5, x: 2, h: 1, w: 1, i: "4" },
       { y: 5, x: 2, h: 1, w: 1, i: "5", static: true }
     ];
     expect(compact(layout, "horizontal", 10)).toEqual([
       { y: 0, x: 0, h: 2, w: 5, i: "1", moved: false, static: false },
-      { y: 0, x: 5, h: 10, w: 1, i: "2", moved: false, static: false },
+      { y: 1, x: 5, h: 10, w: 1, i: "2", moved: false, static: false },
       { y: 5, x: 6, h: 1, w: 1, i: "3", moved: false, static: false },
       { y: 5, x: 7, h: 1, w: 1, i: "4", moved: false, static: false },
       { y: 5, x: 2, h: 1, w: 1, i: "5", moved: false, static: true }

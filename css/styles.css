@@ -20,6 +20,10 @@
   will-change: transform;
 }
 
+.react-grid-item.dropping {
+  visibility: hidden;
+}
+
 .react-grid-item.react-grid-placeholder {
   background: red;
   opacity: 0.2;
