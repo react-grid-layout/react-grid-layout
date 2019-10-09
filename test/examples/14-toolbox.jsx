@@ -34,7 +34,7 @@ class ToolBox extends React.Component {
   }
 }
 
-class ShowcaseLayout extends React.Component {
+export default class ToolboxLayout extends React.Component {
   static defaultProps = {
     className: "layout",
     rowHeight: 30,
@@ -191,8 +191,6 @@ class ShowcaseLayout extends React.Component {
   }
 }
 
-module.exports = ShowcaseLayout;
-
 function generateLayout() {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
@@ -208,5 +206,5 @@ function generateLayout() {
 }
 
 if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+  require("../test-hook.jsx")(ToolboxLayout);
 }

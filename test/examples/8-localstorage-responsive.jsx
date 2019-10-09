@@ -7,7 +7,7 @@ const originalLayouts = getFromLS("layouts") || {};
 /**
  * This layout demonstrates how to sync multiple responsive layouts to localstorage.
  */
-class ResponsiveLocalStorageLayout extends React.PureComponent {
+export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -67,8 +67,6 @@ class ResponsiveLocalStorageLayout extends React.PureComponent {
   }
 }
 
-module.exports = ResponsiveLocalStorageLayout;
-
 function getFromLS(key) {
   let ls = {};
   if (global.localStorage) {
@@ -93,5 +91,5 @@ function saveToLS(key, value) {
 }
 
 if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+  require("../test-hook.jsx")(ResponsiveLocalStorageLayout);
 }

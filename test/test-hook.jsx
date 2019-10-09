@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-require("style-loader!css-loader!../css/styles.css");
-require("style-loader!css-loader!../examples/example-styles.css");
+import "style-loader!css-loader!../css/styles.css";
+import "style-loader!css-loader!../examples/example-styles.css";
 typeof window !== "undefined" && (window.React = React); // for devtools
 
-module.exports = function(Layout) {
+export default function makeLayout(Layout) {
   class ExampleLayout extends React.Component {
     state = { layout: [] };
 
@@ -42,4 +42,4 @@ module.exports = function(Layout) {
   });
 
   return ExampleLayout;
-};
+}

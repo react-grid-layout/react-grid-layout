@@ -4,7 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class GridPropertyLayout extends React.PureComponent {
+export default class GridPropertyLayout extends React.PureComponent {
   static defaultProps = {
     isDraggable: true,
     isResizable: true,
@@ -54,8 +54,6 @@ class GridPropertyLayout extends React.PureComponent {
   }
 }
 
-module.exports = GridPropertyLayout;
-
 if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+  require("../test-hook.jsx")(GridPropertyLayout);
 }

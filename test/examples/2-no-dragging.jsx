@@ -4,7 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class NoDraggingLayout extends React.PureComponent {
+export default class NoDraggingLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     isDraggable: false,
@@ -63,8 +63,6 @@ class NoDraggingLayout extends React.PureComponent {
   }
 }
 
-module.exports = NoDraggingLayout;
-
 if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+  require("../test-hook.jsx")(NoDraggingLayout);
 }
