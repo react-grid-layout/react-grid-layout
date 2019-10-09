@@ -13,7 +13,10 @@ import {
 
 /*:: declare function describe(name: string, fn: Function): void; */
 /*:: declare function it(name: string, fn: Function): void; */
-/*:: declare function expect(any): any; */
+/*:: declare var expect: {
+  (any): any,
+  objectContaining(params: any): any
+}; */
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
