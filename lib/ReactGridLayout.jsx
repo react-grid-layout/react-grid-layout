@@ -69,6 +69,7 @@ export type Props = {
   isDroppable: boolean,
   preventCollision: boolean,
   useCSSTransforms: boolean,
+  transformScale: number,
   droppingItem: $Shape<LayoutItem>,
 
   // Callbacks
@@ -94,6 +95,9 @@ const compactType = (props: Props): CompactType => {
 
   return verticalCompact === false ? null : compactType;
 };
+
+const layoutClassName = "react-grid-layout";
+const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
 
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
@@ -176,6 +180,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     preventCollision: PropTypes.bool,
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool,
+    // parent layout transform scale
+    transformScale: PropTypes.number,
     // If true, an external element can trigger onDrop callback with a specific grid position as a parameter
     isDroppable: PropTypes.bool,
 
@@ -247,6 +253,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isResizable: true,
     isDroppable: false,
     useCSSTransforms: true,
+    transformScale: 1,
     verticalCompact: true,
     compactType: "vertical",
     preventCollision: false,
@@ -465,8 +472,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       compactType(this.props),
       cols
     );
-
-    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    if (this.state.activeDrag) {
+      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    }
 
     // Set state
     const newLayout = compact(layout, compactType(this.props), cols);
@@ -591,7 +599,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       containerPadding,
       rowHeight,
       maxRows,
-      useCSSTransforms
+      useCSSTransforms,
+      transformScale
     } = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
@@ -612,6 +621,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isDraggable={false}
         isResizable={false}
         useCSSTransforms={useCSSTransforms}
+        transformScale={transformScale}
       >
         <div />
       </GridItem>
@@ -640,6 +650,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isDraggable,
       isResizable,
       useCSSTransforms,
+      transformScale,
       draggableCancel,
       draggableHandle
     } = this.props;
@@ -673,6 +684,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isResizable={resizable}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
+        transformScale={transformScale}
         w={l.w}
         h={l.h}
         x={l.x}
@@ -691,6 +703,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   onDragOver = (e: DragOverEvent) => {
+    // we should ignore events from layout's children in Firefox
+    // to avoid unpredictable jumping of a dropping placeholder
+    if (
+      isFirefox &&
+      !e.nativeEvent.target.className.includes(layoutClassName)
+    ) {
+      return false;
+    }
+
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { layerX, layerY } = e.nativeEvent;
@@ -746,7 +767,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   render() {
     const { className, style, isDroppable } = this.props;
 
-    const mergedClassName = classNames("react-grid-layout", className);
+    const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
       height: this.containerHeight(),
       ...style

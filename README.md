@@ -64,6 +64,7 @@ RGL is React-only and does not require jQuery.
 - [ez-Dashing](https://github.com/ylacaute/ez-Dashing)
 - [Kibana](https://www.elastic.co/products/kibana)
 - [Graphext](https://graphext.com/)
+- [Quadency](https://quadency.com/)
 
 *Know of others? Create a PR to let me know!*
 
@@ -301,15 +302,24 @@ isResizable: ?boolean = true,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
+// If parent DOM node of ResponsiveReactGridLayout or ReactGridLayout has "transform: scale(n)" css property,
+// we should set scale coefficient to avoid render artefacts while dragging.
+transformScale: ?number = 1,
 
 // If true, grid items won't change position when being
 // dragged over.
 preventCollision: ?boolean = false;
 
-// If true, droppable elements (with "droppable" attribute) 
+// If true, droppable elements (with `draggable={true}` attribute) 
 // can be dropped on the grid. It triggers "onDrop" callback
 // with position and event object as parameters. 
 // It can be useful for dropping an element in a specific position
+//
+// NOTE: In case of using Firefox you should add
+// `onDragStart={e => e.dataTransfer.setData('text/plain', '')}` attribute
+// along with `draggable={true}` otherwise this feature will work incorrect.
+// onDragStart attribute is required for Firefox for a dragging initialization
+// @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
 isDroppable: ?boolean = false
 
 //
@@ -355,6 +365,15 @@ breakpoints: ?Object = {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0},
 
 // # of cols. This is a breakpoint -> cols map, e.g. {lg: 12, md: 10, ...}
 cols: ?Object = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
+
+
+// margin (in pixels). Can be specified either as horizontal and vertical margin, e.g. `[10, 10]` or as a breakpoint -> margin map, e.g. `{lg: [10, 10], md: [10, 10], ...}.
+margin: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]}
+
+
+// containerPadding (in pixels). Can be specified either as horizontal and vertical padding, e.g. `[10, 10]` or as a breakpoint -> containerPadding map, e.g. `{lg: [10, 10], md: [10, 10], ...}.
+containerPadding: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]}
+
 
 // layouts is an object mapping breakpoints to layouts.
 // e.g. {lg: Layout, md: Layout, ...}

@@ -4,9 +4,21 @@ var fs = require("fs");
 
 // Builds example bundles
 module.exports = {
+  mode: "development",
   context: __dirname,
   entry: {
     commons: ["lodash"]
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: "commons",
+          chunks: "initial",
+          minChunks: 2
+        }
+      }
+    }
   },
   output: {
     path: __dirname + "/dist",
@@ -14,7 +26,7 @@ module.exports = {
     sourceMapFilename: "[file].map"
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -34,12 +46,7 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify("production")
       }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "commons",
-      filename: "commons.js"
-    }),
-    new webpack.optimize.UglifyJsPlugin()
+    })
   ],
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
