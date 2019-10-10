@@ -21,7 +21,7 @@ module.exports = {
     }
   },
   output: {
-    path: __dirname + "/dist",
+    path: __dirname + "/examples",
     filename: "[name].js",
     sourceMapFilename: "[file].map"
   },
