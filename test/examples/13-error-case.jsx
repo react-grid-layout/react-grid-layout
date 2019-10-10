@@ -77,5 +77,5 @@ export default class ErrorCaseLayout extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("test/test-hook.jsx").then((fn) => fn.default(ErrorCaseLayout));
+  import("../test-hook.jsx").then((fn) => fn.default(ErrorCaseLayout));
 }

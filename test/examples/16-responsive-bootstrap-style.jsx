@@ -40,5 +40,5 @@ export default class BootstrapStyleLayout extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("test/test-hook.jsx").then((fn) => fn.default(BootstrapStyleLayout));
+  import("../test-hook.jsx").then((fn) => fn.default(BootstrapStyleLayout));
 }

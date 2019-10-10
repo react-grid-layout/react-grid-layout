@@ -80,5 +80,5 @@ const ReactGridLayout = WidthProvider(RGL);
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("test/test-hook.jsx").then((fn) => fn.default(DynamicMinMaxLayout));
+  import("../test-hook.jsx").then((fn) => fn.default(DynamicMinMaxLayout));
 }

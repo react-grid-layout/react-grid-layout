@@ -63,5 +63,5 @@ export default class MessyLayout extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("test/test-hook.jsx").then((fn) => fn.default(MessyLayout));
+  import("../test-hook.jsx").then((fn) => fn.default(MessyLayout));
 }
