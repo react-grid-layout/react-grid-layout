@@ -32,12 +32,15 @@ dist/%.min.js: $(LIB) $(BIN)
 build-js:
 	@$(BIN)/babel --out-dir $(BUILD) $(LIB)
 
+# Will build for use on github pages. Full url of page is
+# https://strml.github.io/react-grid-layout/examples/0-showcase.html
+# so the CONTENT_BASE should adapt.
 build-example:
 	@$(BIN)/webpack --config webpack-examples.config.js
-	node ./examples/generate.js
+	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
 
 view-example:
-	node ./examples/generate.js
+	env CONTENT_BASE="/examples/" node ./examples/generate.js
 	@$(BIN)/webpack-dev-server --config webpack-examples.config.js --progress --colors 
 
 # FIXME flow is usually global
