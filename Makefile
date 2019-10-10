@@ -18,7 +18,8 @@ clean:
 	rm -rf $(BUILD) $(DIST)
 
 dev:
-	@$(BIN)/webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --open --content-base .
+	@$(BIN)/webpack-dev-server --config webpack-dev-server.config.js \
+	  --hot --progress --colors 
 
 # Allows usage of `make install`, `make link`
 install link:
@@ -28,23 +29,21 @@ install link:
 dist/%.min.js: $(LIB) $(BIN)
 	@$(BIN)/webpack
 
-# find/exec is more cross-platform compatible than `rename`
 build-js:
-	@$(BIN)/babel --stage 0 --out-dir $(BUILD) $(LIB)
+	@$(BIN)/babel --out-dir $(BUILD) $(LIB)
 
 build-example:
 	@$(BIN)/webpack --config webpack-examples.config.js
 	node ./examples/generate.js
 
-view-example: build-example
-	@$(BIN)/opener examples/0-showcase.html
-
+view-example:
+	node ./examples/generate.js
+	@$(BIN)/webpack-dev-server --config webpack-examples.config.js --progress --colors 
 
 # FIXME flow is usually global
 lint:
 	@$(BIN)/flow
 	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
-	@$(BIN)/valiquire $(LIB)
 
 test:
 	@$(BIN)/jest

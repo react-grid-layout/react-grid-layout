@@ -4,7 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class MinMaxLayout extends React.PureComponent {
+export default class MinMaxLayout extends React.PureComponent {
   static defaultProps = {
     isDraggable: true,
     isResizable: true,
@@ -65,8 +65,6 @@ class MinMaxLayout extends React.PureComponent {
   }
 }
 
-module.exports = MinMaxLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(MinMaxLayout));
 }
