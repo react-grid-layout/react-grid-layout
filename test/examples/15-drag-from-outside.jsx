@@ -137,5 +137,5 @@ function generateLayout() {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(DragFromOutsideLayout));
+  import("../test-hook.jsx").then(fn => fn.default(DragFromOutsideLayout));
 }

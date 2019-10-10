@@ -124,5 +124,5 @@ function generateLayout() {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(ShowcaseLayout));
+  import("../test-hook.jsx").then(fn => fn.default(ShowcaseLayout));
 }

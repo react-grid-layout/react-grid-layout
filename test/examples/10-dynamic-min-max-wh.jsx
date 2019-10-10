@@ -10,7 +10,7 @@ const ReactGridLayout = WidthProvider(RGL);
  * In this grid, all elements are allowed a max width of 2 if the height < 3,
  * and a min width of 2 if the height >= 3.
  */
- export default class DynamicMinMaxLayout extends React.PureComponent {
+export default class DynamicMinMaxLayout extends React.PureComponent {
   static defaultProps = {
     isDraggable: true,
     isResizable: true,
@@ -80,5 +80,5 @@ const ReactGridLayout = WidthProvider(RGL);
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(DynamicMinMaxLayout));
+  import("../test-hook.jsx").then(fn => fn.default(DynamicMinMaxLayout));
 }

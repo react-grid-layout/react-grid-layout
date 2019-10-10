@@ -91,5 +91,7 @@ function saveToLS(key, value) {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(ResponsiveLocalStorageLayout));
+  import("../test-hook.jsx").then(fn =>
+    fn.default(ResponsiveLocalStorageLayout)
+  );
 }

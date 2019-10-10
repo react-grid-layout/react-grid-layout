@@ -55,5 +55,5 @@ export default class GridPropertyLayout extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(GridPropertyLayout));
+  import("../test-hook.jsx").then(fn => fn.default(GridPropertyLayout));
 }

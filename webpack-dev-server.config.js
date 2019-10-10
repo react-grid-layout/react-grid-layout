@@ -19,9 +19,7 @@ module.exports = {
         loader: "babel-loader",
         query: {
           cacheDirectory: true,
-          plugins: [
-            ['react-hot-loader/babel']
-          ]
+          plugins: [["react-hot-loader/babel"]]
         }
       }
     ]
@@ -39,7 +37,7 @@ module.exports = {
     compress: true,
     port: 4002,
     open: true,
-    contentBase: '.',
+    contentBase: "."
   },
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".jsx"],

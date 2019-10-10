@@ -64,5 +64,5 @@ export default class NoCompactingLayout extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(NoCompactingLayout));
+  import("../test-hook.jsx").then(fn => fn.default(NoCompactingLayout));
 }

@@ -59,5 +59,5 @@ export default class StaticElementsLayout extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then((fn) => fn.default(StaticElementsLayout));
+  import("../test-hook.jsx").then(fn => fn.default(StaticElementsLayout));
 }

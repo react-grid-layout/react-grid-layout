@@ -26,20 +26,20 @@ module.exports = {
       root: "React"
     },
     "react-dom": {
-      "commonjs": "react-dom",
-      "commonjs2": "react-dom",
-      "amd": "react-dom",
-      "root": "ReactDOM"
+      commonjs: "react-dom",
+      commonjs2: "react-dom",
+      amd: "react-dom",
+      root: "ReactDOM"
     }
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/, 
-        exclude: /node_modules/, 
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         loader: "babel-loader",
         query: {
-          cacheDirectory: true,
+          cacheDirectory: true
         }
       }
     ]
