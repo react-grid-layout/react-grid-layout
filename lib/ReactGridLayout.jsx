@@ -289,6 +289,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     children: []
   };
 
+  dragEnterCounter = 0;
+
   constructor(props: Props, context: any): void {
     super(props, context);
     autoBindHandlers(this, [
@@ -743,11 +745,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     e.preventDefault();
   };
 
-  onDrop = () => {
+  removeDroppingPlaceholder = () => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;
 
-    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
     const newLayout = compact(
       layout.filter(l => l.i !== droppingItem.i),
       compactType(this.props),
@@ -760,6 +761,34 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       droppingPosition: undefined
     });
+  };
+
+  onDragLeave = () => {
+    this.dragEnterCounter--;
+
+    // onDragLeave can be triggered on each layout's child.
+    // But we know that count of dragEnter and dragLeave events
+    // will be balanced after leaving the layout's container
+    // so we can increase and decrease count of dragEnter and
+    // when it'll be equal to 0 we'll remove the placeholder
+    if (this.dragEnterCounter === 0) {
+      this.removeDroppingPlaceholder();
+    }
+  };
+
+  onDragEnter = () => {
+    this.dragEnterCounter++;
+  };
+
+  onDrop = () => {
+    const { droppingItem } = this.props;
+    const { layout } = this.state;
+    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
+
+    // reset gragEnter counter on drop
+    this.dragEnterCounter = 0;
+
+    this.removeDroppingPlaceholder();
 
     this.props.onDrop({ x, y, w, h });
   };
@@ -778,6 +807,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         className={mergedClassName}
         style={mergedStyle}
         onDrop={isDroppable ? this.onDrop : noop}
+        onDragLeave={isDroppable ? this.onDragLeave : noop}
+        onDragEnter={isDroppable ? this.onDragEnter : noop}
         onDragOver={isDroppable ? this.onDragOver : noop}
       >
         {React.Children.map(this.props.children, child =>
