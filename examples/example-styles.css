@@ -1,7 +1,5 @@
 body {
-  background: white;
   padding: 20px;
-  overflow: scroll;
 }
 #content {
   width: 100%;
@@ -55,10 +53,6 @@ body {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
-}
-li b {
-  font-size: 19px;
-  line-height: 14px;
 }
 
 .toolbox {

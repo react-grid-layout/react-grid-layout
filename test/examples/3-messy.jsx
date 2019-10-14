@@ -4,7 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class MessyLayout extends React.PureComponent {
+export default class MessyLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     items: 20,
@@ -62,8 +62,6 @@ class MessyLayout extends React.PureComponent {
   }
 }
 
-module.exports = MessyLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(MessyLayout));
 }

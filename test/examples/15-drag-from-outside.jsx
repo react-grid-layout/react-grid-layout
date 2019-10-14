@@ -3,7 +3,7 @@ import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-class ShowcaseLayout extends React.Component {
+export default class DragFromOutsideLayout extends React.Component {
   static defaultProps = {
     className: "layout",
     rowHeight: 30,
@@ -88,7 +88,16 @@ class ShowcaseLayout extends React.Component {
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
         </button>
-        <div className="droppable-element" draggable={true} unselectable="on">
+        <div
+          className="droppable-element"
+          draggable={true}
+          unselectable="on"
+          // this is a hack for firefox
+          // Firefox requires some kind of initialization
+          // which we can do by adding this attribute
+          // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
+          onDragStart={e => e.dataTransfer.setData("text/plain", "")}
+        >
           Droppable Element
         </div>
         <ResponsiveReactGridLayout
@@ -113,8 +122,6 @@ class ShowcaseLayout extends React.Component {
   }
 }
 
-module.exports = ShowcaseLayout;
-
 function generateLayout() {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
@@ -129,6 +136,6 @@ function generateLayout() {
   });
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(DragFromOutsideLayout));
 }

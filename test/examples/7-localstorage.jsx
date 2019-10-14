@@ -6,7 +6,7 @@ const originalLayout = getFromLS("layout") || [];
 /**
  * This layout demonstrates how to sync to localstorage.
  */
-class LocalStorageLayout extends React.PureComponent {
+export default class LocalStorageLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     cols: 12,
@@ -91,8 +91,6 @@ function saveToLS(key, value) {
   }
 }
 
-module.exports = LocalStorageLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(LocalStorageLayout));
 }

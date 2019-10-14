@@ -107,6 +107,9 @@ const generateID = (): string => {
   );
 };
 
+const layoutClassName = "react-grid-layout";
+const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
  */
@@ -298,6 +301,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     children: []
   };
 
+  dragEnterCounter = 0;
+
   constructor(props: Props, context: any): void {
     super(props, context);
     autoBindHandlers(this, [
@@ -325,6 +330,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     (document.getElementById(this.state.id): any).ondragover = this.props
       .isDroppable
       ? this.onDragOver
+      : noop;
+    (document.getElementById(this.state.id): any).ondragleave = this.props
+      .isDroppable
+      ? this.onDragLeave
+      : noop;
+    (document.getElementById(this.state.id): any).ondragenter = this.props
+      .isDroppable
+      ? this.onDragEnter
       : noop;
   }
 
@@ -492,8 +505,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       compactType(this.props),
       cols
     );
-
-    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    if (this.state.activeDrag) {
+      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+    }
 
     // Set state
     const newLayout = compact(layout, compactType(this.props), cols);
@@ -722,6 +736,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   onDragOver = (e: any) => {
+    // we should ignore events from layout's children in Firefox
+    // to avoid unpredictable jumping of a dropping placeholder
+    if (
+      isFirefox &&
+      !e.nativeEvent.target.className.includes(layoutClassName)
+    ) {
+      return false;
+    }
+
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { layerX, layerY } = e;
@@ -753,11 +776,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     e.preventDefault();
   };
 
-  onDrop = (evt: any) => {
+  removeDroppingPlaceholder = () => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;
 
-    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
     const newLayout = compact(
       layout.filter(l => l.i !== droppingItem.i),
       compactType(this.props),
@@ -770,6 +792,34 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       droppingPosition: undefined
     });
+  };
+
+  onDragLeave = () => {
+    this.dragEnterCounter--;
+
+    // onDragLeave can be triggered on each layout's child.
+    // But we know that count of dragEnter and dragLeave events
+    // will be balanced after leaving the layout's container
+    // so we can increase and decrease count of dragEnter and
+    // when it'll be equal to 0 we'll remove the placeholder
+    if (this.dragEnterCounter === 0) {
+      this.removeDroppingPlaceholder();
+    }
+  };
+
+  onDragEnter = () => {
+    this.dragEnterCounter++;
+  };
+
+  onDrop = (evt: any) => {
+    const { droppingItem } = this.props;
+    const { layout } = this.state;
+    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
+
+    // reset gragEnter counter on drop
+    this.dragEnterCounter = 0;
+
+    this.removeDroppingPlaceholder();
 
     var dataTransfer = evt.dataTransfer;
 
@@ -779,7 +829,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   render() {
     const { className, style, isDroppable } = this.props;
 
-    const mergedClassName = classNames("react-grid-layout", className);
+    const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
       height: this.containerHeight(),
       ...style
