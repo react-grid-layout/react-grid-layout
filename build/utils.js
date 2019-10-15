@@ -544,7 +544,7 @@ function setTransform(_ref)
       width = _ref.width,
       height = _ref.height;
   // Replace unitless items with px
-  var translate = "translate(".concat(left, "px,").concat(top, "px)");
+  var translate = "translate(".concat(left, "px,").concat(top, "px,0)");
   return {
     transform: translate,
     WebkitTransform: translate,
