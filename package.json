@@ -57,6 +57,8 @@
     "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.9",
     "ejs": "^2.4.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "eslint": "^4.17.0",
     "eslint-plugin-flowtype": "^2.44.0",
     "eslint-plugin-mocha": "^4.11.0",
