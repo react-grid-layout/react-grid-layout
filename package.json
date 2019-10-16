@@ -13,7 +13,8 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "flow": "flow",
-    "precommit": "lint-staged && make lint"
+    "precommit": "lint-staged && make lint",
+    "postinstall": "make build-js"
   },
   "repository": {
     "type": "git",
@@ -66,6 +67,7 @@
     "imports-loader": "^0.8.0",
     "jest-cli": "^24.9.0",
     "lint-staged": "^9.2.5",
+    "make": "^0.8.1",
     "lodash": "^4.17.5",
     "opener": "^1.4.3",
     "prettier": "^1.18.2",
