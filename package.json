@@ -40,9 +40,7 @@
     "lodash.isequal": "^4.0.0",
     "prop-types": "^15.0.0",
     "react-draggable": "^4.0.0",
-    "react-resizable": "^1.0.0"
-  },
-  "devDependencies": {
+    "react-resizable": "^1.0.0",
     "@babel/cli": "^7.6.3",
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
