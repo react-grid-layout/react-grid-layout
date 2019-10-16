@@ -2,7 +2,7 @@ var webpack = require("webpack");
 
 // Builds bundle usable <script>. Includes RGL and all deps, excluding React.
 module.exports = {
-  mode: 'production',
+  mode: "production",
   optimization: {
     minimize: true
   },
@@ -18,24 +18,30 @@ module.exports = {
   },
   devtool: "source-map",
   externals: {
-    "react": {
-      "commonjs": "react",
-      "commonjs2": "react",
-      "amd": "react",
+    react: {
+      commonjs: "react",
+      commonjs2: "react",
+      amd: "react",
       // React dep should be available as window.React, not window.react
-      "root": "React"
+      root: "React"
     },
     "react-dom": {
-      "commonjs": "react-dom",
-      "commonjs2": "react-dom",
-      "amd": "react-dom",
-      // React dep should be available as window.React, not window.react
-      "root": "ReactDOM"
+      commonjs: "react-dom",
+      commonjs2: "react-dom",
+      amd: "react-dom",
+      root: "ReactDOM"
     }
   },
   module: {
     rules: [
-      {test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader"}
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: "babel-loader",
+        query: {
+          cacheDirectory: true
+        }
+      }
     ]
   },
   plugins: [
@@ -44,7 +50,7 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ],
   resolve: {
     extensions: [".js", ".jsx"]
