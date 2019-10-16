@@ -1,6 +1,7 @@
 test/
 examples/
 dist/
+build/
 yarn.lock
 .github
 __tests__/
