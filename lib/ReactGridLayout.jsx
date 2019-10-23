@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import isEqual from "lodash.isequal";
+import isNil from "lodash.isnil";
 import classNames from "classnames";
 import {
   autoBindHandlers,
@@ -660,10 +661,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Parse 'static'. Any properties defined directly on the grid item will take precedence.
     const draggable = Boolean(
-      !l.static && isDraggable && (l.isDraggable || l.isDraggable == null)
+      l.static ? !l.static : !isNil(l.isDraggable) ? l.isDraggable : isDraggable
     );
     const resizable = Boolean(
-      !l.static && isResizable && (l.isResizable || l.isResizable == null)
+      l.static ? !l.static : !isNil(l.isResizable) ? l.isResizable : isResizable
     );
 
     return (

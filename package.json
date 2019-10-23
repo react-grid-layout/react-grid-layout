@@ -38,6 +38,7 @@
   "dependencies": {
     "classnames": "2.x",
     "lodash.isequal": "^4.0.0",
+    "lodash.isnil": "^4.0.0",
     "prop-types": "^15.0.0",
     "react-draggable": "^4.0.0",
     "react-resizable": "^1.0.0"
