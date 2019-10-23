@@ -41,6 +41,7 @@ type Props = {
   isDraggable: boolean,
   isResizable: boolean,
   static?: boolean,
+  axis?: string,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
   transformScale: number,
@@ -153,7 +154,9 @@ export default class GridItem extends React.Component<Props, State> {
       e: PropTypes.object.isRequired,
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
-    })
+    }),
+    // Draggable axis
+    axis: PropTypes.string
   };
 
   static defaultProps = {
@@ -465,8 +468,16 @@ export default class GridItem extends React.Component<Props, State> {
 
     if (!this.state.dragging)
       throw new Error("onDrag called before onDragStart.");
-    newPosition.left = this.state.dragging.left + deltaX;
-    newPosition.top = this.state.dragging.top + deltaY;
+
+    const canDragX = this.props.axis === "x" || this.props.axis === "both";
+    const canDragY = this.props.axis === "y" || this.props.axis === "both";
+
+    newPosition.left = canDragX
+      ? this.state.dragging.left + deltaX
+      : this.state.dragging.left;
+    newPosition.top = canDragY
+      ? this.state.dragging.top + deltaY
+      : this.state.dragging.top;
     this.setState({ dragging: newPosition });
 
     const { x, y } = this.calcXY(newPosition.top, newPosition.left);

@@ -287,7 +287,7 @@ containerPadding: ?[number, number] = margin,
 // if you like.
 rowHeight: ?number = 150,
 
-// Configuration of a dropping element. Dropping element is a "virtual" element 
+// Configuration of a dropping element. Dropping element is a "virtual" element
 // which appears when you drag over some element from outside.
 // It can be changed by passing specific parameters:
 //  i - id of an element
@@ -309,11 +309,11 @@ transformScale: ?number = 1,
 
 // If true, grid items won't change position when being
 // dragged over.
-preventCollision: ?boolean = false;
+preventCollision: ?boolean = false,
 
-// If true, droppable elements (with `draggable={true}` attribute) 
+// If true, droppable elements (with `draggable={true}` attribute)
 // can be dropped on the grid. It triggers "onDrop" callback
-// with position and event object as parameters. 
+// with position and event object as parameters.
 // It can be useful for dropping an element in a specific position
 //
 // NOTE: In case of using Firefox you should add
@@ -321,7 +321,13 @@ preventCollision: ?boolean = false;
 // along with `draggable={true}` otherwise this feature will work incorrect.
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-isDroppable: ?boolean = false
+isDroppable: ?boolean = false,
+// Determines which axis the draggable can move.
+// Accepted values:
+// - `both` allows movement horizontally and vertically (default).
+// - `x` limits movement to horizontal axis.
+// - `y` limits movement to vertical axis.
+axis: ?string = 'both',
 
 //
 // Callbacks
@@ -436,7 +442,8 @@ will be draggable.
   // If false, will not be draggable. Overrides `static`.
   isDraggable: ?boolean = true,
   // If false, will not be resizable. Overrides `static`.
-  isResizable: ?boolean = true
+  isResizable: ?boolean = true,
+  axis: ?string = 'both'
 }
 ```
 
