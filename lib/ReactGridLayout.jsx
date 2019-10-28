@@ -323,22 +323,27 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Add drag & drop events manually on the created DOM, rather than using react's event model.  This may
     // help avoid conflicts.
-    (document.getElementById(this.state.id): any).ondrop = this.props
-      .isDroppable
-      ? this.onDrop
-      : noop;
-    (document.getElementById(this.state.id): any).ondragover = this.props
-      .isDroppable
-      ? this.onDragOver
-      : noop;
-    (document.getElementById(this.state.id): any).ondragleave = this.props
-      .isDroppable
-      ? this.onDragLeave
-      : noop;
-    (document.getElementById(this.state.id): any).ondragenter = this.props
-      .isDroppable
-      ? this.onDragEnter
-      : noop;
+    if (this.props.isDroppable) {
+      var rootDOM: HTMLElement | null = document.getElementById(this.state.id);
+      if (rootDOM != null) {
+        rootDOM.addEventListener("drop", this.onDrop);
+        rootDOM.addEventListener("dragover", this.onDragOver);
+        rootDOM.addEventListener("dragleave", this.onDragLeave);
+        rootDOM.addEventListener("dragenter", this.onDragEnter);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.isDroppable) {
+      var rootDOM: HTMLElement | null = document.getElementById(this.state.id);
+      if (rootDOM != null) {
+        rootDOM.removeEventListener("drop", this.onDrop);
+        rootDOM.removeEventListener("dragover", this.onDragOver);
+        rootDOM.removeEventListener("dragleave", this.onDragLeave);
+        rootDOM.removeEventListener("dragenter", this.onDragEnter);
+      }
+    }
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {

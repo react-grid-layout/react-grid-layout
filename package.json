@@ -8,6 +8,7 @@
     "test": "make test",
     "build": "make build",
     "build-example": "make build-example",
+    "build-nomin": "make build-nomin",
     "view-example": "make view-example",
     "dev": "make dev",
     "prepublishOnly": "make build",

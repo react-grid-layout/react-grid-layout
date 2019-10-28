@@ -7,12 +7,15 @@ BUILD = ./build
 LIB = ./lib
 TEST = ./test
 MIN = $(DIST)/react-grid-layout.min.js
+NOMIN = $(DIST)/react-grid-layout.js
 MIN_MAP = $(DIST)/react-grid-layout.min.js.map
 
 .PHONY: test dev lint build clean install link
 
 
 build: clean build-js $(MIN)
+
+build-nomin: clean build-js $(NOMIN)
 
 clean:
 	rm -rf $(BUILD) $(DIST)
@@ -28,6 +31,10 @@ install link:
 # Build browser module
 dist/%.min.js: $(LIB) $(BIN)
 	@$(BIN)/webpack
+
+
+dist/%.js: $(LIB) $(BIN)
+	@$(BIN)/webpack  --config webpack-nomin.config.js
 
 build-js:
 	@$(BIN)/babel --out-dir $(BUILD) $(LIB)
