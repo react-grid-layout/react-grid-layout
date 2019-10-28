@@ -242,31 +242,37 @@ export default class GridItem extends React.Component<Props, State> {
   ): Position {
     const { margin, containerPadding, rowHeight } = this.props;
     const colWidth = this.calcColWidth();
+    const out = {};
 
-    const out = {
-      left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
-      top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
-      // 0 * Infinity === NaN, which causes problems with resize constraints;
-      // Fix this if it occurs.
-      // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      width:
-        w === Infinity
-          ? w
-          : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-      height:
-        h === Infinity
-          ? h
-          : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
-    };
-
+    // If resizing, use the exact width and height as returned from resizing callbacks.
     if (state && state.resizing) {
       out.width = Math.round(state.resizing.width);
       out.height = Math.round(state.resizing.height);
     }
+    // Otherwise, calculate from grid units.
+    else {
+      // 0 * Infinity === NaN, which causes problems with resize constraints;
+      // Fix this if it occurs.
+      // Note we do it here rather than later because Math.round(Infinity) causes deopt
+      out.width =
+        w === Infinity
+          ? w
+          : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
+      out.height =
+        h === Infinity
+          ? h
+          : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
+    }
 
+    // If dragging, use the exact width and height as returned from dragging callbacks.
     if (state && state.dragging) {
       out.top = Math.round(state.dragging.top);
       out.left = Math.round(state.dragging.left);
+    }
+    // Otherwise, calculate from grid units.
+    else {
+      out.top = Math.round((rowHeight + margin[1]) * y + containerPadding[1]);
+      out.left = Math.round((colWidth + margin[0]) * x + containerPadding[0]);
     }
 
     return out;
