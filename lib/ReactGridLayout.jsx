@@ -97,7 +97,13 @@ const compactType = (props: Props): CompactType => {
 };
 
 const layoutClassName = "react-grid-layout";
-const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+let isFirefox = false;
+// Try...catch will protect from navigator not existing (e.g. node) or a bad implementation of navigator
+try {
+  isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+} catch (e) {
+  /* Ignore */
+}
 
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
