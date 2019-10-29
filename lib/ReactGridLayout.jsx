@@ -31,7 +31,8 @@ import type {
   DragOverEvent,
   Layout,
   DroppingPosition,
-  LayoutItem
+  LayoutItem,
+  Axis
 } from "./utils";
 
 type State = {
@@ -67,7 +68,7 @@ export type Props = {
   isDraggable: boolean,
   isResizable: boolean,
   isDroppable: boolean,
-  axis: string,
+  axis: Axis,
   preventCollision: boolean,
   useCSSTransforms: boolean,
   transformScale: number,
@@ -190,7 +191,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // - `both` allows movement horizontally and vertically (default).
     // - `x` limits movement to horizontal axis.
     // - `y` limits movement to vertical axis.
-    axis: PropTypes.string,
+    axis: PropTypes.oneOf(["both", "x", "y"]),
 
     //
     // Callbacks

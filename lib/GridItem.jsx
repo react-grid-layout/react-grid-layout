@@ -13,7 +13,8 @@ import type {
   GridDragEvent,
   GridResizeEvent,
   DroppingPosition,
-  Position
+  Position,
+  Axis
 } from "./utils";
 
 type PartialPosition = { top: number, left: number };
@@ -41,7 +42,7 @@ type Props = {
   isDraggable: boolean,
   isResizable: boolean,
   static?: boolean,
-  axis?: string,
+  axis?: Axis,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
   transformScale: number,
