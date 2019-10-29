@@ -248,17 +248,19 @@ export default class GridItem extends React.Component<Props, State> {
     if (state && state.resizing) {
       out.width = Math.round(state.resizing.width);
       out.height = Math.round(state.resizing.height);
-    } 
+    }
     // Otherwise, calculate from grid units.
     else {
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      out.width = w === Infinity
+      out.width =
+        w === Infinity
           ? w
           : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
-      out.height = h === Infinity
-          ? h 
+      out.height =
+        h === Infinity
+          ? h
           : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
     }
 
@@ -266,7 +268,7 @@ export default class GridItem extends React.Component<Props, State> {
     if (state && state.dragging) {
       out.top = Math.round(state.dragging.top);
       out.left = Math.round(state.dragging.left);
-    } 
+    }
     // Otherwise, calculate from grid units.
     else {
       out.top = Math.round((rowHeight + margin[1]) * y + containerPadding[1]);
@@ -378,6 +380,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
+        scale={this.props.transformScale}
       >
         {child}
       </DraggableCore>
