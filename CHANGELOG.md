@@ -1,5 +1,13 @@
 # Changelog
 
+0.17.1 (Oct 29, 2019)
+----
+
+### Bugfixes
+
+- Surround `navigator` check in `try/catch` to avoid problems with mocked navigators [#1057](https://github.com/STRML/react-grid-layout/pull/1054)
+- TransformScale is not applied properly while dragging an element [#1046](https://github.com/STRML/react-grid-layout/pull/1054)
+
 0.17.0 (Oct 24, 2019)
 ----
 
@@ -9,7 +17,7 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 
 ### New Features
 
-- Added ability to drag items into the grid from outside. [#980](https://github.com/STRML/react-grid-layout/pull/980). See [the example](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html). 
+- Added ability to drag items into the grid from outside. [#980](https://github.com/STRML/react-grid-layout/pull/980). See [the example](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html).
   - This is especially exciting as it opens up new "widget toolbox" use cases such as [Example 14](https://strml.github.io/react-grid-layout/examples/14-toolbox.html) with more intuitive interaction. Thanks @daynin.
 - `transformScale` prop [#987](https://github.com/STRML/react-grid-layout/pull/987)
 - `<ResponsiveReactGridLayout>` now supports margin-per-breakpoint [#1016](https://github.com/STRML/react-grid-layout/pull/1016)
