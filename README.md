@@ -287,7 +287,7 @@ containerPadding: ?[number, number] = margin,
 // if you like.
 rowHeight: ?number = 150,
 
-// Configuration of a dropping element. Dropping element is a "virtual" element 
+// Configuration of a dropping element. Dropping element is a "virtual" element
 // which appears when you drag over some element from outside.
 // It can be changed by passing specific parameters:
 //  i - id of an element
@@ -311,9 +311,9 @@ transformScale: ?number = 1,
 // dragged over.
 preventCollision: ?boolean = false;
 
-// If true, droppable elements (with `draggable={true}` attribute) 
+// If true, droppable elements (with `draggable={true}` attribute)
 // can be dropped on the grid. It triggers "onDrop" callback
-// with position and event object as parameters. 
+// with position and event object as parameters.
 // It can be useful for dropping an element in a specific position
 //
 // NOTE: In case of using Firefox you should add
@@ -413,7 +413,7 @@ are out of range.
 
 Any `<GridItem>` properties defined directly will take precedence over globally-set options. For
 example, if the layout has the property `isDraggable: false`, but the grid item has the prop `isDraggable: true`, the item
-will be draggable.
+will be draggable, even if the item is marked `static: true`.
 
 ```js
 {
