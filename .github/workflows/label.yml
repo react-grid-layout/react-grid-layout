@@ -5,8 +5,9 @@ jobs:
   label:
 
     runs-on: ubuntu-latest
-
+    # 'if' added due to https://github.com/actions/labeler/issues/12
     steps:
     - uses: actions/labeler@v2
+      if: github.repository == 'STRML/react-grid-layout'
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
