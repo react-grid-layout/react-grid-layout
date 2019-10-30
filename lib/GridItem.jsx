@@ -380,6 +380,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
+        scale={this.props.transformScale}
       >
         {child}
       </DraggableCore>
