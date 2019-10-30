@@ -28,7 +28,6 @@ import type {
   CompactType,
   GridResizeEvent,
   GridDragEvent,
-  DragOverEvent,
   Layout,
   DroppingPosition,
   LayoutItem
@@ -395,7 +394,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   enableDropEvents() {
-    var rootDOM: HTMLElement = document.getElementById(this.state.id);
+    var rootDOM: HTMLElement | null = document.getElementById(this.state.id);
     if (rootDOM != null) {
       rootDOM.addEventListener("drop", this.onDrop);
       rootDOM.addEventListener("dragover", this.onDragOver);
@@ -405,7 +404,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   disableDropEvents() {
-    var rootDOM: HTMLElement = document.getElementById(this.state.id);
+    var rootDOM: HTMLElement | null = document.getElementById(this.state.id);
     if (rootDOM != null) {
       rootDOM.removeEventListener("drop", this.onDrop);
       rootDOM.removeEventListener("dragover", this.onDragOver);
@@ -756,7 +755,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
-  onDragOver = (e: DragOverEvent) => {
+  onDragOver = (e: any) => {
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
     if (isFirefox && !e.target.className.includes(layoutClassName)) {
