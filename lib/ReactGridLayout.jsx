@@ -28,6 +28,7 @@ import type {
   CompactType,
   GridResizeEvent,
   GridDragEvent,
+  DragOverEvent,
   Layout,
   DroppingPosition,
   LayoutItem
@@ -80,12 +81,11 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
-  onDrop: (dropEvent: {
+  onDrop: (itemPosition: {
     x: number,
     y: number,
     w: number,
-    h: number,
-    dataTransfer: Object
+    h: number
   }) => void,
   children: ReactChildrenArray<ReactElement<any>>
 };
@@ -324,25 +324,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Add drag & drop events manually on the created DOM, rather than using react's event model.  This may
     // help avoid conflicts.
     if (this.props.isDroppable) {
-      var rootDOM: HTMLElement | null = document.getElementById(this.state.id);
-      if (rootDOM != null) {
-        rootDOM.addEventListener("drop", this.onDrop);
-        rootDOM.addEventListener("dragover", this.onDragOver);
-        rootDOM.addEventListener("dragleave", this.onDragLeave);
-        rootDOM.addEventListener("dragenter", this.onDragEnter);
-      }
+      this.enableDropEvents();
     }
   }
 
   componentWillUnmount() {
     if (this.props.isDroppable) {
-      var rootDOM: HTMLElement | null = document.getElementById(this.state.id);
-      if (rootDOM != null) {
-        rootDOM.removeEventListener("drop", this.onDrop);
-        rootDOM.removeEventListener("dragover", this.onDragOver);
-        rootDOM.removeEventListener("dragleave", this.onDragLeave);
-        rootDOM.removeEventListener("dragenter", this.onDragEnter);
-      }
+      this.disableDropEvents();
     }
   }
 
@@ -395,6 +383,34 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       const oldLayout = prevState.layout;
 
       this.onLayoutMaybeChanged(newLayout, oldLayout);
+
+      if (prevProps.isDroppable !== this.props.isDroppable) {
+        if (this.props.isDroppable) {
+          this.enableDropEvents();
+        } else {
+          this.disableDropEvents();
+        }
+      }
+    }
+  }
+
+  enableDropEvents() {
+    var rootDOM: HTMLElement = document.getElementById(this.state.id);
+    if (rootDOM != null) {
+      rootDOM.addEventListener("drop", this.onDrop);
+      rootDOM.addEventListener("dragover", this.onDragOver);
+      rootDOM.addEventListener("dragleave", this.onDragLeave);
+      rootDOM.addEventListener("dragenter", this.onDragEnter);
+    }
+  }
+
+  disableDropEvents() {
+    var rootDOM: HTMLElement = document.getElementById(this.state.id);
+    if (rootDOM != null) {
+      rootDOM.removeEventListener("drop", this.onDrop);
+      rootDOM.removeEventListener("dragover", this.onDragOver);
+      rootDOM.removeEventListener("dragleave", this.onDragLeave);
+      rootDOM.removeEventListener("dragenter", this.onDragEnter);
     }
   }
 
@@ -740,13 +756,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
-  onDragOver = (e: any) => {
+  onDragOver = (e: DragOverEvent) => {
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
-    if (
-      isFirefox &&
-      !e.nativeEvent.target.className.includes(layoutClassName)
-    ) {
+    if (isFirefox && !e.target.className.includes(layoutClassName)) {
       return false;
     }
 
@@ -816,7 +829,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.dragEnterCounter++;
   };
 
-  onDrop = (evt: any) => {
+  onDrop = () => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
@@ -826,9 +839,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.removeDroppingPlaceholder();
 
-    var dataTransfer = evt.dataTransfer;
-
-    this.props.onDrop({ x, y, w, h, dataTransfer });
+    this.props.onDrop({ x, y, w, h });
   };
 
   render() {
