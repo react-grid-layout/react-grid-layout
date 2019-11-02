@@ -194,7 +194,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // 'sw' - Southwest handle (bottom-left)
     // 'nw' - Northwest handle (top-left)
     // 'se' - Southeast handle (bottom-right)
-    // 'ne' - Northeast handle (top-center)
+    // 'ne' - Northeast handle (top-right)
     resizeHandles: PropTypes.arrayOf(
       PropTypes.oneOf(["s", "w", "e", "n", "sw", "nw", "se", "ne"])
     ),

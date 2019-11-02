@@ -50,6 +50,7 @@ RGL is React-only and does not require jQuery.
 1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
 1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html)
+1. [Resizable Handles](https://strml.github.io/react-grid-layout/examples/17-resizable-handles.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -331,7 +332,7 @@ isDroppable: ?boolean = false
 // 'sw' - Southwest handle (bottom-left)
 // 'nw' - Northwest handle (top-left)
 // 'se' - Southeast handle (bottom-right)
-// 'ne' - Northeast handle (top-center)
+// 'ne' - Northeast handle (top-right)
 resizeHandles: ?string[] = ['se']
 
 //
