@@ -84,7 +84,8 @@ export type Props = {
     x: number,
     y: number,
     w: number,
-    h: number
+    h: number,
+    e: Event
   }) => void,
   children: ReactChildrenArray<ReactElement<any>>
 };
@@ -786,7 +787,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.dragEnterCounter++;
   };
 
-  onDrop = () => {
+  onDrop = (e: Event) => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
@@ -796,7 +797,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.removeDroppingPlaceholder();
 
-    this.props.onDrop({ x, y, w, h });
+    this.props.onDrop({ x, y, w, h, e });
   };
 
   render() {
