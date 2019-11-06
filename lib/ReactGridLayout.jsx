@@ -462,6 +462,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Element} node The current dragging DOM element
    */
   onDragStop(i: string, x: number, y: number, { e, node }: GridDragEvent) {
+    if (!this.state.activeDrag) return;
+
     const { oldDragItem } = this.state;
     let { layout } = this.state;
     const { cols, preventCollision } = this.props;
@@ -480,9 +482,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       compactType(this.props),
       cols
     );
-    if (this.state.activeDrag) {
-      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
-    }
+
+    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
     const newLayout = compact(layout, compactType(this.props), cols);
