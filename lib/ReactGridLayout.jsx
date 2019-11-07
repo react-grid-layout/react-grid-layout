@@ -80,11 +80,13 @@ export type Props = {
   onResize: EventCallback,
   onResizeStart: EventCallback,
   onResizeStop: EventCallback,
+  // Updated to include dataTransfer object
   onDrop: (itemPosition: {
     x: number,
     y: number,
     w: number,
-    h: number
+    h: number,
+    dataTransfer: Object
   }) => void,
   children: ReactChildrenArray<ReactElement<any>>
 };
@@ -718,6 +720,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isFirefox &&
       !e.nativeEvent.target.className.includes(layoutClassName)
     ) {
+      // without this Firefox will not allow drop if currently over
+      // droppingItem
+      e.preventDefault();
       return false;
     }
 
@@ -787,17 +792,24 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.dragEnterCounter++;
   };
 
-  onDrop = () => {
+  onDrop = (e: any) => {
+    // without this Firefox is not happy using any mimetype for dataTransfer
+    // if this causes issues the other option is to use a custom type instead
+    // see: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API#The_basics
+    e.preventDefault();
+
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
 
-    // reset gragEnter counter on drop
+    // reset dragEnter counter on drop
     this.dragEnterCounter = 0;
 
     this.removeDroppingPlaceholder();
 
-    this.props.onDrop({ x, y, w, h });
+    const dataTransfer = e.dataTransfer;
+
+    this.props.onDrop({ x, y, w, h, dataTransfer });
   };
 
   render() {
