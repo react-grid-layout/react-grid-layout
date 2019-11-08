@@ -50,6 +50,7 @@ type State = {
 };
 
 export type Props = {
+  id: string,
   className: string,
   style: Object,
   width: number,
@@ -117,6 +118,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     //
     // Basic props
     //
+    id: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object,
 

@@ -75,7 +75,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     //
     // Basic props
     //
-
+    id: PropTypes.string,
     // Optional, but if you are managing width yourself you may want to set the breakpoint
     // yourself as well.
     breakpoint: PropTypes.string,
