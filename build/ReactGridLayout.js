@@ -67,7 +67,7 @@ var ReactGridLayout = function (_React$Component) {
     var newLayoutBase = void 0;
     // Legacy support for compactType
     // Allow parent to set layout directly.
-    if (!(0, _lodash2.default)(nextProps.layout, this.props.layout) || nextProps.compactType !== this.props.compactType) {
+    if (!(0, _lodash2.default)(nextProps.layout, this.props.layout) || !(0, _lodash2.default)(nextProps.lastRowGaps, this.props.lastRowGaps) || !(0, _lodash2.default)(nextProps.fillGaps, this.props.fillGaps) || nextProps.compactType !== this.props.compactType) {
       newLayoutBase = nextProps.layout;
     } else if (!(0, _utils.childrenEqual)(this.props.children, nextProps.children)) {
       // If children change, also regenerate the layout. Use our state
@@ -418,7 +418,7 @@ var ReactGridLayout = function (_React$Component) {
           i: gap.i,
           containerWidth: width,
           className: "react-grid-gap",
-          style: { display: activeDrag ? 'none' : null },
+          style: { display: activeDrag ? "none" : null },
           cols: cols,
           margin: margin,
           containerPadding: containerPadding || margin,
@@ -520,9 +520,13 @@ var ReactGridLayout = function (_React$Component) {
 
     return _react2.default.createElement(
       "div",
-      { ref: function ref(node) {
+      {
+        ref: function ref(node) {
           return _this2.grid = node;
-        }, className: mergedClassName, style: mergedStyle },
+        },
+        className: mergedClassName,
+        style: mergedStyle
+      },
       _react2.default.Children.map(this.props.children, function (child) {
         return _this2.processGridItem(child);
       }),
