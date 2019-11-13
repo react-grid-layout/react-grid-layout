@@ -254,10 +254,12 @@ export default class GridItem extends React.Component<Props, State> {
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      out.width = w === Infinity
+      out.width =
+        w === Infinity
           ? w
           : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
-      out.height = h === Infinity
+      out.height =
+        h === Infinity
           ? h
           : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
     }
@@ -378,6 +380,7 @@ export default class GridItem extends React.Component<Props, State> {
           ".react-resizable-handle" +
           (this.props.cancel ? "," + this.props.cancel : "")
         }
+        scale={this.props.transformScale}
       >
         {child}
       </DraggableCore>

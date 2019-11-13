@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout",
-  "version": "0.16.6",
+  "version": "0.17.1",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -40,11 +40,11 @@
     "lodash.isequal": "^4.0.0",
     "prop-types": "^15.0.0",
     "react-draggable": "^4.0.0",
-    "react-resizable": "^1.0.0"
+    "react-resizable": "^1.9.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.6.3",
-    "@babel/core": "^7.6.0",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-transform-flow-comments": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
@@ -58,25 +58,25 @@
     "ejs": "^2.7.1",
     "eslint": "^6.4.0",
     "eslint-plugin-flowtype": "^4.3.0",
-    "eslint-plugin-mocha": "^6.1.1",
+    "eslint-plugin-mocha": "^6.2.0",
     "eslint-plugin-react": "^7.14.3",
     "exports-loader": "^0.7.0",
-    "flow-bin": "^0.109.0",
-    "husky": "^3.0.8",
+    "flow-bin": "^0.110.1",
+    "husky": "^3.0.9",
     "imports-loader": "^0.8.0",
     "jest-cli": "^24.9.0",
     "lint-staged": "^9.2.5",
     "lodash": "^4.17.5",
     "opener": "^1.4.3",
     "prettier": "^1.18.2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "react-hot-loader": "^4.12.13",
     "react-transform-hmr": "^1.0.2",
     "style-loader": "^1.0.0",
-    "webpack": "^4.40.2",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1"
+    "webpack-dev-server": "^3.9.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

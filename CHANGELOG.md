@@ -1,5 +1,48 @@
 # Changelog
 
+0.17.1 (Oct 29, 2019)
+----
+
+### Bugfixes
+
+- Surround `navigator` check in `try/catch` to avoid problems with mocked navigators [#1057](https://github.com/STRML/react-grid-layout/pull/1054)
+- TransformScale is not applied properly while dragging an element [#1046](https://github.com/STRML/react-grid-layout/pull/1054)
+
+0.17.0 (Oct 24, 2019)
+----
+
+It's been 18 months since the last release, and this is a pretty large one! For references on the items below, see https://github.com/STRML/react-grid-layout/milestone/1?closed=1.
+
+Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, and for giving it a much-needed shot in the arm, and thanks to the rest of our contributors.
+
+### New Features
+
+- Added ability to drag items into the grid from outside. [#980](https://github.com/STRML/react-grid-layout/pull/980). See [the example](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html).
+  - This is especially exciting as it opens up new "widget toolbox" use cases such as [Example 14](https://strml.github.io/react-grid-layout/examples/14-toolbox.html) with more intuitive interaction. Thanks @daynin.
+- `transformScale` prop [#987](https://github.com/STRML/react-grid-layout/pull/987)
+- `<ResponsiveReactGridLayout>` now supports margin-per-breakpoint [#1016](https://github.com/STRML/react-grid-layout/pull/1016)
+
+
+### Bugfixes
+
+- `onWidthChange` only called on breakpoint changes [#770](https://github.com/STRML/react-grid-layout/pull/770)
+- Various movement bugs when compaction is off [#766](https://github.com/STRML/react-grid-layout/pull/766)
+- Don't fire `onDragStop` if an item is only clicked, not dragged [#1023](https://github.com/STRML/react-grid-layout/pull/1023)
+- Fix infinite loop when dragging over a static element. [#1019](https://github.com/STRML/react-grid-layout/pull/1019)
+
+### Internal Refactors
+
+- Both `react-draggable` and `react-resizable` dependencies are now React 16.9 compatible, as is now `react-grid-layout`.
+  - [RGL PR #990](https://github.com/STRML/react-grid-layout/pull/990)
+  - [react-resizable](https://github.com/STRML/react-resizable/pull/112/commits/541dee69b8e45d91a533855609472b481634edee)
+  - [react-draggable](https://github.com/mzabriskie/react-draggable/commit/fea778c8e89db2a4e1a35e563b65634f8146e7e4)
+- Webpack 4 [#907](https://github.com/STRML/react-grid-layout/pull/907)
+- Babel 7 [#1013](https://github.com/STRML/react-grid-layout/pull/1013)
+- Flow 0.110 [#995](https://github.com/STRML/react-grid-layout/pull/995)
+- Jest [#774](https://github.com/STRML/react-grid-layout/pull/774)
+- Various build simplifications [#773](https://github.com/STRML/react-grid-layout/pull/773)
+- Various PR bots - thanks @daynin
+
 0.16.6 (Mar 8, 2018)
 ----
 

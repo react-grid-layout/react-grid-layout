@@ -84,7 +84,8 @@ export type Props = {
     x: number,
     y: number,
     w: number,
-    h: number
+    h: number,
+    e: Event
   }) => void,
   children: ReactChildrenArray<ReactElement<any>>
 };
@@ -97,7 +98,13 @@ const compactType = (props: Props): CompactType => {
 };
 
 const layoutClassName = "react-grid-layout";
-const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+let isFirefox = false;
+// Try...catch will protect from navigator not existing (e.g. node) or a bad implementation of navigator
+try {
+  isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+} catch (e) {
+  /* Ignore */
+}
 
 /**
  * A reactive, fluid grid layout with draggable, resizable components.
@@ -456,6 +463,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Element} node The current dragging DOM element
    */
   onDragStop(i: string, x: number, y: number, { e, node }: GridDragEvent) {
+    if (!this.state.activeDrag) return;
+
     const { oldDragItem } = this.state;
     let { layout } = this.state;
     const { cols, preventCollision } = this.props;
@@ -474,9 +483,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       compactType(this.props),
       cols
     );
-    if (this.state.activeDrag) {
-      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
-    }
+
+    this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
     const newLayout = compact(layout, compactType(this.props), cols);
@@ -780,7 +788,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.dragEnterCounter++;
   };
 
-  onDrop = () => {
+  onDrop = (e: Event) => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
@@ -790,7 +798,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.removeDroppingPlaceholder();
 
-    this.props.onDrop({ x, y, w, h });
+    this.props.onDrop({ x, y, w, h, e });
   };
 
   render() {
