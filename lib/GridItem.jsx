@@ -248,7 +248,7 @@ export default class GridItem extends React.Component<Props, State> {
     if (state && state.resizing) {
       out.width = Math.round(state.resizing.width);
       out.height = Math.round(state.resizing.height);
-    } 
+    }
     // Otherwise, calculate from grid units.
     else {
       // 0 * Infinity === NaN, which causes problems with resize constraints;
@@ -258,7 +258,7 @@ export default class GridItem extends React.Component<Props, State> {
           ? w
           : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
       out.height = h === Infinity
-          ? h 
+          ? h
           : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
     }
 
@@ -266,7 +266,7 @@ export default class GridItem extends React.Component<Props, State> {
     if (state && state.dragging) {
       out.top = Math.round(state.dragging.top);
       out.left = Math.round(state.dragging.left);
-    } 
+    }
     // Otherwise, calculate from grid units.
     else {
       out.top = Math.round((rowHeight + margin[1]) * y + containerPadding[1]);
@@ -394,7 +394,7 @@ export default class GridItem extends React.Component<Props, State> {
     child: ReactElement<any>,
     position: Position
   ): ReactElement<any> {
-    const { cols, x, minW, minH, maxW, maxH } = this.props;
+    const { cols, x, minW, minH, maxW, maxH, transformScale } = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
     const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
@@ -416,6 +416,7 @@ export default class GridItem extends React.Component<Props, State> {
         onResizeStop={this.onResizeStop}
         onResizeStart={this.onResizeStart}
         onResize={this.onResize}
+        transformScale={transformScale}
       >
         {child}
       </Resizable>
@@ -464,6 +465,8 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
     if (!this.props.onDrag) return;
+    deltaX /= this.props.transformScale
+    deltaY /= this.props.transformScale
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 
