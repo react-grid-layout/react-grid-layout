@@ -31,7 +31,8 @@ import type {
   DragOverEvent,
   Layout,
   DroppingPosition,
-  LayoutItem
+  LayoutItem,
+  Axis
 } from "./utils";
 
 type State = {
@@ -67,6 +68,7 @@ export type Props = {
   isDraggable: boolean,
   isResizable: boolean,
   isDroppable: boolean,
+  axis: Axis,
   preventCollision: boolean,
   useCSSTransforms: boolean,
   transformScale: number,
@@ -191,6 +193,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     transformScale: PropTypes.number,
     // If true, an external element can trigger onDrop callback with a specific grid position as a parameter
     isDroppable: PropTypes.bool,
+    // Determines which axis the draggable can move.
+    // Accepted values:
+    // - `both` allows movement horizontally and vertically (default).
+    // - `x` limits movement to horizontal axis.
+    // - `y` limits movement to vertical axis.
+    axis: PropTypes.oneOf(["both", "x", "y"]),
 
     //
     // Callbacks
@@ -259,6 +267,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isDraggable: true,
     isResizable: true,
     isDroppable: false,
+    axis: "both",
     useCSSTransforms: true,
     transformScale: 1,
     verticalCompact: true,
@@ -662,7 +671,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       useCSSTransforms,
       transformScale,
       draggableCancel,
-      draggableHandle
+      draggableHandle,
+      axis
     } = this.props;
     const { mounted, droppingPosition } = this.state;
 
@@ -673,6 +683,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const resizable = Boolean(
       !l.static && isResizable && (l.isResizable || l.isResizable == null)
     );
+    const draggableAxis = l.axis || axis;
 
     return (
       <GridItem
@@ -692,6 +703,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
+        axis={draggableAxis}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
         transformScale={transformScale}
