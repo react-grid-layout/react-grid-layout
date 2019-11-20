@@ -1,13 +1,14 @@
-name: Labeler
-on: [pull_request]
-
+---
+name: Pull request labeler
+on:
+  schedule:
+    - cron: '*/5 * * * *'
 jobs:
-  label:
-
+  labeler:
     runs-on: ubuntu-latest
-    # 'if' added due to https://github.com/actions/labeler/issues/12
     steps:
-    - uses: actions/labeler@v2
-      if: github.repository == 'STRML/react-grid-layout'
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: paulfantom/periodic-labeler@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          LABEL_MAPPINGS_FILE: .github/labeler.yml
