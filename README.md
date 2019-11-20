@@ -87,6 +87,7 @@ RGL is React-only and does not require jQuery.
 
 |Version         | Compatibility    |
 |----------------|------------------|
+| >= 0.17.0      | React 0.16       |
 | >= 0.11.3      | React 0.14 & v15 |
 | >= 0.10.0      | React 0.14       |
 | 0.8. - 0.9.2   | React 0.13       |
