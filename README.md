@@ -124,7 +124,7 @@ import GridLayout from 'react-grid-layout';
 class MyFirstGrid extends React.Component {
   render() {
     // layout is an array of objects, see the demo for more complete usage
-    var layout = [
+    const layout = [
       {i: 'a', x: 0, y: 0, w: 1, h: 2, static: true},
       {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
       {i: 'c', x: 4, y: 0, w: 1, h: 2}
@@ -173,7 +173,7 @@ import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 class MyResponsiveGrid extends React.Component {
   render() {
     // {lg: layout1, md: layout2, ...}
-    var layouts = getLayoutsFromSomewhere();
+    const layouts = getLayoutsFromSomewhere();
     return (
       <ResponsiveGridLayout className="layout" layouts={layouts}
         breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
