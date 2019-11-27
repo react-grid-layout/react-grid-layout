@@ -203,7 +203,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       !isEqual(this.props.breakpoints, prevProps.breakpoints) ||
       !isEqual(this.props.cols, prevProps.cols)
     ) {
-      this.onWidthChange(this.props);
+      this.onWidthChange(prevProps);
     }
   }
 
@@ -219,11 +219,11 @@ export default class ResponsiveReactGridLayout extends React.Component<
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(nextProps: Props<*>) {
-    const { breakpoints, cols, layouts, compactType } = nextProps;
+  onWidthChange(prevProps: Props<*>) {
+    const { breakpoints, cols, layouts, compactType } = this.props;
     const newBreakpoint =
-      nextProps.breakpoint ||
-      getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
+      this.props.breakpoint ||
+      getBreakpointFromWidth(this.props.breakpoints, this.props.width);
 
     const lastBreakpoint = this.state.breakpoint;
     const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
@@ -232,8 +232,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
     // Breakpoint change
     if (
       lastBreakpoint !== newBreakpoint ||
-      this.props.breakpoints !== breakpoints ||
-      this.props.cols !== cols
+      prevProps.breakpoints !== breakpoints ||
+      prevProps.cols !== cols
     ) {
       // Preserve the current layout if the current breakpoint is not present in the next layouts.
       if (!(lastBreakpoint in newLayouts))
@@ -252,7 +252,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       // This adds missing items.
       layout = synchronizeLayoutWithChildren(
         layout,
-        nextProps.children,
+        this.props.children,
         newCols,
         compactType
       );
@@ -271,15 +271,15 @@ export default class ResponsiveReactGridLayout extends React.Component<
       });
     }
 
-    const margin = getIndentationValue(nextProps.margin, newBreakpoint);
+    const margin = getIndentationValue(this.props.margin, newBreakpoint);
     const containerPadding = getIndentationValue(
-      nextProps.containerPadding,
+      this.props.containerPadding,
       newBreakpoint
     );
 
     //call onWidthChange on every change of width, not only on breakpoint changes
     this.props.onWidthChange(
-      nextProps.width,
+      this.props.width,
       margin,
       newCols,
       containerPadding
