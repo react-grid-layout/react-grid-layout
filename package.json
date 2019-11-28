@@ -78,6 +78,10 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.9.0"
   },
+  "peerDependencies": {
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
