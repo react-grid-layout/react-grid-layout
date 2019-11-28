@@ -1,6 +1,5 @@
 // @flow
 import React from "react";
-import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
@@ -175,6 +174,11 @@ export default class GridItem extends React.Component<Props, State> {
 
   currentNode: HTMLElement;
 
+  constructor(props) {
+    super(props);
+    this.currentNode = React.createRef();
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.props.droppingPosition && prevProps.droppingPosition) {
       this.moveDroppingItem(prevProps);
@@ -189,18 +193,13 @@ export default class GridItem extends React.Component<Props, State> {
       return;
     }
 
-    if (!this.currentNode) {
-      // eslint-disable-next-line react/no-find-dom-node
-      this.currentNode = ((ReactDOM.findDOMNode(this): any): HTMLElement);
-    }
-
     const shouldDrag =
       (dragging && droppingPosition.x !== prevProps.droppingPosition.x) ||
       droppingPosition.y !== prevProps.droppingPosition.y;
 
     if (!dragging) {
       this.onDragStart(droppingPosition.e, {
-        node: this.currentNode,
+        node: this.currentNode.current,
         deltaX: droppingPosition.x,
         deltaY: droppingPosition.y
       });
@@ -209,7 +208,7 @@ export default class GridItem extends React.Component<Props, State> {
       const deltaY = droppingPosition.y - dragging.top;
 
       this.onDrag(droppingPosition.e, {
-        node: this.currentNode,
+        node: this.currentNode.current,
         deltaX,
         deltaY
       });

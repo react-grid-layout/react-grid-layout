@@ -1,7 +1,6 @@
 // @flow
 import React from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import type { ComponentType as ReactComponentType } from "react";
 
 type WPProps = {
@@ -40,6 +39,11 @@ export default function WidthProvider<
 
     mounted: boolean = false;
 
+    constructor(props) {
+      super(props);
+      this.currentNode = React.createRef();
+    }
+
     componentDidMount() {
       this.mounted = true;
 
@@ -58,7 +62,7 @@ export default function WidthProvider<
     onWindowResize = () => {
       if (!this.mounted) return;
       // eslint-disable-next-line react/no-find-dom-node
-      const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
+      const node = this.currentNode.current; // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });
     };
