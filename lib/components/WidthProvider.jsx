@@ -59,6 +59,11 @@ export default function WidthProvider<Config>(
 
     mounted: boolean = false;
 
+    constructor(props) {
+      super(props);
+      this.currentNode = React.createRef();
+    }
+
     componentDidMount() {
       this.mounted = true;
 
@@ -77,7 +82,7 @@ export default function WidthProvider<Config>(
     onWindowResize = () => {
       if (!this.mounted) return;
       // eslint-disable-next-line react/no-find-dom-node
-      const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
+      const node = this.currentNode.current; // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });
     };

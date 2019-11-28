@@ -1,6 +1,5 @@
 // @flow
 import React from "react";
-import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
@@ -210,6 +209,11 @@ export default class GridItem extends React.Component<Props, State> {
 
   currentNode: HTMLElement;
 
+  constructor(props) {
+    super(props);
+    this.currentNode = React.createRef();
+  }
+
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     // We can't deeply compare children. If the developer memoizes them, we can
     // use this optimization.
@@ -258,18 +262,13 @@ export default class GridItem extends React.Component<Props, State> {
     };
     const { dragging } = this.state;
 
-    if (!this.currentNode) {
-      // eslint-disable-next-line react/no-find-dom-node
-      this.currentNode = ((ReactDOM.findDOMNode(this): any): HTMLElement);
-    }
-
     const shouldDrag =
       (dragging && droppingPosition.left !== prevDroppingPosition.left) ||
       droppingPosition.top !== prevDroppingPosition.top;
 
     if (!dragging) {
       this.onDragStart(droppingPosition.e, {
-        node: this.currentNode,
+        node: this.currentNode.current,
         deltaX: droppingPosition.left,
         deltaY: droppingPosition.top
       });
@@ -278,7 +277,7 @@ export default class GridItem extends React.Component<Props, State> {
       const deltaY = droppingPosition.top - dragging.top;
 
       this.onDrag(droppingPosition.e, {
-        node: this.currentNode,
+        node: this.currentNode.current,
         deltaX,
         deltaY
       });
