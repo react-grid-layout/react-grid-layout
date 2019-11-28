@@ -86,6 +86,10 @@
     "react": ">= 16.3.0",
     "react-dom": ">= 16.3.0"
   },
+  "peerDependencies": {
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
