@@ -101,7 +101,7 @@ const layoutClassName = "react-grid-layout";
 let isFirefox = false;
 // Try...catch will protect from navigator not existing (e.g. node) or a bad implementation of navigator
 try {
-  isFirefox = new RegExp("firefox").test(navigator.userAgent.toLowerCase());
+  isFirefox = /firefox/i.test(navigator.userAgent);
 } catch (e) {
   /* Ignore */
 }
@@ -721,7 +721,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // to avoid unpredictable jumping of a dropping placeholder
     if (
       isFirefox &&
-      !(new RegExp(layoutClassName).test(e.nativeEvent.target.className))
+      e.nativeEvent.target.className.indexOf(layoutClassName) === -1
     ) {
       return false;
     }
