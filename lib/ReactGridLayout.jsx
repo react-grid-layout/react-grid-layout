@@ -35,7 +35,8 @@ import type {
   DragOverEvent,
   Layout,
   DroppingPosition,
-  LayoutItem
+  LayoutItem,
+  ResizeAxis
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";

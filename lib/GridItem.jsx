@@ -14,7 +14,8 @@ import type {
   GridDragEvent,
   GridResizeEvent,
   DroppingPosition,
-  Position
+  Position,
+  ResizeAxis
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";
@@ -43,7 +44,7 @@ type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
-  resizeAxis: string,
+  resizeAxis: ResizeAxis,
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
