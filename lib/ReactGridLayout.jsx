@@ -85,6 +85,7 @@ export type Props = {
     y: number,
     w: number,
     h: number,
+    layout: Layout,
     e: Event
   }) => void,
   children: ReactChildrenArray<ReactElement<any>>
@@ -802,7 +803,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.removeDroppingPlaceholder();
 
-    this.props.onDrop({ x, y, w, h, e });
+    this.props.onDrop({ x, y, w, h, layout, e });
   };
 
   render() {
