@@ -13,7 +13,8 @@ import type {
   GridDragEvent,
   GridResizeEvent,
   DroppingPosition,
-  Position
+  Position,
+  ResizeAxis
 } from "./utils";
 
 type PartialPosition = { top: number, left: number };
@@ -40,7 +41,7 @@ type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
-  resizeAxis: string,
+  resizeAxis: ResizeAxis,
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
@@ -155,7 +156,7 @@ export default class GridItem extends React.Component<Props, State> {
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     }),
-    resizeAxis: PropTypes.oneOf(["both", "x", "y"])
+    resizeAxis: PropTypes.oneOf(["both", "x", "y", "none"])
   };
 
   static defaultProps = {

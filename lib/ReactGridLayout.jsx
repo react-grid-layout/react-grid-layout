@@ -31,7 +31,8 @@ import type {
   DragOverEvent,
   Layout,
   DroppingPosition,
-  LayoutItem
+  LayoutItem,
+  ResizeAxis
 } from "./utils";
 
 type State = {
@@ -66,7 +67,7 @@ export type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
-  resizeAxis: string,
+  resizeAxis: ResizeAxis,
   isDroppable: boolean,
   preventCollision: boolean,
   useCSSTransforms: boolean,
@@ -185,7 +186,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isDraggable: PropTypes.bool,
     isResizable: PropTypes.bool,
     // Define direction of resize
-    resizeAxis: PropTypes.oneOf(["both", "x", "y"]),
+    resizeAxis: PropTypes.oneOf(["both", "x", "y", "none"]),
     // If true, grid items won't change position when being dragged over.
     preventCollision: PropTypes.bool,
     // Use CSS transforms instead of top/left
