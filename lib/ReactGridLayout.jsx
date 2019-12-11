@@ -66,6 +66,7 @@ export type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  resizeAxis: string,
   isDroppable: boolean,
   preventCollision: boolean,
   useCSSTransforms: boolean,
@@ -183,6 +184,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     //
     isDraggable: PropTypes.bool,
     isResizable: PropTypes.bool,
+    // Define direction of resize
+    resizeAxis: PropTypes.oneOf(["both", "x", "y"]),
     // If true, grid items won't change position when being dragged over.
     preventCollision: PropTypes.bool,
     // Use CSS transforms instead of top/left
@@ -276,7 +279,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     onResizeStart: noop,
     onResize: noop,
     onResizeStop: noop,
-    onDrop: noop
+    onDrop: noop,
+    resizeAxis: "both"
   };
 
   state: State = {
@@ -662,7 +666,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       useCSSTransforms,
       transformScale,
       draggableCancel,
-      draggableHandle
+      draggableHandle,
+      resizeAxis: resizeAxisGlob
     } = this.props;
     const { mounted, droppingPosition } = this.state;
 
@@ -675,9 +680,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         : !l.static && isDraggable;
     const resizable =
       typeof l.isResizable === "boolean"
-        ? l.isResizable
-        : !l.static && isResizable;
-
+        ? l.isResizable && l.resizeAxis !== "none" && resizeAxisGlob !== "none"
+        : !l.static &&
+          isResizable &&
+          resizeAxisGlob !== "none" &&
+          l.resizeAxis !== "none";
+    const resizeAxis = resizable ? l.resizeAxis || resizeAxisGlob : "none";
     return (
       <GridItem
         containerWidth={width}
@@ -710,6 +718,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         maxW={l.maxW}
         static={l.static}
         droppingPosition={isDroppingItem ? droppingPosition : undefined}
+        resizeAxis={resizeAxis}
       >
         {child}
       </GridItem>

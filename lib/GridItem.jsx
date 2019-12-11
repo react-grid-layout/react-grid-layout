@@ -40,6 +40,7 @@ type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  resizeAxis: string,
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
@@ -153,7 +154,8 @@ export default class GridItem extends React.Component<Props, State> {
       e: PropTypes.object.isRequired,
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
-    })
+    }),
+    resizeAxis: PropTypes.oneOf(["both", "x", "y"])
   };
 
   static defaultProps = {
@@ -164,7 +166,8 @@ export default class GridItem extends React.Component<Props, State> {
     minW: 1,
     maxH: Infinity,
     maxW: Infinity,
-    transformScale: 1
+    transformScale: 1,
+    resizeAxis: "both"
   };
 
   state: State = {
@@ -397,7 +400,16 @@ export default class GridItem extends React.Component<Props, State> {
     child: ReactElement<any>,
     position: Position
   ): ReactElement<any> {
-    const { cols, x, minW, minH, maxW, maxH, transformScale } = this.props;
+    const {
+      cols,
+      x,
+      minW,
+      minH,
+      maxW,
+      maxH,
+      transformScale,
+      resizeAxis
+    } = this.props;
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
     const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
@@ -420,6 +432,7 @@ export default class GridItem extends React.Component<Props, State> {
         onResizeStart={this.onResizeStart}
         onResize={this.onResize}
         transformScale={transformScale}
+        axis={resizeAxis}
       >
         {child}
       </Resizable>
@@ -468,8 +481,8 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
     if (!this.props.onDrag) return;
-    deltaX /= this.props.transformScale
-    deltaY /= this.props.transformScale
+    deltaX /= this.props.transformScale;
+    deltaY /= this.props.transformScale;
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 
