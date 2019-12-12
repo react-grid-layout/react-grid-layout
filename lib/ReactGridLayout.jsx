@@ -33,6 +33,8 @@ import type {
   LayoutItem
 } from "./utils";
 
+declare var Window: any;
+
 type State = {
   id: string,
   activeDrag: ?LayoutItem,
@@ -68,6 +70,7 @@ export type Props = {
   isResizable: boolean,
   isDroppable: boolean,
   preventCollision: boolean,
+  collisionDelay: number,
   useCSSTransforms: boolean,
   transformScale: number,
   droppingItem: $Shape<LayoutItem>,
@@ -192,6 +195,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     //
     isDraggable: PropTypes.bool,
     isResizable: PropTypes.bool,
+    // If greater than 0 (or not null), add a delay before we detect a collision
+    collisionDelay: PropTypes.number,
     // If true, grid items won't change position when being dragged over.
     preventCollision: PropTypes.bool,
     // Use CSS transforms instead of top/left
@@ -273,6 +278,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     verticalCompact: true,
     compactType: "vertical",
     preventCollision: false,
+    collisionDelay: 0,
     droppingItem: {
       i: "__dropping-elem__",
       h: 1,
@@ -307,6 +313,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   };
 
   dragEnterCounter = 0;
+
+  delayedFunction = null;
 
   constructor(props: Props, context: any): void {
     super(props, context);
@@ -493,7 +501,31 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isUserAction,
       this.props.preventCollision,
       compactType(this.props),
-      cols
+      cols,
+      this.props.collisionDelay !== 0
+        ? () => {
+            return setTimeout(() => {
+              moveElement(
+                layout,
+                l,
+                x,
+                y,
+                isUserAction,
+                this.props.preventCollision,
+                compactType(this.props),
+                cols
+              );
+              Window.rglCollisionDelayObj = null;
+
+              this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
+
+              this.setState({
+                layout: compact(layout, compactType(this.props), cols),
+                activeDrag: placeholder
+              });
+            }, this.props.collisionDelay);
+          }
+        : undefined
     );
 
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
@@ -529,7 +561,40 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isUserAction,
       preventCollision,
       compactType(this.props),
-      cols
+      cols,
+      this.props.collisionDelay !== 0
+        ? () => {
+            return setTimeout(() => {
+              moveElement(
+                layout,
+                l,
+                x,
+                y,
+                isUserAction,
+                this.props.preventCollision,
+                compactType(this.props),
+                cols
+              );
+              Window.rglCollisionDelayObj = null;
+
+              if (this.state.activeDrag) {
+                this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+              }
+
+              // Set state
+              const newLayout = compact(layout, compactType(this.props), cols);
+              const { oldLayout } = this.state;
+              this.setState({
+                activeDrag: null,
+                layout: newLayout,
+                oldDragItem: null,
+                oldLayout: null
+              });
+
+              this.onLayoutMaybeChanged(newLayout, oldLayout);
+            }, this.props.collisionDelay);
+          }
+        : undefined
     );
     if (this.state.activeDrag) {
       this.props.onDragStop(layout, oldDragItem, l, null, e, node);
