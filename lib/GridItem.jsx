@@ -51,6 +51,7 @@ type Props = {
   // Draggability
   cancel: string,
   handle: string,
+  enableUserSelectHack: boolean,
 
   x: number,
   y: number,
@@ -148,6 +149,7 @@ export default class GridItem extends React.Component<Props, State> {
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
     cancel: PropTypes.string,
+    enableUserSelectHack: PropTypes.bool,
     // Current position of a dropping element
     droppingPosition: PropTypes.shape({
       e: PropTypes.object.isRequired,
@@ -164,7 +166,8 @@ export default class GridItem extends React.Component<Props, State> {
     minW: 1,
     maxH: Infinity,
     maxW: Infinity,
-    transformScale: 1
+    transformScale: 1,
+    enableUserSelectHack: true
   };
 
   state: State = {
@@ -381,6 +384,7 @@ export default class GridItem extends React.Component<Props, State> {
           (this.props.cancel ? "," + this.props.cancel : "")
         }
         scale={this.props.transformScale}
+        enableUserSelectHack={this.props.enableUserSelectHack}
       >
         {child}
       </DraggableCore>
@@ -468,8 +472,8 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
     if (!this.props.onDrag) return;
-    deltaX /= this.props.transformScale
-    deltaY /= this.props.transformScale
+    deltaX /= this.props.transformScale;
+    deltaY /= this.props.transformScale;
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 
