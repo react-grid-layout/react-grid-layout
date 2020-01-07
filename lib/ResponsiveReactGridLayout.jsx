@@ -117,6 +117,13 @@ export default class ResponsiveReactGridLayout extends React.Component<
       });
     },
 
+    initialLayoutItem: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+      h: PropTypes.number,
+      w: PropTypes.number
+    }),
+
     // The width of this component.
     // Required in this propTypes stanza because generateInitialState() will fail without it.
     width: PropTypes.number.isRequired,
@@ -140,6 +147,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     layouts: {},
+    initialLayoutItem: null,
     margin: [10, 10],
     containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
     onBreakpointChange: noop,
@@ -254,7 +262,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
         layout,
         nextProps.children,
         newCols,
-        compactType
+        compactType,
+        nextProps.initialLayoutItem
       );
 
       // Store the new layout.

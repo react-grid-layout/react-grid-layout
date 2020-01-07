@@ -60,6 +60,7 @@ export type Props = {
   verticalCompact: boolean,
   compactType: CompactType,
   layout: Layout,
+  initialLayoutItem: $Shape<LayoutItem>,
   margin: [number, number],
   containerPadding: [number, number] | null,
   rowHeight: number,
@@ -160,6 +161,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       if (layout === undefined) return;
       validateLayout(layout, "layout");
     },
+
+    initialLayoutItem: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+      h: PropTypes.number,
+      w: PropTypes.number
+    }),
 
     //
     // Grid Dimensions
@@ -286,7 +294,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       this.props.children,
       this.props.cols,
       // Legacy support for verticalCompact: false
-      compactType(this.props)
+      compactType(this.props),
+      this.props.initialLayoutItem
     ),
     mounted: false,
     oldDragItem: null,
@@ -344,7 +353,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         newLayoutBase,
         nextProps.children,
         nextProps.cols,
-        compactType(nextProps)
+        compactType(nextProps),
+        nextProps.initialLayoutItem
       );
 
       return {

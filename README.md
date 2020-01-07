@@ -279,6 +279,11 @@ compactType: ?('vertical' | 'horizontal') = 'vertical';
 // {i: string, x: number, y: number, w: number, h: number}
 layout: ?array = null, // If not provided, use data-grid props on children
 
+// Initial layout for new items that do not yet possess a layout
+// changing height and width is especially useful if items are too small:
+// { w: 4, h: 4} will create items of 4 blocks per 4 blocks
+initialLayoutItem?: { w: number, h: number, x: number, y: number}
+
 // Margin between items [x, y] in px.
 margin: ?[number, number] = [10, 10],
 
