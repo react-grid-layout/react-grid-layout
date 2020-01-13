@@ -3,13 +3,16 @@
 
 import {
   bottom,
+  calcGridColWidth,
+  calcGridItemPosition,
   collides,
-  validateLayout,
-  moveElement,
   compact,
+  fastRGLPropsEqual,
+  moveElement,
   sortLayoutItemsByRowCol,
-  pick
+  validateLayout
 } from "../../lib/utils.js";
+import isEqual from "lodash.isequal";
 /*:: import type { Layout } from "../../lib/utils.js"; */
 
 /*:: declare function describe(name: string, fn: Function): void; */
@@ -417,37 +420,135 @@ describe("compact horizontal", () => {
   });
 });
 
-describe('pick', () => {
-  const pickedObj = {
-    key1: 'value1',
-    key2: 'value2',
-    key3: 'value3',
-    key4: 'value4',
-    key5: 'value5'
-  };
+describe("calcGridColWidth", () => {
+  it("should complete basic calculation", () => {
+    const margin = [0, 0];
+    const containerPadding = [0, 0];
+    const containerWidth = 800;
+    const cols = 8;
+    expect(
+      calcGridColWidth(margin, containerPadding, containerWidth, cols)
+    ).toEqual(100);
+  });
 
-  it('picks certain keys from an object and creates a new one from those keys', () => {
-    const pickedKeys = ['key2', 'key5'];
-    const equalsObj = {
-      key2: 'value2',
-      key5: 'value5',
+  it("should consider margin", () => {
+    const margin = [10, 10];
+    const containerPadding = [0, 0];
+    const containerWidth = 800;
+    const cols = 8;
+    // 70 px of margin in total (one between each of 8 items)
+    expect(
+      calcGridColWidth(margin, containerPadding, containerWidth, cols)
+    ).toEqual(91.25);
+  });
+
+  it("should consider container padding", () => {
+    const margin = [0, 0];
+    const containerPadding = [100, 0];
+    const containerWidth = 800;
+    const cols = 8;
+    // (800 - 100 - 100) / 8
+    expect(
+      calcGridColWidth(margin, containerPadding, containerWidth, cols)
+    ).toEqual(75);
+  });
+
+  it("should consider margin and padding", () => {
+    const margin = [10, 0];
+    const containerPadding = [100, 0];
+    const containerWidth = 800;
+    const cols = 8;
+    // (800 - 100 - 100 - 70) / 8
+    expect(
+      calcGridColWidth(margin, containerPadding, containerWidth, cols)
+    ).toEqual(66.25);
+  });
+});
+
+describe("calcGridItemPosition", () => {
+  it("should complete basic calculation", () => {
+    const x = 1;
+    const y = 1;
+    const w = 2;
+    const h = 2;
+    const resizing = null;
+    const dragging = null;
+    const margin = [10, 10];
+    const containerPadding = [100, 100];
+    const rowHeight = 50;
+    const containerWidth = 800;
+    const cols = 8;
+    expect(
+      calcGridItemPosition(
+        x,
+        y,
+        w,
+        h,
+        resizing,
+        dragging,
+        margin,
+        containerPadding,
+        rowHeight,
+        containerWidth,
+        cols
+      )
+    ).toEqual({
+      height: 110, // 50 * 2 + margin of 10
+      left: 176, // 100 + colWidth (66.25) + margin. Rounded to complete pixel
+      top: 160, // 100 + height + margin
+      width: 143 // 2x colWidth + margin, rounded
+    });
+  });
+});
+
+describe("fastRGLPropsEqual", () => {
+  it("should tell us if props are equal, including arrays and objects", () => {
+    const props1 = {
+      className: "foo",
+      margin: [10, 10],
+      style: { background: "red" }
     };
-
-    expect(pick(pickedKeys, pickedObj)).toEqual(equalsObj);
+    const props2 = {
+      className: "foo",
+      margin: [10, 10],
+      style: { background: "red" }
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
   });
 
-  it('excludes a specific key from an object and creates a new object without this key', () => {
-    const includedKeys = ['key3', 'key1'];
-    const excludedKey = 'key2';
-
-    expect(pick(includedKeys, pickedObj)[excludedKey]).toBeUndefined();
+  it("catches changed arrays", () => {
+    const props1 = {
+      margin: [10, 10]
+    };
+    const props2 = {
+      margin: [10, 11]
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(false);
   });
 
-  it('picks certain keys from the object and creates a new object with these keys and checks for the presence of these keys', () => {
-    const includedKeys = ['key3', 'key1'];
-    const includedKey = 'key3';
-    const includedValue = 'value3';
-
-    expect(pick(includedKeys, pickedObj)[includedKey]).toBe(includedValue);
+  it("ignores children", () => {
+    const props1 = {
+      children: ["foo", "bar"]
+    };
+    const props2 = {
+      children: ["biff", "bar"]
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
   });
-})
+
+  it("fails added props", () => {
+    const props1 = {};
+    const props2 = {
+      droppingItem: { w: 1, h: 2, i: 3 }
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(false);
+  });
+
+  it("ignores invalid props", () => {
+    const props1 = {};
+    const props2 = {
+      somethingElse: { w: 1, h: 2, i: 3 }
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+  });
+});
