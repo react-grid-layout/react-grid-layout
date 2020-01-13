@@ -12,8 +12,7 @@
     "dev": "make dev",
     "prepublishOnly": "make build",
     "validate": "npm ls",
-    "flow": "flow",
-    "precommit": "lint-staged && make lint"
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -91,5 +90,10 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && make lint && make test"
+    }
   }
 }
