@@ -16,6 +16,9 @@ import {
   getAllCollisions,
   noop
 } from "./utils";
+
+import { calcXY } from "./calculateUtils";
+
 import GridItem from "./GridItem";
 import type {
   ChildrenArray as ReactChildrenArray,
@@ -33,6 +36,8 @@ import type {
   DroppingPosition,
   LayoutItem
 } from "./utils";
+
+import type { PositionParams } from "./calculateUtils";
 
 type State = {
   activeDrag: ?LayoutItem,
@@ -726,12 +731,37 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       return false;
     }
 
-    const { droppingItem } = this.props;
+    const {
+      droppingItem,
+      margin,
+      cols,
+      rowHeight,
+      maxRows,
+      width,
+      containerPadding
+    } = this.props;
     const { layout } = this.state;
     const { layerX, layerY } = e.nativeEvent;
     const droppingPosition = { x: layerX, y: layerY, e };
 
     if (!this.state.droppingDOMNode) {
+      const positionParams: PositionParams = {
+        cols,
+        margin,
+        maxRows,
+        rowHeight,
+        containerWidth: width,
+        containerPadding: containerPadding || margin
+      };
+
+      const calculatedPosition = calcXY(
+        positionParams,
+        layerY,
+        layerX,
+        droppingItem.w,
+        droppingItem.h
+      );
+
       this.setState({
         droppingDOMNode: <div key={droppingItem.i} />,
         droppingPosition,
@@ -739,8 +769,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           ...layout,
           {
             ...droppingItem,
-            x: 0,
-            y: 0,
+            x: calculatedPosition.x,
+            y: calculatedPosition.y,
             static: false,
             isDraggable: true
           }
