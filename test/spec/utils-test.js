@@ -3,8 +3,6 @@
 
 import {
   bottom,
-  calcGridColWidth,
-  calcGridItemPosition,
   collides,
   compact,
   fastRGLPropsEqual,
@@ -12,6 +10,10 @@ import {
   sortLayoutItemsByRowCol,
   validateLayout
 } from "../../lib/utils.js";
+import {
+  calcGridColWidth,
+  calcGridItemPosition
+} from "../../lib/calculateUtils.js";
 import isEqual from "lodash.isequal";
 /*:: import type { Layout } from "../../lib/utils.js"; */
 
@@ -420,48 +422,45 @@ describe("compact horizontal", () => {
   });
 });
 
+const basePositionParams = {
+  margin: [0, 0],
+  containerPadding: [0, 0],
+  containerWidth: 800,
+  cols: 8,
+  rowHeight: 50,
+  maxRows: 12
+};
 describe("calcGridColWidth", () => {
   it("should complete basic calculation", () => {
-    const margin = [0, 0];
-    const containerPadding = [0, 0];
-    const containerWidth = 800;
-    const cols = 8;
-    expect(
-      calcGridColWidth(margin, containerPadding, containerWidth, cols)
-    ).toEqual(100);
+    expect(calcGridColWidth(basePositionParams)).toEqual(100);
   });
 
   it("should consider margin", () => {
-    const margin = [10, 10];
-    const containerPadding = [0, 0];
-    const containerWidth = 800;
-    const cols = 8;
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 10]
+    };
     // 70 px of margin in total (one between each of 8 items)
-    expect(
-      calcGridColWidth(margin, containerPadding, containerWidth, cols)
-    ).toEqual(91.25);
+    expect(calcGridColWidth(positionParams)).toEqual(91.25);
   });
 
   it("should consider container padding", () => {
-    const margin = [0, 0];
-    const containerPadding = [100, 0];
-    const containerWidth = 800;
-    const cols = 8;
+    const positionParams = {
+      ...basePositionParams,
+      containerPadding: [100, 0]
+    };
     // (800 - 100 - 100) / 8
-    expect(
-      calcGridColWidth(margin, containerPadding, containerWidth, cols)
-    ).toEqual(75);
+    expect(calcGridColWidth(positionParams)).toEqual(75);
   });
 
   it("should consider margin and padding", () => {
-    const margin = [10, 0];
-    const containerPadding = [100, 0];
-    const containerWidth = 800;
-    const cols = 8;
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 0],
+      containerPadding: [100, 0]
+    };
     // (800 - 100 - 100 - 70) / 8
-    expect(
-      calcGridColWidth(margin, containerPadding, containerWidth, cols)
-    ).toEqual(66.25);
+    expect(calcGridColWidth(positionParams)).toEqual(66.25);
   });
 });
 
@@ -473,25 +472,13 @@ describe("calcGridItemPosition", () => {
     const h = 2;
     const resizing = null;
     const dragging = null;
-    const margin = [10, 10];
-    const containerPadding = [100, 100];
-    const rowHeight = 50;
-    const containerWidth = 800;
-    const cols = 8;
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 10],
+      containerPadding: [100, 100]
+    };
     expect(
-      calcGridItemPosition(
-        x,
-        y,
-        w,
-        h,
-        resizing,
-        dragging,
-        margin,
-        containerPadding,
-        rowHeight,
-        containerWidth,
-        cols
-      )
+      calcGridItemPosition(positionParams, x, y, w, h, { resizing, dragging })
     ).toEqual({
       height: 110, // 50 * 2 + margin of 10
       left: 176, // 100 + colWidth (66.25) + margin. Rounded to complete pixel

@@ -4,9 +4,8 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
-import { perc, setTopLeft, setTransform } from "./utils";
-import { calcGridItemPosition, calcGridColWidth, calcXY, calcWH } from "./calculateUtils";
-import {fastPositionEqual, perc, setTopLeft, setTransform} from "./utils";
+import { fastPositionEqual, perc, setTopLeft, setTransform } from "./utils";
+import { calcGridItemPosition, calcXY, calcWH } from "./calculateUtils";
 import classNames from "classnames";
 import type { Element as ReactElement, Node as ReactNode } from "react";
 
@@ -181,9 +180,23 @@ export default class GridItem extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     let { x, y, w, h } = this.props;
-    const oldPosition = calcGridItemPosition(this.getPositionParams(this.props), x, y, w, h, this.state);
+    const oldPosition = calcGridItemPosition(
+      this.getPositionParams(this.props),
+      x,
+      y,
+      w,
+      h,
+      this.state
+    );
     ({ x, y, w, h } = nextProps);
-    const newPosition = calcGridItemPosition(this.getPositionParams(nextProps), x, y, w, h, nextState);
+    const newPosition = calcGridItemPosition(
+      this.getPositionParams(nextProps),
+      x,
+      y,
+      w,
+      h,
+      nextState
+    );
     return (
       !fastPositionEqual(oldPosition, newPosition) ||
       this.props.useCSSTransforms !== nextProps.useCSSTransforms
@@ -311,7 +324,8 @@ export default class GridItem extends React.Component<Props, State> {
     const positionParams = this.getPositionParams();
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols - x, 0).width;
+    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols - x, 0)
+      .width;
 
     // Calculate min/max constraints using our min & maxes
     const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
@@ -537,7 +551,14 @@ export default class GridItem extends React.Component<Props, State> {
       useCSSTransforms
     } = this.props;
 
-    const pos = calcGridItemPosition(this.getPositionParams(), x, y, w, h, this.state);
+    const pos = calcGridItemPosition(
+      this.getPositionParams(),
+      x,
+      y,
+      w,
+      h,
+      this.state
+    );
     const child = React.Children.only(this.props.children);
 
     // Create the child element. We clone the existing element but modify its className and style.
