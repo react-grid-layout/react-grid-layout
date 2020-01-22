@@ -154,8 +154,8 @@ export default class GridItem extends React.Component<Props, State> {
     // Current position of a dropping element
     droppingPosition: PropTypes.shape({
       e: PropTypes.object.isRequired,
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired
+      left: PropTypes.number.isRequired,
+      top: PropTypes.number.isRequired
     })
   };
 
@@ -179,16 +179,17 @@ export default class GridItem extends React.Component<Props, State> {
   currentNode: HTMLElement;
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.droppingPosition && prevProps.droppingPosition) {
-      this.moveDroppingItem(prevProps);
-    }
+    this.moveDroppingItem(prevProps);
   }
 
+  // When a droppingPosition is present, this means we should fire a move event, as if we had moved
+  // this element by `x, y` pixels.
   moveDroppingItem(prevProps: Props) {
     const { droppingPosition } = this.props;
+    const prevDroppingPosition = prevProps.droppingPosition;
     const { dragging } = this.state;
 
-    if (!droppingPosition || !prevProps.droppingPosition) {
+    if (!droppingPosition || !prevDroppingPosition) {
       return;
     }
 
@@ -198,18 +199,18 @@ export default class GridItem extends React.Component<Props, State> {
     }
 
     const shouldDrag =
-      (dragging && droppingPosition.x !== prevProps.droppingPosition.x) ||
-      droppingPosition.y !== prevProps.droppingPosition.y;
+      (dragging && droppingPosition.left !== prevDroppingPosition.left) ||
+      droppingPosition.top !== prevDroppingPosition.top;
 
     if (!dragging) {
       this.onDragStart(droppingPosition.e, {
         node: this.currentNode,
-        deltaX: droppingPosition.x,
-        deltaY: droppingPosition.y
+        deltaX: droppingPosition.left,
+        deltaY: droppingPosition.top
       });
     } else if (shouldDrag) {
-      const deltaX = droppingPosition.x - dragging.left;
-      const deltaY = droppingPosition.y - dragging.top;
+      const deltaX = droppingPosition.left - dragging.left;
+      const deltaY = droppingPosition.top - dragging.top;
 
       this.onDrag(droppingPosition.e, {
         node: this.currentNode,
@@ -371,9 +372,10 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
-    if (!this.props.onDrag) return;
-    deltaX /= this.props.transformScale;
-    deltaY /= this.props.transformScale;
+    const { onDrag, transformScale } = this.props;
+    if (!onDrag) return;
+    deltaX /= transformScale;
+    deltaY /= transformScale;
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 
@@ -392,8 +394,8 @@ export default class GridItem extends React.Component<Props, State> {
     );
 
     return (
-      this.props.onDrag &&
-      this.props.onDrag.call(this, this.props.i, x, y, {
+      onDrag &&
+      onDrag.call(this, this.props.i, x, y, {
         e,
         node,
         newPosition
