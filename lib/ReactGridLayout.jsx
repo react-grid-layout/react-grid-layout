@@ -16,6 +16,9 @@ import {
   getAllCollisions,
   noop
 } from "./utils";
+
+import { calcXY } from "./calculateUtils";
+
 import GridItem from "./GridItem";
 import type {
   ChildrenArray as ReactChildrenArray,
@@ -33,6 +36,8 @@ import type {
   DroppingPosition,
   LayoutItem
 } from "./utils";
+
+import type { PositionParams } from "./calculateUtils";
 
 type State = {
   activeDrag: ?LayoutItem,
@@ -716,9 +721,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
+  // Called while dragging an element. Part of browser native drag/drop API.
+  // Native event target might be the layout itself, or an element within the layout.
   onDragOver = (e: DragOverEvent) => {
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
+    // FIXME remove this hack
     if (
       isFirefox &&
       e.nativeEvent.target.className.indexOf(layoutClassName) === -1
@@ -726,12 +734,38 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       return false;
     }
 
-    const { droppingItem } = this.props;
+    const {
+      droppingItem,
+      margin,
+      cols,
+      rowHeight,
+      maxRows,
+      width,
+      containerPadding
+    } = this.props;
     const { layout } = this.state;
+    // This is relative to the DOM element that this event fired for.
     const { layerX, layerY } = e.nativeEvent;
-    const droppingPosition = { x: layerX, y: layerY, e };
+    const droppingPosition = { left: layerX, top: layerY, e };
 
     if (!this.state.droppingDOMNode) {
+      const positionParams: PositionParams = {
+        cols,
+        margin,
+        maxRows,
+        rowHeight,
+        containerWidth: width,
+        containerPadding: containerPadding || margin
+      };
+
+      const calculatedPosition = calcXY(
+        positionParams,
+        layerY,
+        layerX,
+        droppingItem.w,
+        droppingItem.h
+      );
+
       this.setState({
         droppingDOMNode: <div key={droppingItem.i} />,
         droppingPosition,
@@ -739,18 +773,19 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           ...layout,
           {
             ...droppingItem,
-            x: 0,
-            y: 0,
+            x: calculatedPosition.x,
+            y: calculatedPosition.y,
             static: false,
             isDraggable: true
           }
         ]
       });
     } else if (this.state.droppingPosition) {
-      const shouldUpdatePosition =
-        this.state.droppingPosition.x != layerX ||
-        this.state.droppingPosition.y != layerY;
-      shouldUpdatePosition && this.setState({ droppingPosition });
+      const { left, top } = this.state.droppingPosition;
+      const shouldUpdatePosition = left != layerX || top != layerY;
+      if (shouldUpdatePosition) {
+        this.setState({ droppingPosition });
+      }
     }
 
     e.stopPropagation();
