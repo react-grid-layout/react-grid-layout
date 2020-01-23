@@ -99,14 +99,14 @@ RGL is React-only and does not require jQuery.
 Install the React-Grid-Layout [package](https://www.npmjs.org/package/react-grid-layout) package using [npm](https://www.npmjs.com/):
 
 ```bash
-npm install react-grid-layout
+npm install react-grid-layout react-resizable
 ```
 
 Include the following stylesheets in your application:
 
-```
-/node_modules/react-grid-layout/css/styles.css
-/node_modules/react-resizable/css/styles.css
+```javascript
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 ```
 
 ## Usage
