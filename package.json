@@ -12,8 +12,7 @@
     "dev": "make dev",
     "prepublishOnly": "make build",
     "validate": "npm ls",
-    "flow": "flow",
-    "precommit": "lint-staged && make lint"
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -43,40 +42,39 @@
     "react-resizable": "^1.9.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.6.4",
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-transform-flow-comments": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "@babel/preset-flow": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/cli": "^7.8.0",
+    "@babel/core": "^7.8.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.0",
+    "@babel/plugin-transform-flow-comments": "^7.8.0",
+    "@babel/preset-env": "^7.8.2",
+    "@babel/preset-flow": "^7.8.0",
+    "@babel/preset-react": "^7.8.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
-    "babel-plugin-espower": "^3.0.1",
-    "css-loader": "^3.2.0",
-    "ejs": "^2.7.1",
-    "eslint": "^6.4.0",
-    "eslint-plugin-flowtype": "^4.3.0",
-    "eslint-plugin-mocha": "^6.2.0",
-    "eslint-plugin-react": "^7.14.3",
+    "css-loader": "^3.4.2",
+    "ejs": "^3.0.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-mocha": "^6.2.2",
+    "eslint-plugin-react": "^7.17.0",
     "exports-loader": "^0.7.0",
-    "flow-bin": "^0.110.1",
+    "flow-bin": "^0.115.0",
     "husky": "^3.0.9",
     "imports-loader": "^0.8.0",
     "jest-cli": "^24.9.0",
-    "lint-staged": "^9.2.5",
+    "lint-staged": "^9.5.0",
     "lodash": "^4.17.5",
     "opener": "^1.4.3",
-    "prettier": "^1.18.2",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-hot-loader": "^4.12.13",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-hot-loader": "^4.12.18",
     "react-transform-hmr": "^1.0.2",
-    "style-loader": "^1.0.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.9.0"
+    "style-loader": "^1.1.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -92,5 +90,10 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && make lint && make test"
+    }
   }
 }

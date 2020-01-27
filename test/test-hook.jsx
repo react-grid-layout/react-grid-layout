@@ -14,9 +14,11 @@ export default function makeLayout(Layout) {
 
     stringifyLayout() {
       return this.state.layout.map(function(l) {
+        const name = l.i === "__dropping-elem__" ? "drop" : l.i;
         return (
           <div className="layoutItem" key={l.i}>
-            <b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]
+            <b>{name}</b>
+            {`: [${l.x}, ${l.y}, ${l.w}, ${l.h}]`}
           </div>
         );
       });

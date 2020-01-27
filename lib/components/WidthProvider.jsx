@@ -10,9 +10,9 @@ type WPProps = {
   style?: Object
 };
 
-type WPState = {
+type WPState = {|
   width: number
-};
+|};
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
