@@ -19,10 +19,14 @@ const IntermediateGrid = ({width, ...otherProps}) => {
 const FullGrid = WidthProvider(IntermediateGrid);
 ```
 
+Last tested: OK @eric-burel January 2020
+
 ## Access the current layout
 
 In non responsive mode, use the `onLayoutChange` callback to store the layout. 
 In responsive mode, you may also need to track the breakpoint to select the correct layout in the `layouts` map: `layouts[currentBreakpoint]`.
+
+Last tested: OK @eric-burel January 2020
 
 ## Provide an initial width/height to new items
 
@@ -43,3 +47,6 @@ import { bottom } from 'react-grid-layout/lib/utils'
 
 <GridItem key="wathever" data-grid={{w:4, h:4, x:0, y: bottom(layout)}} />
 ```
+
+Last tested: OK @eric-burel January 2020
+
