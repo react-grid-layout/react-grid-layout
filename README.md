@@ -29,6 +29,7 @@ RGL is React-only and does not require jQuery.
 - [Grid Layout Props](#grid-layout-props)
 - [Responsive Grid Layout Props](#responsive-grid-layout-props)
 - [Grid Item Props](#grid-item-props)
+- [Users recipes](/STRML/react-grid-layout/wiki/Users-recipes)
 - [Contribute](#contribute)
 - [TODO List](#todo-list)
 
