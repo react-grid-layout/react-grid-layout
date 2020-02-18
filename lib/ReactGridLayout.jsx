@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import isEqual from "lodash.isequal";
 import classNames from "classnames";
+import { ResizeHandle } from "react-resizable";
 import {
   autoBindHandlers,
   bottom,
@@ -62,6 +63,7 @@ export type Props = {
   cols: number,
   draggableCancel: string,
   draggableHandle: string,
+  resizeHandles: ResizeHandle[],
   verticalCompact: boolean,
   compactType: CompactType,
   layout: Layout,
@@ -156,6 +158,17 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     },
     // Choose vertical or hotizontal compaction
     compactType: PropTypes.oneOf(["vertical", "horizontal"]),
+
+    resizeHandles: PropTypes.oneOf([
+      "s",
+      "w",
+      "e",
+      "n",
+      "sw",
+      "nw",
+      "se",
+      "ne"
+    ]),
 
     // layout is an array of object with the format:
     // {x: Number, y: Number, w: Number, h: Number, i: String}
@@ -256,6 +269,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     style: {},
     draggableHandle: "",
     draggableCancel: "",
+    resizeHandles: ["se"],
     containerPadding: null,
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
@@ -667,7 +681,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       useCSSTransforms,
       transformScale,
       draggableCancel,
-      draggableHandle
+      draggableHandle,
+      resizeHandles
     } = this.props;
     const { mounted, droppingPosition } = this.state;
 
@@ -685,6 +700,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     return (
       <GridItem
+        resizeHandles={resizeHandles}
         containerWidth={width}
         cols={cols}
         margin={margin}

@@ -139,5 +139,19 @@ module.exports = [
       "Once you drop the item within the grid you'll get its coordinates/properties and can perform actions with " +
         "it accordingly."
     ]
+  },
+  {
+    title: "Responsive Bootstrap Style",
+    source: "responsive-bootstrap-style",
+    paragraphs: [
+      "This demonstrates how to use responsive bootstrap styles with React Grid Layout"
+    ]
+  },
+  {
+    title: "Customize Resize Handles",
+    source: "resize-handles",
+    paragraphs: [
+      "This demonstrates how to customize where the resize handle is located on a box"
+    ]
   }
 ];

@@ -20,18 +20,21 @@ RGL is React-only and does not require jQuery.
 
 ## Table of Contents
 
-- [Demos](#demos)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Responsive Usage](#responsive-usage)
-- [Providing Grid Width](#providing-grid-width)
-- [Grid Layout Props](#grid-layout-props)
-- [Responsive Grid Layout Props](#responsive-grid-layout-props)
-- [Grid Item Props](#grid-item-props)
-- [Users recipes](../../wiki/Users-recipes)
-- [Contribute](#contribute)
-- [TODO List](#todo-list)
+- [React-Grid-Layout](#react-grid-layout)
+  - [Table of Contents](#table-of-contents)
+  - [Demos](#demos)
+      - [Projects Using React-Grid-Layout](#projects-using-react-grid-layout)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Usage without Browserify/Webpack](#usage-without-browserifywebpack)
+    - [Responsive Usage](#responsive-usage)
+    - [Providing Grid Width](#providing-grid-width)
+    - [Grid Layout Props](#grid-layout-props)
+    - [Responsive Grid Layout Props](#responsive-grid-layout-props)
+    - [Grid Item Props](#grid-item-props)
+  - [Contribute](#contribute)
+  - [TODO List](#todo-list)
 
 ## Demos
 
@@ -51,6 +54,8 @@ RGL is React-only and does not require jQuery.
 1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
 1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html)
+1. [Responsive bootstrap style](https://strml.github.io/react-grid-layout/examples/16-responsive-bootstrap-style.html)
+1. [Customize Resize Handles](https://strml.github.io/react-grid-layout/examples/17-resize-handles.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -85,6 +90,7 @@ RGL is React-only and does not require jQuery.
 * Responsive breakpoints
 * Separate layouts per responsive breakpoint
 * Grid Items placed using CSS Transforms
+* Customize the visible resize handles
 * Performance: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
 
 |Version         | Compatibility    |
@@ -285,6 +291,11 @@ margin: ?[number, number] = [10, 10],
 
 // Padding inside the container [x, y] in px
 containerPadding: ?[number, number] = margin,
+
+// Position of visible resize handles
+// Array of any of the following handle positions
+// Either include react-resizable css file or include your own
+resizeHandles: ?['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne'] = ['se'];
 
 // Rows have a static height, but you can change this based on breakpoints
 // if you like.
