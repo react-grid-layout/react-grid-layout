@@ -13,6 +13,7 @@ module.exports = {
   ],
   plugins: [
     "@babel/plugin-transform-flow-comments",
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    "babel-plugin-preval"
   ]
 };

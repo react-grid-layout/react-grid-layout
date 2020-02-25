@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
-import { perc, setTopLeft, setTransform } from "./utils";
-import { calcPosition, calcXY, calcWH } from "./calculateUtils";
+import { fastPositionEqual, perc, setTopLeft, setTransform } from "./utils";
+import { calcGridItemPosition, calcXY, calcWH } from "./calculateUtils";
 import classNames from "classnames";
 import type { Element as ReactElement, Node as ReactNode } from "react";
 
@@ -178,6 +178,31 @@ export default class GridItem extends React.Component<Props, State> {
 
   currentNode: HTMLElement;
 
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    let { x, y, w, h } = this.props;
+    const oldPosition = calcGridItemPosition(
+      this.getPositionParams(this.props),
+      x,
+      y,
+      w,
+      h,
+      this.state
+    );
+    ({ x, y, w, h } = nextProps);
+    const newPosition = calcGridItemPosition(
+      this.getPositionParams(nextProps),
+      x,
+      y,
+      w,
+      h,
+      nextState
+    );
+    return (
+      !fastPositionEqual(oldPosition, newPosition) ||
+      this.props.useCSSTransforms !== nextProps.useCSSTransforms
+    );
+  }
+
   componentDidUpdate(prevProps: Props) {
     this.moveDroppingItem(prevProps);
   }
@@ -220,14 +245,14 @@ export default class GridItem extends React.Component<Props, State> {
     }
   }
 
-  getPositionParams(): PositionParams {
+  getPositionParams(props: Props = this.props): PositionParams {
     return {
-      cols: this.props.cols,
-      containerPadding: this.props.containerPadding,
-      containerWidth: this.props.containerWidth,
-      margin: this.props.margin,
-      maxRows: this.props.maxRows,
-      rowHeight: this.props.rowHeight
+      cols: props.cols,
+      containerPadding: props.containerPadding,
+      containerWidth: props.containerWidth,
+      margin: props.margin,
+      maxRows: props.maxRows,
+      rowHeight: props.rowHeight
     };
   }
 
@@ -304,11 +329,12 @@ export default class GridItem extends React.Component<Props, State> {
     const positionParams = this.getPositionParams();
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = calcPosition(positionParams, 0, 0, cols - x, 0).width;
+    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols - x, 0)
+      .width;
 
     // Calculate min/max constraints using our min & maxes
-    const mins = calcPosition(positionParams, 0, 0, minW, minH);
-    const maxes = calcPosition(positionParams, 0, 0, maxW, maxH);
+    const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
+    const maxes = calcGridItemPosition(positionParams, 0, 0, maxW, maxH);
     const minConstraints = [mins.width, mins.height];
     const maxConstraints = [
       Math.min(maxes.width, maxWidth),
@@ -534,7 +560,14 @@ export default class GridItem extends React.Component<Props, State> {
       useCSSTransforms
     } = this.props;
 
-    const pos = calcPosition(this.getPositionParams(), x, y, w, h, this.state);
+    const pos = calcGridItemPosition(
+      this.getPositionParams(),
+      x,
+      y,
+      w,
+      h,
+      this.state
+    );
     const child = React.Children.only(this.props.children);
 
     // Create the child element. We clone the existing element but modify its className and style.

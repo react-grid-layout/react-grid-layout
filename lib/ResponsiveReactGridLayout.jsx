@@ -15,7 +15,7 @@ import {
   findOrGenerateResponsiveLayout
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
-import type { Props as RGLProps } from "./ReactGridLayout";
+import type { Props as RGLProps } from "./ReactGridLayoutPropTypes";
 import type { Layout } from "./utils";
 
 const type = obj => Object.prototype.toString.call(obj);
