@@ -1,9 +1,26 @@
+// @flow
 import React from "react";
 import _ from "lodash";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import Responsive from '../../lib/ResponsiveReactGridLayout';
+import WidthProvider from '../../lib/components/WidthProvider';
+import type {CompactType, Layout} from '../../lib/utils';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-export default class ShowcaseLayout extends React.Component {
+type Props = {|
+  className: string,
+  cols: {[string]: number},
+  initialLayout: Layout,
+  onLayoutChange: Function,
+  rowHeight: number,
+|};
+type State = {|
+  currentBreakpoint: string,
+  compactType: CompactType,
+  mounted: boolean,
+  layouts: {[string]: Layout}
+|};
+
+export default class ShowcaseLayout extends React.Component<Props, State> {
   static defaultProps = {
     className: "layout",
     rowHeight: 30,
@@ -42,7 +59,7 @@ export default class ShowcaseLayout extends React.Component {
     });
   }
 
-  onBreakpointChange = breakpoint => {
+  onBreakpointChange = (breakpoint: string) => {
     this.setState({
       currentBreakpoint: breakpoint
     });
@@ -59,7 +76,7 @@ export default class ShowcaseLayout extends React.Component {
     this.setState({ compactType });
   };
 
-  onLayoutChange = (layout, layouts) => {
+  onLayoutChange = (layout: Layout, layouts: {[string]: Layout}) => {
     this.props.onLayoutChange(layout, layouts);
   };
 
@@ -69,11 +86,13 @@ export default class ShowcaseLayout extends React.Component {
     });
   };
 
-  onDrop = elemParams => {
+  onDrop = (elemParams: Object) => {
     alert(`Element parameters: ${JSON.stringify(elemParams)}`);
   };
 
   render() {
+    // eslint-disable-next-line no-unused-vars
+    const {initialLayout, ...props} = this.props;
     return (
       <div>
         <div>
@@ -89,7 +108,7 @@ export default class ShowcaseLayout extends React.Component {
           Change Compaction Type
         </button>
         <ResponsiveReactGridLayout
-          {...this.props}
+          {...props}
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}

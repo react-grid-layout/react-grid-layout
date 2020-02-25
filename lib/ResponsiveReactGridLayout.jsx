@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import isEqual from "lodash.isequal";
 
@@ -15,7 +15,6 @@ import {
   findOrGenerateResponsiveLayout
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
-import type { Props as RGLProps } from "./ReactGridLayoutPropTypes";
 import type { Layout } from "./utils";
 
 const type = obj => Object.prototype.toString.call(obj);
@@ -42,11 +41,11 @@ type State = {
   layouts?: { [key: string]: Layout }
 };
 
-type Props<Breakpoint: string = string> = {
-  ...$Exact<RGLProps>,
+type Props<Breakpoint: string = string> = {|
+  ...React.ElementConfig<typeof ReactGridLayout>,
 
   // Responsive config
-  breakpoint: Breakpoint,
+  breakpoint?: ?Breakpoint,
   breakpoints: { [key: Breakpoint]: number },
   cols: { [key: Breakpoint]: number },
   layouts: { [key: Breakpoint]: Layout },
@@ -63,7 +62,7 @@ type Props<Breakpoint: string = string> = {
     cols: number,
     containerPadding: [number, number] | null
   ) => void
-};
+|};
 
 export default class ResponsiveReactGridLayout extends React.Component<
   Props<>,
