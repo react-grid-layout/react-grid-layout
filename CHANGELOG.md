@@ -1,5 +1,17 @@
 # Changelog
 
+0.18.1 (Feb 25, 2020)
+----
+
+This release contains typedef changes only.
+
+### Bugfixes
+  - Flow types:
+    - Make Props to `<ReactGridLayout>` and `<ResponsiveReactGridLayout>` exact.
+    - Fix loss of props refinement when passing through `WidthProvider`.
+    - Fix Flow errors as surfaced in [#1138](https://github.com/STRML/react-grid-layout/pull/1138).
+    - Modify examples to use types so that the above type error can't resurface
+
 0.18.0 (Feb 25, 2020)
 ----
 
@@ -30,7 +42,7 @@ Thanks to all of our maintainers for this big release. 0.18.0 contains a large n
 
 - Added `shouldComponentUpdate` to major elements for speed. Significant [performance improvements](https://github.com/STRML/react-grid-layout/pull/1032#issuecomment-541604763) while dragging. Started in [#1032](https://github.com/STRML/react-grid-layout/pull/1032) and finished in [#1123](https://github.com/STRML/react-grid-layout/pull/1123).
   - A [fun trick for the curious](https://github.com/STRML/react-grid-layout/blob/44e200067b3640c3230f5511e8624a7c629d2f9a/lib/fastRGLPropsEqual.js).
-- Internal refactor of dropping capability. It is now more predictable and uses similar unit labels (`left`, `top`) to other features. [#1128](https://github.com/STRML/react-grid-layout/issues/1128) 
+- Internal refactor of dropping capability. It is now more predictable and uses similar unit labels (`left`, `top`) to other features. [#1128](https://github.com/STRML/react-grid-layout/issues/1128)
 - Upgrade devDependencies.
 - Remove ESPower from test suite (not useful with Jest).
 
