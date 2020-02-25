@@ -141,7 +141,13 @@ export default class ResponsiveReactGridLayout extends React.Component<
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     layouts: {},
     margin: [10, 10],
-    containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
+    containerPadding: {
+      lg: [0, 0],
+      md: [0, 0],
+      sm: [0, 0],
+      xs: [0, 0],
+      xxs: [0, 0]
+    },
     onBreakpointChange: noop,
     onLayoutChange: noop,
     onWidthChange: noop
