@@ -1,5 +1,15 @@
 # Changelog
 
+0.18.2 (Feb 26, 2020)
+----
+
+### Bugfixes
+  - `shouldComponentUpdate`:
+    - A too-aggressive implementation of `shouldComponentUpdate` was shipped in 0.18.0-0.18.1 ([#1123](https://github.com/STRML/react-grid-layout/pull/1123)), which did not compare the `children` object. While this works well in many simple implementations of RGL, it breaks in more complex applications.
+    - Reference equality of `props.children` and `nextProps.children` is now added to `<ReactGridLayout>` and `<GridItem>`. If you wish to take advantage of the performance improvements from the `shouldComponentUpdate` work, memoize your children.
+    - A section has been added to the [README](/README.md#Performance) explaining how this works.
+    - Fixed [#1150](https://github.com/STRML/react-grid-layout/issues/1150), [#1151](https://github.com/STRML/react-grid-layout/issues/1151).
+
 0.18.1 (Feb 25, 2020)
 ----
 
