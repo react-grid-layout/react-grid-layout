@@ -197,6 +197,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
+      // NOTE: this is almost always unequal. Therefore the only way to get better performance
+      // from SCU is if the user intentionally memoizes children. If they do, and they can
+      // handle changes properly, performance will increase.
+      this.props.children !== nextProps.children ||
       !fastRGLPropsEqual(this.props, nextProps, isEqual) ||
       !isEqual(this.state.activeDrag, nextState.activeDrag)
     );

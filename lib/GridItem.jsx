@@ -179,22 +179,24 @@ export default class GridItem extends React.Component<Props, State> {
   currentNode: HTMLElement;
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    let { x, y, w, h } = this.props;
+    // We can't deeply compare children. If the developer memoizes them, we can
+    // use this optimization.
+    if (this.props.children !== nextProps.children) return true;
+    // TODO memoize these calculations so they don't take so long?
     const oldPosition = calcGridItemPosition(
       this.getPositionParams(this.props),
-      x,
-      y,
-      w,
-      h,
+      this.props.x,
+      this.props.y,
+      this.props.w,
+      this.props.h,
       this.state
     );
-    ({ x, y, w, h } = nextProps);
     const newPosition = calcGridItemPosition(
       this.getPositionParams(nextProps),
-      x,
-      y,
-      w,
-      h,
+      nextProps.x,
+      nextProps.y,
+      nextProps.w,
+      nextProps.h,
       nextState
     );
     return (
