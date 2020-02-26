@@ -128,7 +128,7 @@ module.exports = [
     title: "Toolbox",
     source: "toolbox",
     paragraphs: [
-      "This demonstrates how to implement a toolbox to add and remove widgets."
+      "This demonstrates how to implement a toolbox to add and remove widgets. Click the 'X' on a widget to move it into the toolbox."
     ]
   },
   {
