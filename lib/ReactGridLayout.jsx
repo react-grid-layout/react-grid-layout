@@ -270,7 +270,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (!l) return;
 
     // Create placeholder (display only)
-    var placeholder = {
+    let placeholder = {
       w: l.w,
       h: l.h,
       x: l.x,
@@ -292,10 +292,21 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols
     );
 
+    layout = compact(layout, compactType(this.props), cols);
+
+    const actualPosition = getLayoutItem(layout, i);
+    if (actualPosition) {
+      placeholder = {
+        ...placeholder,
+        x: actualPosition.x,
+        y: actualPosition.y
+      };
+    }
+
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
-      layout: compact(layout, compactType(this.props), cols),
+      layout,
       activeDrag: placeholder
     });
   }
@@ -588,44 +599,78 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // This is relative to the DOM element that this event fired for.
     const { layerX, layerY } = e.nativeEvent;
     const droppingPosition = { left: layerX, top: layerY, e };
+    const positionParams: PositionParams = {
+      cols,
+      margin,
+      maxRows,
+      rowHeight,
+      containerWidth: width,
+      containerPadding: containerPadding || margin
+    };
+
+    const calculatedPosition = calcXY(
+      positionParams,
+      layerY,
+      layerX,
+      droppingItem.w,
+      droppingItem.h
+    );
 
     if (!this.state.droppingDOMNode) {
-      const positionParams: PositionParams = {
-        cols,
-        margin,
-        maxRows,
-        rowHeight,
-        containerWidth: width,
-        containerPadding: containerPadding || margin
-      };
-
-      const calculatedPosition = calcXY(
+      this.setState(
+        {
+          droppingDOMNode: <div key={droppingItem.i} />,
+          droppingPosition,
+          layout: [
+            ...layout,
+            {
+              ...droppingItem,
+              x: calculatedPosition.x,
+              y: calculatedPosition.y,
+              static: false,
+              isDraggable: true
+            }
+          ]
+        },
+        () => {
+          this.onDrag(
+            droppingItem.i,
+            calculatedPosition.x,
+            calculatedPosition.y,
+            {
+              e,
+              node: null,
+              newPosition: droppingPosition
+            }
+          );
+        }
+      );
+    } else if (this.state.droppingPosition) {
+      const { left, top } = this.state.droppingPosition;
+      const shouldUpdatePosition = left != layerX || top != layerY;
+      const prevCalculatedPosition = calcXY(
         positionParams,
-        layerY,
-        layerX,
+        this.state.droppingPosition.top,
+        this.state.droppingPosition.left,
         droppingItem.w,
         droppingItem.h
       );
 
-      this.setState({
-        droppingDOMNode: <div key={droppingItem.i} />,
-        droppingPosition,
-        layout: [
-          ...layout,
-          {
-            ...droppingItem,
-            x: calculatedPosition.x,
-            y: calculatedPosition.y,
-            static: false,
-            isDraggable: true
-          }
-        ]
-      });
-    } else if (this.state.droppingPosition) {
-      const { left, top } = this.state.droppingPosition;
-      const shouldUpdatePosition = left != layerX || top != layerY;
       if (shouldUpdatePosition) {
         this.setState({ droppingPosition });
+
+        if (!isEqual(prevCalculatedPosition, calculatedPosition)) {
+          this.onDrag(
+            this.props.droppingItem.i,
+            calculatedPosition.x,
+            calculatedPosition.y,
+            {
+              e,
+              node: null,
+              newPosition: droppingPosition
+            }
+          );
+        }
       }
     }
 
@@ -666,6 +711,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onDragEnter = () => {
     this.dragEnterCounter++;
+
+    if (this.dragEnterCounter === 1) {
+      this.setState({
+        activeDrag: this.props.droppingItem
+      });
+    }
   };
 
   onDrop = (e: Event) => {
