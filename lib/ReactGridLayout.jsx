@@ -661,7 +661,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
         if (!isEqual(prevCalculatedPosition, calculatedPosition)) {
           this.onDrag(
-            this.props.droppingItem.i,
+            droppingItem.i,
             calculatedPosition.x,
             calculatedPosition.y,
             {
