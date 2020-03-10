@@ -650,8 +650,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       const shouldUpdatePosition = left != layerX || top != layerY;
       const prevCalculatedPosition = calcXY(
         positionParams,
-        this.state.droppingPosition.top,
-        this.state.droppingPosition.left,
+        top,
+        left,
         droppingItem.w,
         droppingItem.h
       );
