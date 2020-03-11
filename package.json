@@ -54,7 +54,6 @@
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-preval": "^4.0.0",
-    "chance": "^1.1.4",
     "css-loader": "^3.4.2",
     "ejs": "^3.0.1",
     "enzyme": "^3.11.0",

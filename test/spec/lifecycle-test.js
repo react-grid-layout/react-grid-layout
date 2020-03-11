@@ -8,15 +8,22 @@ import ReactGridLayout from '../../lib/ReactGridLayout';
 import BasicLayout from '../examples/1-basic';
 import ShowcaseLayout from '../examples/0-showcase';
 import deepFreeze from '../util/deepFreeze';
-import Chance from 'chance';
 import {shallow, mount} from 'enzyme';
 
 describe('Lifecycle tests', function() {
 
   // Example layouts use randomness
+  let randIdx = 0;
   beforeAll(() => {
-    const chance = new Chance(1234);
-    jest.spyOn(global.Math, 'random').mockImplementation(() => chance.random());
+    const randArr = [0.001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.999];
+    jest.spyOn(global.Math, 'random').mockImplementation(() => {
+      randIdx = (randIdx + 1) % randArr.length;
+      return randArr[randIdx];
+    });
+  });
+
+  beforeEach(() => {
+    randIdx = 0;
   });
 
   afterAll(() => {
