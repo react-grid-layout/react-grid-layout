@@ -19,7 +19,7 @@ clean:
 
 dev:
 	@$(BIN)/webpack-dev-server --config webpack-dev-server.config.js \
-	  --hot --progress --colors 
+	  --hot --progress --colors
 
 # Allows usage of `make install`, `make link`
 install link:
@@ -41,7 +41,7 @@ build-example:
 
 view-example:
 	env CONTENT_BASE="/examples/" node ./examples/generate.js
-	@$(BIN)/webpack-dev-server --config webpack-examples.config.js --progress --colors 
+	@$(BIN)/webpack-dev-server --config webpack-examples.config.js --progress --colors
 
 # FIXME flow is usually global
 lint:
@@ -49,7 +49,10 @@ lint:
 	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
 
 test:
-	@$(BIN)/jest
+	env NODE_ENV=test $(BIN)/jest
+
+test-watch:
+	env NODE_ENV=test $(BIN)/jest --watch
 
 release-patch: build lint test
 	@$(call release,patch)
