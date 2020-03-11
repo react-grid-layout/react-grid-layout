@@ -182,6 +182,7 @@ export default class GridItem extends React.Component<Props, State> {
     // We can't deeply compare children. If the developer memoizes them, we can
     // use this optimization.
     if (this.props.children !== nextProps.children) return true;
+    if (this.props.droppingPosition !== nextProps.droppingPosition) return true;
     // TODO memoize these calculations so they don't take so long?
     const oldPosition = calcGridItemPosition(
       this.getPositionParams(this.props),
@@ -205,6 +206,10 @@ export default class GridItem extends React.Component<Props, State> {
     );
   }
 
+  componentDidMount() {
+    this.moveDroppingItem({});
+  }
+
   componentDidUpdate(prevProps: Props) {
     this.moveDroppingItem(prevProps);
   }
@@ -213,12 +218,13 @@ export default class GridItem extends React.Component<Props, State> {
   // this element by `x, y` pixels.
   moveDroppingItem(prevProps: Props) {
     const { droppingPosition } = this.props;
-    const prevDroppingPosition = prevProps.droppingPosition;
-    const { dragging } = this.state;
+    if (!droppingPosition) return;
 
-    if (!droppingPosition || !prevDroppingPosition) {
-      return;
-    }
+    const prevDroppingPosition = prevProps.droppingPosition || {
+      left: 0,
+      top: 0
+    };
+    const { dragging } = this.state;
 
     if (!this.currentNode) {
       // eslint-disable-next-line react/no-find-dom-node

@@ -14,3 +14,10 @@ Array.prototype.sort = function(comparator) {
   sort(this, comparator);
   return this;
 };
+
+// Required in drag code, not working in JSDOM
+Object.defineProperty(HTMLElement.prototype, "offsetParent", {
+  get() {
+    return this.parentNode;
+  }
+});
