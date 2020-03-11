@@ -25,8 +25,15 @@ describe('Lifecycle tests', function() {
 
   describe('<ReactGridLayout>', function() {
     it('Basic Render', async function() {
-      const wrapper = shallow(<BasicLayout />);
+      const wrapper = mount(<BasicLayout />);
+      expect(wrapper).toMatchSnapshot();
+    });
+  });
 
+  describe('<ResponsiveReactGridLayout>', function() {
+
+    it('Basic Render', async function() {
+      const wrapper = mount(<ShowcaseLayout />);
       expect(wrapper).toMatchSnapshot();
     });
 
