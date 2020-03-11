@@ -9,20 +9,13 @@ import {
   moveElement,
   sortLayoutItemsByRowCol,
   validateLayout
-} from "../../lib/utils.js";
+} from "../../lib/utils";
 import {
   calcGridColWidth,
   calcGridItemPosition
-} from "../../lib/calculateUtils.js";
+} from "../../lib/calculateUtils";
 import isEqual from "lodash.isequal";
-/*:: import type { Layout } from "../../lib/utils.js"; */
 
-/*:: declare function describe(name: string, fn: Function): void; */
-/*:: declare function it(name: string, fn: Function): void; */
-/*:: declare var expect: {
-  (any): any,
-  objectContaining(params: any): any
-}; */
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {

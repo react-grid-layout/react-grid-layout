@@ -54,8 +54,12 @@
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-preval": "^4.0.0",
+    "chance": "^1.1.4",
     "css-loader": "^3.4.2",
     "ejs": "^3.0.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.4",
     "eslint": "^6.8.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-mocha": "^6.2.2",
@@ -64,7 +68,7 @@
     "flow-bin": "^0.119.0",
     "husky": "^3.0.9",
     "imports-loader": "^0.8.0",
-    "jest-cli": "^24.9.0",
+    "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
     "lodash": "^4.17.5",
     "opener": "^1.4.3",
@@ -82,6 +86,12 @@
     "registry": "https://registry.npmjs.org"
   },
   "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>test/util/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "testMatch": [
       "<rootDir>/test/spec/*.js"
     ],

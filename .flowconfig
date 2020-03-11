@@ -12,6 +12,7 @@
 
 [libs]
 interfaces/
+flow-typed/
 
 [options]
 emoji=true

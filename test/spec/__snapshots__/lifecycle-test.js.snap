@@ -1,0 +1,337 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
+<WidthProvider
+  className="layout"
+  cols={12}
+  items={20}
+  layout={
+    Array [
+      Object {
+        "h": 2,
+        "i": "0",
+        "w": 2,
+        "x": 0,
+        "y": 0,
+      },
+      Object {
+        "h": 3,
+        "i": "1",
+        "w": 2,
+        "x": 2,
+        "y": 0,
+      },
+      Object {
+        "h": 4,
+        "i": "2",
+        "w": 2,
+        "x": 4,
+        "y": 0,
+      },
+      Object {
+        "h": 5,
+        "i": "3",
+        "w": 2,
+        "x": 6,
+        "y": 0,
+      },
+      Object {
+        "h": 3,
+        "i": "4",
+        "w": 2,
+        "x": 8,
+        "y": 0,
+      },
+      Object {
+        "h": 4,
+        "i": "5",
+        "w": 2,
+        "x": 10,
+        "y": 0,
+      },
+      Object {
+        "h": 5,
+        "i": "6",
+        "w": 2,
+        "x": 0,
+        "y": 5,
+      },
+      Object {
+        "h": 5,
+        "i": "7",
+        "w": 2,
+        "x": 2,
+        "y": 5,
+      },
+      Object {
+        "h": 5,
+        "i": "8",
+        "w": 2,
+        "x": 4,
+        "y": 5,
+      },
+      Object {
+        "h": 5,
+        "i": "9",
+        "w": 2,
+        "x": 6,
+        "y": 5,
+      },
+      Object {
+        "h": 3,
+        "i": "10",
+        "w": 2,
+        "x": 8,
+        "y": 3,
+      },
+      Object {
+        "h": 2,
+        "i": "11",
+        "w": 2,
+        "x": 10,
+        "y": 2,
+      },
+      Object {
+        "h": 3,
+        "i": "12",
+        "w": 2,
+        "x": 0,
+        "y": 6,
+      },
+      Object {
+        "h": 2,
+        "i": "13",
+        "w": 2,
+        "x": 2,
+        "y": 4,
+      },
+      Object {
+        "h": 5,
+        "i": "14",
+        "w": 2,
+        "x": 4,
+        "y": 10,
+      },
+      Object {
+        "h": 5,
+        "i": "15",
+        "w": 2,
+        "x": 6,
+        "y": 10,
+      },
+      Object {
+        "h": 5,
+        "i": "16",
+        "w": 2,
+        "x": 8,
+        "y": 10,
+      },
+      Object {
+        "h": 2,
+        "i": "17",
+        "w": 2,
+        "x": 10,
+        "y": 4,
+      },
+      Object {
+        "h": 5,
+        "i": "18",
+        "w": 2,
+        "x": 0,
+        "y": 15,
+      },
+      Object {
+        "h": 2,
+        "i": "19",
+        "w": 2,
+        "x": 2,
+        "y": 6,
+      },
+    ]
+  }
+  measureBeforeMount={false}
+  onLayoutChange={[Function]}
+  rowHeight={30}
+>
+  <div
+    key="0"
+  >
+    <span
+      className="text"
+    >
+      0
+    </span>
+  </div>
+  <div
+    key="1"
+  >
+    <span
+      className="text"
+    >
+      1
+    </span>
+  </div>
+  <div
+    key="2"
+  >
+    <span
+      className="text"
+    >
+      2
+    </span>
+  </div>
+  <div
+    key="3"
+  >
+    <span
+      className="text"
+    >
+      3
+    </span>
+  </div>
+  <div
+    key="4"
+  >
+    <span
+      className="text"
+    >
+      4
+    </span>
+  </div>
+  <div
+    key="5"
+  >
+    <span
+      className="text"
+    >
+      5
+    </span>
+  </div>
+  <div
+    key="6"
+  >
+    <span
+      className="text"
+    >
+      6
+    </span>
+  </div>
+  <div
+    key="7"
+  >
+    <span
+      className="text"
+    >
+      7
+    </span>
+  </div>
+  <div
+    key="8"
+  >
+    <span
+      className="text"
+    >
+      8
+    </span>
+  </div>
+  <div
+    key="9"
+  >
+    <span
+      className="text"
+    >
+      9
+    </span>
+  </div>
+  <div
+    key="10"
+  >
+    <span
+      className="text"
+    >
+      10
+    </span>
+  </div>
+  <div
+    key="11"
+  >
+    <span
+      className="text"
+    >
+      11
+    </span>
+  </div>
+  <div
+    key="12"
+  >
+    <span
+      className="text"
+    >
+      12
+    </span>
+  </div>
+  <div
+    key="13"
+  >
+    <span
+      className="text"
+    >
+      13
+    </span>
+  </div>
+  <div
+    key="14"
+  >
+    <span
+      className="text"
+    >
+      14
+    </span>
+  </div>
+  <div
+    key="15"
+  >
+    <span
+      className="text"
+    >
+      15
+    </span>
+  </div>
+  <div
+    key="16"
+  >
+    <span
+      className="text"
+    >
+      16
+    </span>
+  </div>
+  <div
+    key="17"
+  >
+    <span
+      className="text"
+    >
+      17
+    </span>
+  </div>
+  <div
+    key="18"
+  >
+    <span
+      className="text"
+    >
+      18
+    </span>
+  </div>
+  <div
+    key="19"
+  >
+    <span
+      className="text"
+    >
+      19
+    </span>
+  </div>
+</WidthProvider>
+`;
