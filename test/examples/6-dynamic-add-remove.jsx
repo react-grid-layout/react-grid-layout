@@ -24,7 +24,7 @@ export default class AddRemoveLayout extends React.PureComponent {
           y: 0,
           w: 2,
           h: 2,
-          add: i === (list.length - 1).toString()
+          add: i === (list.length - 1)
         };
       }),
       newCounter: 0
