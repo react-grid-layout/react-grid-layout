@@ -4227,7 +4227,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 24,
+                "y": 2,
               },
               Object {
                 "h": 4,
@@ -4242,7 +4242,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 27,
+                "y": 5,
               },
               Object {
                 "h": 5,
@@ -4257,7 +4257,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 2,
+                "y": 21,
               },
               Object {
                 "h": 2,
@@ -4272,7 +4272,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 7,
+                "y": 26,
               },
               Object {
                 "h": 3,
@@ -4287,7 +4287,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 21,
+                "y": 28,
               },
               Object {
                 "h": 5,
@@ -4392,7 +4392,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 56,
+                "y": 49,
               },
               Object {
                 "h": 4,
@@ -4452,7 +4452,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 53,
+                "y": 52,
               },
               Object {
                 "h": 5,
@@ -4482,7 +4482,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 51,
+                "y": 55,
               },
               Object {
                 "h": 3,
@@ -4542,7 +4542,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "static": false,
                 "w": 2,
                 "x": 0,
-                "y": 49,
+                "y": 57,
               },
               Object {
                 "h": 3,
@@ -4816,7 +4816,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={24}
+              y={2}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -4889,14 +4889,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,960px)",
-                        "OTransform": "translate(0px,960px)",
-                        "WebkitTransform": "translate(0px,960px)",
+                        "MozTransform": "translate(0px,80px)",
+                        "OTransform": "translate(0px,80px)",
+                        "WebkitTransform": "translate(0px,80px)",
                         "height": "110px",
-                        "msTransform": "translate(0px,960px)",
+                        "msTransform": "translate(0px,80px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,960px)",
+                        "transform": "translate(0px,80px)",
                         "width": "0px",
                       }
                     }
@@ -4980,7 +4980,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={27}
+              y={5}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -5053,14 +5053,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,1080px)",
-                        "OTransform": "translate(0px,1080px)",
-                        "WebkitTransform": "translate(0px,1080px)",
+                        "MozTransform": "translate(0px,200px)",
+                        "OTransform": "translate(0px,200px)",
+                        "WebkitTransform": "translate(0px,200px)",
                         "height": "150px",
-                        "msTransform": "translate(0px,1080px)",
+                        "msTransform": "translate(0px,200px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,1080px)",
+                        "transform": "translate(0px,200px)",
                         "width": "0px",
                       }
                     }
@@ -5144,7 +5144,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={2}
+              y={21}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -5217,14 +5217,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,80px)",
-                        "OTransform": "translate(0px,80px)",
-                        "WebkitTransform": "translate(0px,80px)",
+                        "MozTransform": "translate(0px,840px)",
+                        "OTransform": "translate(0px,840px)",
+                        "WebkitTransform": "translate(0px,840px)",
                         "height": "190px",
-                        "msTransform": "translate(0px,80px)",
+                        "msTransform": "translate(0px,840px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,80px)",
+                        "transform": "translate(0px,840px)",
                         "width": "0px",
                       }
                     }
@@ -5308,7 +5308,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={7}
+              y={26}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -5381,14 +5381,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,280px)",
-                        "OTransform": "translate(0px,280px)",
-                        "WebkitTransform": "translate(0px,280px)",
+                        "MozTransform": "translate(0px,1040px)",
+                        "OTransform": "translate(0px,1040px)",
+                        "WebkitTransform": "translate(0px,1040px)",
                         "height": "70px",
-                        "msTransform": "translate(0px,280px)",
+                        "msTransform": "translate(0px,1040px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,280px)",
+                        "transform": "translate(0px,1040px)",
                         "width": "0px",
                       }
                     }
@@ -5472,7 +5472,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={21}
+              y={28}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -5545,14 +5545,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,840px)",
-                        "OTransform": "translate(0px,840px)",
-                        "WebkitTransform": "translate(0px,840px)",
+                        "MozTransform": "translate(0px,1120px)",
+                        "OTransform": "translate(0px,1120px)",
+                        "WebkitTransform": "translate(0px,1120px)",
                         "height": "110px",
-                        "msTransform": "translate(0px,840px)",
+                        "msTransform": "translate(0px,1120px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,840px)",
+                        "transform": "translate(0px,1120px)",
                         "width": "0px",
                       }
                     }
@@ -6623,7 +6623,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={56}
+              y={49}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -6696,14 +6696,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,2240px)",
-                        "OTransform": "translate(0px,2240px)",
-                        "WebkitTransform": "translate(0px,2240px)",
+                        "MozTransform": "translate(0px,1960px)",
+                        "OTransform": "translate(0px,1960px)",
+                        "WebkitTransform": "translate(0px,1960px)",
                         "height": "110px",
-                        "msTransform": "translate(0px,2240px)",
+                        "msTransform": "translate(0px,1960px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,2240px)",
+                        "transform": "translate(0px,1960px)",
                         "width": "0px",
                       }
                     }
@@ -7279,7 +7279,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={53}
+              y={52}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -7352,14 +7352,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,2120px)",
-                        "OTransform": "translate(0px,2120px)",
-                        "WebkitTransform": "translate(0px,2120px)",
+                        "MozTransform": "translate(0px,2080px)",
+                        "OTransform": "translate(0px,2080px)",
+                        "WebkitTransform": "translate(0px,2080px)",
                         "height": "110px",
-                        "msTransform": "translate(0px,2120px)",
+                        "msTransform": "translate(0px,2080px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,2120px)",
+                        "transform": "translate(0px,2080px)",
                         "width": "0px",
                       }
                     }
@@ -7607,7 +7607,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={51}
+              y={55}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -7680,14 +7680,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,2040px)",
-                        "OTransform": "translate(0px,2040px)",
-                        "WebkitTransform": "translate(0px,2040px)",
+                        "MozTransform": "translate(0px,2200px)",
+                        "OTransform": "translate(0px,2200px)",
+                        "WebkitTransform": "translate(0px,2200px)",
                         "height": "70px",
-                        "msTransform": "translate(0px,2040px)",
+                        "msTransform": "translate(0px,2200px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,2040px)",
+                        "transform": "translate(0px,2200px)",
                         "width": "0px",
                       }
                     }
@@ -8266,7 +8266,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               usePercentages={false}
               w={2}
               x={0}
-              y={49}
+              y={57}
             >
               <DraggableCore
                 allowAnyClick={false}
@@ -8339,14 +8339,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(0px,1960px)",
-                        "OTransform": "translate(0px,1960px)",
-                        "WebkitTransform": "translate(0px,1960px)",
+                        "MozTransform": "translate(0px,2280px)",
+                        "OTransform": "translate(0px,2280px)",
+                        "WebkitTransform": "translate(0px,2280px)",
                         "height": "70px",
-                        "msTransform": "translate(0px,1960px)",
+                        "msTransform": "translate(0px,2280px)",
                         "position": "absolute",
                         "touchAction": "none",
-                        "transform": "translate(0px,1960px)",
+                        "transform": "translate(0px,2280px)",
                         "width": "0px",
                       }
                     }

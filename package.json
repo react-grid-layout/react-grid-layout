@@ -77,6 +77,7 @@
     "react-hot-loader": "^4.12.18",
     "react-transform-hmr": "^1.0.2",
     "style-loader": "^1.1.2",
+    "timsort": "^0.3.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
