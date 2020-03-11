@@ -468,9 +468,9 @@ shouldComponentUpdate(nextProps: Props, nextState: State) {
 If you memoize your children, you can take advantage of this, and reap faster rerenders. For example:
 
 ```js
-function MyGrid() {
-  const children = React.useMemo((count) => {
-    return new Array(count).fill(undefined).map((val, idx) => {
+function MyGrid(props) {
+  const children = React.useMemo(() => {
+    return new Array(props.count).fill(undefined).map((val, idx) => {
       return <div key={idx} data-grid={{x: idx, y: 1, w: 1, h: 1}} />;
     });
   }, [props.count]);
