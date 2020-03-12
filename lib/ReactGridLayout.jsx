@@ -202,7 +202,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       // handle changes properly, performance will increase.
       this.props.children !== nextProps.children ||
       !fastRGLPropsEqual(this.props, nextProps, isEqual) ||
-      !isEqual(this.state.activeDrag, nextState.activeDrag)
+      this.state.activeDrag !== nextState.activeDrag ||
+      this.state.droppingPosition !== nextState.droppingPosition
     );
   }
 
