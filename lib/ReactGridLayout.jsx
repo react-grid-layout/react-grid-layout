@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import PropTypes from "prop-types";
+
 import isEqual from "lodash.isequal";
 import classNames from "classnames";
 import {
@@ -12,11 +12,16 @@ import {
   getLayoutItem,
   moveElement,
   synchronizeLayoutWithChildren,
-  validateLayout,
   getAllCollisions,
-  noop
+  compactType,
+  noop,
+  fastRGLPropsEqual
 } from "./utils";
+
+import { calcXY } from "./calculateUtils";
+
 import GridItem from "./GridItem";
+import ReactGridLayoutPropTypes from "./ReactGridLayoutPropTypes";
 import type {
   ChildrenArray as ReactChildrenArray,
   Element as ReactElement
@@ -24,7 +29,6 @@ import type {
 
 // Types
 import type {
-  EventCallback,
   CompactType,
   GridResizeEvent,
   GridDragEvent,
@@ -33,7 +37,11 @@ import type {
   LayoutItem
 } from "./utils";
 
+<<<<<<< HEAD
 declare var Window: any;
+=======
+import type { PositionParams } from "./calculateUtils";
+>>>>>>> 7435467d7b6926503cb64141710e44c28e33c8a8
 
 type State = {
   id: string,
@@ -51,6 +59,7 @@ type State = {
   propsLayout?: Layout
 };
 
+<<<<<<< HEAD
 export type Props = {
   className: string,
   style: Object,
@@ -93,12 +102,11 @@ export type Props = {
   children: ReactChildrenArray<ReactElement<any>>
 };
 // End Types
+=======
+import type { Props } from "./ReactGridLayoutPropTypes";
+>>>>>>> 7435467d7b6926503cb64141710e44c28e33c8a8
 
-const compactType = (props: Props): CompactType => {
-  const { verticalCompact, compactType } = props || {};
-
-  return verticalCompact === false ? null : compactType;
-};
+// End Types
 
 // https://gist.github.com/gordonbrander/2230317
 const generateID = (): string => {
@@ -127,6 +135,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   // TODO publish internal ReactClass displayName transform
   static displayName = "ReactGridLayout";
 
+<<<<<<< HEAD
   static propTypes = {
     //
     // Basic props
@@ -258,6 +267,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       });
     }
   };
+=======
+  // Refactored to another module to make way for preval
+  static propTypes = ReactGridLayoutPropTypes;
+>>>>>>> 7435467d7b6926503cb64141710e44c28e33c8a8
 
   static defaultProps = {
     autoSize: true,
@@ -389,6 +402,18 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
 
     return null;
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return (
+      // NOTE: this is almost always unequal. Therefore the only way to get better performance
+      // from SCU is if the user intentionally memoizes children. If they do, and they can
+      // handle changes properly, performance will increase.
+      this.props.children !== nextProps.children ||
+      !fastRGLPropsEqual(this.props, nextProps, isEqual) ||
+      this.state.activeDrag !== nextState.activeDrag ||
+      this.state.droppingPosition !== nextState.droppingPosition
+    );
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -832,9 +857,16 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
+<<<<<<< HEAD
   onDragOver = (e: any) => {
+=======
+  // Called while dragging an element. Part of browser native drag/drop API.
+  // Native event target might be the layout itself, or an element within the layout.
+  onDragOver = (e: DragOverEvent) => {
+>>>>>>> 7435467d7b6926503cb64141710e44c28e33c8a8
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
+    // FIXME remove this hack
     if (
       isFirefox &&
       e.nativeEvent.target.className.indexOf(layoutClassName) === -1
@@ -842,12 +874,43 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       return false;
     }
 
-    const { droppingItem } = this.props;
+    const {
+      droppingItem,
+      margin,
+      cols,
+      rowHeight,
+      maxRows,
+      width,
+      containerPadding
+    } = this.props;
     const { layout } = this.state;
+<<<<<<< HEAD
     const { layerX, layerY } = e;
     const droppingPosition = { x: layerX, y: layerY, e };
+=======
+    // This is relative to the DOM element that this event fired for.
+    const { layerX, layerY } = e.nativeEvent;
+    const droppingPosition = { left: layerX, top: layerY, e };
+>>>>>>> 7435467d7b6926503cb64141710e44c28e33c8a8
 
     if (!this.state.droppingDOMNode) {
+      const positionParams: PositionParams = {
+        cols,
+        margin,
+        maxRows,
+        rowHeight,
+        containerWidth: width,
+        containerPadding: containerPadding || margin
+      };
+
+      const calculatedPosition = calcXY(
+        positionParams,
+        layerY,
+        layerX,
+        droppingItem.w,
+        droppingItem.h
+      );
+
       this.setState({
         droppingDOMNode: <div key={droppingItem.i} />,
         droppingPosition,
@@ -855,18 +918,19 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           ...layout,
           {
             ...droppingItem,
-            x: 0,
-            y: 0,
+            x: calculatedPosition.x,
+            y: calculatedPosition.y,
             static: false,
             isDraggable: true
           }
         ]
       });
     } else if (this.state.droppingPosition) {
-      const shouldUpdatePosition =
-        this.state.droppingPosition.x != layerX ||
-        this.state.droppingPosition.y != layerY;
-      shouldUpdatePosition && this.setState({ droppingPosition });
+      const { left, top } = this.state.droppingPosition;
+      const shouldUpdatePosition = left != layerX || top != layerY;
+      if (shouldUpdatePosition) {
+        this.setState({ droppingPosition });
+      }
     }
 
     e.stopPropagation();

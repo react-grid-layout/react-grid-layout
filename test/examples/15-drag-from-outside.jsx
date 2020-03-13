@@ -9,14 +9,13 @@ export default class DragFromOutsideLayout extends React.Component {
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    initialLayout: generateLayout()
   };
 
   state = {
     currentBreakpoint: "lg",
     compactType: "vertical",
     mounted: false,
-    layouts: { lg: this.props.initialLayout }
+    layouts: { lg: generateLayout() }
   };
 
   componentDidMount() {
@@ -70,7 +69,7 @@ export default class DragFromOutsideLayout extends React.Component {
   };
 
   onDrop = elemParams => {
-    alert(`Element parameters: ${JSON.stringify(elemParams)}`);
+    alert(`Element parameters:\n${JSON.stringify(elemParams, ['x', 'y', 'w', 'h'], 2)}`);
   };
 
   render() {
@@ -98,7 +97,7 @@ export default class DragFromOutsideLayout extends React.Component {
           // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
           onDragStart={e => e.dataTransfer.setData("text/plain", "")}
         >
-          Droppable Element
+          Droppable Element (Drag me!)
         </div>
         <ResponsiveReactGridLayout
           {...this.props}
@@ -126,7 +125,7 @@ function generateLayout() {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
-      x: (_.random(0, 5) * 2) % 12,
+      x: Math.round(Math.random() * 5) * 2,
       y: Math.floor(i / 6) * y,
       w: 2,
       h: y,

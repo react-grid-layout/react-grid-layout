@@ -5,7 +5,9 @@ import "style-loader!css-loader!../examples/example-styles.css";
 typeof window !== "undefined" && (window.React = React); // for devtools
 
 export default function makeLayout(Layout) {
-  class ExampleLayout extends React.Component {
+  // Basic layout that mirrors the internals of its child layout by listening to `onLayoutChange`.
+  // It does not pass any other props to the Layout.
+  class ListeningLayout extends React.Component {
     state = { layout: [] };
 
     onLayoutChange = layout => {
@@ -14,9 +16,11 @@ export default function makeLayout(Layout) {
 
     stringifyLayout() {
       return this.state.layout.map(function(l) {
+        const name = l.i === "__dropping-elem__" ? "drop" : l.i;
         return (
           <div className="layoutItem" key={l.i}>
-            <b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]
+            <b>{name}</b>
+            {`: [${l.x}, ${l.y}, ${l.w}, ${l.h}]`}
           </div>
         );
       });
@@ -38,7 +42,7 @@ export default function makeLayout(Layout) {
   function run() {
     const contentDiv = document.getElementById("content");
     const gridProps = window.gridProps || {};
-    ReactDOM.render(React.createElement(ExampleLayout, gridProps), contentDiv);
+    ReactDOM.render(React.createElement(ListeningLayout, gridProps), contentDiv);
   }
   if (!document.getElementById("content")) {
     document.addEventListener("DOMContentLoaded", run);
@@ -46,5 +50,5 @@ export default function makeLayout(Layout) {
     run();
   }
 
-  return ExampleLayout;
+  return ListeningLayout;
 }

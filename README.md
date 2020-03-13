@@ -29,6 +29,8 @@ RGL is React-only and does not require jQuery.
 - [Grid Layout Props](#grid-layout-props)
 - [Responsive Grid Layout Props](#responsive-grid-layout-props)
 - [Grid Item Props](#grid-item-props)
+- [User Recipes](../../wiki/Users-recipes)
+- [Performance](#performance)
 - [Contribute](#contribute)
 - [TODO List](#todo-list)
 
@@ -353,7 +355,7 @@ onResize: ItemCallback,
 // Calls when resize is complete.
 onResizeStop: ItemCallback,
 // Calls when some element has been dropped
-onDrop: (elemParams: { x: number, y: number, e: Event }) => void
+onDrop: (elemParams: { x: number, y: number, w: number, h: number, e: Event }) => void
 ```
 
 ### Responsive Grid Layout Props
@@ -441,6 +443,42 @@ will be draggable, even if the item is marked `static: true`.
   isResizable: ?boolean = true
 }
 ```
+
+### Performance
+
+`<ReactGridLayout>` has [an optimized `shouldComponentUpdate` implementation](lib/ReactGridLayout.jsx), but it relies on the user memoizing the `children` array:
+
+
+```js
+// lib/ReactGridLayout.jsx
+// ...
+shouldComponentUpdate(nextProps: Props, nextState: State) {
+  return (
+    // NOTE: this is almost always unequal. Therefore the only way to get better performance
+    // from SCU is if the user intentionally memoizes children. If they do, and they can
+    // handle changes properly, performance will increase.
+    this.props.children !== nextProps.children ||
+    !fastRGLPropsEqual(this.props, nextProps, isEqual) ||
+    !isEqual(this.state.activeDrag, nextState.activeDrag)
+  );
+}
+// ...
+```
+
+If you memoize your children, you can take advantage of this, and reap faster rerenders. For example:
+
+```js
+function MyGrid(props) {
+  const children = React.useMemo(() => {
+    return new Array(props.count).fill(undefined).map((val, idx) => {
+      return <div key={idx} data-grid={{x: idx, y: 1, w: 1, h: 1}} />;
+    });
+  }, [props.count]);
+  return <ReactGridLayout cols={12}>{children}</ReactGridLayout>;
+}
+```
+
+Because the `children` prop doesn't change between rerenders, updates to `<MyGrid>` won't result in new renders, improving performance.
 
 ## Contribute
 

@@ -1,11 +1,23 @@
 [version]
-0.110.1
+^0.119.0
 
 [ignore]
+<PROJECT_ROOT>/build/.*
+<PROJECT_ROOT>/dist/.*
+# Speeds parsing:
+.*/node_modules/@babel.*
+.*/node_modules/babel.*
 
 [include]
 
 [libs]
 interfaces/
+flow-typed/
 
 [options]
+emoji=true
+module.use_strict=true
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowBug.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowNative.*

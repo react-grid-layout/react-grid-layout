@@ -4,19 +4,18 @@
 import {
   bottom,
   collides,
-  validateLayout,
-  moveElement,
   compact,
-  sortLayoutItemsByRowCol
-} from "../../lib/utils.js";
-/*:: import type { Layout } from "../../lib/utils.js"; */
+  fastRGLPropsEqual,
+  moveElement,
+  sortLayoutItemsByRowCol,
+  validateLayout
+} from "../../lib/utils";
+import {
+  calcGridColWidth,
+  calcGridItemPosition
+} from "../../lib/calculateUtils";
+import isEqual from "lodash.isequal";
 
-/*:: declare function describe(name: string, fn: Function): void; */
-/*:: declare function it(name: string, fn: Function): void; */
-/*:: declare var expect: {
-  (any): any,
-  objectContaining(params: any): any
-}; */
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
@@ -413,5 +412,123 @@ describe("compact horizontal", () => {
       { y: 5, x: 7, h: 1, w: 1, i: "4", moved: false, static: false },
       { y: 5, x: 2, h: 1, w: 1, i: "5", moved: false, static: true }
     ]);
+  });
+});
+
+const basePositionParams = {
+  margin: [0, 0],
+  containerPadding: [0, 0],
+  containerWidth: 800,
+  cols: 8,
+  rowHeight: 50,
+  maxRows: 12
+};
+describe("calcGridColWidth", () => {
+  it("should complete basic calculation", () => {
+    expect(calcGridColWidth(basePositionParams)).toEqual(100);
+  });
+
+  it("should consider margin", () => {
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 10]
+    };
+    // 70 px of margin in total (one between each of 8 items)
+    expect(calcGridColWidth(positionParams)).toEqual(91.25);
+  });
+
+  it("should consider container padding", () => {
+    const positionParams = {
+      ...basePositionParams,
+      containerPadding: [100, 0]
+    };
+    // (800 - 100 - 100) / 8
+    expect(calcGridColWidth(positionParams)).toEqual(75);
+  });
+
+  it("should consider margin and padding", () => {
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 0],
+      containerPadding: [100, 0]
+    };
+    // (800 - 100 - 100 - 70) / 8
+    expect(calcGridColWidth(positionParams)).toEqual(66.25);
+  });
+});
+
+describe("calcGridItemPosition", () => {
+  it("should complete basic calculation", () => {
+    const x = 1;
+    const y = 1;
+    const w = 2;
+    const h = 2;
+    const resizing = null;
+    const dragging = null;
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 10],
+      containerPadding: [100, 100]
+    };
+    expect(
+      calcGridItemPosition(positionParams, x, y, w, h, { resizing, dragging })
+    ).toEqual({
+      height: 110, // 50 * 2 + margin of 10
+      left: 176, // 100 + colWidth (66.25) + margin. Rounded to complete pixel
+      top: 160, // 100 + height + margin
+      width: 143 // 2x colWidth + margin, rounded
+    });
+  });
+});
+
+describe("fastRGLPropsEqual", () => {
+  it("should tell us if props are equal, including arrays and objects", () => {
+    const props1 = {
+      className: "foo",
+      margin: [10, 10],
+      style: { background: "red" }
+    };
+    const props2 = {
+      className: "foo",
+      margin: [10, 10],
+      style: { background: "red" }
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+  });
+
+  it("catches changed arrays", () => {
+    const props1 = {
+      margin: [10, 10]
+    };
+    const props2 = {
+      margin: [10, 11]
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(false);
+  });
+
+  it("ignores children", () => {
+    const props1 = {
+      children: ["foo", "bar"]
+    };
+    const props2 = {
+      children: ["biff", "bar"]
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+  });
+
+  it("fails added props", () => {
+    const props1 = {};
+    const props2 = {
+      droppingItem: { w: 1, h: 2, i: 3 }
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(false);
+  });
+
+  it("ignores invalid props", () => {
+    const props1 = {};
+    const props2 = {
+      somethingElse: { w: 1, h: 2, i: 3 }
+    };
+    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
   });
 });
