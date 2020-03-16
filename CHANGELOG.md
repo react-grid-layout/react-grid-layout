@@ -1,5 +1,14 @@
 # Changelog
 
+0.18.3 (Mar 16, 2020)
+----
+
+### Bugfixes
+  - Fix `shouldComponentUpdate` interfering with droppability ([#1152](https://github.com/STRML/react-grid-layout/issues/1152))
+
+### Internal Changes
+  - New Enzyme test suite added to prevent regression. If you have time, we could really use more test cases that reflect your use cases!
+
 0.18.2 (Feb 26, 2020)
 ----
 
