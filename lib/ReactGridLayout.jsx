@@ -672,14 +672,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onDrop = (e: Event) => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
-    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
+    const item = layout.find(l => l.i === droppingItem.i);
 
     // reset gragEnter counter on drop
     this.dragEnterCounter = 0;
 
     this.removeDroppingPlaceholder();
 
-    this.props.onDrop({ x, y, w, h, e });
+    this.props.onDrop(layout, item, e);
   };
 
   render() {
