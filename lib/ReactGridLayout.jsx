@@ -683,7 +683,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   };
 
   render() {
-    const { className, style, isDroppable } = this.props;
+    const { className, style, isDroppable, innerRef } = this.props;
 
     const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
@@ -693,6 +693,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     return (
       <div
+        ref={innerRef}
         className={mergedClassName}
         style={mergedStyle}
         onDrop={isDroppable ? this.onDrop : noop}
