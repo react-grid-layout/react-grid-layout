@@ -415,16 +415,10 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
-<<<<<<< HEAD
-    if (!this.props.onDrag) return;
-    deltaX /= this.props.transformScale;
-    deltaY /= this.props.transformScale;
-=======
     const { onDrag, transformScale } = this.props;
     if (!onDrag) return;
     deltaX /= transformScale;
     deltaY /= transformScale;
->>>>>>> 7435467d7b6926503cb64141710e44c28e33c8a8
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 

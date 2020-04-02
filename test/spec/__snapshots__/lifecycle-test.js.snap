@@ -163,6 +163,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
     <ReactGridLayout
       autoSize={true}
       className="layout"
+      collisionDelay={0}
       cols={12}
       compactType="vertical"
       containerPadding={null}
@@ -348,10 +349,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
     >
       <div
         className="react-grid-layout layout"
-        onDragEnter={[Function]}
-        onDragLeave={[Function]}
-        onDragOver={[Function]}
-        onDrop={[Function]}
+        id="reactGrid_zypcdtnwj"
         style={
           Object {
             "height": "610px",
@@ -4177,6 +4175,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
         <ReactGridLayout
           autoSize={true}
           className="layout"
+          collisionDelay={0}
           cols={2}
           compactType="vertical"
           containerPadding={
@@ -4601,10 +4600,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
         >
           <div
             className="react-grid-layout layout"
-            onDragEnter={[Function]}
-            onDragLeave={[Function]}
-            onDragOver={[Function]}
-            onDrop={[Function]}
+            id="reactGrid_zypcdtnwj"
             style={
               Object {
                 "height": "3470px",
