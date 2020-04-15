@@ -100,11 +100,11 @@ module.exports = [
     ]
   },
   {
-    title: "No Vertical Compacting (Free Movement)",
-    source: "no-vertical-compact",
+    title: "Compact Types",
+    source: "compact-types",
     paragraphs: [
-      "You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the " +
-        "property `compactType` to `null` to achieve this effect."
+      "You may want to turn off compacting so items can be placed anywhere in the grid. Set the " +
+        "property `compactType` to `null` to achieve this effect, or choose another compact type."
     ]
   },
   {

@@ -98,7 +98,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isDroppable: false,
     useCSSTransforms: true,
     transformScale: 1,
-    verticalCompact: true,
+    verticalCompact: true, // deprecated, REMOVEME
     compactType: "vertical",
     preventCollision: false,
     droppingItem: {
