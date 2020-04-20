@@ -97,6 +97,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     style: {},
     draggableHandle: "",
     draggableCancel: "",
+    minHeight: 0,
     containerPadding: null,
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
@@ -123,7 +124,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     onResizeStart: noop,
     onResize: noop,
     onResizeStop: noop,
-    onDrop: noop
+    onDrop: noop,
+    debug: false
   };
 
   state: State = {
@@ -145,8 +147,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   };
 
   dragEnterCounter = 0;
+  dropZoneXY = [0, 0];
 
   delayedFunction = null;
+
+  dragDebug = {};
 
   constructor(props: Props, context: any): void {
     super(props, context);
@@ -281,11 +286,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const containerPaddingY = this.props.containerPadding
       ? this.props.containerPadding[1]
       : this.props.margin[1];
-    return (
+    const calcHeight =
       nbRow * this.props.rowHeight +
       (nbRow - 1) * this.props.margin[1] +
-      containerPaddingY * 2 +
-      "px"
+      containerPaddingY * 2;
+
+    return (
+      (this.props.minHeight !== 0 && calcHeight < this.props.minHeight
+        ? this.props.minHeight
+        : calcHeight) + "px"
     );
   }
 
@@ -678,15 +687,20 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   // Called while dragging an element. Part of browser native drag/drop API.
   // Native event target might be the layout itself, or an element within the layout.
   onDragOver = (e: any) => {
-    // we should ignore events from layout's children in Firefox
-    // to avoid unpredictable jumping of a dropping placeholder
-    // FIXME remove this hack
-    if (
-      isFirefox &&
-      e.nativeEvent.target.className.indexOf(layoutClassName) === -1
-    ) {
-      return false;
-    }
+    this.debugBox(
+      2,
+      JSON.stringify({
+        dropZoneX: this.dropZoneXY[0],
+        dropZoneY: this.dropZoneXY[1],
+        clientX: e.clientX,
+        clientY: e.clientY,
+        finalX: e.clientX - this.dropZoneXY[0],
+        finalY: e.clientY - this.dropZoneXY[1],
+        target: e.target
+          ? e.target.nodeName + "(" + e.target.className + ")#" + e.target.id
+          : ""
+      })
+    );
 
     const {
       droppingItem,
@@ -698,8 +712,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       containerPadding
     } = this.props;
     const { layout } = this.state;
-    const { layerX, layerY } = e;
-    const droppingPosition = { left: layerX, top: layerY, e };
+    const clientX = e.clientX - this.dropZoneXY[0];
+    const clientY = e.clientY - this.dropZoneXY[1];
+    const droppingPosition = { left: clientX, top: clientY, e };
 
     if (!this.state.droppingDOMNode) {
       const positionParams: PositionParams = {
@@ -713,8 +728,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
       const calculatedPosition = calcXY(
         positionParams,
-        layerY,
-        layerX,
+        clientY,
+        clientX,
         droppingItem.w,
         droppingItem.h
       );
@@ -735,7 +750,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       });
     } else if (this.state.droppingPosition) {
       const { left, top } = this.state.droppingPosition;
-      const shouldUpdatePosition = left != layerX || top != layerY;
+      const shouldUpdatePosition = left != clientX || top != clientY;
       if (shouldUpdatePosition) {
         this.setState({ droppingPosition });
       }
@@ -745,15 +760,21 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     e.preventDefault();
   };
 
-  removeDroppingPlaceholder = () => {
+  removeDroppingPlaceholder = (compactAfter?: boolean) => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;
 
-    const newLayout = compact(
-      layout.filter(l => l.i !== droppingItem.i),
-      compactType(this.props),
-      cols
-    );
+    var newLayout = [];
+
+    if (compactAfter) {
+      newLayout = compact(
+        layout.filter(l => l.i !== droppingItem.i),
+        compactType(this.props),
+        cols
+      );
+    } else {
+      newLayout = layout.filter(l => l.i !== droppingItem.i);
+    }
 
     this.setState({
       layout: newLayout,
@@ -772,12 +793,18 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // so we can increase and decrease count of dragEnter and
     // when it'll be equal to 0 we'll remove the placeholder
     if (this.dragEnterCounter === 0) {
-      this.removeDroppingPlaceholder();
+      this.removeDroppingPlaceholder(true);
     }
+    this.debugBox(1, this.dragEnterCounter.toString());
   };
 
   onDragEnter = () => {
+    var gridContainerDims = (document.getElementById(
+      this.state.id
+    ): any).getBoundingClientRect();
     this.dragEnterCounter++;
+    this.dropZoneXY = [gridContainerDims.left, gridContainerDims.top];
+    this.debugBox(1, this.dragEnterCounter.toString());
   };
 
   onDrop = (e: Event) => {
@@ -793,6 +820,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrop({ x, y, w, h, e });
   };
 
+  debugBox(boxNo: number, boxText: string) {
+    if (this.props.debug) {
+      (document.getElementById(
+        this.state.id + "-debug-box" + boxNo
+      ): any).innerText = boxText;
+    }
+  }
+
   render() {
     const { className, style, isDroppable } = this.props;
 
@@ -803,15 +838,37 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     };
 
     return (
-      <div id={this.state.id} className={mergedClassName} style={mergedStyle}>
-        {React.Children.map(this.props.children, child =>
-          this.processGridItem(child)
+      <>
+        <div id={this.state.id} className={mergedClassName} style={mergedStyle}>
+          {React.Children.map(this.props.children, child =>
+            this.processGridItem(child)
+          )}
+          {isDroppable &&
+            this.state.droppingDOMNode &&
+            this.processGridItem(this.state.droppingDOMNode, true)}
+          {this.placeholder()}
+        </div>
+        {this.props.debug && (
+          <div
+            style={{
+              backgroundColor: "#0000ff",
+              color: "#ffffff",
+              wordBreak: "break-all"
+            }}
+          >
+            <div id={this.state.id + "-debug-box1"}></div>
+            <div id={this.state.id + "-debug-box2"}></div>
+            <div id={this.state.id + "-debug-box3"}></div>
+            <div id={this.state.id + "-debug-box4"}></div>
+            <div id={this.state.id + "-debug-box5"}></div>
+            {JSON.stringify(
+              this.state.layout.map(item => {
+                return { i: item.i, x: item.x, y: item.y };
+              })
+            )}
+          </div>
         )}
-        {isDroppable &&
-          this.state.droppingDOMNode &&
-          this.processGridItem(this.state.droppingDOMNode, true)}
-        {this.placeholder()}
-      </div>
+      </>
     );
   }
 }
