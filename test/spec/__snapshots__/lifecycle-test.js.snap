@@ -339,6 +339,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
       onResizeStart={[Function]}
       onResizeStop={[Function]}
       preventCollision={false}
+      resizeHandles={
+        Array [
+          "se",
+        ]
+      }
       rowHeight={30}
       style={Object {}}
       transformScale={1}
@@ -392,6 +397,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -556,6 +566,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -720,6 +735,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -884,6 +904,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -1048,6 +1073,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -1212,6 +1242,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -1376,6 +1411,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -1540,6 +1580,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -1704,6 +1749,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -1868,6 +1918,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -2032,6 +2087,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -2196,6 +2256,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -2360,6 +2425,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -2524,6 +2594,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -2688,6 +2763,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -2852,6 +2932,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -3016,6 +3101,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -3180,6 +3270,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -3344,6 +3439,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -3508,6 +3608,11 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           static={false}
           transformScale={1}
@@ -4209,6 +4314,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4224,6 +4330,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4239,6 +4346,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4254,6 +4362,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4269,6 +4378,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4284,6 +4394,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4299,6 +4410,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4314,6 +4426,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4329,6 +4442,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4344,6 +4458,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4359,6 +4474,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": true,
                 "w": 2,
                 "x": 0,
@@ -4374,6 +4490,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4389,6 +4506,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4404,6 +4522,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4419,6 +4538,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4434,6 +4554,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4449,6 +4570,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4464,6 +4586,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4479,6 +4602,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4494,6 +4618,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4509,6 +4634,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4524,6 +4650,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": true,
                 "w": 2,
                 "x": 0,
@@ -4539,6 +4666,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4554,6 +4682,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4569,6 +4698,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
+                "resizeHandles": undefined,
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -4592,6 +4722,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           onResizeStart={[Function]}
           onResizeStop={[Function]}
           preventCollision={false}
+          resizeHandles={
+            Array [
+              "se",
+            ]
+          }
           rowHeight={30}
           style={Object {}}
           transformScale={1}
@@ -4645,6 +4780,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -4809,6 +4949,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -4973,6 +5118,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -5137,6 +5287,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -5301,6 +5456,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -5465,6 +5625,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -5629,6 +5794,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -5793,6 +5963,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -5957,6 +6132,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -6121,6 +6301,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -6285,6 +6470,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={true}
               transformScale={1}
@@ -6452,6 +6642,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -6616,6 +6811,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -6780,6 +6980,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -6944,6 +7149,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -7108,6 +7318,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -7272,6 +7487,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -7436,6 +7656,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -7600,6 +7825,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -7764,6 +7994,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -7928,6 +8163,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -8092,6 +8332,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={true}
               transformScale={1}
@@ -8259,6 +8504,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -8423,6 +8673,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
@@ -8587,6 +8842,11 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResize={[Function]}
               onResizeStart={[Function]}
               onResizeStop={[Function]}
+              resizeHandles={
+                Array [
+                  "se",
+                ]
+              }
               rowHeight={30}
               static={false}
               transformScale={1}
