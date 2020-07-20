@@ -356,8 +356,8 @@ onResizeStart: ItemCallback,
 onResize: ItemCallback,
 // Calls when resize is complete.
 onResizeStop: ItemCallback,
-// Calls when some element has been dropped
-onDrop: (elemParams: { x: number, y: number, w: number, h: number, e: Event }) => void,
+// Calls when an element has been dropped into the grid from outside.
+onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void
 
 // Ref for getting a reference for the wrapping div.
 innerRef: ?React.Ref
