@@ -359,8 +359,9 @@ onResizeStop: ItemCallback,
 // Calls when an element has been dropped into the grid from outside.
 onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void
 
-// Ref for getting a reference for the wrapping div.
-innerRef: ?React.Ref
+// Ref for getting a reference for the grid's wrapping div.
+// You can use this instead of a regular ref and the deprecated `ReactDOM.findDOMNode()`` function.
+innerRef: ?React.Ref<"div">
 ```
 
 ### Responsive Grid Layout Props
