@@ -1,5 +1,5 @@
 [version]
-^0.119.0
+^0.129.0
 
 [ignore]
 <PROJECT_ROOT>/build/.*
@@ -17,7 +17,3 @@ flow-typed/
 [options]
 emoji=true
 module.use_strict=true
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowBug.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowNative.*
