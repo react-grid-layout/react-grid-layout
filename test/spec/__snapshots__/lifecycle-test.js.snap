@@ -175,6 +175,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           "w": 1,
         }
       }
+      isBounded={false}
       isDraggable={true}
       isDroppable={false}
       isResizable={true}
@@ -372,6 +373,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={2}
           handle=""
           i="0"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$0"
@@ -536,6 +538,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={2}
           handle=""
           i="1"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$1"
@@ -700,6 +703,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={3}
           handle=""
           i="2"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$2"
@@ -864,6 +868,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={3}
           handle=""
           i="3"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$3"
@@ -1028,6 +1033,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={3}
           handle=""
           i="4"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$4"
@@ -1192,6 +1198,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={4}
           handle=""
           i="5"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$5"
@@ -1356,6 +1363,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={4}
           handle=""
           i="6"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$6"
@@ -1520,6 +1528,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={5}
           handle=""
           i="7"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$7"
@@ -1684,6 +1693,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={5}
           handle=""
           i="8"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$8"
@@ -1848,6 +1858,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={5}
           handle=""
           i="9"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$9"
@@ -2012,6 +2023,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={2}
           handle=""
           i="10"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$10"
@@ -2176,6 +2188,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={2}
           handle=""
           i="11"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$11"
@@ -2340,6 +2353,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={2}
           handle=""
           i="12"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$12"
@@ -2504,6 +2518,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={3}
           handle=""
           i="13"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$13"
@@ -2668,6 +2683,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={3}
           handle=""
           i="14"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$14"
@@ -2832,6 +2848,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={3}
           handle=""
           i="15"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$15"
@@ -2996,6 +3013,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={4}
           handle=""
           i="16"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$16"
@@ -3160,6 +3178,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={4}
           handle=""
           i="17"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$17"
@@ -3324,6 +3343,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={5}
           handle=""
           i="18"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$18"
@@ -3488,6 +3508,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           h={5}
           handle=""
           i="19"
+          isBounded={false}
           isDraggable={true}
           isResizable={true}
           key=".$19"
@@ -4194,6 +4215,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               "w": 1,
             }
           }
+          isBounded={false}
           isDraggable={true}
           isDroppable={false}
           isResizable={true}
@@ -4202,6 +4224,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "0",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4217,6 +4240,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "1",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4232,6 +4256,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 4,
                 "i": "2",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4247,6 +4272,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 5,
                 "i": "3",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4262,6 +4288,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "4",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4277,6 +4304,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "5",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4292,6 +4320,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 5,
                 "i": "6",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4307,6 +4336,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "7",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4322,6 +4352,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "8",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4337,6 +4368,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 4,
                 "i": "9",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4352,6 +4384,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 5,
                 "i": "10",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4367,6 +4400,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "11",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4382,6 +4416,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "12",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4397,6 +4432,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 4,
                 "i": "13",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4412,6 +4448,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 5,
                 "i": "14",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4427,6 +4464,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "15",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4442,6 +4480,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "16",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4457,6 +4496,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 5,
                 "i": "17",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4472,6 +4512,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "18",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4487,6 +4528,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "19",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4502,6 +4544,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 4,
                 "i": "20",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4517,6 +4560,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 5,
                 "i": "21",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4532,6 +4576,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 2,
                 "i": "22",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4547,6 +4592,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 3,
                 "i": "23",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4562,6 +4608,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               Object {
                 "h": 4,
                 "i": "24",
+                "isBounded": undefined,
                 "isDraggable": undefined,
                 "isResizable": undefined,
                 "maxH": undefined,
@@ -4625,6 +4672,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="0"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$0"
@@ -4789,6 +4837,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="1"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$1"
@@ -4953,6 +5002,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={4}
               handle=""
               i="2"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$2"
@@ -5117,6 +5167,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={5}
               handle=""
               i="3"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$3"
@@ -5281,6 +5332,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="4"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$4"
@@ -5445,6 +5497,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="5"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$5"
@@ -5609,6 +5662,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={5}
               handle=""
               i="6"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$6"
@@ -5773,6 +5827,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="7"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$7"
@@ -5937,6 +5992,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="8"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$8"
@@ -6101,6 +6157,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={4}
               handle=""
               i="9"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$9"
@@ -6265,6 +6322,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={5}
               handle=""
               i="10"
+              isBounded={false}
               isDraggable={false}
               isResizable={false}
               key=".$10"
@@ -6432,6 +6490,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="11"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$11"
@@ -6596,6 +6655,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="12"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$12"
@@ -6760,6 +6820,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={4}
               handle=""
               i="13"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$13"
@@ -6924,6 +6985,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={5}
               handle=""
               i="14"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$14"
@@ -7088,6 +7150,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="15"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$15"
@@ -7252,6 +7315,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="16"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$16"
@@ -7416,6 +7480,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={5}
               handle=""
               i="17"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$17"
@@ -7580,6 +7645,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="18"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$18"
@@ -7744,6 +7810,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="19"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$19"
@@ -7908,6 +7975,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={4}
               handle=""
               i="20"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$20"
@@ -8072,6 +8140,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={5}
               handle=""
               i="21"
+              isBounded={false}
               isDraggable={false}
               isResizable={false}
               key=".$21"
@@ -8239,6 +8308,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={2}
               handle=""
               i="22"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$22"
@@ -8403,6 +8473,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={3}
               handle=""
               i="23"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$23"
@@ -8567,6 +8638,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               h={4}
               handle=""
               i="24"
+              isBounded={false}
               isDraggable={true}
               isResizable={true}
               key=".$24"
