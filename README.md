@@ -52,6 +52,7 @@ RGL is React-only and does not require jQuery.
 1. [Error Case](https://strml.github.io/react-grid-layout/examples/13-error-case.html)
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
 1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html)
+1. [Bounded Layout](https://strml.github.io/react-grid-layout/examples/16-bounded.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -304,6 +305,7 @@ droppingItem?: { i: string, w: number, h: number }
 //
 isDraggable: ?boolean = true,
 isResizable: ?boolean = true,
+isBounded: ?boolean = false,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
@@ -443,7 +445,9 @@ will be draggable, even if the item is marked `static: true`.
   // If false, will not be draggable. Overrides `static`.
   isDraggable: ?boolean = true,
   // If false, will not be resizable. Overrides `static`.
-  isResizable: ?boolean = true
+  isResizable: ?boolean = true,
+  // If true and draggable, item will be moved only within grid.
+  isBounded: ?boolean = false
 }
 ```
 

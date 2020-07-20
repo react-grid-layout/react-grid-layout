@@ -139,5 +139,12 @@ module.exports = [
       "Once you drop the item within the grid you'll get its coordinates/properties and can perform actions with " +
         "it accordingly."
     ]
+  },
+  {
+    title: "Bounded",
+    source: "bounded",
+    paragraphs: [
+      "Try dragging the elements around. They can only be moved within the grid, the draggable placeholder will not show outside it."
+    ]
   }
 ];

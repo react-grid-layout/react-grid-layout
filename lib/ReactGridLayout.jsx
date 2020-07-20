@@ -91,6 +91,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     maxRows: Infinity, // infinite vertical growth
     layout: [],
     margin: [10, 10],
+    isBounded: false,
     isDraggable: true,
     isResizable: true,
     isDroppable: false,
@@ -477,6 +478,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         rowHeight={rowHeight}
         isDraggable={false}
         isResizable={false}
+        isBounded={false}
         useCSSTransforms={useCSSTransforms}
         transformScale={transformScale}
       >
@@ -506,6 +508,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       maxRows,
       isDraggable,
       isResizable,
+      isBounded,
       useCSSTransforms,
       transformScale,
       draggableCancel,
@@ -525,6 +528,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         ? l.isResizable
         : !l.static && isResizable;
 
+    // isBounded set on child if set on parent, and child is not explicitly false
+    const bounded = draggable && isBounded && l.isBounded !== false;
+
     return (
       <GridItem
         containerWidth={width}
@@ -543,6 +549,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
+        isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
         transformScale={transformScale}

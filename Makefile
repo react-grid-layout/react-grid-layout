@@ -54,6 +54,9 @@ test:
 test-watch:
 	env NODE_ENV=test $(BIN)/jest --watch
 
+test-update-snapshots:
+	env NODE_ENV=test $(BIN)/jest --updateSnapshot
+
 release-patch: build lint test
 	@$(call release,patch)
 
