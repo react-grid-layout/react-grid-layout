@@ -166,6 +166,15 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
       cols={12}
       compactType="vertical"
       containerPadding={null}
+      dragApiRef={
+        Object {
+          "current": Object {
+            "dragIn": [Function],
+            "dragOut": [Function],
+            "stop": [Function],
+          },
+        }
+      }
       draggableCancel=""
       draggableHandle=""
       droppingItem={
@@ -4205,6 +4214,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               0,
               0,
             ]
+          }
+          dragApiRef={
+            Object {
+              "current": Object {
+                "dragIn": [Function],
+                "dragOut": [Function],
+                "stop": [Function],
+              },
+            }
           }
           draggableCancel=""
           draggableHandle=""
