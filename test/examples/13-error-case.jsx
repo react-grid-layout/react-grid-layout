@@ -3,7 +3,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class BasicLayout extends React.PureComponent {
+export default class ErrorCaseLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     items: 3,
@@ -76,8 +76,6 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-module.exports = BasicLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(ErrorCaseLayout));
 }

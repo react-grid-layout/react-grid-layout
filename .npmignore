@@ -8,5 +8,8 @@ Makefile
 *.sh
 *.*.json
 __tests__/
+__mocks__/
 index-dev.js
 index.html
+flow-typed/
+interfaces/

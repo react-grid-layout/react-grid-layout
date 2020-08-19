@@ -20,6 +20,10 @@
   will-change: transform;
 }
 
+.react-grid-item.dropping {
+  visibility: hidden;
+}
+
 .react-grid-item.react-grid-placeholder {
   background: red;
   opacity: 0.2;
@@ -50,4 +54,8 @@
   height: 5px;
   border-right: 2px solid rgba(0, 0, 0, 0.4);
   border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+.react-resizable-hide > .react-resizable-handle {
+  display: none;
 }

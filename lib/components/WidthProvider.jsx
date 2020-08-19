@@ -1,30 +1,49 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
-import type { ComponentType as ReactComponentType } from "react";
 
-type WPProps = {
+type WPDefaultProps = {|
+  measureBeforeMount: boolean
+|};
+
+// eslint-disable-next-line no-unused-vars
+type WPProps = {|
   className?: string,
-  measureBeforeMount: boolean,
-  style?: Object
-};
+  style?: Object,
+  ...WPDefaultProps
+|};
 
-type WPState = {
+type WPState = {|
   width: number
-};
+|};
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
+ *
+ * The Flow type is pretty janky here. I can't just spread `WPProps` into this returned object - I wish I could - but it triggers
+ * a flow bug of some sort that causes it to stop typechecking.
  */
-export default function WidthProvider<
-  Props,
-  ComposedProps: { ...Props, ...WPProps }
->(
-  ComposedComponent: ReactComponentType<Props>
-): ReactComponentType<ComposedProps> {
-  return class WidthProvider extends React.Component<ComposedProps, WPState> {
-    static defaultProps = {
+export default function WidthProvider<Config>(
+  ComposedComponent: React.AbstractComponent<Config>
+): React.AbstractComponent<{|
+  ...Config,
+  measureBeforeMount?: boolean,
+  className?: string,
+  style?: Object,
+  width?: number
+|}> {
+  return class WidthProvider extends React.Component<
+    {|
+      ...Config,
+      measureBeforeMount?: boolean,
+      className?: string,
+      style?: Object,
+      width?: number
+    |},
+    WPState
+  > {
+    static defaultProps: WPDefaultProps = {
       measureBeforeMount: false
     };
 
@@ -57,7 +76,7 @@ export default function WidthProvider<
 
     onWindowResize = () => {
       if (!this.mounted) return;
-      // eslint-disable-next-line
+      // eslint-disable-next-line react/no-find-dom-node
       const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });

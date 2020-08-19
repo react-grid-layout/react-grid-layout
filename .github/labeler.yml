@@ -1,0 +1,29 @@
+documentation:
+  - test/examples/**/*
+  - README.md
+  - examples/**/*
+
+core:
+  - lib/**/*
+
+release:
+  - dist/**/*
+
+tests:
+  - test/spec/**/*
+
+deps:
+  - yarn.lock
+
+infrastructure:
+  - .github/**/*
+  - .babelrc
+  - .eslintignore
+  - .eslintrc.json
+  - .flowconfig
+  - .gitignore
+  - .npmignore
+  - .travis.yml
+  - build.sh
+  - package.json
+  - webpack*
