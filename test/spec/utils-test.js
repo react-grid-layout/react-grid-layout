@@ -9,20 +9,12 @@ import {
   moveElement,
   sortLayoutItemsByRowCol,
   validateLayout
-} from "../../lib/utils.js";
+} from "../../lib/utils";
 import {
   calcGridColWidth,
   calcGridItemPosition
-} from "../../lib/calculateUtils.js";
+} from "../../lib/calculateUtils";
 import isEqual from "lodash.isequal";
-/*:: import type { Layout } from "../../lib/utils.js"; */
-
-/*:: declare function describe(name: string, fn: Function): void; */
-/*:: declare function it(name: string, fn: Function): void; */
-/*:: declare var expect: {
-  (any): any,
-  objectContaining(params: any): any
-}; */
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
@@ -83,9 +75,9 @@ describe("validateLayout", () => {
   });
   it("Throws errors on invalid input", () => {
     expect(() => {
-      // $FlowFixMe: dynamic check
       validateLayout([
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
+        // $FlowFixMe: dynamic check
         { i: "2", x: 1, y: 2, w: 1 }
       ]);
     }).toThrowError(/layout\[1\]\.h must be a number!/i);

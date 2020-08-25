@@ -9,7 +9,6 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 type Props = {|
   className: string,
   cols: {[string]: number},
-  initialLayout: Layout,
   onLayoutChange: Function,
   rowHeight: number,
 |};
@@ -26,14 +25,13 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    initialLayout: generateLayout()
   };
 
   state = {
     currentBreakpoint: "lg",
     compactType: "vertical",
     mounted: false,
-    layouts: { lg: this.props.initialLayout }
+    layouts: { lg: generateLayout() }
   };
 
   componentDidMount() {
@@ -92,7 +90,6 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    const {initialLayout, ...props} = this.props;
     return (
       <div>
         <div>
@@ -108,7 +105,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
           Change Compaction Type
         </button>
         <ResponsiveReactGridLayout
-          {...props}
+          {...this.props}
           layouts={this.state.layouts}
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}
@@ -132,7 +129,7 @@ function generateLayout() {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
-      x: (_.random(0, 5) * 2) % 12,
+      x: Math.round(Math.random() * 5) * 2,
       y: Math.floor(i / 6) * y,
       w: 2,
       h: y,

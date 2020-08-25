@@ -7,15 +7,17 @@ import {
   cloneLayout,
   synchronizeLayoutWithChildren,
   validateLayout,
-  noop
+  noop,
+  type Layout
 } from "./utils";
 import {
   getBreakpointFromWidth,
   getColsFromBreakpoint,
-  findOrGenerateResponsiveLayout
+  findOrGenerateResponsiveLayout,
+  type ResponsiveLayout,
+  type Breakpoints
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
-import type { Layout } from "./utils";
 
 const type = obj => Object.prototype.toString.call(obj);
 
@@ -46,9 +48,9 @@ type Props<Breakpoint: string = string> = {|
 
   // Responsive config
   breakpoint?: ?Breakpoint,
-  breakpoints: { [key: Breakpoint]: number },
+  breakpoints: Breakpoints<Breakpoint>,
   cols: { [key: Breakpoint]: number },
-  layouts: { [key: Breakpoint]: Layout },
+  layouts: ResponsiveLayout<Breakpoint>,
   width: number,
   margin: { [key: Breakpoint]: [number, number] } | [number, number],
   containerPadding: { [key: Breakpoint]: [number, number] } | [number, number],

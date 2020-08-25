@@ -1,4 +1,5 @@
-var webpack = require("webpack");
+// @flow
+const webpack = require("webpack");
 
 // Builds bundle usable <script>. Includes RGL and all deps, excluding React.
 module.exports = {

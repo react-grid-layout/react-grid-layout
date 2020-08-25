@@ -13,6 +13,11 @@
   "rules": {
     "no-console": 0,
     "no-use-before-define": [2, "nofunc"],
+    "no-unused-vars": [1, {
+      "argsIgnorePattern": "^(e|_.*)$",
+      "vars": "local",
+      "varsIgnorePattern": "(debug|^_)"
+    }],
     "prefer-const": 2,
     "react/jsx-boolean-value": [2, "always"]
   },

@@ -4,3 +4,4 @@ build/
 .idea
 # Ignore dist/ (not used by gh-pages)
 dist/
+.vscode

@@ -91,6 +91,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     maxRows: Infinity, // infinite vertical growth
     layout: [],
     margin: [10, 10],
+    isBounded: false,
     isDraggable: true,
     isResizable: true,
     isDroppable: false,
@@ -202,7 +203,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       // handle changes properly, performance will increase.
       this.props.children !== nextProps.children ||
       !fastRGLPropsEqual(this.props, nextProps, isEqual) ||
-      !isEqual(this.state.activeDrag, nextState.activeDrag)
+      this.state.activeDrag !== nextState.activeDrag ||
+      this.state.mounted !== nextState.mounted ||
+      this.state.droppingPosition !== nextState.droppingPosition
     );
   }
 
@@ -476,6 +479,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         rowHeight={rowHeight}
         isDraggable={false}
         isResizable={false}
+        isBounded={false}
         useCSSTransforms={useCSSTransforms}
         transformScale={transformScale}
       >
@@ -505,6 +509,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       maxRows,
       isDraggable,
       isResizable,
+      isBounded,
       useCSSTransforms,
       transformScale,
       draggableCancel,
@@ -524,6 +529,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         ? l.isResizable
         : !l.static && isResizable;
 
+    // isBounded set on child if set on parent, and child is not explicitly false
+    const bounded = draggable && isBounded && l.isBounded !== false;
+
     return (
       <GridItem
         containerWidth={width}
@@ -542,6 +550,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
         isResizable={resizable}
+        isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
         transformScale={transformScale}
@@ -671,18 +680,18 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onDrop = (e: Event) => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
-    const { x, y, w, h } = layout.find(l => l.i === droppingItem.i) || {};
+    const item = layout.find(l => l.i === droppingItem.i);
 
     // reset gragEnter counter on drop
     this.dragEnterCounter = 0;
 
     this.removeDroppingPlaceholder();
 
-    this.props.onDrop({ x, y, w, h, e });
+    this.props.onDrop(layout, item, e);
   };
 
   render() {
-    const { className, style, isDroppable } = this.props;
+    const { className, style, isDroppable, innerRef } = this.props;
 
     const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
@@ -692,6 +701,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     return (
       <div
+        ref={innerRef}
         className={mergedClassName}
         style={mergedStyle}
         onDrop={isDroppable ? this.onDrop : noop}
