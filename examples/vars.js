@@ -141,9 +141,11 @@ module.exports = [
     ]
   },
   {
-    title: "Responsive Bootstrap Style",
-    source: "responsive-bootstrap-style",
-    paragraphs: []
+    title: "Bounded",
+    source: "bounded",
+    paragraphs: [
+      "Try dragging the elements around. They can only be moved within the grid, the draggable placeholder will not show outside it."
+    ]
   },
   {
     title: "Resizable Handles",

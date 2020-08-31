@@ -10,3 +10,4 @@ examples/*.html
 examples/*.js
 !examples/generate.js
 !examples/vars.js
+.vscode

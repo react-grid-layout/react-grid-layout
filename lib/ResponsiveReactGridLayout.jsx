@@ -15,7 +15,7 @@ import {
   getColsFromBreakpoint,
   findOrGenerateResponsiveLayout,
   type ResponsiveLayout,
-  type Breakpoints,
+  type Breakpoints
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
 
