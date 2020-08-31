@@ -53,6 +53,7 @@ RGL is React-only and does not require jQuery.
 1. [Toolbox](https://strml.github.io/react-grid-layout/examples/14-toolbox.html)
 1. [Drag From Outside](https://strml.github.io/react-grid-layout/examples/15-drag-from-outside.html)
 1. [Bounded Layout](https://strml.github.io/react-grid-layout/examples/16-bounded.html)
+1. [Resizable Handles](https://strml.github.io/react-grid-layout/examples/17-resizable-handles.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -328,6 +329,17 @@ preventCollision: ?boolean = false;
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
 isDroppable: ?boolean = false
+// Defines which resize handles should be rendered
+// Allows for any combination of:
+// 's' - South handle (bottom-center)
+// 'w' - West handle (left-center)
+// 'e' - East handle (right-center)
+// 'n' - North handle (top-center)
+// 'sw' - Southwest handle (bottom-left)
+// 'nw' - Northwest handle (top-left)
+// 'se' - Southeast handle (bottom-right)
+// 'ne' - Northeast handle (top-right)
+resizeHandles: ?string[] = ['se']
 
 //
 // Callbacks
@@ -447,6 +459,9 @@ will be draggable, even if the item is marked `static: true`.
   isDraggable: ?boolean = true,
   // If false, will not be resizable. Overrides `static`.
   isResizable: ?boolean = true,
+  // By default, a handle is only shown on the bottom-right (southeast) corner.
+  // Note that resizing from the top or left is generally not intuitive.
+  resizeHandles?: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
   // If true and draggable, item will be moved only within grid.
   isBounded: ?boolean = false
 }

@@ -146,5 +146,12 @@ module.exports = [
     paragraphs: [
       "Try dragging the elements around. They can only be moved within the grid, the draggable placeholder will not show outside it."
     ]
+  },
+  {
+    title: "Resizable Handles",
+    source: "resizable-handles",
+    paragraphs: [
+      "This demonstrates how to implement resizable handles for any corner"
+    ]
   }
 ];
