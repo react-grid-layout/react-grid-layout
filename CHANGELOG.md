@@ -1,5 +1,44 @@
 # Changelog
 
+1.1.0 (Sep 3, 2020)
+---
+
+### New Features
+  - You can now place resizable handles on all corners. Use the `resizeHandles` prop, which is default `['se']` (for 'southeast').
+    - Allowable values are:
+      * 's' - South handle (bottom-center)
+      * 'w' - West handle (left-center)
+      * 'e' - East handle (right-center)
+      * 'n' - North handle (top-center)
+      * 'sw' - Southwest handle (bottom-left)
+      * 'nw' - Northwest handle (top-left)
+      * 'se' - Southeast handle (bottom-right)
+      * 'ne' - Northeast handle (top-right)
+    - These values may be combined, e.g. `['s', 'se', 'e']`, to place three handles on the bottom side, bottom-right corner, and right side.
+
+### Bugfixes
+  - Revert `containerPadding` change in #1138. This change was meant to be types-only, but it caused a behavioral change where the default value of `containerPadding` became `[0, 0]`, not `margin`, which is default `[10, 10]`.
+  - Add a few more files to `npmignore` to improve package size.
+
+1.0.0 (July 20, 2020)
+---
+
+React-Grid-Layout has been in `0.x` status for far too long. With the addition of some new features in this version and a breaking change, I thought it was time to move to a stable semver.
+
+### Breaking Changes
+   - `onDrop` callback now has a form more consistent with other callbacks.
+     - Previous type: `(elemParams: { x: number, y: number, w: number, h: number, e: Event }) => void`
+     - New type: `(layout: Layout, item: ?LayoutItem, e: Event) => void`
+     - Thanks @ceberhar [#1169](https://github.com/STRML/react-grid-layout/pull/1169)
+  - Dropping Node 8 compatibility and testing due to devDep incompatibilities
+
+### New Features
+  - Add `innerRef: React.Ref<'div'>` prop to expose a ref for the grid layout's outer div. Thanks @paul-sachs [#1176](https://github.com/STRML/react-grid-layout/pull/1176)
+  - Add `isBounded` property to prevent dragging items outside of the grid. Thanks @artembykov [#1248](https://github.com/STRML/react-grid-layout/pull/1248)
+
+### Bugfixes
+  - Fix grid items stuck using percentages on first render. Thanks @rhbg [#1246](https://github.com/STRML/react-grid-layout/pull/1246)
+
 0.18.3 (Mar 16, 2020)
 ----
 
