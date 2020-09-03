@@ -29,10 +29,12 @@ const type = obj => Object.prototype.toString.call(obj);
  * @return {Array}
  */
 
-function getIndentationValue(
-  param: { [key: string]: [number, number] } | [number, number],
+function getIndentationValue<T: ?[number, number]>(
+  param: { [key: string]: T } | T,
   breakpoint: string
-) {
+): T {
+  // $FlowIssue doesn't seem to understand this
+  if (param == null) return null;
   return Array.isArray(param) ? param : param[breakpoint];
 }
 
@@ -53,7 +55,8 @@ type Props<Breakpoint: string = string> = {|
   layouts: ResponsiveLayout<Breakpoint>,
   width: number,
   margin: { [key: Breakpoint]: [number, number] } | [number, number],
-  containerPadding: { [key: Breakpoint]: [number, number] } | [number, number],
+  /* prettier-ignore */
+  containerPadding: { [key: Breakpoint]: ?[number, number] } | ?[number, number],
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -62,7 +65,7 @@ type Props<Breakpoint: string = string> = {|
     containerWidth: number,
     margin: [number, number],
     cols: number,
-    containerPadding: [number, number] | null
+    containerPadding: ?[number, number]
   ) => void
 |};
 
@@ -142,13 +145,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     layouts: {},
     margin: [10, 10],
-    containerPadding: {
-      lg: [0, 0],
-      md: [0, 0],
-      sm: [0, 0],
-      xs: [0, 0],
-      xxs: [0, 0]
-    },
+    containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
     onBreakpointChange: noop,
     onLayoutChange: noop,
     onWidthChange: noop
