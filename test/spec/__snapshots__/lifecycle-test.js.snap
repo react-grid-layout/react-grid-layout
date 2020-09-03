@@ -461,16 +461,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -481,7 +475,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(10px,10px)",
@@ -490,7 +483,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "70px",
                     "msTransform": "translate(10px,10px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(10px,10px)",
                     "width": "-12px",
                   }
@@ -522,12 +514,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -631,16 +617,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -651,7 +631,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(8px,10px)",
@@ -660,7 +639,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "70px",
                     "msTransform": "translate(8px,10px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(8px,10px)",
                     "width": "-12px",
                   }
@@ -692,12 +670,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -801,16 +773,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -821,7 +787,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(7px,10px)",
@@ -830,7 +795,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "110px",
                     "msTransform": "translate(7px,10px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(7px,10px)",
                     "width": "-12px",
                   }
@@ -862,12 +826,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -971,16 +929,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -991,7 +943,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(5px,10px)",
@@ -1000,7 +951,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "110px",
                     "msTransform": "translate(5px,10px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(5px,10px)",
                     "width": "-12px",
                   }
@@ -1032,12 +982,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -1141,16 +1085,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -1161,7 +1099,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(3px,10px)",
@@ -1170,7 +1107,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "110px",
                     "msTransform": "translate(3px,10px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(3px,10px)",
                     "width": "-12px",
                   }
@@ -1202,12 +1138,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -1311,16 +1241,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -1331,7 +1255,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(2px,10px)",
@@ -1340,7 +1263,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "150px",
                     "msTransform": "translate(2px,10px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(2px,10px)",
                     "width": "-12px",
                   }
@@ -1372,12 +1294,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -1481,16 +1397,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -1501,7 +1411,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(10px,90px)",
@@ -1510,7 +1419,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "150px",
                     "msTransform": "translate(10px,90px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(10px,90px)",
                     "width": "-12px",
                   }
@@ -1542,12 +1450,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -1651,16 +1553,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -1671,7 +1567,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(8px,90px)",
@@ -1680,7 +1575,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "190px",
                     "msTransform": "translate(8px,90px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(8px,90px)",
                     "width": "-12px",
                   }
@@ -1712,12 +1606,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -1821,16 +1709,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -1841,7 +1723,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(7px,130px)",
@@ -1850,7 +1731,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "190px",
                     "msTransform": "translate(7px,130px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(7px,130px)",
                     "width": "-12px",
                   }
@@ -1882,12 +1762,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -1991,16 +1865,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -2011,7 +1879,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(5px,130px)",
@@ -2020,7 +1887,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "190px",
                     "msTransform": "translate(5px,130px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(5px,130px)",
                     "width": "-12px",
                   }
@@ -2052,12 +1918,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -2161,16 +2021,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -2181,7 +2035,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(3px,130px)",
@@ -2190,7 +2043,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "70px",
                     "msTransform": "translate(3px,130px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(3px,130px)",
                     "width": "-12px",
                   }
@@ -2222,12 +2074,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -2331,16 +2177,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -2351,7 +2191,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(2px,170px)",
@@ -2360,7 +2199,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "70px",
                     "msTransform": "translate(2px,170px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(2px,170px)",
                     "width": "-12px",
                   }
@@ -2392,12 +2230,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -2501,16 +2333,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -2521,7 +2347,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(10px,250px)",
@@ -2530,7 +2355,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "70px",
                     "msTransform": "translate(10px,250px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(10px,250px)",
                     "width": "-12px",
                   }
@@ -2562,12 +2386,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -2671,16 +2489,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -2691,7 +2503,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(8px,290px)",
@@ -2700,7 +2511,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "110px",
                     "msTransform": "translate(8px,290px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(8px,290px)",
                     "width": "-12px",
                   }
@@ -2732,12 +2542,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -2841,16 +2645,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -2861,7 +2659,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(7px,330px)",
@@ -2870,7 +2667,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "110px",
                     "msTransform": "translate(7px,330px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(7px,330px)",
                     "width": "-12px",
                   }
@@ -2902,12 +2698,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -3011,16 +2801,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -3031,7 +2815,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(5px,330px)",
@@ -3040,7 +2823,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "110px",
                     "msTransform": "translate(5px,330px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(5px,330px)",
                     "width": "-12px",
                   }
@@ -3072,12 +2854,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -3181,16 +2957,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -3201,7 +2971,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(3px,210px)",
@@ -3210,7 +2979,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "150px",
                     "msTransform": "translate(3px,210px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(3px,210px)",
                     "width": "-12px",
                   }
@@ -3242,12 +3010,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -3351,16 +3113,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -3371,7 +3127,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(2px,250px)",
@@ -3380,7 +3135,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "150px",
                     "msTransform": "translate(2px,250px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(2px,250px)",
                     "width": "-12px",
                   }
@@ -3412,12 +3166,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -3521,16 +3269,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -3541,7 +3283,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(10px,330px)",
@@ -3550,7 +3291,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "190px",
                     "msTransform": "translate(10px,330px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(10px,330px)",
                     "width": "-12px",
                   }
@@ -3582,12 +3322,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -3691,16 +3425,10 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               onTouchEnd={[Function]}
-              onTouchStart={[Function]}
               resizeHandles={
                 Array [
                   "se",
                 ]
-              }
-              style={
-                Object {
-                  "touchAction": "none",
-                }
               }
               transformScale={1}
               width={-12}
@@ -3711,7 +3439,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
                 onTouchEnd={[Function]}
-                onTouchStart={[Function]}
                 style={
                   Object {
                     "MozTransform": "translate(8px,410px)",
@@ -3720,7 +3447,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     "height": "190px",
                     "msTransform": "translate(8px,410px)",
                     "position": "absolute",
-                    "touchAction": "none",
                     "transform": "translate(8px,410px)",
                     "width": "-12px",
                   }
@@ -3752,12 +3478,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "touchAction": "none",
-                      }
-                    }
                   />
                 </DraggableCore>
               </div>
@@ -4890,16 +4610,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -4910,7 +4624,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,0px)",
@@ -4919,7 +4632,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,0px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,0px)",
                         "width": "0px",
                       }
@@ -4951,12 +4663,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -5060,16 +4766,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -5080,7 +4780,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,80px)",
@@ -5089,7 +4788,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,80px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,80px)",
                         "width": "0px",
                       }
@@ -5121,12 +4819,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -5230,16 +4922,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -5250,7 +4936,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,200px)",
@@ -5259,7 +4944,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "150px",
                         "msTransform": "translate(0px,200px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,200px)",
                         "width": "0px",
                       }
@@ -5291,12 +4975,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -5400,16 +5078,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -5420,7 +5092,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,840px)",
@@ -5429,7 +5100,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "190px",
                         "msTransform": "translate(0px,840px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,840px)",
                         "width": "0px",
                       }
@@ -5461,12 +5131,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -5570,16 +5234,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -5590,7 +5248,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1040px)",
@@ -5599,7 +5256,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,1040px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1040px)",
                         "width": "0px",
                       }
@@ -5631,12 +5287,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -5740,16 +5390,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -5760,7 +5404,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1120px)",
@@ -5769,7 +5412,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,1120px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1120px)",
                         "width": "0px",
                       }
@@ -5801,12 +5443,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -5910,16 +5546,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -5930,7 +5560,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1760px)",
@@ -5939,7 +5568,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "190px",
                         "msTransform": "translate(0px,1760px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1760px)",
                         "width": "0px",
                       }
@@ -5971,12 +5599,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -6080,16 +5702,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -6100,7 +5716,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1240px)",
@@ -6109,7 +5724,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,1240px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1240px)",
                         "width": "0px",
                       }
@@ -6141,12 +5755,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -6250,16 +5858,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -6270,7 +5872,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1400px)",
@@ -6279,7 +5880,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,1400px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1400px)",
                         "width": "0px",
                       }
@@ -6311,12 +5911,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -6420,16 +6014,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -6440,7 +6028,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1520px)",
@@ -6449,7 +6036,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "150px",
                         "msTransform": "translate(0px,1520px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1520px)",
                         "width": "0px",
                       }
@@ -6481,12 +6067,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -6591,16 +6171,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -6611,7 +6185,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,400px)",
@@ -6620,7 +6193,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "190px",
                         "msTransform": "translate(0px,400px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,400px)",
                         "width": "0px",
                       }
@@ -6654,12 +6226,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -6763,16 +6329,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -6783,7 +6343,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1320px)",
@@ -6792,7 +6351,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,1320px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1320px)",
                         "width": "0px",
                       }
@@ -6824,12 +6382,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -6933,16 +6485,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -6953,7 +6499,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1960px)",
@@ -6962,7 +6507,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,1960px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1960px)",
                         "width": "0px",
                       }
@@ -6994,12 +6538,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -7103,16 +6641,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -7123,7 +6655,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2360px)",
@@ -7132,7 +6663,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "150px",
                         "msTransform": "translate(0px,2360px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2360px)",
                         "width": "0px",
                       }
@@ -7164,12 +6694,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -7273,16 +6797,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -7293,7 +6811,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2760px)",
@@ -7302,7 +6819,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "190px",
                         "msTransform": "translate(0px,2760px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2760px)",
                         "width": "0px",
                       }
@@ -7334,12 +6850,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -7443,16 +6953,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -7463,7 +6967,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,1680px)",
@@ -7472,7 +6975,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,1680px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,1680px)",
                         "width": "0px",
                       }
@@ -7504,12 +7006,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -7613,16 +7109,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -7633,7 +7123,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2080px)",
@@ -7642,7 +7131,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,2080px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2080px)",
                         "width": "0px",
                       }
@@ -7674,12 +7162,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -7783,16 +7265,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -7803,7 +7279,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2960px)",
@@ -7812,7 +7287,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "190px",
                         "msTransform": "translate(0px,2960px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2960px)",
                         "width": "0px",
                       }
@@ -7844,12 +7318,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -7953,16 +7421,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -7973,7 +7435,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2200px)",
@@ -7982,7 +7443,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,2200px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2200px)",
                         "width": "0px",
                       }
@@ -8014,12 +7474,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -8123,16 +7577,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -8143,7 +7591,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2520px)",
@@ -8152,7 +7599,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,2520px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2520px)",
                         "width": "0px",
                       }
@@ -8184,12 +7630,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -8293,16 +7733,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -8313,7 +7747,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,3160px)",
@@ -8322,7 +7755,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "150px",
                         "msTransform": "translate(0px,3160px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,3160px)",
                         "width": "0px",
                       }
@@ -8354,12 +7786,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -8464,16 +7890,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -8484,7 +7904,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,640px)",
@@ -8493,7 +7912,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "190px",
                         "msTransform": "translate(0px,640px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,640px)",
                         "width": "0px",
                       }
@@ -8527,12 +7945,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -8636,16 +8048,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -8656,7 +8062,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2280px)",
@@ -8665,7 +8070,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "70px",
                         "msTransform": "translate(0px,2280px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2280px)",
                         "width": "0px",
                       }
@@ -8697,12 +8101,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -8806,16 +8204,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -8826,7 +8218,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,2640px)",
@@ -8835,7 +8226,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "110px",
                         "msTransform": "translate(0px,2640px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,2640px)",
                         "width": "0px",
                       }
@@ -8867,12 +8257,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
@@ -8976,16 +8360,10 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStart={[Function]}
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
-                  onTouchStart={[Function]}
                   resizeHandles={
                     Array [
                       "se",
                     ]
-                  }
-                  style={
-                    Object {
-                      "touchAction": "none",
-                    }
                   }
                   transformScale={1}
                   width={0}
@@ -8996,7 +8374,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseDown={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
-                    onTouchStart={[Function]}
                     style={
                       Object {
                         "MozTransform": "translate(0px,3320px)",
@@ -9005,7 +8382,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         "height": "150px",
                         "msTransform": "translate(0px,3320px)",
                         "position": "absolute",
-                        "touchAction": "none",
                         "transform": "translate(0px,3320px)",
                         "width": "0px",
                       }
@@ -9037,12 +8413,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                         onMouseDown={[Function]}
                         onMouseUp={[Function]}
                         onTouchEnd={[Function]}
-                        onTouchStart={[Function]}
-                        style={
-                          Object {
-                            "touchAction": "none",
-                          }
-                        }
                       />
                     </DraggableCore>
                   </div>
