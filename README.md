@@ -200,7 +200,7 @@ You will also need to provide a `width`, when using `<ResponsiveReactGridLayout>
 `WidthProvider` as per the instructions below.
 
 It is possible to supply default mappings via the `data-grid` property on individual
-items, so that they would be taken into account within layout interpolation. 
+items, so that they would be taken into account within layout interpolation.
 
 ### Providing Grid Width
 
@@ -339,7 +339,7 @@ isDroppable: ?boolean = false
 // 'nw' - Northwest handle (top-left)
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
-resizeHandles: ?string[] = ['se']
+resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
 
 //
 // Callbacks

@@ -74,7 +74,7 @@ type Props = {
   maxH: number,
   i: string,
 
-  resizeHandles?: string[],
+  resizeHandles?: Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'>,
 
   onDrag?: GridItemCallback<GridDragEvent>,
   onDragStart?: GridItemCallback<GridDragEvent>,
