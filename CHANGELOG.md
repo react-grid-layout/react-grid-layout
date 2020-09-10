@@ -1,5 +1,10 @@
 # Changelog
 
+1.1.1 (Sep 10, 2020)
+---
+
+Republish to add `dist/` folder for unpkg use.
+
 1.1.0 (Sep 3, 2020)
 ---
 
