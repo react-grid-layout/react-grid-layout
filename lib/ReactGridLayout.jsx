@@ -15,7 +15,8 @@ import {
   getAllCollisions,
   compactType,
   noop,
-  fastRGLPropsEqual
+  fastRGLPropsEqual,
+  cloneLayout
 } from "./utils";
 
 import { calcXY } from "./calculateUtils";
@@ -371,7 +372,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
-    const { layout, oldResizeItem } = this.state;
+    const { oldResizeItem } = this.state;
+    const layout = cloneLayout(this.state.layout);
     const { cols, preventCollision } = this.props;
     const l: ?LayoutItem = getLayoutItem(layout, i);
     if (!l) return;
