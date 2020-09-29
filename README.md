@@ -341,6 +341,8 @@ isDroppable: ?boolean = false
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
+// Custom component for resize handles
+resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis) => ReactElement<any>)
 
 //
 // Callbacks
