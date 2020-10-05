@@ -585,7 +585,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // FIXME remove this hack
     if (
       isFirefox &&
-      e.nativeEvent.target.className.indexOf(layoutClassName) === -1
+      !e.nativeEvent.target.classList.contains(layoutClassName)
     ) {
       return false;
     }
