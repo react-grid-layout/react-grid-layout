@@ -1,7 +1,6 @@
 import React from "react";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
-import "style-loader!css-loader!../../examples/resizable-styles.css";
 
 const ReactGridLayout = WidthProvider(RGL);
 
