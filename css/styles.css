@@ -6,6 +6,10 @@
   transition: all 200ms ease;
   transition-property: left, top;
 }
+.react-grid-item img {
+  pointer-events: none;
+  user-select: none;  
+}
 .react-grid-item.cssTransforms {
   transition-property: transform;
 }
