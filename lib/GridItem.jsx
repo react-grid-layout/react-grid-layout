@@ -13,6 +13,10 @@ import {
   calcWH,
   clamp
 } from "./calculateUtils";
+import {
+  resizeHandlesType,
+  resizeHandleType
+} from "./ReactGridLayoutPropTypes";
 import classNames from "classnames";
 import type { Element as ReactElement, Node as ReactNode } from "react";
 
@@ -25,6 +29,7 @@ import type {
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";
+import type { ResizeHandles, ResizeHandle } from "./ReactGridLayoutPropTypes";
 
 type PartialPosition = { top: number, left: number };
 type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
@@ -74,7 +79,8 @@ type Props = {
   maxH: number,
   i: string,
 
-  resizeHandles?: Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'>,
+  resizeHandles?: ResizeHandles,
+  resizeHandle?: ResizeHandle,
 
   onDrag?: GridItemCallback<GridDragEvent>,
   onDragStart?: GridItemCallback<GridDragEvent>,
@@ -137,6 +143,10 @@ export default class GridItem extends React.Component<Props, State> {
 
     // ID is nice to have for callbacks
     i: PropTypes.string.isRequired,
+
+    // Resize handle options
+    resizeHandles: resizeHandlesType,
+    resizeHandle: resizeHandleType,
 
     // Functions
     onDragStop: PropTypes.func,
@@ -352,7 +362,8 @@ export default class GridItem extends React.Component<Props, State> {
       maxW,
       maxH,
       transformScale,
-      resizeHandles
+      resizeHandles,
+      resizeHandle
     } = this.props;
     const positionParams = this.getPositionParams();
 
@@ -383,6 +394,7 @@ export default class GridItem extends React.Component<Props, State> {
         onResize={this.onResize}
         transformScale={transformScale}
         resizeHandles={resizeHandles}
+        handle={resizeHandle}
       >
         {child}
       </Resizable>

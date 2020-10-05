@@ -515,7 +515,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       transformScale,
       draggableCancel,
       draggableHandle,
-      resizeHandles
+      resizeHandles,
+      resizeHandle
     } = this.props;
     const { mounted, droppingPosition } = this.state;
 
@@ -569,6 +570,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         static={l.static}
         droppingPosition={isDroppingItem ? droppingPosition : undefined}
         resizeHandles={resizeHandlesOptions}
+        resizeHandle={resizeHandle}
       >
         {child}
       </GridItem>
