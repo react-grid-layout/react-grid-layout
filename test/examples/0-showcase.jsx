@@ -1,22 +1,37 @@
+// @flow
 import React from "react";
 import _ from "lodash";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import Responsive from '../../lib/ResponsiveReactGridLayout';
+import WidthProvider from '../../lib/components/WidthProvider';
+import type {CompactType, Layout} from '../../lib/utils';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-export default class ShowcaseLayout extends React.Component {
+type Props = {|
+  className: string,
+  cols: {[string]: number},
+  onLayoutChange: Function,
+  rowHeight: number,
+|};
+type State = {|
+  currentBreakpoint: string,
+  compactType: CompactType,
+  mounted: boolean,
+  layouts: {[string]: Layout}
+|};
+
+export default class ShowcaseLayout extends React.Component<Props, State> {
   static defaultProps = {
     className: "layout",
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    initialLayout: generateLayout()
   };
 
   state = {
     currentBreakpoint: "lg",
     compactType: "vertical",
     mounted: false,
-    layouts: { lg: this.props.initialLayout }
+    layouts: { lg: generateLayout() }
   };
 
   componentDidMount() {
@@ -42,7 +57,7 @@ export default class ShowcaseLayout extends React.Component {
     });
   }
 
-  onBreakpointChange = breakpoint => {
+  onBreakpointChange = (breakpoint: string) => {
     this.setState({
       currentBreakpoint: breakpoint
     });
@@ -59,7 +74,7 @@ export default class ShowcaseLayout extends React.Component {
     this.setState({ compactType });
   };
 
-  onLayoutChange = (layout, layouts) => {
+  onLayoutChange = (layout: Layout, layouts: {[string]: Layout}) => {
     this.props.onLayoutChange(layout, layouts);
   };
 
@@ -69,11 +84,12 @@ export default class ShowcaseLayout extends React.Component {
     });
   };
 
-  onDrop = elemParams => {
+  onDrop = (elemParams: Object) => {
     alert(`Element parameters: ${JSON.stringify(elemParams)}`);
   };
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     return (
       <div>
         <div>
@@ -113,7 +129,7 @@ function generateLayout() {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
-      x: (_.random(0, 5) * 2) % 12,
+      x: Math.round(Math.random() * 5) * 2,
       y: Math.floor(i / 6) * y,
       w: 2,
       h: y,

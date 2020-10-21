@@ -1,35 +1,24 @@
-// @flow
 import React from "react";
 import _ from "lodash";
-import RGL from '../../lib/ReactGridLayout';
-import WidthProvider from '../../lib/components/WidthProvider';
-import type {Layout} from '../../lib/utils';
+import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-type Props = {|
-  className: string,
-  cols: number,
-  items: number,
-  onLayoutChange: Function,
-  rowHeight: number,
-|};
-type State = {|
-  layout: Layout
-|};
-
-export default class MessyLayout extends React.PureComponent<Props, State> {
+class BoundedLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
-    cols: 12,
     items: 20,
-    onLayoutChange: function() {},
     rowHeight: 30,
+    onLayoutChange: function() {},
+    cols: 12
   };
 
-  state = {
-    layout: this.generateLayout()
-  };
+  constructor(props) {
+    super(props);
+
+    const layout = this.generateLayout();
+    this.state = { layout };
+  }
 
   generateDOM() {
     return _.map(_.range(this.props.items), function(i) {
@@ -41,33 +30,31 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     });
   }
 
-  generateLayout(): Layout {
+  generateLayout() {
     const p = this.props;
     return _.map(new Array(p.items), function(item, i) {
-      const w = Math.ceil(Math.random() * 4);
-      const y = Math.ceil(Math.random() * 4) + 1;
+      const y = _.result(p, "y") || Math.ceil(Math.random() * 4) + 1;
       return {
         x: (i * 2) % 12,
         y: Math.floor(i / 6) * y,
-        w: w,
+        w: 2,
         h: y,
         i: i.toString()
       };
     });
   }
 
-  onLayoutChange(layout: Layout) {
+  onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
   }
 
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const {items, ...props} = this.props;
     return (
       <ReactGridLayout
         layout={this.state.layout}
         onLayoutChange={this.onLayoutChange}
-        {...props}
+        isBounded={true}
+        {...this.props}
       >
         {this.generateDOM()}
       </ReactGridLayout>
@@ -76,5 +63,5 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then(fn => fn.default(MessyLayout));
+  import("../test-hook.jsx").then(fn => fn.default(BoundedLayout));
 }

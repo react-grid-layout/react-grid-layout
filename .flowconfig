@@ -1,11 +1,19 @@
 [version]
-0.110.1
+^0.133.0
 
 [ignore]
+<PROJECT_ROOT>/build/.*
+<PROJECT_ROOT>/dist/.*
+# Speeds parsing:
+.*/node_modules/@babel.*
+.*/node_modules/babel.*
 
 [include]
 
 [libs]
 interfaces/
+flow-typed/
 
 [options]
+emoji=true
+module.use_strict=true

@@ -3,7 +3,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
-import { perc, setTopLeft, setTransform } from "./utils";
+import { fastPositionEqual, perc, setTopLeft, setTransform } from "./utils";
+import {
+  calcGridItemPosition,
+  calcGridItemWHPx,
+  calcGridColWidth,
+  calcXY,
+  calcWH,
+  clamp
+} from "./calculateUtils";
+import {
+  resizeHandlesType,
+  resizeHandleType
+} from "./ReactGridLayoutPropTypes";
 import classNames from "classnames";
 import type { Element as ReactElement, Node as ReactNode } from "react";
 
@@ -14,6 +26,9 @@ import type {
   DroppingPosition,
   Position
 } from "./utils";
+
+import type { PositionParams } from "./calculateUtils";
+import type { ResizeHandles, ResizeHandle } from "./ReactGridLayoutPropTypes";
 
 type PartialPosition = { top: number, left: number };
 type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
@@ -39,6 +54,7 @@ type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  isBounded: boolean,
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
@@ -61,6 +77,9 @@ type Props = {
   minH: number,
   maxH: number,
   i: string,
+
+  resizeHandles?: ResizeHandles,
+  resizeHandle?: ResizeHandle,
 
   onDrag?: GridItemCallback<GridDragEvent>,
   onDragStart?: GridItemCallback<GridDragEvent>,
@@ -93,28 +112,28 @@ export default class GridItem extends React.Component<Props, State> {
     h: PropTypes.number.isRequired,
 
     // All optional
-    minW: function(props: Props, propName: string) {
+    minW: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== "number") return new Error("minWidth not Number");
       if (value > props.w || value > props.maxW)
         return new Error("minWidth larger than item width/maxWidth");
     },
 
-    maxW: function(props: Props, propName: string) {
+    maxW: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== "number") return new Error("maxWidth not Number");
       if (value < props.w || value < props.minW)
         return new Error("maxWidth smaller than item width/minWidth");
     },
 
-    minH: function(props: Props, propName: string) {
+    minH: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== "number") return new Error("minHeight not Number");
       if (value > props.h || value > props.maxH)
         return new Error("minHeight larger than item height/maxHeight");
     },
 
-    maxH: function(props: Props, propName: string) {
+    maxH: function (props: Props, propName: string) {
       const value = props[propName];
       if (typeof value !== "number") return new Error("maxHeight not Number");
       if (value < props.h || value < props.minH)
@@ -123,6 +142,10 @@ export default class GridItem extends React.Component<Props, State> {
 
     // ID is nice to have for callbacks
     i: PropTypes.string.isRequired,
+
+    // Resize handle options
+    resizeHandles: resizeHandlesType,
+    resizeHandle: resizeHandleType,
 
     // Functions
     onDragStop: PropTypes.func,
@@ -135,6 +158,7 @@ export default class GridItem extends React.Component<Props, State> {
     // Flags
     isDraggable: PropTypes.bool.isRequired,
     isResizable: PropTypes.bool.isRequired,
+    isBounded: PropTypes.bool.isRequired,
     static: PropTypes.bool,
 
     // Use CSS transforms instead of top/left
@@ -150,8 +174,8 @@ export default class GridItem extends React.Component<Props, State> {
     // Current position of a dropping element
     droppingPosition: PropTypes.shape({
       e: PropTypes.object.isRequired,
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired
+      left: PropTypes.number.isRequired,
+      top: PropTypes.number.isRequired
     })
   };
 
@@ -179,34 +203,68 @@ export default class GridItem extends React.Component<Props, State> {
     this.currentNode = React.createRef<HTMLElement>();
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.droppingPosition && prevProps.droppingPosition) {
-      this.moveDroppingItem(prevProps);
-    }
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    // We can't deeply compare children. If the developer memoizes them, we can
+    // use this optimization.
+    if (this.props.children !== nextProps.children) return true;
+    if (this.props.droppingPosition !== nextProps.droppingPosition) return true;
+    // TODO memoize these calculations so they don't take so long?
+    const oldPosition = calcGridItemPosition(
+      this.getPositionParams(this.props),
+      this.props.x,
+      this.props.y,
+      this.props.w,
+      this.props.h,
+      this.state
+    );
+    const newPosition = calcGridItemPosition(
+      this.getPositionParams(nextProps),
+      nextProps.x,
+      nextProps.y,
+      nextProps.w,
+      nextProps.h,
+      nextState
+    );
+    return (
+      !fastPositionEqual(oldPosition, newPosition) ||
+      this.props.useCSSTransforms !== nextProps.useCSSTransforms
+    );
   }
 
+  componentDidMount() {
+    this.moveDroppingItem({});
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    this.moveDroppingItem(prevProps);
+  }
+
+  // When a droppingPosition is present, this means we should fire a move event, as if we had moved
+  // this element by `x, y` pixels.
   moveDroppingItem(prevProps: Props) {
     const { droppingPosition } = this.props;
+    if (!droppingPosition) return;
+
+    const prevDroppingPosition = prevProps.droppingPosition || {
+      left: 0,
+      top: 0
+    };
     const { dragging } = this.state;
 
-    if (!droppingPosition || !prevProps.droppingPosition) {
-      return;
-    }
-
     const shouldDrag =
-      (dragging && droppingPosition.x !== prevProps.droppingPosition.x) ||
-      droppingPosition.y !== prevProps.droppingPosition.y;
+      (dragging && droppingPosition.left !== prevDroppingPosition.left) ||
+      droppingPosition.top !== prevDroppingPosition.top;
 
     if (this.currentNode && this.currentNode.current) {
       if (!dragging) {
         this.onDragStart(droppingPosition.e, {
           node: this.currentNode.current,
-          deltaX: droppingPosition.x,
-          deltaY: droppingPosition.y
+          deltaX: droppingPosition.left,
+          deltaY: droppingPosition.top
         });
       } else if (shouldDrag) {
-        const deltaX = droppingPosition.x - dragging.left;
-        const deltaY = droppingPosition.y - dragging.top;
+        const deltaX = droppingPosition.left - dragging.left;
+        const deltaY = droppingPosition.top - dragging.top;
         this.onDrag(droppingPosition.e, {
           node: this.currentNode.current,
           deltaX,
@@ -216,121 +274,15 @@ export default class GridItem extends React.Component<Props, State> {
     }
   }
 
-  // Helper for generating column width
-  calcColWidth(): number {
-    const { margin, containerPadding, containerWidth, cols } = this.props;
-    return (
-      (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
-    );
-  }
-
-  /**
-   * Return position on the page given an x, y, w, h.
-   * left, top, width, height are all in pixels.
-   * @param  {Number}  x             X coordinate in grid units.
-   * @param  {Number}  y             Y coordinate in grid units.
-   * @param  {Number}  w             W coordinate in grid units.
-   * @param  {Number}  h             H coordinate in grid units.
-   * @return {Object}                Object containing coords.
-   */
-  calcPosition(
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-    state: ?Object
-  ): Position {
-    const { margin, containerPadding, rowHeight } = this.props;
-    const colWidth = this.calcColWidth();
-    const out = {};
-
-    // If resizing, use the exact width and height as returned from resizing callbacks.
-    if (state && state.resizing) {
-      out.width = Math.round(state.resizing.width);
-      out.height = Math.round(state.resizing.height);
-    }
-    // Otherwise, calculate from grid units.
-    else {
-      // 0 * Infinity === NaN, which causes problems with resize constraints;
-      // Fix this if it occurs.
-      // Note we do it here rather than later because Math.round(Infinity) causes deopt
-      out.width =
-        w === Infinity
-          ? w
-          : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]);
-      out.height =
-        h === Infinity
-          ? h
-          : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]);
-    }
-
-    // If dragging, use the exact width and height as returned from dragging callbacks.
-    if (state && state.dragging) {
-      out.top = Math.round(state.dragging.top);
-      out.left = Math.round(state.dragging.left);
-    }
-    // Otherwise, calculate from grid units.
-    else {
-      out.top = Math.round((rowHeight + margin[1]) * y + containerPadding[1]);
-      out.left = Math.round((colWidth + margin[0]) * x + containerPadding[0]);
-    }
-
-    return out;
-  }
-
-  /**
-   * Translate x and y coordinates from pixels to grid units.
-   * @param  {Number} top  Top position (relative to parent) in pixels.
-   * @param  {Number} left Left position (relative to parent) in pixels.
-   * @return {Object} x and y in grid units.
-   */
-  calcXY(top: number, left: number): { x: number, y: number } {
-    const { margin, cols, rowHeight, w, h, maxRows } = this.props;
-    const colWidth = this.calcColWidth();
-
-    // left = colWidth * x + margin * (x + 1)
-    // l = cx + m(x+1)
-    // l = cx + mx + m
-    // l - m = cx + mx
-    // l - m = x(c + m)
-    // (l - m) / (c + m) = x
-    // x = (left - margin) / (coldWidth + margin)
-    let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
-    let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
-
-    // Capping
-    x = Math.max(Math.min(x, cols - w), 0);
-    y = Math.max(Math.min(y, maxRows - h), 0);
-
-    return { x, y };
-  }
-
-  /**
-   * Given a height and width in pixel values, calculate grid units.
-   * @param  {Number} height Height in pixels.
-   * @param  {Number} width  Width in pixels.
-   * @return {Object} w, h as grid units.
-   */
-  calcWH({
-    height,
-    width
-  }: {
-    height: number,
-    width: number
-  }): { w: number, h: number } {
-    const { margin, maxRows, cols, rowHeight, x, y } = this.props;
-    const colWidth = this.calcColWidth();
-
-    // width = colWidth * w - (margin * (w - 1))
-    // ...
-    // w = (width + margin) / (colWidth + margin)
-    let w = Math.round((width + margin[0]) / (colWidth + margin[0]));
-    let h = Math.round((height + margin[1]) / (rowHeight + margin[1]));
-
-    // Capping
-    w = Math.max(Math.min(w, cols - x), 0);
-    h = Math.max(Math.min(h, maxRows - y), 0);
-    return { w, h };
+  getPositionParams(props: Props = this.props): PositionParams {
+    return {
+      cols: props.cols,
+      containerPadding: props.containerPadding,
+      containerWidth: props.containerWidth,
+      margin: props.margin,
+      maxRows: props.maxRows,
+      rowHeight: props.rowHeight
+    };
   }
 
   /**
@@ -369,9 +321,13 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Element} child    Child element.
    * @return {Element}          Child wrapped in Draggable.
    */
-  mixinDraggable(child: ReactElement<any>): ReactElement<any> {
+  mixinDraggable(
+    child: ReactElement<any>,
+    isDraggable: boolean
+  ): ReactElement<any> {
     return (
       <DraggableCore
+        disabled={!isDraggable}
         onStart={this.onDragStart}
         onDrag={this.onDrag}
         onStop={this.onDragStop}
@@ -395,16 +351,29 @@ export default class GridItem extends React.Component<Props, State> {
    */
   mixinResizable(
     child: ReactElement<any>,
-    position: Position
+    position: Position,
+    isResizable: boolean
   ): ReactElement<any> {
-    const { cols, x, minW, minH, maxW, maxH, transformScale } = this.props;
+    const {
+      cols,
+      x,
+      minW,
+      minH,
+      maxW,
+      maxH,
+      transformScale,
+      resizeHandles,
+      resizeHandle
+    } = this.props;
+    const positionParams = this.getPositionParams();
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = this.calcPosition(0, 0, cols - x, 0).width;
+    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols - x, 0)
+      .width;
 
     // Calculate min/max constraints using our min & maxes
-    const mins = this.calcPosition(0, 0, minW, minH);
-    const maxes = this.calcPosition(0, 0, maxW, maxH);
+    const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
+    const maxes = calcGridItemPosition(positionParams, 0, 0, maxW, maxH);
     const minConstraints = [mins.width, mins.height];
     const maxConstraints = [
       Math.min(maxes.width, maxWidth),
@@ -412,6 +381,10 @@ export default class GridItem extends React.Component<Props, State> {
     ];
     return (
       <Resizable
+        draggableOpts={{
+          disabled: !isResizable
+        }}
+        className={isResizable ? undefined : "react-resizable-hide"}
         width={position.width}
         height={position.height}
         minConstraints={minConstraints}
@@ -420,6 +393,8 @@ export default class GridItem extends React.Component<Props, State> {
         onResizeStart={this.onResizeStart}
         onResize={this.onResize}
         transformScale={transformScale}
+        resizeHandles={resizeHandles}
+        handle={resizeHandle}
       >
         {child}
       </Resizable>
@@ -432,7 +407,8 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDragStart = (e: Event, { node }: ReactDraggableCallbackData) => {
-    if (!this.props.onDragStart) return;
+    const { onDragStart } = this.props;
+    if (!onDragStart) return;
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 
@@ -449,16 +425,20 @@ export default class GridItem extends React.Component<Props, State> {
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
     this.setState({ dragging: newPosition });
 
-    const { x, y } = this.calcXY(newPosition.top, newPosition.left);
-
-    return (
-      this.props.onDragStart &&
-      this.props.onDragStart.call(this, this.props.i, x, y, {
-        e,
-        node,
-        newPosition
-      })
+    // Call callback with this data
+    const { x, y } = calcXY(
+      this.getPositionParams(),
+      newPosition.top,
+      newPosition.left,
+      this.props.w,
+      this.props.h
     );
+
+    return onDragStart.call(this, this.props.i, x, y, {
+      e,
+      node,
+      newPosition
+    });
   };
 
   /**
@@ -467,28 +447,47 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
-    if (!this.props.onDrag) return;
-    deltaX /= this.props.transformScale;
-    deltaY /= this.props.transformScale;
+    const { onDrag, transformScale } = this.props;
+    if (!onDrag) return;
+    deltaX /= transformScale;
+    deltaY /= transformScale;
 
-    const newPosition: PartialPosition = { top: 0, left: 0 };
-
-    if (!this.state.dragging)
+    if (!this.state.dragging) {
       throw new Error("onDrag called before onDragStart.");
-    newPosition.left = this.state.dragging.left + deltaX;
-    newPosition.top = this.state.dragging.top + deltaY;
+    }
+    let top = this.state.dragging.top + deltaY;
+    let left = this.state.dragging.left + deltaX;
+
+    const { isBounded, i, w, h, containerWidth } = this.props;
+    const positionParams = this.getPositionParams();
+
+    // Boundary calculations; keeps items within the grid
+    if (isBounded) {
+      const { offsetParent } = node;
+
+      if (offsetParent) {
+        const { margin, rowHeight } = this.props;
+        const bottomBoundary =
+          offsetParent.clientHeight - calcGridItemWHPx(h, rowHeight, margin[1]);
+        top = clamp(top, 0, bottomBoundary);
+
+        const colWidth = calcGridColWidth(positionParams);
+        const rightBoundary =
+          containerWidth - calcGridItemWHPx(w, colWidth, margin[0]);
+        left = clamp(left, 0, rightBoundary);
+      }
+    }
+
+    const newPosition: PartialPosition = { top, left };
     this.setState({ dragging: newPosition });
 
-    const { x, y } = this.calcXY(newPosition.top, newPosition.left);
-
-    return (
-      this.props.onDrag &&
-      this.props.onDrag.call(this, this.props.i, x, y, {
-        e,
-        node,
-        newPosition
-      })
-    );
+    // Call callback with this data
+    const { x, y } = calcXY(positionParams, top, left, w, h);
+    return onDrag.call(this, i, x, y, {
+      e,
+      node,
+      newPosition
+    });
   };
 
   /**
@@ -497,26 +496,24 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDragStop = (e: Event, { node }: ReactDraggableCallbackData) => {
-    if (!this.props.onDragStop) return;
+    const { onDragStop } = this.props;
+    if (!onDragStop) return;
 
-    const newPosition: PartialPosition = { top: 0, left: 0 };
-
-    if (!this.state.dragging)
+    if (!this.state.dragging) {
       throw new Error("onDragEnd called before onDragStart.");
-    newPosition.left = this.state.dragging.left;
-    newPosition.top = this.state.dragging.top;
+    }
+    const { w, h, i } = this.props;
+    const { left, top } = this.state.dragging;
+    const newPosition: PartialPosition = { top, left };
     this.setState({ dragging: null });
 
-    const { x, y } = this.calcXY(newPosition.top, newPosition.left);
+    const { x, y } = calcXY(this.getPositionParams(), top, left, w, h);
 
-    return (
-      this.props.onDragStop &&
-      this.props.onDragStop.call(this, this.props.i, x, y, {
-        e,
-        node,
-        newPosition
-      })
-    );
+    return onDragStop.call(this, i, x, y, {
+      e,
+      node,
+      newPosition
+    });
   };
 
   /**
@@ -570,19 +567,27 @@ export default class GridItem extends React.Component<Props, State> {
   ) {
     const handler = this.props[handlerName];
     if (!handler) return;
-    const { cols, x, i, maxW, minW, maxH, minH } = this.props;
+    const { cols, x, y, i, maxH, minH } = this.props;
+    let { minW, maxW } = this.props;
 
     // Get new XY
-    let { w, h } = this.calcWH(size);
+    let { w, h } = calcWH(
+      this.getPositionParams(),
+      size.width,
+      size.height,
+      x,
+      y
+    );
 
-    // Cap w at numCols
-    w = Math.min(w, cols - x);
-    // Ensure w is at least 1
-    w = Math.max(w, 1);
+    // minW should be at least 1 (TODO propTypes validation?)
+    minW = Math.max(minW, 1);
+
+    // maxW should be at most (cols - x)
+    maxW = Math.min(maxW, cols - x);
 
     // Min/max capping
-    w = Math.max(Math.min(w, maxW), minW);
-    h = Math.max(Math.min(h, maxH), minH);
+    w = clamp(w, minW, maxW);
+    h = clamp(h, minH, maxH);
 
     this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
 
@@ -601,7 +606,14 @@ export default class GridItem extends React.Component<Props, State> {
       useCSSTransforms
     } = this.props;
 
-    const pos = this.calcPosition(x, y, w, h, this.state);
+    const pos = calcGridItemPosition(
+      this.getPositionParams(),
+      x,
+      y,
+      w,
+      h,
+      this.state
+    );
     const child = React.Children.only(this.props.children);
 
     // Create the child element. We clone the existing element but modify its className and style.
@@ -628,10 +640,10 @@ export default class GridItem extends React.Component<Props, State> {
     });
 
     // Resizable support. This is usually on but the user can toggle it off.
-    if (isResizable) newChild = this.mixinResizable(newChild, pos);
+    newChild = this.mixinResizable(newChild, pos, isResizable);
 
     // Draggable support. This is always on, except for with placeholders.
-    if (isDraggable) newChild = this.mixinDraggable(newChild);
+    newChild = this.mixinDraggable(newChild, isDraggable);
 
     return newChild;
   }

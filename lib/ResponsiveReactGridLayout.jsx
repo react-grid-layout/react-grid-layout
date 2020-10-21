@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import isEqual from "lodash.isequal";
 
@@ -7,16 +7,17 @@ import {
   cloneLayout,
   synchronizeLayoutWithChildren,
   validateLayout,
-  noop
+  noop,
+  type Layout
 } from "./utils";
 import {
   getBreakpointFromWidth,
   getColsFromBreakpoint,
-  findOrGenerateResponsiveLayout
+  findOrGenerateResponsiveLayout,
+  type ResponsiveLayout,
+  type Breakpoints
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
-import type { Props as RGLProps } from "./ReactGridLayout";
-import type { Layout } from "./utils";
 
 const type = obj => Object.prototype.toString.call(obj);
 
@@ -28,10 +29,12 @@ const type = obj => Object.prototype.toString.call(obj);
  * @return {Array}
  */
 
-function getIndentationValue(
-  param: { [key: string]: [number, number] } | [number, number],
+function getIndentationValue<T: ?[number, number]>(
+  param: { [key: string]: T } | T,
   breakpoint: string
-) {
+): T {
+  // $FlowIssue doesn't seem to understand this
+  if (param == null) return null;
   return Array.isArray(param) ? param : param[breakpoint];
 }
 
@@ -42,17 +45,18 @@ type State = {
   layouts?: { [key: string]: Layout }
 };
 
-type Props<Breakpoint: string = string> = {
-  ...$Exact<RGLProps>,
+type Props<Breakpoint: string = string> = {|
+  ...React.ElementConfig<typeof ReactGridLayout>,
 
   // Responsive config
-  breakpoint: Breakpoint,
-  breakpoints: { [key: Breakpoint]: number },
+  breakpoint?: ?Breakpoint,
+  breakpoints: Breakpoints<Breakpoint>,
   cols: { [key: Breakpoint]: number },
-  layouts: { [key: Breakpoint]: Layout },
+  layouts: ResponsiveLayout<Breakpoint>,
   width: number,
   margin: { [key: Breakpoint]: [number, number] } | [number, number],
-  containerPadding: { [key: Breakpoint]: [number, number] } | [number, number],
+  /* prettier-ignore */
+  containerPadding: { [key: Breakpoint]: ?[number, number] } | ?[number, number],
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -61,9 +65,9 @@ type Props<Breakpoint: string = string> = {
     containerWidth: number,
     margin: [number, number],
     cols: number,
-    containerPadding: [number, number] | null
+    containerPadding: ?[number, number]
   ) => void
-};
+|};
 
 export default class ResponsiveReactGridLayout extends React.Component<
   Props<>,
@@ -203,7 +207,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       !isEqual(this.props.breakpoints, prevProps.breakpoints) ||
       !isEqual(this.props.cols, prevProps.cols)
     ) {
-      this.onWidthChange(this.props);
+      this.onWidthChange(prevProps);
     }
   }
 
@@ -219,11 +223,11 @@ export default class ResponsiveReactGridLayout extends React.Component<
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
    */
-  onWidthChange(nextProps: Props<*>) {
-    const { breakpoints, cols, layouts, compactType } = nextProps;
+  onWidthChange(prevProps: Props<*>) {
+    const { breakpoints, cols, layouts, compactType } = this.props;
     const newBreakpoint =
-      nextProps.breakpoint ||
-      getBreakpointFromWidth(nextProps.breakpoints, nextProps.width);
+      this.props.breakpoint ||
+      getBreakpointFromWidth(this.props.breakpoints, this.props.width);
 
     const lastBreakpoint = this.state.breakpoint;
     const newCols: number = getColsFromBreakpoint(newBreakpoint, cols);
@@ -232,8 +236,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
     // Breakpoint change
     if (
       lastBreakpoint !== newBreakpoint ||
-      this.props.breakpoints !== breakpoints ||
-      this.props.cols !== cols
+      prevProps.breakpoints !== breakpoints ||
+      prevProps.cols !== cols
     ) {
       // Preserve the current layout if the current breakpoint is not present in the next layouts.
       if (!(lastBreakpoint in newLayouts))
@@ -252,7 +256,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
       // This adds missing items.
       layout = synchronizeLayoutWithChildren(
         layout,
-        nextProps.children,
+        this.props.children,
         newCols,
         compactType
       );
@@ -271,15 +275,15 @@ export default class ResponsiveReactGridLayout extends React.Component<
       });
     }
 
-    const margin = getIndentationValue(nextProps.margin, newBreakpoint);
+    const margin = getIndentationValue(this.props.margin, newBreakpoint);
     const containerPadding = getIndentationValue(
-      nextProps.containerPadding,
+      this.props.containerPadding,
       newBreakpoint
     );
 
     //call onWidthChange on every change of width, not only on breakpoint changes
     this.props.onWidthChange(
-      nextProps.width,
+      this.props.width,
       margin,
       newCols,
       containerPadding
