@@ -172,11 +172,11 @@ export default class GridItem extends React.Component<Props, State> {
     className: ""
   };
 
-  currentNode: HTMLElement;
+  currentNode: {| current: null | HTMLElement |};
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.currentNode = React.createRef();
+    this.currentNode = React.createRef<HTMLElement>();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -197,21 +197,22 @@ export default class GridItem extends React.Component<Props, State> {
       (dragging && droppingPosition.x !== prevProps.droppingPosition.x) ||
       droppingPosition.y !== prevProps.droppingPosition.y;
 
-    if (!dragging) {
-      this.onDragStart(droppingPosition.e, {
-        node: this.currentNode.current,
-        deltaX: droppingPosition.x,
-        deltaY: droppingPosition.y
-      });
-    } else if (shouldDrag) {
-      const deltaX = droppingPosition.x - dragging.left;
-      const deltaY = droppingPosition.y - dragging.top;
-
-      this.onDrag(droppingPosition.e, {
-        node: this.currentNode.current,
-        deltaX,
-        deltaY
-      });
+    if (this.currentNode && this.currentNode.current) {
+      if (!dragging) {
+        this.onDragStart(droppingPosition.e, {
+          node: this.currentNode.current,
+          deltaX: droppingPosition.x,
+          deltaY: droppingPosition.y
+        });
+      } else if (shouldDrag) {
+        const deltaX = droppingPosition.x - dragging.left;
+        const deltaY = droppingPosition.y - dragging.top;
+        this.onDrag(droppingPosition.e, {
+          node: this.currentNode.current,
+          deltaX,
+          deltaY
+        });
+      }
     }
   }
 
@@ -467,8 +468,8 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
     if (!this.props.onDrag) return;
-    deltaX /= this.props.transformScale
-    deltaY /= this.props.transformScale
+    deltaX /= this.props.transformScale;
+    deltaY /= this.props.transformScale;
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
 

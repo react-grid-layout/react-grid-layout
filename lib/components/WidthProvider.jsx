@@ -39,6 +39,8 @@ export default function WidthProvider<
 
     mounted: boolean = false;
 
+    currentNode: {| current: null | HTMLElement |};
+
     constructor(props) {
       super(props);
       this.currentNode = React.createRef();
