@@ -171,18 +171,18 @@ var ResponsiveReactGridLayout = (function(_React$Component) {
     };
   };
 
-  ResponsiveReactGridLayout.prototype.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(
-    nextProps
+  ResponsiveReactGridLayout.prototype.componentDidUpdate = function componentDidUpdate(
+    prevProps
   ) {
     // Allow parent to set width or breakpoint directly.
     if (
-      nextProps.width != this.props.width ||
-      nextProps.breakpoint !== this.props.breakpoint ||
-      !(0, _lodash2.default)(nextProps.breakpoints, this.props.breakpoints) ||
-      !(0, _lodash2.default)(nextProps.cols, this.props.cols)
+      prevProps.width != this.props.width ||
+      prevProps.breakpoint !== this.props.breakpoint ||
+      !(0, _lodash2.default)(prevProps.breakpoints, this.props.breakpoints) ||
+      !(0, _lodash2.default)(prevProps.cols, this.props.cols)
     ) {
-      this.onWidthChange(nextProps);
-    } else if (!(0, _lodash2.default)(nextProps.layouts, this.props.layouts)) {
+      this.onWidthChange(this.props);
+    } else if (!(0, _lodash2.default)(prevProps.layouts, this.props.layouts)) {
       // Allow parent to set layouts directly.
       var _state = this.state,
         _breakpoint = _state.breakpoint,
@@ -192,12 +192,12 @@ var ResponsiveReactGridLayout = (function(_React$Component) {
       // if one does not exist.
 
       var newLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(
-        nextProps.layouts,
-        nextProps.breakpoints,
+        this.props.layouts,
+        this.props.breakpoints,
         _breakpoint,
         _breakpoint,
         _cols,
-        nextProps.compactType
+        this.props.compactType
       );
       this.setState({ layout: newLayout });
     }

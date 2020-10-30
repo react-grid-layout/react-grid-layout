@@ -119,7 +119,7 @@ var ReactGridLayout = (function(_React$Component) {
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
   };
 
-  ReactGridLayout.prototype.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(
+  ReactGridLayout.prototype.componentDidUpdate = function componentDidUpdate(
     prevProps
   ) {
     var newLayoutBase = void 0;
@@ -129,7 +129,7 @@ var ReactGridLayout = (function(_React$Component) {
       !(0, _lodash2.default)(prevProps.layout, this.props.layout) ||
       prevProps.compactType !== this.props.compactType
     ) {
-      newLayoutBase = prevProps.layout;
+      newLayoutBase = this.props.layout;
     } else if (
       !(0, _utils.childrenEqual)(this.props.children, prevProps.children)
     ) {
@@ -143,9 +143,9 @@ var ReactGridLayout = (function(_React$Component) {
     if (newLayoutBase) {
       var newLayout = (0, _utils.synchronizeLayoutWithChildren)(
         newLayoutBase,
-        prevProps.children,
-        prevProps.cols,
-        this.compactType(prevProps)
+        this.props.children,
+        this.props.cols,
+        this.compactType(this.props)
       );
       var _oldLayout = this.state.layout;
       this.setState({ layout: newLayout });
