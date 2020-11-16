@@ -587,6 +587,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isFirefox &&
       e.nativeEvent.target.className.indexOf(layoutClassName) === -1
     ) {
+      // without this Firefox will not allow drop if currently over droppingItem
+      e.preventDefault();
       return false;
     }
 
