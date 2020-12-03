@@ -346,7 +346,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       oldLayout: null
     });
 
-    this.onLayoutMaybeChanged(newLayout, oldLayout);
+    // this.onLayoutMaybeChanged(newLayout, oldLayout);
   }
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
