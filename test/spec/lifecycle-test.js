@@ -81,7 +81,7 @@ describe("Lifecycle tests", function () {
           h: 1,
           w: 1,
           x: 1,
-          y: 4,
+          y: 3,
           static: false,
           isDraggable: true
         });
