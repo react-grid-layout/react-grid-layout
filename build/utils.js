@@ -40,6 +40,7 @@ exports.sortLayoutItemsByColRow = sortLayoutItemsByColRow;
 exports.synchronizeLayoutWithChildren = synchronizeLayoutWithChildren;
 exports.validateLayout = validateLayout;
 exports.autoBindHandlers = autoBindHandlers;
+exports.compactType = compactType;
 
 var _lodash = require("lodash.isequal");
 
@@ -695,6 +696,14 @@ function autoBindHandlers(el, fns) {
   fns.forEach(function(key) {
     return (el[key] = el[key].bind(el));
   });
+}
+
+function compactType(props) {
+  var _ref3 = props || {},
+    verticalCompact = _ref3.verticalCompact,
+    compactType = _ref3.compactType;
+
+  return verticalCompact === false ? null : compactType;
 }
 
 function log() {
