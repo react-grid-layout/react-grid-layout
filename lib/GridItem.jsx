@@ -447,10 +447,8 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
-    const { onDrag, transformScale } = this.props;
+    const { onDrag } = this.props;
     if (!onDrag) return;
-    deltaX /= transformScale;
-    deltaY /= transformScale;
 
     if (!this.state.dragging) {
       throw new Error("onDrag called before onDragStart.");
