@@ -330,6 +330,7 @@ preventCollision: ?boolean = false;
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
 isDroppable: ?boolean = false
+
 // Defines which resize handles should be rendered
 // Allows for any combination of:
 // 's' - South handle (bottom-center)
@@ -341,7 +342,9 @@ isDroppable: ?boolean = false
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
+
 // Custom component for resize handles
+// For the custom component to work, it must have the same classname specified by `draggableHandle`
 resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis) => ReactElement<any>)
 
 //
