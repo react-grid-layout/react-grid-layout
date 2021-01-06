@@ -47,6 +47,7 @@ type State = {
   oldDragItem: ?LayoutItem,
   oldLayout: ?Layout,
   oldResizeItem: ?LayoutItem,
+  resizing: boolean,
   droppingDOMNode: ?ReactElement<any>,
   droppingPosition?: DroppingPosition,
   // Mirrored props
@@ -129,6 +130,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     oldDragItem: null,
     oldLayout: null,
     oldResizeItem: null,
+    resizing: false,
     droppingDOMNode: null,
     children: []
   };
@@ -364,14 +366,16 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.setState({
       oldResizeItem: cloneLayoutItem(l),
-      oldLayout: this.state.layout
+      oldLayout: this.state.layout,
+      resizing: true
     });
 
     this.props.onResizeStart(layout, l, l, null, e, node);
   }
 
   onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
-    const { layout, oldResizeItem } = this.state;
+    const { oldResizeItem } = this.state;
+    let { layout } = this.state;
     const { cols, preventCollision } = this.props;
     const l: ?LayoutItem = getLayoutItem(layout, i);
     if (!l) return;
@@ -401,9 +405,58 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
 
     if (!hasCollisions) {
-      // Set new width and height.
-      l.w = w;
-      l.h = h;
+      if (
+        [
+          "react-resizable-handle-sw",
+          "react-resizable-handle-w",
+          "react-resizable-handle-nw",
+          "react-resizable-handle-n",
+          "react-resizable-handle-ne"
+        ].indexOf(node.classList.item(1)) !== -1
+      ) {
+        let x = l.x;
+        let y = l.y;
+        if (
+          [
+            "react-resizable-handle-sw",
+            "react-resizable-handle-nw",
+            "react-resizable-handle-w"
+          ].indexOf(node.classList.item(1)) !== -1
+        ) {
+          x = l.x + (l.w - w);
+          x = x < 0 ? 0 : x;
+        }
+
+        if (
+          [
+            "react-resizable-handle-ne",
+            "react-resizable-handle-n",
+            "react-resizable-handle-nw"
+          ].indexOf(node.classList.item(1)) !== -1
+        ) {
+          y = l.y + (l.h - h);
+          y = y < 0 ? 0 : y;
+        }
+
+        l.w = w;
+        l.h = h;
+        // Move the element to the new position.
+        const isUserAction = true;
+        layout = moveElement(
+          layout,
+          l,
+          x,
+          y,
+          isUserAction,
+          this.props.preventCollision,
+          compactType(this.props),
+          cols
+        );
+      } else {
+        // Set new width and height.
+        l.w = w;
+        l.h = h;
+      }
     }
 
     // Create placeholder element (display only)
@@ -439,7 +492,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       layout: newLayout,
       oldResizeItem: null,
-      oldLayout: null
+      oldLayout: null,
+      resizing: false
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
@@ -471,7 +525,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         x={activeDrag.x}
         y={activeDrag.y}
         i={activeDrag.i}
-        className="react-grid-placeholder"
+        className={classNames("react-grid-placeholder", {
+          "placeholder-resizing": Boolean(this.state.resizing)
+        })}
         containerWidth={width}
         cols={cols}
         margin={margin}
