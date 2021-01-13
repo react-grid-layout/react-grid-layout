@@ -601,7 +601,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -18,
+                  -20,
                   Infinity,
                 ]
               }
@@ -757,7 +757,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -17,
+                  -20,
                   Infinity,
                 ]
               }
@@ -913,7 +913,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -15,
+                  -20,
                   Infinity,
                 ]
               }
@@ -1069,7 +1069,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -13,
+                  -20,
                   Infinity,
                 ]
               }
@@ -1225,7 +1225,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -12,
+                  -20,
                   Infinity,
                 ]
               }
@@ -1537,7 +1537,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -18,
+                  -20,
                   Infinity,
                 ]
               }
@@ -1693,7 +1693,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -17,
+                  -20,
                   Infinity,
                 ]
               }
@@ -1849,7 +1849,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -15,
+                  -20,
                   Infinity,
                 ]
               }
@@ -2005,7 +2005,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -13,
+                  -20,
                   Infinity,
                 ]
               }
@@ -2161,7 +2161,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -12,
+                  -20,
                   Infinity,
                 ]
               }
@@ -2473,7 +2473,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -18,
+                  -20,
                   Infinity,
                 ]
               }
@@ -2629,7 +2629,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -17,
+                  -20,
                   Infinity,
                 ]
               }
@@ -2785,7 +2785,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -15,
+                  -20,
                   Infinity,
                 ]
               }
@@ -2941,7 +2941,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -13,
+                  -20,
                   Infinity,
                 ]
               }
@@ -3097,7 +3097,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -12,
+                  -20,
                   Infinity,
                 ]
               }
@@ -3409,7 +3409,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 Array [
-                  -18,
+                  -20,
                   Infinity,
                 ]
               }

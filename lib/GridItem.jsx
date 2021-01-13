@@ -40,7 +40,7 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
 ) => void;
 
 type State = {
-  resizing: ?{ width: number, height: number },
+  resizing: ?{ top: number, left: number, width: number, height: number },
   dragging: ?{ top: number, left: number },
   className: string
 };
@@ -356,7 +356,6 @@ export default class GridItem extends React.Component<Props, State> {
   ): ReactElement<any> {
     const {
       cols,
-      x,
       minW,
       minH,
       maxW,
@@ -368,8 +367,7 @@ export default class GridItem extends React.Component<Props, State> {
     const positionParams = this.getPositionParams();
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols - x, 0)
-      .width;
+    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols, 0).width;
 
     // Calculate min/max constraints using our min & maxes
     const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
@@ -567,29 +565,87 @@ export default class GridItem extends React.Component<Props, State> {
   ) {
     const handler = this.props[handlerName];
     if (!handler) return;
-    const { cols, x, y, i, maxH, minH } = this.props;
+    const { cols, x, y, i, maxH, minH, useCSSTransforms } = this.props;
     let { minW, maxW } = this.props;
 
+    const handleOrientation =
+      node.classList.item(1).indexOf("w") != -1 ? "west" : "east";
     // Get new XY
     let { w, h } = calcWH(
       this.getPositionParams(),
       size.width,
       size.height,
       x,
-      y
+      y,
+      handleOrientation
     );
 
     // minW should be at least 1 (TODO propTypes validation?)
     minW = Math.max(minW, 1);
 
-    // maxW should be at most (cols - x)
-    maxW = Math.min(maxW, cols - x);
+    if (handleOrientation === "west") {
+      maxW = Math.min(maxW, cols);
+    } else {
+      maxW = Math.min(maxW, cols - x);
+    }
 
     // Min/max capping
     w = clamp(w, minW, maxW);
     h = clamp(h, minH, maxH);
 
-    this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
+    const elem = ((node.parentElement: any): HTMLElement);
+    if (elem) {
+      let currentLeft, currentTop;
+      if (useCSSTransforms) {
+        const transformCSS = elem.style.transform
+          .replace(/[^\d.,]/g, "")
+          .split(",");
+        currentLeft = parseInt(transformCSS[0], 10);
+        currentTop = parseInt(transformCSS[1], 10);
+      } else {
+        currentLeft = parseInt(elem.style.left, 10);
+        currentTop = parseInt(elem.style.top, 10);
+      }
+
+      const currentWidth = elem.offsetWidth;
+      const currentHeight = elem.offsetHeight;
+
+      if (
+        [
+          "react-resizable-handle-sw",
+          "react-resizable-handle-w",
+          "react-resizable-handle-nw",
+          "react-resizable-handle-n",
+          "react-resizable-handle-ne"
+        ].indexOf(node.classList.item(1)) === -1
+      ) {
+        this.setState({
+          resizing: handlerName === "onResizeStop" ? null : size
+        });
+      } else {
+        if (
+          ["react-resizable-handle-sw", "react-resizable-handle-w"].indexOf(
+            node.classList.item(1)
+          ) !== -1
+        ) {
+          size.left = currentLeft - (size.width - currentWidth);
+          size.top = currentTop;
+        } else if (
+          ["react-resizable-handle-n", "react-resizable-handle-ne"].indexOf(
+            node.classList.item(1)
+          ) !== -1
+        ) {
+          size.left = currentLeft;
+          size.top = currentTop - (size.height - currentHeight);
+        } else {
+          size.left = currentLeft - (size.width - currentWidth);
+          size.top = currentTop - (size.height - currentHeight);
+        }
+        size.left = size.left < 0 ? 0 : size.left;
+        size.top = size.top < 0 ? 0 : size.top;
+      }
+      this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
+    }
 
     handler.call(this, i, w, h, { e, node, size });
   }
