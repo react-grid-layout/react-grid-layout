@@ -381,7 +381,7 @@ describe("compact horizontal", () => {
   it("compact horizontal should remove empty horizontal space to left of item", () => {
     const layout = [{ x: 5, y: 5, w: 1, h: 1, i: "1" }];
     expect(compact(layout, "horizontal", 10)).toEqual([
-      { x: 0, y: 0, w: 1, h: 1, i: "1", moved: false, static: false }
+      { x: 0, y: 5, w: 1, h: 1, i: "1", moved: false, static: false }
     ]);
   });
 
