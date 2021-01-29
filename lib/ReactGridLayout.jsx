@@ -594,6 +594,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const {
       droppingItem,
+      onDragOver,
       margin,
       cols,
       rowHeight,
@@ -601,6 +602,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       width,
       containerPadding
     } = this.props;
+    const finalDroppingItem = onDragOver ? { ...droppingItem, ...onDragOver(e) } : droppingItem;
+    
     const { layout } = this.state;
     // This is relative to the DOM element that this event fired for.
     const { layerX, layerY } = e.nativeEvent;
@@ -620,17 +623,17 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         positionParams,
         layerY,
         layerX,
-        droppingItem.w,
-        droppingItem.h
+        finalDroppingItem.w,
+        finalDroppingItem.h
       );
 
       this.setState({
-        droppingDOMNode: <div key={droppingItem.i} />,
+        droppingDOMNode: <div key={finalDroppingItem.i} />,
         droppingPosition,
         layout: [
           ...layout,
           {
-            ...droppingItem,
+            ...finalDroppingItem,
             x: calculatedPosition.x,
             y: calculatedPosition.y,
             static: false,
