@@ -13,7 +13,6 @@ module.exports = {
         commons: {
           name: "commons",
           chunks: "all",
-          test: /[\\/]node_modules[\\/]/,
           minChunks: 2
         }
       }
