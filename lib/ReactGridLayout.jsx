@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import * as React from "react";
 
 import isEqual from "lodash.isequal";
 import classNames from "classnames";
@@ -55,7 +55,7 @@ type State = {
   propsLayout?: Layout
 };
 
-import type { Props } from "./ReactGridLayoutPropTypes";
+import type { Props, DefaultProps } from "./ReactGridLayoutPropTypes";
 
 // End Types
 
@@ -74,12 +74,12 @@ try {
 
 export default class ReactGridLayout extends React.Component<Props, State> {
   // TODO publish internal ReactClass displayName transform
-  static displayName = "ReactGridLayout";
+  static displayName: ?string = "ReactGridLayout";
 
   // Refactored to another module to make way for preval
   static propTypes = ReactGridLayoutPropTypes;
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     autoSize: true,
     cols: 12,
     className: "",
@@ -133,7 +133,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     children: []
   };
 
-  dragEnterCounter = 0;
+  dragEnterCounter: number = 0;
 
   constructor(props: Props, context: any): void {
     super(props, context);
@@ -154,7 +154,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
   }
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+  static getDerivedStateFromProps(
+    nextProps: Props,
+    prevState: State
+  ): $Shape<State> | null {
     let newLayoutBase;
 
     if (prevState.activeDrag) {
@@ -197,7 +200,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     return null;
   }
 
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     return (
       // NOTE: this is almost always unequal. Therefore the only way to get better performance
       // from SCU is if the user intentionally memoizes children. If they do, and they can
@@ -223,7 +226,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * Calculates a pixel value for the container.
    * @return {String} Container height in pixels.
    */
-  containerHeight() {
+  containerHeight(): ?string {
     if (!this.props.autoSize) return;
     const nbRow = bottom(this.state.layout);
     const containerPaddingY = this.props.containerPadding
@@ -245,7 +248,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDragStart(i: string, x: number, y: number, { e, node }: GridDragEvent) {
+  onDragStart(
+    i: string,
+    x: number,
+    y: number,
+    { e, node }: GridDragEvent
+  ): void {
     const { layout } = this.state;
     var l = getLayoutItem(layout, i);
     if (!l) return;
@@ -266,7 +274,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDrag(i: string, x: number, y: number, { e, node }: GridDragEvent) {
+  onDrag(i: string, x: number, y: number, { e, node }: GridDragEvent): void {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
     const { cols } = this.props;
@@ -312,7 +320,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDragStop(i: string, x: number, y: number, { e, node }: GridDragEvent) {
+  onDragStop(
+    i: string,
+    x: number,
+    y: number,
+    { e, node }: GridDragEvent
+  ): void {
     if (!this.state.activeDrag) return;
 
     const { oldDragItem } = this.state;
@@ -579,13 +592,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   // Called while dragging an element. Part of browser native drag/drop API.
   // Native event target might be the layout itself, or an element within the layout.
-  onDragOver = (e: DragOverEvent) => {
+  onDragOver: DragOverEvent => void | false = e => {
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
     // FIXME remove this hack
     if (
       isFirefox &&
-      !e.nativeEvent.target.classList.contains(layoutClassName)
+      // $FlowIgnore can't figure this out
+      !e.nativeEvent.target?.classList.contains(layoutClassName)
     ) {
       // without this Firefox will not allow drop if currently over droppingItem
       e.preventDefault();
@@ -650,7 +664,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     e.preventDefault();
   };
 
-  removeDroppingPlaceholder = () => {
+  removeDroppingPlaceholder: () => void = () => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;
 
@@ -668,7 +682,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     });
   };
 
-  onDragLeave = () => {
+  onDragLeave: () => void = () => {
     this.dragEnterCounter--;
 
     // onDragLeave can be triggered on each layout's child.
@@ -681,11 +695,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
   };
 
-  onDragEnter = () => {
+  onDragEnter: () => void = () => {
     this.dragEnterCounter++;
   };
 
-  onDrop = (e: Event) => {
+  onDrop: EventHandler = (e: Event) => {
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const item = layout.find(l => l.i === droppingItem.i);
@@ -698,7 +712,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrop(layout, item, e);
   };
 
-  render() {
+  render(): React.Element<"div"> {
     const { className, style, isDroppable, innerRef } = this.props;
 
     const mergedClassName = classNames(layoutClassName, className);

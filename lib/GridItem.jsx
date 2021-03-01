@@ -90,6 +90,17 @@ type Props = {
   onResizeStop?: GridItemCallback<GridResizeEvent>
 };
 
+type DefaultProps = {
+  className: string,
+  cancel: string,
+  handle: string,
+  minH: number,
+  minW: number,
+  maxH: number,
+  maxW: number,
+  transformScale: number
+};
+
 /**
  * An individual item within a ReactGridLayout.
  */
@@ -180,7 +191,7 @@ export default class GridItem extends React.Component<Props, State> {
     })
   };
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     className: "",
     cancel: "",
     handle: "",
@@ -199,7 +210,7 @@ export default class GridItem extends React.Component<Props, State> {
 
   currentNode: HTMLElement;
 
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     // We can't deeply compare children. If the developer memoizes them, we can
     // use this optimization.
     if (this.props.children !== nextProps.children) return true;
@@ -406,8 +417,8 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node, delta and position information
    */
-  onDragStart = (e: Event, { node }: ReactDraggableCallbackData) => {
-    const { onDragStart } = this.props;
+  onDragStart: (Event, ReactDraggableCallbackData) => void = (e, { node }) => {
+    const { onDragStart, transformScale } = this.props;
     if (!onDragStart) return;
 
     const newPosition: PartialPosition = { top: 0, left: 0 };
@@ -417,10 +428,10 @@ export default class GridItem extends React.Component<Props, State> {
     if (!offsetParent) return;
     const parentRect = offsetParent.getBoundingClientRect();
     const clientRect = node.getBoundingClientRect();
-    const cLeft = clientRect.left / this.props.transformScale;
-    const pLeft = parentRect.left / this.props.transformScale;
-    const cTop = clientRect.top / this.props.transformScale;
-    const pTop = parentRect.top / this.props.transformScale;
+    const cLeft = clientRect.left / transformScale;
+    const pLeft = parentRect.left / transformScale;
+    const cTop = clientRect.top / transformScale;
+    const pTop = parentRect.top / transformScale;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
     this.setState({ dragging: newPosition });
@@ -446,8 +457,11 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node, delta and position information
    */
-  onDrag = (e: Event, { node, deltaX, deltaY }: ReactDraggableCallbackData) => {
-    const { onDrag, transformScale } = this.props;
+  onDrag: (Event, ReactDraggableCallbackData) => void = (
+    e,
+    { node, deltaX, deltaY }
+  ) => {
+    const { onDrag } = this.props;
     if (!onDrag) return;
 
     if (!this.state.dragging) {
@@ -493,7 +507,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node, delta and position information
    */
-  onDragStop = (e: Event, { node }: ReactDraggableCallbackData) => {
+  onDragStop: (Event, ReactDraggableCallbackData) => void = (e, { node }) => {
     const { onDragStop } = this.props;
     if (!onDragStop) return;
 
@@ -519,9 +533,9 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStop = (
-    e: Event,
-    callbackData: { node: HTMLElement, size: Position }
+  onResizeStop: (Event, { node: HTMLElement, size: Position }) => void = (
+    e,
+    callbackData
   ) => {
     this.onResizeHandler(e, callbackData, "onResizeStop");
   };
@@ -531,9 +545,9 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStart = (
-    e: Event,
-    callbackData: { node: HTMLElement, size: Position }
+  onResizeStart: (Event, { node: HTMLElement, size: Position }) => void = (
+    e,
+    callbackData
   ) => {
     this.onResizeHandler(e, callbackData, "onResizeStart");
   };
@@ -543,9 +557,9 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResize = (
-    e: Event,
-    callbackData: { node: HTMLElement, size: Position }
+  onResize: (Event, { node: HTMLElement, size: Position }) => void = (
+    e,
+    callbackData
   ) => {
     this.onResizeHandler(e, callbackData, "onResize");
   };
@@ -562,7 +576,7 @@ export default class GridItem extends React.Component<Props, State> {
     e: Event,
     { node, size }: { node: HTMLElement, size: Position },
     handlerName: string
-  ) {
+  ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
     const { cols, x, y, i, maxH, minH } = this.props;

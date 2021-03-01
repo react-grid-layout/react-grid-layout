@@ -1,16 +1,18 @@
-// flow-typed signature: a00cf41b09af4862583460529d5cfcb9
-// flow-typed version: c6154227d1/classnames_v2.x.x/flow_>=v0.104.x
+// flow-typed signature: e5943b73ab5a7e87ce78d833ac522e54
+// flow-typed version: a913c9ae5a/classnames_v2.x.x/flow_>=v0.104.x
 
 type $npm$classnames$Classes =
   | string
+  | number
   | { [className: string]: *, ... }
-  | false
+  | boolean
   | void
-  | null;
+  | null
+  | $ReadOnlyArray<$npm$classnames$Classes>;
 
 declare module "classnames" {
   declare module.exports: (
-    ...classes: Array<$npm$classnames$Classes | $npm$classnames$Classes[]>
+    ...classes: Array<$npm$classnames$Classes>
   ) => string;
 }
 
