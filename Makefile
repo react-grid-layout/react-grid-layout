@@ -18,8 +18,8 @@ clean:
 	rm -rf $(BUILD) $(DIST)
 
 dev:
-	@$(BIN)/webpack-dev-server --config webpack-dev-server.config.js \
-	  --hot --progress --colors
+	@$(BIN)/webpack serve --config webpack-dev-server.config.js \
+	  --hot --progress
 
 # Allows usage of `make install`, `make link`
 install link:
@@ -41,7 +41,7 @@ build-example:
 
 view-example:
 	env CONTENT_BASE="/examples/" node ./examples/generate.js
-	@$(BIN)/webpack-dev-server --config webpack-examples.config.js --progress --colors
+	@$(BIN)/webpack serve --config webpack-examples.config.js --progress
 
 # FIXME flow is usually global
 lint:

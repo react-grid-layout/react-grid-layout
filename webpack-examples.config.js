@@ -6,15 +6,14 @@ const fs = require("fs");
 module.exports = {
   mode: "development",
   context: __dirname,
-  entry: {
-    commons: ["lodash"]
-  },
+  entry: {},
   optimization: {
     splitChunks: {
       cacheGroups: {
         commons: {
           name: "commons",
-          chunks: "initial",
+          chunks: "all",
+          test: /[\\/]node_modules[\\/]/,
           minChunks: 2
         }
       }
@@ -31,7 +30,7 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
-        query: {
+        options: {
           cacheDirectory: true
         }
       }
@@ -62,7 +61,7 @@ module.exports = {
 // Load all entry points
 const files = fs
   .readdirSync(__dirname + "/test/examples")
-  .filter(function(element, index, array) {
+  .filter(function (element, index, array) {
     return element.match(/^.+\.jsx$/);
   });
 

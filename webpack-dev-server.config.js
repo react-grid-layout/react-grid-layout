@@ -17,7 +17,7 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
-        query: {
+        options: {
           cacheDirectory: true,
           plugins: [["react-hot-loader/babel"]]
         }
