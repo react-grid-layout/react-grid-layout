@@ -5,14 +5,13 @@ import React from "react";
 import _ from "lodash";
 import TestUtils from "react-dom/test-utils";
 import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
-import ReactGridLayout from "../../lib/ReactGridLayout";
 import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
 import deepFreeze from "../util/deepFreeze";
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
-describe("Lifecycle tests", function() {
+describe("Lifecycle tests", function () {
   // Example layouts use randomness
   let randIdx = 0;
   beforeAll(() => {
@@ -31,15 +30,15 @@ describe("Lifecycle tests", function() {
     global.Math.random.mockRestore();
   });
 
-  describe("<ReactGridLayout>", function() {
-    it("Basic Render", async function() {
+  describe("<ReactGridLayout>", function () {
+    it("Basic Render", async function () {
       const wrapper = mount(<BasicLayout />);
       expect(wrapper).toMatchSnapshot();
     });
 
-    describe("Droppability", function() {
-      it("Updates when an item is dropped in", function() {
-        const wrapper = mount(<DroppableLayout />);
+    describe("Droppability", function () {
+      it("Updates when an item is dropped in", function () {
+        const wrapper = mount(<DroppableLayout containerPadding={[0, 0]} />);
         const gridLayout = wrapper.find("ReactGridLayout");
         expect(gridLayout).toHaveLength(1);
 
@@ -116,13 +115,13 @@ describe("Lifecycle tests", function() {
     });
   });
 
-  describe("<ResponsiveReactGridLayout>", function() {
-    it("Basic Render", async function() {
+  describe("<ResponsiveReactGridLayout>", function () {
+    it("Basic Render", async function () {
       const wrapper = mount(<ShowcaseLayout />);
       expect(wrapper).toMatchSnapshot();
     });
 
-    it("Does not modify layout on movement", async function() {
+    it("Does not modify layout on movement", async function () {
       const layouts = {
         lg: [
           ..._.times(3, i => ({
@@ -160,34 +159,3 @@ describe("Lifecycle tests", function() {
     });
   });
 });
-
-function simulateMovementFromTo(node, fromX, fromY, toX, toY) {
-  TestUtils.Simulate.mouseDown(node, { clientX: fromX, clientY: fromX });
-  mouseMove(node, toX, toY);
-  TestUtils.Simulate.mouseUp(node);
-}
-
-function mouseMove(node, x, y) {
-  const doc = node ? node.ownerDocument : document;
-  const evt = doc.createEvent("MouseEvents");
-  // $FlowIgnore get with it, flow
-  evt.initMouseEvent(
-    "mousemove",
-    true,
-    true,
-    window,
-    0,
-    0,
-    0,
-    x,
-    y,
-    false,
-    false,
-    false,
-    false,
-    0,
-    null
-  );
-  doc.dispatchEvent(evt);
-  return evt;
-}

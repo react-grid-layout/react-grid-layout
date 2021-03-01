@@ -1,9 +1,9 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import _ from "lodash";
 import RGL from '../../lib/ReactGridLayout';
 import WidthProvider from '../../lib/components/WidthProvider';
-import type {Layout} from '../../lib/utils';
+import type {Layout, ReactChildren} from '../../lib/utils';
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -19,7 +19,7 @@ type State = {|
 |};
 
 export default class MessyLayout extends React.PureComponent<Props, State> {
-  static defaultProps = {
+  static defaultProps: Props = {
     className: "layout",
     cols: 12,
     items: 20,
@@ -27,11 +27,11 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     rowHeight: 30,
   };
 
-  state = {
+  state: State = {
     layout: this.generateLayout()
   };
 
-  generateDOM() {
+  generateDOM(): ReactChildren {
     return _.map(_.range(this.props.items), function(i) {
       return (
         <div key={i}>
@@ -60,7 +60,7 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     this.props.onLayoutChange(layout);
   }
 
-  render() {
+  render(): React.Node {
     // eslint-disable-next-line no-unused-vars
     const {items, ...props} = this.props;
     return (

@@ -1,5 +1,84 @@
 # Changelog
 
+1.2.1 (Mar 1, 2021)
+---
+
+## Organization Changes
+
+We have created the [React-Grid-Layout Organization](https://github.com/react-grid-layout)! Therefore the repository
+[has moved](https://github.com/react-grid-layout/react-grid-layout).
+
+This organization will grow as time goes on, and also contains the dependencies of RGL.
+
+### Bugfixes
+  - Use `classList` in Firefox onDragOver hack. [#1310](https://github.com/STRML/react-grid-layout/pull/1310)
+  - Fix `scale` property. As `scale` support was added to dependencies, this caused double-compensation for scale, causing the dragged element not to follow the cursor. [#1393](https://github.com/STRML/react-grid-layout/pull/1393)
+  - Fix horizontal compact mode issue where it inadventently would compact the bottom of the grid. This is not useful nor intended. Thanks @s4m3. [#1390](https://github.com/STRML/react-grid-layout/pull/1390)
+  - Fix `onLayoutChange` sometimes not triggering on resize. We weren't cloning the layout item before modifying it. Thanks @xcqwan. [#1289](https://github.com/react-grid-layout/react-grid-layout/pull/1289)
+
+### Internal Refactors
+  - Updated to the latest versions of all dependencies (enzyme, webpack, jest, flow).
+  - Held back React@17 as enzyme is [not yet ready](https://github.com/enzymejs/enzyme/issues/2429).
+
+1.2.0 (Nov 17, 2020)
+---
+
+### New Features
+  - You can now customize your resizable handle component as supported by [`react-resizable`](https://github.com/STRML/react-resizable/blob/09fd865c0e1cc570caa8d67e44a2e56172d3d816/examples/ExampleLayout.js#L72). For example:
+  ```js
+    <ReactGridLayout resizeHandle={<span className="custom-handle custom-handle-se" />} {...props} />
+  ````
+  Thanks @typeetfunc [#1303](https://github.com/STRML/react-grid-layout/pull/1303)
+
+### Bugfixes
+  - Fix `onDrop` handler not firing on Firefox if you drop over the placeholder.
+    - Thanks @Charles-Lamoureux [#1333](https://github.com/STRML/react-grid-layout/pull/1333)
+  - Various example style fixes [#1283](https://github.com/STRML/react-grid-layout/pull/1283) [#1299](https://github.com/STRML/react-grid-layout/pull/1299)
+
+1.1.1 (Sep 10, 2020)
+---
+
+Republish to add `dist/` folder for unpkg use.
+
+1.1.0 (Sep 3, 2020)
+---
+
+### New Features
+  - You can now place resizable handles on all corners. Use the `resizeHandles` prop, which is default `['se']` (for 'southeast').
+    - Allowable values are:
+      * 's' - South handle (bottom-center)
+      * 'w' - West handle (left-center)
+      * 'e' - East handle (right-center)
+      * 'n' - North handle (top-center)
+      * 'sw' - Southwest handle (bottom-left)
+      * 'nw' - Northwest handle (top-left)
+      * 'se' - Southeast handle (bottom-right)
+      * 'ne' - Northeast handle (top-right)
+    - These values may be combined, e.g. `['s', 'se', 'e']`, to place three handles on the bottom side, bottom-right corner, and right side.
+
+### Bugfixes
+  - Revert `containerPadding` change in #1138. This change was meant to be types-only, but it caused a behavioral change where the default value of `containerPadding` became `[0, 0]`, not `margin`, which is default `[10, 10]`.
+  - Add a few more files to `npmignore` to improve package size.
+
+1.0.0 (July 20, 2020)
+---
+
+React-Grid-Layout has been in `0.x` status for far too long. With the addition of some new features in this version and a breaking change, I thought it was time to move to a stable semver.
+
+### Breaking Changes
+  - `onDrop` callback now has a form more consistent with other callbacks.
+    - Previous type: `(elemParams: { x: number, y: number, w: number, h: number, e: Event }) => void`
+    - New type: `(layout: Layout, item: ?LayoutItem, e: Event) => void`
+    - Thanks @ceberhar [#1169](https://github.com/STRML/react-grid-layout/pull/1169)
+  - Dropping Node 8 compatibility and testing due to devDep incompatibilities
+
+### New Features
+  - Add `innerRef: React.Ref<'div'>` prop to expose a ref for the grid layout's outer div. Thanks @paul-sachs [#1176](https://github.com/STRML/react-grid-layout/pull/1176)
+  - Add `isBounded` property to prevent dragging items outside of the grid. Thanks @artembykov [#1248](https://github.com/STRML/react-grid-layout/pull/1248)
+
+### Bugfixes
+  - Fix grid items stuck using percentages on first render. Thanks @rhbg [#1246](https://github.com/STRML/react-grid-layout/pull/1246)
+
 0.18.3 (Mar 16, 2020)
 ----
 

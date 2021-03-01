@@ -1,9 +1,10 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import _ from "lodash";
 import Responsive from '../../lib/ResponsiveReactGridLayout';
 import WidthProvider from '../../lib/components/WidthProvider';
-import type {CompactType, Layout} from '../../lib/utils';
+import type {CompactType, Layout, LayoutItem, ReactChildren} from '../../lib/utils';
+import type {Breakpoint, OnLayoutChangeCallback} from '../../lib/responsiveUtils';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 type Props = {|
@@ -20,14 +21,14 @@ type State = {|
 |};
 
 export default class ShowcaseLayout extends React.Component<Props, State> {
-  static defaultProps = {
+  static defaultProps: Props = {
     className: "layout",
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   };
 
-  state = {
+  state: State = {
     currentBreakpoint: "lg",
     compactType: "vertical",
     mounted: false,
@@ -38,7 +39,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     this.setState({ mounted: true });
   }
 
-  generateDOM() {
+  generateDOM(): ReactChildren {
     return _.map(this.state.layouts.lg, function(l, i) {
       return (
         <div key={i} className={l.static ? "static" : ""}>
@@ -57,13 +58,13 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     });
   }
 
-  onBreakpointChange = (breakpoint: string) => {
+  onBreakpointChange: (Breakpoint) => void = (breakpoint) => {
     this.setState({
       currentBreakpoint: breakpoint
     });
   };
 
-  onCompactTypeChange = () => {
+  onCompactTypeChange: () => void = () => {
     const { compactType: oldCompactType } = this.state;
     const compactType =
       oldCompactType === "horizontal"
@@ -74,21 +75,21 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     this.setState({ compactType });
   };
 
-  onLayoutChange = (layout: Layout, layouts: {[string]: Layout}) => {
+  onLayoutChange: OnLayoutChangeCallback = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
   };
 
-  onNewLayout = () => {
+  onNewLayout: EventHandler = () => {
     this.setState({
       layouts: { lg: generateLayout() }
     });
   };
 
-  onDrop = (elemParams: Object) => {
+  onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void = (elemParams) => {
     alert(`Element parameters: ${JSON.stringify(elemParams)}`);
   };
 
-  render() {
+  render(): React.Node {
     // eslint-disable-next-line no-unused-vars
     return (
       <div>
