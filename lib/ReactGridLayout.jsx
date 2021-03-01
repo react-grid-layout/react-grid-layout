@@ -386,8 +386,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
     const { layout, oldResizeItem } = this.state;
     const { cols, preventCollision } = this.props;
-    const l: ?LayoutItem = getLayoutItem(layout, i);
-    if (!l) return;
+    const originalLayoutItem: ?LayoutItem = getLayoutItem(layout, i);
+    if (!originalLayoutItem) return;
+
+    // We're going to modify this object now, so clone it first.
+    const l = cloneLayoutItem(originalLayoutItem);
 
     // Something like quad tree should be used
     // to find collisions faster
