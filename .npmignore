@@ -9,6 +9,7 @@ Makefile
 __tests__/
 __mocks__/
 index-dev.js
+index-dev.html
 index.html
 flow-typed/
 interfaces/
