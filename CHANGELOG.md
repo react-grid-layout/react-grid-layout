@@ -1,5 +1,12 @@
 # Changelog
 
+1.2.2 (Mar 1, 2021)
+---
+
+### Bugfixes
+  - `onResize` as changed in 1.2.1 did not correctly save the layout. This is now fixed.
+    - As you might guess, we need more test coverage! PRs are very welcome, I'll buy you beers on Cashapp or Patreon or whatever you like.
+
 1.2.1 (Mar 1, 2021)
 ---
 
