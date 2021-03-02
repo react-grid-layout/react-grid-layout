@@ -29,7 +29,7 @@ import type {
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";
-import type { ResizeHandles, ResizeHandle } from "./ReactGridLayoutPropTypes";
+import type { ResizeHandles, ResizeHandle, DraggableCoreProps } from "./ReactGridLayoutPropTypes";
 
 type PartialPosition = { top: number, left: number };
 type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
@@ -67,7 +67,7 @@ type Props = {
   // Draggability
   cancel: string,
   handle: string,
-  enableUserSelectHack: boolean,
+  draggableOpts?: ?DraggableCoreProps,
 
   x: number,
   y: number,
@@ -184,7 +184,8 @@ export default class GridItem extends React.Component<Props, State> {
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
     cancel: PropTypes.string,
-    enableUserSelectHack: PropTypes.bool,
+    // Passing down `DraggableCore` props
+    draggableOpts: PropTypes.any,
     // Current position of a dropping element
     droppingPosition: PropTypes.shape({
       e: PropTypes.object.isRequired,
@@ -202,7 +203,6 @@ export default class GridItem extends React.Component<Props, State> {
     maxH: Infinity,
     maxW: Infinity,
     transformScale: 1,
-    enableUserSelectHack: true
   };
 
   state: State = {
@@ -351,7 +351,7 @@ export default class GridItem extends React.Component<Props, State> {
           (this.props.cancel ? "," + this.props.cancel : "")
         }
         scale={this.props.transformScale}
-        enableUserSelectHack={this.props.enableUserSelectHack}
+        {...this.props.draggableOpts}
       >
         {child}
       </DraggableCore>
@@ -377,7 +377,7 @@ export default class GridItem extends React.Component<Props, State> {
       maxW,
       maxH,
       transformScale,
-      enableUserSelectHack
+      draggableOpts,
       resizeHandles,
       resizeHandle
     } = this.props;
@@ -398,7 +398,8 @@ export default class GridItem extends React.Component<Props, State> {
     return (
       <Resizable
         draggableOpts={{
-          disabled: !isResizable
+          disabled: !isResizable,
+          ...draggableOpts
         }}
         className={isResizable ? undefined : "react-resizable-hide"}
         width={position.width}
@@ -409,9 +410,6 @@ export default class GridItem extends React.Component<Props, State> {
         onResizeStart={this.onResizeStart}
         onResize={this.onResize}
         transformScale={transformScale}
-        draggableOpts={{
-          enableUserSelectHack
-        }}
         resizeHandles={resizeHandles}
         handle={resizeHandle}
       >

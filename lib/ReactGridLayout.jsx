@@ -106,7 +106,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       h: 1,
       w: 1
     },
-    enableUserSelectHack: true,
     resizeHandles: ["se"],
     onLayoutChange: noop,
     onDragStart: noop,
@@ -481,7 +480,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       maxRows,
       useCSSTransforms,
       transformScale,
-      enableUserSelectHack
+      draggableOpts 
     } = this.props;
 
     // {...this.state.activeDrag} is pretty slow, actually
@@ -504,7 +503,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isBounded={false}
         useCSSTransforms={useCSSTransforms}
         transformScale={transformScale}
-        enableUserSelectHack={enableUserSelectHack}
+        draggableOpts={draggableOpts}
       >
         <div />
       </GridItem>
@@ -537,7 +536,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       transformScale,
       draggableCancel,
       draggableHandle,
-      enableUserSelectHack
+      draggableOpts,
       resizeHandles,
       resizeHandle
     } = this.props;
@@ -592,7 +591,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         maxW={l.maxW}
         static={l.static}
         droppingPosition={isDroppingItem ? droppingPosition : undefined}
-        enableUserSelectHack={enableUserSelectHack}
+        draggableOpts={draggableOpts}
         resizeHandles={resizeHandlesOptions}
         resizeHandle={resizeHandle}
       >
