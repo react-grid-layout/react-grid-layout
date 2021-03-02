@@ -3,6 +3,7 @@ const fs = require("fs");
 const ejs = require("ejs");
 const data = require("./vars");
 const tpl = fs.readFileSync(__dirname + "/template.ejs").toString();
+const version = require('../package.json').version;
 
 const base = process.env.CONTENT_BASE;
 if (typeof base !== "string") {
@@ -18,6 +19,7 @@ data.forEach(function(datum, i) {
   datum.banner = banner;
   datum.previous = data[i - 1];
   datum.next = data[i + 1];
+  datum.version = version;
   const html = ejs.render(tpl, datum);
   fs.writeFileSync(__dirname + "/" + i + "-" + datum.source + ".html", html);
 });
