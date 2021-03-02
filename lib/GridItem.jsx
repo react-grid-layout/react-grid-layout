@@ -202,7 +202,7 @@ export default class GridItem extends React.Component<Props, State> {
     minW: 1,
     maxH: Infinity,
     maxW: Infinity,
-    transformScale: 1,
+    transformScale: 1
   };
 
   state: State = {
@@ -341,6 +341,7 @@ export default class GridItem extends React.Component<Props, State> {
   ): ReactElement<any> {
     return (
       <DraggableCore
+        {...this.props.draggableOpts}
         disabled={!isDraggable}
         onStart={this.onDragStart}
         onDrag={this.onDrag}
@@ -351,7 +352,6 @@ export default class GridItem extends React.Component<Props, State> {
           (this.props.cancel ? "," + this.props.cancel : "")
         }
         scale={this.props.transformScale}
-        {...this.props.draggableOpts}
       >
         {child}
       </DraggableCore>
@@ -398,8 +398,8 @@ export default class GridItem extends React.Component<Props, State> {
     return (
       <Resizable
         draggableOpts={{
-          disabled: !isResizable,
-          ...draggableOpts
+          ...draggableOpts,
+          disabled: !isResizable
         }}
         className={isResizable ? undefined : "react-resizable-hide"}
         width={position.width}
