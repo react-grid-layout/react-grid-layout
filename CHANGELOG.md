@@ -1,5 +1,32 @@
 # Changelog
 
+1.2.2 (Mar 1, 2021)
+---
+
+### Bugfixes
+  - `onResize` as changed in 1.2.1 did not correctly save the layout. This is now fixed.
+    - As you might guess, we need more test coverage! PRs are very welcome, I'll buy you beers on Cashapp or Patreon or whatever you like.
+
+1.2.1 (Mar 1, 2021)
+---
+
+## Organization Changes
+
+We have created the [React-Grid-Layout Organization](https://github.com/react-grid-layout)! Therefore the repository
+[has moved](https://github.com/react-grid-layout/react-grid-layout).
+
+This organization will grow as time goes on, and also contains the dependencies of RGL.
+
+### Bugfixes
+  - Use `classList` in Firefox onDragOver hack. [#1310](https://github.com/STRML/react-grid-layout/pull/1310)
+  - Fix `scale` property. As `scale` support was added to dependencies, this caused double-compensation for scale, causing the dragged element not to follow the cursor. [#1393](https://github.com/STRML/react-grid-layout/pull/1393)
+  - Fix horizontal compact mode issue where it inadventently would compact the bottom of the grid. This is not useful nor intended. Thanks @s4m3. [#1390](https://github.com/STRML/react-grid-layout/pull/1390)
+  - Fix `onLayoutChange` sometimes not triggering on resize. We weren't cloning the layout item before modifying it. Thanks @xcqwan. [#1289](https://github.com/react-grid-layout/react-grid-layout/pull/1289)
+
+### Internal Refactors
+  - Updated to the latest versions of all dependencies (enzyme, webpack, jest, flow).
+  - Held back React@17 as enzyme is [not yet ready](https://github.com/enzymejs/enzyme/issues/2429).
+
 1.2.0 (Nov 17, 2020)
 ---
 

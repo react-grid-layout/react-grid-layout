@@ -151,7 +151,14 @@ module.exports = [
     title: "Resizable Handles",
     source: "resizable-handles",
     paragraphs: [
-      "This demonstrates how to implement resizable handles for any corner"
+      "This demonstrates how to implement resizable handles for any corner."
+    ]
+  },
+  {
+    title: "Scale",
+    source: "scale",
+    paragraphs: [
+      "This demonstrates how to compensate for a scaled parent."
     ]
   }
 ];

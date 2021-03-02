@@ -1,4 +1,4 @@
-// @flow
+// @noflow
 const webpack = require("webpack");
 
 // Builds bundle usable <script>. Includes RGL and all deps, excluding React.
@@ -39,7 +39,7 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
-        query: {
+        options: {
           cacheDirectory: true
         }
       }
