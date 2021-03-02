@@ -327,7 +327,20 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     y: number,
     { e, node }: GridDragEvent
   ): void {
-    if (!this.state.activeDrag) return;
+    if (!this.state.activeDrag) {
+      // Stop directly after start. Still need to fire the callback!
+      const { layout, oldDragItem } = this.state;
+      const l = getLayoutItem(layout, i);
+      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
+
+      // Don't hang on to useless state
+      this.setState({
+        oldDragItem: null,
+        oldLayout: null
+      });
+      // Short-circuit as no drag happened
+      return;
+    }
 
     const { oldDragItem } = this.state;
     let { layout } = this.state;
