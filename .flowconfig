@@ -1,11 +1,20 @@
 [version]
-0.115.0
+^0.145.0
 
 [ignore]
+<PROJECT_ROOT>/build/.*
+<PROJECT_ROOT>/dist/.*
+# Speeds parsing:
+.*/node_modules/@babel.*
+.*/node_modules/babel.*
 
 [include]
 
 [libs]
 interfaces/
+flow-typed/
 
 [options]
+sharedmemory.heap_size=3221225472
+emoji=true
+module.use_strict=true

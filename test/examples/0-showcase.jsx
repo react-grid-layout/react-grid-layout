@@ -1,29 +1,45 @@
-import React from "react";
+// @flow
+import * as React from "react";
 import _ from "lodash";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import Responsive from '../../lib/ResponsiveReactGridLayout';
+import WidthProvider from '../../lib/components/WidthProvider';
+import type {CompactType, Layout, LayoutItem, ReactChildren} from '../../lib/utils';
+import type {Breakpoint, OnLayoutChangeCallback} from '../../lib/responsiveUtils';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-export default class ShowcaseLayout extends React.Component {
-  static defaultProps = {
+type Props = {|
+  className: string,
+  cols: {[string]: number},
+  onLayoutChange: Function,
+  rowHeight: number,
+|};
+type State = {|
+  currentBreakpoint: string,
+  compactType: CompactType,
+  mounted: boolean,
+  layouts: {[string]: Layout}
+|};
+
+export default class ShowcaseLayout extends React.Component<Props, State> {
+  static defaultProps: Props = {
     className: "layout",
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    initialLayout: generateLayout()
   };
 
-  state = {
+  state: State = {
     currentBreakpoint: "lg",
     compactType: "vertical",
     mounted: false,
-    layouts: { lg: this.props.initialLayout }
+    layouts: { lg: generateLayout() }
   };
 
   componentDidMount() {
     this.setState({ mounted: true });
   }
 
-  generateDOM() {
+  generateDOM(): ReactChildren {
     return _.map(this.state.layouts.lg, function(l, i) {
       return (
         <div key={i} className={l.static ? "static" : ""}>
@@ -42,13 +58,13 @@ export default class ShowcaseLayout extends React.Component {
     });
   }
 
-  onBreakpointChange = breakpoint => {
+  onBreakpointChange: (Breakpoint) => void = (breakpoint) => {
     this.setState({
       currentBreakpoint: breakpoint
     });
   };
 
-  onCompactTypeChange = () => {
+  onCompactTypeChange: () => void = () => {
     const { compactType: oldCompactType } = this.state;
     const compactType =
       oldCompactType === "horizontal"
@@ -59,21 +75,22 @@ export default class ShowcaseLayout extends React.Component {
     this.setState({ compactType });
   };
 
-  onLayoutChange = (layout, layouts) => {
+  onLayoutChange: OnLayoutChangeCallback = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
   };
 
-  onNewLayout = () => {
+  onNewLayout: EventHandler = () => {
     this.setState({
       layouts: { lg: generateLayout() }
     });
   };
 
-  onDrop = elemParams => {
+  onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void = (elemParams) => {
     alert(`Element parameters: ${JSON.stringify(elemParams)}`);
   };
 
-  render() {
+  render(): React.Node {
+    // eslint-disable-next-line no-unused-vars
     return (
       <div>
         <div>
@@ -113,7 +130,7 @@ function generateLayout() {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
-      x: (_.random(0, 5) * 2) % 12,
+      x: Math.round(Math.random() * 5) * 2,
       y: Math.floor(i / 6) * y,
       w: 2,
       h: y,

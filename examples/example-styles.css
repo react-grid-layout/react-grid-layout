@@ -6,6 +6,7 @@ body {
 }
 .react-grid-layout {
   background: #eee;
+  margin-top: 10px;
 }
 .layoutJSON {
   background: #ddd;
@@ -91,8 +92,9 @@ body {
 }
 .droppable-element {
   width: 150px;
-  background: #ddd;
+  text-align: center;
+  background: #fdd;
   border: 1px solid black;
-  margin-top: 10px;
+  margin: 10px 0;
   padding: 10px;
 }
