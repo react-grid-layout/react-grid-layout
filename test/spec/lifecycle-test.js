@@ -1,7 +1,7 @@
 // @flow
 /* eslint-env jest */
 
-import React from "react";
+import * as React from "react";
 import _ from "lodash";
 import TestUtils from "react-dom/test-utils";
 import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
@@ -34,6 +34,211 @@ describe("Lifecycle tests", function () {
     it("Basic Render", async function () {
       const wrapper = mount(<BasicLayout />);
       expect(wrapper).toMatchSnapshot();
+    });
+
+    describe("Callbacks", function () {
+      let fns, wrapper, draggable, draggableNode, gridLayout;
+
+      beforeAll(() => {
+        fns = {
+          onDragStart: jest.fn(),
+          onDrag: jest.fn(),
+          onDragStop: jest.fn()
+        };
+        wrapper = mount(<BasicLayout {...fns} />);
+        gridLayout = wrapper.find("ReactGridLayout");
+        draggable = wrapper.find(".react-grid-item").at(0);
+        draggableNode = draggable.getDOMNode();
+      });
+
+      // Reset mocks
+      afterEach(() => {
+        Object.keys(fns).forEach(key => fns[key].mockReset());
+      });
+
+      afterAll(() => {
+        wrapper.unmount();
+      });
+
+      it("Calls onDragStart/onDrag/onDragStop", async function () {
+        // Move
+        simulateMovementFromTo(draggableNode, 100, 100, 200, 200);
+
+        // All three will be called
+        expect(fns.onDragStart).toHaveBeenCalled();
+        expect(fns.onDrag).toHaveBeenCalled();
+        expect(fns.onDragStop).toHaveBeenCalled();
+      });
+
+      it("Calls onDragStart with correct props", async function () {
+        const originalLayout = gridLayout.state().layout;
+
+        // Basic move
+        simulateMovementFromTo(draggableNode, 100, 100, 200, 200);
+
+        const onDragStartCall = fns.onDragStart.mock.calls[0];
+
+        // type EventCallback = (
+        //   Layout,
+        //   oldItem: ?LayoutItem,
+        //   newItem: ?LayoutItem,
+        //   placeholder: ?LayoutItem,
+        //   Event,
+        //   ?HTMLElement
+        // ) => void;
+        expect(onDragStartCall[0]).toBe(originalLayout);
+        expect(onDragStartCall[1]).toEqual(originalLayout[0]);
+        expect(onDragStartCall[2]).toEqual(originalLayout[0]);
+        expect(onDragStartCall[3]).toEqual(null);
+        const event = onDragStartCall[4];
+        expect(event.target).toBe(draggableNode);
+        expect(event.type).toBe("mousedown");
+        expect(onDragStartCall[5]).toBe(draggableNode);
+      });
+
+      it("Calls onDrag with correct props", async function () {
+        const originalLayout = clone(gridLayout.state().layout);
+        // Basic move
+        simulateMovementFromTo(draggableNode, 100, 100, 200, 200);
+
+        const onDragCall = fns.onDrag.mock.calls[0];
+
+        // layout
+        // There should be at least one item with `moved: true``
+        expect(onDragCall[0].find(obj => obj.moved)).toBeTruthy();
+        expect(onDragCall[0]).toMatchSnapshot();
+
+        // oldItem
+        expect(onDragCall[1]).toMatchObject(originalLayout[0]);
+
+        // newItem
+        const modifiedItem = { ...originalLayout[0], moved: true };
+        delete modifiedItem.y; // it changed due to movement, let's not match on it
+        expect(onDragCall[2]).toMatchObject(modifiedItem);
+
+        // placeholder
+        const placeholder = onDragCall[3];
+        expect(placeholder).toMatchSnapshot();
+        expect(placeholder.placeholder).toEqual(true);
+
+        // event
+        const event = onDragCall[4];
+        expect(event).toBeInstanceOf(MouseEvent);
+        expect(event.type).toBe("mousemove");
+
+        // node
+        expect(onDragCall[5]).toBe(draggableNode);
+      });
+
+      it("Calls onDragStop with correct props", async function () {
+        const originalLayout = clone(gridLayout.state().layout);
+
+        // Basic move
+        simulateMovementFromTo(draggableNode, 100, 100, 200, 200);
+
+        const onDragStopCall = fns.onDragStop.mock.calls[0];
+
+        // layout
+        // There should be at least one item with `moved: true``
+        expect(onDragStopCall[0].find(obj => obj.moved)).toBeTruthy();
+        expect(onDragStopCall[0]).toMatchSnapshot();
+
+        // oldItem
+        expect(onDragStopCall[1]).toMatchObject(originalLayout[0]);
+
+        // newItem
+        const modifiedItem = { ...originalLayout[0], moved: true };
+        delete modifiedItem.y; // it changed due to movement, let's not match on it
+        expect(onDragStopCall[2]).toMatchObject(modifiedItem);
+
+        // placeholder
+        expect(onDragStopCall[3]).toBeNull();
+
+        // event
+        const event = onDragStopCall[4];
+        expect(event.target).toBe(draggableNode);
+        expect(event.type).toBe("mouseup");
+        expect(onDragStopCall[5]).toBe(draggableNode);
+      });
+
+      describe("ignoreClickOnly: true", function () {
+        beforeEach(() => {
+          wrapper.setProps({ ignoreClickOnly: true });
+        });
+        it("Does not call onDragStart/onDragStop when no movement occurs", async function () {
+          // Mousedown/up, but no mousemove
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStart).not.toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+        });
+
+        it("Does not call onDragStart/onDragStop until movement occurs", async function () {
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          // no events yet fired as no move has happened
+          expect(fns.onDragStart).not.toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // There's the move, we should get onDrag and onDragStart simultaneously`
+          mouseMove(draggableNode, 1, 1);
+          expect(fns.onDragStart).toHaveBeenCalled();
+          expect(fns.onDrag).toHaveBeenCalled();
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // Final stop event
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStop).toHaveBeenCalled();
+        });
+      });
+
+      // TODO [>=2.0.0]: Eliminate this option
+      describe("ignoreClickOnly: false (legacy)", function () {
+        beforeEach(() => {
+          wrapper.setProps({ ignoreClickOnly: false });
+        });
+        it("Still calls onDragStart/onDragStop when no movement occurs", async function () {
+          // Mousedown/up, but no mousemove
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStart).toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled(); // since there was no drag. not great
+        });
+
+        it("Calls onDragStart/onDragStop when movement occurs", async function () {
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          // dragStart called on mouseDown
+          expect(fns.onDragStart).toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // There's the move, we should get onDrag and onDragStart simultaneously`
+          mouseMove(draggableNode, 1, 1);
+          expect(fns.onDrag).toHaveBeenCalled();
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // Final stop event
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStop).toHaveBeenCalled();
+        });
+      });
+
+      // TODO
+      it("Does not mutate layout between calls", async function () {});
     });
 
     describe("Droppability", function () {
@@ -159,3 +364,42 @@ describe("Lifecycle tests", function () {
     });
   });
 });
+
+function simulateMovementFromTo(node, fromX, fromY, toX, toY) {
+  TestUtils.Simulate.mouseDown(node, { clientX: fromX, clientY: fromY });
+  mouseMove(node, toX, toY);
+  TestUtils.Simulate.mouseUp(node);
+}
+
+function mouseMove(node, x, y) {
+  const doc = node ? node.ownerDocument : document;
+  const evt = doc.createEvent("MouseEvents");
+  // $FlowIgnore get with it, flow
+  evt.initMouseEvent(
+    "mousemove",
+    true,
+    true,
+    window,
+    0,
+    0,
+    0,
+    x,
+    y,
+    false,
+    false,
+    false,
+    false,
+    0,
+    null
+  );
+  doc.dispatchEvent(evt);
+  return evt;
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
