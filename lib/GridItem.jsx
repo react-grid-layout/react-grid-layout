@@ -42,7 +42,7 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
 type State = {
   resizing: ?{ width: number, height: number },
   dragging: ?{ top: number, left: number },
-  className: string
+  dragStartEvent: ?Event
 };
 
 type Props = {
@@ -61,6 +61,7 @@ type Props = {
   usePercentages?: boolean,
   transformScale: number,
   droppingPosition?: DroppingPosition,
+  ignoreClickOnly?: boolean,
 
   className: string,
   style?: Object,
@@ -172,6 +173,10 @@ export default class GridItem extends React.Component<Props, State> {
     isResizable: PropTypes.bool.isRequired,
     isBounded: PropTypes.bool.isRequired,
     static: PropTypes.bool,
+    // Waits until an drag to fire onDragStart
+    // Avoids onDragStart firing when only a click has happened
+    // TODO [>=2.0.0]: Make this the default behavior and eliminate the option.
+    ignoreClickOnly: PropTypes.bool,
 
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
@@ -203,9 +208,13 @@ export default class GridItem extends React.Component<Props, State> {
   };
 
   state: State = {
+    // Resizing state (w/h)
     resizing: null,
+    // Dragging state (top/left)
     dragging: null,
-    className: ""
+    // Store event created when dragging starts so that we don't fire
+    // until an actual drag happens. Avoids dragStart on a simple click
+    dragStartEvent: null
   };
 
   currentNode: HTMLElement;
@@ -268,11 +277,12 @@ export default class GridItem extends React.Component<Props, State> {
       droppingPosition.top !== prevDroppingPosition.top;
 
     if (!dragging) {
-      this.onDragStart(droppingPosition.e, {
+      const dragging = this.onDragReallyStarted(droppingPosition.e, {
         node: this.currentNode,
         deltaX: droppingPosition.left,
         deltaY: droppingPosition.top
       });
+      this.setState({ dragging });
     } else if (shouldDrag) {
       const deltaX = droppingPosition.left - dragging.left;
       const deltaY = droppingPosition.top - dragging.top;
@@ -417,15 +427,42 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node, delta and position information
    */
-  onDragStart: (Event, ReactDraggableCallbackData) => void = (e, { node }) => {
-    const { onDragStart, transformScale } = this.props;
-    if (!onDragStart) return;
-
-    const newPosition: PartialPosition = { top: 0, left: 0 };
-
+  onDragStart: (Event, ReactDraggableCallbackData) => void = (e, data) => {
+    if (!this.props.onDragStart) return;
     // TODO: this wont work on nested parents
+    if (!data.node.offsetParent) return;
+
+    if (this.props.ignoreClickOnly) {
+      // NOTE: do *not* call onDragStart until we've actually moved!
+      // As of #1411 we no longer call back, instead waiting for a real drag
+      // (i.e. we've moved at least 1px)
+      this.setState({ dragStartEvent: e });
+    } else {
+      // Old behavior, kept around for backwards compatibility
+      // TODO [>=2.0.0]: Make this the default behavior and eliminate the option.
+      const dragging = this.onDragReallyStarted(e, data);
+      this.setState({ dragging });
+    }
+  };
+
+  /**
+   * Actual onDragStart handler. May be deferred.
+   */
+  onDragReallyStarted: (
+    Event,
+    ReactDraggableCallbackData
+  ) => PartialPosition = (e, { node }) => {
+    const { onDragStart, transformScale } = this.props;
+    if (!onDragStart) {
+      throw new Error("onDragReallyStarted without onDragStart() present.");
+    }
     const { offsetParent } = node;
-    if (!offsetParent) return;
+    if (!offsetParent) {
+      throw new Error("offsetParent is required for dragging.");
+    }
+
+    // Calculate starting position for callback & state
+    const newPosition: PartialPosition = { top: 0, left: 0 };
     const parentRect = offsetParent.getBoundingClientRect();
     const clientRect = node.getBoundingClientRect();
     const cLeft = clientRect.left / transformScale;
@@ -434,7 +471,6 @@ export default class GridItem extends React.Component<Props, State> {
     const pTop = parentRect.top / transformScale;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
-    this.setState({ dragging: newPosition });
 
     // Call callback with this data
     const { x, y } = calcXY(
@@ -444,12 +480,12 @@ export default class GridItem extends React.Component<Props, State> {
       this.props.w,
       this.props.h
     );
-
-    return onDragStart.call(this, this.props.i, x, y, {
+    onDragStart.call(this, this.props.i, x, y, {
       e,
       node,
       newPosition
     });
+    return newPosition;
   };
 
   /**
@@ -464,11 +500,20 @@ export default class GridItem extends React.Component<Props, State> {
     const { onDrag } = this.props;
     if (!onDrag) return;
 
-    if (!this.state.dragging) {
-      throw new Error("onDrag called before onDragStart.");
+    let { dragging } = this.state;
+    const { dragStartEvent } = this.state;
+    if (!dragging) {
+      if (!dragStartEvent) {
+        throw new Error("Drag start not fired! Possible bug?");
+      }
+      // Is this the first actual drag? If so, fire onDragStart to parent.
+      // We haven't moved just yet, so this is fine to do.
+      // See https://github.com/react-grid-layout/react-grid-layout/pull/1411
+      dragging = this.onDragReallyStarted(dragStartEvent, ({ node }: Object));
     }
-    let top = this.state.dragging.top + deltaY;
-    let left = this.state.dragging.left + deltaX;
+
+    let top = dragging.top + deltaY;
+    let left = dragging.left + deltaX;
 
     const { isBounded, i, w, h, containerWidth } = this.props;
     const positionParams = this.getPositionParams();
@@ -512,12 +557,12 @@ export default class GridItem extends React.Component<Props, State> {
     if (!onDragStop) return;
 
     if (!this.state.dragging) {
-      throw new Error("onDragEnd called before onDragStart.");
+      return; // No drag occurred
     }
     const { w, h, i } = this.props;
     const { left, top } = this.state.dragging;
     const newPosition: PartialPosition = { top, left };
-    this.setState({ dragging: null });
+    this.setState({ dragging: null, dragStartEvent: null });
 
     const { x, y } = calcXY(this.getPositionParams(), top, left, w, h);
 

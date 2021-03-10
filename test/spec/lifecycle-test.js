@@ -161,13 +161,80 @@ describe("Lifecycle tests", function () {
         expect(onDragStopCall[5]).toBe(draggableNode);
       });
 
-      it("Calls onDragStart/onDragStop when no movement occurs", async function () {
-        // Mousedown/up, but no mousemove
-        TestUtils.Simulate.mouseDown(draggableNode, { clientX: 0, clientY: 0 });
-        TestUtils.Simulate.mouseUp(draggableNode);
-        expect(fns.onDragStart).toHaveBeenCalled();
-        expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
-        expect(fns.onDragStop).toHaveBeenCalled();
+      describe("ignoreClickOnly: true", function () {
+        beforeEach(() => {
+          wrapper.setProps({ ignoreClickOnly: true });
+        });
+        it("Does not call onDragStart/onDragStop when no movement occurs", async function () {
+          // Mousedown/up, but no mousemove
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStart).not.toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+        });
+
+        it("Does not call onDragStart/onDragStop until movement occurs", async function () {
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          // no events yet fired as no move has happened
+          expect(fns.onDragStart).not.toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // There's the move, we should get onDrag and onDragStart simultaneously`
+          mouseMove(draggableNode, 1, 1);
+          expect(fns.onDragStart).toHaveBeenCalled();
+          expect(fns.onDrag).toHaveBeenCalled();
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // Final stop event
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStop).toHaveBeenCalled();
+        });
+      });
+
+      // TODO [>=2.0.0]: Eliminate this option
+      describe("ignoreClickOnly: false (legacy)", function () {
+        beforeEach(() => {
+          wrapper.setProps({ ignoreClickOnly: false });
+        });
+        it("Still calls onDragStart/onDragStop when no movement occurs", async function () {
+          // Mousedown/up, but no mousemove
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStart).toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled(); // since there was no drag. not great
+        });
+
+        it("Calls onDragStart/onDragStop when movement occurs", async function () {
+          TestUtils.Simulate.mouseDown(draggableNode, {
+            clientX: 0,
+            clientY: 0
+          });
+          // dragStart called on mouseDown
+          expect(fns.onDragStart).toHaveBeenCalled();
+          expect(fns.onDrag).not.toHaveBeenCalled(); // no mousemove
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // There's the move, we should get onDrag and onDragStart simultaneously`
+          mouseMove(draggableNode, 1, 1);
+          expect(fns.onDrag).toHaveBeenCalled();
+          expect(fns.onDragStop).not.toHaveBeenCalled();
+
+          // Final stop event
+          TestUtils.Simulate.mouseUp(draggableNode);
+          expect(fns.onDragStop).toHaveBeenCalled();
+        });
       });
 
       // TODO

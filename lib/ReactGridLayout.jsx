@@ -101,6 +101,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     verticalCompact: true,
     compactType: "vertical",
     preventCollision: false,
+    ignoreClickOnly: false,
     droppingItem: {
       i: "__dropping-elem__",
       h: 1,
@@ -327,20 +328,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     y: number,
     { e, node }: GridDragEvent
   ): void {
-    if (!this.state.activeDrag) {
-      // Stop directly after start. Still need to fire the callback!
-      const { layout, oldDragItem } = this.state;
-      const l = getLayoutItem(layout, i);
-      this.props.onDragStop(layout, oldDragItem, l, null, e, node);
-
-      // Don't hang on to useless state
-      this.setState({
-        oldDragItem: null,
-        oldLayout: null
-      });
-      // Short-circuit as no drag happened
-      return;
-    }
+    // Shouldn't happen as `onDrag` fires immediately after `onDragStart`
+    if (!this.state.activeDrag) return;
 
     const { oldDragItem } = this.state;
     let { layout } = this.state;
@@ -543,6 +532,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isDraggable,
       isResizable,
       isBounded,
+      ignoreClickOnly,
       useCSSTransforms,
       transformScale,
       draggableCancel,
@@ -589,6 +579,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
+        ignoreClickOnly={ignoreClickOnly}
         transformScale={transformScale}
         w={l.w}
         h={l.h}
@@ -609,7 +600,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     );
   }
 
-  // Called while dragging an element. Part of browser native drag/drop API.
+  //
+  // Droppable functionality
+  //
+  // Called while dragging an external element into the grid. Part of browser native drag/drop API.
   // Native event target might be the layout itself, or an element within the layout.
   onDragOver: DragOverEvent => void | false = e => {
     // we should ignore events from layout's children in Firefox
@@ -683,6 +677,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     e.preventDefault();
   };
 
+  // Called when dragover ends or goes out of the grid area.
+  // Removes the virtual placeholder.
   removeDroppingPlaceholder: () => void = () => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;

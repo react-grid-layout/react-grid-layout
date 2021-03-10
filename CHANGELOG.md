@@ -1,5 +1,15 @@
 # Changelog
 
+Unreleased
+---
+
+### Bugfixes
+  - New boolean prop, `ignoreClickOnly` added.
+    - If this is `true`, `onDragStart` is not called until an actual drag occurs.
+    - This makes it easier to listen to `onDragStart` because you don't have to ignore simple clicks.
+    - As this is a breaking change, it will be behind this prop until 2.0.0, after which **it will become the default behavior**.
+    - Ref: [PR #1411](https://github.com/react-grid-layout/react-grid-layout/pull/1411), [#1401](https://github.com/react-grid-layout/react-grid-layout/issues/1401)
+
 1.2.2 (Mar 1, 2021)
 ---
 
