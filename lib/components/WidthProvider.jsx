@@ -17,6 +17,10 @@ type WPState = {|
   width: number
 |};
 
+type ReactRef = {
+  current: HTMLElement,
+};
+
 /*
  * A simple HOC that provides facility for listening to container resizes.
  *
@@ -58,9 +62,17 @@ export default function WidthProvideRGL<Config>(
 
     mounted: boolean = false;
 
-    constructor(props) {
+    currentNode: ReactRef;
+
+    constructor(props: {|
+      ...Config,
+      measureBeforeMount?: boolean,
+      className?: string,
+      style?: Object,
+      width?: number
+    |}) {
       super(props);
-      this.ref = React.createRef();
+      this.currentNode = ((React.createRef(): any): ReactRef);
     }
 
     componentDidMount() {
@@ -81,7 +93,7 @@ export default function WidthProvideRGL<Config>(
     onWindowResize = () => {
       if (!this.mounted) return;
       // eslint-disable-next-line react/no-find-dom-node
-      const node = this.ref.current; // Flow casts this to Text | Element
+      const node = this.currentNode.current; // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });
     };
@@ -94,7 +106,7 @@ export default function WidthProvideRGL<Config>(
         );
       }
 
-      return <ComposedComponent innerRef={this.ref} {...rest} {...this.state} />;
+      return <ComposedComponent innerRef={this.currentNode} {...rest} {...this.state} />;
     }
   }
 }

@@ -100,6 +100,10 @@ type DefaultProps = {
   transformScale: number
 };
 
+type ReactRef = {
+  current: HTMLElement,
+};
+
 /**
  * An individual item within a ReactGridLayout.
  */
@@ -207,11 +211,11 @@ export default class GridItem extends React.Component<Props, State> {
     className: ""
   };
 
-  currentNode: HTMLElement;
+  currentNode: ReactRef;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.ref = React.createRef();
+    this.currentNode = ((React.createRef(): any): ReactRef);
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
@@ -268,7 +272,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     if (!dragging) {
       this.onDragStart(droppingPosition.e, {
-        node: this.ref.current,
+        node: this.currentNode.current,
         deltaX: droppingPosition.left,
         deltaY: droppingPosition.top
       });
@@ -277,7 +281,7 @@ export default class GridItem extends React.Component<Props, State> {
       const deltaY = droppingPosition.top - dragging.top;
 
       this.onDrag(droppingPosition.e, {
-        node: this.ref.current,
+        node: this.currentNode.current,
         deltaX,
         deltaY
       });
@@ -629,7 +633,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
-      ref: this.ref,
+      ref: this.currentNode,
       className: classNames(
         "react-grid-item",
         child.props.className,
