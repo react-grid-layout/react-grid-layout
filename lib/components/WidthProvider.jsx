@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
+import type { ReactRef } from "../ReactGridLayoutPropTypes";
 
 type WPDefaultProps = {|
   measureBeforeMount: boolean
@@ -18,29 +18,25 @@ type WPState = {|
   width: number
 |};
 
+type ComposedProps<Config> = {|
+  ...Config,
+  measureBeforeMount?: boolean,
+  className?: string,
+  style?: Object,
+  width?: number
+|};
+
 /*
  * A simple HOC that provides facility for listening to container resizes.
  *
  * The Flow type is pretty janky here. I can't just spread `WPProps` into this returned object - I wish I could - but it triggers
  * a flow bug of some sort that causes it to stop typechecking.
  */
-export default function WidthProvider<Config>(
+export default function WidthProvideRGL<Config>(
   ComposedComponent: React.AbstractComponent<Config>
-): React.AbstractComponent<{|
-  ...Config,
-  measureBeforeMount?: boolean,
-  className?: string,
-  style?: Object,
-  width?: number
-|}> {
+): React.AbstractComponent<ComposedProps<Config>> {
   return class WidthProvider extends React.Component<
-    {|
-      ...Config,
-      measureBeforeMount?: boolean,
-      className?: string,
-      style?: Object,
-      width?: number
-    |},
+    ComposedProps<Config>,
     WPState
   > {
     static defaultProps: WPDefaultProps = {
@@ -53,15 +49,13 @@ export default function WidthProvider<Config>(
       measureBeforeMount: PropTypes.bool
     };
 
-    state = {
+    state: WPState = {
       width: 1280
     };
 
-    mounted: boolean = false;
+    elementRef: ReactRef<HTMLDivElement> = React.createRef();
 
     componentDidMount() {
-      this.mounted = true;
-
       window.addEventListener("resize", this.onWindowResize);
       // Call to properly set the breakpoint and resize the elements.
       // Note that if you're doing a full-width element, this can get a little wonky if a scrollbar
@@ -70,27 +64,31 @@ export default function WidthProvider<Config>(
     }
 
     componentWillUnmount() {
-      this.mounted = false;
       window.removeEventListener("resize", this.onWindowResize);
     }
 
     onWindowResize = () => {
-      if (!this.mounted) return;
-      // eslint-disable-next-line react/no-find-dom-node
-      const node = ReactDOM.findDOMNode(this); // Flow casts this to Text | Element
-      if (node instanceof HTMLElement)
+      const node = this.elementRef.current; // Flow casts this to Text | Element
+      if (node instanceof HTMLElement) {
         this.setState({ width: node.offsetWidth });
+      }
     };
 
     render() {
       const { measureBeforeMount, ...rest } = this.props;
-      if (measureBeforeMount && !this.mounted) {
+      if (measureBeforeMount && !this.elementRef.current /* unmounted */) {
         return (
           <div className={this.props.className} style={this.props.style} />
         );
       }
 
-      return <ComposedComponent {...rest} {...this.state} />;
+      return (
+        <ComposedComponent
+          innerRef={this.elementRef}
+          {...rest}
+          {...this.state}
+        />
+      );
     }
   };
 }
