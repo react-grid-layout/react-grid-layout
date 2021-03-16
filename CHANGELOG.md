@@ -1,5 +1,12 @@
 # Changelog
 
+1.2.3 (Mar 16, 2021)
+---
+
+### New Features
+  - React-Grid-Layout is now fully compatible with `<React.StrictMode>`.
+    - Usage of `ReactDOM` has been removed by using `React.createRef()` inside RGL, and the new [`nodeRef` prop](https://github.com/react-grid-layout/react-draggable/blob/master/CHANGELOG.md#440-may-12-2020) in `react-draggable`.
+
 1.2.2 (Mar 1, 2021)
 ---
 
