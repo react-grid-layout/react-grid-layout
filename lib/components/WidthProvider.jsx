@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
+import type { ReactRef } from "../ReactGridLayoutPropTypes";
 
 type WPDefaultProps = {|
   measureBeforeMount: boolean
@@ -17,9 +18,13 @@ type WPState = {|
   width: number
 |};
 
-type ReactRef = {
-  current: HTMLElement,
-};
+type ComposedProps<Config> = {|
+  ...Config,
+  measureBeforeMount?: boolean,
+  className?: string,
+  style?: Object,
+  width?: number
+|};
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
@@ -29,21 +34,9 @@ type ReactRef = {
  */
 export default function WidthProvideRGL<Config>(
   ComposedComponent: React.AbstractComponent<Config>
-): React.AbstractComponent<{|
-  ...Config,
-  measureBeforeMount?: boolean,
-  className?: string,
-  style?: Object,
-  width?: number
-|}> {
+): React.AbstractComponent<ComposedProps<Config>> {
   return class WidthProvider extends React.Component<
-    {|
-      ...Config,
-      measureBeforeMount?: boolean,
-      className?: string,
-      style?: Object,
-      width?: number
-    |},
+    ComposedProps<Config>,
     WPState
   > {
     static defaultProps: WPDefaultProps = {
@@ -56,28 +49,13 @@ export default function WidthProvideRGL<Config>(
       measureBeforeMount: PropTypes.bool
     };
 
-    state = {
+    state: WPState = {
       width: 1280
     };
 
-    mounted: boolean = false;
-
-    currentNode: ReactRef;
-
-    constructor(props: {|
-      ...Config,
-      measureBeforeMount?: boolean,
-      className?: string,
-      style?: Object,
-      width?: number
-    |}) {
-      super(props);
-      this.currentNode = ((React.createRef(): any): ReactRef);
-    }
+    elementRef: ReactRef<HTMLDivElement> = React.createRef();
 
     componentDidMount() {
-      this.mounted = true;
-
       window.addEventListener("resize", this.onWindowResize);
       // Call to properly set the breakpoint and resize the elements.
       // Note that if you're doing a full-width element, this can get a little wonky if a scrollbar
@@ -86,27 +64,31 @@ export default function WidthProvideRGL<Config>(
     }
 
     componentWillUnmount() {
-      this.mounted = false;
       window.removeEventListener("resize", this.onWindowResize);
     }
 
     onWindowResize = () => {
-      if (!this.mounted) return;
-      // eslint-disable-next-line react/no-find-dom-node
-      const node = this.currentNode.current; // Flow casts this to Text | Element
-      if (node instanceof HTMLElement)
+      const node = this.elementRef.current; // Flow casts this to Text | Element
+      if (node instanceof HTMLElement) {
         this.setState({ width: node.offsetWidth });
+      }
     };
 
     render() {
       const { measureBeforeMount, ...rest } = this.props;
-      if (measureBeforeMount && !this.mounted) {
+      if (measureBeforeMount && !this.elementRef.current /* unmounted */) {
         return (
           <div className={this.props.className} style={this.props.style} />
         );
       }
 
-      return <ComposedComponent innerRef={this.currentNode} {...rest} {...this.state} />;
+      return (
+        <ComposedComponent
+          innerRef={this.elementRef}
+          {...rest}
+          {...this.state}
+        />
+      );
     }
-  }
+  };
 }
