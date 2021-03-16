@@ -1,7 +1,6 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 
 type WPDefaultProps = {|
   measureBeforeMount: boolean
@@ -24,7 +23,7 @@ type WPState = {|
  * The Flow type is pretty janky here. I can't just spread `WPProps` into this returned object - I wish I could - but it triggers
  * a flow bug of some sort that causes it to stop typechecking.
  */
-export default function WidthProvider<Config>(
+export default function WidthProvideRGL<Config>(
   ComposedComponent: React.AbstractComponent<Config>
 ): React.AbstractComponent<{|
   ...Config,
@@ -61,7 +60,7 @@ export default function WidthProvider<Config>(
 
     constructor(props) {
       super(props);
-      this.currentNode = React.createRef();
+      this.ref = React.createRef();
     }
 
     componentDidMount() {
@@ -82,7 +81,7 @@ export default function WidthProvider<Config>(
     onWindowResize = () => {
       if (!this.mounted) return;
       // eslint-disable-next-line react/no-find-dom-node
-      const node = this.currentNode.current; // Flow casts this to Text | Element
+      const node = this.ref.current; // Flow casts this to Text | Element
       if (node instanceof HTMLElement)
         this.setState({ width: node.offsetWidth });
     };
@@ -95,7 +94,7 @@ export default function WidthProvider<Config>(
         );
       }
 
-      return <ComposedComponent {...rest} {...this.state} />;
+      return <ComposedComponent innerRef={this.ref} {...rest} {...this.state} />;
     }
-  };
+  }
 }

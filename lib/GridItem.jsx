@@ -211,7 +211,7 @@ export default class GridItem extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.currentNode = React.createRef();
+    this.ref = React.createRef();
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
@@ -268,7 +268,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     if (!dragging) {
       this.onDragStart(droppingPosition.e, {
-        node: this.currentNode.current,
+        node: this.ref.current,
         deltaX: droppingPosition.left,
         deltaY: droppingPosition.top
       });
@@ -277,7 +277,7 @@ export default class GridItem extends React.Component<Props, State> {
       const deltaY = droppingPosition.top - dragging.top;
 
       this.onDrag(droppingPosition.e, {
-        node: this.currentNode.current,
+        node: this.ref.current,
         deltaX,
         deltaY
       });
@@ -629,6 +629,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
+      ref: this.ref,
       className: classNames(
         "react-grid-item",
         child.props.className,
