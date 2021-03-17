@@ -69,7 +69,9 @@ export default function WidthProvideRGL<Config>(
 
     onWindowResize = () => {
       const node = this.elementRef.current; // Flow casts this to Text | Element
-      if (node instanceof HTMLElement) {
+      // fix: grid position error when node or parentNode display is none by window resize
+      // #924 #1084
+      if (node instanceof HTMLElement && node.offsetWidth) {
         this.setState({ width: node.offsetWidth });
       }
     };
