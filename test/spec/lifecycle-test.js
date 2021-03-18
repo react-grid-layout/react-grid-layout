@@ -36,6 +36,64 @@ describe("Lifecycle tests", function () {
       expect(wrapper).toMatchSnapshot();
     });
 
+    describe("WidthProvider", () => {
+      it("Renders with WidthProvider", async function () {
+        const wrapper = mount(<BasicLayout measureBeforeMount={false} />);
+        expect(wrapper).toMatchSnapshot();
+
+        const widthProviderWrapper = wrapper.childAt(0);
+        expect(widthProviderWrapper.name()).toEqual("WidthProvider");
+        expect(widthProviderWrapper.childAt(0).name()).toEqual(
+          "ReactGridLayout"
+        );
+
+        expect(widthProviderWrapper.state().width).toEqual(1280); // default
+      });
+
+      it("Renders with WidthProvider measureBeforeMount", async function () {
+        const wrapper = mount(<BasicLayout measureBeforeMount={true} />);
+        expect(wrapper).toMatchSnapshot();
+
+        const widthProviderWrapper = wrapper.childAt(0);
+        expect(widthProviderWrapper.name()).toEqual("WidthProvider");
+        // Renders a div first
+        expect(widthProviderWrapper.childAt(0).name()).toEqual("div");
+
+        // Mock offsetWidth to return 500 and fire a resize
+        const node = wrapper.getDOMNode();
+        Object.defineProperty(node, "offsetWidth", {
+          get: jest.fn(() => 500)
+        });
+        global.dispatchEvent(new Event("resize"));
+
+        wrapper.setProps({}); // force a rerender synchronously
+
+        // Should have removed the div, now has the RGL
+        expect(wrapper.childAt(0).childAt(0).name()).toEqual("ReactGridLayout");
+        expect(wrapper.childAt(0).state().width).toEqual(500);
+      });
+
+      it("WidthProvider responds to window resize events", async function () {
+        const wrapper = mount(<BasicLayout />);
+        const widthProviderWrapper = wrapper.childAt(0);
+
+        // Original width
+        expect(widthProviderWrapper.state().width).toEqual(1280);
+
+        // Mock offsetWidth to return 500
+        const node = wrapper.getDOMNode();
+        Object.defineProperty(node, "offsetWidth", {
+          get: jest.fn(() => 500)
+        });
+
+        // Trigger the window resize event.
+        global.dispatchEvent(new Event("resize"));
+
+        // State should now be 500
+        expect(widthProviderWrapper.state().width).toEqual(500);
+      });
+    });
+
     describe("Droppability", function () {
       it("Updates when an item is dropped in", function () {
         const wrapper = mount(<DroppableLayout containerPadding={[0, 0]} />);
@@ -79,7 +137,7 @@ describe("Lifecycle tests", function () {
           i: "__dropping-elem__",
           h: 1,
           w: 1,
-          x: 1,
+          x: 2,
           y: 4,
           static: false,
           isDraggable: true
@@ -107,7 +165,7 @@ describe("Lifecycle tests", function () {
           h: 1,
           w: 1,
           x: 0,
-          y: 9,
+          y: 10,
           static: false,
           isDraggable: true
         });

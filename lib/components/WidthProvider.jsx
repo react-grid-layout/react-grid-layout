@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import type { ReactRef } from "../ReactGridLayoutPropTypes";
 
 type WPDefaultProps = {|
@@ -25,6 +26,8 @@ type ComposedProps<Config> = {|
   style?: Object,
   width?: number
 |};
+
+const layoutClassName = "react-grid-layout";
 
 /*
  * A simple HOC that provides facility for listening to container resizes.
@@ -54,8 +57,10 @@ export default function WidthProvideRGL<Config>(
     };
 
     elementRef: ReactRef<HTMLDivElement> = React.createRef();
+    mounted: boolean = false;
 
     componentDidMount() {
+      this.mounted = true;
       window.addEventListener("resize", this.onWindowResize);
       // Call to properly set the breakpoint and resize the elements.
       // Note that if you're doing a full-width element, this can get a little wonky if a scrollbar
@@ -64,10 +69,12 @@ export default function WidthProvideRGL<Config>(
     }
 
     componentWillUnmount() {
+      this.mounted = false;
       window.removeEventListener("resize", this.onWindowResize);
     }
 
     onWindowResize = () => {
+      if (!this.mounted) return;
       const node = this.elementRef.current; // Flow casts this to Text | Element
       // fix: grid position error when node or parentNode display is none by window resize
       // #924 #1084
@@ -78,9 +85,14 @@ export default function WidthProvideRGL<Config>(
 
     render() {
       const { measureBeforeMount, ...rest } = this.props;
-      if (measureBeforeMount && !this.elementRef.current /* unmounted */) {
+      if (measureBeforeMount && !this.mounted) {
         return (
-          <div className={this.props.className} style={this.props.style} />
+          <div
+            className={classNames(this.props.className, layoutClassName)}
+            style={this.props.style}
+            // $FlowIgnore ref types
+            ref={this.elementRef}
+          />
         );
       }
 
