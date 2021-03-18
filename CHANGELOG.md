@@ -1,5 +1,16 @@
 # Changelog
 
+1.2.4 (Mar 18, 2021)
+---
+
+*This version fixes a serious render bug in `<WidthProvider>`. 1.2.3 should not be used.*
+
+### Bugfixes
+  - Fix failure to mount when layout is WidthProvider-wrapped and `measureBeforeMount` is `true`.
+    - Ref: [#1428](https://github.com/react-grid-layout/react-grid-layout/issues/1428)
+  - `<WidthProvider>` no longer updates grid with if it has been set to 0. This prevents unnecessary updates
+    if the grid is set to `display: none;`. Thanks @405go [#1427](https://github.com/react-grid-layout/react-grid-layout/pull/1427)
+
 1.2.3 (Mar 16, 2021)
 ---
 
