@@ -371,6 +371,9 @@ onResizeStart: ItemCallback,
 onResize: ItemCallback,
 // Calls when resize is complete.
 onResizeStop: ItemCallback,
+// Calls when an element is dragged over the grid from outsied
+// This callback should return an object to dynamically change the droppingItem size
+onDragOver: (e: DragOverEvent) => Object: { w: number, h: number };
 // Calls when an element has been dropped into the grid from outside.
 onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void
 
