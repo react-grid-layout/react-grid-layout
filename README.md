@@ -16,7 +16,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://react-grid-layout.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js)**]
+[**[Demo](https://react-grid-layout.github.io/react-grid-layout/) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js)**]
 
 ## Table of Contents
 
@@ -92,11 +92,12 @@ RGL is React-only and does not require jQuery.
 * Separate layouts per responsive breakpoint
 * Grid Items placed using CSS Transforms
   * Performance with CSS Transforms: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
+* Compatibility with `<React.StrictMode>`
 
 |Version         | Compatibility    |
 |----------------|------------------|
-| >= 0.17.0      | React 0.16       |
-| >= 0.11.3      | React 0.14 & v15 |
+| >= 0.17.0      | React 16 & 17    |
+| >= 0.11.3      | React 0.14 & 15  |
 | >= 0.10.0      | React 0.14       |
 | 0.8. - 0.9.2   | React 0.13       |
 | < 0.8          | React 0.12       |

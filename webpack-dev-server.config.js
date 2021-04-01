@@ -37,6 +37,7 @@ module.exports = {
     compress: true,
     port: 4002,
     open: true,
+    openPage: "index-dev.html",
     contentBase: "."
   },
   resolve: {
