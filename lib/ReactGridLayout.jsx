@@ -387,7 +387,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResizeStart(layout, l, l, null, e, node);
   }
 
-  onResize(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
+  onResize(i: string, w: number, h: number, { e, node, size, handle }: GridResizeEvent) {
     const { oldResizeItem } = this.state;
     let { layout } = this.state;
     const { cols, preventCollision } = this.props;
@@ -417,62 +417,41 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         }
       }
 
-      if (!hasCollisions) {
-        if (
-          [
-            "react-resizable-handle-sw",
-            "react-resizable-handle-w",
-            "react-resizable-handle-nw",
-            "react-resizable-handle-n",
-            "react-resizable-handle-ne"
-          ].indexOf(node.classList.item(1)) !== -1
-        ) {
-          let x = l.x;
-          let y = l.y;
-          if (
-            [
-              "react-resizable-handle-sw",
-              "react-resizable-handle-nw",
-              "react-resizable-handle-w"
-            ].indexOf(node.classList.item(1)) !== -1
-          ) {
-            x = l.x + (l.w - w);
-            x = x < 0 ? 0 : x;
-          }
-
-          if (
-            [
-              "react-resizable-handle-ne",
-              "react-resizable-handle-n",
-              "react-resizable-handle-nw"
-            ].indexOf(node.classList.item(1)) !== -1
-          ) {
-            y = l.y + (l.h - h);
-            y = y < 0 ? 0 : y;
-          }
-
-          l.w = w;
-          l.h = h;
-          // Move the element to the new position.
-          const isUserAction = true;
-          layout = moveElement(
-            layout,
-            l,
-            x,
-            y,
-            isUserAction,
-            this.props.preventCollision,
-            compactType(this.props),
-            cols
-          );
-        } else {
-          // Set new width and height.
-          l.w = w;
-          l.h = h;
-        }
-
       return l;
     });
+    let finalLayout;
+    if (["sw","w","nw","n","ne"].indexOf(handle) !== -1) {
+      let x = l.x;
+      let y = l.y;
+      if (["sw","nw","w"].indexOf(handle) !== -1) {
+        x = l.x + (l.w - w);
+        x = x < 0 ? 0 : x;
+      }
+
+      if (["ne","n","nw"].indexOf(handle) !== -1) {
+        y = l.y + (l.h - h);
+        y = y < 0 ? 0 : y;
+      }
+
+      l.w = w;
+      l.h = h;
+      // Move the element to the new position.
+      const isUserAction = true;
+      finalLayout = moveElement(
+        newLayout,
+        l,
+        x,
+        y,
+        isUserAction,
+        this.props.preventCollision,
+        compactType(this.props),
+        cols
+      );
+    } else {
+      l.w = w;
+      l.h = h;
+      finalLayout = newLayout
+    }
 
     // Shouldn't ever happen, but typechecking makes it necessary
     if (!l) return;
@@ -487,11 +466,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       i: i
     };
 
-    this.props.onResize(newLayout, oldResizeItem, l, placeholder, e, node);
+    this.props.onResize(finalLayout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the newLayout and set the drag placeholder.
     this.setState({
-      layout: compact(newLayout, compactType(this.props), cols),
+      layout: compact(finalLayout, compactType(this.props), cols),
       activeDrag: placeholder
     });
   }

@@ -531,7 +531,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStop: (Event, { node: HTMLElement, size: Position }) => void = (
+  onResizeStop: (Event, { node: HTMLElement, size: Position, handle: string }) => void = (
     e,
     callbackData
   ) => {
@@ -543,7 +543,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStart: (Event, { node: HTMLElement, size: Position }) => void = (
+  onResizeStart: (Event, { node: HTMLElement, size: Position, handle: string }) => void = (
     e,
     callbackData
   ) => {
@@ -555,7 +555,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResize: (Event, { node: HTMLElement, size: Position }) => void = (
+  onResize: (Event, { node: HTMLElement, size: Position, handle: string }) => void = (
     e,
     callbackData
   ) => {
@@ -572,8 +572,8 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onResizeHandler(
     e: Event,
-    { node, size }: { node: HTMLElement, size: Position },
-    handlerName: string
+    { node, size, handle }: { node: HTMLElement, size: Position, handle: string },
+    handlerName: string,
   ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
@@ -581,7 +581,7 @@ export default class GridItem extends React.Component<Props, State> {
     let { minW, maxW } = this.props;
 
     const handleOrientation =
-      node.classList.item(1).indexOf("w") != -1 ? "west" : "east";
+      ["sw","w","nw"].indexOf(handle) != -1 ? "west" : "east";
     // Get new XY
     let { w, h } = calcWH(
       this.getPositionParams(),
@@ -624,28 +624,22 @@ export default class GridItem extends React.Component<Props, State> {
 
       if (
         [
-          "react-resizable-handle-sw",
-          "react-resizable-handle-w",
-          "react-resizable-handle-nw",
-          "react-resizable-handle-n",
-          "react-resizable-handle-ne"
-        ].indexOf(node.classList.item(1)) === -1
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ].indexOf(handle) === -1
       ) {
         this.setState({
           resizing: handlerName === "onResizeStop" ? null : size
         });
       } else {
-        if (
-          ["react-resizable-handle-sw", "react-resizable-handle-w"].indexOf(
-            node.classList.item(1)
-          ) !== -1
-        ) {
+        if (["sw", "w"].indexOf(handle) !== -1) {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop;
         } else if (
-          ["react-resizable-handle-n", "react-resizable-handle-ne"].indexOf(
-            node.classList.item(1)
-          ) !== -1
+          ["n", "ne"].indexOf(handle) !== -1
         ) {
           size.left = currentLeft;
           size.top = currentTop - (size.height - currentHeight);
@@ -659,7 +653,7 @@ export default class GridItem extends React.Component<Props, State> {
       this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
     }
 
-    handler.call(this, i, w, h, { e, node, size });
+    handler.call(this, i, w, h, { e, node, size, handle });
   }
 
   render(): ReactNode {
