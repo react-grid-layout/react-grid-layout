@@ -701,7 +701,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
   };
 
-  onDragEnter: () => void = () => {
+  onDragEnter: (e: Event) => void = (e: Event) => {
+    e.preventDefault();
+
     this.dragEnterCounter++;
   };
 
