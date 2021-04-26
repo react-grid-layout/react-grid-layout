@@ -137,6 +137,7 @@ export default class MultipleLayout extends React.Component {
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
           isDroppable={true}
+          isDetachable={true}
         >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
@@ -154,6 +155,7 @@ export default class MultipleLayout extends React.Component {
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
           isDroppable={true}
+          isDetachable={true}
         >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
