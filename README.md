@@ -273,9 +273,6 @@ draggableCancel: ?string = '',
 // If you forget the leading . it will not work.
 draggableHandle: ?string = '',
 
-// If true, the layout will compact vertically
-verticalCompact: ?boolean = true,
-
 // Compaction type.
 compactType: ?('vertical' | 'horizontal') = 'vertical';
 
