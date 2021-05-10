@@ -1,5 +1,20 @@
 # Changelog
 
+1.2.5 (May 10, 2021)
+---
+
+### Bugfixes
+  - Ensure no negative positions are possible when compacting
+    - Thanks @DonnyLi [#829](https://github.com/react-grid-layout/react-grid-layout/pull/829)
+    - Fixes [#535](https://github.com/react-grid-layout/react-grid-layout/issues/535)
+  - Fix resizing on mobile. This was caused by the `ref` refactor to remove ReactDOM in 1.2.3.
+    - Fixes #[1458](https://github.com/react-grid-layout/react-grid-layout/issues/1458)
+    - Note: this upgrades `react-resizable` to `3.0.1`, which like our other deps, is only compatible with `React@>=16.3`.
+
+### Documentation
+  - Document new arity of `resizeHandle` (`(axis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => React$Element`)
+  - Remove references to the deprecated `verticalCompact` prop
+
 1.2.4 (Mar 18, 2021)
 ---
 
