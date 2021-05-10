@@ -39,7 +39,7 @@
     "lodash.isequal": "^4.0.0",
     "prop-types": "^15.0.0",
     "react-draggable": "^4.0.0",
-    "react-resizable": "^1.11.1"
+    "react-resizable": "^3.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
