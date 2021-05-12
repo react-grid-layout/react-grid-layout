@@ -401,9 +401,9 @@ export default class GridItem extends React.Component<Props, State> {
         height={position.height}
         minConstraints={minConstraints}
         maxConstraints={maxConstraints}
-        onResizeStop={this.onResizeStop}
-        onResizeStart={this.onResizeStart}
-        onResize={this.onResize}
+        onResizeStop={(e,data, position) =>  this.onResizeStop(e, data, arguments[1])}
+        onResizeStart={(e,data, position) => this.onResizeStart(e, data, arguments[1])}
+        onResize={(e,data, position) =>  this.onResize(e, data, arguments[1])}
         transformScale={transformScale}
         resizeHandles={resizeHandles}
         handle={resizeHandle}
@@ -534,11 +534,12 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStop: (Event, { node: HTMLElement, size: Position, handle: string }) => void = (
+  onResizeStop: (Event, { node: HTMLElement, size: Position, handle: string }, position) => void = (
     e,
-    callbackData
+    callbackData,
+    position
   ) => {
-    this.onResizeHandler(e, callbackData, "onResizeStop");
+    this.onResizeHandler(e, callbackData, position,  "onResizeStop");
   };
 
   /**
@@ -546,11 +547,12 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStart: (Event, { node: HTMLElement, size: Position, handle: string }) => void = (
+  onResizeStart: (Event, { node: HTMLElement, size: Position, handle: string }, position) => void = (
     e,
-    callbackData
+    callbackData,
+    position
   ) => {
-    this.onResizeHandler(e, callbackData, "onResizeStart");
+    this.onResizeHandler(e, callbackData, position, "onResizeStart");
   };
 
   /**
@@ -558,11 +560,12 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResize: (Event, { node: HTMLElement, size: Position, handle: string }) => void = (
+  onResize: (Event, { node: HTMLElement, size: Position, handle: string }, position) => void = (
     e,
-    callbackData
+    callbackData,
+    position
   ) => {
-    this.onResizeHandler(e, callbackData, "onResize");
+    this.onResizeHandler(e, callbackData, position,  "onResize");
   };
 
   /**
@@ -576,7 +579,8 @@ export default class GridItem extends React.Component<Props, State> {
   onResizeHandler(
     e: Event,
     { node, size, handle }: { node: HTMLElement, size: Position, handle: string },
-    handlerName: string,
+    position,
+    handlerName: string
   ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
@@ -608,22 +612,12 @@ export default class GridItem extends React.Component<Props, State> {
     w = clamp(w, minW, maxW);
     h = clamp(h, minH, maxH);
 
-    const elem = ((node.parentElement: any): HTMLElement);
+    const elem = ((node: any): HTMLElement);
     if (elem) {
-      let currentLeft, currentTop;
-      if (useCSSTransforms) {
-        const transformCSS = elem.style.transform
-          .replace(/[^\d.,]/g, "")
-          .split(",");
-        currentLeft = parseInt(transformCSS[0], 10);
-        currentTop = parseInt(transformCSS[1], 10);
-      } else {
-        currentLeft = parseInt(elem.style.left, 10);
-        currentTop = parseInt(elem.style.top, 10);
-      }
-
-      const currentWidth = elem.offsetWidth;
-      const currentHeight = elem.offsetHeight;
+      const currentLeft = position.left;
+      const currentTop = position.top;
+      const currentWidth = position.width;
+      const currentHeight = position.height;
 
       if (
         [
@@ -632,12 +626,8 @@ export default class GridItem extends React.Component<Props, State> {
           "nw",
           "n",
           "ne"
-        ].indexOf(handle) === -1
+        ].indexOf(handle) !== -1
       ) {
-        this.setState({
-          resizing: handlerName === "onResizeStop" ? null : size
-        });
-      } else {
         if (["sw", "w"].indexOf(handle) !== -1) {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop;
