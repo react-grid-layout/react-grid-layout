@@ -394,7 +394,6 @@ export default class GridItem extends React.Component<Props, State> {
       <Resizable
         draggableOpts={{
           disabled: !isResizable,
-          nodeRef: this.elementRef
         }}
         className={isResizable ? undefined : "react-resizable-hide"}
         width={position.width}
