@@ -326,6 +326,33 @@ describe("moveElement", () => {
       expect.objectContaining({ x: 1, y: 0, w: 1, h: 2, i: "C" })
     ]);
   });
+
+  it("Allow overlapping the grid items", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
+    ];
+    // Move A down by 2. Both B and C should remain in same position
+    const itemA = layout[0];
+    expect(
+      moveElement(
+        layout,
+        itemA,
+        0,
+        2, // x, y
+        true,
+        true, // isUserAction, preventCollision
+        null,
+        10, // compactType, cols
+        true // allowOverlap
+      )
+    ).toEqual([
+      expect.objectContaining({ x: 0, y: 2, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
+    ]);
+  });
 });
 
 describe("compact vertical", () => {
