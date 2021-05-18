@@ -273,9 +273,6 @@ draggableCancel: ?string = '',
 // If you forget the leading . it will not work.
 draggableHandle: ?string = '',
 
-// If true, the layout will compact vertically
-verticalCompact: ?boolean = true,
-
 // Compaction type.
 compactType: ?('vertical' | 'horizontal') = 'vertical';
 
@@ -345,7 +342,8 @@ isDroppable: ?boolean = false
 // 'ne' - Northeast handle (top-right)
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
 // Custom component for resize handles
-resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis) => ReactElement<any>)
+// See `handle` as used in https://github.com/react-grid-layout/react-resizable#props
+resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>)
 
 //
 // Callbacks

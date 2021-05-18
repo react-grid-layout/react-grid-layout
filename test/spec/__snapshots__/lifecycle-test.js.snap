@@ -719,21 +719,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        0
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -804,19 +789,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          0
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -924,21 +899,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        1
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -1009,19 +969,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          1
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -1129,21 +1079,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        2
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -1214,19 +1149,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          2
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -1334,21 +1259,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        3
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -1419,19 +1329,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          3
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -1539,21 +1439,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        4
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -1624,19 +1509,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          4
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -1744,21 +1619,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        5
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -1829,19 +1689,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          5
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -1949,21 +1799,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        6
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -2034,19 +1869,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          6
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -2154,21 +1979,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        7
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -2239,19 +2049,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          7
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -2359,21 +2159,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        8
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -2444,19 +2229,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          8
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -2564,21 +2339,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        9
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -2649,19 +2409,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          9
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -2769,21 +2519,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        10
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -2854,19 +2589,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          10
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -2974,21 +2699,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        11
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -3059,19 +2769,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          11
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -3179,21 +2879,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        12
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -3264,19 +2949,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          12
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -3384,21 +3059,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        13
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -3469,19 +3129,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          13
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -3589,21 +3239,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        14
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -3674,19 +3309,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          14
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -3794,21 +3419,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        15
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -3879,19 +3489,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          15
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -3999,21 +3599,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        16
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -4084,19 +3669,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          16
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -4204,21 +3779,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        17
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -4289,19 +3849,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          17
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -4409,21 +3959,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        18
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -4494,19 +4029,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          18
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -4614,21 +4139,6 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        19
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -4699,19 +4209,9 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          19
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -5459,21 +4959,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        0
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -5544,19 +5029,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          0
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -5664,21 +5139,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        1
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -5749,19 +5209,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          1
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -5869,21 +5319,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        2
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -5954,19 +5389,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          2
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -6074,21 +5499,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        3
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -6159,19 +5569,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          3
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -6279,21 +5679,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        4
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -6364,19 +5749,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          4
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -6484,21 +5859,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        5
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -6569,19 +5929,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          5
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -6689,21 +6039,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        6
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -6774,19 +6109,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          6
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -6894,21 +6219,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        7
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -6979,19 +6289,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          7
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -7099,21 +6399,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        8
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -7184,19 +6469,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          8
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -7304,21 +6579,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        9
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -7389,19 +6649,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          9
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -7509,21 +6759,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        10
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -7594,19 +6829,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          10
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -7714,21 +6939,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        11
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -7799,19 +7009,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          11
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -7919,21 +7119,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        12
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -8004,19 +7189,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          12
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -8124,21 +7299,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        13
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -8209,19 +7369,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          13
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -8329,21 +7479,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        14
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -8414,19 +7549,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          14
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -8534,21 +7659,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        15
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -8619,19 +7729,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          15
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -8739,21 +7839,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        16
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -8824,19 +7909,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          16
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -8944,21 +8019,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        17
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -9029,19 +8089,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          17
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -9149,21 +8199,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        18
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -9234,19 +8269,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          18
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -9354,21 +8379,6 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               draggableOpts={
                 Object {
                   "disabled": false,
-                  "nodeRef": Object {
-                    "current": <div
-                      class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
-                    >
-                      <span
-                        class="text"
-                      >
-                        19
-                      </span>
-                      <span
-                        class="react-resizable-handle react-resizable-handle-se"
-                      />
-                    </div>,
-                  },
                 }
               }
               handleSize={
@@ -9439,19 +8449,9 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                   key="resizableHandle-se"
                   nodeRef={
                     Object {
-                      "current": <div
-                        class="react-grid-item react-draggable cssTransforms react-resizable"
-                        style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
-                      >
-                        <span
-                          class="text"
-                        >
-                          19
-                        </span>
-                        <span
-                          class="react-resizable-handle react-resizable-handle-se"
-                        />
-                      </div>,
+                      "current": <span
+                        class="react-resizable-handle react-resizable-handle-se"
+                      />,
                     }
                   }
                   offsetParent={null}
@@ -11412,21 +10412,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            0
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -11497,19 +10482,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              0
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -11617,21 +10592,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            1
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -11702,19 +10662,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              1
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -11822,21 +10772,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 150px; position: absolute; transform: translate(857px,10px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            2
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -11907,19 +10842,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 150px; position: absolute; transform: translate(857px,10px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              2
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -12027,21 +10952,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 190px; position: absolute; transform: translate(10px,10px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            3
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -12112,19 +11022,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 190px; position: absolute; transform: translate(10px,10px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              3
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -12232,21 +11132,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(433px,10px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            4
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -12317,19 +11202,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(433px,10px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              4
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -12437,21 +11312,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(645px,130px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            5
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -12522,19 +11382,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(645px,130px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              5
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -12642,21 +11492,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,10px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            6
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -12727,19 +11562,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,10px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              6
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -12847,21 +11672,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(222px,90px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            7
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -12932,19 +11742,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(222px,90px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              7
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -13052,21 +11852,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(433px,90px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            8
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -13137,19 +11922,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(433px,90px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              8
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -13257,21 +12032,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 150px; position: absolute; transform: translate(857px,170px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            9
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -13342,19 +12102,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 150px; position: absolute; transform: translate(857px,170px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              9
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -13465,23 +12215,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": true,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                          style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,410px);"
-                        >
-                          <span
-                            class="text"
-                            title="This item is static and cannot be removed or resized."
-                          >
-                            Static - 
-                            10
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -13554,21 +12287,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                            style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,410px);"
-                          >
-                            <span
-                              class="text"
-                              title="This item is static and cannot be removed or resized."
-                            >
-                              Static - 
-                              10
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -13676,21 +12397,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(222px,170px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            11
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -13761,19 +12467,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(222px,170px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              11
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -13881,21 +12577,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(645px,250px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            12
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -13966,19 +12647,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(645px,250px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              12
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -14086,21 +12757,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 150px; position: absolute; transform: translate(857px,330px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            13
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -14171,19 +12827,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 150px; position: absolute; transform: translate(857px,330px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              13
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -14291,21 +12937,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 190px; position: absolute; transform: translate(10px,210px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            14
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -14376,19 +13007,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 190px; position: absolute; transform: translate(10px,210px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              14
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -14496,21 +13117,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(433px,210px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            15
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -14581,19 +13187,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(433px,210px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              15
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -14701,21 +13297,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(645px,370px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            16
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -14786,19 +13367,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(645px,370px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              16
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -14906,21 +13477,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,810px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            17
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -14991,19 +13547,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,810px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              17
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -15111,21 +13657,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(222px,250px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            18
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -15196,19 +13727,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(222px,250px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              18
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -15316,21 +13837,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(433px,290px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            19
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -15401,19 +13907,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(433px,290px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              19
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -15521,21 +14017,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 150px; position: absolute; transform: translate(857px,490px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            20
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -15606,19 +14087,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 150px; position: absolute; transform: translate(857px,490px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              20
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -15729,23 +14200,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": true,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                          style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,610px);"
-                        >
-                          <span
-                            class="text"
-                            title="This item is static and cannot be removed or resized."
-                          >
-                            Static - 
-                            21
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -15818,21 +14272,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                            style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,610px);"
-                          >
-                            <span
-                              class="text"
-                              title="This item is static and cannot be removed or resized."
-                            >
-                              Static - 
-                              21
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -15940,21 +14382,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 70px; position: absolute; transform: translate(222px,330px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            22
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -16025,19 +14452,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 70px; position: absolute; transform: translate(222px,330px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              22
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -16145,21 +14562,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 110px; position: absolute; transform: translate(645px,490px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            23
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -16230,19 +14632,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 110px; position: absolute; transform: translate(645px,490px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              23
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}
@@ -16350,21 +14742,6 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   draggableOpts={
                     Object {
                       "disabled": false,
-                      "nodeRef": Object {
-                        "current": <div
-                          class="react-grid-item react-draggable cssTransforms react-resizable"
-                          style="width: 202px; height: 150px; position: absolute; transform: translate(857px,650px);"
-                        >
-                          <span
-                            class="text"
-                          >
-                            24
-                          </span>
-                          <span
-                            class="react-resizable-handle react-resizable-handle-se"
-                          />
-                        </div>,
-                      },
                     }
                   }
                   handleSize={
@@ -16435,19 +14812,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       key="resizableHandle-se"
                       nodeRef={
                         Object {
-                          "current": <div
-                            class="react-grid-item react-draggable cssTransforms react-resizable"
-                            style="width: 202px; height: 150px; position: absolute; transform: translate(857px,650px);"
-                          >
-                            <span
-                              class="text"
-                            >
-                              24
-                            </span>
-                            <span
-                              class="react-resizable-handle react-resizable-handle-se"
-                            />
-                          </div>,
+                          "current": <span
+                            class="react-resizable-handle react-resizable-handle-se"
+                          />,
                         }
                       }
                       offsetParent={null}

@@ -13,7 +13,7 @@ import {
   clamp
 } from "./calculateUtils";
 import {
-  resizeHandlesType,
+  resizeHandleAxesType,
   resizeHandleType
 } from "./ReactGridLayoutPropTypes";
 import classNames from "classnames";
@@ -29,7 +29,7 @@ import type {
 
 import type { PositionParams } from "./calculateUtils";
 import type {
-  ResizeHandles,
+  ResizeHandleAxis,
   ResizeHandle,
   ReactRef
 } from "./ReactGridLayoutPropTypes";
@@ -82,7 +82,7 @@ type Props = {
   maxH: number,
   i: string,
 
-  resizeHandles?: ResizeHandles,
+  resizeHandles?: ResizeHandleAxis[],
   resizeHandle?: ResizeHandle,
 
   onDrag?: GridItemCallback<GridDragEvent>,
@@ -159,7 +159,7 @@ export default class GridItem extends React.Component<Props, State> {
     i: PropTypes.string.isRequired,
 
     // Resize handle options
-    resizeHandles: resizeHandlesType,
+    resizeHandles: resizeHandleAxesType,
     resizeHandle: resizeHandleType,
 
     // Functions
@@ -392,6 +392,7 @@ export default class GridItem extends React.Component<Props, State> {
     ];
     return (
       <Resizable
+        // These are opts for the resize handle itself
         draggableOpts={{
           disabled: !isResizable,
         }}
