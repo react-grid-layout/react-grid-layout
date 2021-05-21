@@ -95,6 +95,18 @@ describe("Lifecycle tests", function () {
     });
 
     describe("Droppability", function () {
+      function dragDroppableTo(wrapper, x, y) {
+        const gridLayout = wrapper.find("ReactGridLayout");
+        const droppable = wrapper.find(".droppable-element");
+
+        TestUtils.Simulate.dragOver(gridLayout.getDOMNode(), {
+          nativeEvent: {
+            target: droppable.getDOMNode(),
+            layerX: x,
+            layerY: y
+          }
+        });
+      }
       it("Updates when an item is dropped in", function () {
         const wrapper = mount(<DroppableLayout containerPadding={[0, 0]} />);
         const gridLayout = wrapper.find("ReactGridLayout");
@@ -103,15 +115,8 @@ describe("Lifecycle tests", function () {
         // Start: no dropping node.
         expect(gridLayout.state("droppingDOMNode")).toEqual(null);
 
-        // Find the droppable element and drag it over the grid layout.
-        const droppable = wrapper.find(".droppable-element");
-        TestUtils.Simulate.dragOver(gridLayout.getDOMNode(), {
-          nativeEvent: {
-            target: droppable.getDOMNode(),
-            layerX: 200,
-            layerY: 150
-          }
-        });
+        // Drag the droppable over the grid layout.
+        dragDroppableTo(wrapper, 200, 150);
 
         // We should have the position in our state.
         expect(gridLayout.state("droppingPosition")).toHaveProperty(
@@ -144,13 +149,7 @@ describe("Lifecycle tests", function () {
         });
 
         // Let's move it some more.
-        TestUtils.Simulate.dragOver(gridLayout.getDOMNode(), {
-          nativeEvent: {
-            target: droppable.getDOMNode(),
-            layerX: 0,
-            layerY: 300
-          }
-        });
+        dragDroppableTo(wrapper, 0, 300);
 
         // State should change.
         expect(gridLayout.state("droppingPosition")).toHaveProperty("left", 0);
@@ -169,6 +168,44 @@ describe("Lifecycle tests", function () {
           static: false,
           isDraggable: true
         });
+      });
+
+      it("Allows customizing the droppable placeholder", function () {
+        const wrapper = mount(
+          <DroppableLayout onDropDragOver={() => ({ w: 2, h: 2 })} />
+        );
+        const gridLayout = wrapper.find("ReactGridLayout");
+
+        // Find the droppable element and drag it over the grid layout.
+        dragDroppableTo(wrapper, 200, 150);
+
+        // It should also have a layout item assigned to it.
+        const layoutItem = gridLayout
+          .state("layout")
+          .find(item => item.i === "__dropping-elem__");
+        expect(layoutItem).toEqual({
+          i: "__dropping-elem__",
+          h: 2,
+          w: 2,
+          x: 2,
+          y: 4,
+          static: false,
+          isDraggable: true
+        });
+      });
+
+      it("Allows short-circuiting the drag", function () {
+        const wrapper = mount(<DroppableLayout onDropDragOver={() => false} />);
+        const gridLayout = wrapper.find("ReactGridLayout");
+
+        // Find the droppable element and drag it over the grid layout.
+        dragDroppableTo(wrapper, 200, 150);
+
+        // It should also have a layout item assigned to it.
+        const layoutItem = gridLayout
+          .state("layout")
+          .find(item => item.i === "__dropping-elem__");
+        expect(layoutItem).toBeUndefined();
       });
     });
   });

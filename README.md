@@ -372,8 +372,17 @@ onResizeStart: ItemCallback,
 onResize: ItemCallback,
 // Calls when resize is complete.
 onResizeStop: ItemCallback,
+
+//
+// Dropover functionality
+//
+
 // Calls when an element has been dropped into the grid from outside.
 onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void
+// Calls when an element is being dragged over the grid from outside as above.
+// This callback should return an object to dynamically change the droppingItem size
+// Return false to short-circuit the dragover
+onDropDragOver: (e: DragOverEvent) => ?({|w?: number, h?: number|} | false);
 
 // Ref for getting a reference for the grid's wrapping div.
 // You can use this instead of a regular ref and the deprecated `ReactDOM.findDOMNode()`` function.
