@@ -312,7 +312,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
-      layout: allowOverlap ? layout : compact(layout, compactType(this.props), cols),
+      layout: allowOverlap
+        ? layout
+        : compact(layout, compactType(this.props), cols),
       activeDrag: placeholder
     });
   }
@@ -356,7 +358,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
-    const newLayout = allowOverlap ? layout : compact(layout, compactType(this.props), cols);
+    const newLayout = allowOverlap
+      ? layout
+      : compact(layout, compactType(this.props), cols);
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
@@ -444,7 +448,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Re-compact the newLayout and set the drag placeholder.
     this.setState({
-      layout: allowOverlap ? newLayout : compact(newLayout, compactType(this.props), cols),
+      layout: allowOverlap
+        ? newLayout
+        : compact(newLayout, compactType(this.props), cols),
       activeDrag: placeholder
     });
   }
@@ -457,7 +463,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     // Set state
-    const newLayout = allowOverlap ? layout : compact(layout, compactType(this.props), cols);
+    const newLayout = allowOverlap
+      ? layout
+      : compact(layout, compactType(this.props), cols);
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
@@ -728,6 +736,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
+      height: this.containerHeight(),
       ...style
     };
 

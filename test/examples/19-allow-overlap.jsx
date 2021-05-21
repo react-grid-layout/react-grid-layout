@@ -53,9 +53,9 @@ export default class AllowOverlap extends React.PureComponent {
       <ReactGridLayout
         layout={this.state.layout}
         onLayoutChange={this.onLayoutChange}
-        useCSSTransforms
-        preventCollision
-        allowOverlap
+        useCSSTransforms={true}
+        preventCollision={true}
+        allowOverlap={true}
         {...this.props}
       >
         {this.generateDOM()}

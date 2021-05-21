@@ -74,6 +74,7 @@ type Props<Breakpoint: string = string> = {|
 type DefaultProps = Pick<
   Props<>,
   {|
+    allowOverlap: 0,
     breakpoints: 0,
     cols: 0,
     containerPadding: 0,
@@ -281,7 +282,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
         this.props.children,
         newCols,
         compactType,
-        this.props.allowOverlap,
+        this.props.allowOverlap
       );
 
       // Store the new layout.
