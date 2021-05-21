@@ -21,6 +21,7 @@ import {
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
 
+// $FlowFixMe[method-unbinding]
 const type = obj => Object.prototype.toString.call(obj);
 
 /**
