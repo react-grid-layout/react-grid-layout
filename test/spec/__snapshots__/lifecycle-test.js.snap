@@ -161,6 +161,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
     rowHeight={30}
   >
     <ReactGridLayout
+      allowOverlap={false}
       autoSize={true}
       className="layout"
       cols={12}
@@ -4401,6 +4402,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
     rowHeight={30}
   >
     <ReactGridLayout
+      allowOverlap={false}
       autoSize={true}
       className="layout"
       cols={12}
@@ -8912,6 +8914,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
       useCSSTransforms={true}
     >
       <ResponsiveReactGridLayout
+        allowOverlap={false}
         breakpoints={
           Object {
             "lg": 1200,
@@ -9501,6 +9504,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
         width={1280}
       >
         <ReactGridLayout
+          allowOverlap={false}
           autoSize={true}
           className="layout"
           cols={12}

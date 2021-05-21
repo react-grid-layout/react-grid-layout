@@ -4,7 +4,6 @@ import * as React from "react";
 import isEqual from "lodash.isequal";
 import classNames from "classnames";
 import {
-  autoBindHandlers,
   bottom,
   childrenEqual,
   cloneLayoutItem,
@@ -140,18 +139,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   dragEnterCounter: number = 0;
 
-  constructor(props: Props, context: any): void {
-    super(props, context);
-    autoBindHandlers(this, [
-      "onDragStart",
-      "onDrag",
-      "onDragStop",
-      "onResizeStart",
-      "onResize",
-      "onResizeStop"
-    ]);
-  }
-
   componentDidMount() {
     this.setState({ mounted: true });
     // Possibly call back with layout on mount. This should be done after correcting the layout width
@@ -254,12 +241,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDragStart(
+  onDragStart: (i: string, x: number, y: number, GridDragEvent) => void = (
     i: string,
     x: number,
     y: number,
     { e, node }: GridDragEvent
-  ): void {
+  ) => {
     const { layout } = this.state;
     const l = getLayoutItem(layout, i);
     if (!l) return;
@@ -270,7 +257,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     });
 
     return this.props.onDragStart(layout, l, l, null, e, node);
-  }
+  };
 
   /**
    * Each drag movement create a new dragelement and move the element to the dragged location
@@ -280,7 +267,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDrag(i: string, x: number, y: number, { e, node }: GridDragEvent): void {
+  onDrag: (i: string, x: number, y: number, GridDragEvent) => void = (
+    i,
+    x,
+    y,
+    { e, node }
+  ) => {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
     const { cols, allowOverlap } = this.props;
@@ -314,10 +306,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
-      layout: allowOverlap ? layout : compact(layout, compactType(this.props), cols),
+      layout: allowOverlap
+        ? layout
+        : compact(layout, compactType(this.props), cols),
       activeDrag: placeholder
     });
-  }
+  };
 
   /**
    * When dragging stops, figure out which position the element is closest to and update its x and y.
@@ -327,12 +321,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @param {Event} e The mousedown event
    * @param {Element} node The current dragging DOM element
    */
-  onDragStop(
-    i: string,
-    x: number,
-    y: number,
-    { e, node }: GridDragEvent
-  ): void {
+  onDragStop: (i: string, x: number, y: number, GridDragEvent) => void = (
+    i,
+    x,
+    y,
+    { e, node }
+  ) => {
     if (!this.state.activeDrag) return;
 
     const { oldDragItem } = this.state;
@@ -358,7 +352,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);
 
     // Set state
-    const newLayout = allowOverlap ? layout : compact(layout, compactType(this.props), cols);
+    const newLayout = allowOverlap
+      ? layout
+      : compact(layout, compactType(this.props), cols);
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
@@ -368,7 +364,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
-  }
+  };
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
@@ -378,7 +374,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
   }
 
-  onResizeStart(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
+  onResizeStart: (i: string, w: number, h: number, GridResizeEvent) => void = (
+    i,
+    w,
+    h,
+    { e, node }
+  ) => {
     const { layout } = this.state;
     const l = getLayoutItem(layout, i);
     if (!l) return;
@@ -390,9 +391,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     });
 
     this.props.onResizeStart(layout, l, l, null, e, node);
-  }
+  };
 
-  onResize(i: string, w: number, h: number, { e, node, size, handle }: GridResizeEvent) {
+  onResize: (i: string, w: number, h: number, GridResizeEvent) => void = (
+    i,
+    w,
+    h,
+    { e, node, size, handle }
+  ) => {
     const { oldResizeItem } = this.state;
     let { layout } = this.state;
     const { cols, preventCollision, allowOverlap } = this.props;
@@ -475,12 +481,19 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // Re-compact the newLayout and set the drag placeholder.
     this.setState({
-      layout: allowOverlap ? finalLayout : compact(finalLayout, compactType(this.props), cols),
+      layout: allowOverlap
+        ? finalLayout
+        : compact(finalLayout, compactType(this.props), cols),
       activeDrag: placeholder
     });
-  }
+  };
 
-  onResizeStop(i: string, w: number, h: number, { e, node }: GridResizeEvent) {
+  onResizeStop: (i: string, w: number, h: number, GridResizeEvent) => void = (
+    i,
+    w,
+    h,
+    { e, node }
+  ) => {
     const { layout, oldResizeItem } = this.state;
     const { cols, allowOverlap } = this.props;
     const l = getLayoutItem(layout, i);
@@ -488,7 +501,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
 
     // Set state
-    const newLayout = allowOverlap ? layout : compact(layout, compactType(this.props), cols);
+    const newLayout = allowOverlap
+      ? layout
+      : compact(layout, compactType(this.props), cols);
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
@@ -499,7 +514,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
-  }
+  };
 
   /**
    * Create a placeholder object.
@@ -762,6 +777,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
+      height: this.containerHeight(),
       ...style
     };
 
