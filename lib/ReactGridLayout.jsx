@@ -619,6 +619,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   // Called while dragging an element. Part of browser native drag/drop API.
   // Native event target might be the layout itself, or an element within the layout.
   onDragOver: DragOverEvent => void | false = e => {
+    e.preventDefault(); // Prevent any browser native action
+    e.stopPropagation();
+
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
     // FIXME remove this hack
@@ -627,8 +630,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       // $FlowIgnore can't figure this out
       !e.nativeEvent.target?.classList.contains(layoutClassName)
     ) {
-      // without this Firefox will not allow drop if currently over droppingItem
-      e.preventDefault();
       return false;
     }
 
@@ -685,9 +686,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         this.setState({ droppingPosition });
       }
     }
-
-    e.stopPropagation();
-    e.preventDefault();
   };
 
   removeDroppingPlaceholder: () => void = () => {
@@ -708,7 +706,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     });
   };
 
-  onDragLeave: () => void = () => {
+  onDragLeave: EventHandler = e => {
+    e.preventDefault(); // Prevent any browser native action
     this.dragEnterCounter--;
 
     // onDragLeave can be triggered on each layout's child.
@@ -721,11 +720,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
   };
 
-  onDragEnter: () => void = () => {
+  onDragEnter: EventHandler = e => {
+    e.preventDefault(); // Prevent any browser native action
     this.dragEnterCounter++;
   };
 
   onDrop: EventHandler = (e: Event) => {
+    e.preventDefault(); // Prevent any browser native action
     const { droppingItem } = this.props;
     const { layout } = this.state;
     const item = layout.find(l => l.i === droppingItem.i);
