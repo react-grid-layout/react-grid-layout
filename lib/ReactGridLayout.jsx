@@ -602,7 +602,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       width,
       containerPadding
     } = this.props;
-    const finalDroppingItem = onDragOver ? { ...droppingItem, ...onDragOver(e) } : droppingItem;
+    // Allow user to customize the dropping item or short-circuit the drop based on the results
+    // of the `onDragOver(e: Event)` callback.
+    const onDragOverResult = onDragOver?.(e);
+    if (onDragOverResult === false) return;
+    const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
     
     const { layout } = this.state;
     // This is relative to the DOM element that this event fired for.
