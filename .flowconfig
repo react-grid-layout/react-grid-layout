@@ -1,5 +1,5 @@
 [version]
-^0.150.1
+^0.151.0
 
 [ignore]
 <PROJECT_ROOT>/build/.*
@@ -15,6 +15,5 @@ interfaces/
 flow-typed/
 
 [options]
-sharedmemory.heap_size=3221225472
 emoji=true
 module.use_strict=true
