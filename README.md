@@ -342,7 +342,7 @@ isDroppable: ?boolean = false
 // 'ne' - Northeast handle (top-right)
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
 // Custom component for resize handles
-// See `handle` as used in https://github.com/react-grid-layout/react-resizable#props
+// See `handle` as used in https://github.com/react-grid-layout/react-resizable#resize-handle
 resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>)
 
 //
