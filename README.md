@@ -266,6 +266,7 @@ cols: ?number = 12,
 // A CSS selector for tags that will not be draggable.
 // For example: draggableCancel:'.MyNonDraggableAreaClassName'
 // If you forget the leading . it will not work.
+// .react-resizable-handle" is always prepended to this value.
 draggableCancel: ?string = '',
 
 // A CSS selector for tags that will act as the draggable handle.
@@ -343,6 +344,8 @@ isDroppable: ?boolean = false
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
 // Custom component for resize handles
 // See `handle` as used in https://github.com/react-grid-layout/react-resizable#resize-handle
+// Your component should have the class `.react-resizable-handle`, or you should add your custom
+// class to the `draggableCancel` prop.
 resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>)
 
 //
