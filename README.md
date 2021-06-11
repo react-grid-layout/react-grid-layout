@@ -519,6 +519,29 @@ function MyGrid(props) {
 
 Because the `children` prop doesn't change between rerenders, updates to `<MyGrid>` won't result in new renders, improving performance.
 
+### Custom Child Components and Draggable Handles
+
+If you use React Components as grid children, they need to do a few things:
+
+1. Forward refs to an underlying DOM node, and
+2. Forward `style` and `className` to that same DOM node.
+
+For example:
+
+```js
+const CustomGridItemComponent = React.forwardRef(({style, className, ...props}, ref) => {
+  return (
+    <div style={{ /* styles */, ...style}} className={className} ref={ref}>
+      {/* Some other content */}
+    </div>  
+  );
+}
+```
+
+The same is true of custom elements as draggable handles using the `draggableHandle` prop. This is so that
+the underlying `react-draggable` library can get a reference to the DOM node underneath, manipulate
+positioning via `style`, and set classes.
+
 ## Contribute
 
 If you have a feature request, please add it as an issue or make a pull request.
