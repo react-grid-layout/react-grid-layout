@@ -584,11 +584,9 @@ export default class GridItem extends React.Component<Props, State> {
   ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
-    const { cols, x, y, i, maxH, minH, useCSSTransforms } = this.props;
+    const { cols, x, y, i, maxH, minH } = this.props;
     let { minW, maxW } = this.props;
 
-    const handleOrientation =
-      ["sw","w","nw"].indexOf(handle) != -1 ? "west" : "east";
     // Get new XY
     let { w, h } = calcWH(
       this.getPositionParams(),
@@ -596,17 +594,11 @@ export default class GridItem extends React.Component<Props, State> {
       size.height,
       x,
       y,
-      handleOrientation
+      handle
     );
 
     // minW should be at least 1 (TODO propTypes validation?)
     minW = Math.max(minW, 1);
-
-    if (handleOrientation === "west") {
-      maxW = Math.min(maxW, cols);
-    } else {
-      maxW = Math.min(maxW, cols - x);
-    }
 
     // Min/max capping
     w = clamp(w, minW, maxW);

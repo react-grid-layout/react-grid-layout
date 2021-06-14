@@ -436,11 +436,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       let y = l.y;
       if (["sw","nw","w"].indexOf(handle) !== -1) {
         x = l.x + (l.w - w);
+        w = l.x !== x && x < 0 ? l.w : w;
         x = x < 0 ? 0 : x;
       }
 
       if (["ne","n","nw"].indexOf(handle) !== -1) {
         y = l.y + (l.h - h);
+        h = l.y !== y && y < 0 ? l.h : h;
         y = y < 0 ? 0 : y;
       }
 
@@ -456,7 +458,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isUserAction,
         this.props.preventCollision,
         compactType(this.props),
-        cols
+        cols,
+        allowOverlap
       );
     } else {
       l.w = w;
