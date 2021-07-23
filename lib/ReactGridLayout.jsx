@@ -101,6 +101,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     verticalCompact: true,
     compactType: "vertical",
     preventCollision: false,
+    ignoreClickOnly: false,
     droppingItem: {
       i: "__dropping-elem__",
       h: 1,
@@ -551,6 +552,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isDraggable,
       isResizable,
       isBounded,
+      ignoreClickOnly,
       useCSSTransforms,
       transformScale,
       draggableCancel,
@@ -597,6 +599,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
+        ignoreClickOnly={ignoreClickOnly}
         transformScale={transformScale}
         w={l.w}
         h={l.h}
