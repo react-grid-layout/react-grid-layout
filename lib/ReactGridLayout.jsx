@@ -138,6 +138,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   dragEnterCounter: number = 0;
 
+  ref = React.createRef();
+
   componentDidMount() {
     this.setState({ mounted: true });
     // Possibly call back with layout on mount. This should be done after correcting the layout width
@@ -657,9 +659,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
 
     const { layout } = this.state;
-    // This is relative to the DOM element that this event fired for.
-    const { layerX, layerY } = e.nativeEvent;
-    const droppingPosition = { left: layerX / transformScale, top: layerY / transformScale, e };
+
+    const { clientX, clientY } = e.nativeEvent;
+    const dropTarget = this.ref.current?.getBoundingClientRect() ?? {left:0, top:0};
+    const offsetX = (clientX - dropTarget.left) / transformScale;
+    const offsetY = (clientY - dropTarget.top) / transformScale;
+
+    const droppingPosition = { left: offsetX, top: offsetY, e };
 
     if (!this.state.droppingDOMNode) {
       const positionParams: PositionParams = {
@@ -673,8 +679,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
       const calculatedPosition = calcXY(
         positionParams,
-        layerY,
-        layerX,
+        offsetY,
+        offsetX,
         finalDroppingItem.w,
         finalDroppingItem.h
       );
@@ -695,7 +701,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       });
     } else if (this.state.droppingPosition) {
       const { left, top } = this.state.droppingPosition;
-      const shouldUpdatePosition = left != layerX || top != layerY;
+      const shouldUpdatePosition = left != droppingPosition.left || top != droppingPosition.top;
       if (shouldUpdatePosition) {
         this.setState({ droppingPosition });
       }
@@ -755,6 +761,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   render(): React.Element<"div"> {
     const { className, style, isDroppable, innerRef } = this.props;
+    
+    if (innerRef) {
+      innerRef.current = this.ref.current;
+    }
 
     const mergedClassName = classNames(layoutClassName, className);
     const mergedStyle = {
@@ -764,7 +774,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     return (
       <div
-        ref={innerRef}
+        ref={this.ref}
         className={mergedClassName}
         style={mergedStyle}
         onDrop={isDroppable ? this.onDrop : noop}

@@ -102,8 +102,8 @@ describe("Lifecycle tests", function () {
         TestUtils.Simulate.dragOver(gridLayout.getDOMNode(), {
           nativeEvent: {
             target: droppable.getDOMNode(),
-            layerX: x,
-            layerY: y
+            clientX: x,
+            clientY: y
           }
         });
       }
