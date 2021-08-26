@@ -9,7 +9,8 @@ module.exports = {
   output: {
     path: "/",
     filename: "bundle.js",
-    sourceMapFilename: "[file].map"
+    sourceMapFilename: "[file].map",
+    publicPath: "/"
   },
   module: {
     rules: [
@@ -33,12 +34,15 @@ module.exports = {
   ],
   devtool: "eval",
   devServer: {
-    publicPath: "/",
     compress: true,
     port: 4002,
-    open: true,
-    openPage: "index-dev.html",
-    contentBase: "."
+    open: "index-dev.html",
+    client: {
+      overlay: true
+    },
+    static: {
+      directory: "."
+    }
   },
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
