@@ -2,7 +2,7 @@
 import * as React from "react";
 
 import isEqual from "lodash.isequal";
-import classNames from "classnames";
+import clsx from "clsx";
 import {
   bottom,
   childrenEqual,
@@ -756,7 +756,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   render(): React.Element<"div"> {
     const { className, style, isDroppable, innerRef } = this.props;
 
-    const mergedClassName = classNames(layoutClassName, className);
+    const mergedClassName = clsx(layoutClassName, className);
     const mergedStyle = {
       height: this.containerHeight(),
       ...style
