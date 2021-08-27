@@ -160,5 +160,12 @@ module.exports = [
     paragraphs: [
       "This demonstrates how to compensate for a scaled parent."
     ]
+  },
+  {
+    title: "Allow Overlap",
+    source: "allow-overlap",
+    paragraphs: [
+      "This demonstrates how to overlap grid items."
+    ]
   }
 ];
