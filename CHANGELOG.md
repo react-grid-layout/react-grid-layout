@@ -1,5 +1,27 @@
 # Changelog
 
+1.3.0 (Aug 27, 2021)
+---
+
+### New Features
+  - `allowOverlap` prop, when `true`, allows overlapping grid items. [#1470](https://github.com/react-grid-layout/react-grid-layout/pull/1470)
+  - Add `onDropDragOver` callback. [#1395](https://github.com/react-grid-layout/react-grid-layout/pull/1395)
+    - Use this callback to dynamically adjust the `droppingItem` based on what is being dragged over. Return `w` and `h` to adjust the item. It is then [spread into the dropping placeholder](https://github.com/react-grid-layout/react-grid-layout/pull/1395/files#diff-83ab569936bfd4bf0460a4f23653ecbe8bc88509062c95e75c9402218b2b8733R609).
+    - This callback has the type:
+      - `onDragOver: (e: DragOverEvent) => { w: number, h: number } | false;`
+      - Return `false` to short-circuit the dragover.
+
+### Bugfixes
+  - Remove sorting when `compactType` is `null`. [#1474](https://github.com/react-grid-layout/react-grid-layout/pull/1474)
+  - Droppable fixes for Chrome behavior. [#1442](https://github.com/react-grid-layout/react-grid-layout/issues/1442) [#1448](https://github.com/react-grid-layout/react-grid-layout/issues/1442)
+  - Allow `null` children as a convenience so that inline expressions don't break the library. [#1296](https://github.com/react-grid-layout/react-grid-layout/pull/1296)
+  - Various dependency upgrades.
+
+### Documentation
+  - Add docs on using custom components as grid children.
+  - Note required class on resizable handles for proper styling.
+
+
 1.2.5 (May 10, 2021)
 ---
 
