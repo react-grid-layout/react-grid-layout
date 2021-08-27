@@ -551,7 +551,7 @@ positioning via `style`, and set classes.
 
 If you have a feature request, please add it as an issue or make a pull request.
 
-If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js) to help
+If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/staging-bush-3lvt7?file=/src/ShowcaseLayout.js) to help
 us easily isolate it.
 
 ## TODO List
@@ -567,5 +567,5 @@ us easily isolate it.
 - [x] Static elements
 - [x] Persistent id per item for predictable localstorage restores, even when # items changes
 - [x] Min/max w/h per item
-- [ ] Resizable handles on other corners
+- [x] Resizable handles on other corners
 - [ ] Configurable w/h per breakpoint
