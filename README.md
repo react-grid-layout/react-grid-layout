@@ -55,6 +55,7 @@ RGL is React-only and does not require jQuery.
 1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/16-bounded.html)
 1. [Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/17-resizable-handles.html)
 1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
+1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -317,9 +318,12 @@ useCSSTransforms: ?boolean = true,
 // we should set scale coefficient to avoid render artefacts while dragging.
 transformScale: ?number = 1,
 
+// If true, grid can be placed one over the other.
+allowOverlap: ?boolean = false,
+
 // If true, grid items won't change position when being
 // dragged over.
-preventCollision: ?boolean = false;
+preventCollision: ?boolean = false,
 
 // If true, droppable elements (with `draggable={true}` attribute)
 // can be dropped on the grid. It triggers "onDrop" callback
@@ -331,7 +335,7 @@ preventCollision: ?boolean = false;
 // along with `draggable={true}` otherwise this feature will work incorrect.
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-isDroppable: ?boolean = false
+isDroppable: ?boolean = false,
 // Defines which resize handles should be rendered
 // Allows for any combination of:
 // 's' - South handle (bottom-center)
@@ -342,12 +346,12 @@ isDroppable: ?boolean = false
 // 'nw' - Northwest handle (top-left)
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
-resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
+resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se'],
 // Custom component for resize handles
 // See `handle` as used in https://github.com/react-grid-layout/react-resizable#resize-handle
 // Your component should have the class `.react-resizable-handle`, or you should add your custom
 // class to the `draggableCancel` prop.
-resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>)
+resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>),
 
 //
 // Callbacks
@@ -362,7 +366,7 @@ onLayoutChange: (layout: Layout) => void,
 // 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
 //
 type ItemCallback = (layout: Layout, oldItem: LayoutItem, newItem: LayoutItem,
-                     placeholder: LayoutItem, e: MouseEvent, element: HTMLElement) => void;
+                     placeholder: LayoutItem, e: MouseEvent, element: HTMLElement) => void,
 
 // Calls when drag starts.
 onDragStart: ItemCallback,
@@ -382,15 +386,15 @@ onResizeStop: ItemCallback,
 //
 
 // Calls when an element has been dropped into the grid from outside.
-onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void
+onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void,
 // Calls when an element is being dragged over the grid from outside as above.
 // This callback should return an object to dynamically change the droppingItem size
 // Return false to short-circuit the dragover
-onDropDragOver: (e: DragOverEvent) => ?({|w?: number, h?: number|} | false);
+onDropDragOver: (e: DragOverEvent) => ?({|w?: number, h?: number|} | false),
 
 // Ref for getting a reference for the grid's wrapping div.
 // You can use this instead of a regular ref and the deprecated `ReactDOM.findDOMNode()`` function.
-innerRef: ?React.Ref<"div">
+innerRef: ?React.Ref<"div">,
 ```
 
 ### Responsive Grid Layout Props
@@ -408,16 +412,16 @@ cols: ?Object = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
 
 
 // margin (in pixels). Can be specified either as horizontal and vertical margin, e.g. `[10, 10]` or as a breakpoint -> margin map, e.g. `{lg: [10, 10], md: [10, 10], ...}.
-margin: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]}
+margin: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]},
 
 
 // containerPadding (in pixels). Can be specified either as horizontal and vertical padding, e.g. `[10, 10]` or as a breakpoint -> containerPadding map, e.g. `{lg: [10, 10], md: [10, 10], ...}.
-containerPadding: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]}
+containerPadding: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]},
 
 
 // layouts is an object mapping breakpoints to layouts.
 // e.g. {lg: Layout, md: Layout, ...}
-layouts: {[key: $Keys<breakpoints>]: Layout}
+layouts: {[key: $Keys<breakpoints>]: Layout},
 
 //
 // Callbacks
