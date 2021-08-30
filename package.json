@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
-    "classnames": "2.3.1",
+    "clsx": "^1.1.1",
     "lodash.isequal": "^4.0.0",
     "prop-types": "^15.0.0",
     "react-draggable": "^4.0.0",

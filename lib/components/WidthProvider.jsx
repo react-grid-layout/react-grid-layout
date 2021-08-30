@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
+import clsx from "clsx";
 import type { ReactRef } from "../ReactGridLayoutPropTypes";
 
 type WPDefaultProps = {|
@@ -88,7 +88,7 @@ export default function WidthProvideRGL<Config>(
       if (measureBeforeMount && !this.mounted) {
         return (
           <div
-            className={classNames(this.props.className, layoutClassName)}
+            className={clsx(this.props.className, layoutClassName)}
             style={this.props.style}
             // $FlowIgnore ref types
             ref={this.elementRef}
