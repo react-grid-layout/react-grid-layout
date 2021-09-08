@@ -16,7 +16,7 @@ import {
   resizeHandleAxesType,
   resizeHandleType
 } from "./ReactGridLayoutPropTypes";
-import classNames from "classnames";
+import clsx from "clsx";
 import type { Element as ReactElement, Node as ReactNode } from "react";
 
 import type {
@@ -634,7 +634,7 @@ export default class GridItem extends React.Component<Props, State> {
     // Create the child element. We clone the existing element but modify its className and style.
     let newChild = React.cloneElement(child, {
       ref: this.elementRef,
-      className: classNames(
+      className: clsx(
         "react-grid-item",
         child.props.className,
         this.props.className,
