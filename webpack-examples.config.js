@@ -13,7 +13,7 @@ module.exports = {
         commons: {
           name: "commons",
           chunks: "all",
-          minChunks: 2
+          minChunks: 1
         }
       }
     }
@@ -22,7 +22,7 @@ module.exports = {
     path: __dirname + "/examples",
     filename: "[name].js",
     sourceMapFilename: "[file].map",
-    publicPath: "/examples/"
+    publicPath: "auto"
   },
   module: {
     rules: [
