@@ -56,9 +56,9 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     });
   }
 
-  onLayoutChange(layout: Layout) {
+  onLayoutChange: (Layout) => void = (layout: Layout) => {
     this.props.onLayoutChange(layout);
-  }
+  };
 
   render(): React.Node {
     // eslint-disable-next-line no-unused-vars
