@@ -57,6 +57,7 @@ type Props = {
   rowHeight: number,
   maxRows: number,
   isDraggable: boolean,
+  delayedDragOnTouch: boolean,
   isResizable: boolean,
   isBounded: boolean,
   static?: boolean,
@@ -172,6 +173,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Flags
     isDraggable: PropTypes.bool.isRequired,
+    delayedDragOnTouch: PropTypes.bool,
     isResizable: PropTypes.bool.isRequired,
     isBounded: PropTypes.bool.isRequired,
     static: PropTypes.bool,
@@ -206,6 +208,7 @@ export default class GridItem extends React.Component<Props, State> {
   };
 
   state: State = {
+    dragEnabled: false,
     resizing: null,
     dragging: null,
     className: ""
@@ -243,10 +246,19 @@ export default class GridItem extends React.Component<Props, State> {
 
   componentDidMount() {
     this.moveDroppingItem({});
+
+    if (this.props.isDraggable && this.props.delayedDragOnTouch) {
+      this.registerTouchEventListeners();
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
     this.moveDroppingItem(prevProps);
+  }
+
+  componentWillUnmount() {
+    if (this.props.isDraggable && this.props.delayedDragOnTouch)
+      this.unregisterTouchEventListeners();
   }
 
   // When a droppingPosition is present, this means we should fire a move event, as if we had moved
@@ -326,6 +338,111 @@ export default class GridItem extends React.Component<Props, State> {
     }
 
     return style;
+  }
+
+  isMouseDown = React.createRef(false);
+  dragEnabled = React.createRef(false);
+  initMouseXY = React.createRef([0, 0]);
+  timeoutRef = React.createRef();
+
+  // Check if device is touch-capable.
+  isTouchCapable(): void {
+    return (
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      navigator.msMaxTouchPoints > 0
+    );
+  }
+
+  /**
+   * onTouchStart event handler
+   * @param  {Event}  e             event data
+   */
+  onTouchStart: Event => void = e => {
+    this.isMouseDown.current = true;
+    // Prevent user-select on long press.
+    this.elementRef.current.style.userSelect = "none";
+
+    // Enable drag after 1 second.
+    this.timeoutRef.current = setTimeout(() => {
+      if (this.isMouseDown.current) {
+        this.dragEnabled.current = true;
+        this.initMouseXY.current = [e.touches[0].clientX, e.touches[0].clientY];
+        this.onDragStart(e, { node: this.elementRef.current });
+      }
+    }, 1000);
+  };
+
+  /**
+   * onTouchMove event handler
+   * @param  {Event}  e             event data
+   */
+  onTouchMove: Event => void = e => {
+    if (this.dragEnabled.current) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const [x, y] = this.initMouseXY.current;
+      const [newX, newY] = [e.touches[0].clientX, e.touches[0].clientY];
+      this.onDrag(e, {
+        node: this.elementRef.current,
+        deltaX: newX - x,
+        deltaY: newY - y
+      });
+      this.initMouseXY.current = [newX, newY];
+    } else {
+      // Prevent touch and scroll at the same time
+      if (this.timeoutRef.current) clearTimeout(this.timeoutRef.current);
+    }
+  };
+
+  /**
+   * onTouchEnd event handler
+   * @param  {Event}  e             event data
+   */
+  onTouchEnd: Event => void = e => {
+    if (this.dragEnabled.current) {
+      this.onDragStop(e, {
+        node: this.elementRef.current
+      });
+      this.isMouseDown.current = false;
+      this.dragEnabled.current = false;
+      this.initMouseXY.current = [0, 0];
+    }
+
+    if (this.timeoutRef.current) clearTimeout(this.timeoutRef.current);
+  };
+
+  touchEventListeners = React.createRef([]);
+
+  /**
+   * Register touch event listeners to enable delayed drag operations.
+   */
+  registerTouchEventListeners(): void {
+    const touchStart = this.elementRef.current.addEventListener(
+      "touchstart",
+      this.onTouchStart,
+      { passive: false }
+    );
+    const touchMove = this.elementRef.current.addEventListener(
+      "touchmove",
+      this.onTouchMove,
+      { passive: false }
+    );
+    const touchEnd = this.elementRef.current.addEventListener(
+      "touchend",
+      this.onTouchEnd,
+      {
+        passive: false
+      }
+    );
+    this.touchEventListeners.current = [touchStart, touchMove, touchEnd];
+  }
+
+  unregisterTouchEventListeners(): void {
+    this.touchEventListeners.current.forEach(eventListener => {
+      this.elementRef.current.removeEventListener(eventListener);
+    });
   }
 
   /**
@@ -622,6 +739,7 @@ export default class GridItem extends React.Component<Props, State> {
       h,
       isDraggable,
       isResizable,
+      delayedDragOnTouch,
       droppingPosition,
       useCSSTransforms
     } = this.props;
@@ -664,7 +782,11 @@ export default class GridItem extends React.Component<Props, State> {
     newChild = this.mixinResizable(newChild, pos, isResizable);
 
     // Draggable support. This is always on, except for with placeholders.
-    newChild = this.mixinDraggable(newChild, isDraggable);
+    newChild = this.mixinDraggable(
+      newChild,
+      (isDraggable && !this.isTouchCapable()) ||
+        (isDraggable && this.isTouchCapable() && !delayedDragOnTouch)
+    );
 
     return newChild;
   }

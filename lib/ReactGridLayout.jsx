@@ -93,6 +93,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     margin: [10, 10],
     isBounded: false,
     isDraggable: true,
+    delayedDragOnTouch: true,
     isResizable: true,
     allowOverlap: false,
     isDroppable: false,
@@ -528,7 +529,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       </GridItem>
     );
   }
-
+  
   /**
    * Given a grid item, set its style attributes & surround in a <Draggable>.
    * @param  {Element} child React element.
@@ -549,6 +550,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       rowHeight,
       maxRows,
       isDraggable,
+      delayedDragOnTouch,
       isResizable,
       isBounded,
       useCSSTransforms,
@@ -593,6 +595,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
+        delayedDragOnTouch={delayedDragOnTouch}
         isResizable={resizable}
         isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}
