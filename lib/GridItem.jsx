@@ -334,7 +334,18 @@ export default class GridItem extends React.Component<Props, State> {
     return style;
   }
 
-  draggableRef = React.createRef();
+  // Check if device is touch-capable.
+  isTouchCapable(): boolean {
+    return (
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      navigator.msMaxTouchPoints > 0
+    );
+  }
+
+  // A reference to the DraggableCore component to access it directly.
+  draggableCoreRef = React.createRef();
+
   /**
    * Mix a Draggable instance into a child.
    * @param  {Element} child    Child element.
@@ -344,26 +355,39 @@ export default class GridItem extends React.Component<Props, State> {
     child: ReactElement<any>,
     isDraggable: boolean
   ): ReactElement<any> {
+    const delayedDragEnabled: boolean =
+      this.props.dragDelayDuration && this.isTouchCapable();
+    /**
+     * Delayed works by changing the 'cancel' prop of the DraggableCore component
+     * which is a CSS selector of the elements we wish to ignore them while dragging.
+     * We can calculate this 'cancel' prop by calling the function below:
+     */
+    const cancelSelector: () => string = () => {
+      const draggable =
+        ".react-resizable-handle" +
+        (this.props.cancel ? "," + this.props.cancel : "");
+      const notDraggable = ".react-grid-item";
+
+      if (delayedDragEnabled) {
+        return this.state.allowedToDrag ? draggable : notDraggable;
+      } else {
+        return draggable;
+      }
+    };
+
     return (
       <DraggableCore
         disabled={!isDraggable}
         onStart={this.onDragStart}
-        onMouseDown={this.onMouseDown}
+        onMouseDown={delayedDragEnabled ? this.onMouseDown : undefined}
         onDrag={this.onDrag}
         onStop={this.onDragStop}
         handle={this.props.handle}
         enableUserSelectHack={false}
-        cancel={
-          this.state.allowedToDrag &&
-          this.props.dragDelayDuration &&
-          this.isTouchCapable()
-            ? ".react-resizable-handle" +
-              (this.props.cancel ? "," + this.props.cancel : "")
-            : ".react-grid-item"
-        }
+        cancel={cancelSelector()}
         scale={this.props.transformScale}
         nodeRef={this.elementRef}
-        ref={this.draggableRef}
+        ref={this.draggableCoreRef}
       >
         {child}
       </DraggableCore>
@@ -434,63 +458,103 @@ export default class GridItem extends React.Component<Props, State> {
     );
   }
 
-  delayEvents = React.createRef([]);
-  initMouseXY = React.createRef([0, 0]);
-  timeoutRef = React.createRef();
+  delayEvents = React.createRef();
+  addEvent = (type, event, passive = true) => {
+    if (this.elementRef.current) {
+      this.elementRef.current.addEventListener(type, event, {
+        passive
+      });
+      this.delayEvents.current.push({ type, event, passive });
+    }
+  };
 
-  // Check if device is touch-capable.
-  isTouchCapable(): void {
-    return (
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      navigator.msMaxTouchPoints > 0
-    );
-  }
+  removeEvents = () => {
+    if (this.elementRef.current) {
+      this.delayEvents.current.forEach(({ type, event, passive }) => {
+        this.elementRef.current.removeEventListener(type, event, {
+          passive
+        });
+      });
+      this.delayEvents.current = [];
+    }
+  };
 
-  startDelayTimeout = e => {
+  //A reference to the timeout handler to be able to access it at any time.
+  timeoutRef: { current: null | TimeoutID, ... } = React.createRef();
+
+  /**
+   * Start the delayed counter to determine when a drag should start.
+   * @param  {Event} e          TouchStart/MouseDown event.
+   */
+  startDelayTimeout: Event => void = e => {
+    this.delayEvents.current = [];
     if (!this.state.allowedToDrag) {
-      const events = [
-        {
-          type: "mouseup",
-          event: this.elementRef.current.addEventListener(
-            "mouseup",
-            this.resetDelayTimeout
-          )
-        },
-        {
-          type: "touchend",
-          event: this.elementRef.current.addEventListener(
-            "touchend",
-            this.resetDelayTimeout
-          )
-        }
-      ];
-      this.delayEvents.current = events;
-      this.elementRef.current.style.userSelect = "none";
-      this.elementRef.current.style.touchAction = "none";
+      /**
+       * Register events to cancel the timeout handler if user releases the mouse or touch
+       */
+      this.addEvent("mouseup", this.resetDelayTimeout);
+      this.addEvent("touchend", this.resetDelayTimeout);
+      /**
+       * Prevent user from doing touch and scroll at the same time.
+       * If the user starts scrolling, we can not cancel the scroll event,
+       * so we cancel the drag event instead.
+       */
+      this.addEvent("touchmove", this.handleTouchMove, false);
 
+      // Prevent text selection while dragging.
+      this.elementRef.current.style.userSelect = "none";
+
+      // Start the timeout and assign its handler to the timeoutRef
       this.timeoutRef.current = setTimeout(() => {
         this.timeoutRef.current = null;
         this.setState({ allowedToDrag: true });
-        this.draggableRef.current.handleDragStart(e);
+        // Start the drag process by calling the DraggableCore handleDragStartFunction directly.
+        this.draggableCoreRef.current.handleDragStart(e);
       }, this.props.dragDelayDuration);
     }
   };
 
-  resetDelayTimeout = () => {
-    this.setState({ allowedToDrag: false });
+  /**
+   * Reset the drag timer and clear all events and values.
+   */
+  resetDelayTimeout: () => void = () => {
+    if (!this.timeoutRef.current) return;
+
     clearTimeout(this.timeoutRef.current);
     this.timeoutRef.current = null;
+
+    this.setState({ allowedToDrag: false });
+    this.removeEvents();
+
     this.elementRef.current.style.userSelect = "";
-    this.elementRef.current.style.touchAction = "";
-    this.delayEvents.current.forEach(({ type, event }) => {
-      this.elementRef.current.removeEventListener(type, event);
-    });
   };
 
-  onMouseDown = e => {
+  /**
+   * onMouseDown event is tied to both 'mousedown' and 'touchstart' events in DraggableCore.
+   * We start the delayed drag process when the user presses the mouse button or the finger.
+   * @param  {Event} e  TouchStart/MouseDown event.
+   */
+  onMouseDown: Event => void = e => {
     if (!this.timeoutRef.current) {
       this.startDelayTimeout(e);
+    }
+  };
+
+  /**
+   * Prevent user from doing touch and scroll at the same time.
+   * If the user starts scrolling, we can not cancel the scroll event,
+   * so we cancel the drag event instead.
+   *
+   * if the user is currently dragging, and the timeout has not been canceled,
+   * we prevent the future scroll events by calling preventDefault.
+   *
+   * @param  {Event} e  TouchMove/Scroll event.
+   */
+  handleTouchMove: Event => void = (e: TouchEvent) => {
+    if (this.state.allowedToDrag) {
+      e.preventDefault();
+    } else {
+      this.resetDelayTimeout();
     }
   };
 
@@ -543,11 +607,6 @@ export default class GridItem extends React.Component<Props, State> {
     e,
     { node, deltaX, deltaY }
   ) => {
-    if (!this.state.allowedToDrag) {
-      this.resetDelayTimeout();
-      return;
-    }
-
     const { onDrag } = this.props;
     if (!onDrag) return;
 
