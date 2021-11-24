@@ -287,7 +287,7 @@ cols: ?number = 12,
 // If set, items will be draggable only after the specified delay.
 // This feature is only enabled on touch devices.
 // This can be helpful if you want to be able to scroll on touch devices easily.
-dragDelayDuration: ?number = 1000,
+dragTouchDelayDuration: ?number = 1000,
 
 // A CSS selector for tags that will not be draggable.
 // For example: draggableCancel:'.MyNonDraggableAreaClassName'
