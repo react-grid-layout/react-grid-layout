@@ -54,7 +54,6 @@ export default class AllowOverlap extends React.PureComponent {
         layout={this.state.layout}
         onLayoutChange={this.onLayoutChange}
         useCSSTransforms={true}
-        preventCollision={true}
         allowOverlap={true}
         {...this.props}
       >
