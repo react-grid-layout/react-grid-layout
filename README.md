@@ -319,10 +319,12 @@ useCSSTransforms: ?boolean = true,
 transformScale: ?number = 1,
 
 // If true, grid can be placed one over the other.
+// If set, implies `preventCollision`.
 allowOverlap: ?boolean = false,
 
 // If true, grid items won't change position when being
-// dragged over.
+// dragged over. If `allowOverlap` is still false,
+// this simply won't allow one to drop on an existing object.
 preventCollision: ?boolean = false,
 
 // If true, droppable elements (with `draggable={true}` attribute)
