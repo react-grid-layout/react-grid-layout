@@ -252,7 +252,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.setState({
       oldDragItem: cloneLayoutItem(l),
-      oldLayout: this.state.layout
+      oldLayout: layout
     });
 
     return this.props.onDragStart(layout, l, l, null, e, node);
@@ -274,7 +274,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   ) => {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, allowOverlap } = this.props;
+    const { cols, allowOverlap, preventCollision } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -296,7 +296,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       x,
       y,
       isUserAction,
-      this.props.preventCollision,
+      preventCollision,
       compactType(this.props),
       cols,
       allowOverlap
@@ -659,7 +659,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const { layout } = this.state;
     // This is relative to the DOM element that this event fired for.
     const { layerX, layerY } = e.nativeEvent;
-    const droppingPosition = { left: layerX / transformScale, top: layerY / transformScale, e };
+    const droppingPosition = {
+      left: layerX / transformScale,
+      top: layerY / transformScale,
+      e
+    };
 
     if (!this.state.droppingDOMNode) {
       const positionParams: PositionParams = {
