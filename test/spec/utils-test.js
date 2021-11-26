@@ -123,8 +123,8 @@ describe("moveElement", () => {
         layoutItem,
         1,
         2, // x, y
-        true,
-        true, // isUserAction, preventCollision
+        true, // isUserAction
+        true, // preventCollision
         null,
         2 // compactType, cols
       )
@@ -146,8 +146,8 @@ describe("moveElement", () => {
         layoutItem,
         1,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         2 // compactType, cols
       )
@@ -172,8 +172,8 @@ describe("moveElement", () => {
         itemA,
         0,
         1, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         10 // compactType, cols
       )
@@ -199,8 +199,8 @@ describe("moveElement", () => {
         itemA,
         0,
         2, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         10 // compactType, cols
       )
@@ -226,8 +226,8 @@ describe("moveElement", () => {
         itemA,
         1,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         2 // compactType, cols
       )
@@ -253,8 +253,8 @@ describe("moveElement", () => {
         itemA,
         2,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "horizontal",
         10 // compactType, cols
       )
@@ -283,8 +283,8 @@ describe("moveElement", () => {
         itemB,
         1,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         4 // compactType, cols
       )
@@ -315,8 +315,8 @@ describe("moveElement", () => {
         itemB,
         1,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         4 // compactType, cols
       )
@@ -324,6 +324,34 @@ describe("moveElement", () => {
       expect.objectContaining({ x: 0, y: 2, w: 2, h: 1, i: "A" }),
       expect.objectContaining({ x: 0, y: 3, w: 1, h: 1, i: "B" }),
       expect.objectContaining({ x: 1, y: 0, w: 1, h: 2, i: "C" })
+    ]);
+  });
+
+  it("Prevent collision", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
+    ];
+    // Move A down by 2. This will collide with B and C so
+    // the layout should be unchanged
+    const itemA = layout[0];
+    const modifiedLayout = moveElement(
+      layout,
+      itemA,
+      0, // x
+      2, // y
+      true, // isUserAction
+      true, // preventCollision
+      null, // compactType
+      10 // cols
+    );
+    expect(Object.is(layout, modifiedLayout)).toBe(true);
+
+    expect(layout).toEqual([
+      expect.objectContaining({ x: 0, y: 0, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
     ]);
   });
 
@@ -341,8 +369,8 @@ describe("moveElement", () => {
         itemA,
         0,
         2, // x, y
-        true,
-        true, // isUserAction, preventCollision
+        true, // isUserAction
+        false, // preventCollision
         null,
         10, // compactType, cols
         true // allowOverlap
@@ -352,6 +380,28 @@ describe("moveElement", () => {
       expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
       expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
     ]);
+  });
+
+  it("Layout is cloned when using allowOverlap (#1606)", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
+    ];
+    // Move A down by 2. Both B and C should remain in same position
+    const itemA = layout[0];
+    const modifiedLayout = moveElement(
+      layout,
+      itemA,
+      0,
+      2, // x, y
+      true, // isUserAction
+      false, // preventCollision
+      null,
+      10, // compactType, cols
+      true // allowOverlap
+    );
+    expect(Object.is(layout, modifiedLayout)).toBe(false);
   });
 });
 
