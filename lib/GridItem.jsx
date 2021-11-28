@@ -376,6 +376,8 @@ export default class GridItem extends React.Component<Props, State> {
       }
     };
 
+    this.cancelSelector = cancelSelector();
+
     return (
       <DraggableCore
         disabled={!isDraggable}
@@ -384,7 +386,6 @@ export default class GridItem extends React.Component<Props, State> {
         onDrag={this.onDrag}
         onStop={this.onDragStop}
         handle={this.props.handle}
-        enableUserSelectHack={false}
         cancel={cancelSelector()}
         scale={this.props.transformScale}
         nodeRef={this.elementRef}

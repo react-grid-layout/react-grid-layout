@@ -11,6 +11,13 @@ import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
 import deepFreeze from "../util/deepFreeze";
+import {
+  touchStart,
+  touchMove,
+  touchEnd,
+  mouseDown,
+  mouseMove
+} from "../util/simulateEvents";
 import { mount } from "enzyme";
 
 describe("Lifecycle tests", function () {
@@ -448,49 +455,103 @@ describe("Lifecycle tests", function () {
         expect(layoutItem).toBeUndefined();
       });
     });
-  });
 
-  describe("<ResponsiveReactGridLayout>", function () {
-    it("Basic Render", async function () {
-      const wrapper = mount(<ShowcaseLayout />);
-      expect(wrapper).toMatchSnapshot();
+    describe("Delayed Drag on touch devices", function () {
+      let wrapper;
+      let gridItems;
+      let firstItem;
+
+      beforeAll(() => {
+        navigator.maxTouchPoints = 10;
+      });
+
+      afterAll(() => {
+        navigator.maxTouchPoints = undefined;
+      });
+
+      beforeEach(() => {
+        wrapper = mount(<BasicLayout />);
+        gridItems = wrapper.find("GridItem");
+        firstItem = gridItems.first();
+      });
+
+      afterEach(() => {
+        wrapper.unmount();
+        wrapper = null;
+        gridItems = null;
+        firstItem = null;
+      });
+
+      it("Does detect touch devices", function () {
+        expect(firstItem.instance().isTouchCapable()).toBe(true);
+      });
+
+      it("Does not execute drag events immediately", async function () {
+        touchStart(firstItem);
+        touchMove(firstItem, 50, 100);
+        expect(firstItem.instance().state.allowedToDrag).toBe(false);
+      });
+
+      it("Executes drag events after the specified delay", function () {
+        jest.useFakeTimers();
+        touchStart(firstItem);
+        setTimeout(() => {
+          touchMove(firstItem, 50, 100);
+          expect(firstItem.instance().state.allowedToDrag).toBe(true);
+        }, 600);
+        jest.runAllTimers();
+      });
+
+      it("Gets disabled if delay is set to 0", function () {
+        wrapper.setProps({ dragTouchDelayDuration: 0 });
+        touchStart(firstItem);
+        touchMove(firstItem, 50, 100);
+        expect(firstItem.instance().state.dragging).not.toBe(null);
+      });
     });
 
-    it("Does not modify layout on movement", async function () {
-      const layouts = {
-        lg: [
-          ..._.times(3, i => ({
-            i: String(i),
-            x: i,
-            y: 0,
-            w: 1,
-            h: 1
-          }))
-        ]
-      };
-      const frozenLayouts = deepFreeze(layouts, {
-        set: true,
-        get: false /* don't crash on unknown gets */
+    describe("<ResponsiveReactGridLayout>", function () {
+      it("Basic Render", async function () {
+        const wrapper = mount(<ShowcaseLayout />);
+        expect(wrapper).toMatchSnapshot();
       });
-      // Render the basic Responsive layout.
-      const wrapper = mount(
-        <ResponsiveReactGridLayout
-          layouts={frozenLayouts}
-          width={1280}
-          breakpoint="lg"
-        >
-          {_.times(3, i => (
-            <div key={i} />
-          ))}
-        </ResponsiveReactGridLayout>
-      );
 
-      // Set that layout as state and ensure it doesn't change.
-      wrapper.setState({ layouts: frozenLayouts });
-      wrapper.setProps({ width: 800, breakpoint: "md" }); // will generate new layout
-      wrapper.render();
+      it("Does not modify layout on movement", async function () {
+        const layouts = {
+          lg: [
+            ..._.times(3, i => ({
+              i: String(i),
+              x: i,
+              y: 0,
+              w: 1,
+              h: 1
+            }))
+          ]
+        };
+        const frozenLayouts = deepFreeze(layouts, {
+          set: true,
+          get: false /* don't crash on unknown gets */
+        });
+        // Render the basic Responsive layout.
+        const wrapper = mount(
+          <ResponsiveReactGridLayout
+            layouts={frozenLayouts}
+            width={1280}
+            breakpoint="lg"
+          >
+            {_.times(3, i => (
+              <div key={i} />
+            ))}
+          </ResponsiveReactGridLayout>
+        );
 
-      expect(frozenLayouts).not.toContain("md");
+        // Set that layout as state and ensure it doesn't change.
+        wrapper.setState({ layouts: frozenLayouts });
+        wrapper.setProps({ width: 800, breakpoint: "md" }); // will generate new layout
+        wrapper.render();
+
+        expect(frozenLayouts).not.toContain("md");
+      });
     });
   });
 });
