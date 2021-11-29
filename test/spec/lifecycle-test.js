@@ -11,14 +11,8 @@ import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
 import deepFreeze from "../util/deepFreeze";
-import {
-  touchStart,
-  touchMove,
-  touchEnd,
-  mouseDown,
-  mouseMove
-} from "../util/simulateEvents";
-import { mount } from "enzyme";
+import { touchStart, touchMove } from "../util/simulateEvents";
+import { mount, ReactWrapper } from "enzyme";
 
 describe("Lifecycle tests", function () {
   // Example layouts use randomness
@@ -457,16 +451,18 @@ describe("Lifecycle tests", function () {
     });
 
     describe("Delayed Drag on touch devices", function () {
-      let wrapper;
-      let gridItems;
-      let firstItem;
+      let wrapper: ReactWrapper<any>;
+      let gridItems: ReactWrapper<any>;
+      let firstItem: ReactWrapper<any>;
 
       beforeAll(() => {
+        // simulate touch support
         navigator.maxTouchPoints = 10;
       });
 
       afterAll(() => {
-        navigator.maxTouchPoints = undefined;
+        // reset touch support
+        navigator.maxTouchPoints = 0;
       });
 
       beforeEach(() => {
@@ -477,16 +473,13 @@ describe("Lifecycle tests", function () {
 
       afterEach(() => {
         wrapper.unmount();
-        wrapper = null;
-        gridItems = null;
-        firstItem = null;
       });
 
       it("Does detect touch devices", function () {
         expect(firstItem.instance().isTouchCapable()).toBe(true);
       });
 
-      it("Does not execute drag events immediately", async function () {
+      it("Does not execute drag events immediately", function () {
         touchStart(firstItem);
         touchMove(firstItem, 50, 100);
         expect(firstItem.instance().state.allowedToDrag).toBe(false);
@@ -498,7 +491,18 @@ describe("Lifecycle tests", function () {
         setTimeout(() => {
           touchMove(firstItem, 50, 100);
           expect(firstItem.instance().state.allowedToDrag).toBe(true);
+          expect(firstItem.instance().state.dragging).toBeTruthy();
         }, 600);
+        jest.runAllTimers();
+      });
+
+      it("Gets canceled if user starts dragging before timer ends", function () {
+        jest.useFakeTimers();
+        touchStart(firstItem);
+        touchMove(firstItem, 50, 100);
+        setTimeout(() => {
+          expect(firstItem.instance().timeoutRef).toBe(null);
+        }, 200);
         jest.runAllTimers();
       });
 

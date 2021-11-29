@@ -8,7 +8,6 @@ export function touchStart(target) {
 
 export function touchMove(target, x, y) {
   const node = target.getDOMNode();
-  const doc = node ? node.ownerDocument : document;
 
   const touch = {
     identifier: "123",
