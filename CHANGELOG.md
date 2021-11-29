@@ -1,5 +1,15 @@
 # Changelog
 
+1.3.1 (Nov 29, 2021)
+---
+
+### Bugfixes
+  - Fix `allowOverlap` not firing `onLayoutChange()`. [#1620](https://github.com/react-grid-layout/react-grid-layout/pull/1620)
+    - This was due to a short-circuiting of internal logic that did not properly clone the `layout` prop.
+
+### Internal Changes
+  - Replace `classnames` with `clsx` for smaller package size. (#1543)
+
 1.3.0 (Aug 27, 2021)
 ---
 
