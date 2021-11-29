@@ -314,8 +314,8 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object}     Style object.
    */
   createStyle(pos: Position): { [key: string]: ?string } {
-    const { usePercentages, containerWidth, useCSSTransforms } = this.props;
-    const scale = this.state.allowedToDrag ? 1.1 : 1;
+    const { static: isStatic, usePercentages, containerWidth, useCSSTransforms } = this.props;
+    const scale = !isStatic && this.state.allowedToDrag ? 1.1 : 1;
 
     let style;
     // CSS Transforms support (default)
@@ -531,7 +531,7 @@ export default class GridItem extends React.Component<Props, State> {
       this.timeoutRef = setTimeout(() => {
         this.timeoutRef = null;
         // vibrate api is not available on safari, so we need to check it
-        if(navigator.vibrate){
+        if(navigator.vibrate && !this.props.static){
           // vibrate device for 80ms
           navigator.vibrate(80);
         }
