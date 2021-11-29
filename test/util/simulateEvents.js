@@ -2,7 +2,7 @@ import TestUtils from "react-dom/test-utils";
 
 export function touchStart(target) {
   const node = target.getDOMNode();
-  const e = new Event("touchstart");
+  const e = new TouchEvent("touchstart");
   node.dispatchEvent(e);
 }
 
@@ -22,16 +22,17 @@ export function touchMove(target, x, y) {
     view: window,
     cancelable: true,
     bubbles: true,
-    changedTouches: [touch]
+    changedTouches: [touch],
+    target: node
   });
 
-  doc.dispatchEvent(touchEvent);
+  node.dispatchEvent(touchEvent);
   return touchEvent;
 }
 
 export function touchEnd(target) {
   const node = target.getDOMNode();
-  const e = new Event("touchend");
+  const e = new TouchEvent("touchend");
   node.dispatchEvent(e);
 }
 
