@@ -314,7 +314,12 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object}     Style object.
    */
   createStyle(pos: Position): { [key: string]: ?string } {
-    const { static: isStatic, usePercentages, containerWidth, useCSSTransforms } = this.props;
+    const {
+      static: isStatic,
+      usePercentages,
+      containerWidth,
+      useCSSTransforms
+    } = this.props;
     const scale = !isStatic && this.state.allowedToDrag ? 1.1 : 1;
 
     let style;
@@ -460,7 +465,8 @@ export default class GridItem extends React.Component<Props, State> {
     );
   }
 
-  childEvents: {type: string, event: (e: Event) => void, passive: boolean}[] = [];
+  childEvents: { type: string, event: (e: Event) => void, passive: boolean }[] =
+    [];
 
   /**
    * Add an event listener to the grid item.
@@ -469,7 +475,11 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {(e: Event) => void} event  The event callback
    * @param  {boolean} passive  Whether the event should be passive, defaults to false
    */
-  addChildEvent: (type: string, event: (e: Event) => void, passive: ?boolean) => void = (type, event, passive = true) => {
+  addChildEvent: (
+    type: string,
+    event: (e: Event) => void,
+    passive: ?boolean
+  ) => void = (type, event, passive = true) => {
     if (this.elementRef.current) {
       this.elementRef.current.addEventListener(type, event, {
         passive
@@ -489,8 +499,8 @@ export default class GridItem extends React.Component<Props, State> {
     }
   };
 
-  //A reference to the timeout handler to be able to access it at any time.
-  timeoutRef: ?TimeoutID = null;
+  // A reference to the timeout handler to be able to access it at any time.
+  dragDelayTimeout: ?TimeoutID = null;
 
   /**
    * onMouseDown event is tied to both 'mousedown' and 'touchstart' events in DraggableCore.
@@ -499,8 +509,8 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onMouseDown: Event => void = e => {
     // handle touch events only
-    if (!this.timeoutRef && e instanceof TouchEvent) {
-      this.startDelayTimeout(e);
+    if (!this.dragDelayTimeout && e instanceof TouchEvent) {
+      this.startDragDelayTimeout(e);
     }
   };
 
@@ -508,9 +518,12 @@ export default class GridItem extends React.Component<Props, State> {
    * Start the delayed counter to determine when a drag should start.
    * @param  {Event} e          TouchStart/MouseDown event.
    */
-  startDelayTimeout: Event => void = e => {
+  startDragDelayTimeout: Event => void = e => {
     // Prevent text selection while dragging.
-    if(document.body.style.userSelect === '' || document.body.style.webkitUserSelect === '') {
+    if (
+      document.body.style.userSelect === "" ||
+      document.body.style.webkitUserSelect === ""
+    ) {
       document.body.style.webkitUserSelect = "none";
       document.body.style.userSelect = "none";
     }
@@ -527,11 +540,11 @@ export default class GridItem extends React.Component<Props, State> {
        */
       this.addChildEvent("touchmove", this.handleTouchMove, false);
 
-      // Start the timeout and assign its handler to the timeoutRef
-      this.timeoutRef = setTimeout(() => {
-        this.timeoutRef = null;
+      // Start the timeout and assign its handler to the dragDelayTimeout
+      this.dragDelayTimeout = setTimeout(() => {
+        this.dragDelayTimeout = null;
         // vibrate api is not available on safari, so we need to check it
-        if(navigator.vibrate && !this.props.static){
+        if (navigator.vibrate && !this.props.static) {
           // vibrate device for 80ms
           navigator.vibrate(80);
         }
@@ -552,7 +565,7 @@ export default class GridItem extends React.Component<Props, State> {
    *
    * @param  {Event} e  TouchMove/Scroll event.
    */
-   handleTouchMove: Event => void = (e: Event) => {
+  handleTouchMove: Event => void = (e: Event) => {
     if (this.state.allowedToDrag) {
       e.preventDefault();
     } else {
@@ -564,13 +577,16 @@ export default class GridItem extends React.Component<Props, State> {
    * Reset the drag timer and clear all events and values.
    */
   resetDelayTimeout: () => void = () => {
-    clearTimeout(this.timeoutRef);
-    this.timeoutRef = null;
+    clearTimeout(this.dragDelayTimeout);
+    this.dragDelayTimeout = null;
 
     this.setState({ allowedToDrag: false });
     this.removeChildEvents();
 
-    if(document.body.style.userSelect === 'none' || document.body.style.webkitUserSelect === 'none') {
+    if (
+      document.body.style.userSelect === "none" ||
+      document.body.style.webkitUserSelect === "none"
+    ) {
       document.body.style.webkitUserSelect = "";
       document.body.style.userSelect = "";
     }

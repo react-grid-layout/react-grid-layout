@@ -284,10 +284,12 @@ autoSize: ?boolean = true,
 // Number of columns in this layout.
 cols: ?number = 12,
 
-// If set, items will be draggable only after the specified delay.
-// This feature is only enabled on touch devices.
+// If set, items will be draggable only after the specified delay on touch devices.
 // This can be helpful if you want to be able to scroll on touch devices easily.
-dragTouchDelayDuration: ?number = 1000,
+// When the user holds his/her finger on the item, it will vibrate (if supported)
+// and scale slightly to indicate that the item can be moved.
+// In the next major version (>2.0), this will be set to 250ms by deafult.
+dragTouchDelayDuration: ?number = 0,
 
 // A CSS selector for tags that will not be draggable.
 // For example: draggableCancel:'.MyNonDraggableAreaClassName'

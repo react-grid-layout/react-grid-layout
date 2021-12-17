@@ -85,7 +85,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     className: "",
     style: {},
     draggableHandle: "",
-    dragTouchDelayDuration: 500,
+    // TODO [>=2.0.0] Make this default duration 250ms
+    // By default, this is off. Set to ~250ms for touch devices
+    dragTouchDelayDuration: 0,
     draggableCancel: "",
     containerPadding: null,
     rowHeight: 150,
@@ -529,7 +531,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       </GridItem>
     );
   }
-  
+
   /**
    * Given a grid item, set its style attributes & surround in a <Draggable>.
    * @param  {Element} child React element.
