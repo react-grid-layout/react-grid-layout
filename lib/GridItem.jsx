@@ -363,35 +363,23 @@ export default class GridItem extends React.Component<Props, State> {
   ): ReactElement<any> {
     const delayedDragEnabled: boolean =
       this.props.dragTouchDelayDuration && this.isTouchCapable();
-    /**
-     * Delayed works by changing the 'cancel' prop of the DraggableCore component
-     * which is a CSS selector of the elements we wish to ignore them while dragging.
-     * We can calculate this 'cancel' prop by calling the function below:
-     */
-    const cancelSelector: () => string = () => {
-      const draggable =
-        ".react-resizable-handle" +
-        (this.props.cancel ? "," + this.props.cancel : "");
-      const notDraggable = ".react-grid-item";
 
-      if (delayedDragEnabled) {
-        return this.state.allowedToDrag ? draggable : notDraggable;
-      } else {
-        return draggable;
-      }
-    };
-
-    this.cancelSelector = cancelSelector();
+    // Delayed touch works by changing disabling DraggableCore for a short while.
+    const delayedDragNeedsWait =
+      delayedDragEnabled && !this.state.allowedToDrag;
 
     return (
       <DraggableCore
-        disabled={!isDraggable}
+        disabled={!isDraggable || delayedDragNeedsWait}
         onStart={this.onDragStart}
         onMouseDown={delayedDragEnabled ? this.onMouseDown : undefined}
         onDrag={this.onDrag}
         onStop={this.onDragStop}
         handle={this.props.handle}
-        cancel={cancelSelector()}
+        cancel={
+          ".react-resizable-handle" +
+          (this.props.cancel ? "," + this.props.cancel : "")
+        }
         scale={this.props.transformScale}
         nodeRef={this.elementRef}
         ref={this.draggableCoreRef}
