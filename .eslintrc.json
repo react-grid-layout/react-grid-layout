@@ -1,11 +1,7 @@
 {
   "root": true,
   "parser": "@babel/eslint-parser",
-  "plugins": [
-    "react",
-    "flowtype",
-    "unicorn"
-  ],
+  "plugins": ["react", "flowtype", "unicorn"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -13,10 +9,7 @@
   ],
   "rules": {
     "no-console": "off",
-    "no-use-before-define": [
-      "error",
-      "nofunc"
-    ],
+    "no-use-before-define": ["error", "nofunc"],
     "no-unused-vars": [
       "warn",
       {
@@ -26,10 +19,7 @@
       }
     ],
     "prefer-const": "error",
-    "react/jsx-boolean-value": [
-      "error",
-      "always"
-    ],
+    "react/jsx-boolean-value": ["error", "always"],
     "unicorn/better-regex": "warn",
     "unicorn/expiring-todo-comments": "error",
     "unicorn/no-abusive-eslint-disable": "error"

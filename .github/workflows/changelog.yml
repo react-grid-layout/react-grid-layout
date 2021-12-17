@@ -1,8 +1,8 @@
-name: 'changelog'
+name: "changelog"
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   release:

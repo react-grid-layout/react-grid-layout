@@ -48,7 +48,7 @@ view-example:
 # FIXME flow is usually global
 lint:
 	@$(BIN)/flow
-	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
+	@$(BIN)/eslint --ext .js,.jsx
 
 test:
 	env NODE_ENV=test $(BIN)/jest

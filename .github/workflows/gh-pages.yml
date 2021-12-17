@@ -2,7 +2,7 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     tags:
-      - '*'
+      - "*"
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
