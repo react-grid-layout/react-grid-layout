@@ -80,7 +80,7 @@ describe("validateLayout", () => {
         // $FlowFixMe: dynamic check
         { i: "2", x: 1, y: 2, w: 1 }
       ]);
-    }).toThrowError(/layout\[1\]\.h must be a number!/i);
+    }).toThrowError(/layout\[1]\.h must be a number!/i);
   });
 });
 
