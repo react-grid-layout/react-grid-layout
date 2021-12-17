@@ -31,6 +31,7 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           eslint: true
+          prettier: true
 
       # Flow is not supported by lint-action, so we run it raw
       - name: Run Flow
