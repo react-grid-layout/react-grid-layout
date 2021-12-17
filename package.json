@@ -64,6 +64,7 @@
     "eslint-plugin-flowtype": "^5.9.0",
     "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-unicorn": "^39.0.0",
     "exports-loader": "^3.0.0",
     "flow-bin": "^0.158.0",
     "husky": "^7.0.2",
