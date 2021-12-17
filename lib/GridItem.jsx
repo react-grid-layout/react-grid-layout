@@ -53,7 +53,7 @@ type Props = {
   cols: number,
   containerWidth: number,
   margin: [number, number],
-  containerPadding: [number, number],
+  containerPaddinge: [number, number],
   rowHeight: number,
   maxRows: number,
   isDraggable: boolean,
