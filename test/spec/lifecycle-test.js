@@ -513,49 +513,50 @@ describe("Lifecycle tests", function () {
         expect(firstItem.instance().state.dragging).not.toBe(null);
       });
     });
+  });
 
-    describe("<ResponsiveReactGridLayout>", function () {
-      it("Basic Render", async function () {
-        const wrapper = mount(<ShowcaseLayout />);
-        expect(wrapper).toMatchSnapshot();
+
+  describe("<ResponsiveReactGridLayout>", function () {
+    it("Basic Render", async function () {
+      const wrapper = mount(<ShowcaseLayout />);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it("Does not modify layout on movement", async function () {
+      const layouts = {
+        lg: [
+          ..._.times(3, i => ({
+            i: String(i),
+            x: i,
+            y: 0,
+            w: 1,
+            h: 1
+          }))
+        ]
+      };
+      const frozenLayouts = deepFreeze(layouts, {
+        set: true,
+        get: false /* don't crash on unknown gets */
       });
+      // Render the basic Responsive layout.
+      const wrapper = mount(
+        <ResponsiveReactGridLayout
+          layouts={frozenLayouts}
+          width={1280}
+          breakpoint="lg"
+        >
+          {_.times(3, i => (
+            <div key={i} />
+          ))}
+        </ResponsiveReactGridLayout>
+      );
 
-      it("Does not modify layout on movement", async function () {
-        const layouts = {
-          lg: [
-            ..._.times(3, i => ({
-              i: String(i),
-              x: i,
-              y: 0,
-              w: 1,
-              h: 1
-            }))
-          ]
-        };
-        const frozenLayouts = deepFreeze(layouts, {
-          set: true,
-          get: false /* don't crash on unknown gets */
-        });
-        // Render the basic Responsive layout.
-        const wrapper = mount(
-          <ResponsiveReactGridLayout
-            layouts={frozenLayouts}
-            width={1280}
-            breakpoint="lg"
-          >
-            {_.times(3, i => (
-              <div key={i} />
-            ))}
-          </ResponsiveReactGridLayout>
-        );
+      // Set that layout as state and ensure it doesn't change.
+      wrapper.setState({ layouts: frozenLayouts });
+      wrapper.setProps({ width: 800, breakpoint: "md" }); // will generate new layout
+      wrapper.render();
 
-        // Set that layout as state and ensure it doesn't change.
-        wrapper.setState({ layouts: frozenLayouts });
-        wrapper.setProps({ width: 800, breakpoint: "md" }); // will generate new layout
-        wrapper.render();
-
-        expect(frozenLayouts).not.toContain("md");
-      });
+      expect(frozenLayouts).not.toContain("md");
     });
   });
 });
