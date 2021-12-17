@@ -10,6 +10,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 type Props = {|
   className: string,
   cols: {[string]: number},
+  dragTouchDelayDuration: number,
   onLayoutChange: Function,
   rowHeight: number,
 |};

@@ -98,6 +98,7 @@ type Props = {
 type DefaultProps = {
   className: string,
   cancel: string,
+  dragTouchDelayDuration: number,
   handle: string,
   minH: number,
   minW: number,
@@ -200,6 +201,7 @@ export default class GridItem extends React.Component<Props, State> {
   static defaultProps: DefaultProps = {
     className: "",
     cancel: "",
+    dragTouchDelayDuration: 0,
     handle: "",
     minH: 1,
     minW: 1,
