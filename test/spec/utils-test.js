@@ -76,7 +76,7 @@ describe("validateLayout", () => {
       { i: "2", x: 1, y: 2, w: 1, h: 1 }
     ]);
   });
-  it("Throws errors on index not as a number", () => {
+  it("Throws errors on h not as a number", () => {
     expect(() => {
       validateLayout([
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
@@ -91,6 +91,11 @@ describe("validateLayout", () => {
         { i: "1", x: 0, y: 1, w: 1, h: 1, static: "bad-string" }
       ]);
     }).toThrowError("ReactGridLayout: Layout[0].static must be a boolean!");
+  });
+  it("Throws error when layout input is not an array", () => {
+    expect(() => {
+      validateLayout({ i: "1", x: 0, y: 1, w: 1, h: 1, static: "bad-string" });
+    }).toThrowError("Layout must be an array!");
   });
 });
 
