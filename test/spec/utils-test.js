@@ -8,7 +8,8 @@ import {
   fastRGLPropsEqual,
   moveElement,
   sortLayoutItemsByRowCol,
-  validateLayout
+  validateLayout,
+  compactType
 } from "../../lib/utils";
 import {
   calcGridColWidth,
@@ -75,7 +76,7 @@ describe("validateLayout", () => {
       { i: "2", x: 1, y: 2, w: 1, h: 1 }
     ]);
   });
-  it("Throws errors on invalid input", () => {
+  it("Throws errors on index not as a number", () => {
     expect(() => {
       validateLayout([
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
@@ -83,6 +84,13 @@ describe("validateLayout", () => {
         { i: "2", x: 1, y: 2, w: 1 }
       ]);
     }).toThrowError(/layout\[1]\.h must be a number!/i);
+  });
+  it("Throws errors on static not as a boolean", () => {
+    expect(() => {
+      validateLayout([
+        { i: "1", x: 0, y: 1, w: 1, h: 1, static: "bad-string" }
+      ]);
+    }).toThrowError("ReactGridLayout: Layout[0].static must be a boolean!");
   });
 });
 
@@ -667,5 +675,20 @@ describe("calcXY", () => {
     const H = 0;
     const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
     expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 1 }));
+  });
+});
+
+describe("compactType", () => {
+  const mockProps = {
+    verticalCompact: false,
+    compactType: "horizontal"
+  };
+  it("returns null when verticalCompact is false", () => {
+    expect(compactType(mockProps)).toBe(null);
+  });
+  it("returns compactType value when verticalCompact is true", () => {
+    expect(compactType({ ...mockProps, verticalCompact: true })).toBe(
+      "horizontal"
+    );
   });
 });
