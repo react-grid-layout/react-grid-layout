@@ -18,6 +18,7 @@ import {
   calcXY
 } from "../../lib/calculateUtils";
 import isEqual from "lodash.isequal";
+import deepFreeze from "./../util/deepFreeze";
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
@@ -700,5 +701,12 @@ describe("compactType", () => {
     expect(compactType({ ...mockProps, verticalCompact: true })).toBe(
       "horizontal"
     );
+  });
+});
+
+describe("deepFreeze", () => {
+  it("smoke test", () => {
+    let deepFreezeResult = deepFreeze({ a: "a", b: { b: "c" } }, { get: true });
+    expect(JSON.stringify(deepFreezeResult)).toBe('{"a":"a","b":{"b":"c"}}');
   });
 });
