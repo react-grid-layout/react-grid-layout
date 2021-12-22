@@ -12,7 +12,9 @@ import {
 } from "../../lib/utils";
 import {
   calcGridColWidth,
-  calcGridItemPosition
+  calcGridItemPosition,
+  calcWH,
+  calcXY
 } from "../../lib/calculateUtils";
 import isEqual from "lodash.isequal";
 
@@ -606,5 +608,64 @@ describe("fastRGLPropsEqual", () => {
       somethingElse: { w: 1, h: 2, i: 3 }
     };
     expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+  });
+});
+
+describe("calcWH", () => {
+  const mockPositionParams = {
+    margin: [0, 0],
+    containerPadding: [0, 0],
+    containerWidth: 400,
+    cols: 4,
+    rowHeight: 200,
+    maxRows: 3
+  };
+  it("return { w: 1, h: 1 }", () => {
+    const res = calcWH(mockPositionParams, 100, 200, 1, 1);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 1, h: 1 }));
+  });
+  it("return { w: 2, h: 1 }", () => {
+    const res = calcWH(mockPositionParams, 200, 200, 1, 1);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 2, h: 1 }));
+  });
+  it("return { w: 1, h: 2 }", () => {
+    const res = calcWH(mockPositionParams, 100, 400, 1, 1);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 1, h: 2 }));
+  });
+});
+
+describe("calcXY", () => {
+  const mockPositionParams = {
+    margin: [0, 0],
+    containerPadding: [0, 0],
+    containerWidth: 500,
+    cols: 4,
+    rowHeight: 100,
+    maxRows: 3
+  };
+
+  it("return {x:0, y:0}", () => {
+    const TOP = 10;
+    const LEFT = 10;
+    const W = 300;
+    const H = 100;
+    const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 0 }));
+  });
+  it("return {x:1, y:0}", () => {
+    const TOP = 0;
+    const LEFT = 100;
+    const W = 0;
+    const H = 0;
+    const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 1, y: 0 }));
+  });
+  it("return {x:0, y:1}", () => {
+    const TOP = 110;
+    const LEFT = 0;
+    const W = 0;
+    const H = 0;
+    const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 1 }));
   });
 });
