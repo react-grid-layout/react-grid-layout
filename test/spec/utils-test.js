@@ -85,6 +85,11 @@ describe("validateLayout", () => {
       ]);
     }).toThrowError(/layout\[1]\.h must be a number!/i);
   });
+  it("Throws errors on i not as a string", () => {
+    expect(() => {
+      validateLayout([{ i: 2, x: 0, y: 1, w: 1, h: 1 }]);
+    }).toThrowError(/ReactGridLayout: Layout\[0\]\.i must be a string!/i);
+  });
   it("Throws errors on static not as a boolean", () => {
     expect(() => {
       validateLayout([
