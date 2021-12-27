@@ -15,7 +15,7 @@ export default function makeLayout(Layout) {
     };
 
     stringifyLayout() {
-      return this.state.layout.map(function(l) {
+      return this.state.layout.map(function (l) {
         const name = l.i === "__dropping-elem__" ? "drop" : l.i;
         return (
           <div className="layoutItem" key={l.i}>
@@ -28,13 +28,15 @@ export default function makeLayout(Layout) {
 
     render() {
       return (
-        <div>
-          <div className="layoutJSON">
-            Displayed as <code>[x, y, w, h]</code>:
-            <div className="columns">{this.stringifyLayout()}</div>
+        <React.StrictMode>
+          <div>
+            <div className="layoutJSON">
+              Displayed as <code>[x, y, w, h]</code>:
+              <div className="columns">{this.stringifyLayout()}</div>
+            </div>
+            <Layout onLayoutChange={this.onLayoutChange} />
           </div>
-          <Layout onLayoutChange={this.onLayoutChange} />
-        </div>
+        </React.StrictMode>
       );
     }
   }
@@ -42,7 +44,10 @@ export default function makeLayout(Layout) {
   function run() {
     const contentDiv = document.getElementById("content");
     const gridProps = window.gridProps || {};
-    ReactDOM.render(React.createElement(ListeningLayout, gridProps), contentDiv);
+    ReactDOM.render(
+      React.createElement(ListeningLayout, gridProps),
+      contentDiv
+    );
   }
   if (!document.getElementById("content")) {
     document.addEventListener("DOMContentLoaded", run);

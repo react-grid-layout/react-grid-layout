@@ -104,7 +104,7 @@ module.exports = [
     source: "no-vertical-compact",
     paragraphs: [
       "You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the " +
-        "property `verticalCompact` to `false` to achieve this effect."
+        "property `compactType` to `null` to achieve this effect."
     ]
   },
   {
@@ -113,7 +113,7 @@ module.exports = [
     paragraphs: [
       "You may want to turn off rearrangement so items don't move arround when dragging. Set the " +
         "property `preventCollision` to `true` to achieve this effect. " +
-        "It's particularly useful with `verticalCompact` set to `false`."
+        "It's particularly useful with `compactType` set to `null`."
     ]
   },
   {
@@ -159,6 +159,13 @@ module.exports = [
     source: "scale",
     paragraphs: [
       "This demonstrates how to compensate for a scaled parent."
+    ]
+  },
+  {
+    title: "Allow Overlap",
+    source: "allow-overlap",
+    paragraphs: [
+      "This demonstrates how to overlap grid items."
     ]
   }
 ];

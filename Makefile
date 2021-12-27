@@ -39,14 +39,16 @@ build-example:
 	@$(BIN)/webpack --config webpack-examples.config.js
 	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
 
+# Note: this doesn't hot reload, you need to re-run to update files.
+# TODO fix that
 view-example:
-	env CONTENT_BASE="/examples/" node ./examples/generate.js
+	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
 	@$(BIN)/webpack serve --config webpack-examples.config.js --progress
 
 # FIXME flow is usually global
 lint:
 	@$(BIN)/flow
-	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
+	@$(BIN)/eslint --ext .js,.jsx
 
 test:
 	env NODE_ENV=test $(BIN)/jest

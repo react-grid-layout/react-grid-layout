@@ -21,6 +21,7 @@ import {
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
 
+// $FlowFixMe[method-unbinding]
 const type = obj => Object.prototype.toString.call(obj);
 
 /**
@@ -74,6 +75,7 @@ type Props<Breakpoint: string = string> = {|
 type DefaultProps = Pick<
   Props<>,
   {|
+    allowOverlap: 0,
     breakpoints: 0,
     cols: 0,
     containerPadding: 0,
@@ -102,6 +104,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
 
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
     breakpoints: PropTypes.object,
+
+    allowOverlap: PropTypes.bool,
 
     // # of cols. This is a breakpoint -> cols map
     cols: PropTypes.object,
@@ -162,6 +166,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
     layouts: {},
     margin: [10, 10],
+    allowOverlap: false,
     onBreakpointChange: noop,
     onLayoutChange: noop,
     onWidthChange: noop
@@ -277,7 +282,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
         layout,
         this.props.children,
         newCols,
-        compactType
+        compactType,
+        this.props.allowOverlap
       );
 
       // Store the new layout.

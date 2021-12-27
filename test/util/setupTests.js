@@ -10,7 +10,7 @@ Enzyme.configure({ adapter: new Adapter() });
 import { sort } from "timsort";
 
 // $FlowIgnore dirty hack
-Array.prototype.sort = function(comparator) {
+Array.prototype.sort = function (comparator) {
   sort(this, comparator);
   return this;
 };
@@ -18,6 +18,7 @@ Array.prototype.sort = function(comparator) {
 // Required in drag code, not working in JSDOM
 Object.defineProperty(HTMLElement.prototype, "offsetParent", {
   get() {
+    // $FlowIgnore[object-this-reference]
     return this.parentNode;
   }
 });

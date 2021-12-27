@@ -1,5 +1,70 @@
 # Changelog
 
+1.3.1 (Nov 29, 2021)
+---
+
+### Bugfixes
+  - Fix `allowOverlap` not firing `onLayoutChange()`. [#1620](https://github.com/react-grid-layout/react-grid-layout/pull/1620)
+    - This was due to a short-circuiting of internal logic that did not properly clone the `layout` prop.
+
+### Internal Changes
+  - Replace `classnames` with `clsx` for smaller package size. (#1543)
+
+1.3.0 (Aug 27, 2021)
+---
+
+### New Features
+  - `allowOverlap` prop, when `true`, allows overlapping grid items. [#1470](https://github.com/react-grid-layout/react-grid-layout/pull/1470)
+  - Add `onDropDragOver` callback. [#1395](https://github.com/react-grid-layout/react-grid-layout/pull/1395)
+    - Use this callback to dynamically adjust the `droppingItem` based on what is being dragged over. Return `w` and `h` to adjust the item. It is then [spread into the dropping placeholder](https://github.com/react-grid-layout/react-grid-layout/pull/1395/files#diff-83ab569936bfd4bf0460a4f23653ecbe8bc88509062c95e75c9402218b2b8733R609).
+    - This callback has the type:
+      - `onDragOver: (e: DragOverEvent) => { w: number, h: number } | false;`
+      - Return `false` to short-circuit the dragover.
+
+### Bugfixes
+  - Remove sorting when `compactType` is `null`. [#1474](https://github.com/react-grid-layout/react-grid-layout/pull/1474)
+  - Droppable fixes for Chrome behavior. [#1442](https://github.com/react-grid-layout/react-grid-layout/issues/1442) [#1448](https://github.com/react-grid-layout/react-grid-layout/issues/1442)
+  - Allow `null` children as a convenience so that inline expressions don't break the library. [#1296](https://github.com/react-grid-layout/react-grid-layout/pull/1296)
+  - Various dependency upgrades.
+
+### Documentation
+  - Add docs on using custom components as grid children.
+  - Note required class on resizable handles for proper styling.
+
+
+1.2.5 (May 10, 2021)
+---
+
+### Bugfixes
+  - Ensure no negative positions are possible when compacting
+    - Thanks @DonnyLi [#829](https://github.com/react-grid-layout/react-grid-layout/pull/829)
+    - Fixes [#535](https://github.com/react-grid-layout/react-grid-layout/issues/535)
+  - Fix resizing on mobile. This was caused by the `ref` refactor to remove ReactDOM in 1.2.3.
+    - Fixes #[1458](https://github.com/react-grid-layout/react-grid-layout/issues/1458)
+    - Note: this upgrades `react-resizable` to `3.0.1`, which like our other deps, is only compatible with `React@>=16.3`.
+
+### Documentation
+  - Document new arity of `resizeHandle` (`(axis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => React$Element`)
+  - Remove references to the deprecated `verticalCompact` prop
+
+1.2.4 (Mar 18, 2021)
+---
+
+*This version fixes a serious render bug in `<WidthProvider>`. 1.2.3 should not be used.*
+
+### Bugfixes
+  - Fix failure to mount when layout is WidthProvider-wrapped and `measureBeforeMount` is `true`.
+    - Ref: [#1428](https://github.com/react-grid-layout/react-grid-layout/issues/1428)
+  - `<WidthProvider>` no longer updates grid with if it has been set to 0. This prevents unnecessary updates
+    if the grid is set to `display: none;`. Thanks @405go [#1427](https://github.com/react-grid-layout/react-grid-layout/pull/1427)
+
+1.2.3 (Mar 16, 2021)
+---
+
+### New Features
+  - React-Grid-Layout is now fully compatible with `<React.StrictMode>`.
+    - Usage of `ReactDOM` has been removed by using `React.createRef()` inside RGL, and the new [`nodeRef` prop](https://github.com/react-grid-layout/react-draggable/blob/master/CHANGELOG.md#440-may-12-2020) in `react-draggable`.
+
 1.2.2 (Mar 1, 2021)
 ---
 

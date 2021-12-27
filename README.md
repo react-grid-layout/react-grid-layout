@@ -16,7 +16,7 @@ RGL is React-only and does not require jQuery.
 ![BitMEX UI](http://i.imgur.com/oo1NT6c.gif)
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://react-grid-layout.github.io/react-grid-layout/examples/0-showcase.html) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js)**]
+[**[Demo](https://react-grid-layout.github.io/react-grid-layout/) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js)**]
 
 ## Table of Contents
 
@@ -55,6 +55,7 @@ RGL is React-only and does not require jQuery.
 1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/16-bounded.html)
 1. [Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/17-resizable-handles.html)
 1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
+1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -74,6 +75,7 @@ RGL is React-only and does not require jQuery.
 - [Hakkiri](https://www.hakkiri.io)
 - [Ubidots](https://help.ubidots.com/en/articles/2400308-create-dashboards-and-widgets)
 - [Statsout](https://statsout.com/)
+- [Datto RMM](https://www.datto.com/uk/products/rmm/)
 
 *Know of others? Create a PR to let me know!*
 
@@ -92,11 +94,12 @@ RGL is React-only and does not require jQuery.
 * Separate layouts per responsive breakpoint
 * Grid Items placed using CSS Transforms
   * Performance with CSS Transforms: [on](http://i.imgur.com/FTogpLp.jpg) / [off](http://i.imgur.com/gOveMm8.jpg), note paint (green) as % of time
+* Compatibility with `<React.StrictMode>`
 
 |Version         | Compatibility    |
 |----------------|------------------|
-| >= 0.17.0      | React 0.16       |
-| >= 0.11.3      | React 0.14 & v15 |
+| >= 0.17.0      | React 16 & 17    |
+| >= 0.11.3      | React 0.14 & 15  |
 | >= 0.10.0      | React 0.14       |
 | 0.8. - 0.9.2   | React 0.13       |
 | < 0.8          | React 0.12       |
@@ -265,15 +268,13 @@ cols: ?number = 12,
 // A CSS selector for tags that will not be draggable.
 // For example: draggableCancel:'.MyNonDraggableAreaClassName'
 // If you forget the leading . it will not work.
+// .react-resizable-handle" is always prepended to this value.
 draggableCancel: ?string = '',
 
 // A CSS selector for tags that will act as the draggable handle.
 // For example: draggableHandle:'.MyDragHandleClassName'
 // If you forget the leading . it will not work.
 draggableHandle: ?string = '',
-
-// If true, the layout will compact vertically
-verticalCompact: ?boolean = true,
 
 // Compaction type.
 compactType: ?('vertical' | 'horizontal') = 'vertical';
@@ -317,9 +318,14 @@ useCSSTransforms: ?boolean = true,
 // we should set scale coefficient to avoid render artefacts while dragging.
 transformScale: ?number = 1,
 
+// If true, grid can be placed one over the other.
+// If set, implies `preventCollision`.
+allowOverlap: ?boolean = false,
+
 // If true, grid items won't change position when being
-// dragged over.
-preventCollision: ?boolean = false;
+// dragged over. If `allowOverlap` is still false,
+// this simply won't allow one to drop on an existing object.
+preventCollision: ?boolean = false,
 
 // If true, droppable elements (with `draggable={true}` attribute)
 // can be dropped on the grid. It triggers "onDrop" callback
@@ -331,7 +337,7 @@ preventCollision: ?boolean = false;
 // along with `draggable={true}` otherwise this feature will work incorrect.
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-isDroppable: ?boolean = false
+isDroppable: ?boolean = false,
 // Defines which resize handles should be rendered
 // Allows for any combination of:
 // 's' - South handle (bottom-center)
@@ -342,9 +348,12 @@ isDroppable: ?boolean = false
 // 'nw' - Northwest handle (top-left)
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
-resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
+resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se'],
 // Custom component for resize handles
-resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis) => ReactElement<any>)
+// See `handle` as used in https://github.com/react-grid-layout/react-resizable#resize-handle
+// Your component should have the class `.react-resizable-handle`, or you should add your custom
+// class to the `draggableCancel` prop.
+resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>),
 
 // Passing down `DraggableCore` props
 draggableOpts?: ?DraggableCoreProps 
@@ -362,7 +371,7 @@ onLayoutChange: (layout: Layout) => void,
 // 'start' and 'stop' callbacks pass `undefined` for 'placeholder'.
 //
 type ItemCallback = (layout: Layout, oldItem: LayoutItem, newItem: LayoutItem,
-                     placeholder: LayoutItem, e: MouseEvent, element: HTMLElement) => void;
+                     placeholder: LayoutItem, e: MouseEvent, element: HTMLElement) => void,
 
 // Calls when drag starts.
 onDragStart: ItemCallback,
@@ -376,12 +385,21 @@ onResizeStart: ItemCallback,
 onResize: ItemCallback,
 // Calls when resize is complete.
 onResizeStop: ItemCallback,
+
+//
+// Dropover functionality
+//
+
 // Calls when an element has been dropped into the grid from outside.
-onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void
+onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void,
+// Calls when an element is being dragged over the grid from outside as above.
+// This callback should return an object to dynamically change the droppingItem size
+// Return false to short-circuit the dragover
+onDropDragOver: (e: DragOverEvent) => ?({|w?: number, h?: number|} | false),
 
 // Ref for getting a reference for the grid's wrapping div.
 // You can use this instead of a regular ref and the deprecated `ReactDOM.findDOMNode()`` function.
-innerRef: ?React.Ref<"div">
+innerRef: ?React.Ref<"div">,
 ```
 
 ### Responsive Grid Layout Props
@@ -399,16 +417,16 @@ cols: ?Object = {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
 
 
 // margin (in pixels). Can be specified either as horizontal and vertical margin, e.g. `[10, 10]` or as a breakpoint -> margin map, e.g. `{lg: [10, 10], md: [10, 10], ...}.
-margin: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]}
+margin: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]},
 
 
 // containerPadding (in pixels). Can be specified either as horizontal and vertical padding, e.g. `[10, 10]` or as a breakpoint -> containerPadding map, e.g. `{lg: [10, 10], md: [10, 10], ...}.
-containerPadding: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]}
+containerPadding: [number, number] | {[breakpoint: $Keys<breakpoints>]: [number, number]},
 
 
 // layouts is an object mapping breakpoints to layouts.
 // e.g. {lg: Layout, md: Layout, ...}
-layouts: {[key: $Keys<breakpoints>]: Layout}
+layouts: {[key: $Keys<breakpoints>]: Layout},
 
 //
 // Callbacks
@@ -511,11 +529,34 @@ function MyGrid(props) {
 
 Because the `children` prop doesn't change between rerenders, updates to `<MyGrid>` won't result in new renders, improving performance.
 
+### Custom Child Components and Draggable Handles
+
+If you use React Components as grid children, they need to do a few things:
+
+1. Forward refs to an underlying DOM node, and
+2. Forward `style` and `className` to that same DOM node.
+
+For example:
+
+```js
+const CustomGridItemComponent = React.forwardRef(({style, className, ...props}, ref) => {
+  return (
+    <div style={{ /* styles */, ...style}} className={className} ref={ref}>
+      {/* Some other content */}
+    </div>  
+  );
+}
+```
+
+The same is true of custom elements as draggable handles using the `draggableHandle` prop. This is so that
+the underlying `react-draggable` library can get a reference to the DOM node underneath, manipulate
+positioning via `style`, and set classes.
+
 ## Contribute
 
 If you have a feature request, please add it as an issue or make a pull request.
 
-If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js) to help
+If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/staging-bush-3lvt7?file=/src/ShowcaseLayout.js) to help
 us easily isolate it.
 
 ## TODO List
@@ -531,5 +572,5 @@ us easily isolate it.
 - [x] Static elements
 - [x] Persistent id per item for predictable localstorage restores, even when # items changes
 - [x] Min/max w/h per item
-- [ ] Resizable handles on other corners
+- [x] Resizable handles on other corners
 - [ ] Configurable w/h per breakpoint
