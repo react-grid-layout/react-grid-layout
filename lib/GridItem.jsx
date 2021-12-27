@@ -8,7 +8,7 @@ import {
   calcGridItemPosition,
   calcGridItemWHPx,
   calcGridColWidth,
-  calc
+  calcXY,
   calcWH,
   clamp
 } from "./calculateUtils";
