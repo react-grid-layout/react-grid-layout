@@ -20,19 +20,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
 
       - name: Install Node.js dependencies
         run: yarn
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          prettier: true
+      - name: Run Prettier
+        run: yarn fmt:check
 
-      # Flow is not supported by lint-action, so we run it raw
-      - name: Run Flow
-        run: yarn flow
+      - name: Run ESLint/Flow
+        run: yarn lint

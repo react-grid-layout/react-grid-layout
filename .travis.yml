@@ -6,4 +6,3 @@ node_js:
 script:
   - make build test
 cache: yarn
-

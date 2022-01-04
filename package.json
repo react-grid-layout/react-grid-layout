@@ -12,7 +12,9 @@
     "dev": "make dev",
     "prepublishOnly": "make build",
     "validate": "npm ls",
-    "flow": "flow"
+    "flow": "flow",
+    "fmt": "prettier --write ./**.{json,js,yml,md}",
+    "fmt:check": "prettier --check ./**.{json,js,yml,md}"
   },
   "repository": {
     "type": "git",
@@ -106,7 +108,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,css}": [
-      "prettier --write"
+      "eslint --ext .js,.jsx --fix",
+      "yarn fmt"
     ]
   }
 }
