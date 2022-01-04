@@ -89,7 +89,7 @@ describe("validateLayout", () => {
   it("Throws errors on i not as a string", () => {
     expect(() => {
       validateLayout([{ i: 2, x: 0, y: 1, w: 1, h: 1 }]);
-    }).toThrowError(/ReactGridLayout: Layout\[0\]\.i must be a string!/i);
+    }).toThrowError("ReactGridLayout: Layout[0].i must be a string!");
   });
   it("Throws errors on static not as a boolean", () => {
     expect(() => {
@@ -706,7 +706,10 @@ describe("compactType", () => {
 
 describe("deepFreeze", () => {
   it("smoke test", () => {
-    let deepFreezeResult = deepFreeze({ a: "a", b: { b: "c" } }, { get: true });
+    const deepFreezeResult = deepFreeze(
+      { a: "a", b: { b: "c" } },
+      { get: true }
+    );
     expect(JSON.stringify(deepFreezeResult)).toBe('{"a":"a","b":{"b":"c"}}');
   });
 });
