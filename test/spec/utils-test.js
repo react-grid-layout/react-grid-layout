@@ -86,23 +86,6 @@ describe("validateLayout", () => {
       ]);
     }).toThrowError(/layout\[1]\.h must be a number!/i);
   });
-  it("Throws errors on i not as a string", () => {
-    expect(() => {
-      validateLayout([{ i: 2, x: 0, y: 1, w: 1, h: 1 }]);
-    }).toThrowError("ReactGridLayout: Layout[0].i must be a string!");
-  });
-  it("Throws errors on static not as a boolean", () => {
-    expect(() => {
-      validateLayout([
-        { i: "1", x: 0, y: 1, w: 1, h: 1, static: "bad-string" }
-      ]);
-    }).toThrowError("ReactGridLayout: Layout[0].static must be a boolean!");
-  });
-  it("Throws error when layout input is not an array", () => {
-    expect(() => {
-      validateLayout({ i: "1", x: 0, y: 1, w: 1, h: 1, static: "bad-string" });
-    }).toThrowError("Layout must be an array!");
-  });
 });
 
 describe("moveElement", () => {
@@ -708,7 +691,7 @@ describe("deepFreeze", () => {
   it("smoke test", () => {
     const deepFreezeResult = deepFreeze(
       { a: "a", b: { b: "c" } },
-      { get: true }
+      { get: true, set: true }
     );
     expect(JSON.stringify(deepFreezeResult)).toBe('{"a":"a","b":{"b":"c"}}');
   });
