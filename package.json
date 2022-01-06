@@ -104,7 +104,15 @@
       "<rootDir>/test/spec/*.js"
     ],
     "testEnvironment": "jsdom",
-    "testURL": "http://localhost"
+    "testURL": "http://localhost",
+    "coverageThreshold": {
+      "global": {
+        "statements": 75.15,
+        "branches": 69.16,
+        "functions": 77.12,
+        "lines": 77.07
+      }
+    }
   },
   "lint-staged": {
     "*.{js,jsx,css}": [
