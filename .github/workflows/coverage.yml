@@ -1,12 +1,8 @@
 name: "code-coverage-report"
-on:
+on: push
   # pull_request:
   #   branches:
   #     - '*'
-  push:
-    tags:
-      - "*"
-
 jobs:
   run-jest-with-coverage:
     runs-on: ubuntu-latest
