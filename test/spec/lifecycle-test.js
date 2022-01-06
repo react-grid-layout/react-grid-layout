@@ -5,6 +5,7 @@ import React from "react";
 import _ from "lodash";
 import TestUtils from "react-dom/test-utils";
 import ReactGridLayout from "../../lib/ReactGridLayout";
+import GridItem from "../../lib/GridItem";
 import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
 import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
@@ -31,6 +32,31 @@ describe("Lifecycle tests", function () {
     global.Math.random.mockRestore();
   });
 
+  describe("<GridItem >", () => {
+    const mockProps = {
+      children: <div>test child</div>,
+      cols: 12,
+      containerWidth: 1200,
+      rowHeight: 300,
+      margin: [0, 0],
+      maxRows: 4,
+      containerPadding: [0, 0],
+      i: "0",
+      // These are all in grid units
+      x: 0,
+      y: 0,
+      w: 1,
+      h: 1,
+      isDraggable: false,
+      isResizable: false,
+      isBounded: false,
+      useCSSTransforms: false
+    };
+    it("Basic Render", () => {
+      const wrapper = mount(<GridItem {...mockProps} />);
+      expect(wrapper).toMatchSnapshot();
+    });
+  });
   describe("<ReactGridLayout>", function () {
     it("Basic Render", async function () {
       const wrapper = mount(<BasicLayout />);
