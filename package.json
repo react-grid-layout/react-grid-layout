@@ -107,10 +107,10 @@
     "testURL": "http://localhost",
     "coverageThreshold": {
       "global": {
-        "statements": 76.17,
-        "branches": 71.14,
-        "functions": 77.12,
-        "lines": 77.65
+        "statements": 75.92,
+        "branches": 70.62,
+        "functions": 77.52,
+        "lines": 77.52
       }
     }
   },
