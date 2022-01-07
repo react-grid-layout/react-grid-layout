@@ -63,6 +63,12 @@ describe("Lifecycle tests", function () {
         afterEach(() => {
           jest.clearAllMocks();
         });
+
+        it("2x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} minW={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(2);
+        });
         it("1 err when larger than w prop", () => {
           mount(<GridItem {...mockProps} minW={4} />);
           expect(mockError).toHaveBeenCalledTimes(1);
@@ -73,6 +79,12 @@ describe("Lifecycle tests", function () {
         const mockError = jest.spyOn(console, "error");
         afterEach(() => {
           jest.clearAllMocks();
+        });
+
+        it("1x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} maxW={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
         });
         it("1x err when smaller than w prop", () => {
           mount(<GridItem {...mockProps} w={4} maxW={2} />);
@@ -85,6 +97,12 @@ describe("Lifecycle tests", function () {
         afterEach(() => {
           jest.clearAllMocks();
         });
+
+        it("2x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} minH={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(2);
+        });
         it("1x when larger than h prop", () => {
           mount(<GridItem {...mockProps} minH={2} />);
           expect(mockError).toHaveBeenCalledTimes(1);
@@ -95,6 +113,12 @@ describe("Lifecycle tests", function () {
         const mockError = jest.spyOn(console, "error");
         afterEach(() => {
           jest.clearAllMocks();
+        });
+
+        it("1x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} maxH={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
         });
         it("1x when smaller than h prop", () => {
           mount(<GridItem {...mockProps} h={3} maxH={2} />);
