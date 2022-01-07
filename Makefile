@@ -51,7 +51,7 @@ lint:
 	@$(BIN)/eslint --ext .js,.jsx
 
 test:
-	env NODE_ENV=test $(BIN)/jest
+	env NODE_ENV=test $(BIN)/jest --coverage
 
 test-watch:
 	env NODE_ENV=test $(BIN)/jest --watch
