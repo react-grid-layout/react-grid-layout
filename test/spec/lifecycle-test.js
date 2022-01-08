@@ -141,6 +141,17 @@ describe("Lifecycle tests", function () {
         );
         expect(mockFn).toHaveBeenCalledTimes(1);
       });
+
+      it("throws err when calling onDrag without state set to dragging ", () => {
+        const componentInstance = mount(
+          <GridItem {...mockProps} onDrag={() => {}} />
+        ).instance();
+
+        // $FlowIgnore
+        expect(() => {
+          componentInstance.onDrag({}, {});
+        }).toThrow("onDrag called before onDragStart.");
+      });
     });
   });
 
