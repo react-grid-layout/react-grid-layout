@@ -11,7 +11,7 @@ import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
 import deepFreeze from "../util/deepFreeze";
-import { mount, render } from "enzyme";
+import { mount } from "enzyme";
 
 describe("Lifecycle tests", function () {
   // Example layouts use randomness
@@ -124,6 +124,22 @@ describe("Lifecycle tests", function () {
           mount(<GridItem {...mockProps} h={3} maxH={2} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
+      });
+    });
+
+    describe("onDrag", () => {
+      it("calls onDragStart prop when droppingPosition prop has expected content", () => {
+        const mockFn = jest.fn();
+
+        mount(
+          <GridItem
+            {...mockProps}
+            // $FlowIgnore
+            droppingPosition={{ left: 1, top: 1, e: {} }}
+            onDragStart={mockFn}
+          />
+        );
+        expect(mockFn).toHaveBeenCalledTimes(1);
       });
     });
   });
