@@ -45,8 +45,8 @@ describe("Lifecycle tests", function () {
       // These are all in grid units
       x: 0,
       y: 0,
-      w: 1,
-      h: 1,
+      w: 100,
+      h: 100,
       isDraggable: false,
       isResizable: false,
       isBounded: false,
@@ -156,15 +156,39 @@ describe("Lifecycle tests", function () {
       it("calls onDragStart prop callback fn", () => {
         const mockFn = jest.fn();
 
-        mount(
+        const componentInstance = mount(
           <GridItem
             {...mockProps}
             // $FlowIgnore
             droppingPosition={{ left: 1, top: 1, e: {} }}
             onDragStart={mockFn}
           />
-        );
+        ).instance();
+        // $FlowIgnore
+        componentInstance.onDrag({}, () => {});
         expect(mockFn).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls onDrag prop callback fn", () => {
+        const mockOnDragStartCallback = jest.fn();
+        const mockOnDrag = jest.fn();
+        const renderedItem = mount(
+          <GridItem
+            {...mockProps}
+            // $FlowIgnore
+            isDraggable={true}
+            isBounded={true}
+            onDragStart={mockOnDragStartCallback}
+            onDrag={mockOnDrag}
+          />
+        );
+        TestUtils.act(() => {
+          renderedItem.setState({ dragging: true });
+          renderedItem.setProps({
+            droppingPosition: { left: 700, top: 300, e: {} }
+          });
+        });
+        expect(mockOnDrag).toHaveBeenCalledTimes(1);
       });
     });
   });
