@@ -147,10 +147,24 @@ describe("Lifecycle tests", function () {
           <GridItem {...mockProps} onDrag={() => {}} />
         ).instance();
 
-        // $FlowIgnore
         expect(() => {
+          // $FlowIgnore
           componentInstance.onDrag({}, {});
         }).toThrow("onDrag called before onDragStart.");
+      });
+
+      it("calls onDragStart prop callback fn", () => {
+        const mockFn = jest.fn();
+
+        mount(
+          <GridItem
+            {...mockProps}
+            // $FlowIgnore
+            droppingPosition={{ left: 1, top: 1, e: {} }}
+            onDragStart={mockFn}
+          />
+        );
+        expect(mockFn).toHaveBeenCalledTimes(1);
       });
     });
   });
