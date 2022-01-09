@@ -12,7 +12,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
     ]
   }
   containerWidth={1200}
-  h={1}
+  h={100}
   handle=""
   i="0"
   isBounded={false}
@@ -32,7 +32,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
   rowHeight={300}
   transformScale={1}
   useCSSTransforms={false}
-  w={1}
+  w={100}
   x={0}
   y={0}
 >
@@ -46,7 +46,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
       Object {
         "current": <div
           class="react-grid-item react-resizable-hide react-resizable"
-          style="top: 0px; left: 0px; width: 100px; height: 300px; position: absolute;"
+          style="top: 0px; left: 0px; width: 10000px; height: 30000px; position: absolute;"
         >
           test child
           <span
@@ -75,7 +75,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
           20,
         ]
       }
-      height={300}
+      height={30000}
       lockAspectRatio={false}
       maxConstraints={
         Array [
@@ -101,7 +101,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
         ]
       }
       transformScale={1}
-      width={100}
+      width={10000}
     >
       <div
         className="react-grid-item react-resizable-hide react-resizable"
@@ -110,11 +110,11 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
         onTouchEnd={[Function]}
         style={
           Object {
-            "height": "300px",
+            "height": "30000px",
             "left": "0px",
             "position": "absolute",
             "top": "0px",
-            "width": "100px",
+            "width": "10000px",
           }
         }
       >
