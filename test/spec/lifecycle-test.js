@@ -70,7 +70,7 @@ describe("Lifecycle tests", function () {
           expect(mockError).toHaveBeenCalledTimes(2);
         });
         it("1 err when larger than w prop", () => {
-          mount(<GridItem {...mockProps} minW={4} />);
+          mount(<GridItem {...mockProps} minW={400} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
       });
@@ -104,7 +104,7 @@ describe("Lifecycle tests", function () {
           expect(mockError).toHaveBeenCalledTimes(2);
         });
         it("1x when larger than h prop", () => {
-          mount(<GridItem {...mockProps} minH={2} />);
+          mount(<GridItem {...mockProps} minH={200} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
       });
