@@ -381,8 +381,13 @@ export default class GridItem extends React.Component<Props, State> {
     const positionParams = this.getPositionParams();
 
     // This is the max possible width - doesn't go to infinity because of the width of the window
-    const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols - x, 0)
-      .width;
+    const maxWidth = calcGridItemPosition(
+      positionParams,
+      0,
+      0,
+      cols - x,
+      0
+    ).width;
 
     // Calculate min/max constraints using our min & maxes
     const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
@@ -396,7 +401,7 @@ export default class GridItem extends React.Component<Props, State> {
       <Resizable
         // These are opts for the resize handle itself
         draggableOpts={{
-          disabled: !isResizable,
+          disabled: !isResizable
         }}
         className={isResizable ? undefined : "react-resizable-hide"}
         width={position.width}

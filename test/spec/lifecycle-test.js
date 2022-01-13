@@ -5,6 +5,7 @@ import React from "react";
 import _ from "lodash";
 import TestUtils from "react-dom/test-utils";
 import ReactGridLayout from "../../lib/ReactGridLayout";
+import GridItem from "../../lib/GridItem";
 import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
 import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
@@ -29,6 +30,167 @@ describe("Lifecycle tests", function () {
 
   afterAll(() => {
     global.Math.random.mockRestore();
+  });
+
+  describe("<GridItem >", () => {
+    const mockProps = {
+      children: <div>test child</div>,
+      cols: 12,
+      containerWidth: 1200,
+      rowHeight: 300,
+      margin: [0, 0],
+      maxRows: 4,
+      containerPadding: [0, 0],
+      i: "0",
+      // These are all in grid units
+      x: 0,
+      y: 0,
+      w: 100,
+      h: 100,
+      isDraggable: false,
+      isResizable: false,
+      isBounded: false,
+      useCSSTransforms: false
+    };
+    it("Basic Render", () => {
+      const wrapper = mount(<GridItem {...mockProps} />);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    describe("optional min/max dimension props log err", () => {
+      describe("minW", () => {
+        const mockError = jest.spyOn(console, "error");
+        afterEach(() => {
+          jest.clearAllMocks();
+        });
+
+        it("2x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} minW={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(2);
+        });
+        it("1 err when larger than w prop", () => {
+          mount(<GridItem {...mockProps} minW={400} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe("maxW", () => {
+        const mockError = jest.spyOn(console, "error");
+        afterEach(() => {
+          jest.clearAllMocks();
+        });
+
+        it("1x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} maxW={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
+        });
+        it("1x err when smaller than w prop", () => {
+          mount(<GridItem {...mockProps} w={4} maxW={2} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe("minH", () => {
+        const mockError = jest.spyOn(console, "error");
+        afterEach(() => {
+          jest.clearAllMocks();
+        });
+
+        it("2x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} minH={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(2);
+        });
+        it("1x when larger than h prop", () => {
+          mount(<GridItem {...mockProps} minH={200} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe("maxH", () => {
+        const mockError = jest.spyOn(console, "error");
+        afterEach(() => {
+          jest.clearAllMocks();
+        });
+
+        it("1x when string, not number", () => {
+          // $FlowIgnore
+          mount(<GridItem {...mockProps} maxH={"apple"} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
+        });
+        it("1x when smaller than h prop", () => {
+          mount(<GridItem {...mockProps} h={3} maxH={2} />);
+          expect(mockError).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+
+    describe("onDrag", () => {
+      it("calls onDragStart prop when droppingPosition prop has expected content", () => {
+        const mockFn = jest.fn();
+
+        mount(
+          <GridItem
+            {...mockProps}
+            // $FlowIgnore
+            droppingPosition={{ left: 1, top: 1, e: {} }}
+            onDragStart={mockFn}
+          />
+        );
+        expect(mockFn).toHaveBeenCalledTimes(1);
+      });
+
+      it("throws err when calling onDrag without state set to dragging ", () => {
+        const componentInstance = mount(
+          <GridItem {...mockProps} onDrag={() => {}} />
+        ).instance();
+
+        expect(() => {
+          // $FlowIgnore
+          componentInstance.onDrag({}, {});
+        }).toThrow("onDrag called before onDragStart.");
+      });
+
+      it("calls onDragStart prop callback fn", () => {
+        const mockFn = jest.fn();
+
+        const componentInstance = mount(
+          <GridItem
+            {...mockProps}
+            // $FlowIgnore
+            droppingPosition={{ left: 1, top: 1, e: {} }}
+            onDragStart={mockFn}
+          />
+        ).instance();
+        // $FlowIgnore
+        componentInstance.onDrag({}, () => {});
+        expect(mockFn).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls onDrag prop callback fn", () => {
+        const mockOnDragStartCallback = jest.fn();
+        const mockOnDrag = jest.fn();
+        const renderedItem = mount(
+          <GridItem
+            {...mockProps}
+            // $FlowIgnore
+            isDraggable={true}
+            isBounded={true}
+            onDragStart={mockOnDragStartCallback}
+            onDrag={mockOnDrag}
+          />
+        );
+        TestUtils.act(() => {
+          renderedItem.setState({ dragging: true });
+          renderedItem.setProps({
+            droppingPosition: { left: 700, top: 300, e: {} }
+          });
+        });
+        expect(mockOnDrag).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe("<ReactGridLayout>", function () {
