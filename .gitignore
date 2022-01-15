@@ -12,3 +12,4 @@ examples/*.js
 !examples/generate.js
 !examples/vars.js
 .vscode
+*.tgz
