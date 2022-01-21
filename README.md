@@ -415,7 +415,9 @@ onDropDragOver: (e: DragOverEvent) => ?({|w?: number, h?: number|} | false),
 
 // Ref for getting a reference for the grid's wrapping div.
 // You can use this instead of a regular ref and the deprecated `ReactDOM.findDOMNode()`` function.
-innerRef: ?React.Ref<"div">,
+// Note that this type is React.Ref<HTMLDivElement> in TypeScript, Flow has a bug here
+// https://github.com/facebook/flow/issues/8671#issuecomment-862634865
+innerRef: {current: null | HTMLDivElement},
 ```
 
 ### Responsive Grid Layout Props
