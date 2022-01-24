@@ -85,4 +85,5 @@ define release
 	git add package.json CHANGELOG.md $(MIN) $(MIN_MAP) && \
 	git commit -m "release $$NEXT_VERSION" && \
 	git tag "$$NEXT_VERSION" -m "release $$NEXT_VERSION"
+	npm pack --dry-run
 endef
