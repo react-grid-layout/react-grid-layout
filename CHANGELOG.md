@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.3.3 (Jan 24, 2022)
+
+This was a quick release to improve package size and dependency use. Thanks @salvoravida [#1655](https://github.com/react-grid-layout/react-grid-layout/pull/1655)
+
+### Bugfixes
+
+- Removed `coverage/` folder from npm package to save size
+- Moved eslint parser to `devDependencies`
+
+## 1.3.2 (Jan 24, 2022)
+
+### Internal Changes
+
+- Package size reduced by ~30% by removing source in `dist/` source maps.
+- Various tests added (thanks @imagineLife!)
+- New GitHub Actions flow for PRs
+
 ## 1.3.1 (Nov 29, 2021)
 
 ### Bugfixes
