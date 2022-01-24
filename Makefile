@@ -33,7 +33,7 @@ build-js:
 	@$(BIN)/babel --out-dir $(BUILD) $(LIB)
 
 # Will build for use on github pages. Full url of page is
-# https://strml.github.io/react-grid-layout/examples/0-showcase.html
+# https://react-grid-layout.github.io/react-grid-layout/examples/0-showcase.html
 # so the CONTENT_BASE should adapt.
 build-example:
 	@$(BIN)/webpack --config webpack-examples.config.js
