@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.4 (Feb 21, 2022)
+
+### Bugfixes
+
+- Add `e.stopPropagation()` on drag events to better support nested grids. Thanks @rogerfar [#1494](https://github.com/react-grid-layout/react-grid-layout/pull/1494).
+
+### Internal Changes
+
+- Various dependency upgrades.
+
 ## 1.3.3 (Jan 24, 2022)
 
 This was a quick release to improve package size and dependency use. Thanks @salvoravida [#1655](https://github.com/react-grid-layout/react-grid-layout/pull/1655)
