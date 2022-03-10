@@ -62,7 +62,7 @@ type Props = {
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
-  transformScale: number,
+  transformScale: number| { w: number; h: number },
   droppingPosition?: DroppingPosition,
 
   className: string,
@@ -101,7 +101,7 @@ type DefaultProps = {
   minW: number,
   maxH: number,
   maxW: number,
-  transformScale: number
+  transformScale: number | { w: number; h: number }
 };
 
 /**
@@ -178,7 +178,13 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
-    transformScale: PropTypes.number,
+    transformScale: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.shape({
+        w: PropTypes.number,
+        h: PropTypes.number
+      })
+    ]),
 
     // Others
     className: PropTypes.string,
@@ -436,10 +442,12 @@ export default class GridItem extends React.Component<Props, State> {
     if (!offsetParent) return;
     const parentRect = offsetParent.getBoundingClientRect();
     const clientRect = node.getBoundingClientRect();
-    const cLeft = clientRect.left / transformScale;
-    const pLeft = parentRect.left / transformScale;
-    const cTop = clientRect.top / transformScale;
-    const pTop = parentRect.top / transformScale;
+    const transformScaleW = typeof transformScale === 'number' ? transformScale : transformScale.w;
+    const transformScaleH = typeof transformScale === 'number' ? transformScale : transformScale.h;
+    const cLeft = clientRect.left / transformScaleW;
+    const pLeft = parentRect.left / transformScaleW;
+    const cTop = clientRect.top / transformScaleH;
+    const pTop = parentRect.top / transformScaleH;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
     this.setState({ dragging: newPosition });
