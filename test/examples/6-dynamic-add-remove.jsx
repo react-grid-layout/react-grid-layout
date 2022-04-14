@@ -6,7 +6,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-class AddRemoveLayout extends React.PureComponent {
+export default class AddRemoveLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
@@ -24,7 +24,7 @@ class AddRemoveLayout extends React.PureComponent {
           y: 0,
           w: 2,
           h: 2,
-          add: i === (list.length - 1).toString()
+          add: i === (list.length - 1)
         };
       }),
       newCounter: 0
@@ -117,8 +117,6 @@ class AddRemoveLayout extends React.PureComponent {
   }
 }
 
-module.exports = AddRemoveLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(AddRemoveLayout));
 }

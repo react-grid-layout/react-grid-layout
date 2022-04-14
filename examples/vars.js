@@ -104,7 +104,7 @@ module.exports = [
     source: "no-vertical-compact",
     paragraphs: [
       "You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the " +
-        "property `verticalCompact` to `false` to achieve this effect."
+        "property `compactType` to `null` to achieve this effect."
     ]
   },
   {
@@ -113,7 +113,7 @@ module.exports = [
     paragraphs: [
       "You may want to turn off rearrangement so items don't move arround when dragging. Set the " +
         "property `preventCollision` to `true` to achieve this effect. " +
-        "It's particularly useful with `verticalCompact` set to `false`."
+        "It's particularly useful with `compactType` set to `null`."
     ]
   },
   {
@@ -128,7 +128,44 @@ module.exports = [
     title: "Toolbox",
     source: "toolbox",
     paragraphs: [
-      "This demonstrates how to implement a toolbox to add and remove widgets."
+      "This demonstrates how to implement a toolbox to add and remove widgets. Click the 'X' on a widget to move it into the toolbox."
+    ]
+  },
+  {
+    title: "Drag From Outside",
+    source: "drag-from-outside",
+    paragraphs: [
+      "This demo shows what happens when an item is added from outside of the grid.",
+      "Once you drop the item within the grid you'll get its coordinates/properties and can perform actions with " +
+        "it accordingly."
+    ]
+  },
+  {
+    title: "Bounded",
+    source: "bounded",
+    paragraphs: [
+      "Try dragging the elements around. They can only be moved within the grid, the draggable placeholder will not show outside it."
+    ]
+  },
+  {
+    title: "Resizable Handles",
+    source: "resizable-handles",
+    paragraphs: [
+      "This demonstrates how to implement resizable handles for any corner."
+    ]
+  },
+  {
+    title: "Scale",
+    source: "scale",
+    paragraphs: [
+      "This demonstrates how to compensate for a scaled parent."
+    ]
+  },
+  {
+    title: "Allow Overlap",
+    source: "allow-overlap",
+    paragraphs: [
+      "This demonstrates how to overlap grid items."
     ]
   }
 ];

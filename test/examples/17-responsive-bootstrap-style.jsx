@@ -6,7 +6,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 /**
  * This example illustrates how to let grid items lay themselves out with a bootstrap-style specification.
  */
-class BootstrapStyleLayout extends React.PureComponent {
+export default class BootstrapStyleLayout extends React.PureComponent {
   static defaultProps = {
     isDraggable: true,
     isResizable: true,
@@ -39,8 +39,6 @@ class BootstrapStyleLayout extends React.PureComponent {
   }
 }
 
-module.exports = BootstrapStyleLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(BootstrapStyleLayout));
 }

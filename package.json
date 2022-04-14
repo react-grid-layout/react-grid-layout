@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout",
-  "version": "1.0.0",
+  "version": "1.3.4",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,8 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "flow": "flow",
-    "precommit": "make build",
-    "precommit-bak": "lint-staged && make lint"
+    "fmt": "prettier --write ./**.{json,js,yml,md}",
+    "fmt:check": "prettier --check ./**.{json,js,yml,md}"
   },
   "repository": {
     "type": "git",
@@ -37,65 +37,87 @@
   },
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
-    "classnames": "2.x",
+    "clsx": "^1.1.1",
     "lodash.isequal": "^4.0.0",
-    "prop-types": "15.x",
-    "react-draggable": "3.x",
-    "react-resizable": "1.x"
+    "prop-types": "^15.8.1",
+    "react-draggable": "^4.0.0",
+    "react-resizable": "^3.0.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.2.2",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-react-transform": "^3.0.0",
-    "babel-plugin-transform-react-constant-elements": "^6.5.0",
-    "babel-plugin-transform-react-inline-elements": "^6.6.5",
-    "babel-plugin-typecheck": "^3.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-1": "^6.24.1",
-    "css-loader": "^0.28.9",
-    "ejs": "^2.4.1",
-    "eslint": "^4.17.0",
-    "eslint-plugin-flowtype": "^2.44.0",
-    "eslint-plugin-mocha": "^4.11.0",
-    "eslint-plugin-react": "^7.6.1",
-    "exports-loader": "^0.7.0",
-    "flow-bin": "^0.65.0",
-    "husky": "^0.14.3",
-    "imports-loader": "^0.7.1",
-    "jest-cli": "^22.3.0",
-    "lint-staged": "^6.1.0",
-    "lodash": "^4.17.5",
-    "opener": "^1.4.3",
-    "prettier": "^1.10.2",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-hot-loader": "^3.1.3",
+    "@babel/cli": "^7.17.3",
+    "@babel/core": "^7.17.5",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-transform-flow-comments": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-flow": "^7.16.7",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/register": "^7.17.0",
+    "@webpack-cli/serve": "^1.6.1",
+    "babel-jest": "^27.5.1",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-preval": "^5.1.0",
+    "css-loader": "^6.6.0",
+    "ejs": "^3.1.6",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.6.2",
+    "eslint": "^8.9.0",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-mocha": "^10.0.3",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-unicorn": "^41.0.0",
+    "exports-loader": "^3.0.0",
+    "flow-bin": "^0.172.0",
+    "husky": "^7.0.2",
+    "imports-loader": "^3.0.0",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.4",
+    "lodash": "^4.17.21",
+    "opener": "^1.5.2",
+    "prettier": "^2.3.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.13.0",
     "react-transform-hmr": "^1.0.2",
-    "style-loader": "^0.20.2",
-    "valiquire": "^0.3.0",
-    "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.1"
+    "style-loader": "^3.2.1",
+    "timsort": "^0.3.0",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "peerDependencies": {
+    "react": ">= 16.3.0",
+    "react-dom": ">= 16.3.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>test/util/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "testMatch": [
       "<rootDir>/test/spec/*.js"
-    ]
+    ],
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost",
+    "coverageThreshold": {
+      "global": {
+        "statements": 77,
+        "branches": 72,
+        "functions": 77,
+        "lines": 78
+      }
+    }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.css": [
-      "prettier --write",
-      "git add"
+    "*.{js,jsx,css}": [
+      "eslint --ext .js,.jsx --fix",
+      "yarn fmt"
     ]
   }
 }

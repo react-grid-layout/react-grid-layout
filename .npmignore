@@ -1,6 +1,6 @@
+coverage/
 test/
 examples/
-dist/
 yarn.lock
 .github
 *.config.js
@@ -8,5 +8,11 @@ Makefile
 *.sh
 *.*.json
 __tests__/
+__mocks__/
 index-dev.js
+index-dev.html
 index.html
+flow-typed/
+interfaces/
+.husky
+.travis.yml

@@ -1,13 +1,12 @@
 body {
-  background: white;
   padding: 20px;
-  overflow: scroll;
 }
 #content {
   width: 100%;
 }
 .react-grid-layout {
   background: #eee;
+  margin-top: 10px;
 }
 .layoutJSON {
   background: #ddd;
@@ -56,10 +55,6 @@ body {
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
-li b {
-  font-size: 19px;
-  line-height: 14px;
-}
 
 .toolbox {
   background-color: #dfd;
@@ -94,4 +89,12 @@ li b {
   margin: 5px;
   border: 1px solid black;
   background-color: #ddd;
+}
+.droppable-element {
+  width: 150px;
+  text-align: center;
+  background: #fdd;
+  border: 1px solid black;
+  margin: 10px 0;
+  padding: 10px;
 }

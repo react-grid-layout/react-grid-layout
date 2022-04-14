@@ -1,52 +1,70 @@
-'use strict';
-var webpack = require('webpack');
-var fs = require('fs');
+"use strict";
+const webpack = require("webpack");
+const fs = require("fs");
 
 // Builds example bundles
 module.exports = {
-    context: __dirname,
-    entry: {
-      commons: ["lodash"],
-    },
-    output: {
-        path: __dirname + "/dist",
-        filename: "[name].bundle.js",
-        sourceMapFilename: "[file].map",
-    },
-    module: {
-      loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: {
-          cacheDirectory: true,
-          plugins: [
-            'transform-react-inline-elements',
-            'transform-react-constant-elements',
-          ]
-        }}
-      ]
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        "process.env": {
-          NODE_ENV: JSON.stringify('production')
+  mode: "development",
+  context: __dirname,
+  entry: {},
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: "commons",
+          chunks: "all",
+          minChunks: 1
         }
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'commons', filename: 'commons.js'
-      })
-    ],
-    resolve: {
-      extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
-      alias: {'react-grid-layout': __dirname + '/index-dev.js'}
+      }
     }
+  },
+  output: {
+    path: __dirname + "/examples",
+    filename: "[name].js",
+    sourceMapFilename: "[file].map",
+    publicPath: "auto"
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: "babel-loader",
+        options: {
+          cacheDirectory: true
+        }
+      }
+    ]
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.STATIC_EXAMPLES": JSON.stringify(true)
+    })
+  ],
+  devServer: {
+    compress: true,
+    port: 4002,
+    open: "/react-grid-layout/examples/0-showcase.html",
+    client: {
+      overlay: true
+    },
+    static: {
+      directory: ".",
+      publicPath: "/react-grid-layout"
+    }
+  },
+  resolve: {
+    extensions: [".js", ".jsx"],
+    alias: { "react-grid-layout": __dirname + "/index-dev.js" }
+  }
 };
 
 // Load all entry points
-var files = fs.readdirSync(__dirname + '/test/examples').filter(function(element, index, array){
-    return element.match(/^.+\.jsx$/);
-});
+const files = fs
+  .readdirSync(__dirname + "/test/examples")
+  .filter(element => element.match(/^.+\.jsx$/));
 
-for(var idx in files){
-    var file = files[idx];
-    var module_name = file.replace(/\.jsx$/,'');
-    module.exports.entry[module_name] = './test/examples/' + file;
+for (const file of files) {
+  const module_name = file.replace(/\.jsx$/, "");
+  module.exports.entry[module_name] = "./test/examples/" + file;
 }
