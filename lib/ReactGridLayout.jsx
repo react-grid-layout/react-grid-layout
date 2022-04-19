@@ -181,7 +181,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Allow parent to set layout directly.
     if (
       !isEqual(nextProps.layout, prevState.propsLayout) ||
-      !isEqual(nextProps.lastRowGaps, prevState.lastRowGaps) ||
+      !isEqual(nextProps.lastRowGap, prevState.lastRowGap) ||
       !isEqual(nextProps.fillGaps, prevState.fillGaps) ||
       nextProps.compactType !== prevState.compactType
     ) {
@@ -218,6 +218,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         // We need to save these props to state for using
         // getDerivedStateFromProps instead of componentDidMount (in which we would get extra rerender)
         compactType: nextProps.compactType,
+        lastRowGap: nextProps.lastRowGap,
+        fillGaps: nextProps.fillGaps,
         children: nextProps.children,
         propsLayout: nextProps.layout
       };
