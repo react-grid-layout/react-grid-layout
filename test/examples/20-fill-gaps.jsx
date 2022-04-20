@@ -4,7 +4,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-class FillGapsLayout extends React.Component {
+export default class FillGapsLayout extends React.Component {
   static defaultProps = {
     className: "layout",
     rowHeight: 200,
@@ -114,8 +114,6 @@ class FillGapsLayout extends React.Component {
   }
 }
 
-module.exports = FillGapsLayout;
-
 function generateLayout() {
   return _.map(_.range(0, 3), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
@@ -133,6 +131,6 @@ function generateLayout() {
   });
 }
 
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(FillGapsLayout));
 }
