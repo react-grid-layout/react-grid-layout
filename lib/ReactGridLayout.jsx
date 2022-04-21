@@ -14,8 +14,6 @@ import {
   getLayoutItem,
   moveElement,
   fillInGaps,
-  filterOutGaps,
-  getOnlyGaps,
   noop,
   synchronizeLayoutWithChildren,
   withLayoutItem
@@ -92,10 +90,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     containerPadding: null,
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
-
-    fillGaps: false, // fill empty spaces in grid with gapRenderFunction
-    lastRowGap: false, // should there be a last row "gap"
-    gapRenderFunction: noop, // the render function for the gap element
+    fillGaps: false,
+    lastRowGap: false,
+    gapRenderFunction: noop,
     heightUnits: 1,
     layout: [],
     margin: [10, 10],
@@ -337,13 +334,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols,
       allowOverlap
     );
-    // if you are filling gaps and want to hide them on drag, filter gaps out
-    const tempLayout = fillGaps ? filterOutGaps(layout, true) : layout;
-    this.props.onDrag(tempLayout, oldDragItem, l, placeholder, e, node);
+    this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
     this.setState({
       layout: allowOverlap
-        ? tempLayout
-        : compact(tempLayout, compactType(this.props), cols),
+        ? layout
+        : compact(layout, compactType(this.props), cols),
       activeDrag: placeholder
     });
   };
@@ -406,11 +401,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
-    const previousLayout = this.props.fillGaps
-      ? filterOutGaps(oldLayout)
+    const previousLayout = this.props.fillGaps // TODO: is this necessary? may have to do with the very first render, otherwise the gaps should always be the same if layouts are same?
+      ? oldLayout.filter((item) => !item.gap)
       : oldLayout;
     const nextLayout = this.props.fillGaps
-      ? filterOutGaps(newLayout)
+      ? newLayout.filter((item) => !item.gap)
       : newLayout;
 
     if (!isEqual(previousLayout, nextLayout)) {
@@ -495,11 +490,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResize(newLayout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the newLayout and set the drag placeholder.
-    const tempLayout = fillGaps ? filterOutGaps(newLayout, true) : newLayout;
     this.setState({
       layout: allowOverlap
-        ? tempLayout
-        : compact(tempLayout, compactType(this.props), cols),
+        ? newLayout
+        : compact(newLayout, compactType(this.props), cols),
       activeDrag: placeholder
     });
   };
@@ -594,8 +588,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       gapRenderFunction
     } = this.props;
     const { layout, activeDrag } = this.state;
-    const addGaps = getOnlyGaps(layout, activeDrag);
-    return addGaps.map(gap => {
+    // TODO: removed behaviour of active drag last row - test to make sure that's ok
+    const gapItems = layout.filter((item) => item.gap);
+    return gapItems.map(gap => {
+      // TODO: change function to component
       return (
         <GridItem
           key={gap.i}
@@ -866,7 +862,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     return (
       <div
         ref={innerRef}
-        // ref={node => (this.grid = node)}
         className={mergedClassName}
         style={mergedStyle}
         onDrop={isDroppable ? this.onDrop : noop}
