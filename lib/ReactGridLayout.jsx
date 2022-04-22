@@ -93,7 +93,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     fillGaps: false,
     lastRowGap: false,
     GapComponent: null,
-    heightUnits: 1,
+    gapFillHeight: 1,
     layout: [],
     margin: [10, 10],
     isBounded: false,
@@ -137,7 +137,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       this.props.cols,
       this.props.fillGaps,
       this.props.lastRowGap,
-      this.props.heightUnits,
+      this.props.gapFillHeight,
     ),
     mounted: false,
     oldDragItem: null,
@@ -170,8 +170,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Allow parent to set layout directly.
     if (
       !isEqual(nextProps.layout, prevState.propsLayout) ||
-      !isEqual(nextProps.lastRowGap, prevState.lastRowGap) ||
-      !isEqual(nextProps.fillGaps, prevState.fillGaps) ||
       nextProps.compactType !== prevState.compactType
     ) {
       newLayoutBase = nextProps.layout;
@@ -198,13 +196,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           nextProps.cols,
           nextProps.fillGaps,
           nextProps.lastRowGap,
-          nextProps.heightUnits
+          nextProps.gapFillHeight
         ),
         // We need to save these props to state for using
         // getDerivedStateFromProps instead of componentDidMount (in which we would get extra rerender)
         compactType: nextProps.compactType,
-        lastRowGap: nextProps.lastRowGap,
-        fillGaps: nextProps.fillGaps,
         children: nextProps.children,
         propsLayout: nextProps.layout
       };
@@ -349,7 +345,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, preventCollision, allowOverlap, fillGaps, lastRowGap, heightUnits } = this.props;
+    const { cols, preventCollision, allowOverlap, fillGaps, lastRowGap, gapFillHeight } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -373,7 +369,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const compactedLayout = allowOverlap
       ? layout
       : compact(layout, compactType(this.props), cols);
-    const newLayout = fillInGaps(compactedLayout, cols, fillGaps, lastRowGap, heightUnits); // TODO: I don't know if heightUnits needs to be customizable?
+    const newLayout = fillInGaps(compactedLayout, cols, fillGaps, lastRowGap, gapFillHeight);
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
@@ -387,12 +383,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
-    const previousLayout = this.props.fillGaps // TODO: is this necessary? may have to do with the very first render, otherwise the gaps should always be the same if layouts are same?
-      ? oldLayout.filter((item) => !item.gap)
-      : oldLayout;
-    const nextLayout = this.props.fillGaps
-      ? newLayout.filter((item) => !item.gap)
-      : newLayout;
+    const previousLayout = oldLayout.filter((item) => !item.isGap);
+    const nextLayout = newLayout.filter((item) => !item.isGap);
 
     if (!isEqual(previousLayout, nextLayout)) {
       this.props.onLayoutChange(nextLayout);
@@ -491,7 +483,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     { e, node }
   ) => {
     const { layout, oldResizeItem } = this.state;
-    const { cols, allowOverlap, fillGaps, lastRowGap, heightUnits } = this.props;
+    const { cols, allowOverlap, fillGaps, lastRowGap, gapFillHeight } = this.props;
     const l = getLayoutItem(layout, i);
 
     this.props.onResizeStop(layout, oldResizeItem, l, null, e, node);
@@ -500,7 +492,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const compactedLayout = allowOverlap
       ? layout
       : compact(layout, compactType(this.props), cols);
-    const newLayout = fillInGaps(compactedLayout, cols, fillGaps, lastRowGap, heightUnits);
+    const newLayout = fillInGaps(compactedLayout, cols, fillGaps, lastRowGap, gapFillHeight);
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
@@ -576,7 +568,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     if (!fillGaps) return null;
 
-    const gapItems = layout.filter((item) => item.gap);
+    const gapItems = layout.filter((item) => item.isGap);
     return gapItems.map(gap => (
       <GridItem
         key={gap.i}
