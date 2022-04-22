@@ -291,7 +291,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   ) => {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, allowOverlap, preventCollision, fillGaps } = this.props;
+    const { cols, allowOverlap, preventCollision } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -318,7 +318,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols,
       allowOverlap
     );
+
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
+
     this.setState({
       layout: allowOverlap
         ? layout
@@ -416,7 +418,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     { e, node }
   ) => {
     const { layout, oldResizeItem } = this.state;
-    const { cols, preventCollision, allowOverlap, fillGaps } = this.props;
+    const { cols, preventCollision, allowOverlap } = this.props;
 
     const [newLayout, l] = withLayoutItem(layout, i, l => {
       // Something like quad tree should be used
