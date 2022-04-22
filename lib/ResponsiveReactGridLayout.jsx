@@ -203,7 +203,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     nextProps: Props<*>,
     prevState: State
   ): ?$Shape<State> {
-    if (!isEqual(nextProps.layouts, prevState.layouts) || !isEqual(nextProps.children, prevState.children)) {
+    if (!isEqual(nextProps.layouts, prevState.layouts)) {
       // Allow parent to set layouts directly.
       const { breakpoint, cols } = prevState;
 
@@ -217,7 +217,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
         cols,
         nextProps.compactType
       );
-      return { layout: newLayout, layouts: nextProps.layouts, children: nextProps.children };
+      return { layout: newLayout, layouts: nextProps.layouts };
     }
 
     return null;
