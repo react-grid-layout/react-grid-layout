@@ -61,9 +61,9 @@ export default class FillGapsLayout extends React.Component {
           // Gap props
           fillGaps={true}
           lastRowGap={true}
-          gapRenderFunction={(gap) => {
+          GapComponent={(gap) => {
               return (
-                  <div style={{ height: 'inherit', backgroundColor: 'gray' }} onClick={() => this.addCard(gap)}><span className="text">Gap filler: click to add</span></div>
+                  <div style={{ backgroundColor: 'gray' }} onClick={() => this.addCard(gap)}><span className="text">Gap filler: click to add</span></div>
               );
           }}
         >
