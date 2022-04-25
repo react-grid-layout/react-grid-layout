@@ -57,12 +57,10 @@ var resizeHandleType
   resizeHandles: ResizeHandleAxis[],
   resizeHandle?: ResizeHandle,
   allowOverlap: boolean,
-  heightUnits: number,
-
-  // Gap props
-  fillGaps: boolean, // fill empty spaces in grid with gapRenderFunction
-  lastRowGap: boolean, // should there be a last row "gap"
-  gapRenderFunction: Function, // the render function for the gap element
+  gapFillHeight: number,
+  fillGaps: boolean,
+  lastRowGap: boolean,
+  GapComponent: Function,
 
   // Callbacks
   onLayoutChange: Layout => void,
@@ -149,13 +147,17 @@ var _default = {
   // an item past the barrier. They can push items beyond the barrier, though.
   // Intentionally not documented for this reason.
   maxRows: _propTypes.default.number,
+  //
   // Gap props
+  //
+  // fill empty spaces in grid with GapComponent
   fillGaps: _propTypes.default.bool,
-  // fill empty spaces in grid with gapRenderFunction
+  // should there be an extra gap below the last row of items
   lastRowGap: _propTypes.default.bool,
-  // should there be a last row "gap"
-  gapRenderFunction: _propTypes.default.func,
-  // the render function for the gap element
+  // the gap filling component
+  GapComponent: _propTypes.default.func,
+  // how tall (max) the gap filler should grow to be
+  gapFillHeight: _propTypes.default.number,
   //
   // Flags
   //

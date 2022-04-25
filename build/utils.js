@@ -15,11 +15,9 @@ exports.correctBounds = correctBounds;
 exports.fastPositionEqual = fastPositionEqual;
 exports.fastRGLPropsEqual = void 0;
 exports.fillInGaps = fillInGaps;
-exports.filterOutGaps = filterOutGaps;
 exports.getAllCollisions = getAllCollisions;
 exports.getFirstCollision = getFirstCollision;
 exports.getLayoutItem = getLayoutItem;
-exports.getOnlyGaps = getOnlyGaps;
 exports.getStatics = getStatics;
 exports.modifyLayout = modifyLayout;
 exports.moveElement = moveElement;
@@ -158,9 +156,7 @@ function cloneLayoutItem(layoutItem
     maxH: layoutItem.maxH,
     moved: Boolean(layoutItem.moved),
     static: Boolean(layoutItem.static),
-    // Gap config
-    gap: layoutItem.gap,
-    lastRow: layoutItem.lastRow,
+    isGap: layoutItem.isGap,
     // These can be null/undefined
     isDraggable: layoutItem.isDraggable,
     isResizable: layoutItem.isResizable,
@@ -860,209 +856,220 @@ function validateLayout(layout
       }
     }
   }
-}
-/**
- * Filters out the gap items
- *
- * @param  {Array}  layout              Array of layout items.
- * @param  {Boolean} ignoreLastRow      Do you want to ignore the lastRow when filtering
- * @throw  {Array}                      The gap-less layout
- */
+} // creates a 2d array of the size given
 
 
-function filterOutGaps(layout) {
-  var ignoreLastRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  if (ignoreLastRow) return layout.filter(function (item) {
-    return !item.gap || item.lastRow;
-  });
-  return layout.filter(function (item) {
-    return !item.gap || !item.gap && !item.lastRow;
-  });
-}
-/**
- * Filters the list for just the gaps
- *
- * @param  {Array}  layout        Array of layout items.
- * @param  {Boolean} lastRow      Do you want to only get the lastRow
- * @throw  {Array}                The gap-only layout
- */
-
-
-function getOnlyGaps(layout) {
-  var lastRowOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  if (lastRowOnly) return layout.filter(function (item) {
-    return item.lastRow;
-  });
-  return layout.filter(function (item) {
-    return item.gap || item.gap && item.lastRow;
-  });
-}
-
-var generateMatrix = function generateMatrix(layout, _ref3) {
-  var x = _ref3.x,
-      y = _ref3.y;
+function generateGridMatrix(layout
+/*: Layout*/
+, _ref3)
+/*: Array<Array<string>>*/
+{
+  var width = _ref3.width,
+      height = _ref3.height;
   var matrix = [];
 
-  for (var i = 0; i < y; i++) {
+  for (var i = 0; i < height; i++) {
     matrix[i] = [];
 
-    for (var j = 0; j < x; j++) {
+    for (var j = 0; j < width; j++) {
       matrix[i][j] = null;
     }
   }
 
-  layout.filter(function (l) {
-    return !l.gap;
-  }).forEach(function (l) {
-    var x = l.x,
-        y = l.y,
-        w = l.w,
-        h = l.h,
-        i = l.i;
-    var endX = x + w;
-    var endY = y + h;
-
-    for (var vert = y; vert < endY; vert++) {
-      for (var horiz = x; horiz < endX; horiz++) {
-        matrix[vert][horiz] = i;
-      }
-    }
-  });
   return matrix;
-};
+} // fills in the matrix with the item's i where the item is located
 
-Object.size = function (obj) {
-  var size = 0,
-      key;
 
-  for (key in obj) {
-    if (obj.hasOwnProperty(key)) size++;
-  }
+function addGridMatrixItem(item
+/*: LayoutItem*/
+, matrix
+/*: Array<Array<string>>*/
+)
+/*: void*/
+{
+  var x = item.x,
+      y = item.y,
+      w = item.w,
+      h = item.h,
+      i = item.i;
+  var endX = x + w;
+  var endY = y + h;
 
-  return size;
-};
-
-function calculateHeightScore(matrix, initialX, y, dx) {
-  var hScore = 1;
-
-  if (initialX === 0) {// if (y === matrix.length - 1) hScore++;
-  } else {
-    if (y === matrix.length - 1) {
-      if (!(matrix[y][initialX - 1] === null || matrix[y][initialX - 1].includes('gap'))) hScore++;
-    } else {
-      if (matrix[y][initialX - 1] !== matrix[y + 1][initialX - 1]) hScore++;
+  for (var currentY = y; currentY < endY; currentY++) {
+    for (var currentX = x; currentX < endX; currentX++) {
+      matrix[currentY][currentX] = i;
     }
   }
+} // detects boundaries in the vertical layout for a given x-column at a given y
 
-  if (initialX + dx === matrix[y].length) {// if (y === matrix.length - 1) hScore++;
+
+function scoreNeighborBoundaries(matrix, x, y) {
+  var score = 0;
+  var neighbor = matrix[y][x];
+
+  if (y < matrix.length - 1) {
+    // if there is a row below, increase score if there is a boundary between items that aligns at this height
+    if (neighbor !== matrix[y + 1][x]) score++;
   } else {
-    if (y === matrix.length - 1) {
-      if (!(matrix[y][initialX + dx] === null || matrix[y][initialX + dx].includes('gap'))) hScore++;
-    } else {
-      if (matrix[y][initialX + dx] !== matrix[y + 1][initialX + dx]) hScore++;
-    }
+    // for the last row, only increase if there is not a gap next to this gap
+    if (neighbor !== null && !neighbor.includes('gap')) score++;
+  }
+
+  return score;
+} // gives a score of how good a given height is for a gap filler
+// does so by detecting boundaries in the vertical layout
+
+
+function calculateHeightScore(matrix
+/*: Array<Array<string>>*/
+, x
+/*: number*/
+, y
+/*: number*/
+, w
+/*: number*/
+) {
+  var hScore = 1; // if not on left edge, check left neighbor
+
+  var xBeforeItem = x - 1;
+
+  if (xBeforeItem >= 0) {
+    hScore += scoreNeighborBoundaries(matrix, xBeforeItem, y);
+  } // if not on right edge, check right neighbor
+
+
+  var xAfterItem = x + w;
+
+  if (xAfterItem < matrix[y].length) {
+    hScore += scoreNeighborBoundaries(matrix, xAfterItem, y);
   }
 
   return hScore;
-}
+} // creates an item to fill a gap: determines the height and width of the gap
 
-function generateGap(matrix, initialY, initialX, i, heightUnits) {
-  var h = 0;
-  var heightScores = [0];
+
+function generateGapItem(matrix
+/*: Array<Array<string>>*/
+, initialY
+/*: number*/
+, initialX
+/*: number*/
+, i
+/*: string*/
+, gapFillHeight
+/*: number*/
+)
+/*: LayoutItem*/
+{
+  // find width
   var w = 1;
-  var dx;
 
-  for (var y = initialY; y < matrix.length; y++) {
+  while (matrix[initialY][initialX + w] === null && initialX + w < matrix[initialY].length) {
+    w++;
+  } // find height: calculate a score for each possible height
+  // calculate for h=1 outside of loop since we don't need to loop through that row
+
+
+  var heightScores = [calculateHeightScore(matrix, initialX, initialY, w)];
+  var h = 2;
+
+  for (var y = initialY + h - 1; y < matrix.length; y++) {
+    if (h === gapFillHeight + 1) break; // stop looping when we get past gapFillHeight
+    // check whether this row is empty
+
+    var dx = void 0;
+
     for (dx = 0; dx < w; dx++) {
-      if (y === initialY) {
-        if (initialX + dx + 1 < matrix[y].length && matrix[y][initialX + dx + 1] === null) w++;
-      } else {
-        if (matrix[y][initialX + dx] !== null) break;
-      }
+      if (matrix[y][initialX + dx] !== null) break; // found something -> didn't get all the way to w
     }
 
-    if (dx === w) {
-      h++; // calculate a 'score' for this height (for an intelligentish algorithm)
+    if (dx < w) break; // if the row contains an item, don't consider it for gap filling
+    // calculate a 'score' for this height (for an intelligentish algorithm)
 
-      heightScores.push(calculateHeightScore(matrix, initialX, y, dx));
-    } else break;
-
-    if (h === heightUnits) break;
-  } // use the 'best' height that we calculated
+    heightScores.push(calculateHeightScore(matrix, initialX, y, w));
+    h++;
+  } // use the best scoring height that we calculated
 
 
-  h = heightScores.reduce(function (bestIndex, cur, i) {
-    return heightScores[bestIndex] > cur ? bestIndex : i;
-  });
-
-  for (var _y = initialY; _y < initialY + h; _y++) {
-    for (var x = initialX; x < initialX + w; x++) {
-      matrix[_y][x] = i;
-    }
-  }
-
+  h = heightScores.reduce(function (bestHeight, currentScore, i) {
+    var bestHeightIndex = bestHeight - 1;
+    return heightScores[bestHeightIndex] > currentScore ? bestHeight : i + 1;
+  }, 1);
   return {
     i: i,
-    x: initialX,
-    y: initialY,
     w: w,
     h: h,
-    gap: true
+    x: initialX,
+    y: initialY,
+    isGap: true,
+    isDraggable: false,
+    isResizable: false
   };
 }
 /**
  * Fills in all gaps (empty spaces) in the grid layout
  *
  * @param  {Array}  layout        Array of layout items.
- * @param  {Number} cols          The number of columns, needed for filling
- * @param  {Boolean} lastRow      Do you want to insert a lastRow gap
+ * @param  {Number} columnCount   The number of columns, needed for filling
+ * @param  {Boolean} fillGaps     whether to fill the gaps
+ * @param  {Boolean} lastRowGap   Do you want to insert a last row gap
+ * @param  {Number} gapFillHeight how tall the gap filler should grow to be
  * @throw  {Array}                The new layout
  */
 
 
-function fillInGaps(layout, columnCount, lastRow) {
-  var heightUnits = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 4;
-  var gapConfig = {
-    gap: true,
-    isDraggable: false,
-    isResizable: false
-  }; // * 1. Get mxY
+function fillInGaps(layout
+/*: Layout*/
+, columnCount
+/*: number*/
+, fillGaps
+/*: boolean*/
+, lastRowGap
+/*: boolean*/
+, gapFillHeight
+/*: number*/
+)
+/*: Layout*/
+{
+  if (!fillGaps) return layout; // Get maxY
 
   var maxY = 0;
-  var cardsInLayout = layout.filter(function (l) {
-    return !l.gap;
-  }).map(function (card) {
-    var cardMaxCoord = card.y + card.h;
-    maxY = cardMaxCoord > maxY ? card.y + card.h : maxY;
-    return card;
-  });
-  var matrix = generateMatrix(layout, {
-    x: columnCount,
-    y: maxY
-  }); // * 2. Create a new matrix with a Y of maxY and an X of columnCount
+  layout.forEach(function (item) {
+    var itemBottomY = item.y + item.h;
+    if (itemBottomY > maxY) maxY = itemBottomY;
+  }); // Create a matrix representing the grid
 
+  var matrix = generateGridMatrix(layout, {
+    width: columnCount,
+    height: maxY
+  });
+  layout.forEach(function (item) {
+    return addGridMatrixItem(item, matrix);
+  });
   var gaps = [];
 
   for (var y = 0; y < matrix.length; y++) {
-    // *  Row section
     for (var x = 0; x < matrix[y].length; x++) {
-      // * Cell loop -- Go through all cells in the row
+      // add gap fillers where the matrix is empty
       if (matrix[y][x] === null) {
-        gaps.push(generateGap(matrix, y, x, "gap-".concat(gaps.length), heightUnits));
+        var gapItem = generateGapItem(matrix, y, x, "gap-".concat(gaps.length), gapFillHeight);
+        gaps.push(gapItem);
+        addGridMatrixItem(gapItem, matrix);
       }
     }
-  } // If lastRow is true, add lastRow
+  }
 
-
-  lastRow && gaps.push(_objectSpread({
+  if (lastRowGap) gaps.push({
     w: columnCount,
+    h: gapFillHeight,
     x: 0,
     y: matrix.length,
-    h: heightUnits,
     i: 'gap-last-row',
-    lastRow: true
-  }, gapConfig));
-  return [].concat(_toConsumableArray(cardsInLayout), gaps); // Merge the layouts
+    isGap: true,
+    isDraggable: false,
+    isResizable: false
+  });
+  return [].concat(_toConsumableArray(layout), gaps);
 } // Legacy support for verticalCompact: false
 
 

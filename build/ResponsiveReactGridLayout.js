@@ -280,7 +280,7 @@ var ResponsiveReactGridLayout = /*#__PURE__*/function (_React$Component) {
     )
     /*: ?$Shape<State>*/
     {
-      if (!(0, _lodash.default)(nextProps.layouts, prevState.layouts) || !(0, _lodash.default)(nextProps.children, prevState.children)) {
+      if (!(0, _lodash.default)(nextProps.layouts, prevState.layouts)) {
         // Allow parent to set layouts directly.
         var breakpoint = prevState.breakpoint,
             _cols = prevState.cols; // Since we're setting an entirely new layout object, we must generate a new responsive layout
@@ -289,8 +289,7 @@ var ResponsiveReactGridLayout = /*#__PURE__*/function (_React$Component) {
         var newLayout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(nextProps.layouts, nextProps.breakpoints, breakpoint, breakpoint, _cols, nextProps.compactType);
         return {
           layout: newLayout,
-          layouts: nextProps.layouts,
-          children: nextProps.children
+          layouts: nextProps.layouts
         };
       }
 
