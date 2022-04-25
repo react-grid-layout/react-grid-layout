@@ -64,7 +64,11 @@ export default class FillGapsLayout extends React.Component {
           fillGaps={true}
           lastRowGaps={2}
           gapFillHeight={2}
-          GapComponent={(gapItem) => <div style={{ backgroundColor: 'gray' }} onClick={() => this.addCard(gapItem)}><span className="text">Gap filler: click to add</span></div>}
+          GapComponent={(props) => (
+            <div style={{ backgroundColor: 'gray', width: '100%', height: '100%' }} onClick={() => this.addCard(props)}>
+              <span className="text">Gap filler: click to add</span>
+            </div>
+          )}
         >
           {this.generateDOM()}
         </ReactGridLayout>
