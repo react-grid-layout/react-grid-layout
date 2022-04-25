@@ -46,7 +46,8 @@ export default class FillGapsLayout extends React.Component {
   }
 
   addCard(item) {
-    this.setState({ layout: [...this.state.layout, { ...item, i: this.state.layout.length.toString(), isGap: false }] })
+    const { w, h, x, y } = item;
+    this.setState({ layout: [...this.state.layout, { w, h, x, y, i: this.state.layout.length.toString(), isGap: false }] })
   }
 
   render() {
@@ -61,7 +62,7 @@ export default class FillGapsLayout extends React.Component {
           useCSSTransforms={true}
           // Gap props
           fillGaps={true}
-          lastRowGap={true}
+          lastRowGaps={2}
           gapFillHeight={2}
           GapComponent={(gapItem) => <div style={{ backgroundColor: 'gray' }} onClick={() => this.addCard(gapItem)}><span className="text">Gap filler: click to add</span></div>}
         >
