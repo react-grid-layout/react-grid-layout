@@ -55,7 +55,9 @@ export default class FillGapsLayout extends React.Component {
         <ReactGridLayout
           {...this.props}
           layout={this.state.layout}
-          onLayoutChange={this.props.onLayoutChange}
+          onLayoutChange={(layout) => { // this must be specified if you are going to update the layout prop on an event (such as adding an item)
+            this.setState({ layout })
+          }}
           useCSSTransforms={true}
           // Gap props
           fillGaps={true}
