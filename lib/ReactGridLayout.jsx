@@ -291,7 +291,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   ) => {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, allowOverlap, preventCollision } = this.props;
+    const { cols, allowOverlap, preventCollision, fillGaps, lastRowGaps, gapFillHeight } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -321,10 +321,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
+    // Re-compact the layout and set the drag placeholder.
+    const compactedLayout = allowOverlap ? layout.filter((i) => !i.isGap) : compact(layout.filter((i) => !i.isGap), compactType(this.props), cols);
     this.setState({
-      layout: allowOverlap
-        ? layout
-        : compact(layout, compactType(this.props), cols),
+      layout: fillInGaps(compactedLayout, cols, fillGaps, lastRowGaps, gapFillHeight),
       activeDrag: placeholder
     });
   };
@@ -418,7 +418,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     { e, node }
   ) => {
     const { layout, oldResizeItem } = this.state;
-    const { cols, preventCollision, allowOverlap } = this.props;
+    const { cols, preventCollision, allowOverlap, fillGaps, lastRowGaps, gapFillHeight } = this.props;
 
     const [newLayout, l] = withLayoutItem(layout, i, l => {
       // Something like quad tree should be used
@@ -470,10 +470,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResize(newLayout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the newLayout and set the drag placeholder.
+    const compactedLayout = allowOverlap ? newLayout.filter((i) => !i.isGap) : compact(newLayout.filter((i) => !i.isGap), compactType(this.props), cols);
     this.setState({
-      layout: allowOverlap
-        ? newLayout
-        : compact(newLayout, compactType(this.props), cols),
+      layout: fillInGaps(compactedLayout, cols, fillGaps, lastRowGaps, gapFillHeight),
       activeDrag: placeholder
     });
   };
@@ -581,7 +580,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         i={gap.i}
         containerWidth={width}
         className="react-grid-gap"
-        style={{ display: activeDrag ? "none" : null }}
         cols={cols}
         margin={margin}
         containerPadding={containerPadding || margin}
