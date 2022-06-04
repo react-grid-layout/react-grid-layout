@@ -695,4 +695,63 @@ describe("deepFreeze", () => {
     );
     expect(JSON.stringify(deepFreezeResult)).toBe('{"a":"a","b":{"b":"c"}}');
   });
+  it('gets nested key value', () => {
+    const res = deepFreeze(
+      { one: "a", two: { b: "c" } },
+      { set: true, get: true }
+    )
+
+    const val = res.two.b
+    expect(val).toBe('c')
+  })
+  it('defaults option prop to get: true', () => { 
+    const res = deepFreeze(
+      { one: "a", two: { b: "c" } },
+    );
+
+    expect(res.two.b).toBe('c')
+  })
+  it("does not pass check `if(options.set)` ", () => {    
+    const res = deepFreeze({ one: "a" }, {set: false, get:false});
+    expect(res.one).toBe("a");
+  });
+
+
+  it('returns `toJSON`', () => { 
+    const res = deepFreeze({ a: 'toJSON' })
+    expect(res.a.toString()).toBe(`toJSON`)
+  })
+  describe('throws "unknown prop" error', () => { 
+    it('when setting bad key', () => { 
+      try {
+        const res = deepFreeze(
+          { one: "a", two: { b: "c" } },
+          { set: true, get: false }
+        );
+        // $FlowIgnore to test the error throw
+        res.badProp = "dog";
+      } catch (e) {
+        expect(e.message).toBe(
+          'Can not set unknown prop "badProp" on frozen object.'
+        );
+      }
+    })
+    it("when getting bad key", () => {
+      try {
+        const res = deepFreeze(
+          { one: "a", two: { b: "c" } },
+          { set: true, get: true }
+        );
+        // $FlowIgnore to test the error throws
+        res.badProp;
+        
+      } catch (e) {
+        expect(e.message).toBe(
+          'Can not get unknown prop "badProp" on frozen object.'
+        );
+      }
+    });
+  })
+
+
 });
