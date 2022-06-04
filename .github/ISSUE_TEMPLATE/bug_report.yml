@@ -1,4 +1,4 @@
-name: '🐛 Bug report'
+name: "🐛 Bug report"
 description: Create a report to help us improve
 body:
   - type: markdown
@@ -64,7 +64,7 @@ body:
       label: react-grid-layout library version
       description: What version of the `react-grid-layout` library are you using?
     validations:
-      required: true      
+      required: true
   - type: input
     id: os
     attributes:
