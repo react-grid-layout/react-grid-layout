@@ -448,6 +448,28 @@ describe("Lifecycle tests", function () {
         expect(layoutItem).toBeUndefined();
       });
     });
+  
+    describe("getLayout", () => {
+      it("Gets layout state with getLayout ref function", async function () {
+        const wrapper = mount(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+          >
+            <div key="a" data-grid={{ x: 0, y: 0, w: 1, h: 1 }}>
+              a
+            </div>
+            <div key="b" data-grid={{ x: 1, y: 0, w: 1, h: 1 }}>
+              b
+            </div>
+          </ReactGridLayout>
+        );
+        const layoutThroughRef = wrapper.instance().getLayout();
+        expect(wrapper.state().layout).toMatchObject(layoutThroughRef);
+      });
+    });
   });
 
   describe("<ResponsiveReactGridLayout>", function () {
