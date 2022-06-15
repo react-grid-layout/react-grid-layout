@@ -215,6 +215,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   }
 
   /**
+   * Returns layout through ref
+   * @return {Layout} State layout
+   */
+  getLayout(): Layout {
+    return this.state.layout;
+  }
+
+  /**
    * Calculates a pixel value for the container.
    * @return {String} Container height in pixels.
    */
