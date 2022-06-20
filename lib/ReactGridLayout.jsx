@@ -35,13 +35,15 @@ import type {
   DragOverEvent,
   Layout,
   DroppingPosition,
-  LayoutItem
+  LayoutItem,
+  ChangeMode,
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";
 
 type State = {
   activeDrag: ?LayoutItem,
+  changeMode: ?ChangeMode,
   layout: Layout,
   mounted: boolean,
   oldDragItem: ?LayoutItem,
@@ -120,6 +122,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   state: State = {
     activeDrag: null,
+    changeMode: null,
     layout: synchronizeLayoutWithChildren(
       this.props.layout,
       this.props.children,
@@ -252,7 +255,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.setState({
       oldDragItem: cloneLayoutItem(l),
-      oldLayout: layout
+      oldLayout: layout,
+      changeMode: "drag",
     });
 
     return this.props.onDragStart(layout, l, l, null, e, node);
@@ -357,6 +361,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
+      changeMode: null,
       layout: newLayout,
       oldDragItem: null,
       oldLayout: null
@@ -385,7 +390,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.setState({
       oldResizeItem: cloneLayoutItem(l),
-      oldLayout: this.state.layout
+      oldLayout: this.state.layout,
+      changeMode: 'resize',
     });
 
     this.props.onResizeStart(layout, l, l, null, e, node);
@@ -477,6 +483,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const { oldLayout } = this.state;
     this.setState({
       activeDrag: null,
+      changeMode: null,
       layout: newLayout,
       oldResizeItem: null,
       oldLayout: null
@@ -490,7 +497,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * @return {Element} Placeholder div.
    */
   placeholder(): ?ReactElement<any> {
-    const { activeDrag } = this.state;
+    const {
+      activeDrag,
+      changeMode,
+    } = this.state;
     if (!activeDrag) return null;
     const {
       width,
@@ -500,8 +510,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       rowHeight,
       maxRows,
       useCSSTransforms,
-      transformScale
+      transformScale,
     } = this.props;
+
+    const placeholder = this.props.placeholder || <div className="react-grid-default-placeholder" />;
+
+    const placeholderNode = typeof placeholder === 'function'
+      ? placeholder(activeDrag, changeMode)
+      : placeholder;
 
     // {...this.state.activeDrag} is pretty slow, actually
     return (
@@ -524,7 +540,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         useCSSTransforms={useCSSTransforms}
         transformScale={transformScale}
       >
-        <div />
+        { placeholderNode }
       </GridItem>
     );
   }

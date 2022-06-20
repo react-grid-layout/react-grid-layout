@@ -167,5 +167,12 @@ module.exports = [
     paragraphs: [
       "This demonstrates how to overlap grid items."
     ]
+  },
+  {
+    title: "Custom Placeholder",
+    source: "custom-placeholder",
+    paragraphs: [
+      "This demonstrates how to set custom placeholder."
+    ]
   }
 ];
