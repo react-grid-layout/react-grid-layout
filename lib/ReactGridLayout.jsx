@@ -1,5 +1,6 @@
 // @flow
 import * as React from "react";
+import * as ReactDom from "react-dom";
 
 import isEqual from "lodash.isequal";
 import clsx from "clsx";
@@ -304,12 +305,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
-    this.setState({
-      layout: allowOverlap
-        ? layout
-        : compact(layout, compactType(this.props), cols),
-      activeDrag: placeholder
-    });
+    ReactDom.flushSync(() => {
+      this.setState({
+        layout: allowOverlap
+          ? layout
+          : compact(layout, compactType(this.props), cols),
+        activeDrag: placeholder
+      });
+    })
   };
 
   /**
@@ -450,12 +453,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onResize(newLayout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the newLayout and set the drag placeholder.
-    this.setState({
-      layout: allowOverlap
-        ? newLayout
-        : compact(newLayout, compactType(this.props), cols),
-      activeDrag: placeholder
-    });
+    ReactDom.flushSync(() => {
+      this.setState({
+        layout: allowOverlap
+          ? newLayout
+          : compact(newLayout, compactType(this.props), cols),
+        activeDrag: placeholder
+      });
+    })
   };
 
   onResizeStop: (i: string, w: number, h: number, GridResizeEvent) => void = (
