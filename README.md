@@ -332,6 +332,8 @@ isResizable: ?boolean = true,
 isBounded: ?boolean = false,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
+// Disabled on Firefox by default due to negative SVG interaction.
+// See https://bugzilla.mozilla.org/show_bug.cgi?id=1610093
 useCSSTransforms: ?boolean = true,
 // If parent DOM node of ResponsiveReactGridLayout or ReactGridLayout has "transform: scale(n)" css property,
 // we should set scale coefficient to avoid render artefacts while dragging.

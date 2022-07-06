@@ -96,7 +96,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isResizable: true,
     allowOverlap: false,
     isDroppable: false,
-    useCSSTransforms: true,
+    useCSSTransforms: !isFirefox, // https://bugzilla.mozilla.org/show_bug.cgi?id=1610093
     transformScale: 1,
     verticalCompact: true,
     compactType: "vertical",
