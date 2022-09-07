@@ -13,3 +13,4 @@ examples/*.js
 !examples/vars.js
 .vscode
 *.tgz
+coverage/
