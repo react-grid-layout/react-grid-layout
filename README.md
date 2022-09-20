@@ -21,19 +21,23 @@ RGL is React-only and does not require jQuery.
 
 ## Table of Contents
 
-- [Demos](#demos)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Responsive Usage](#responsive-usage)
-- [Providing Grid Width](#providing-grid-width)
-- [Grid Layout Props](#grid-layout-props)
-- [Responsive Grid Layout Props](#responsive-grid-layout-props)
-- [Grid Item Props](#grid-item-props)
-- [User Recipes](../../wiki/Users-recipes)
-- [Performance](#performance)
-- [Contribute](#contribute)
-- [TODO List](#todo-list)
+- [React-Grid-Layout](#react-grid-layout)
+  - [Table of Contents](#table-of-contents)
+  - [Demos](#demos)
+      - [Projects Using React-Grid-Layout](#projects-using-react-grid-layout)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Usage without Browserify/Webpack](#usage-without-browserifywebpack)
+    - [Responsive Usage](#responsive-usage)
+    - [Providing Grid Width](#providing-grid-width)
+    - [Grid Layout Props](#grid-layout-props)
+    - [Responsive Grid Layout Props](#responsive-grid-layout-props)
+    - [Grid Item Props](#grid-item-props)
+    - [Performance](#performance)
+    - [Custom Child Components and Draggable Handles](#custom-child-components-and-draggable-handles)
+  - [Contribute](#contribute)
+  - [TODO List](#todo-list)
 
 ## Demos
 
@@ -330,6 +334,7 @@ droppingItem?: { i: string, w: number, h: number }
 isDraggable: ?boolean = true,
 isResizable: ?boolean = true,
 isBounded: ?boolean = false,
+lockAspectRatio: ?boolean = false,
 // Uses CSS3 translate() instead of position top/left.
 // This makes about 6x faster paint performance
 useCSSTransforms: ?boolean = true,
@@ -503,6 +508,8 @@ will be draggable, even if the item is marked `static: true`.
   isDraggable: ?boolean = true,
   // If false, will not be resizable. Overrides `static`.
   isResizable: ?boolean = true,
+  // If false, will not lockAspectRatio. Overrides `static`.
+  lockAspectRatio: ?boolean = false,
   // By default, a handle is only shown on the bottom-right (southeast) corner.
   // Note that resizing from the top or left is generally not intuitive.
   resizeHandles?: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
