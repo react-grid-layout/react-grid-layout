@@ -551,14 +551,14 @@ Because the `children` prop doesn't change between rerenders, updates to `<MyGri
 If you use React Components as grid children, they need to do a few things:
 
 1. Forward refs to an underlying DOM node, and
-2. Forward `style` and `className` to that same DOM node.
+2. Forward `style`,`className`, `onMouseDown`, `onMouseUp` and `onTouchEnd` to that same DOM node.
 
 For example:
 
 ```js
-const CustomGridItemComponent = React.forwardRef(({style, className, ...props}, ref) => {
+const CustomGridItemComponent = React.forwardRef(({style, className, onMouseDown, onMouseUp, onTouchEnd, ...props}, ref) => {
   return (
-    <div style={{ /* styles */, ...style}} className={className} ref={ref}>
+    <div style={{ /* styles */, ...style}} className={className} ref={ref} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onTouchEnd={onTouchEnd}>
       {/* Some other content */}
     </div>
   );
