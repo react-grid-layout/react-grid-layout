@@ -2,6 +2,7 @@
 import * as React from "react";
 
 import isEqual from "lodash.isequal";
+import throttle from "lodash.throttle"
 import clsx from "clsx";
 import {
   bottom,
@@ -619,10 +620,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   // Called while dragging an element. Part of browser native drag/drop API.
   // Native event target might be the layout itself, or an element within the layout.
-  onDragOver: DragOverEvent => void | false = e => {
-    e.preventDefault(); // Prevent any browser native action
-    e.stopPropagation();
-
+  _onDragOver: DragOverEvent => void | false = e => {
     // we should ignore events from layout's children in Firefox
     // to avoid unpredictable jumping of a dropping placeholder
     // FIXME remove this hack
@@ -706,6 +704,21 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     }
   };
 
+  // Add throttle
+  // The trigger frequency is too high, causing the stuck problem
+  _throttleDragOver = throttle(_onDragOver, 50,
+    {
+    leading: true,
+    trailing: false
+    }
+  )
+
+  onDragOver = DragOverEvent => void | false = e => {
+    e.preventDefault(); // Prevent any browser native action
+    e.stopPropagation();
+    this._throttleDragOver(e)
+  }
+
   removeDroppingPlaceholder: () => void = () => {
     const { droppingItem, cols } = this.props;
     const { layout } = this.state;
@@ -777,7 +790,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onDrop={isDroppable ? this.onDrop : noop}
         onDragLeave={isDroppable ? this.onDragLeave : noop}
         onDragEnter={isDroppable ? this.onDragEnter : noop}
-        onDragOver={isDroppable ? this.onDragOver : noop}
+        onDragOver={isDroppable ? this.onDragOver  : noop}
       >
         {React.Children.map(this.props.children, child =>
           this.processGridItem(child)

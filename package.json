@@ -39,6 +39,7 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "lodash.isequal": "^4.0.0",
+    "lodash.throttle": "^4.1.1",
     "prop-types": "^15.8.1",
     "react-draggable": "^4.0.0",
     "react-resizable": "^3.0.4"
