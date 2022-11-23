@@ -706,14 +706,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
   // Add throttle
   // The trigger frequency is too high, causing the stuck problem
-  _throttleDragOver = throttle(_onDragOver, 50,
+  _throttleDragOver = throttle(this._onDragOver, 50,
     {
     leading: true,
     trailing: false
     }
   )
 
-  onDragOver = DragOverEvent => void | false = e => {
+  onDragOver: DragOverEvent => void = e => {
     e.preventDefault(); // Prevent any browser native action
     e.stopPropagation();
     this._throttleDragOver(e)

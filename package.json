@@ -1,6 +1,6 @@
 {
-  "name": "react-grid-layout",
-  "version": "1.3.4",
+  "name": "@drip/react-grid-layout",
+  "version": "1.3.5",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,7 @@
     "fmt": "prettier --write ./**.{json,js,yml,md}",
     "fmt:check": "prettier --check ./**.{json,js,yml,md}"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:STRML/react-grid-layout.git"
-  },
+  "repository": {},
   "keywords": [
     "react",
     "grid",
@@ -92,7 +89,7 @@
     "react-dom": ">= 16.3.0"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "registry": "http://registry.m.jd.com/"
   },
   "jest": {
     "setupFilesAfterEnv": [
