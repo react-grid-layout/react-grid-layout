@@ -107,6 +107,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       w: 1
     },
     resizeHandles: ["se"],
+    onLayoutInit: noop,
     onLayoutChange: noop,
     onDragStart: noop,
     onDrag: noop,
@@ -143,6 +144,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Possibly call back with layout on mount. This should be done after correcting the layout width
     // to ensure we don't rerender with the wrong width.
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
+    this.props.onLayoutInit(this.state.layout)
   }
 
   static getDerivedStateFromProps(
