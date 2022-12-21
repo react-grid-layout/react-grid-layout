@@ -101,6 +101,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     verticalCompact: true,
     compactType: "vertical",
     preventCollision: false,
+    preferSwap: false,
     droppingItem: {
       i: "__dropping-elem__",
       h: 1,
@@ -274,7 +275,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   ) => {
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, allowOverlap, preventCollision } = this.props;
+    const { cols, allowOverlap, preventCollision, preferSwap } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -299,7 +300,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       preventCollision,
       compactType(this.props),
       cols,
-      allowOverlap
+      allowOverlap,
+      preferSwap
     );
 
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
@@ -330,7 +332,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const { oldDragItem } = this.state;
     let { layout } = this.state;
-    const { cols, preventCollision, allowOverlap } = this.props;
+    const { cols, preventCollision, allowOverlap, preferSwap } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -345,7 +347,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       preventCollision,
       compactType(this.props),
       cols,
-      allowOverlap
+      allowOverlap,
+      preferSwap
     );
 
     this.props.onDragStop(layout, oldDragItem, l, null, e, node);

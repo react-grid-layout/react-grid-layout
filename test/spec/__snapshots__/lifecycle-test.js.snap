@@ -760,6 +760,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
       onResize={[Function]}
       onResizeStart={[Function]}
       onResizeStop={[Function]}
+      preferSwap={false}
       preventCollision={false}
       resizeHandles={
         Array [
@@ -4842,6 +4843,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
       onResize={[Function]}
       onResizeStart={[Function]}
       onResizeStop={[Function]}
+      preferSwap={false}
       preventCollision={false}
       resizeHandles={
         Array [
@@ -8519,6 +8521,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
   onResize={[Function]}
   onResizeStart={[Function]}
   onResizeStop={[Function]}
+  preferSwap={false}
   preventCollision={false}
   resizeHandles={
     Array [
@@ -9109,6 +9112,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
   onResize={[Function]}
   onResizeStart={[Function]}
   onResizeStop={[Function]}
+  preferSwap={false}
   preventCollision={false}
   resizeHandles={
     Array [
@@ -11143,6 +11147,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           onResize={[Function]}
           onResizeStart={[Function]}
           onResizeStop={[Function]}
+          preferSwap={false}
           preventCollision={false}
           resizeHandles={
             Array [

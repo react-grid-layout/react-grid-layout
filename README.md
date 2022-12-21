@@ -298,6 +298,10 @@ draggableHandle: ?string = '',
 // Compaction type.
 compactType: ?('vertical' | 'horizontal') = 'vertical';
 
+// If true, when items are moving, grid item will
+// prefer to swap places instead of shifting other items
+preferSwap: ?boolean = false,
+
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}
 // The index into the layout must match the key used on each item component.
