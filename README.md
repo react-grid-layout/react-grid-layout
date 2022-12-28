@@ -556,10 +556,11 @@ If you use React Components as grid children, they need to do a few things:
 For example:
 
 ```js
-const CustomGridItemComponent = React.forwardRef(({style, className, onMouseDown, onMouseUp, onTouchEnd, ...props}, ref) => {
+const CustomGridItemComponent = React.forwardRef(({style, className, onMouseDown, onMouseUp, onTouchEnd, children, ...props}, ref) => {
   return (
     <div style={{ /* styles */, ...style}} className={className} ref={ref} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onTouchEnd={onTouchEnd}>
       {/* Some other content */}
+      {children} {/* Make sure to include children to add resizable handle */}
     </div>
   );
 }
