@@ -493,6 +493,23 @@ describe("compact horizontal", () => {
       { y: 5, x: 2, h: 1, w: 1, i: "5", moved: false, static: true }
     ]);
   });
+
+  it('Should put overflowing right elements as bottom needed without colliding and as left as possible', () => {
+    const cols = 6;
+    const layout = [
+      {y: 0, x: 0, h: 2, w: 2, i: '1'},
+      {y: 0, x: 2, h: 2, w: 2, i: '2'},
+      {y: 0, x: 4, h: 2, w: 2, i: '3'},
+      {y: -2, x: -2, h: 2, w: 2, i: '4'}
+    ];
+
+    expect(compact(layout, 'horizontal', cols)).toEqual([
+      {y: 0, x: 2, h: 2, w: 2, i: '1', moved: false, static: false},
+      {y: 0, x: 4, h: 2, w: 2, i: '2', moved: false, static: false},
+      {y: 2, x: 0, h: 2, w: 2, i: '3', moved: false, static: false},
+      {y: 0, x: 0, h: 2, w: 2, i: '4', moved: false, static: false},
+    ]);
+  });
 });
 
 const basePositionParams = {
@@ -704,25 +721,25 @@ describe("deepFreeze", () => {
     const val = res.two.b
     expect(val).toBe('c')
   })
-  it('defaults option prop to get: true', () => { 
+  it('defaults option prop to get: true', () => {
     const res = deepFreeze(
       { one: "a", two: { b: "c" } },
     );
 
     expect(res.two.b).toBe('c')
   })
-  it("does not pass check `if(options.set)` ", () => {    
+  it("does not pass check `if(options.set)` ", () => {
     const res = deepFreeze({ one: "a" }, {set: false, get:false});
     expect(res.one).toBe("a");
   });
 
 
-  it('returns `toJSON`', () => { 
+  it('returns `toJSON`', () => {
     const res = deepFreeze({ a: 'toJSON' })
     expect(res.a.toString()).toBe(`toJSON`)
   })
-  describe('throws "unknown prop" error', () => { 
-    it('when setting bad key', () => { 
+  describe('throws "unknown prop" error', () => {
+    it('when setting bad key', () => {
       try {
         const res = deepFreeze(
           { one: "a", two: { b: "c" } },
@@ -744,7 +761,7 @@ describe("deepFreeze", () => {
         );
         // $FlowIgnore to test the error throws
         res.badProp;
-        
+
       } catch (e) {
         expect(e.message).toBe(
           'Can not get unknown prop "badProp" on frozen object.'
