@@ -192,7 +192,10 @@ export default class ResponsiveReactGridLayout extends React.Component<
       compactType
     );
 
+    debugger;
+
     return {
+      layouts: {...layouts, [breakpoint]: initialLayout},
       layout: initialLayout,
       breakpoint: breakpoint,
       cols: colNo
@@ -237,10 +240,12 @@ export default class ResponsiveReactGridLayout extends React.Component<
 
   // wrap layouts so we do not need to pass layouts to child
   onLayoutChange: Layout => void = (layout: Layout) => {
-    this.props.onLayoutChange(layout, {
-      ...this.props.layouts,
-      [this.state.breakpoint]: layout
-    });
+    const layouts = {
+      ...this.state.layouts,
+      [this.state.breakpoint]: layout,
+    };
+    this.setState({layout, layouts})
+    this.props.onLayoutChange(layout, layouts);
   };
 
   /**
@@ -248,7 +253,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
    * Width changes are necessary to figure out the widget widths.
    */
   onWidthChange(prevProps: Props<*>) {
-    const { breakpoints, cols, layouts, compactType } = this.props;
+    const { breakpoints, cols, compactType } = this.props;
+    const { layouts } = this.state;
     const newBreakpoint =
       this.props.breakpoint ||
       getBreakpointFromWidth(this.props.breakpoints, this.props.width);
