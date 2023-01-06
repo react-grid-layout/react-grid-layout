@@ -511,6 +511,20 @@ will be draggable, even if the item is marked `static: true`.
 }
 ```
 
+### Grid Item Heights and Widths
+
+Grid item widths are based on container and number of columns. The size of a grid unit's height is based on `rowHeight`.
+
+Note that an item that has `h=2` is *not exactly twice as tall as one with `h=1` unless you have no `margin`*!
+
+In order for the grid to not be ragged, when an item spans grid units, it must also span margins. So you must add the height or width or the margin you are spanning for each unit. So actual pixel height is `(rowHeight * h) + (marginH * (h - 1)`.
+
+For example, with `rowHeight=30`, `margin=[10,10]` and a unit with height 4, the calculation is `(30 * 4) + (10 * 3)`
+
+![margin](margin.png)
+
+If this is a problem for you, set `margin=[0,0]` and handle visual spacing between your elements inside the elements' content.
+
 ### Performance
 
 `<ReactGridLayout>` has [an optimized `shouldComponentUpdate` implementation](lib/ReactGridLayout.jsx), but it relies on the user memoizing the `children` array:
