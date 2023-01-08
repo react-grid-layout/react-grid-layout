@@ -11,7 +11,8 @@ import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
 import deepFreeze from "../util/deepFreeze";
-import { mount } from "enzyme";
+import { touchStart, touchMove } from "../util/simulateEvents";
+import { mount, ReactWrapper } from "enzyme";
 
 describe("Lifecycle tests", function () {
   // Example layouts use randomness
@@ -448,7 +449,72 @@ describe("Lifecycle tests", function () {
         expect(layoutItem).toBeUndefined();
       });
     });
+
+    describe("Delayed Drag on touch devices", function () {
+      let wrapper: ReactWrapper<any>;
+      let gridItems: ReactWrapper<any>;
+      let firstItem: ReactWrapper<any>;
+
+      beforeAll(() => {
+        // simulate touch support
+        navigator.maxTouchPoints = 10;
+      });
+
+      afterAll(() => {
+        // reset touch support
+        navigator.maxTouchPoints = 0;
+      });
+
+      beforeEach(() => {
+        wrapper = mount(<BasicLayout />);
+        gridItems = wrapper.find("GridItem");
+        firstItem = gridItems.first();
+      });
+
+      afterEach(() => {
+        wrapper.unmount();
+      });
+
+      it("Does detect touch devices", function () {
+        expect(firstItem.instance().isTouchCapable()).toBe(true);
+      });
+
+      it("Does not execute drag events immediately", function () {
+        touchStart(firstItem);
+        touchMove(firstItem, 50, 100);
+        expect(firstItem.instance().state.allowedToDrag).toBe(false);
+      });
+
+      it("Executes drag events after the specified delay", function () {
+        jest.useFakeTimers();
+        touchStart(firstItem);
+        setTimeout(() => {
+          touchMove(firstItem, 50, 100);
+          expect(firstItem.instance().state.allowedToDrag).toBe(true);
+          expect(firstItem.instance().state.dragging).toBeTruthy();
+        }, 600);
+        jest.runAllTimers();
+      });
+
+      it("Gets canceled if user starts dragging before timer ends", function () {
+        jest.useFakeTimers();
+        touchStart(firstItem);
+        touchMove(firstItem, 50, 100);
+        setTimeout(() => {
+          expect(firstItem.instance().timeoutRef).toBe(null);
+        }, 200);
+        jest.runAllTimers();
+      });
+
+      it("Gets disabled if delay is set to 0", function () {
+        wrapper.setProps({ dragTouchDelayDuration: 0 });
+        touchStart(firstItem);
+        touchMove(firstItem, 50, 100);
+        expect(firstItem.instance().state.dragging).not.toBe(null);
+      });
+    });
   });
+
 
   describe("<ResponsiveReactGridLayout>", function () {
     it("Basic Render", async function () {

@@ -46,7 +46,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
       Object {
         "current": <div
           class="react-grid-item react-resizable-hide react-resizable"
-          style="top: 0px; left: 0px; width: 10000px; height: 30000px; position: absolute;"
+          style="transform: scale(1); top: 0px; left: 0px; width: 10000px; height: 30000px; position: absolute;"
         >
           test child
           <span
@@ -110,10 +110,15 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
         onTouchEnd={[Function]}
         style={
           Object {
+            "MozTransform": "scale(1)",
+            "OTransform": "scale(1)",
+            "WebkitTransform": "scale(1)",
             "height": "30000px",
             "left": "0px",
+            "msTransform": "scale(1)",
             "position": "absolute",
             "top": "0px",
+            "transform": "scale(1)",
             "width": "10000px",
           }
         }
@@ -317,6 +322,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
       cols={12}
       compactType="vertical"
       containerPadding={null}
+      dragTouchDelayDuration={500}
       draggableCancel=""
       draggableHandle=""
       droppingItem={
@@ -334,7 +340,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
           >
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
+              style="transform: translate(10px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -347,7 +353,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+              style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -360,7 +366,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
+              style="transform: translate(433px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -373,7 +379,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+              style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -386,7 +392,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
+              style="transform: translate(857px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -399,7 +405,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
+              style="transform: translate(1068px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -412,7 +418,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
+              style="transform: translate(10px,90px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -425,7 +431,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
+              style="transform: translate(222px,90px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -438,7 +444,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
+              style="transform: translate(433px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -451,7 +457,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
+              style="transform: translate(645px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -464,7 +470,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
+              style="transform: translate(857px,130px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -477,7 +483,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
+              style="transform: translate(1068px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -490,7 +496,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
+              style="transform: translate(10px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -503,7 +509,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
+              style="transform: translate(222px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -516,7 +522,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
+              style="transform: translate(433px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -529,7 +535,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
+              style="transform: translate(645px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -542,7 +548,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
+              style="transform: translate(857px,210px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -555,7 +561,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
+              style="transform: translate(1068px,250px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -568,7 +574,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
+              style="transform: translate(10px,330px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -581,7 +587,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
+              style="transform: translate(222px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -796,6 +802,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="0"
@@ -844,7 +851,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
+                  style="transform: translate(10px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -912,13 +919,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,10px)",
-                    "OTransform": "translate(10px,10px)",
-                    "WebkitTransform": "translate(10px,10px)",
+                    "MozTransform": "translate(10px,10px) scale(1)",
+                    "OTransform": "translate(10px,10px) scale(1)",
+                    "WebkitTransform": "translate(10px,10px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(10px,10px)",
+                    "msTransform": "translate(10px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,10px)",
+                    "transform": "translate(10px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -968,6 +975,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="1"
@@ -1016,7 +1024,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+                  style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -1084,13 +1092,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,10px)",
-                    "OTransform": "translate(222px,10px)",
-                    "WebkitTransform": "translate(222px,10px)",
+                    "MozTransform": "translate(222px,10px) scale(1)",
+                    "OTransform": "translate(222px,10px) scale(1)",
+                    "WebkitTransform": "translate(222px,10px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(222px,10px)",
+                    "msTransform": "translate(222px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,10px)",
+                    "transform": "translate(222px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -1140,6 +1148,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="2"
@@ -1188,7 +1197,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
+                  style="transform: translate(433px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -1256,13 +1265,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(433px,10px)",
-                    "OTransform": "translate(433px,10px)",
-                    "WebkitTransform": "translate(433px,10px)",
+                    "MozTransform": "translate(433px,10px) scale(1)",
+                    "OTransform": "translate(433px,10px) scale(1)",
+                    "WebkitTransform": "translate(433px,10px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(433px,10px)",
+                    "msTransform": "translate(433px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(433px,10px)",
+                    "transform": "translate(433px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -1312,6 +1321,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="3"
@@ -1360,7 +1370,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+                  style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -1428,13 +1438,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(645px,10px)",
-                    "OTransform": "translate(645px,10px)",
-                    "WebkitTransform": "translate(645px,10px)",
+                    "MozTransform": "translate(645px,10px) scale(1)",
+                    "OTransform": "translate(645px,10px) scale(1)",
+                    "WebkitTransform": "translate(645px,10px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(645px,10px)",
+                    "msTransform": "translate(645px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(645px,10px)",
+                    "transform": "translate(645px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -1484,6 +1494,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="4"
@@ -1532,7 +1543,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
+                  style="transform: translate(857px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -1600,13 +1611,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(857px,10px)",
-                    "OTransform": "translate(857px,10px)",
-                    "WebkitTransform": "translate(857px,10px)",
+                    "MozTransform": "translate(857px,10px) scale(1)",
+                    "OTransform": "translate(857px,10px) scale(1)",
+                    "WebkitTransform": "translate(857px,10px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(857px,10px)",
+                    "msTransform": "translate(857px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(857px,10px)",
+                    "transform": "translate(857px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -1656,6 +1667,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="5"
@@ -1704,7 +1716,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
+                  style="transform: translate(1068px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -1772,13 +1784,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(1068px,10px)",
-                    "OTransform": "translate(1068px,10px)",
-                    "WebkitTransform": "translate(1068px,10px)",
+                    "MozTransform": "translate(1068px,10px) scale(1)",
+                    "OTransform": "translate(1068px,10px) scale(1)",
+                    "WebkitTransform": "translate(1068px,10px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(1068px,10px)",
+                    "msTransform": "translate(1068px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(1068px,10px)",
+                    "transform": "translate(1068px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -1828,6 +1840,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="6"
@@ -1876,7 +1889,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
+                  style="transform: translate(10px,90px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -1944,13 +1957,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,90px)",
-                    "OTransform": "translate(10px,90px)",
-                    "WebkitTransform": "translate(10px,90px)",
+                    "MozTransform": "translate(10px,90px) scale(1)",
+                    "OTransform": "translate(10px,90px) scale(1)",
+                    "WebkitTransform": "translate(10px,90px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(10px,90px)",
+                    "msTransform": "translate(10px,90px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,90px)",
+                    "transform": "translate(10px,90px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -2000,6 +2013,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="7"
@@ -2048,7 +2062,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
+                  style="transform: translate(222px,90px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -2116,13 +2130,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,90px)",
-                    "OTransform": "translate(222px,90px)",
-                    "WebkitTransform": "translate(222px,90px)",
+                    "MozTransform": "translate(222px,90px) scale(1)",
+                    "OTransform": "translate(222px,90px) scale(1)",
+                    "WebkitTransform": "translate(222px,90px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(222px,90px)",
+                    "msTransform": "translate(222px,90px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,90px)",
+                    "transform": "translate(222px,90px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -2172,6 +2186,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="8"
@@ -2220,7 +2235,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
+                  style="transform: translate(433px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -2288,13 +2303,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(433px,130px)",
-                    "OTransform": "translate(433px,130px)",
-                    "WebkitTransform": "translate(433px,130px)",
+                    "MozTransform": "translate(433px,130px) scale(1)",
+                    "OTransform": "translate(433px,130px) scale(1)",
+                    "WebkitTransform": "translate(433px,130px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(433px,130px)",
+                    "msTransform": "translate(433px,130px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(433px,130px)",
+                    "transform": "translate(433px,130px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -2344,6 +2359,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="9"
@@ -2392,7 +2408,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
+                  style="transform: translate(645px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -2460,13 +2476,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(645px,130px)",
-                    "OTransform": "translate(645px,130px)",
-                    "WebkitTransform": "translate(645px,130px)",
+                    "MozTransform": "translate(645px,130px) scale(1)",
+                    "OTransform": "translate(645px,130px) scale(1)",
+                    "WebkitTransform": "translate(645px,130px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(645px,130px)",
+                    "msTransform": "translate(645px,130px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(645px,130px)",
+                    "transform": "translate(645px,130px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -2516,6 +2532,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="10"
@@ -2564,7 +2581,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
+                  style="transform: translate(857px,130px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -2632,13 +2649,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(857px,130px)",
-                    "OTransform": "translate(857px,130px)",
-                    "WebkitTransform": "translate(857px,130px)",
+                    "MozTransform": "translate(857px,130px) scale(1)",
+                    "OTransform": "translate(857px,130px) scale(1)",
+                    "WebkitTransform": "translate(857px,130px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(857px,130px)",
+                    "msTransform": "translate(857px,130px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(857px,130px)",
+                    "transform": "translate(857px,130px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -2688,6 +2705,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="11"
@@ -2736,7 +2754,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
+                  style="transform: translate(1068px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -2804,13 +2822,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(1068px,170px)",
-                    "OTransform": "translate(1068px,170px)",
-                    "WebkitTransform": "translate(1068px,170px)",
+                    "MozTransform": "translate(1068px,170px) scale(1)",
+                    "OTransform": "translate(1068px,170px) scale(1)",
+                    "WebkitTransform": "translate(1068px,170px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(1068px,170px)",
+                    "msTransform": "translate(1068px,170px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(1068px,170px)",
+                    "transform": "translate(1068px,170px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -2860,6 +2878,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="12"
@@ -2908,7 +2927,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
+                  style="transform: translate(10px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -2976,13 +2995,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,250px)",
-                    "OTransform": "translate(10px,250px)",
-                    "WebkitTransform": "translate(10px,250px)",
+                    "MozTransform": "translate(10px,250px) scale(1)",
+                    "OTransform": "translate(10px,250px) scale(1)",
+                    "WebkitTransform": "translate(10px,250px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(10px,250px)",
+                    "msTransform": "translate(10px,250px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,250px)",
+                    "transform": "translate(10px,250px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -3032,6 +3051,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="13"
@@ -3080,7 +3100,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
+                  style="transform: translate(222px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -3148,13 +3168,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,290px)",
-                    "OTransform": "translate(222px,290px)",
-                    "WebkitTransform": "translate(222px,290px)",
+                    "MozTransform": "translate(222px,290px) scale(1)",
+                    "OTransform": "translate(222px,290px) scale(1)",
+                    "WebkitTransform": "translate(222px,290px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(222px,290px)",
+                    "msTransform": "translate(222px,290px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,290px)",
+                    "transform": "translate(222px,290px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -3204,6 +3224,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="14"
@@ -3252,7 +3273,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
+                  style="transform: translate(433px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -3320,13 +3341,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(433px,330px)",
-                    "OTransform": "translate(433px,330px)",
-                    "WebkitTransform": "translate(433px,330px)",
+                    "MozTransform": "translate(433px,330px) scale(1)",
+                    "OTransform": "translate(433px,330px) scale(1)",
+                    "WebkitTransform": "translate(433px,330px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(433px,330px)",
+                    "msTransform": "translate(433px,330px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(433px,330px)",
+                    "transform": "translate(433px,330px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -3376,6 +3397,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="15"
@@ -3424,7 +3446,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
+                  style="transform: translate(645px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -3492,13 +3514,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(645px,330px)",
-                    "OTransform": "translate(645px,330px)",
-                    "WebkitTransform": "translate(645px,330px)",
+                    "MozTransform": "translate(645px,330px) scale(1)",
+                    "OTransform": "translate(645px,330px) scale(1)",
+                    "WebkitTransform": "translate(645px,330px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(645px,330px)",
+                    "msTransform": "translate(645px,330px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(645px,330px)",
+                    "transform": "translate(645px,330px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -3548,6 +3570,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="16"
@@ -3596,7 +3619,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
+                  style="transform: translate(857px,210px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -3664,13 +3687,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(857px,210px)",
-                    "OTransform": "translate(857px,210px)",
-                    "WebkitTransform": "translate(857px,210px)",
+                    "MozTransform": "translate(857px,210px) scale(1)",
+                    "OTransform": "translate(857px,210px) scale(1)",
+                    "WebkitTransform": "translate(857px,210px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(857px,210px)",
+                    "msTransform": "translate(857px,210px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(857px,210px)",
+                    "transform": "translate(857px,210px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -3720,6 +3743,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="17"
@@ -3768,7 +3792,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
+                  style="transform: translate(1068px,250px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -3836,13 +3860,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(1068px,250px)",
-                    "OTransform": "translate(1068px,250px)",
-                    "WebkitTransform": "translate(1068px,250px)",
+                    "MozTransform": "translate(1068px,250px) scale(1)",
+                    "OTransform": "translate(1068px,250px) scale(1)",
+                    "WebkitTransform": "translate(1068px,250px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(1068px,250px)",
+                    "msTransform": "translate(1068px,250px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(1068px,250px)",
+                    "transform": "translate(1068px,250px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -3892,6 +3916,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="18"
@@ -3940,7 +3965,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
+                  style="transform: translate(10px,330px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -4008,13 +4033,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,330px)",
-                    "OTransform": "translate(10px,330px)",
-                    "WebkitTransform": "translate(10px,330px)",
+                    "MozTransform": "translate(10px,330px) scale(1)",
+                    "OTransform": "translate(10px,330px) scale(1)",
+                    "WebkitTransform": "translate(10px,330px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(10px,330px)",
+                    "msTransform": "translate(10px,330px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,330px)",
+                    "transform": "translate(10px,330px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -4064,6 +4089,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="19"
@@ -4112,7 +4138,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
+                  style="transform: translate(222px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -4180,13 +4206,13 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,410px)",
-                    "OTransform": "translate(222px,410px)",
-                    "WebkitTransform": "translate(222px,410px)",
+                    "MozTransform": "translate(222px,410px) scale(1)",
+                    "OTransform": "translate(222px,410px) scale(1)",
+                    "WebkitTransform": "translate(222px,410px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(222px,410px)",
+                    "msTransform": "translate(222px,410px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,410px)",
+                    "transform": "translate(222px,410px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -4399,6 +4425,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
       cols={12}
       compactType="vertical"
       containerPadding={null}
+      dragTouchDelayDuration={500}
       draggableCancel=""
       draggableHandle=""
       droppingItem={
@@ -4416,7 +4443,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
           >
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
+              style="transform: translate(10px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -4429,7 +4456,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+              style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -4442,7 +4469,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
+              style="transform: translate(433px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -4455,7 +4482,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+              style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -4468,7 +4495,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
+              style="transform: translate(857px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -4481,7 +4508,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
+              style="transform: translate(1068px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -4494,7 +4521,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
+              style="transform: translate(10px,90px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -4507,7 +4534,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
+              style="transform: translate(222px,90px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -4520,7 +4547,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
+              style="transform: translate(433px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -4533,7 +4560,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
+              style="transform: translate(645px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -4546,7 +4573,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
+              style="transform: translate(857px,130px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -4559,7 +4586,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
+              style="transform: translate(1068px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -4572,7 +4599,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
+              style="transform: translate(10px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
             >
               <span
                 class="text"
@@ -4585,7 +4612,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
+              style="transform: translate(222px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -4598,7 +4625,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
+              style="transform: translate(433px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -4611,7 +4638,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
+              style="transform: translate(645px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
             >
               <span
                 class="text"
@@ -4624,7 +4651,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
+              style="transform: translate(857px,210px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -4637,7 +4664,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
+              style="transform: translate(1068px,250px) scale(1); width: 202px; height: 150px; position: absolute;"
             >
               <span
                 class="text"
@@ -4650,7 +4677,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
+              style="transform: translate(10px,330px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -4663,7 +4690,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             </div>
             <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
-              style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
+              style="transform: translate(222px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
             >
               <span
                 class="text"
@@ -4878,6 +4905,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="0"
@@ -4926,7 +4954,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(10px,10px);"
+                  style="transform: translate(10px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -4994,13 +5022,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,10px)",
-                    "OTransform": "translate(10px,10px)",
-                    "WebkitTransform": "translate(10px,10px)",
+                    "MozTransform": "translate(10px,10px) scale(1)",
+                    "OTransform": "translate(10px,10px) scale(1)",
+                    "WebkitTransform": "translate(10px,10px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(10px,10px)",
+                    "msTransform": "translate(10px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,10px)",
+                    "transform": "translate(10px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -5050,6 +5078,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="1"
@@ -5098,7 +5127,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+                  style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -5166,13 +5195,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,10px)",
-                    "OTransform": "translate(222px,10px)",
-                    "WebkitTransform": "translate(222px,10px)",
+                    "MozTransform": "translate(222px,10px) scale(1)",
+                    "OTransform": "translate(222px,10px) scale(1)",
+                    "WebkitTransform": "translate(222px,10px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(222px,10px)",
+                    "msTransform": "translate(222px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,10px)",
+                    "transform": "translate(222px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -5222,6 +5251,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="2"
@@ -5270,7 +5300,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(433px,10px);"
+                  style="transform: translate(433px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -5338,13 +5368,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(433px,10px)",
-                    "OTransform": "translate(433px,10px)",
-                    "WebkitTransform": "translate(433px,10px)",
+                    "MozTransform": "translate(433px,10px) scale(1)",
+                    "OTransform": "translate(433px,10px) scale(1)",
+                    "WebkitTransform": "translate(433px,10px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(433px,10px)",
+                    "msTransform": "translate(433px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(433px,10px)",
+                    "transform": "translate(433px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -5394,6 +5424,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="3"
@@ -5442,7 +5473,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+                  style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -5510,13 +5541,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(645px,10px)",
-                    "OTransform": "translate(645px,10px)",
-                    "WebkitTransform": "translate(645px,10px)",
+                    "MozTransform": "translate(645px,10px) scale(1)",
+                    "OTransform": "translate(645px,10px) scale(1)",
+                    "WebkitTransform": "translate(645px,10px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(645px,10px)",
+                    "msTransform": "translate(645px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(645px,10px)",
+                    "transform": "translate(645px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -5566,6 +5597,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="4"
@@ -5614,7 +5646,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(857px,10px);"
+                  style="transform: translate(857px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -5682,13 +5714,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(857px,10px)",
-                    "OTransform": "translate(857px,10px)",
-                    "WebkitTransform": "translate(857px,10px)",
+                    "MozTransform": "translate(857px,10px) scale(1)",
+                    "OTransform": "translate(857px,10px) scale(1)",
+                    "WebkitTransform": "translate(857px,10px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(857px,10px)",
+                    "msTransform": "translate(857px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(857px,10px)",
+                    "transform": "translate(857px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -5738,6 +5770,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="5"
@@ -5786,7 +5819,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,10px);"
+                  style="transform: translate(1068px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -5854,13 +5887,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(1068px,10px)",
-                    "OTransform": "translate(1068px,10px)",
-                    "WebkitTransform": "translate(1068px,10px)",
+                    "MozTransform": "translate(1068px,10px) scale(1)",
+                    "OTransform": "translate(1068px,10px) scale(1)",
+                    "WebkitTransform": "translate(1068px,10px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(1068px,10px)",
+                    "msTransform": "translate(1068px,10px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(1068px,10px)",
+                    "transform": "translate(1068px,10px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -5910,6 +5943,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="6"
@@ -5958,7 +5992,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(10px,90px);"
+                  style="transform: translate(10px,90px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -6026,13 +6060,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,90px)",
-                    "OTransform": "translate(10px,90px)",
-                    "WebkitTransform": "translate(10px,90px)",
+                    "MozTransform": "translate(10px,90px) scale(1)",
+                    "OTransform": "translate(10px,90px) scale(1)",
+                    "WebkitTransform": "translate(10px,90px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(10px,90px)",
+                    "msTransform": "translate(10px,90px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,90px)",
+                    "transform": "translate(10px,90px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -6082,6 +6116,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="7"
@@ -6130,7 +6165,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(222px,90px);"
+                  style="transform: translate(222px,90px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -6198,13 +6233,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,90px)",
-                    "OTransform": "translate(222px,90px)",
-                    "WebkitTransform": "translate(222px,90px)",
+                    "MozTransform": "translate(222px,90px) scale(1)",
+                    "OTransform": "translate(222px,90px) scale(1)",
+                    "WebkitTransform": "translate(222px,90px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(222px,90px)",
+                    "msTransform": "translate(222px,90px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,90px)",
+                    "transform": "translate(222px,90px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -6254,6 +6289,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="8"
@@ -6302,7 +6338,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(433px,130px);"
+                  style="transform: translate(433px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -6370,13 +6406,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(433px,130px)",
-                    "OTransform": "translate(433px,130px)",
-                    "WebkitTransform": "translate(433px,130px)",
+                    "MozTransform": "translate(433px,130px) scale(1)",
+                    "OTransform": "translate(433px,130px) scale(1)",
+                    "WebkitTransform": "translate(433px,130px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(433px,130px)",
+                    "msTransform": "translate(433px,130px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(433px,130px)",
+                    "transform": "translate(433px,130px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -6426,6 +6462,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="9"
@@ -6474,7 +6511,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(645px,130px);"
+                  style="transform: translate(645px,130px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -6542,13 +6579,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(645px,130px)",
-                    "OTransform": "translate(645px,130px)",
-                    "WebkitTransform": "translate(645px,130px)",
+                    "MozTransform": "translate(645px,130px) scale(1)",
+                    "OTransform": "translate(645px,130px) scale(1)",
+                    "WebkitTransform": "translate(645px,130px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(645px,130px)",
+                    "msTransform": "translate(645px,130px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(645px,130px)",
+                    "transform": "translate(645px,130px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -6598,6 +6635,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="10"
@@ -6646,7 +6684,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(857px,130px);"
+                  style="transform: translate(857px,130px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -6714,13 +6752,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(857px,130px)",
-                    "OTransform": "translate(857px,130px)",
-                    "WebkitTransform": "translate(857px,130px)",
+                    "MozTransform": "translate(857px,130px) scale(1)",
+                    "OTransform": "translate(857px,130px) scale(1)",
+                    "WebkitTransform": "translate(857px,130px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(857px,130px)",
+                    "msTransform": "translate(857px,130px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(857px,130px)",
+                    "transform": "translate(857px,130px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -6770,6 +6808,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="11"
@@ -6818,7 +6857,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(1068px,170px);"
+                  style="transform: translate(1068px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -6886,13 +6925,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(1068px,170px)",
-                    "OTransform": "translate(1068px,170px)",
-                    "WebkitTransform": "translate(1068px,170px)",
+                    "MozTransform": "translate(1068px,170px) scale(1)",
+                    "OTransform": "translate(1068px,170px) scale(1)",
+                    "WebkitTransform": "translate(1068px,170px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(1068px,170px)",
+                    "msTransform": "translate(1068px,170px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(1068px,170px)",
+                    "transform": "translate(1068px,170px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -6942,6 +6981,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={2}
           handle=""
           i="12"
@@ -6990,7 +7030,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(10px,250px);"
+                  style="transform: translate(10px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -7058,13 +7098,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,250px)",
-                    "OTransform": "translate(10px,250px)",
-                    "WebkitTransform": "translate(10px,250px)",
+                    "MozTransform": "translate(10px,250px) scale(1)",
+                    "OTransform": "translate(10px,250px) scale(1)",
+                    "WebkitTransform": "translate(10px,250px) scale(1)",
                     "height": "70px",
-                    "msTransform": "translate(10px,250px)",
+                    "msTransform": "translate(10px,250px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,250px)",
+                    "transform": "translate(10px,250px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -7114,6 +7154,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="13"
@@ -7162,7 +7203,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(222px,290px);"
+                  style="transform: translate(222px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -7230,13 +7271,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,290px)",
-                    "OTransform": "translate(222px,290px)",
-                    "WebkitTransform": "translate(222px,290px)",
+                    "MozTransform": "translate(222px,290px) scale(1)",
+                    "OTransform": "translate(222px,290px) scale(1)",
+                    "WebkitTransform": "translate(222px,290px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(222px,290px)",
+                    "msTransform": "translate(222px,290px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,290px)",
+                    "transform": "translate(222px,290px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -7286,6 +7327,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="14"
@@ -7334,7 +7376,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(433px,330px);"
+                  style="transform: translate(433px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -7402,13 +7444,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(433px,330px)",
-                    "OTransform": "translate(433px,330px)",
-                    "WebkitTransform": "translate(433px,330px)",
+                    "MozTransform": "translate(433px,330px) scale(1)",
+                    "OTransform": "translate(433px,330px) scale(1)",
+                    "WebkitTransform": "translate(433px,330px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(433px,330px)",
+                    "msTransform": "translate(433px,330px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(433px,330px)",
+                    "transform": "translate(433px,330px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -7458,6 +7500,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={3}
           handle=""
           i="15"
@@ -7506,7 +7549,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,330px);"
+                  style="transform: translate(645px,330px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -7574,13 +7617,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(645px,330px)",
-                    "OTransform": "translate(645px,330px)",
-                    "WebkitTransform": "translate(645px,330px)",
+                    "MozTransform": "translate(645px,330px) scale(1)",
+                    "OTransform": "translate(645px,330px) scale(1)",
+                    "WebkitTransform": "translate(645px,330px) scale(1)",
                     "height": "110px",
-                    "msTransform": "translate(645px,330px)",
+                    "msTransform": "translate(645px,330px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(645px,330px)",
+                    "transform": "translate(645px,330px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -7630,6 +7673,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="16"
@@ -7678,7 +7722,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,210px);"
+                  style="transform: translate(857px,210px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -7746,13 +7790,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(857px,210px)",
-                    "OTransform": "translate(857px,210px)",
-                    "WebkitTransform": "translate(857px,210px)",
+                    "MozTransform": "translate(857px,210px) scale(1)",
+                    "OTransform": "translate(857px,210px) scale(1)",
+                    "WebkitTransform": "translate(857px,210px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(857px,210px)",
+                    "msTransform": "translate(857px,210px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(857px,210px)",
+                    "transform": "translate(857px,210px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -7802,6 +7846,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={4}
           handle=""
           i="17"
@@ -7850,7 +7895,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(1068px,250px);"
+                  style="transform: translate(1068px,250px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -7918,13 +7963,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(1068px,250px)",
-                    "OTransform": "translate(1068px,250px)",
-                    "WebkitTransform": "translate(1068px,250px)",
+                    "MozTransform": "translate(1068px,250px) scale(1)",
+                    "OTransform": "translate(1068px,250px) scale(1)",
+                    "WebkitTransform": "translate(1068px,250px) scale(1)",
                     "height": "150px",
-                    "msTransform": "translate(1068px,250px)",
+                    "msTransform": "translate(1068px,250px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(1068px,250px)",
+                    "transform": "translate(1068px,250px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -7974,6 +8019,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="18"
@@ -8022,7 +8068,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(10px,330px);"
+                  style="transform: translate(10px,330px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -8090,13 +8136,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(10px,330px)",
-                    "OTransform": "translate(10px,330px)",
-                    "WebkitTransform": "translate(10px,330px)",
+                    "MozTransform": "translate(10px,330px) scale(1)",
+                    "OTransform": "translate(10px,330px) scale(1)",
+                    "WebkitTransform": "translate(10px,330px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(10px,330px)",
+                    "msTransform": "translate(10px,330px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(10px,330px)",
+                    "transform": "translate(10px,330px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -8146,6 +8192,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
             ]
           }
           containerWidth={1280}
+          dragTouchDelayDuration={500}
           h={5}
           handle=""
           i="19"
@@ -8194,7 +8241,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               Object {
                 "current": <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(222px,410px);"
+                  style="transform: translate(222px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -8262,13 +8309,13 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 onTouchEnd={[Function]}
                 style={
                   Object {
-                    "MozTransform": "translate(222px,410px)",
-                    "OTransform": "translate(222px,410px)",
-                    "WebkitTransform": "translate(222px,410px)",
+                    "MozTransform": "translate(222px,410px) scale(1)",
+                    "OTransform": "translate(222px,410px) scale(1)",
+                    "WebkitTransform": "translate(222px,410px) scale(1)",
                     "height": "190px",
-                    "msTransform": "translate(222px,410px)",
+                    "msTransform": "translate(222px,410px) scale(1)",
                     "position": "absolute",
-                    "transform": "translate(222px,410px)",
+                    "transform": "translate(222px,410px) scale(1)",
                     "width": "202px",
                   }
                 }
@@ -8489,6 +8536,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
   cols={12}
   compactType="vertical"
   containerPadding={null}
+  dragTouchDelayDuration={500}
   draggableCancel=""
   draggableHandle=""
   droppingItem={
@@ -8555,6 +8603,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
         ]
       }
       containerWidth={1200}
+      dragTouchDelayDuration={500}
       h={2}
       handle=""
       i="a"
@@ -8604,7 +8653,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             "current": <div
               class="react-grid-item static cssTransforms react-resizable-hide react-resizable"
               data-grid="[object Object]"
-              style="width: 89px; height: 70px; position: absolute; transform: translate(10px,10px);"
+              style="transform: translate(10px,10px) scale(1); width: 89px; height: 70px; position: absolute;"
             >
               a
               <span
@@ -8678,13 +8727,13 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             onTouchEnd={[Function]}
             style={
               Object {
-                "MozTransform": "translate(10px,10px)",
-                "OTransform": "translate(10px,10px)",
-                "WebkitTransform": "translate(10px,10px)",
+                "MozTransform": "translate(10px,10px) scale(1)",
+                "OTransform": "translate(10px,10px) scale(1)",
+                "WebkitTransform": "translate(10px,10px) scale(1)",
                 "height": "70px",
-                "msTransform": "translate(10px,10px)",
+                "msTransform": "translate(10px,10px) scale(1)",
                 "position": "absolute",
-                "transform": "translate(10px,10px)",
+                "transform": "translate(10px,10px) scale(1)",
                 "width": "89px",
               }
             }
@@ -8730,6 +8779,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
         ]
       }
       containerWidth={1200}
+      dragTouchDelayDuration={500}
       h={2}
       handle=""
       i="b"
@@ -8779,7 +8829,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             "current": <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
               data-grid="[object Object]"
-              style="width: 288px; height: 70px; position: absolute; transform: translate(109px,10px);"
+              style="transform: translate(109px,10px) scale(1); width: 288px; height: 70px; position: absolute;"
             >
               b
               <span
@@ -8853,13 +8903,13 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             onTouchEnd={[Function]}
             style={
               Object {
-                "MozTransform": "translate(109px,10px)",
-                "OTransform": "translate(109px,10px)",
-                "WebkitTransform": "translate(109px,10px)",
+                "MozTransform": "translate(109px,10px) scale(1)",
+                "OTransform": "translate(109px,10px) scale(1)",
+                "WebkitTransform": "translate(109px,10px) scale(1)",
                 "height": "70px",
-                "msTransform": "translate(109px,10px)",
+                "msTransform": "translate(109px,10px) scale(1)",
                 "position": "absolute",
-                "transform": "translate(109px,10px)",
+                "transform": "translate(109px,10px) scale(1)",
                 "width": "288px",
               }
             }
@@ -8905,6 +8955,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
         ]
       }
       containerWidth={1200}
+      dragTouchDelayDuration={500}
       h={2}
       handle=""
       i="c"
@@ -8954,7 +9005,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             "current": <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
               data-grid="[object Object]"
-              style="width: 89px; height: 70px; position: absolute; transform: translate(407px,10px);"
+              style="transform: translate(407px,10px) scale(1); width: 89px; height: 70px; position: absolute;"
             >
               c
               <span
@@ -9026,13 +9077,13 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             onTouchEnd={[Function]}
             style={
               Object {
-                "MozTransform": "translate(407px,10px)",
-                "OTransform": "translate(407px,10px)",
-                "WebkitTransform": "translate(407px,10px)",
+                "MozTransform": "translate(407px,10px) scale(1)",
+                "OTransform": "translate(407px,10px) scale(1)",
+                "WebkitTransform": "translate(407px,10px) scale(1)",
                 "height": "70px",
-                "msTransform": "translate(407px,10px)",
+                "msTransform": "translate(407px,10px) scale(1)",
                 "position": "absolute",
-                "transform": "translate(407px,10px)",
+                "transform": "translate(407px,10px) scale(1)",
                 "width": "89px",
               }
             }
@@ -9079,6 +9130,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
   cols={12}
   compactType="vertical"
   containerPadding={null}
+  dragTouchDelayDuration={500}
   draggableCancel=""
   draggableHandle=""
   droppingItem={
@@ -9145,6 +9197,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
         ]
       }
       containerWidth={1200}
+      dragTouchDelayDuration={500}
       h={2}
       handle=""
       i="a"
@@ -9194,7 +9247,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
             "current": <div
               class="react-grid-item static cssTransforms react-resizable-hide react-resizable"
               data-grid="[object Object]"
-              style="width: 89px; height: 70px; position: absolute; transform: translate(10px,10px);"
+              style="transform: translate(10px,10px) scale(1); width: 89px; height: 70px; position: absolute;"
             >
               a
               <span
@@ -9268,13 +9321,13 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
             onTouchEnd={[Function]}
             style={
               Object {
-                "MozTransform": "translate(10px,10px)",
-                "OTransform": "translate(10px,10px)",
-                "WebkitTransform": "translate(10px,10px)",
+                "MozTransform": "translate(10px,10px) scale(1)",
+                "OTransform": "translate(10px,10px) scale(1)",
+                "WebkitTransform": "translate(10px,10px) scale(1)",
                 "height": "70px",
-                "msTransform": "translate(10px,10px)",
+                "msTransform": "translate(10px,10px) scale(1)",
                 "position": "absolute",
-                "transform": "translate(10px,10px)",
+                "transform": "translate(10px,10px) scale(1)",
                 "width": "89px",
               }
             }
@@ -9320,6 +9373,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
         ]
       }
       containerWidth={1200}
+      dragTouchDelayDuration={500}
       h={2}
       handle=""
       i="c"
@@ -9369,7 +9423,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
             "current": <div
               class="react-grid-item react-draggable cssTransforms react-resizable"
               data-grid="[object Object]"
-              style="width: 89px; height: 70px; position: absolute; transform: translate(407px,10px);"
+              style="transform: translate(407px,10px) scale(1); width: 89px; height: 70px; position: absolute;"
             >
               c
               <span
@@ -9441,13 +9495,13 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
             onTouchEnd={[Function]}
             style={
               Object {
-                "MozTransform": "translate(407px,10px)",
-                "OTransform": "translate(407px,10px)",
-                "WebkitTransform": "translate(407px,10px)",
+                "MozTransform": "translate(407px,10px) scale(1)",
+                "OTransform": "translate(407px,10px) scale(1)",
+                "WebkitTransform": "translate(407px,10px) scale(1)",
                 "height": "70px",
-                "msTransform": "translate(407px,10px)",
+                "msTransform": "translate(407px,10px) scale(1)",
                 "position": "absolute",
-                "transform": "translate(407px,10px)",
+                "transform": "translate(407px,10px) scale(1)",
                 "width": "89px",
               }
             }
@@ -9789,7 +9843,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+                style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9802,7 +9856,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+                style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9815,7 +9869,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 150px; position: absolute; transform: translate(857px,10px);"
+                style="transform: translate(857px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9828,7 +9882,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 190px; position: absolute; transform: translate(10px,10px);"
+                style="transform: translate(10px,10px) scale(1); width: 202px; height: 190px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9841,7 +9895,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(433px,10px);"
+                style="transform: translate(433px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9854,7 +9908,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(645px,130px);"
+                style="transform: translate(645px,130px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9867,7 +9921,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,10px);"
+                style="transform: translate(1068px,10px) scale(1); width: 202px; height: 190px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9880,7 +9934,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(222px,90px);"
+                style="transform: translate(222px,90px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9893,7 +9947,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(433px,90px);"
+                style="transform: translate(433px,90px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9906,7 +9960,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 150px; position: absolute; transform: translate(857px,170px);"
+                style="transform: translate(857px,170px) scale(1); width: 202px; height: 150px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9919,7 +9973,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,410px);"
+                style="transform: translate(1068px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9934,7 +9988,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(222px,170px);"
+                style="transform: translate(222px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9947,7 +10001,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(645px,250px);"
+                style="transform: translate(645px,250px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9960,7 +10014,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 150px; position: absolute; transform: translate(857px,330px);"
+                style="transform: translate(857px,330px) scale(1); width: 202px; height: 150px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9973,7 +10027,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 190px; position: absolute; transform: translate(10px,210px);"
+                style="transform: translate(10px,210px) scale(1); width: 202px; height: 190px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9986,7 +10040,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(433px,210px);"
+                style="transform: translate(433px,210px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -9999,7 +10053,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(645px,370px);"
+                style="transform: translate(645px,370px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10012,7 +10066,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,810px);"
+                style="transform: translate(1068px,810px) scale(1); width: 202px; height: 190px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10025,7 +10079,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(222px,250px);"
+                style="transform: translate(222px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10038,7 +10092,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(433px,290px);"
+                style="transform: translate(433px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10051,7 +10105,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 150px; position: absolute; transform: translate(857px,490px);"
+                style="transform: translate(857px,490px) scale(1); width: 202px; height: 150px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10064,7 +10118,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,610px);"
+                style="transform: translate(1068px,610px) scale(1); width: 202px; height: 190px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10079,7 +10133,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 70px; position: absolute; transform: translate(222px,330px);"
+                style="transform: translate(222px,330px) scale(1); width: 202px; height: 70px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10092,7 +10146,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 110px; position: absolute; transform: translate(645px,490px);"
+                style="transform: translate(645px,490px) scale(1); width: 202px; height: 110px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10105,7 +10159,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               </div>
               <div
                 class="react-grid-item react-draggable cssTransforms react-resizable"
-                style="width: 202px; height: 150px; position: absolute; transform: translate(857px,650px);"
+                style="transform: translate(857px,650px) scale(1); width: 202px; height: 150px; position: absolute;"
               >
                 <span
                   class="text"
@@ -10347,6 +10401,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           cols={12}
           compactType="vertical"
           containerPadding={null}
+          dragTouchDelayDuration={500}
           draggableCancel=""
           draggableHandle=""
           droppingItem={
@@ -10364,7 +10419,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               >
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+                  style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10377,7 +10432,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+                  style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10390,7 +10445,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,10px);"
+                  style="transform: translate(857px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10403,7 +10458,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(10px,10px);"
+                  style="transform: translate(10px,10px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10416,7 +10471,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(433px,10px);"
+                  style="transform: translate(433px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10429,7 +10484,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,130px);"
+                  style="transform: translate(645px,130px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10442,7 +10497,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,10px);"
+                  style="transform: translate(1068px,10px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10455,7 +10510,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,90px);"
+                  style="transform: translate(222px,90px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10468,7 +10523,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(433px,90px);"
+                  style="transform: translate(433px,90px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10481,7 +10536,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,170px);"
+                  style="transform: translate(857px,170px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10494,7 +10549,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,410px);"
+                  style="transform: translate(1068px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10509,7 +10564,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,170px);"
+                  style="transform: translate(222px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10522,7 +10577,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,250px);"
+                  style="transform: translate(645px,250px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10535,7 +10590,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,330px);"
+                  style="transform: translate(857px,330px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10548,7 +10603,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(10px,210px);"
+                  style="transform: translate(10px,210px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10561,7 +10616,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(433px,210px);"
+                  style="transform: translate(433px,210px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10574,7 +10629,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,370px);"
+                  style="transform: translate(645px,370px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10587,7 +10642,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,810px);"
+                  style="transform: translate(1068px,810px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10600,7 +10655,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,250px);"
+                  style="transform: translate(222px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10613,7 +10668,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(433px,290px);"
+                  style="transform: translate(433px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10626,7 +10681,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,490px);"
+                  style="transform: translate(857px,490px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10639,7 +10694,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                  style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,610px);"
+                  style="transform: translate(1068px,610px) scale(1); width: 202px; height: 190px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10654,7 +10709,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 70px; position: absolute; transform: translate(222px,330px);"
+                  style="transform: translate(222px,330px) scale(1); width: 202px; height: 70px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10667,7 +10722,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 110px; position: absolute; transform: translate(645px,490px);"
+                  style="transform: translate(645px,490px) scale(1); width: 202px; height: 110px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -10680,7 +10735,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 </div>
                 <div
                   class="react-grid-item react-draggable cssTransforms react-resizable"
-                  style="width: 202px; height: 150px; position: absolute; transform: translate(857px,650px);"
+                  style="transform: translate(857px,650px) scale(1); width: 202px; height: 150px; position: absolute;"
                 >
                   <span
                     class="text"
@@ -11179,6 +11234,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="0"
@@ -11227,7 +11283,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
+                      style="transform: translate(222px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -11295,13 +11351,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(222px,10px)",
-                        "OTransform": "translate(222px,10px)",
-                        "WebkitTransform": "translate(222px,10px)",
+                        "MozTransform": "translate(222px,10px) scale(1)",
+                        "OTransform": "translate(222px,10px) scale(1)",
+                        "WebkitTransform": "translate(222px,10px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(222px,10px)",
+                        "msTransform": "translate(222px,10px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(222px,10px)",
+                        "transform": "translate(222px,10px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -11351,6 +11407,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="1"
@@ -11399,7 +11456,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
+                      style="transform: translate(645px,10px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -11467,13 +11524,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(645px,10px)",
-                        "OTransform": "translate(645px,10px)",
-                        "WebkitTransform": "translate(645px,10px)",
+                        "MozTransform": "translate(645px,10px) scale(1)",
+                        "OTransform": "translate(645px,10px) scale(1)",
+                        "WebkitTransform": "translate(645px,10px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(645px,10px)",
+                        "msTransform": "translate(645px,10px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(645px,10px)",
+                        "transform": "translate(645px,10px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -11523,6 +11580,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={4}
               handle=""
               i="2"
@@ -11571,7 +11629,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,10px);"
+                      style="transform: translate(857px,10px) scale(1); width: 202px; height: 150px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -11639,13 +11697,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(857px,10px)",
-                        "OTransform": "translate(857px,10px)",
-                        "WebkitTransform": "translate(857px,10px)",
+                        "MozTransform": "translate(857px,10px) scale(1)",
+                        "OTransform": "translate(857px,10px) scale(1)",
+                        "WebkitTransform": "translate(857px,10px) scale(1)",
                         "height": "150px",
-                        "msTransform": "translate(857px,10px)",
+                        "msTransform": "translate(857px,10px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(857px,10px)",
+                        "transform": "translate(857px,10px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -11695,6 +11753,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={5}
               handle=""
               i="3"
@@ -11743,7 +11802,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(10px,10px);"
+                      style="transform: translate(10px,10px) scale(1); width: 202px; height: 190px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -11811,13 +11870,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(10px,10px)",
-                        "OTransform": "translate(10px,10px)",
-                        "WebkitTransform": "translate(10px,10px)",
+                        "MozTransform": "translate(10px,10px) scale(1)",
+                        "OTransform": "translate(10px,10px) scale(1)",
+                        "WebkitTransform": "translate(10px,10px) scale(1)",
                         "height": "190px",
-                        "msTransform": "translate(10px,10px)",
+                        "msTransform": "translate(10px,10px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(10px,10px)",
+                        "transform": "translate(10px,10px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -11867,6 +11926,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="4"
@@ -11915,7 +11975,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(433px,10px);"
+                      style="transform: translate(433px,10px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -11983,13 +12043,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(433px,10px)",
-                        "OTransform": "translate(433px,10px)",
-                        "WebkitTransform": "translate(433px,10px)",
+                        "MozTransform": "translate(433px,10px) scale(1)",
+                        "OTransform": "translate(433px,10px) scale(1)",
+                        "WebkitTransform": "translate(433px,10px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(433px,10px)",
+                        "msTransform": "translate(433px,10px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(433px,10px)",
+                        "transform": "translate(433px,10px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -12039,6 +12099,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="5"
@@ -12087,7 +12148,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,130px);"
+                      style="transform: translate(645px,130px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -12155,13 +12216,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(645px,130px)",
-                        "OTransform": "translate(645px,130px)",
-                        "WebkitTransform": "translate(645px,130px)",
+                        "MozTransform": "translate(645px,130px) scale(1)",
+                        "OTransform": "translate(645px,130px) scale(1)",
+                        "WebkitTransform": "translate(645px,130px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(645px,130px)",
+                        "msTransform": "translate(645px,130px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(645px,130px)",
+                        "transform": "translate(645px,130px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -12211,6 +12272,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={5}
               handle=""
               i="6"
@@ -12259,7 +12321,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,10px);"
+                      style="transform: translate(1068px,10px) scale(1); width: 202px; height: 190px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -12327,13 +12389,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(1068px,10px)",
-                        "OTransform": "translate(1068px,10px)",
-                        "WebkitTransform": "translate(1068px,10px)",
+                        "MozTransform": "translate(1068px,10px) scale(1)",
+                        "OTransform": "translate(1068px,10px) scale(1)",
+                        "WebkitTransform": "translate(1068px,10px) scale(1)",
                         "height": "190px",
-                        "msTransform": "translate(1068px,10px)",
+                        "msTransform": "translate(1068px,10px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(1068px,10px)",
+                        "transform": "translate(1068px,10px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -12383,6 +12445,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="7"
@@ -12431,7 +12494,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,90px);"
+                      style="transform: translate(222px,90px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -12499,13 +12562,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(222px,90px)",
-                        "OTransform": "translate(222px,90px)",
-                        "WebkitTransform": "translate(222px,90px)",
+                        "MozTransform": "translate(222px,90px) scale(1)",
+                        "OTransform": "translate(222px,90px) scale(1)",
+                        "WebkitTransform": "translate(222px,90px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(222px,90px)",
+                        "msTransform": "translate(222px,90px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(222px,90px)",
+                        "transform": "translate(222px,90px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -12555,6 +12618,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="8"
@@ -12603,7 +12667,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(433px,90px);"
+                      style="transform: translate(433px,90px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -12671,13 +12735,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(433px,90px)",
-                        "OTransform": "translate(433px,90px)",
-                        "WebkitTransform": "translate(433px,90px)",
+                        "MozTransform": "translate(433px,90px) scale(1)",
+                        "OTransform": "translate(433px,90px) scale(1)",
+                        "WebkitTransform": "translate(433px,90px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(433px,90px)",
+                        "msTransform": "translate(433px,90px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(433px,90px)",
+                        "transform": "translate(433px,90px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -12727,6 +12791,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={4}
               handle=""
               i="9"
@@ -12775,7 +12840,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,170px);"
+                      style="transform: translate(857px,170px) scale(1); width: 202px; height: 150px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -12843,13 +12908,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(857px,170px)",
-                        "OTransform": "translate(857px,170px)",
-                        "WebkitTransform": "translate(857px,170px)",
+                        "MozTransform": "translate(857px,170px) scale(1)",
+                        "OTransform": "translate(857px,170px) scale(1)",
+                        "WebkitTransform": "translate(857px,170px) scale(1)",
                         "height": "150px",
-                        "msTransform": "translate(857px,170px)",
+                        "msTransform": "translate(857px,170px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(857px,170px)",
+                        "transform": "translate(857px,170px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -12899,6 +12964,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={5}
               handle=""
               i="10"
@@ -12947,7 +13013,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,410px);"
+                      style="transform: translate(1068px,410px) scale(1); width: 202px; height: 190px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -13018,13 +13084,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(1068px,410px)",
-                        "OTransform": "translate(1068px,410px)",
-                        "WebkitTransform": "translate(1068px,410px)",
+                        "MozTransform": "translate(1068px,410px) scale(1)",
+                        "OTransform": "translate(1068px,410px) scale(1)",
+                        "WebkitTransform": "translate(1068px,410px) scale(1)",
                         "height": "190px",
-                        "msTransform": "translate(1068px,410px)",
+                        "msTransform": "translate(1068px,410px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(1068px,410px)",
+                        "transform": "translate(1068px,410px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -13076,6 +13142,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="11"
@@ -13124,7 +13191,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,170px);"
+                      style="transform: translate(222px,170px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -13192,13 +13259,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(222px,170px)",
-                        "OTransform": "translate(222px,170px)",
-                        "WebkitTransform": "translate(222px,170px)",
+                        "MozTransform": "translate(222px,170px) scale(1)",
+                        "OTransform": "translate(222px,170px) scale(1)",
+                        "WebkitTransform": "translate(222px,170px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(222px,170px)",
+                        "msTransform": "translate(222px,170px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(222px,170px)",
+                        "transform": "translate(222px,170px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -13248,6 +13315,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="12"
@@ -13296,7 +13364,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,250px);"
+                      style="transform: translate(645px,250px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -13364,13 +13432,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(645px,250px)",
-                        "OTransform": "translate(645px,250px)",
-                        "WebkitTransform": "translate(645px,250px)",
+                        "MozTransform": "translate(645px,250px) scale(1)",
+                        "OTransform": "translate(645px,250px) scale(1)",
+                        "WebkitTransform": "translate(645px,250px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(645px,250px)",
+                        "msTransform": "translate(645px,250px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(645px,250px)",
+                        "transform": "translate(645px,250px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -13420,6 +13488,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={4}
               handle=""
               i="13"
@@ -13468,7 +13537,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,330px);"
+                      style="transform: translate(857px,330px) scale(1); width: 202px; height: 150px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -13536,13 +13605,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(857px,330px)",
-                        "OTransform": "translate(857px,330px)",
-                        "WebkitTransform": "translate(857px,330px)",
+                        "MozTransform": "translate(857px,330px) scale(1)",
+                        "OTransform": "translate(857px,330px) scale(1)",
+                        "WebkitTransform": "translate(857px,330px) scale(1)",
                         "height": "150px",
-                        "msTransform": "translate(857px,330px)",
+                        "msTransform": "translate(857px,330px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(857px,330px)",
+                        "transform": "translate(857px,330px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -13592,6 +13661,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={5}
               handle=""
               i="14"
@@ -13640,7 +13710,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(10px,210px);"
+                      style="transform: translate(10px,210px) scale(1); width: 202px; height: 190px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -13708,13 +13778,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(10px,210px)",
-                        "OTransform": "translate(10px,210px)",
-                        "WebkitTransform": "translate(10px,210px)",
+                        "MozTransform": "translate(10px,210px) scale(1)",
+                        "OTransform": "translate(10px,210px) scale(1)",
+                        "WebkitTransform": "translate(10px,210px) scale(1)",
                         "height": "190px",
-                        "msTransform": "translate(10px,210px)",
+                        "msTransform": "translate(10px,210px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(10px,210px)",
+                        "transform": "translate(10px,210px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -13764,6 +13834,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="15"
@@ -13812,7 +13883,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(433px,210px);"
+                      style="transform: translate(433px,210px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -13880,13 +13951,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(433px,210px)",
-                        "OTransform": "translate(433px,210px)",
-                        "WebkitTransform": "translate(433px,210px)",
+                        "MozTransform": "translate(433px,210px) scale(1)",
+                        "OTransform": "translate(433px,210px) scale(1)",
+                        "WebkitTransform": "translate(433px,210px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(433px,210px)",
+                        "msTransform": "translate(433px,210px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(433px,210px)",
+                        "transform": "translate(433px,210px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -13936,6 +14007,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="16"
@@ -13984,7 +14056,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,370px);"
+                      style="transform: translate(645px,370px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -14052,13 +14124,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(645px,370px)",
-                        "OTransform": "translate(645px,370px)",
-                        "WebkitTransform": "translate(645px,370px)",
+                        "MozTransform": "translate(645px,370px) scale(1)",
+                        "OTransform": "translate(645px,370px) scale(1)",
+                        "WebkitTransform": "translate(645px,370px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(645px,370px)",
+                        "msTransform": "translate(645px,370px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(645px,370px)",
+                        "transform": "translate(645px,370px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -14108,6 +14180,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={5}
               handle=""
               i="17"
@@ -14156,7 +14229,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,810px);"
+                      style="transform: translate(1068px,810px) scale(1); width: 202px; height: 190px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -14224,13 +14297,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(1068px,810px)",
-                        "OTransform": "translate(1068px,810px)",
-                        "WebkitTransform": "translate(1068px,810px)",
+                        "MozTransform": "translate(1068px,810px) scale(1)",
+                        "OTransform": "translate(1068px,810px) scale(1)",
+                        "WebkitTransform": "translate(1068px,810px) scale(1)",
                         "height": "190px",
-                        "msTransform": "translate(1068px,810px)",
+                        "msTransform": "translate(1068px,810px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(1068px,810px)",
+                        "transform": "translate(1068px,810px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -14280,6 +14353,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="18"
@@ -14328,7 +14402,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,250px);"
+                      style="transform: translate(222px,250px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -14396,13 +14470,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(222px,250px)",
-                        "OTransform": "translate(222px,250px)",
-                        "WebkitTransform": "translate(222px,250px)",
+                        "MozTransform": "translate(222px,250px) scale(1)",
+                        "OTransform": "translate(222px,250px) scale(1)",
+                        "WebkitTransform": "translate(222px,250px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(222px,250px)",
+                        "msTransform": "translate(222px,250px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(222px,250px)",
+                        "transform": "translate(222px,250px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -14452,6 +14526,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="19"
@@ -14500,7 +14575,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(433px,290px);"
+                      style="transform: translate(433px,290px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -14568,13 +14643,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(433px,290px)",
-                        "OTransform": "translate(433px,290px)",
-                        "WebkitTransform": "translate(433px,290px)",
+                        "MozTransform": "translate(433px,290px) scale(1)",
+                        "OTransform": "translate(433px,290px) scale(1)",
+                        "WebkitTransform": "translate(433px,290px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(433px,290px)",
+                        "msTransform": "translate(433px,290px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(433px,290px)",
+                        "transform": "translate(433px,290px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -14624,6 +14699,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={4}
               handle=""
               i="20"
@@ -14672,7 +14748,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,490px);"
+                      style="transform: translate(857px,490px) scale(1); width: 202px; height: 150px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -14740,13 +14816,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(857px,490px)",
-                        "OTransform": "translate(857px,490px)",
-                        "WebkitTransform": "translate(857px,490px)",
+                        "MozTransform": "translate(857px,490px) scale(1)",
+                        "OTransform": "translate(857px,490px) scale(1)",
+                        "WebkitTransform": "translate(857px,490px) scale(1)",
                         "height": "150px",
-                        "msTransform": "translate(857px,490px)",
+                        "msTransform": "translate(857px,490px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(857px,490px)",
+                        "transform": "translate(857px,490px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -14796,6 +14872,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={5}
               handle=""
               i="21"
@@ -14844,7 +14921,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
-                      style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,610px);"
+                      style="transform: translate(1068px,610px) scale(1); width: 202px; height: 190px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -14915,13 +14992,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(1068px,610px)",
-                        "OTransform": "translate(1068px,610px)",
-                        "WebkitTransform": "translate(1068px,610px)",
+                        "MozTransform": "translate(1068px,610px) scale(1)",
+                        "OTransform": "translate(1068px,610px) scale(1)",
+                        "WebkitTransform": "translate(1068px,610px) scale(1)",
                         "height": "190px",
-                        "msTransform": "translate(1068px,610px)",
+                        "msTransform": "translate(1068px,610px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(1068px,610px)",
+                        "transform": "translate(1068px,610px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -14973,6 +15050,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={2}
               handle=""
               i="22"
@@ -15021,7 +15099,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 70px; position: absolute; transform: translate(222px,330px);"
+                      style="transform: translate(222px,330px) scale(1); width: 202px; height: 70px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -15089,13 +15167,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(222px,330px)",
-                        "OTransform": "translate(222px,330px)",
-                        "WebkitTransform": "translate(222px,330px)",
+                        "MozTransform": "translate(222px,330px) scale(1)",
+                        "OTransform": "translate(222px,330px) scale(1)",
+                        "WebkitTransform": "translate(222px,330px) scale(1)",
                         "height": "70px",
-                        "msTransform": "translate(222px,330px)",
+                        "msTransform": "translate(222px,330px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(222px,330px)",
+                        "transform": "translate(222px,330px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -15145,6 +15223,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={3}
               handle=""
               i="23"
@@ -15193,7 +15272,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 110px; position: absolute; transform: translate(645px,490px);"
+                      style="transform: translate(645px,490px) scale(1); width: 202px; height: 110px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -15261,13 +15340,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(645px,490px)",
-                        "OTransform": "translate(645px,490px)",
-                        "WebkitTransform": "translate(645px,490px)",
+                        "MozTransform": "translate(645px,490px) scale(1)",
+                        "OTransform": "translate(645px,490px) scale(1)",
+                        "WebkitTransform": "translate(645px,490px) scale(1)",
                         "height": "110px",
-                        "msTransform": "translate(645px,490px)",
+                        "msTransform": "translate(645px,490px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(645px,490px)",
+                        "transform": "translate(645px,490px) scale(1)",
                         "width": "202px",
                       }
                     }
@@ -15317,6 +15396,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 ]
               }
               containerWidth={1280}
+              dragTouchDelayDuration={500}
               h={4}
               handle=""
               i="24"
@@ -15365,7 +15445,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   Object {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
-                      style="width: 202px; height: 150px; position: absolute; transform: translate(857px,650px);"
+                      style="transform: translate(857px,650px) scale(1); width: 202px; height: 150px; position: absolute;"
                     >
                       <span
                         class="text"
@@ -15433,13 +15513,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onTouchEnd={[Function]}
                     style={
                       Object {
-                        "MozTransform": "translate(857px,650px)",
-                        "OTransform": "translate(857px,650px)",
-                        "WebkitTransform": "translate(857px,650px)",
+                        "MozTransform": "translate(857px,650px) scale(1)",
+                        "OTransform": "translate(857px,650px) scale(1)",
+                        "WebkitTransform": "translate(857px,650px) scale(1)",
                         "height": "150px",
-                        "msTransform": "translate(857px,650px)",
+                        "msTransform": "translate(857px,650px) scale(1)",
                         "position": "absolute",
-                        "transform": "translate(857px,650px)",
+                        "transform": "translate(857px,650px) scale(1)",
                         "width": "202px",
                       }
                     }

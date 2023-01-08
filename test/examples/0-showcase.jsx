@@ -10,6 +10,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 type Props = {|
   className: string,
   cols: {[string]: number},
+  dragTouchDelayDuration: number,
   onLayoutChange: Function,
   rowHeight: number,
 |};
@@ -26,6 +27,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+    dragTouchDelayDuration: 250,
   };
 
   state: State = {

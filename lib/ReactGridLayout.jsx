@@ -85,6 +85,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     className: "",
     style: {},
     draggableHandle: "",
+    // TODO [>=2.0.0] Make this default duration 250ms
+    // By default, this is off. Set to ~250ms for touch devices
+    dragTouchDelayDuration: 0,
     draggableCancel: "",
     containerPadding: null,
     rowHeight: 150,
@@ -549,6 +552,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       rowHeight,
       maxRows,
       isDraggable,
+      dragTouchDelayDuration,
       isResizable,
       isBounded,
       useCSSTransforms,
@@ -593,6 +597,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
+        dragTouchDelayDuration={dragTouchDelayDuration}
         isResizable={resizable}
         isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}

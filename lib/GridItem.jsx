@@ -45,6 +45,7 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
 type State = {
   resizing: ?{ width: number, height: number },
   dragging: ?{ top: number, left: number },
+  allowedToDrag: boolean,
   className: string
 };
 
@@ -57,6 +58,7 @@ type Props = {
   rowHeight: number,
   maxRows: number,
   isDraggable: boolean,
+  dragTouchDelayDuration: number,
   isResizable: boolean,
   isBounded: boolean,
   static?: boolean,
@@ -96,6 +98,7 @@ type Props = {
 type DefaultProps = {
   className: string,
   cancel: string,
+  dragTouchDelayDuration: number,
   handle: string,
   minH: number,
   minW: number,
@@ -172,6 +175,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Flags
     isDraggable: PropTypes.bool.isRequired,
+    dragTouchDelayDuration: PropTypes.number,
     isResizable: PropTypes.bool.isRequired,
     isBounded: PropTypes.bool.isRequired,
     static: PropTypes.bool,
@@ -197,6 +201,7 @@ export default class GridItem extends React.Component<Props, State> {
   static defaultProps: DefaultProps = {
     className: "",
     cancel: "",
+    dragTouchDelayDuration: 0,
     handle: "",
     minH: 1,
     minW: 1,
@@ -206,6 +211,8 @@ export default class GridItem extends React.Component<Props, State> {
   };
 
   state: State = {
+    dragEnabled: false,
+    allowedToDrag: false,
     resizing: null,
     dragging: null,
     className: ""
@@ -218,6 +225,7 @@ export default class GridItem extends React.Component<Props, State> {
     // use this optimization.
     if (this.props.children !== nextProps.children) return true;
     if (this.props.droppingPosition !== nextProps.droppingPosition) return true;
+    if (this.state.allowedToDrag !== nextState.allowedToDrag) return true;
     // TODO memoize these calculations so they don't take so long?
     const oldPosition = calcGridItemPosition(
       this.getPositionParams(this.props),
@@ -308,15 +316,21 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object}     Style object.
    */
   createStyle(pos: Position): { [key: string]: ?string } {
-    const { usePercentages, containerWidth, useCSSTransforms } = this.props;
+    const {
+      static: isStatic,
+      usePercentages,
+      containerWidth,
+      useCSSTransforms
+    } = this.props;
+    const scale = !isStatic && this.state.allowedToDrag ? 1.1 : 1;
 
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos);
+      style = setTransform(pos, scale);
     } else {
       // top,left (slow)
-      style = setTopLeft(pos);
+      style = setTopLeft(pos, scale);
 
       // This is used for server rendering.
       if (usePercentages) {
@@ -328,6 +342,18 @@ export default class GridItem extends React.Component<Props, State> {
     return style;
   }
 
+  // Check if device is touch-capable.
+  isTouchCapable(): boolean {
+    return (
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      navigator.msMaxTouchPoints > 0
+    );
+  }
+
+  // A reference to the DraggableCore component to access it directly.
+  draggableCoreRef = React.createRef();
+
   /**
    * Mix a Draggable instance into a child.
    * @param  {Element} child    Child element.
@@ -337,10 +363,18 @@ export default class GridItem extends React.Component<Props, State> {
     child: ReactElement<any>,
     isDraggable: boolean
   ): ReactElement<any> {
+    const delayedDragEnabled: boolean =
+      this.props.dragTouchDelayDuration && this.isTouchCapable();
+
+    // Delayed touch works by changing disabling DraggableCore for a short while.
+    const delayedDragNeedsWait =
+      delayedDragEnabled && !this.state.allowedToDrag;
+
     return (
       <DraggableCore
-        disabled={!isDraggable}
+        disabled={!isDraggable || delayedDragNeedsWait}
         onStart={this.onDragStart}
+        onMouseDown={delayedDragEnabled ? this.onMouseDown : undefined}
         onDrag={this.onDrag}
         onStop={this.onDragStop}
         handle={this.props.handle}
@@ -350,6 +384,7 @@ export default class GridItem extends React.Component<Props, State> {
         }
         scale={this.props.transformScale}
         nodeRef={this.elementRef}
+        ref={this.draggableCoreRef}
       >
         {child}
       </DraggableCore>
@@ -419,6 +454,133 @@ export default class GridItem extends React.Component<Props, State> {
       </Resizable>
     );
   }
+
+  childEvents: { type: string, event: (e: Event) => void, passive: boolean }[] =
+    [];
+
+  /**
+   * Add an event listener to the grid item.
+   * The event will also be added to childEvents array for future use.
+   * @param  {string} type  Type of event to add (eg: mousedown, touchstart, etc)
+   * @param  {(e: Event) => void} event  The event callback
+   * @param  {boolean} passive  Whether the event should be passive, defaults to false
+   */
+  addChildEvent: (
+    type: string,
+    event: (e: Event) => void,
+    passive: ?boolean
+  ) => void = (type, event, passive = true) => {
+    if (this.elementRef.current) {
+      this.elementRef.current.addEventListener(type, event, {
+        passive
+      });
+      this.childEvents.push({ type, event, passive });
+    }
+  };
+
+  removeChildEvents: () => void = () => {
+    if (this.elementRef.current) {
+      this.childEvents.forEach(({ type, event, passive }) => {
+        this.elementRef.current.removeEventListener(type, event, {
+          passive
+        });
+      });
+      this.childEvents = [];
+    }
+  };
+
+  // A reference to the timeout handler to be able to access it at any time.
+  dragDelayTimeout: ?TimeoutID = null;
+
+  /**
+   * onMouseDown event is tied to both 'mousedown' and 'touchstart' events in DraggableCore.
+   * We start the delayed drag process when the user presses the mouse button or the finger.
+   * @param  {Event} e  TouchStart/MouseDown event.
+   */
+  onMouseDown: Event => void = e => {
+    // handle touch events only
+    if (!this.dragDelayTimeout && e instanceof TouchEvent) {
+      this.startDragDelayTimeout(e);
+    }
+  };
+
+  /**
+   * Start the delayed counter to determine when a drag should start.
+   * @param  {Event} e          TouchStart/MouseDown event.
+   */
+  startDragDelayTimeout: Event => void = e => {
+    // Prevent text selection while dragging.
+    if (
+      document.body.style.userSelect === "" ||
+      document.body.style.webkitUserSelect === ""
+    ) {
+      document.body.style.webkitUserSelect = "none";
+      document.body.style.userSelect = "none";
+    }
+
+    if (!this.state.allowedToDrag) {
+      /**
+       * Register events to cancel the timeout handler if user releases the mouse or touch
+       */
+      this.addChildEvent("touchend", this.resetDelayTimeout);
+      /**
+       * Prevent user from doing touch and scroll at the same time.
+       * If the user starts scrolling, we can not cancel the scroll event,
+       * so we cancel the drag event instead.
+       */
+      this.addChildEvent("touchmove", this.handleTouchMove, false);
+
+      // Start the timeout and assign its handler to the dragDelayTimeout
+      this.dragDelayTimeout = setTimeout(() => {
+        this.dragDelayTimeout = null;
+        // vibrate api is not available on safari, so we need to check it
+        if (navigator.vibrate && !this.props.static) {
+          // vibrate device for 80ms
+          navigator.vibrate(80);
+        }
+        this.setState({ allowedToDrag: true });
+        // Start the drag process by calling the DraggableCore handleDragStartFunction directly.
+        this.draggableCoreRef.current.handleDragStart(e);
+      }, this.props.dragTouchDelayDuration);
+    }
+  };
+
+  /**
+   * Prevent user from doing touch and scroll at the same time.
+   * If the user starts scrolling, we can not cancel the scroll event,
+   * so we cancel the drag event instead.
+   *
+   * if the user is currently dragging, and the timeout has not been canceled,
+   * we prevent the future scroll events by calling preventDefault.
+   *
+   * @param  {Event} e  TouchMove/Scroll event.
+   */
+  handleTouchMove: Event => void = (e: Event) => {
+    if (this.state.allowedToDrag) {
+      e.preventDefault();
+    } else {
+      this.resetDelayTimeout();
+    }
+  };
+
+  /**
+   * Reset the drag timer and clear all events and values.
+   */
+  resetDelayTimeout: () => void = () => {
+    clearTimeout(this.dragDelayTimeout);
+    this.dragDelayTimeout = null;
+
+    this.setState({ allowedToDrag: false });
+    this.removeChildEvents();
+
+    if (
+      document.body.style.userSelect === "none" ||
+      document.body.style.webkitUserSelect === "none"
+    ) {
+      document.body.style.webkitUserSelect = "";
+      document.body.style.userSelect = "";
+    }
+  };
 
   /**
    * onDragStart event handler
@@ -516,6 +678,8 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} callbackData  an object with node, delta and position information
    */
   onDragStop: (Event, ReactDraggableCallbackData) => void = (e, { node }) => {
+    this.resetDelayTimeout();
+
     const { onDragStop } = this.props;
     if (!onDragStop) return;
 
