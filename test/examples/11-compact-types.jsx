@@ -4,15 +4,17 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-export default class NoCompactingLayout extends React.PureComponent {
+export default class AlternateCompactingLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
-    items: 50,
-    cols: 12,
+    items: 10,
+    cols: 6,
     rowHeight: 30,
     onLayoutChange: function() {},
-    // This turns off compaction so you can place items wherever.
-    verticalCompact: false
+  };
+
+  state = {
+    compactType: null,
   };
 
   constructor(props) {
@@ -50,19 +52,33 @@ export default class NoCompactingLayout extends React.PureComponent {
     this.props.onLayoutChange(layout);
   }
 
+  onCompactTypeChange(compactType) {
+    this.setState({compactType});
+  }
+
   render() {
     return (
-      <ReactGridLayout
-        layout={this.state.layout}
-        onLayoutChange={this.onLayoutChange}
-        {...this.props}
-      >
-        {this.generateDOM()}
-      </ReactGridLayout>
+      <div>
+        <span>
+          <h3>Compact Type</h3>
+          <div>Current Compact Type: {this.state.compactType || 'null'}</div>
+          {[null, 'horizontal', 'vertical', 'wrap'].map((compactType) =>
+            <button key={compactType} onClick={() => this.onCompactTypeChange(compactType)}>{compactType || 'null'}</button>
+          )}
+        </span>
+        <ReactGridLayout
+          layout={this.state.layout}
+          onLayoutChange={this.onLayoutChange}
+          compactType={this.state.compactType}
+          {...this.props}
+        >
+          {this.generateDOM()}
+        </ReactGridLayout>
+      </div>
     );
   }
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then(fn => fn.default(NoCompactingLayout));
+  import("../test-hook.jsx").then(fn => fn.default(AlternateCompactingLayout));
 }
