@@ -566,7 +566,7 @@ Using hooks to save your layout state on change will cause the layouts to re-ren
 To avoid this you should wrap your WidthProvider in a useMemo:
 
 ```js
-const ResponsiveReactGridLayout = useMemo(()=>WidthProvider(Responsive), [])
+const ResponsiveReactGridLayout = useMemo(() => WidthProvider(Responsive), []);
 ```
 
 ### Custom Child Components and Draggable Handles

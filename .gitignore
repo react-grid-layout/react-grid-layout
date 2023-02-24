@@ -6,6 +6,7 @@ dist/*
 npm-debug.log
 build/
 .idea
+coverage/
 # Ignore built example files
 examples/*.html
 examples/*.js
