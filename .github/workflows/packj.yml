@@ -1,0 +1,5 @@
+name: Packj Security Audit
+uses: ossillate-inc/packj-github-action@0.0.6-beta
+with:
+  DEPENDENCY_FILES: npm:package.json
+  REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
