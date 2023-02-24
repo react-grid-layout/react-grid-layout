@@ -515,7 +515,7 @@ will be draggable, even if the item is marked `static: true`.
 
 Grid item widths are based on container and number of columns. The size of a grid unit's height is based on `rowHeight`.
 
-Note that an item that has `h=2` is *not exactly twice as tall as one with `h=1` unless you have no `margin`*!
+Note that an item that has `h=2` is _not exactly twice as tall as one with `h=1` unless you have no `margin`_!
 
 In order for the grid to not be ragged, when an item spans grid units, it must also span margins. So you must add the height or width or the margin you are spanning for each unit. So actual pixel height is `(rowHeight * h) + (marginH * (h - 1)`.
 
@@ -566,7 +566,7 @@ Using hooks to save your layout state on change will cause the layouts to re-ren
 To avoid this you should wrap your WidthProvider in a useMemo:
 
 ```js
-const ResponsiveReactGridLayout = useMemo(()=>WidthProvider(Responsive), [])
+const ResponsiveReactGridLayout = useMemo(() => WidthProvider(Responsive), []);
 ```
 
 ### Custom Child Components and Draggable Handles
