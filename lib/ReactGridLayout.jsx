@@ -713,7 +713,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const newLayout = compact(
       layout.filter(l => l.i !== droppingItem.i),
       compactType(this.props),
-      cols
+      cols,
+      this.props.allowOverlap
     );
 
     this.setState({
