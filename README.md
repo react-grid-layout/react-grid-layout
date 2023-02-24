@@ -560,6 +560,15 @@ function MyGrid(props) {
 
 Because the `children` prop doesn't change between rerenders, updates to `<MyGrid>` won't result in new renders, improving performance.
 
+### React Hooks Performance
+
+Using hooks to save your layout state on change will cause the layouts to re-render as the ResponsiveGridLayout will change it's value on every render.
+To avoid this you should wrap your WidthProvider in a useMemo:
+
+```js
+const ResponsiveReactGridLayout = useMemo(()=>WidthProvider(Responsive), [])
+```
+
 ### Custom Child Components and Draggable Handles
 
 If you use React Components as grid children, they need to do a few things:
