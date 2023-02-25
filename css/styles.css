@@ -24,6 +24,11 @@
   will-change: transform;
 }
 
+.react-grid-item.react-grid-gap{
+    width: inherit;
+    height: inherit;
+}
+
 .react-grid-item.dropping {
   visibility: hidden;
 }
