@@ -17,7 +17,7 @@ import {
   calcWH,
   calcXY
 } from "../../lib/calculateUtils";
-import isEqual from "lodash.isequal";
+import { deepEqual } from "fast-equals";
 import deepFreeze from "./../util/deepFreeze";
 
 describe("bottom", () => {
@@ -590,7 +590,7 @@ describe("fastRGLPropsEqual", () => {
       margin: [10, 10],
       style: { background: "red" }
     };
-    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(true);
   });
 
   it("catches changed arrays", () => {
@@ -600,7 +600,7 @@ describe("fastRGLPropsEqual", () => {
     const props2 = {
       margin: [10, 11]
     };
-    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(false);
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(false);
   });
 
   it("ignores children", () => {
@@ -610,7 +610,7 @@ describe("fastRGLPropsEqual", () => {
     const props2 = {
       children: ["biff", "bar"]
     };
-    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(true);
   });
 
   it("fails added props", () => {
@@ -618,7 +618,7 @@ describe("fastRGLPropsEqual", () => {
     const props2 = {
       droppingItem: { w: 1, h: 2, i: 3 }
     };
-    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(false);
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(false);
   });
 
   it("ignores invalid props", () => {
@@ -626,7 +626,7 @@ describe("fastRGLPropsEqual", () => {
     const props2 = {
       somethingElse: { w: 1, h: 2, i: 3 }
     };
-    expect(fastRGLPropsEqual(props1, props2, isEqual)).toEqual(true);
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(true);
   });
 });
 
