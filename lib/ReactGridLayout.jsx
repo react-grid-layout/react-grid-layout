@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react";
 
-import isEqual from "lodash.isequal";
+import { deepEqual } from "fast-equals";
 import clsx from "clsx";
 import {
   bottom,
@@ -158,7 +158,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Legacy support for compactType
     // Allow parent to set layout directly.
     if (
-      !isEqual(nextProps.layout, prevState.propsLayout) ||
+      !deepEqual(nextProps.layout, prevState.propsLayout) ||
       nextProps.compactType !== prevState.compactType
     ) {
       newLayoutBase = nextProps.layout;
@@ -198,7 +198,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       // from SCU is if the user intentionally memoizes children. If they do, and they can
       // handle changes properly, performance will increase.
       this.props.children !== nextProps.children ||
-      !fastRGLPropsEqual(this.props, nextProps, isEqual) ||
+      !fastRGLPropsEqual(this.props, nextProps, deepEqual) ||
       this.state.activeDrag !== nextState.activeDrag ||
       this.state.mounted !== nextState.mounted ||
       this.state.droppingPosition !== nextState.droppingPosition
@@ -368,7 +368,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
 
-    if (!isEqual(oldLayout, newLayout)) {
+    if (!deepEqual(oldLayout, newLayout)) {
       this.props.onLayoutChange(newLayout);
     }
   }
