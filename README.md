@@ -380,7 +380,7 @@ resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: Re
 
 // Callback so you can save the layout.
 // Calls back with (currentLayout) after every drag or resize stop.
-onLayoutChange: (layout: Layout) => void,
+onLayoutChange: (layout: Layout[]) => void,
 
 //
 // All callbacks below have signature (layout, oldItem, newItem, placeholder, e, element).
@@ -455,7 +455,7 @@ onBreakpointChange: (newBreakpoint: string, newCols: number) => void,
 
 // Callback so you can save the layout.
 // AllLayouts are keyed by breakpoint.
-onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints>]: Layout}) => void,
+onLayoutChange: (currentLayout: Layout[], allLayouts: {[key: $Keys<breakpoints>]: Layout}) => void,
 
 // Callback when the width changes, so you can modify the layout as needed.
 onWidthChange: (containerWidth: number, margin: [number, number], cols: number, containerPadding: [number, number]) => void;
