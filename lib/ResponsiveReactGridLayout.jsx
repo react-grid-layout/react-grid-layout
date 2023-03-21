@@ -1,24 +1,27 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import isEqual from "lodash.isequal";
+import { deepEqual } from "fast-equals";
 
 import {
   cloneLayout,
   synchronizeLayoutWithChildren,
   validateLayout,
   noop,
-  type Layout
+  type Layout,
+  type Pick
 } from "./utils";
 import {
   getBreakpointFromWidth,
   getColsFromBreakpoint,
   findOrGenerateResponsiveLayout,
   type ResponsiveLayout,
+  type OnLayoutChangeCallback,
   type Breakpoints
 } from "./responsiveUtils";
 import ReactGridLayout from "./ReactGridLayout";
 
+// $FlowFixMe[method-unbinding]
 const type = obj => Object.prototype.toString.call(obj);
 
 /**
@@ -28,13 +31,13 @@ const type = obj => Object.prototype.toString.call(obj);
  * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
  * @return {Array}
  */
-
 function getIndentationValue<T: ?[number, number]>(
   param: { [key: string]: T } | T,
   breakpoint: string
 ): T {
-  // $FlowIssue doesn't seem to understand this
+  // $FlowIgnore TODO fix this typedef
   if (param == null) return null;
+  // $FlowIgnore TODO fix this typedef
   return Array.isArray(param) ? param : param[breakpoint];
 }
 
@@ -42,7 +45,7 @@ type State = {
   layout: Layout,
   breakpoint: string,
   cols: number,
-  layouts?: { [key: string]: Layout }
+  layouts?: ResponsiveLayout<string>
 };
 
 type Props<Breakpoint: string = string> = {|
@@ -60,7 +63,7 @@ type Props<Breakpoint: string = string> = {|
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
-  onLayoutChange: (Layout, { [key: Breakpoint]: Layout }) => void,
+  onLayoutChange: OnLayoutChangeCallback,
   onWidthChange: (
     containerWidth: number,
     margin: [number, number],
@@ -68,6 +71,21 @@ type Props<Breakpoint: string = string> = {|
     containerPadding: ?[number, number]
   ) => void
 |};
+
+type DefaultProps = Pick<
+  Props<>,
+  {|
+    allowOverlap: 0,
+    breakpoints: 0,
+    cols: 0,
+    containerPadding: 0,
+    layouts: 0,
+    margin: 0,
+    onBreakpointChange: 0,
+    onLayoutChange: 0,
+    onWidthChange: 0
+  |}
+>;
 
 export default class ResponsiveReactGridLayout extends React.Component<
   Props<>,
@@ -86,6 +104,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
 
     // {name: pxVal}, e.g. {lg: 1200, md: 996, sm: 768, xs: 480}
     breakpoints: PropTypes.object,
+
+    allowOverlap: PropTypes.bool,
 
     // # of cols. This is a breakpoint -> cols map
     cols: PropTypes.object,
@@ -140,18 +160,19 @@ export default class ResponsiveReactGridLayout extends React.Component<
     onWidthChange: PropTypes.func
   };
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+    containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
     layouts: {},
     margin: [10, 10],
-    containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
+    allowOverlap: false,
     onBreakpointChange: noop,
     onLayoutChange: noop,
     onWidthChange: noop
   };
 
-  state = this.generateInitialState();
+  state: State = this.generateInitialState();
 
   generateInitialState(): State {
     const { width, breakpoints, layouts, cols } = this.props;
@@ -178,8 +199,11 @@ export default class ResponsiveReactGridLayout extends React.Component<
     };
   }
 
-  static getDerivedStateFromProps(nextProps: Props<*>, prevState: State) {
-    if (!isEqual(nextProps.layouts, prevState.layouts)) {
+  static getDerivedStateFromProps(
+    nextProps: Props<*>,
+    prevState: State
+  ): ?$Shape<State> {
+    if (!deepEqual(nextProps.layouts, prevState.layouts)) {
       // Allow parent to set layouts directly.
       const { breakpoint, cols } = prevState;
 
@@ -204,15 +228,15 @@ export default class ResponsiveReactGridLayout extends React.Component<
     if (
       this.props.width != prevProps.width ||
       this.props.breakpoint !== prevProps.breakpoint ||
-      !isEqual(this.props.breakpoints, prevProps.breakpoints) ||
-      !isEqual(this.props.cols, prevProps.cols)
+      !deepEqual(this.props.breakpoints, prevProps.breakpoints) ||
+      !deepEqual(this.props.cols, prevProps.cols)
     ) {
       this.onWidthChange(prevProps);
     }
   }
 
   // wrap layouts so we do not need to pass layouts to child
-  onLayoutChange = (layout: Layout) => {
+  onLayoutChange: Layout => void = (layout: Layout) => {
     this.props.onLayoutChange(layout, {
       ...this.props.layouts,
       [this.state.breakpoint]: layout
@@ -258,7 +282,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
         layout,
         this.props.children,
         newCols,
-        compactType
+        compactType,
+        this.props.allowOverlap
       );
 
       // Store the new layout.
@@ -290,7 +315,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     );
   }
 
-  render() {
+  render(): React.Element<typeof ReactGridLayout> {
     /* eslint-disable no-unused-vars */
     const {
       breakpoint,
@@ -309,6 +334,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     return (
       <ReactGridLayout
         {...other}
+        // $FlowIgnore should allow nullable here due to DefaultProps
         margin={getIndentationValue(margin, this.state.breakpoint)}
         containerPadding={getIndentationValue(
           containerPadding,

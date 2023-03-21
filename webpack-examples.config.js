@@ -6,16 +6,14 @@ const fs = require("fs");
 module.exports = {
   mode: "development",
   context: __dirname,
-  entry: {
-    commons: ["lodash"]
-  },
+  entry: {},
   optimization: {
     splitChunks: {
       cacheGroups: {
         commons: {
           name: "commons",
-          chunks: "initial",
-          minChunks: 2
+          chunks: "all",
+          minChunks: 1
         }
       }
     }
@@ -23,7 +21,8 @@ module.exports = {
   output: {
     path: __dirname + "/examples",
     filename: "[name].js",
-    sourceMapFilename: "[file].map"
+    sourceMapFilename: "[file].map",
+    publicPath: "auto"
   },
   module: {
     rules: [
@@ -31,7 +30,7 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
-        query: {
+        options: {
           cacheDirectory: true
         }
       }
@@ -39,19 +38,20 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production"),
-        // sigil to load self into #content
-        STATIC_EXAMPLES: JSON.stringify(true)
-      }
+      "process.env.STATIC_EXAMPLES": JSON.stringify(true)
     })
   ],
   devServer: {
+    compress: true,
     port: 4002,
-    open: true,
-    openPage: "examples/0-showcase.html",
-    contentBase: ".",
-    publicPath: "/examples/"
+    open: "/react-grid-layout/examples/0-showcase.html",
+    client: {
+      overlay: true
+    },
+    static: {
+      directory: ".",
+      publicPath: "/react-grid-layout"
+    }
   },
   resolve: {
     extensions: [".js", ".jsx"],
@@ -62,9 +62,7 @@ module.exports = {
 // Load all entry points
 const files = fs
   .readdirSync(__dirname + "/test/examples")
-  .filter(function(element, index, array) {
-    return element.match(/^.+\.jsx$/);
-  });
+  .filter(element => element.match(/^.+\.jsx$/));
 
 for (const file of files) {
   const module_name = file.replace(/\.jsx$/, "");

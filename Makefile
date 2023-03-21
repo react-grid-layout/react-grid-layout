@@ -18,8 +18,8 @@ clean:
 	rm -rf $(BUILD) $(DIST)
 
 dev:
-	@$(BIN)/webpack-dev-server --config webpack-dev-server.config.js \
-	  --hot --progress --colors
+	@$(BIN)/webpack serve --config webpack-dev-server.config.js \
+	  --hot --progress
 
 # Allows usage of `make install`, `make link`
 install link:
@@ -33,23 +33,25 @@ build-js:
 	@$(BIN)/babel --out-dir $(BUILD) $(LIB)
 
 # Will build for use on github pages. Full url of page is
-# https://strml.github.io/react-grid-layout/examples/0-showcase.html
+# https://react-grid-layout.github.io/react-grid-layout/examples/0-showcase.html
 # so the CONTENT_BASE should adapt.
 build-example:
 	@$(BIN)/webpack --config webpack-examples.config.js
 	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
 
+# Note: this doesn't hot reload, you need to re-run to update files.
+# TODO fix that
 view-example:
-	env CONTENT_BASE="/examples/" node ./examples/generate.js
-	@$(BIN)/webpack-dev-server --config webpack-examples.config.js --progress --colors
+	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
+	@$(BIN)/webpack serve --config webpack-examples.config.js --progress
 
 # FIXME flow is usually global
 lint:
 	@$(BIN)/flow
-	@$(BIN)/eslint --ext .js,.jsx $(LIB) $(TEST)
+	@$(BIN)/eslint --ext .js,.jsx
 
 test:
-	env NODE_ENV=test $(BIN)/jest
+	env NODE_ENV=test $(BIN)/jest --coverage
 
 test-watch:
 	env NODE_ENV=test $(BIN)/jest --watch
@@ -83,4 +85,5 @@ define release
 	git add package.json CHANGELOG.md $(MIN) $(MIN_MAP) && \
 	git commit -m "release $$NEXT_VERSION" && \
 	git tag "$$NEXT_VERSION" -m "release $$NEXT_VERSION"
+	npm pack --dry-run
 endef
