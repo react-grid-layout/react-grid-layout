@@ -54,6 +54,6 @@ jobs:
           npm-token: ${{ secrets.NPM_TOKEN }}
           # optional: NPM will generate provenance statement, or abort release if it can't
           provenance: true
-          build_command: |
+          build-command: |
             yarn
             yarn build
