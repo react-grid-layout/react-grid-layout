@@ -586,7 +586,7 @@ const CustomGridItemComponent = React.forwardRef(({style, className, onMouseDown
       {children} {/* Make sure to include children to add resizable handle */}
     </div>
   );
-}
+})
 ```
 
 The same is true of custom elements as draggable handles using the `draggableHandle` prop. This is so that
