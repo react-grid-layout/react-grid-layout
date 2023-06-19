@@ -468,6 +468,8 @@ RGL supports the following properties on grid items or layout items. When initia
 build a layout array (as in the first example above), or attach this object as the `data-grid` property
 to each of your child elements (as in the second example).
 
+If `data-grid` is provided on an item, it will take precedence over an item in the `layout` with the same key (`i`).
+
 Note that if a grid item is provided but incomplete (missing one of `x, y, w, or h`), an error
 will be thrown so you can correct your layout.
 

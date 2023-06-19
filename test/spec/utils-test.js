@@ -9,8 +9,10 @@ import {
   moveElement,
   sortLayoutItemsByRowCol,
   validateLayout,
-  compactType
+  compactType,
+  synchronizeLayoutWithChildren
 } from "../../lib/utils";
+import * as React from "react";
 import {
   calcGridColWidth,
   calcGridItemPosition,
@@ -494,20 +496,20 @@ describe("compact horizontal", () => {
     ]);
   });
 
-  it('Should put overflowing right elements as bottom needed without colliding and as left as possible', () => {
+  it("Should put overflowing right elements as bottom needed without colliding and as left as possible", () => {
     const cols = 6;
     const layout = [
-      {y: 0, x: 0, h: 2, w: 2, i: '1'},
-      {y: 0, x: 2, h: 2, w: 2, i: '2'},
-      {y: 0, x: 4, h: 2, w: 2, i: '3'},
-      {y: -2, x: -2, h: 2, w: 2, i: '4'}
+      { y: 0, x: 0, h: 2, w: 2, i: "1" },
+      { y: 0, x: 2, h: 2, w: 2, i: "2" },
+      { y: 0, x: 4, h: 2, w: 2, i: "3" },
+      { y: -2, x: -2, h: 2, w: 2, i: "4" }
     ];
 
-    expect(compact(layout, 'horizontal', cols)).toEqual([
-      {y: 0, x: 2, h: 2, w: 2, i: '1', moved: false, static: false},
-      {y: 0, x: 4, h: 2, w: 2, i: '2', moved: false, static: false},
-      {y: 2, x: 0, h: 2, w: 2, i: '3', moved: false, static: false},
-      {y: 0, x: 0, h: 2, w: 2, i: '4', moved: false, static: false},
+    expect(compact(layout, "horizontal", cols)).toEqual([
+      { y: 0, x: 2, h: 2, w: 2, i: "1", moved: false, static: false },
+      { y: 0, x: 4, h: 2, w: 2, i: "2", moved: false, static: false },
+      { y: 2, x: 0, h: 2, w: 2, i: "3", moved: false, static: false },
+      { y: 0, x: 0, h: 2, w: 2, i: "4", moved: false, static: false }
     ]);
   });
 });
@@ -712,34 +714,31 @@ describe("deepFreeze", () => {
     );
     expect(JSON.stringify(deepFreezeResult)).toBe('{"a":"a","b":{"b":"c"}}');
   });
-  it('gets nested key value', () => {
+  it("gets nested key value", () => {
     const res = deepFreeze(
       { one: "a", two: { b: "c" } },
       { set: true, get: true }
-    )
-
-    const val = res.two.b
-    expect(val).toBe('c')
-  })
-  it('defaults option prop to get: true', () => {
-    const res = deepFreeze(
-      { one: "a", two: { b: "c" } },
     );
 
-    expect(res.two.b).toBe('c')
-  })
+    const val = res.two.b;
+    expect(val).toBe("c");
+  });
+  it("defaults option prop to get: true", () => {
+    const res = deepFreeze({ one: "a", two: { b: "c" } });
+
+    expect(res.two.b).toBe("c");
+  });
   it("does not pass check `if(options.set)` ", () => {
-    const res = deepFreeze({ one: "a" }, {set: false, get:false});
+    const res = deepFreeze({ one: "a" }, { set: false, get: false });
     expect(res.one).toBe("a");
   });
 
-
-  it('returns `toJSON`', () => {
-    const res = deepFreeze({ a: 'toJSON' })
-    expect(res.a.toString()).toBe(`toJSON`)
-  })
+  it("returns `toJSON`", () => {
+    const res = deepFreeze({ a: "toJSON" });
+    expect(res.a.toString()).toBe(`toJSON`);
+  });
   describe('throws "unknown prop" error', () => {
-    it('when setting bad key', () => {
+    it("when setting bad key", () => {
       try {
         const res = deepFreeze(
           { one: "a", two: { b: "c" } },
@@ -752,7 +751,7 @@ describe("deepFreeze", () => {
           'Can not set unknown prop "badProp" on frozen object.'
         );
       }
-    })
+    });
     it("when getting bad key", () => {
       try {
         const res = deepFreeze(
@@ -761,14 +760,59 @@ describe("deepFreeze", () => {
         );
         // $FlowIgnore to test the error throws
         res.badProp;
-
       } catch (e) {
         expect(e.message).toBe(
           'Can not get unknown prop "badProp" on frozen object.'
         );
       }
     });
-  })
+  });
+});
 
-
+describe("synchronizeLayoutWithChildren", () => {
+  const layout = [
+    { x: 0, y: 0, w: 1, h: 10, i: "A" },
+    { x: 0, y: 10, w: 1, h: 1, i: "B" },
+    { x: 0, y: 11, w: 1, h: 1, i: "C" }
+  ];
+  const cols = 6;
+  const compactType = "horizontal";
+  it("test", () => {
+    const children = [
+      <div key="A" />,
+      <div key="B" />,
+      <div key="C" />,
+      <div key="D" />
+    ];
+    const output = synchronizeLayoutWithChildren(
+      layout,
+      children,
+      cols,
+      compactType
+    );
+    expect(output).toEqual([
+      expect.objectContaining({ w: 1, h: 10, x: 0, y: 0, i: "A" }),
+      expect.objectContaining({ w: 1, h: 1, x: 0, y: 10, i: "B" }),
+      expect.objectContaining({ w: 1, h: 1, x: 0, y: 11, i: "C" }),
+      expect.objectContaining({ w: 1, h: 1, x: 0, y: 12, i: "D" })
+    ]);
+  });
+  it("Prefers data-grid over layout", () => {
+    const children = [
+      <div key="A" />,
+      <div key="B" />,
+      <div key="C" data-grid={{ x: 0, y: 11, w: 2, h: 2 }} />
+    ];
+    const output = synchronizeLayoutWithChildren(
+      layout,
+      children,
+      cols,
+      compactType
+    );
+    expect(output).toEqual([
+      expect.objectContaining({ w: 1, h: 10, x: 0, y: 0, i: "A" }),
+      expect.objectContaining({ w: 1, h: 1, x: 0, y: 10, i: "B" }),
+      expect.objectContaining({ w: 2, h: 2, x: 0, y: 11, i: "C" })
+    ]);
+  });
 });
