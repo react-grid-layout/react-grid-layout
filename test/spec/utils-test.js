@@ -4,51 +4,34 @@
 import {
   bottom,
   collides,
-  validateLayout,
-  moveElement,
   compact,
-  sortLayoutItemsByRowCol
-} from "../../lib/utils.js";
-/*:: import type { Layout } from "../../lib/utils.js"; */
-import assert from "power-assert";
-
-/*:: declare function describe(name: string, fn: Function): void; */
-/*:: declare function it(name: string, fn: Function): void; */
-
-//
-// Utils
-//
-function stripArray(arr) {
-  return arr.map(stripObject);
-}
-
-function stripObject(obj) {
-  obj = Object.assign({}, obj);
-  return Object.keys(obj).reduce((memo, key) => {
-    if (obj[key] != null) memo[key] = obj[key];
-    return memo;
-  }, {});
-}
-
-function assertDeepEqualStrip(obj1, obj2) {
-  assert.deepEqual(stripArray(obj1), stripArray(obj2));
-}
-//
-// Specs
-//
+  fastRGLPropsEqual,
+  moveElement,
+  sortLayoutItemsByRowCol,
+  validateLayout,
+  compactType
+} from "../../lib/utils";
+import {
+  calcGridColWidth,
+  calcGridItemPosition,
+  calcWH,
+  calcXY
+} from "../../lib/calculateUtils";
+import { deepEqual } from "fast-equals";
+import deepFreeze from "./../util/deepFreeze";
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
-    assert(bottom([]) === 0);
+    expect(bottom([])).toEqual(0);
   });
 
   it("Returns the bottom coordinate of the layout", () => {
-    assert(
+    expect(
       bottom([
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
         { i: "2", x: 1, y: 2, w: 1, h: 1 }
-      ]) === 3
-    );
+      ])
+    ).toEqual(3);
   });
 });
 
@@ -59,7 +42,7 @@ describe("sortLayoutItemsByRowCol", () => {
       { x: 1, y: 0, w: 1, h: 1, i: "1" },
       { x: 0, y: 1, w: 2, h: 2, i: "3" }
     ];
-    assert.deepEqual(sortLayoutItemsByRowCol(layout), [
+    expect(sortLayoutItemsByRowCol(layout)).toEqual([
       { x: 1, y: 0, w: 1, h: 1, i: "1" },
       { x: 0, y: 1, w: 2, h: 2, i: "3" },
       { x: 1, y: 1, w: 1, h: 1, i: "2" }
@@ -69,18 +52,18 @@ describe("sortLayoutItemsByRowCol", () => {
 
 describe("collides", () => {
   it("Returns whether the layout items collide", () => {
-    assert(
+    expect(
       collides(
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
         { i: "2", x: 1, y: 2, w: 1, h: 1 }
-      ) === false
-    );
-    assert(
+      )
+    ).toEqual(false);
+    expect(
       collides(
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
         { i: "2", x: 0, y: 1, w: 1, h: 1 }
-      ) === true
-    );
+      )
+    ).toEqual(true);
   });
 });
 
@@ -94,40 +77,65 @@ describe("validateLayout", () => {
       { i: "2", x: 1, y: 2, w: 1, h: 1 }
     ]);
   });
-  it("Throws errors on invalid input", () => {
-    assert.throws(() => {
-      // $FlowFixMe: dynamic check
+  it("Throws errors on h not as a number", () => {
+    expect(() => {
       validateLayout([
         { i: "1", x: 0, y: 1, w: 1, h: 1 },
+        // $FlowFixMe: dynamic check
         { i: "2", x: 1, y: 2, w: 1 }
       ]);
-    }, /layout\[1\]\.h must be a number!/i);
+    }).toThrowError(/layout\[1]\.h must be a number!/i);
   });
 });
 
 describe("moveElement", () => {
+  function compactAndMove(
+    layout,
+    layoutItem,
+    x,
+    y,
+    isUserAction,
+    preventCollision,
+    compactType,
+    cols
+  ) {
+    return compact(
+      moveElement(
+        layout,
+        layoutItem,
+        x,
+        y,
+        isUserAction,
+        preventCollision,
+        compactType,
+        cols
+      ),
+      compactType,
+      cols
+    );
+  }
+
   it("Does not change layout when colliding on no rearrangement mode", () => {
     const layout = [
       { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
       { i: "2", x: 1, y: 2, w: 1, h: 1, moved: false }
     ];
     const layoutItem = layout[0];
-    assert.deepEqual(
+    expect(
       moveElement(
         layout,
         layoutItem,
         1,
         2, // x, y
-        true,
-        true, // isUserAction, preventCollision
+        true, // isUserAction
+        true, // preventCollision
         null,
-        2
-      ),
-      [
-        { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
-        { i: "2", x: 1, y: 2, w: 1, h: 1, moved: false }
-      ]
-    );
+        2 // compactType, cols
+      )
+    ).toEqual([
+      { i: "1", x: 0, y: 1, w: 1, h: 1, moved: false },
+      { i: "2", x: 1, y: 2, w: 1, h: 1, moved: false }
+    ]);
   });
 
   it("Does change layout when colliding in rearrangement mode", () => {
@@ -136,78 +144,75 @@ describe("moveElement", () => {
       { i: "2", x: 1, y: 0, w: 1, h: 1, moved: false }
     ];
     const layoutItem = layout[0];
-    assert.deepEqual(
+    expect(
       moveElement(
         layout,
         layoutItem,
         1,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         2 // compactType, cols
-      ),
-      [
-        { i: "1", x: 1, y: 0, w: 1, h: 1, moved: true },
-        { i: "2", x: 1, y: 1, w: 1, h: 1, moved: true }
-      ]
-    );
+      )
+    ).toEqual([
+      { i: "1", x: 1, y: 0, w: 1, h: 1, moved: true },
+      { i: "2", x: 1, y: 1, w: 1, h: 1, moved: true }
+    ]);
   });
 
   it("Moves elements out of the way without causing panel jumps when compaction is vertical", () => {
     const layout = [
-      { x: 0, y: 0, w: 1, h: 10, moved: false, i: "A" },
-      { x: 0, y: 10, w: 1, h: 1, moved: false, i: "B" },
-      { x: 0, y: 11, w: 1, h: 1, moved: false, i: "C" }
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
     ];
     // move A down slightly so it collides with C; can cause C to jump above B.
     // We instead want B to jump above A (it has the room)
     const itemA = layout[0];
-    assert.deepEqual(
-      moveElement(
+    expect(
+      compactAndMove(
         layout,
         itemA,
         0,
         1, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         10 // compactType, cols
-      ),
-      [
-        { x: 0, y: 1, w: 1, h: 10, moved: true, i: "A" },
-        { x: 0, y: 0, w: 1, h: 1, moved: true, i: "B" },
-        { x: 0, y: 11, w: 1, h: 1, moved: false, i: "C" }
-      ]
-    );
+      )
+    ).toEqual([
+      expect.objectContaining({ x: 0, y: 1, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 0, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
+    ]);
   });
 
   it("Calculates the correct collision when moving large object far", () => {
     const layout = [
-      { x: 0, y: 0, w: 1, h: 10, moved: false, i: "A" },
-      { x: 0, y: 10, w: 1, h: 1, moved: false, i: "B" },
-      { x: 0, y: 11, w: 1, h: 1, moved: false, i: "C" }
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
     ];
     // Move A down by 2. This should move B above, but since we don't compact in between,
     // C should move below.
     const itemA = layout[0];
-    assert.deepEqual(
+    expect(
       moveElement(
         layout,
         itemA,
         0,
         2, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         10 // compactType, cols
-      ),
-      [
-        { x: 0, y: 2, w: 1, h: 10, moved: true, i: "A" },
-        { x: 0, y: 1, w: 1, h: 1, moved: true, i: "B" },
-        { x: 0, y: 12, w: 1, h: 1, moved: true, i: "C" }
-      ]
-    );
+      )
+    ).toEqual([
+      expect.objectContaining({ x: 0, y: 2, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 1, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 12, w: 1, h: 1, i: "C" })
+    ]);
   });
 
   it("Moves elements out of the way without causing panel jumps when compaction is vertical (example case 13)", () => {
@@ -219,58 +224,195 @@ describe("moveElement", () => {
     // move A over slightly so it collides with B; can cause C to jump above B
     // this test will check that that does not happen
     const itemA = layout[0];
-    assert.deepEqual(
+    expect(
       moveElement(
         layout,
         itemA,
         1,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "vertical",
         2 // compactType, cols
-      ),
-      [
-        { x: 1, y: 0, w: 1, h: 1, i: "A", moved: true },
-        { x: 1, y: 1, w: 1, h: 1, i: "B", moved: true },
-        { x: 0, y: 2, w: 2, h: 2, i: "C", moved: true }
-      ]
-    );
+      )
+    ).toEqual([
+      { x: 1, y: 0, w: 1, h: 1, i: "A", moved: true },
+      { x: 1, y: 1, w: 1, h: 1, i: "B", moved: true },
+      { x: 0, y: 2, w: 2, h: 2, i: "C", moved: true }
+    ]);
   });
 
   it("Moves elements out of the way without causing panel jumps when compaction is horizontal", () => {
     const layout = [
-      { y: 0, x: 0, h: 1, w: 10, moved: false, i: "A" },
-      { y: 0, x: 11, h: 1, w: 1, moved: false, i: "B" },
-      { y: 0, x: 12, h: 1, w: 1, moved: false, i: "C" }
+      { y: 0, x: 0, h: 1, w: 10, i: "A" },
+      { y: 0, x: 11, h: 1, w: 1, i: "B" },
+      { y: 0, x: 12, h: 1, w: 1, i: "C" }
     ];
     // move A over slightly so it collides with C; can cause C to jump left of B
     // this test will check that that does not happen
     const itemA = layout[0];
-    assert.deepEqual(
+    expect(
       moveElement(
         layout,
         itemA,
         2,
         0, // x, y
-        true,
-        false, // isUserAction, preventCollision
+        true, // isUserAction
+        false, //  preventCollision
         "horizontal",
         10 // compactType, cols
-      ),
-      [
-        { y: 0, x: 2, h: 1, w: 10, moved: true, i: "A" },
-        { y: 0, x: 1, h: 1, w: 1, moved: true, i: "B" },
-        { y: 0, x: 12, h: 1, w: 1, moved: false, i: "C" }
-      ]
+      )
+    ).toEqual([
+      { y: 0, x: 2, h: 1, w: 10, moved: true, i: "A" },
+      { y: 0, x: 1, h: 1, w: 1, moved: true, i: "B" },
+      { y: 0, x: 12, h: 1, w: 1, i: "C" }
+    ]);
+  });
+
+  it("Moves one element to another should cause moving down panels, vert compact, example 1", () => {
+    // | A | B |
+    // |C|  D  |
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 1, i: "A" },
+      { x: 2, y: 0, w: 2, h: 1, i: "B" },
+      { x: 0, y: 1, w: 1, h: 1, i: "C" },
+      { x: 1, y: 1, w: 3, h: 1, i: "D" }
+    ];
+    // move B left slightly so it collides with A; can cause C to jump above A
+    // this test will check that that does not happen
+    const itemB = layout[1];
+    expect(
+      compactAndMove(
+        layout,
+        itemB,
+        1,
+        0, // x, y
+        true, // isUserAction
+        false, //  preventCollision
+        "vertical",
+        4 // compactType, cols
+      )
+    ).toEqual([
+      expect.objectContaining({ x: 0, y: 1, w: 2, h: 1, i: "A" }),
+      expect.objectContaining({ x: 1, y: 0, w: 2, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 2, w: 1, h: 1, i: "C" }),
+      expect.objectContaining({ x: 1, y: 2, w: 3, h: 1, i: "D" })
+    ]);
+  });
+
+  it("Moves one element to another should cause moving down panels, vert compact, example 2", () => {
+    // | A |
+    // |B|C|
+    //   | |
+    //
+    // Moving C above A should not move B above A
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 1, i: "A" },
+      { x: 0, y: 1, w: 1, h: 1, i: "B" },
+      { x: 1, y: 1, w: 1, h: 2, i: "C" }
+    ];
+    // Move C up.
+    const itemB = layout[2];
+    expect(
+      compactAndMove(
+        layout,
+        itemB,
+        1,
+        0, // x, y
+        true, // isUserAction
+        false, //  preventCollision
+        "vertical",
+        4 // compactType, cols
+      )
+    ).toEqual([
+      expect.objectContaining({ x: 0, y: 2, w: 2, h: 1, i: "A" }),
+      expect.objectContaining({ x: 0, y: 3, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 1, y: 0, w: 1, h: 2, i: "C" })
+    ]);
+  });
+
+  it("Prevent collision", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
+    ];
+    // Move A down by 2. This will collide with B and C so
+    // the layout should be unchanged
+    const itemA = layout[0];
+    const modifiedLayout = moveElement(
+      layout,
+      itemA,
+      0, // x
+      2, // y
+      true, // isUserAction
+      true, // preventCollision
+      null, // compactType
+      10 // cols
     );
+    expect(Object.is(layout, modifiedLayout)).toBe(true);
+
+    expect(layout).toEqual([
+      expect.objectContaining({ x: 0, y: 0, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
+    ]);
+  });
+
+  it("Allow overlapping the grid items", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
+    ];
+    // Move A down by 2. Both B and C should remain in same position
+    const itemA = layout[0];
+    expect(
+      moveElement(
+        layout,
+        itemA,
+        0,
+        2, // x, y
+        true, // isUserAction
+        false, // preventCollision
+        null,
+        10, // compactType, cols
+        true // allowOverlap
+      )
+    ).toEqual([
+      expect.objectContaining({ x: 0, y: 2, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
+    ]);
+  });
+
+  it("Layout is cloned when using allowOverlap (#1606)", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 10, i: "A" },
+      { x: 0, y: 10, w: 1, h: 1, i: "B" },
+      { x: 0, y: 11, w: 1, h: 1, i: "C" }
+    ];
+    // Move A down by 2. Both B and C should remain in same position
+    const itemA = layout[0];
+    const modifiedLayout = moveElement(
+      layout,
+      itemA,
+      0,
+      2, // x, y
+      true, // isUserAction
+      false, // preventCollision
+      null,
+      10, // compactType, cols
+      true // allowOverlap
+    );
+    expect(Object.is(layout, modifiedLayout)).toBe(false);
   });
 });
 
 describe("compact vertical", () => {
   it("Removes empty vertical space above item", () => {
     const layout = [{ i: "1", x: 0, y: 1, w: 1, h: 1 }];
-    assertDeepEqualStrip(compact(layout, "vertical", 10), [
+    expect(compact(layout, "vertical", 10)).toEqual([
       { i: "1", x: 0, y: 0, w: 1, h: 1, moved: false, static: false }
     ]);
   });
@@ -280,7 +422,7 @@ describe("compact vertical", () => {
       { x: 0, y: 0, w: 1, h: 5, i: "1" },
       { x: 0, y: 1, w: 1, h: 1, i: "2" }
     ];
-    assertDeepEqualStrip(compact(layout, "vertical", 10), [
+    expect(compact(layout, "vertical", 10)).toEqual([
       { x: 0, y: 0, w: 1, h: 5, i: "1", moved: false, static: false },
       { x: 0, y: 5, w: 1, h: 1, i: "2", moved: false, static: false }
     ]);
@@ -295,7 +437,7 @@ describe("compact vertical", () => {
       { x: 5, y: 3, w: 1, h: 1, i: "5", static: true }
     ];
 
-    assertDeepEqualStrip(compact(layout, "vertical", 10), [
+    expect(compact(layout, "vertical", 10)).toEqual([
       { x: 0, y: 0, w: 2, h: 5, i: "1", moved: false, static: false },
       { x: 0, y: 5, w: 10, h: 1, i: "2", moved: false, static: false },
       { x: 5, y: 6, w: 1, h: 1, i: "3", moved: false, static: false },
@@ -311,7 +453,7 @@ describe("compact vertical", () => {
     ];
     const out = compact(layout, "vertical", 10);
     layout.forEach(item => {
-      assert(!out.includes(item));
+      expect(out.includes(item)).toEqual(false);
     });
   });
 });
@@ -319,8 +461,8 @@ describe("compact vertical", () => {
 describe("compact horizontal", () => {
   it("compact horizontal should remove empty horizontal space to left of item", () => {
     const layout = [{ x: 5, y: 5, w: 1, h: 1, i: "1" }];
-    assertDeepEqualStrip(compact(layout, "horizontal", 10), [
-      { x: 0, y: 0, w: 1, h: 1, i: "1", moved: false, static: false }
+    expect(compact(layout, "horizontal", 10)).toEqual([
+      { x: 0, y: 5, w: 1, h: 1, i: "1", moved: false, static: false }
     ]);
   });
 
@@ -329,7 +471,7 @@ describe("compact horizontal", () => {
       { y: 0, x: 0, h: 1, w: 5, i: "1" },
       { y: 0, x: 1, h: 1, w: 1, i: "2" }
     ];
-    assertDeepEqualStrip(compact(layout, "horizontal", 10), [
+    expect(compact(layout, "horizontal", 10)).toEqual([
       { y: 0, x: 0, h: 1, w: 5, i: "1", moved: false, static: false },
       { y: 0, x: 5, h: 1, w: 1, i: "2", moved: false, static: false }
     ]);
@@ -338,17 +480,295 @@ describe("compact horizontal", () => {
   it("Handles recursive collision by moving new collisions out of the way before moving item to the right", () => {
     const layout = [
       { y: 0, x: 0, h: 2, w: 5, i: "1" },
-      { y: 0, x: 0, h: 10, w: 1, i: "2" },
+      { y: 1, x: 0, h: 10, w: 1, i: "2" },
       { y: 5, x: 1, h: 1, w: 1, i: "3" },
       { y: 5, x: 2, h: 1, w: 1, i: "4" },
       { y: 5, x: 2, h: 1, w: 1, i: "5", static: true }
     ];
-    assertDeepEqualStrip(compact(layout, "horizontal", 10), [
+    expect(compact(layout, "horizontal", 10)).toEqual([
       { y: 0, x: 0, h: 2, w: 5, i: "1", moved: false, static: false },
-      { y: 0, x: 5, h: 10, w: 1, i: "2", moved: false, static: false },
+      { y: 1, x: 5, h: 10, w: 1, i: "2", moved: false, static: false },
       { y: 5, x: 6, h: 1, w: 1, i: "3", moved: false, static: false },
       { y: 5, x: 7, h: 1, w: 1, i: "4", moved: false, static: false },
       { y: 5, x: 2, h: 1, w: 1, i: "5", moved: false, static: true }
     ]);
   });
+
+  it('Should put overflowing right elements as bottom needed without colliding and as left as possible', () => {
+    const cols = 6;
+    const layout = [
+      {y: 0, x: 0, h: 2, w: 2, i: '1'},
+      {y: 0, x: 2, h: 2, w: 2, i: '2'},
+      {y: 0, x: 4, h: 2, w: 2, i: '3'},
+      {y: -2, x: -2, h: 2, w: 2, i: '4'}
+    ];
+
+    expect(compact(layout, 'horizontal', cols)).toEqual([
+      {y: 0, x: 2, h: 2, w: 2, i: '1', moved: false, static: false},
+      {y: 0, x: 4, h: 2, w: 2, i: '2', moved: false, static: false},
+      {y: 2, x: 0, h: 2, w: 2, i: '3', moved: false, static: false},
+      {y: 0, x: 0, h: 2, w: 2, i: '4', moved: false, static: false},
+    ]);
+  });
+});
+
+const basePositionParams = {
+  margin: [0, 0],
+  containerPadding: [0, 0],
+  containerWidth: 800,
+  cols: 8,
+  rowHeight: 50,
+  maxRows: 12
+};
+describe("calcGridColWidth", () => {
+  it("should complete basic calculation", () => {
+    expect(calcGridColWidth(basePositionParams)).toEqual(100);
+  });
+
+  it("should consider margin", () => {
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 10]
+    };
+    // 70 px of margin in total (one between each of 8 items)
+    expect(calcGridColWidth(positionParams)).toEqual(91.25);
+  });
+
+  it("should consider container padding", () => {
+    const positionParams = {
+      ...basePositionParams,
+      containerPadding: [100, 0]
+    };
+    // (800 - 100 - 100) / 8
+    expect(calcGridColWidth(positionParams)).toEqual(75);
+  });
+
+  it("should consider margin and padding", () => {
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 0],
+      containerPadding: [100, 0]
+    };
+    // (800 - 100 - 100 - 70) / 8
+    expect(calcGridColWidth(positionParams)).toEqual(66.25);
+  });
+});
+
+describe("calcGridItemPosition", () => {
+  it("should complete basic calculation", () => {
+    const x = 1;
+    const y = 1;
+    const w = 2;
+    const h = 2;
+    const resizing = null;
+    const dragging = null;
+    const positionParams = {
+      ...basePositionParams,
+      margin: [10, 10],
+      containerPadding: [100, 100]
+    };
+    expect(
+      calcGridItemPosition(positionParams, x, y, w, h, { resizing, dragging })
+    ).toEqual({
+      height: 110, // 50 * 2 + margin of 10
+      left: 176, // 100 + colWidth (66.25) + margin. Rounded to complete pixel
+      top: 160, // 100 + height + margin
+      width: 143 // 2x colWidth + margin, rounded
+    });
+  });
+});
+
+describe("fastRGLPropsEqual", () => {
+  it("should tell us if props are equal, including arrays and objects", () => {
+    const props1 = {
+      className: "foo",
+      margin: [10, 10],
+      style: { background: "red" }
+    };
+    const props2 = {
+      className: "foo",
+      margin: [10, 10],
+      style: { background: "red" }
+    };
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(true);
+  });
+
+  it("catches changed arrays", () => {
+    const props1 = {
+      margin: [10, 10]
+    };
+    const props2 = {
+      margin: [10, 11]
+    };
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(false);
+  });
+
+  it("ignores children", () => {
+    const props1 = {
+      children: ["foo", "bar"]
+    };
+    const props2 = {
+      children: ["biff", "bar"]
+    };
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(true);
+  });
+
+  it("fails added props", () => {
+    const props1 = {};
+    const props2 = {
+      droppingItem: { w: 1, h: 2, i: 3 }
+    };
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(false);
+  });
+
+  it("ignores invalid props", () => {
+    const props1 = {};
+    const props2 = {
+      somethingElse: { w: 1, h: 2, i: 3 }
+    };
+    expect(fastRGLPropsEqual(props1, props2, deepEqual)).toEqual(true);
+  });
+});
+
+describe("calcWH", () => {
+  const mockPositionParams = {
+    margin: [0, 0],
+    containerPadding: [0, 0],
+    containerWidth: 400,
+    cols: 4,
+    rowHeight: 200,
+    maxRows: 3
+  };
+  it("return { w: 1, h: 1 }", () => {
+    const res = calcWH(mockPositionParams, 100, 200, 1, 1);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 1, h: 1 }));
+  });
+  it("return { w: 2, h: 1 }", () => {
+    const res = calcWH(mockPositionParams, 200, 200, 1, 1);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 2, h: 1 }));
+  });
+  it("return { w: 1, h: 2 }", () => {
+    const res = calcWH(mockPositionParams, 100, 400, 1, 1);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 1, h: 2 }));
+  });
+});
+
+describe("calcXY", () => {
+  const mockPositionParams = {
+    margin: [0, 0],
+    containerPadding: [0, 0],
+    containerWidth: 500,
+    cols: 4,
+    rowHeight: 100,
+    maxRows: 3
+  };
+
+  it("return {x:0, y:0}", () => {
+    const TOP = 10;
+    const LEFT = 10;
+    const W = 300;
+    const H = 100;
+    const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 0 }));
+  });
+  it("return {x:1, y:0}", () => {
+    const TOP = 0;
+    const LEFT = 100;
+    const W = 0;
+    const H = 0;
+    const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 1, y: 0 }));
+  });
+  it("return {x:0, y:1}", () => {
+    const TOP = 110;
+    const LEFT = 0;
+    const W = 0;
+    const H = 0;
+    const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
+    expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 1 }));
+  });
+});
+
+describe("compactType", () => {
+  const mockProps = {
+    verticalCompact: false,
+    compactType: "horizontal"
+  };
+  it("returns null when verticalCompact is false", () => {
+    expect(compactType(mockProps)).toBe(null);
+  });
+  it("returns compactType value when verticalCompact is true", () => {
+    expect(compactType({ ...mockProps, verticalCompact: true })).toBe(
+      "horizontal"
+    );
+  });
+});
+
+describe("deepFreeze", () => {
+  it("smoke test", () => {
+    const deepFreezeResult = deepFreeze(
+      { a: "a", b: { b: "c" } },
+      { get: true, set: true }
+    );
+    expect(JSON.stringify(deepFreezeResult)).toBe('{"a":"a","b":{"b":"c"}}');
+  });
+  it('gets nested key value', () => {
+    const res = deepFreeze(
+      { one: "a", two: { b: "c" } },
+      { set: true, get: true }
+    )
+
+    const val = res.two.b
+    expect(val).toBe('c')
+  })
+  it('defaults option prop to get: true', () => {
+    const res = deepFreeze(
+      { one: "a", two: { b: "c" } },
+    );
+
+    expect(res.two.b).toBe('c')
+  })
+  it("does not pass check `if(options.set)` ", () => {
+    const res = deepFreeze({ one: "a" }, {set: false, get:false});
+    expect(res.one).toBe("a");
+  });
+
+
+  it('returns `toJSON`', () => {
+    const res = deepFreeze({ a: 'toJSON' })
+    expect(res.a.toString()).toBe(`toJSON`)
+  })
+  describe('throws "unknown prop" error', () => {
+    it('when setting bad key', () => {
+      try {
+        const res = deepFreeze(
+          { one: "a", two: { b: "c" } },
+          { set: true, get: false }
+        );
+        // $FlowIgnore to test the error throw
+        res.badProp = "dog";
+      } catch (e) {
+        expect(e.message).toBe(
+          'Can not set unknown prop "badProp" on frozen object.'
+        );
+      }
+    })
+    it("when getting bad key", () => {
+      try {
+        const res = deepFreeze(
+          { one: "a", two: { b: "c" } },
+          { set: true, get: true }
+        );
+        // $FlowIgnore to test the error throws
+        res.badProp;
+
+      } catch (e) {
+        expect(e.message).toBe(
+          'Can not get unknown prop "badProp" on frozen object.'
+        );
+      }
+    });
+  })
+
+
 });

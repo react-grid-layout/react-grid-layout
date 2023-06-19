@@ -1,3 +1,4 @@
+.DS_Store
 node_modules
 dist/*
 !dist/react-grid-layout.min*
@@ -5,3 +6,11 @@ dist/*
 npm-debug.log
 build/
 .idea
+coverage/
+# Ignore built example files
+examples/*.html
+examples/*.js
+!examples/generate.js
+!examples/vars.js
+.vscode
+*.tgz

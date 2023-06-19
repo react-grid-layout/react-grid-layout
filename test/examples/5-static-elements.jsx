@@ -7,7 +7,7 @@ const ReactGridLayout = WidthProvider(RGL);
  * This layout demonstrates how to use static grid elements.
  * Static elements are not draggable or resizable, and cannot be moved.
  */
-class StaticElementsLayout extends React.PureComponent {
+export default class StaticElementsLayout extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -24,6 +24,7 @@ class StaticElementsLayout extends React.PureComponent {
         className="layout"
         onLayoutChange={this.onLayoutChange}
         rowHeight={30}
+        draggableHandle=".react-grid-dragHandleExample"
       >
         <div key="1" data-grid={{ x: 0, y: 0, w: 2, h: 3 }}>
           <span className="text">1</span>
@@ -40,8 +41,7 @@ class StaticElementsLayout extends React.PureComponent {
             x: 8,
             y: 0,
             w: 4,
-            h: 3,
-            draggableHandle: ".react-grid-dragHandleExample"
+            h: 3
           }}
         >
           <span className="text">
@@ -58,8 +58,6 @@ class StaticElementsLayout extends React.PureComponent {
   }
 }
 
-module.exports = StaticElementsLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(StaticElementsLayout));
 }

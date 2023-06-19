@@ -4,7 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class NoCompactingLayout extends React.PureComponent {
+export default class NoCollisionLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     items: 50,
@@ -65,8 +65,6 @@ class NoCompactingLayout extends React.PureComponent {
   }
 }
 
-module.exports = NoCompactingLayout;
-
-if (require.main === module) {
-  require("../test-hook.jsx")(module.exports);
+if (process.env.STATIC_EXAMPLES === true) {
+  import("../test-hook.jsx").then(fn => fn.default(NoCollisionLayout));
 }

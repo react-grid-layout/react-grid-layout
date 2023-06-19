@@ -1,0 +1,59 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: "The semver to use"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
+      baseTag:
+        description: "base release tag"
+      tag:
+        description: "The npm tag"
+        required: false
+        default: "latest"
+      commit-message:
+        description: "The commit message template"
+        required: false
+        default: "Release {version}"
+  pull_request:
+    types: [closed]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      # optional: `id-token: write` permission is required if `provenance: true` is set below
+      id-token: write
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - uses: nearform-actions/optic-release-automation-action@v4
+        with:
+          commit-message: ${{ github.event.inputs.commit-message }}
+          semver: ${{ github.event.inputs.semver }}
+          npm-tag: ${{ github.event.inputs.tag }}
+          # optional: set this secret in your repo config for publishing to NPM
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          # optional: NPM will generate provenance statement, or abort release if it can't
+          provenance: true
+          build-command: |
+            yarn
+            yarn build
