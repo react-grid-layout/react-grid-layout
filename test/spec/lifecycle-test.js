@@ -59,7 +59,9 @@ describe("Lifecycle tests", function () {
 
     describe("optional min/max dimension props log err", () => {
       describe("minW", () => {
-        const mockError = jest.spyOn(console, "error");
+        const mockError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
         afterEach(() => {
           jest.clearAllMocks();
         });
@@ -76,7 +78,9 @@ describe("Lifecycle tests", function () {
       });
 
       describe("maxW", () => {
-        const mockError = jest.spyOn(console, "error");
+        const mockError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
         afterEach(() => {
           jest.clearAllMocks();
         });
@@ -93,7 +97,9 @@ describe("Lifecycle tests", function () {
       });
 
       describe("minH", () => {
-        const mockError = jest.spyOn(console, "error");
+        const mockError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
         afterEach(() => {
           jest.clearAllMocks();
         });
@@ -110,7 +116,9 @@ describe("Lifecycle tests", function () {
       });
 
       describe("maxH", () => {
-        const mockError = jest.spyOn(console, "error");
+        const mockError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
         afterEach(() => {
           jest.clearAllMocks();
         });

@@ -468,6 +468,8 @@ RGL supports the following properties on grid items or layout items. When initia
 build a layout array (as in the first example above), or attach this object as the `data-grid` property
 to each of your child elements (as in the second example).
 
+If `data-grid` is provided on an item, it will take precedence over an item in the `layout` with the same key (`i`).
+
 Note that if a grid item is provided but incomplete (missing one of `x, y, w, or h`), an error
 will be thrown so you can correct your layout.
 
@@ -515,7 +517,7 @@ will be draggable, even if the item is marked `static: true`.
 
 Grid item widths are based on container and number of columns. The size of a grid unit's height is based on `rowHeight`.
 
-Note that an item that has `h=2` is *not exactly twice as tall as one with `h=1` unless you have no `margin`*!
+Note that an item that has `h=2` is _not exactly twice as tall as one with `h=1` unless you have no `margin`_!
 
 In order for the grid to not be ragged, when an item spans grid units, it must also span margins. So you must add the height or width or the margin you are spanning for each unit. So actual pixel height is `(rowHeight * h) + (marginH * (h - 1)`.
 
@@ -560,6 +562,15 @@ function MyGrid(props) {
 
 Because the `children` prop doesn't change between rerenders, updates to `<MyGrid>` won't result in new renders, improving performance.
 
+### React Hooks Performance
+
+Using hooks to save your layout state on change will cause the layouts to re-render as the ResponsiveGridLayout will change it's value on every render.
+To avoid this you should wrap your WidthProvider in a useMemo:
+
+```js
+const ResponsiveReactGridLayout = useMemo(() => WidthProvider(Responsive), []);
+```
+
 ### Custom Child Components and Draggable Handles
 
 If you use React Components as grid children, they need to do a few things:
@@ -577,7 +588,7 @@ const CustomGridItemComponent = React.forwardRef(({style, className, onMouseDown
       {children} {/* Make sure to include children to add resizable handle */}
     </div>
   );
-}
+})
 ```
 
 The same is true of custom elements as draggable handles using the `draggableHandle` prop. This is so that

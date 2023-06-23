@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import isEqual from "lodash.isequal";
+import { deepEqual } from "fast-equals";
 
 import {
   cloneLayout,
@@ -203,7 +203,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
     nextProps: Props<*>,
     prevState: State
   ): ?$Shape<State> {
-    if (!isEqual(nextProps.layouts, prevState.layouts)) {
+    if (!deepEqual(nextProps.layouts, prevState.layouts)) {
       // Allow parent to set layouts directly.
       const { breakpoint, cols } = prevState;
 
@@ -228,8 +228,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
     if (
       this.props.width != prevProps.width ||
       this.props.breakpoint !== prevProps.breakpoint ||
-      !isEqual(this.props.breakpoints, prevProps.breakpoints) ||
-      !isEqual(this.props.cols, prevProps.cols)
+      !deepEqual(this.props.breakpoints, prevProps.breakpoints) ||
+      !deepEqual(this.props.cols, prevProps.cols)
     ) {
       this.onWidthChange(prevProps);
     }
