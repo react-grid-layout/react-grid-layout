@@ -41,7 +41,8 @@
     "lodash.isequal": "^4.0.0",
     "prop-types": "^15.8.1",
     "react-draggable": "^4.0.0",
-    "react-resizable": "^3.0.4"
+    "react-resizable": "^3.0.4",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.3",
