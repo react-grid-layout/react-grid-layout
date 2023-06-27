@@ -1,5 +1,4 @@
-name: Lint
-
+name: CI
 on:
   # Trigger the workflow on push or pull request,
   # but only for the master branch
@@ -9,12 +8,9 @@ on:
   pull_request:
     branches:
       - master
-
 jobs:
-  run-linters:
-    name: Run linters
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
@@ -27,8 +23,5 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn
 
-      - name: Run Prettier
-        run: yarn fmt:check
-
-      - name: Run ESLint/Flow
-        run: yarn lint
+      - name: Run tests
+        run: yarn test
