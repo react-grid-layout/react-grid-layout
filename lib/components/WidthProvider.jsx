@@ -1,8 +1,10 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
+import ResizeObserver from 'resize-observer-polyfill';
 import clsx from "clsx";
 import type { ReactRef } from "../ReactGridLayoutPropTypes";
+
 
 type WPDefaultProps = {|
   measureBeforeMount: boolean
@@ -58,6 +60,7 @@ export default function WidthProvideRGL<Config>(
 
     elementRef: ReactRef<HTMLDivElement> = React.createRef();
     mounted: boolean = false;
+    resizeObserver:ResizeObserver
 
     componentDidMount() {
       this.mounted = true;
