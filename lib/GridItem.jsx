@@ -59,6 +59,7 @@ type Props = {
   isDraggable: boolean,
   isResizable: boolean,
   isBounded: boolean,
+  lockAspectRatio?: boolean,
   static?: boolean,
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
@@ -174,6 +175,7 @@ export default class GridItem extends React.Component<Props, State> {
     isDraggable: PropTypes.bool.isRequired,
     isResizable: PropTypes.bool.isRequired,
     isBounded: PropTypes.bool.isRequired,
+    lockAspectRatio: PropTypes.bool,
     static: PropTypes.bool,
 
     // Use CSS transforms instead of top/left
@@ -198,6 +200,7 @@ export default class GridItem extends React.Component<Props, State> {
     className: "",
     cancel: "",
     handle: "",
+    lockAspectRatio: false,
     minH: 1,
     minW: 1,
     maxH: Infinity,
@@ -370,6 +373,7 @@ export default class GridItem extends React.Component<Props, State> {
     const {
       cols,
       x,
+      lockAspectRatio,
       minW,
       minH,
       maxW,
@@ -406,6 +410,7 @@ export default class GridItem extends React.Component<Props, State> {
         className={isResizable ? undefined : "react-resizable-hide"}
         width={position.width}
         height={position.height}
+        lockAspectRatio={lockAspectRatio}
         minConstraints={minConstraints}
         maxConstraints={maxConstraints}
         onResizeStop={this.onResizeStop}

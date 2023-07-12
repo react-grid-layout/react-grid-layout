@@ -94,6 +94,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isBounded: false,
     isDraggable: true,
     isResizable: true,
+    lockAspectRatio: false,
     allowOverlap: false,
     isDroppable: false,
     useCSSTransforms: true,
@@ -553,6 +554,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       isDraggable,
       isResizable,
       isBounded,
+      lockAspectRatio,
       useCSSTransforms,
       transformScale,
       draggableCancel,
@@ -573,6 +575,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       typeof l.isResizable === "boolean"
         ? l.isResizable
         : !l.static && isResizable;
+    const itemLockAspectRatio = 
+    typeof l.lockAspectRatio === "boolean"
+    ? l.lockAspectRatio
+    : !l.static && lockAspectRatio;
     const resizeHandlesOptions = l.resizeHandles || resizeHandles;
 
     // isBounded set on child if set on parent, and child is not explicitly false
@@ -597,6 +603,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         isDraggable={draggable}
         isResizable={resizable}
         isBounded={bounded}
+        lockAspectRatio={itemLockAspectRatio}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
         transformScale={transformScale}
