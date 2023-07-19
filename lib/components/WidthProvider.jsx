@@ -79,7 +79,9 @@ export default function WidthProvideRGL<Config>(
       // fix: grid position error when node or parentNode display is none by window resize
       // #924 #1084
       if (node instanceof HTMLElement && node.offsetWidth) {
-        this.setState({ width: node.offsetWidth });
+        this.setState(previousState => previousState.width !== node.offsetWidth
+          ? { width: node.offsetWidth }
+          : previousState);
       }
     };
 
