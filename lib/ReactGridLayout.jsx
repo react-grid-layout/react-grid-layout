@@ -663,8 +663,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const gridRect = e.currentTarget.getBoundingClientRect() // The grid's position in the viewport
 
     // Calculate the mouse position relative to the grid
-    const layerX = e.clientX - gridRect.left / transformScale
-    const layerY = e.clientY - gridRect.top / transformScale
+    const layerX = e.clientX - gridRect.left 
+    const layerY = e.clientY - gridRect.top 
     const droppingPosition = {
       left: layerX / transformScale,
       top: layerY / transformScale,
