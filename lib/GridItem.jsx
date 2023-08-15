@@ -639,7 +639,7 @@ export default class GridItem extends React.Component<Props, State> {
         }
       };
 
-      if (["sw", "w", "nw", "n", "ne", "e"].indexOf(handle) !== -1) {
+      if (["sw", "w", "nw", "n", "ne", "e", "se"].indexOf(handle) !== -1) {
         if (["sw", "w"].indexOf(handle) !== -1) {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop;
@@ -649,7 +649,7 @@ export default class GridItem extends React.Component<Props, State> {
           size.top = currentTop - (size.height - currentHeight);
           constrainWidth();
           constrainHeight();
-        } else if (handle === "e") {
+        } else if (["e", "se"].indexOf(handle) !== -1) {
           constrainWidth();
         } else {
           size.left = currentLeft - (size.width - currentWidth);
