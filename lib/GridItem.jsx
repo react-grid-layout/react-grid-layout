@@ -620,13 +620,35 @@ export default class GridItem extends React.Component<Props, State> {
       const currentWidth = position.width;
       const currentHeight = position.height;
 
-      if (["sw", "w", "nw", "n", "ne"].indexOf(handle) !== -1) {
+      const constrainWidth = () => {
+        const elementRightBound = currentLeft + size.width;
+        const containerRightBound =
+          this.props.containerWidth - this.props.containerPadding[0];
+        size.width = Math.min(
+          elementRightBound > containerRightBound
+            ? size.width - (containerRightBound - elementRightBound) - 10
+            : size.width,
+          containerRightBound - currentLeft
+        );
+      };
+
+      const constrainHeight = () => {
+        if (currentTop <= 0) {
+          size.height = currentHeight;
+        }
+      };
+
+      if (["sw", "w", "nw", "n", "ne", "e"].indexOf(handle) !== -1) {
         if (["sw", "w"].indexOf(handle) !== -1) {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop;
         } else if (["n", "ne"].indexOf(handle) !== -1) {
           size.left = currentLeft;
           size.top = currentTop - (size.height - currentHeight);
+          constrainWidth();
+          constrainHeight();
+        } else if (handle === "e") {
+          constrainWidth();
         } else {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop - (size.height - currentHeight);
