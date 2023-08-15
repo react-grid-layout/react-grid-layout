@@ -621,20 +621,21 @@ export default class GridItem extends React.Component<Props, State> {
       const currentHeight = position.height;
 
       const constrainWidth = () => {
-        const elementRightBound = currentLeft + size.width;
-        const containerRightBound =
-          this.props.containerWidth - this.props.containerPadding[0];
-        size.width = Math.min(
-          elementRightBound > containerRightBound
-            ? size.width - (containerRightBound - elementRightBound) - 10
-            : size.width,
-          containerRightBound - currentLeft
-        );
+        if (currentLeft + size.width > this.props.containerWidth) {
+          size.width = currentWidth;
+        }
       };
 
       const constrainHeight = () => {
-        if (currentTop <= 0) {
+        if (size.top <= 0) {
           size.height = currentHeight;
+        }
+      };
+
+      const constrainLeft = () => {
+        if (size.left <= 0) {
+          size.left = currentLeft;
+          size.width = currentWidth;
         }
       };
 
@@ -642,6 +643,7 @@ export default class GridItem extends React.Component<Props, State> {
         if (["sw", "w"].indexOf(handle) !== -1) {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop;
+          constrainLeft();
         } else if (["n", "ne"].indexOf(handle) !== -1) {
           size.left = currentLeft;
           size.top = currentTop - (size.height - currentHeight);
@@ -652,6 +654,8 @@ export default class GridItem extends React.Component<Props, State> {
         } else {
           size.left = currentLeft - (size.width - currentWidth);
           size.top = currentTop - (size.height - currentHeight);
+          constrainHeight();
+          constrainLeft();
         }
         size.left = size.left < 0 ? 0 : size.left;
         size.top = size.top < 0 ? 0 : size.top;
