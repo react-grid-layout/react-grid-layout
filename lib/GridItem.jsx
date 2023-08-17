@@ -1,8 +1,8 @@
 // @flow
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
-import { Resizable } from "react-resizable";
+import { Resizable, ResizeCallbackData } from "react-resizable";
 import { fastPositionEqual, perc, setTopLeft, setTransform } from "./utils";
 import {
   calcGridItemPosition,
@@ -40,6 +40,11 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
   w: number,
   h: number,
   Data
+) => void;
+type GridItemResizeCallback = (
+  e: SyntheticEvent,
+  data: ResizeCallbackData,
+  position: Position
 ) => void;
 
 type State = {
@@ -357,6 +362,15 @@ export default class GridItem extends React.Component<Props, State> {
   }
 
   /**
+   * Utility function to setup callback handler definitions for
+   * similarily structured resize events.
+   */
+  curryResizeHandler(position: Position, handler: GridItemCallback) {
+    return (e: SyntheticEvent, data: ResizeCallbackData) =>
+      handler(e, data, position);
+  }
+
+  /**
    * Mix a Resizable instance into a child.
    * @param  {Element} child    Child element.
    * @param  {Object} position  Position object (pixel values)
@@ -402,13 +416,9 @@ export default class GridItem extends React.Component<Props, State> {
         height={position.height}
         minConstraints={minConstraints}
         maxConstraints={maxConstraints}
-        onResizeStop={(e, data, position) =>
-          this.onResizeStop(e, data, arguments[1])
-        }
-        onResizeStart={(e, data, position) =>
-          this.onResizeStart(e, data, arguments[1])
-        }
-        onResize={(e, data, position) => this.onResize(e, data, arguments[1])}
+        onResizeStop={this.curryResizeHandler(position, this.onResizeStop)}
+        onResizeStart={this.curryResizeHandler(position, this.onResizeStart)}
+        onResize={this.curryResizeHandler(position, this.onResize)}
         transformScale={transformScale}
         resizeHandles={resizeHandles}
         handle={resizeHandle}
@@ -539,61 +549,31 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStop: (
-    Event,
-    { node: HTMLElement, size: Position, handle: string },
-    position
-  ) => void = (e, callbackData, position) => {
+  onResizeStop: GridItemResizeCallback = (e, callbackData, position) =>
     this.onResizeHandler(e, callbackData, position, "onResizeStop");
-  };
 
-  /**
-   * onResizeStart event handler
-   * @param  {Event}  e             event data
-   * @param  {Object} callbackData  an object with node and size information
-   */
-  onResizeStart: (
-    Event,
-    { node: HTMLElement, size: Position, handle: string },
-    position
-  ) => void = (e, callbackData, position) => {
+  // onResizeStart event handler
+  onResizeStart: GridItemResizeCallback = (e, callbackData, position) =>
     this.onResizeHandler(e, callbackData, position, "onResizeStart");
-  };
 
-  /**
-   * onResize event handler
-   * @param  {Event}  e             event data
-   * @param  {Object} callbackData  an object with node and size information
-   */
-  onResize: (
-    Event,
-    { node: HTMLElement, size: Position, handle: string },
-    position
-  ) => void = (e, callbackData, position) => {
+  // onResize event handler
+  onResize: GridItemResizeCallback = (e, callbackData, position) =>
     this.onResizeHandler(e, callbackData, position, "onResize");
-  };
 
   /**
    * Wrapper around drag events to provide more useful data.
    * All drag events call the function with the given handler name,
    * with the signature (index, x, y).
-   *
-   * @param  {String} handlerName Handler name to wrap.
-   * @return {Function}           Handler function.
    */
   onResizeHandler(
-    e: Event,
-    {
-      node,
-      size,
-      handle
-    }: { node: HTMLElement, size: Position, handle: string },
-    position,
+    e: SyntheticEvent,
+    { node, size, handle }: ResizeCallbackData,
+    position: Position,
     handlerName: string
   ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
-    const { cols, x, y, i, maxH, minH } = this.props;
+    const { x, y, i, maxH, minH } = this.props;
     let { minW, maxW } = this.props;
 
     // Get new XY
@@ -613,8 +593,7 @@ export default class GridItem extends React.Component<Props, State> {
     w = clamp(w, minW, maxW);
     h = clamp(h, minH, maxH);
 
-    const elem = ((node: any): HTMLElement);
-    if (elem) {
+    if (node) {
       const currentLeft = position.left;
       const currentTop = position.top;
       const currentWidth = position.width;

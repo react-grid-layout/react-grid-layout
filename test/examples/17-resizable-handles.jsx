@@ -4,6 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
+window.asdf = RGL;
 export default class ResizableHandles extends React.PureComponent {
   static defaultProps = {
     className: "layout",
@@ -42,7 +43,7 @@ export default class ResizableHandles extends React.PureComponent {
         w: 2,
         h: y,
         i: i.toString(),
-        resizeHandles: _.shuffle(availableHandles).slice(0, _.random(1, availableHandles.length-1))
+        resizeHandles: availableHandles
       };
     });
   }
