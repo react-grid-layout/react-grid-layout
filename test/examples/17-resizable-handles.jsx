@@ -18,7 +18,7 @@ export default class ResizableHandles extends React.PureComponent {
     super(props);
 
     const layout = this.generateLayout();
-    this.state = { layout };
+    this.state = { layout, compactType: "vertical" };
   }
 
   generateDOM() {
@@ -52,15 +52,36 @@ export default class ResizableHandles extends React.PureComponent {
     this.props.onLayoutChange(layout);
   }
 
+  onCompactTypeChange = () => {
+    const { compactType: oldCompactType } = this.state;
+    const compactType =
+      oldCompactType === "horizontal"
+        ? "vertical"
+        : oldCompactType === "vertical"
+        ? null
+        : "horizontal";
+    this.setState({ compactType });
+  };
+
   render() {
     return (
-      <ReactGridLayout
-        layout={this.state.layout}
-        onLayoutChange={this.onLayoutChange}
-        {...this.props}
-      >
-        {this.generateDOM()}
-      </ReactGridLayout>
+      <>
+        <div>
+          Compaction type:{" "}
+          {_.capitalize(this.state.compactType) || "No Compaction"}
+        </div>
+        <button onClick={this.onCompactTypeChange}>
+          Change Compaction Type
+        </button>
+        <ReactGridLayout
+          layout={this.state.layout}
+          onLayoutChange={this.onLayoutChange}
+          compactType={this.state.compactType}
+          {...this.props}
+        >
+          {this.generateDOM()}
+        </ReactGridLayout>
+      </>
     );
   }
 }
