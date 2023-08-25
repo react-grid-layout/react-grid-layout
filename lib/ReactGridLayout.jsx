@@ -249,10 +249,21 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const { layout } = this.state;
     const l = getLayoutItem(layout, i);
     if (!l) return;
+    
+    // Create placeholder (display only)
+    const placeholder = {
+      w: l.w,
+      h: l.h,
+      x: l.x,
+      y: l.y,
+      placeholder: true,
+      i: i
+    };
 
     this.setState({
       oldDragItem: cloneLayoutItem(l),
-      oldLayout: layout
+      oldLayout: layout,
+      activeDrag: placeholder
     });
 
     return this.props.onDragStart(layout, l, l, null, e, node);
