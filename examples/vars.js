@@ -167,5 +167,12 @@ module.exports = [
     paragraphs: [
       "This demonstrates how to overlap grid items."
     ]
+  },
+  {
+    title: "Single Row Horizontal",
+    source: "horizontal",
+    paragraphs: [
+      "This demonstrates how to constrain the elements to a single row."
+    ]
   }
 ];
