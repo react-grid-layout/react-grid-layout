@@ -4,7 +4,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-export default class AllowOverlap extends React.PureComponent {
+export default class Horizontal extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     items: 5,
@@ -67,5 +67,5 @@ export default class AllowOverlap extends React.PureComponent {
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
-  import("../test-hook.jsx").then(fn => fn.default(AllowOverlap));
+  import("../test-hook.jsx").then(fn => fn.default(Horizontal));
 }
