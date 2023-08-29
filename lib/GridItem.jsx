@@ -593,56 +593,99 @@ export default class GridItem extends React.Component<Props, State> {
     w = clamp(w, minW, maxW);
     h = clamp(h, minH, maxH);
 
+    let updatedSize = size;
     if (node) {
       const currentLeft = position.left;
       const currentTop = position.top;
       const currentWidth = position.width;
       const currentHeight = position.height;
 
-      const constrainWidth = () => {
-        if (currentLeft + size.width > this.props.containerWidth) {
-          size.width = currentWidth;
-        }
+      const constrainWidth = width => ({
+        width:
+          currentLeft + width > this.props.containerWidth ? currentWidth : width
+      });
+
+      const constrainHeight = (top, height) => ({
+        height: top <= 0 ? currentHeight : height
+      });
+
+      const constrainLeft = left => ({
+        left: Math.max(0, left)
+      });
+
+      const constrainTop = top => ({
+        top: Math.max(0, top)
+      });
+
+      const resizeNorth = ({ left, height, width }) => {
+        const top = currentTop - (height - currentHeight);
+
+        return {
+          top,
+          left,
+          width,
+          ...constrainHeight(top, height),
+          ...constrainTop(top)
+        };
       };
 
-      const constrainHeight = () => {
-        if (size.top <= 0) {
-          size.height = currentHeight;
-        }
+      const resizeEast = ({ top, left, height, width }) => ({
+        top,
+        height,
+        ...constrainWidth(width),
+        ...constrainLeft(left)
+      });
+
+      const resizeWest = ({ top, height, width }) => {
+        const left = currentLeft - (width - currentWidth);
+
+        return {
+          height,
+          width: left <= 0 ? currentWidth : constrainWidth(width).width,
+          ...constrainTop(top),
+          ...constrainLeft(left)
+        };
       };
 
-      const constrainLeft = () => {
-        if (size.left <= 0) {
-          size.left = currentLeft;
-          size.width = currentWidth;
-        }
+      const resizeSouth = ({ top, left, height, width }) => ({
+        width,
+        left,
+        ...constrainHeight(top, height),
+        ...constrainTop(top)
+      });
+
+      const resizeNorthEast = (...args) => resizeNorth(resizeEast(...args));
+      const resizeNorthWest = (...args) => resizeNorth(resizeWest(...args));
+      const resizeSouthEast = (...args) => resizeSouth(resizeEast(...args));
+      const resizeSouthWest = (...args) => resizeSouth(resizeWest(...args));
+
+      const ordinalResizeHandlerMap = {
+        n: resizeNorth,
+        ne: resizeNorthEast,
+        e: resizeEast,
+        se: resizeSouthEast,
+        s: resizeSouth,
+        sw: resizeSouthWest,
+        w: resizeWest,
+        nw: resizeNorthWest
       };
 
-      if (["sw", "w", "nw", "n", "ne", "e", "se"].indexOf(handle) !== -1) {
-        if (["sw", "w"].indexOf(handle) !== -1) {
-          size.left = currentLeft - (size.width - currentWidth);
-          size.top = currentTop;
-          constrainLeft();
-        } else if (["n", "ne"].indexOf(handle) !== -1) {
-          size.left = currentLeft;
-          size.top = currentTop - (size.height - currentHeight);
-          constrainWidth();
-          constrainHeight();
-        } else if (["e", "se"].indexOf(handle) !== -1) {
-          constrainWidth();
-        } else {
-          size.left = currentLeft - (size.width - currentWidth);
-          size.top = currentTop - (size.height - currentHeight);
-          constrainHeight();
-          constrainLeft();
-        }
-        size.left = size.left < 0 ? 0 : size.left;
-        size.top = size.top < 0 ? 0 : size.top;
-      }
-      this.setState({ resizing: handlerName === "onResizeStop" ? null : size });
+      const resizeHandler = ordinalResizeHandlerMap[handle];
+      updatedSize = resizeHandler
+        ? resizeHandler({
+            top: currentTop,
+            left: currentLeft,
+            height: currentHeight,
+            width: currentWidth,
+            ...size
+          })
+        : size;
+      this.setState({
+        resizing: handlerName === "onResizeStop" ? null : updatedSize
+      });
     }
 
-    handler.call(this, i, w, h, { e, node, size, handle });
+    handler.call(this, i, w, h, { e, node, size: updatedSize, handle });
   }
 
   render(): ReactNode {

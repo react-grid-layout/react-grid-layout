@@ -4,7 +4,6 @@ import RGL, { WidthProvider } from "react-grid-layout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-window.asdf = RGL;
 export default class ResizableHandles extends React.PureComponent {
   static defaultProps = {
     className: "layout",
@@ -18,7 +17,7 @@ export default class ResizableHandles extends React.PureComponent {
     super(props);
 
     const layout = this.generateLayout();
-    this.state = { layout, compactType: "vertical" };
+    this.state = { layout };
   }
 
   generateDOM() {
@@ -43,7 +42,7 @@ export default class ResizableHandles extends React.PureComponent {
         w: 2,
         h: y,
         i: i.toString(),
-        resizeHandles: availableHandles
+        resizeHandles: _.shuffle(availableHandles).slice(0, _.random(1, availableHandles.length-1))
       };
     });
   }
@@ -52,36 +51,15 @@ export default class ResizableHandles extends React.PureComponent {
     this.props.onLayoutChange(layout);
   }
 
-  onCompactTypeChange = () => {
-    const { compactType: oldCompactType } = this.state;
-    const compactType =
-      oldCompactType === "horizontal"
-        ? "vertical"
-        : oldCompactType === "vertical"
-        ? null
-        : "horizontal";
-    this.setState({ compactType });
-  };
-
   render() {
     return (
-      <>
-        <div>
-          Compaction type:{" "}
-          {_.capitalize(this.state.compactType) || "No Compaction"}
-        </div>
-        <button onClick={this.onCompactTypeChange}>
-          Change Compaction Type
-        </button>
-        <ReactGridLayout
-          layout={this.state.layout}
-          onLayoutChange={this.onLayoutChange}
-          compactType={this.state.compactType}
-          {...this.props}
-        >
-          {this.generateDOM()}
-        </ReactGridLayout>
-      </>
+      <ReactGridLayout
+        layout={this.state.layout}
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
+        {this.generateDOM()}
+      </ReactGridLayout>
     );
   }
 }
