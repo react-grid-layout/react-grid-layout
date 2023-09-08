@@ -31,7 +31,8 @@ import type { PositionParams } from "./calculateUtils";
 import type {
   ResizeHandleAxis,
   ResizeHandle,
-  ReactRef
+  ReactRef,
+  DraggableCoreProps
 } from "./ReactGridLayoutPropTypes";
 
 type PartialPosition = { top: number, left: number };
@@ -70,6 +71,7 @@ type Props = {
   // Draggability
   cancel: string,
   handle: string,
+  draggableOpts?: ?DraggableCoreProps,
 
   x: number,
   y: number,
@@ -186,6 +188,8 @@ export default class GridItem extends React.Component<Props, State> {
     handle: PropTypes.string,
     // Selector for draggable cancel (see react-draggable)
     cancel: PropTypes.string,
+    // Passing down `DraggableCore` props
+    draggableOpts: PropTypes.any,
     // Current position of a dropping element
     droppingPosition: PropTypes.shape({
       e: PropTypes.object.isRequired,
@@ -339,6 +343,7 @@ export default class GridItem extends React.Component<Props, State> {
   ): ReactElement<any> {
     return (
       <DraggableCore
+        {...this.props.draggableOpts}
         disabled={!isDraggable}
         onStart={this.onDragStart}
         onDrag={this.onDrag}
@@ -375,6 +380,7 @@ export default class GridItem extends React.Component<Props, State> {
       maxW,
       maxH,
       transformScale,
+      draggableOpts,
       resizeHandles,
       resizeHandle
     } = this.props;
@@ -401,6 +407,7 @@ export default class GridItem extends React.Component<Props, State> {
       <Resizable
         // These are opts for the resize handle itself
         draggableOpts={{
+          ...draggableOpts,
           disabled: !isResizable
         }}
         className={isResizable ? undefined : "react-resizable-hide"}

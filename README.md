@@ -374,6 +374,9 @@ resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se'
 // class to the `draggableCancel` prop.
 resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>),
 
+// Passing down `DraggableCore` props
+draggableOpts?: ?DraggableCoreProps 
+
 //
 // Callbacks
 //
