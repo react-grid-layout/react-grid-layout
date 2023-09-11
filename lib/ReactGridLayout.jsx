@@ -433,6 +433,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       return l;
     });
 
+    // Shouldn't ever happen, but typechecking makes it necessary
+    if (!l) return;
+
     let finalLayout;
     if (["sw", "w", "nw", "n", "ne"].indexOf(handle) !== -1) {
       let x = l.x;
@@ -469,9 +472,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       l.h = h;
       finalLayout = newLayout;
     }
-
-    // Shouldn't ever happen, but typechecking makes it necessary
-    if (!l) return;
 
     // Create placeholder element (display only)
     const placeholder = {

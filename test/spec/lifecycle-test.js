@@ -481,25 +481,14 @@ describe("Lifecycle tests", function () {
        */
       const mouseMove = (node, x, y) => {
         const doc = node ? node.ownerDocument : document;
-        const evt = doc.createEvent("MouseEvents");
-        evt.initMouseEvent(
-          "mousemove",
-          true,
-          true,
-          window,
-          0,
-          0,
-          0,
-          x,
-          y,
-          false,
-          false,
-          false,
-          false,
-          0,
-          null
-        );
-        doc.dispatchEvent(evt);
+        const mouseEvent = new MouseEvent("mousemove", {
+          button: 0,
+          clientX: x,
+          clientY: y,
+          screenX: 0,
+          screenY: 0
+        });
+        doc.dispatchEvent(mouseEvent);
       };
 
       const getCurrentPosition = wrapper => {

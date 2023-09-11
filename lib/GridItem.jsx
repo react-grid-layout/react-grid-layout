@@ -1,8 +1,8 @@
 // @flow
-import React, { SyntheticEvent } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
-import { Resizable, ResizeCallbackData } from "react-resizable";
+import { Resizable } from "react-resizable";
 import { fastPositionEqual, perc, setTopLeft, setTransform } from "./utils";
 import {
   calcGridItemPosition,
@@ -42,10 +42,15 @@ type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
   Data
 ) => void;
 type GridItemResizeCallback = (
-  e: SyntheticEvent,
+  e: Event,
   data: ResizeCallbackData,
   position: Position
 ) => void;
+type ResizeCallbackData = {
+  node: HTMLElement,
+  size: Position,
+  handle: string
+};
 
 type State = {
   resizing: ?{ top: number, left: number, width: number, height: number },
@@ -365,8 +370,8 @@ export default class GridItem extends React.Component<Props, State> {
    * Utility function to setup callback handler definitions for
    * similarily structured resize events.
    */
-  curryResizeHandler(position: Position, handler: GridItemCallback) {
-    return (e: SyntheticEvent, data: ResizeCallbackData) =>
+  curryResizeHandler(position: Position, handler: function): function {
+    return (e: Event, data: ResizeCallbackData): function =>
       handler(e, data, position);
   }
 
@@ -566,7 +571,7 @@ export default class GridItem extends React.Component<Props, State> {
    * with the signature (index, x, y).
    */
   onResizeHandler(
-    e: SyntheticEvent,
+    e: Event,
     { node, size, handle }: ResizeCallbackData,
     position: Position,
     handlerName: string
@@ -600,23 +605,6 @@ export default class GridItem extends React.Component<Props, State> {
       const currentWidth = position.width;
       const currentHeight = position.height;
 
-      const constrainWidth = width => ({
-        width:
-          currentLeft + width > this.props.containerWidth ? currentWidth : width
-      });
-
-      const constrainHeight = (top, height) => ({
-        height: top <= 0 ? currentHeight : height
-      });
-
-      const constrainLeft = left => ({
-        left: Math.max(0, left)
-      });
-
-      const constrainTop = top => ({
-        top: Math.max(0, top)
-      });
-
       const resizeNorth = ({ left, height, width }) => {
         const top = currentTop - (height - currentHeight);
 
@@ -624,16 +612,16 @@ export default class GridItem extends React.Component<Props, State> {
           top,
           left,
           width,
-          ...constrainHeight(top, height),
-          ...constrainTop(top)
+          height: this.constrainHeight(top, currentHeight, height),
+          top: this.constrainTop(top)
         };
       };
 
       const resizeEast = ({ top, left, height, width }) => ({
         top,
         height,
-        ...constrainWidth(width),
-        ...constrainLeft(left)
+        width: this.constrainWidth(currentLeft, currentWidth, width),
+        left: this.constrainLeft(left)
       });
 
       const resizeWest = ({ top, height, width }) => {
@@ -641,17 +629,20 @@ export default class GridItem extends React.Component<Props, State> {
 
         return {
           height,
-          width: left <= 0 ? currentWidth : constrainWidth(width).width,
-          ...constrainTop(top),
-          ...constrainLeft(left)
+          width:
+            left <= 0
+              ? currentWidth
+              : this.constrainWidth(currentLeft, currentWidth, width),
+          top: this.constrainTop(top),
+          left: this.constrainLeft(left)
         };
       };
 
       const resizeSouth = ({ top, left, height, width }) => ({
         width,
         left,
-        ...constrainHeight(top, height),
-        ...constrainTop(top)
+        height: this.constrainHeight(top, currentHeight, height),
+        top: this.constrainTop(top)
       });
 
       const resizeNorthEast = (...args) => resizeNorth(resizeEast(...args));
@@ -686,6 +677,31 @@ export default class GridItem extends React.Component<Props, State> {
     }
 
     handler.call(this, i, w, h, { e, node, size: updatedSize, handle });
+  }
+
+  /**
+   * Helper functions to constrain dimensions of a GridItem
+   */
+  constrainWidth(left: number, currentWidth: number, newWidth: number): number {
+    return left + newWidth > this.props.containerWidth
+      ? currentWidth
+      : newWidth;
+  }
+
+  constrainHeight(
+    top: number,
+    currentHeight: number,
+    newHeight: number
+  ): number {
+    return top <= 0 ? currentHeight : newHeight;
+  }
+
+  constrainLeft(left: number): number {
+    return Math.max(0, left);
+  }
+
+  constrainTop(top: number): number {
+    return Math.max(0, top);
   }
 
   render(): ReactNode {
