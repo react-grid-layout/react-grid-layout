@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.4.0 (Sep 11, 2023)
+
+Hey, it's been a long time! Taking a year and a half off is a pretty "open-source" thing to do, thanks for bearing with me.
 
 ### New Features
 
