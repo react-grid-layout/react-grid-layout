@@ -167,5 +167,12 @@ module.exports = [
     paragraphs: [
       "This demonstrates how to overlap grid items."
     ]
+  },
+  {
+    title: "All Resizable Handles",
+    source: "resizable-handles",
+    paragraphs: [
+      "This shows a grid with all resizable handles enabled. See the prop `resizableHandles` on the grid and grid items in the README."
+    ]
   }
 ];
