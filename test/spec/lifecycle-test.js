@@ -11,7 +11,7 @@ import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
 import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
-import ResizableLayout from "../examples/17-resizable-handles";
+import ResizableLayout from "../examples/20-resizable-handles";
 import deepFreeze from "../util/deepFreeze";
 import { mount } from "enzyme";
 
