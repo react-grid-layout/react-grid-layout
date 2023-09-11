@@ -1,10 +1,9 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import ResizeObserver from 'resize-observer-polyfill';
+import ResizeObserver from "resize-observer-polyfill";
 import clsx from "clsx";
 import type { ReactRef } from "../ReactGridLayoutPropTypes";
-
 
 type WPDefaultProps = {|
   measureBeforeMount: boolean
@@ -60,30 +59,30 @@ export default function WidthProvideRGL<Config>(
 
     elementRef: ReactRef<HTMLDivElement> = React.createRef();
     mounted: boolean = false;
-    resizeObserver:ResizeObserver
+    resizeObserver: ResizeObserver;
 
     componentDidMount() {
       this.mounted = true;
-      this.resizeObserver = new ResizeObserver((entries) => {
-        const node = this.elementRef.current
+      this.resizeObserver = new ResizeObserver(entries => {
+        const node = this.elementRef.current;
         if (node instanceof HTMLElement) {
-          const width = entries[0].contentRect.width
-          this.setState({width})
+          const width = entries[0].contentRect.width;
+          this.setState({ width });
         }
-      })
-      const node = this.elementRef.current
+      });
+      const node = this.elementRef.current;
       if (node instanceof HTMLElement) {
-        this.resizeObserver.observe(node)
+        this.resizeObserver.observe(node);
       }
     }
 
     componentWillUnmount() {
       this.mounted = false;
-      const node = this.elementRef.current
+      const node = this.elementRef.current;
       if (node instanceof HTMLElement) {
-        this.resizeObserver.unobserve(node)
+        this.resizeObserver.unobserve(node);
       }
-      this.resizeObserver.disconnect()
+      this.resizeObserver.disconnect();
     }
 
     render() {
