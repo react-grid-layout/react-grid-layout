@@ -578,25 +578,6 @@ export default class GridItem extends React.Component<Props, State> {
   ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
-    const { x, y, i, maxH, minH } = this.props;
-    let { minW, maxW } = this.props;
-
-    // Get new XY
-    let { w, h } = calcWH(
-      this.getPositionParams(),
-      size.width,
-      size.height,
-      x,
-      y,
-      handle
-    );
-
-    // minW should be at least 1 (TODO propTypes validation?)
-    minW = Math.max(minW, 1);
-
-    // Min/max capping
-    w = clamp(w, minW, maxW);
-    h = clamp(h, minH, maxH);
 
     let updatedSize = size;
     if (node) {
@@ -609,7 +590,6 @@ export default class GridItem extends React.Component<Props, State> {
         const top = currentTop - (height - currentHeight);
 
         return {
-          top,
           left,
           width,
           height: this.constrainHeight(top, currentHeight, height),
@@ -676,6 +656,26 @@ export default class GridItem extends React.Component<Props, State> {
       });
     }
 
+    const { x, y, i, maxH, minH } = this.props;
+    let { minW, maxW } = this.props;
+
+    // Get new XY from updated size
+    let { w, h } = calcWH(
+        this.getPositionParams(),
+        updatedSize.width,
+        updatedSize.height,
+        x,
+        y,
+        handle
+    );
+
+    // minW should be at least 1 (TODO propTypes validation?)
+    minW = Math.max(minW, 1);
+
+    // Min/max capping
+    w = clamp(w, minW, maxW);
+    h = clamp(h, minH, maxH);
+
     handler.call(this, i, w, h, { e, node, size: updatedSize, handle });
   }
 
@@ -693,7 +693,7 @@ export default class GridItem extends React.Component<Props, State> {
     currentHeight: number,
     newHeight: number
   ): number {
-    return top <= 0 ? currentHeight : newHeight;
+    return top < 0 ? currentHeight : newHeight;
   }
 
   constrainLeft(left: number): number {

@@ -204,6 +204,67 @@ describe("Lifecycle tests", function () {
   });
 
   describe("<ReactGridLayout>", function () {
+
+    /**
+     * Simulate a movement; can't use TestUtils here because it uses react's event system only,
+     * but <DraggableCore> attaches event listeners directly to the document.
+     * Would love to new MouseEvent() here but it doesn't work with PhantomJS / old browsers.
+     * var e = new MouseEvent('mousemove', {clientX: 100, clientY: 100});
+     *
+     * Taken from: https://github.com/react-grid-layout/react-draggable/blob/master/specs/draggable.spec.jsx#L1000C1-L1003C70
+     */
+    const mouseMove = (node, x, y) => {
+      const doc = node ? node.ownerDocument : document;
+      const mouseEvent = new MouseEvent("mousemove", {
+        button: 0,
+        clientX: x,
+        clientY: y,
+        screenX: 0,
+        screenY: 0
+      });
+      doc.dispatchEvent(mouseEvent);
+    };
+
+    const getCurrentPosition = wrapper => {
+      const { x, y, w, h } = wrapper.props();
+      return calcGridItemPosition(
+          wrapper.instance().getPositionParams(),
+          x,
+          y,
+          w,
+          h,
+          wrapper.state()
+      );
+    };
+
+    const resizeTo = (wrapper, preventMouseUp, currentPosition, x, y) => {
+      const node = wrapper.getDOMNode();
+      TestUtils.Simulate.mouseDown(node, {
+        clientX: currentPosition.left,
+        clientY: currentPosition.top
+      });
+      mouseMove(node, x, y);
+
+      // In some test cases we want to take measurements before mouseUp occurs
+      if (!preventMouseUp) {
+        TestUtils.Simulate.mouseUp(node);
+      }
+    };
+
+    const findGridItemByText = (wrapper, id) =>
+        wrapper.findWhere(node => {
+          const isGridItem = node.instance() instanceof GridItem;
+          const hasSpecifiedText = node.find({ children: id }).exists();
+
+          return isGridItem && hasSpecifiedText;
+        });
+
+    const findHandleForGridItem = (wrapper, handle) =>
+        wrapper.find(`.react-resizable-handle-${handle}`);
+
+    const getGridItemData = (wrapper, id) =>
+        wrapper.state("layout").find(item => item.i == id);
+
     it("Basic Render", async function () {
       const wrapper = mount(<BasicLayout />);
       expect(wrapper).toMatchSnapshot();
@@ -470,66 +531,6 @@ describe("Lifecycle tests", function () {
       const colWidth = 101;
       const gridPadding = 10;
       let gridLayout;
-
-      /**
-       * Simulate a movement; can't use TestUtils here because it uses react's event system only,
-       * but <DraggableCore> attaches event listeners directly to the document.
-       * Would love to new MouseEvent() here but it doesn't work with PhantomJS / old browsers.
-       * var e = new MouseEvent('mousemove', {clientX: 100, clientY: 100});
-       *
-       * Taken from: https://github.com/react-grid-layout/react-draggable/blob/master/specs/draggable.spec.jsx#L1000C1-L1003C70
-       */
-      const mouseMove = (node, x, y) => {
-        const doc = node ? node.ownerDocument : document;
-        const mouseEvent = new MouseEvent("mousemove", {
-          button: 0,
-          clientX: x,
-          clientY: y,
-          screenX: 0,
-          screenY: 0
-        });
-        doc.dispatchEvent(mouseEvent);
-      };
-
-      const getCurrentPosition = wrapper => {
-        const { x, y, w, h } = wrapper.props();
-        return calcGridItemPosition(
-          wrapper.instance().getPositionParams(),
-          x,
-          y,
-          w,
-          h,
-          wrapper.state()
-        );
-      };
-
-      const resizeTo = (wrapper, preventMouseUp, currentPosition, x, y) => {
-        const node = wrapper.getDOMNode();
-        TestUtils.Simulate.mouseDown(node, {
-          clientX: currentPosition.left,
-          clientY: currentPosition.top
-        });
-        mouseMove(node, x, y);
-
-        // In some test cases we want to take measurements before mouseUp occurs
-        if (!preventMouseUp) {
-          TestUtils.Simulate.mouseUp(node);
-        }
-      };
-
-      const findGridItemByText = (wrapper, id) =>
-        wrapper.findWhere(node => {
-          const isGridItem = node.instance() instanceof GridItem;
-          const hasSpecifiedText = node.find({ children: id }).exists();
-
-          return isGridItem && hasSpecifiedText;
-        });
-
-      const findHandleForGridItem = (wrapper, handle) =>
-        wrapper.find(`.react-resizable-handle-${handle}`);
-
-      const getGridItemData = (wrapper, id) =>
-        wrapper.state("layout").find(item => item.i == id);
 
       beforeEach(() => {
         const wrapper = mount(<ResizableLayout />);
@@ -852,6 +853,30 @@ describe("Lifecycle tests", function () {
         });
       });
     });
+
+    describe("Resizing first row when containerPadding is disabled", () => {
+      const rowHeight = 150;
+
+      it("resizes from s handle when containerPadding=[0, 0]", () => {
+        const wrapper = mount(<ResizableLayout rowHeight={rowHeight} containerPadding={[0, 0]} />);
+        const gridLayout = wrapper.find("ReactGridLayout");
+        const itemId = 0;
+        const gridItem0 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem0, "s");
+        const pos = getCurrentPosition(gridItem0);
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+        // Resize down two columns
+        resizeTo(handleElement, false, pos, pos.left, pos.top + rowHeight * 2);
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          h: positionBeforeResize.h * 2
+        });
+      });
+
+    });
+
   });
 
   describe("<ResponsiveReactGridLayout>", function () {
