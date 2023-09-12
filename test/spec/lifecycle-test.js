@@ -851,6 +851,36 @@ describe("Lifecycle tests", function () {
           });
         });
       });
+
+      describe("Resizing first row when containerPadding is disabled (#1929)", () => {
+        const rowHeight = 150;
+
+        it("resizes from s handle when containerPadding=[0, 0]", () => {
+          const wrapper = mount(
+            <ResizableLayout rowHeight={rowHeight} containerPadding={[0, 0]} />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "s");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize down two columns
+          resizeTo(
+            handleElement,
+            false,
+            pos,
+            pos.left,
+            pos.top + rowHeight * 2
+          );
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          expect(positionAfterResize).toEqual({
+            ...positionBeforeResize,
+            h: positionBeforeResize.h + 2
+          });
+        });
+      });
     });
   });
 
