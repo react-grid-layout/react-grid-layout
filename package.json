@@ -38,11 +38,14 @@
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
     "clsx": "^2.0.0",
-    "fast-equals": "^5.0.1",
+    "fast-equals": "^4.0.3",
     "prop-types": "^15.8.1",
     "react-draggable": "^4.4.5",
     "react-resizable": "^3.0.5",
     "resize-observer-polyfill": "^1.5.1"
+  },
+  "_dependencyNotes": {
+    "fast-equals": "Bug in CRA5 causes fast-equals@5 to fail to import due to .cjs file. See https://github.com/react-grid-layout/react-grid-layout/issues/1904"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.15",
