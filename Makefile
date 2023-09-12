@@ -79,10 +79,10 @@ define release
 			var j = require(fileName);\
 			j.version = \"$$NEXT_VERSION\";\
 			var s = JSON.stringify(j, null, 2);\
-			require('fs').writeFileSync(fileName, s);\
+			require('fs').writeFileSync(fileName, s + '\\n');\
 		});" && \
 	git add package.json CHANGELOG.md $(MIN) $(MIN_MAP) && \
-	git commit -m "release $$NEXT_VERSION" && \
+	git commit -nm "release $$NEXT_VERSION" && \
 	git tag "$$NEXT_VERSION" -m "release $$NEXT_VERSION"
 	npm pack --dry-run
 endef
