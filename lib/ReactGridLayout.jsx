@@ -405,18 +405,50 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     let { layout } = this.state;
     const { cols, preventCollision, allowOverlap } = this.props;
 
+    let shouldMoveItem = false;
+    let finalLayout;
+    let x;
+    let y;
+
     const [newLayout, l] = withLayoutItem(layout, i, l => {
+      let hasCollisions;
+      x = l.x;
+      y = l.y;
+      if (["sw", "w", "nw", "n", "ne"].indexOf(handle) !== -1) {
+        if (["sw", "nw", "w"].indexOf(handle) !== -1) {
+          x = l.x + (l.w - w);
+          w = l.x !== x && x < 0 ? l.w : w;
+          x = x < 0 ? 0 : x;
+        }
+
+        if (["ne", "n", "nw"].indexOf(handle) !== -1) {
+          y = l.y + (l.h - h);
+          h = l.y !== y && y < 0 ? l.h : h;
+          y = y < 0 ? 0 : y;
+        }
+
+        shouldMoveItem = true;
+      }
+
       // Something like quad tree should be used
       // to find collisions faster
-      let hasCollisions;
       if (preventCollision && !allowOverlap) {
-        const collisions = getAllCollisions(layout, { ...l, w, h }).filter(
-          layoutItem => layoutItem.i !== l.i
-        );
+        const collisions = getAllCollisions(layout, {
+          ...l,
+          w,
+          h,
+          x,
+          y
+        }).filter(layoutItem => layoutItem.i !== l.i);
         hasCollisions = collisions.length > 0;
 
         // If we're colliding, we need adjust the placeholder.
         if (hasCollisions) {
+          // Reset layoutItem dimensions if there were collisions
+          y = l.y;
+          h = l.h;
+          x = l.x;
+          w = l.w;
           // adjust w && h to maximum allowed space
           let leastX = Infinity,
             leastY = Infinity;
@@ -429,6 +461,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           if (Number.isFinite(leastY)) l.h = leastY - l.y;
         }
       }
+      l.w = w;
+      l.h = h;
 
       return l;
     });
@@ -436,24 +470,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Shouldn't ever happen, but typechecking makes it necessary
     if (!l) return;
 
-    let finalLayout;
-    if (["sw", "w", "nw", "n", "ne"].indexOf(handle) !== -1) {
-      let x = l.x;
-      let y = l.y;
-      if (["sw", "nw", "w"].indexOf(handle) !== -1) {
-        x = l.x + (l.w - w);
-        w = l.x !== x && x < 0 ? l.w : w;
-        x = x < 0 ? 0 : x;
-      }
-
-      if (["ne", "n", "nw"].indexOf(handle) !== -1) {
-        y = l.y + (l.h - h);
-        h = l.y !== y && y < 0 ? l.h : h;
-        y = y < 0 ? 0 : y;
-      }
-
-      l.w = w;
-      l.h = h;
+    finalLayout = newLayout;
+    if (shouldMoveItem) {
       // Move the element to the new position.
       const isUserAction = true;
       finalLayout = moveElement(
@@ -467,10 +485,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         cols,
         allowOverlap
       );
-    } else {
-      l.w = w;
-      l.h = h;
-      finalLayout = newLayout;
     }
 
     // Create placeholder element (display only)

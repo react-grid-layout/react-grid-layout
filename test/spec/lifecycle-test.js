@@ -881,6 +881,24 @@ describe("Lifecycle tests", function () {
           });
         });
       });
+
+      it("Does not cause elements to move when resizing with preventCollision=true and no compaction (#1933)", () => {
+        const wrapper = mount(
+          <ResizableLayout preventCollision={true} compactType={null} />
+        );
+        const gridLayout = wrapper.find("ReactGridLayout");
+        const itemId = 0;
+        const gridItem0 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem0, "e");
+        const pos = getCurrentPosition(gridItem0);
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+        // Resize right two columns
+        resizeTo(handleElement, true, pos, pos.left + colWidth * 2, pos.top);
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        // Position shouldn't change because the system should preventCollisions
+        expect(positionAfterResize).toEqual(positionBeforeResize);
+      });
     });
   });
 
