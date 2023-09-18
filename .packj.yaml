@@ -143,7 +143,6 @@ sandbox:
     # NOTE: only ONE 'allow' and 'block' lines are allowed
     #
     network:
-
       # TODO: customize as per your threat model
 
       # block all external network communication (except the ones below)
