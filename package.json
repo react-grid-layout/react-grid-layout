@@ -122,9 +122,11 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,css}": [
-      "eslint --ext .js,.jsx --fix",
-      "yarn fmt"
+    "*.{js,jsx}": [
+      "eslint --ext .js,.jsx --fix"
+    ],
+    "*": [
+      "prettier --ignore-unknown --write"
     ]
   }
 }
