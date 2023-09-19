@@ -449,18 +449,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           h = l.h;
           x = l.x;
           w = l.w;
-          // adjust w && h to maximum allowed space
-          let leastX = Infinity,
-            leastY = Infinity;
-          collisions.forEach(layoutItem => {
-            if (layoutItem.x > l.x) leastX = Math.min(leastX, layoutItem.x);
-            if (layoutItem.y > l.y) leastY = Math.min(leastY, layoutItem.y);
-          });
-
-          if (Number.isFinite(leastX)) l.w = leastX - l.x;
-          if (Number.isFinite(leastY)) l.h = leastY - l.y;
         }
       }
+
       l.w = w;
       l.h = h;
 
