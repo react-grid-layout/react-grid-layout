@@ -493,8 +493,14 @@ describe("Lifecycle tests", function () {
 
       const getCurrentPosition = wrapper => {
         const { x, y, w, h } = wrapper.props();
+        const positionParams = wrapper.instance()?.getPositionParams();
+
+        if (!positionParams) {
+          return {};
+        }
+
         return calcGridItemPosition(
-          wrapper.instance().getPositionParams(),
+          positionParams,
           x,
           y,
           w,
