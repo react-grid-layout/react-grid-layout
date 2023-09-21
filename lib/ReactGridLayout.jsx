@@ -449,6 +449,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
           h = l.h;
           x = l.x;
           w = l.w;
+          shouldMoveItem = false;
         }
       }
 
