@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.4.2 (Sep 22, 2023)
+
+### Bugfixes
+
+- Resizing in every directionnow obeys preventCollision restrictions [#1937](https://github.com/react-grid-layout/react-grid-layout/pull/1937)
+
+## 1.4.1 (Sep 12, 2023)
+
+### Bugfixes
+
+- Fixed bug where height/width could not be resized if `h = 0` or `w = 0` and 0 `containerPadding`. [#1931](https://github.com/react-grid-layout/react-grid-layout/pull/1931)
+- Revert `fast-equals` to @4. Fixes incompatibility with `Create-React-App@5`.
+
 ## 1.4.0 (Sep 11, 2023)
 
 Hey, it's been a long time! Taking a year and a half off is a pretty "open-source" thing to do, thanks for bearing with me.
