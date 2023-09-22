@@ -493,8 +493,14 @@ describe("Lifecycle tests", function () {
 
       const getCurrentPosition = wrapper => {
         const { x, y, w, h } = wrapper.props();
+        const positionParams = wrapper.instance()?.getPositionParams();
+
+        if (!positionParams) {
+          return {};
+        }
+
         return calcGridItemPosition(
-          wrapper.instance().getPositionParams(),
+          positionParams,
           x,
           y,
           w,
@@ -520,7 +526,7 @@ describe("Lifecycle tests", function () {
       const findGridItemByText = (wrapper, id) =>
         wrapper.findWhere(node => {
           const isGridItem = node.instance() instanceof GridItem;
-          const hasSpecifiedText = node.find({ children: id }).exists();
+          const hasSpecifiedText = node.text() === `${id}`;
 
           return isGridItem && hasSpecifiedText;
         });
@@ -878,6 +884,100 @@ describe("Lifecycle tests", function () {
           expect(positionAfterResize).toEqual({
             ...positionBeforeResize,
             h: positionBeforeResize.h + 2
+          });
+        });
+      });
+
+      describe("preventCollision=true and no compaction (#1933)", () => {
+        const resizeHandles = ["n", "e", "s", "w"];
+        const PreventCollisionContainer = ({ layoutA, layoutB }) => (
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            preventCollision={true}
+            compactType={null}
+            resizeHandles={resizeHandles}
+          >
+            <div key="0" data-grid={layoutA}>
+              0
+            </div>
+            <div key="1" data-grid={layoutB}>
+              1
+            </div>
+          </ReactGridLayout>
+        );
+
+        it("Does not allow elements to move when resizing with no free space", () => {
+          const wrapper = mount(
+            <PreventCollisionContainer
+              layoutA={{ x: 0, y: 0, w: 1, h: 2, i: "0" }}
+              layoutB={{ x: 1, y: 0, w: 7, h: 2, i: "1" }}
+            />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "e");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize right two columns
+          resizeTo(handleElement, true, pos, pos.left + colWidth * 2, pos.top);
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          // Position shouldn't change because the system should preventCollisions
+          expect(positionAfterResize).toEqual(positionBeforeResize);
+        });
+
+        it("Allows elements to resize only within available free space", () => {
+          const wrapper = mount(
+            <PreventCollisionContainer
+              layoutA={{ x: 0, y: 0, w: 1, h: 2, i: "0" }}
+              layoutB={{ x: 2, y: 0, w: 7, h: 2, i: "1" }}
+            />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "e");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize right two columns
+          resizeTo(handleElement, true, pos, pos.left + colWidth, pos.top);
+          resizeTo(handleElement, false, pos, pos.left + colWidth * 2, pos.top);
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          /**
+           * Width should only increase by 1 column, not 2, because there is a
+           * collision that occurs at x=2 when attempting to resize over it.
+           **/
+          expect(positionAfterResize).toEqual({
+            ...positionBeforeResize,
+            w: 2
+          });
+        });
+
+        it("Allows elements to resize within free space", () => {
+          const wrapper = mount(
+            <PreventCollisionContainer
+              layoutA={{ x: 0, y: 0, w: 1, h: 2, i: "0" }}
+              layoutB={{ x: 10, y: 0, w: 2, h: 2, i: "1" }}
+            />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "e");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize right nine columns
+          resizeTo(handleElement, true, pos, pos.left + colWidth * 9, pos.top);
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          expect(positionAfterResize).toEqual({
+            ...positionBeforeResize,
+            w: 10
           });
         });
       });
