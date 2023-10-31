@@ -17,8 +17,11 @@ type State = {|
   currentBreakpoint: string,
   compactType: CompactType,
   mounted: boolean,
+  resizeHandles: string[],
   layouts: {[string]: Layout}
 |};
+
+const availableHandles = ["s", "w", "e", "n", "sw", "nw", "se", "ne"];
 
 export default class ShowcaseLayout extends React.Component<Props, State> {
   static defaultProps: Props = {
@@ -31,8 +34,9 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
   state: State = {
     currentBreakpoint: "lg",
     compactType: "vertical",
+    resizeHandles: ['se'],
     mounted: false,
-    layouts: { lg: generateLayout() }
+    layouts: { lg: generateLayout(['se']) }
   };
 
   componentDidMount() {
@@ -75,13 +79,19 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     this.setState({ compactType });
   };
 
+  onResizeTypeChange: () => void = () => {
+    const resizeHandles = this.state.resizeHandles === availableHandles ? ['se'] : availableHandles;
+    this.setState({resizeHandles, layouts: {lg: generateLayout(resizeHandles)}});
+  };
+
+
   onLayoutChange: OnLayoutChangeCallback = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
   };
 
   onNewLayout: EventHandler = () => {
     this.setState({
-      layouts: { lg: generateLayout() }
+      layouts: { lg: generateLayout(this.state.resizeHandles) }
     });
   };
 
@@ -105,6 +115,9 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
         </button>
+        <button onClick={this.onResizeTypeChange}>
+          Resize {this.state.resizeHandles === availableHandles ? "One Corner" : "All Corners"}
+        </button>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -126,7 +139,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
   }
 }
 
-function generateLayout() {
+function generateLayout(resizeHandles) {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
@@ -135,7 +148,8 @@ function generateLayout() {
       w: 2,
       h: y,
       i: i.toString(),
-      static: Math.random() < 0.05
+      static: Math.random() < 0.05,
+      resizeHandles
     };
   });
 }

@@ -5,6 +5,7 @@
 <PROJECT_ROOT>/build/.*
 <PROJECT_ROOT>/dist/.*
 <PROJECT_ROOT>/node_modules/resolve/.*
+<PROJECT_ROOT>/node_modules/.*/resolve/.*
 # Speeds parsing:
 .*/node_modules/@babel.*
 .*/node_modules/babel.*

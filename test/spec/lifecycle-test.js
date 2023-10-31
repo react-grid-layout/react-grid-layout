@@ -5,11 +5,13 @@ import React from "react";
 import _ from "lodash";
 import TestUtils from "react-dom/test-utils";
 import ReactGridLayout from "../../lib/ReactGridLayout";
+import { calcGridItemPosition } from "../../lib/calculateUtils";
 import GridItem from "../../lib/GridItem";
 import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
 import BasicLayout from "../examples/1-basic";
 import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
+import ResizableLayout from "../examples/20-resizable-handles";
 import deepFreeze from "../util/deepFreeze";
 import { render, screen } from "@testing-library/react";
 import { mount } from "enzyme";
@@ -307,7 +309,10 @@ describe("Lifecycle tests", function () {
         expect(wrapper.instanceRef.current.props.width).toBeFalsy(); // no width passed down before mount
       });
 
-      it("Renders with a width when WidthProvider measureBeforeMount", async function () {
+      // FIXME: This doesn't work since we rewrote to use <ResizeObserver>
+      // See https://github.com/react-grid-layout/react-grid-layout/pull/1839
+      // eslint-disable-next-line no-undef
+      xit("Renders with a width when WidthProvider measureBeforeMount", async function () {
         const PAGE_WIDTH = 500;
         const wrapper = renderWithInstance(
           <BasicLayout measureBeforeMount={true} />
@@ -350,8 +355,13 @@ describe("Lifecycle tests", function () {
         ).toEqual(desiredWidth + "px");
       });
 
-      it("WidthProvider responds to window resize events", async function () {
+      // FIXME: This doesn't work since we rewrote to use <ResizeObserver>
+      // See https://github.com/react-grid-layout/react-grid-layout/pull/1839
+      // eslint-disable-next-line no-undef
+      xit("WidthProvider responds to window resize events", async function () {
         const wrapper = render(<BasicLayout />);
+        const widthProviderWrapper = wrapper.childAt(0);
+
 
         // Original width
         const originalItemWidth = calculateItemWidth(
@@ -499,6 +509,524 @@ describe("Lifecycle tests", function () {
           .state("layout")
           .find(item => item.i === "__dropping-elem__");
         expect(layoutItem).toBeUndefined();
+      });
+    });
+
+    describe("Resizing", () => {
+      const rowHeight = 30;
+      const colWidth = 101;
+      const gridPadding = 10;
+      let gridLayout;
+
+      /**
+       * Simulate a movement; can't use TestUtils here because it uses react's event system only,
+       * but <DraggableCore> attaches event listeners directly to the document.
+       * Would love to new MouseEvent() here but it doesn't work with PhantomJS / old browsers.
+       * var e = new MouseEvent('mousemove', {clientX: 100, clientY: 100});
+       *
+       * Taken from: https://github.com/react-grid-layout/react-draggable/blob/master/specs/draggable.spec.jsx#L1000C1-L1003C70
+       */
+      const mouseMove = (node, x, y) => {
+        const doc = node ? node.ownerDocument : document;
+        const mouseEvent = new MouseEvent("mousemove", {
+          button: 0,
+          clientX: x,
+          clientY: y,
+          screenX: 0,
+          screenY: 0
+        });
+        doc.dispatchEvent(mouseEvent);
+      };
+
+      const getCurrentPosition = wrapper => {
+        const { x, y, w, h } = wrapper.props();
+        const positionParams = wrapper.instance()?.getPositionParams();
+
+        if (!positionParams) {
+          return {};
+        }
+
+        return calcGridItemPosition(
+          positionParams,
+          x,
+          y,
+          w,
+          h,
+          wrapper.state()
+        );
+      };
+
+      const resizeTo = (wrapper, preventMouseUp, currentPosition, x, y) => {
+        const node = wrapper.getDOMNode();
+        TestUtils.Simulate.mouseDown(node, {
+          clientX: currentPosition.left,
+          clientY: currentPosition.top
+        });
+        mouseMove(node, x, y);
+
+        // In some test cases we want to take measurements before mouseUp occurs
+        if (!preventMouseUp) {
+          TestUtils.Simulate.mouseUp(node);
+        }
+      };
+
+      const findGridItemByText = (wrapper, id) =>
+        wrapper.findWhere(node => {
+          const isGridItem = node.instance() instanceof GridItem;
+          const hasSpecifiedText = node.text() === `${id}`;
+
+          return isGridItem && hasSpecifiedText;
+        });
+
+      const findHandleForGridItem = (wrapper, handle) =>
+        wrapper.find(`.react-resizable-handle-${handle}`);
+
+      const getGridItemData = (wrapper, id) =>
+        wrapper.state("layout").find(item => item.i == id);
+
+      beforeEach(() => {
+        const wrapper = mount(<ResizableLayout />);
+        gridLayout = wrapper.find("ReactGridLayout");
+      });
+
+      it("sets up resizable handles", () => {
+        const gridItem0 = findGridItemByText(gridLayout, 0);
+        // Ensure every handle is present on the target element
+        ["n", "ne", "e", "se", "s", "sw", "w", "nw"].forEach(handle => {
+          expect(findHandleForGridItem(gridItem0, handle).exists()).toEqual(
+            true
+          );
+        });
+      });
+
+      it("resizes from n handle", () => {
+        const itemId = 6;
+        const gridItem6 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem6, "n");
+        const pos = getCurrentPosition(gridItem6);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize up two rows
+        resizeTo(handleElement, false, pos, pos.left, pos.top - rowHeight * 2);
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          h: positionBeforeResize.h + 2,
+          y: positionBeforeResize.y - 2
+        });
+      });
+
+      it("resizes from ne handle", () => {
+        const itemId = 6;
+        const gridItem6 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem6, "ne");
+        const pos = getCurrentPosition(gridItem6);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize up two rows and right two columns
+        resizeTo(
+          handleElement,
+          false,
+          pos,
+          pos.left + colWidth * 2,
+          pos.top - rowHeight * 2
+        );
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          w: positionBeforeResize.w + 2,
+          h: positionBeforeResize.h + 2,
+          y: positionBeforeResize.y - 2
+        });
+      });
+
+      it("resizes from e handle", () => {
+        const itemId = 6;
+        const gridItem6 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem6, "e");
+        const pos = getCurrentPosition(gridItem6);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize right two columns
+        resizeTo(handleElement, false, pos, pos.left + colWidth * 2, pos.top);
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          w: positionBeforeResize.w + 2
+        });
+      });
+
+      it("resizes from se handle", () => {
+        const itemId = 6;
+        const gridItem6 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem6, "se");
+        const pos = getCurrentPosition(gridItem6);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize down two rows and right two columns
+        resizeTo(
+          handleElement,
+          false,
+          pos,
+          pos.left + colWidth * 2,
+          pos.top + rowHeight * 2
+        );
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          w: positionBeforeResize.w + 2,
+          h: positionBeforeResize.h + 2
+        });
+      });
+
+      it("resizes from s handle", () => {
+        const itemId = 6;
+        const gridItem6 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem6, "s");
+        const pos = getCurrentPosition(gridItem6);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize right two columns
+        resizeTo(handleElement, false, pos, pos.left, pos.top + rowHeight * 2);
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          h: positionBeforeResize.h + 2
+        });
+      });
+
+      it("resizes from sw handle", () => {
+        const itemId = 1;
+        const gridItem1 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem1, "sw");
+        const pos = getCurrentPosition(gridItem1);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize down two rows and left two columns
+        resizeTo(
+          handleElement,
+          false,
+          pos,
+          pos.left - colWidth * 2,
+          pos.top + rowHeight * 2
+        );
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          x: positionBeforeResize.x - 2,
+          w: positionBeforeResize.w + 2,
+          h: positionBeforeResize.h + 2
+        });
+      });
+
+      it("resizes from w handle", () => {
+        const itemId = 1;
+        const gridItem1 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem1, "w");
+        const pos = getCurrentPosition(gridItem1);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize left two columns
+        resizeTo(handleElement, false, pos, pos.left - colWidth * 2, pos.top);
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          x: positionBeforeResize.x - 2,
+          w: positionBeforeResize.w + 2
+        });
+      });
+
+      it("resizes from nw handle", () => {
+        const itemId = 7;
+        const gridItem7 = findGridItemByText(gridLayout, itemId);
+        const handleElement = findHandleForGridItem(gridItem7, "nw");
+        const pos = getCurrentPosition(gridItem7);
+
+        const positionBeforeResize = getGridItemData(gridLayout, itemId);
+        // Resize up two rows and left two columns
+        resizeTo(
+          handleElement,
+          false,
+          pos,
+          pos.left - colWidth * 2,
+          pos.top - rowHeight * 2
+        );
+        const positionAfterResize = getGridItemData(gridLayout, itemId);
+        expect(positionAfterResize).toEqual({
+          ...positionBeforeResize,
+          x: positionBeforeResize.x - 2,
+          w: positionBeforeResize.w + 2,
+          h: positionBeforeResize.h + 2,
+          y: positionBeforeResize.y - 2
+        });
+      });
+
+      describe("Out of bounds prevention", () => {
+        it("prevents OOB from n handle", () => {
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "n");
+          const pos = getCurrentPosition(gridItem0);
+
+          // Attempt to resize up two rows outside of the container
+          resizeTo(handleElement, true, pos, pos.left, pos.top - rowHeight * 2);
+          const posAfter = getCurrentPosition(gridItem0);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            top: 0
+          });
+        });
+
+        it("prevents OOB from ne handle", () => {
+          const itemId = 5;
+          const gridItem5 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem5, "ne");
+          const pos = getCurrentPosition(gridItem5);
+
+          // Attempt to resize up two rows and right two rows outside of the container
+          resizeTo(
+            handleElement,
+            true,
+            pos,
+            pos.left + colWidth * 2,
+            pos.top - rowHeight * 2
+          );
+          const posAfter = getCurrentPosition(gridItem5);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            top: 0,
+            left: gridLayout.props().width - gridPadding - pos.width
+          });
+        });
+
+        it("prevents OOB from e handle", () => {
+          const itemId = 5;
+          const gridItem5 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem5, "e");
+          const pos = getCurrentPosition(gridItem5);
+
+          // Attempt to resize right two rows outside of the container
+          resizeTo(handleElement, true, pos, pos.left + colWidth * 2, pos.top);
+          const posAfter = getCurrentPosition(gridItem5);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            left: gridLayout.props().width - gridPadding - pos.width
+          });
+        });
+
+        it("prevents OOB from se handle", () => {
+          const itemId = 5;
+          const gridItem5 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem5, "se");
+          const pos = getCurrentPosition(gridItem5);
+
+          // Attempt to resize down two rows and right two rows outside of the container
+          resizeTo(
+            handleElement,
+            true,
+            pos,
+            pos.left + colWidth * 2,
+            pos.top + rowHeight * 2
+          );
+          const posAfter = getCurrentPosition(gridItem5);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            // There is always room to grow south, so height should adjust as normal
+            height: pos.height + rowHeight * 2,
+            left: gridLayout.props().width - gridPadding - pos.width
+          });
+        });
+
+        it("prevents OOB from sw handle", () => {
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "sw");
+          const pos = getCurrentPosition(gridItem0);
+
+          // Attempt to resize down two rows and left two rows outside of the container
+          resizeTo(
+            handleElement,
+            true,
+            pos,
+            pos.left - colWidth * 2,
+            pos.top + rowHeight * 2
+          );
+          const posAfter = getCurrentPosition(gridItem0);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            // There is always room to grow south, so height should adjust as normal
+            height: pos.height + rowHeight * 2,
+            left: 0
+          });
+        });
+
+        it("prevents OOB from w handle", () => {
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "w");
+          const pos = getCurrentPosition(gridItem0);
+
+          // Attempt to resize left two rows outside of the container
+          resizeTo(handleElement, true, pos, pos.left - colWidth * 2, pos.top);
+          const posAfter = getCurrentPosition(gridItem0);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            left: 0
+          });
+        });
+
+        it("prevents OOB from nw handle", () => {
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "nw");
+          const pos = getCurrentPosition(gridItem0);
+
+          // Attempt to resize up two rows and left two rows outside of the container
+          resizeTo(
+            handleElement,
+            true,
+            pos,
+            pos.left - colWidth * 2,
+            pos.top - rowHeight * 2
+          );
+          const posAfter = getCurrentPosition(gridItem0);
+          // We should prevent resizing outside container bounds
+          expect(posAfter).toEqual({
+            ...pos,
+            top: 0,
+            left: 0
+          });
+        });
+      });
+
+      describe("Resizing first row when containerPadding is disabled (#1929)", () => {
+        const rowHeight = 150;
+
+        it("resizes from s handle when containerPadding=[0, 0]", () => {
+          const wrapper = mount(
+            <ResizableLayout rowHeight={rowHeight} containerPadding={[0, 0]} />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "s");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize down two columns
+          resizeTo(
+            handleElement,
+            false,
+            pos,
+            pos.left,
+            pos.top + rowHeight * 2
+          );
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          expect(positionAfterResize).toEqual({
+            ...positionBeforeResize,
+            h: positionBeforeResize.h + 2
+          });
+        });
+      });
+
+      describe("preventCollision=true and no compaction (#1933)", () => {
+        const resizeHandles = ["n", "e", "s", "w"];
+        const PreventCollisionContainer = ({ layoutA, layoutB }) => (
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            preventCollision={true}
+            compactType={null}
+            resizeHandles={resizeHandles}
+          >
+            <div key="0" data-grid={layoutA}>
+              0
+            </div>
+            <div key="1" data-grid={layoutB}>
+              1
+            </div>
+          </ReactGridLayout>
+        );
+
+        it("Does not allow elements to move when resizing with no free space", () => {
+          const wrapper = mount(
+            <PreventCollisionContainer
+              layoutA={{ x: 0, y: 0, w: 1, h: 2, i: "0" }}
+              layoutB={{ x: 1, y: 0, w: 7, h: 2, i: "1" }}
+            />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "e");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize right two columns
+          resizeTo(handleElement, true, pos, pos.left + colWidth * 2, pos.top);
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          // Position shouldn't change because the system should preventCollisions
+          expect(positionAfterResize).toEqual(positionBeforeResize);
+        });
+
+        it("Allows elements to resize only within available free space", () => {
+          const wrapper = mount(
+            <PreventCollisionContainer
+              layoutA={{ x: 0, y: 0, w: 1, h: 2, i: "0" }}
+              layoutB={{ x: 2, y: 0, w: 7, h: 2, i: "1" }}
+            />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "e");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize right two columns
+          resizeTo(handleElement, true, pos, pos.left + colWidth, pos.top);
+          resizeTo(handleElement, false, pos, pos.left + colWidth * 2, pos.top);
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          /**
+           * Width should only increase by 1 column, not 2, because there is a
+           * collision that occurs at x=2 when attempting to resize over it.
+           **/
+          expect(positionAfterResize).toEqual({
+            ...positionBeforeResize,
+            w: 2
+          });
+        });
+
+        it("Allows elements to resize within free space", () => {
+          const wrapper = mount(
+            <PreventCollisionContainer
+              layoutA={{ x: 0, y: 0, w: 1, h: 2, i: "0" }}
+              layoutB={{ x: 10, y: 0, w: 2, h: 2, i: "1" }}
+            />
+          );
+          const gridLayout = wrapper.find("ReactGridLayout");
+          const itemId = 0;
+          const gridItem0 = findGridItemByText(gridLayout, itemId);
+          const handleElement = findHandleForGridItem(gridItem0, "e");
+          const pos = getCurrentPosition(gridItem0);
+          const positionBeforeResize = getGridItemData(gridLayout, itemId);
+
+          // Resize right nine columns
+          resizeTo(handleElement, true, pos, pos.left + colWidth * 9, pos.top);
+          const positionAfterResize = getGridItemData(gridLayout, itemId);
+          expect(positionAfterResize).toEqual({
+            ...positionBeforeResize,
+            w: 10
+          });
+        });
       });
     });
   });

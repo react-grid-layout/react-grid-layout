@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
+import ResizeObserver from "resize-observer-polyfill";
 import clsx from "clsx";
 import type { ReactRef } from "../ReactGridLayoutPropTypes";
 
@@ -58,30 +59,31 @@ export default function WidthProvideRGL<Config>(
 
     elementRef: ReactRef<HTMLDivElement> = React.createRef();
     mounted: boolean = false;
+    resizeObserver: ResizeObserver;
 
     componentDidMount() {
       this.mounted = true;
-      window.addEventListener("resize", this.onWindowResize);
-      // Call to properly set the breakpoint and resize the elements.
-      // Note that if you're doing a full-width element, this can get a little wonky if a scrollbar
-      // appears because of the grid. In that case, fire your own resize event, or set `overflow: scroll` on your body.
-      this.onWindowResize();
+      this.resizeObserver = new ResizeObserver(entries => {
+        const node = this.elementRef.current;
+        if (node instanceof HTMLElement) {
+          const width = entries[0].contentRect.width;
+          this.setState({ width });
+        }
+      });
+      const node = this.elementRef.current;
+      if (node instanceof HTMLElement) {
+        this.resizeObserver.observe(node);
+      }
     }
 
     componentWillUnmount() {
       this.mounted = false;
-      window.removeEventListener("resize", this.onWindowResize);
-    }
-
-    onWindowResize = () => {
-      if (!this.mounted) return;
-      const node = this.elementRef.current; // Flow casts this to Text | Element
-      // fix: grid position error when node or parentNode display is none by window resize
-      // #924 #1084
-      if (node instanceof HTMLElement && node.offsetWidth) {
-        this.setState({ width: node.offsetWidth });
+      const node = this.elementRef.current;
+      if (node instanceof HTMLElement) {
+        this.resizeObserver.unobserve(node);
       }
-    };
+      this.resizeObserver.disconnect();
+    }
 
     render() {
       const { measureBeforeMount, ...rest } = this.props;

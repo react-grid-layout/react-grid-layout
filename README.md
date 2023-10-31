@@ -57,6 +57,7 @@ RGL is React-only and does not require jQuery.
 1. [Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/17-resizable-handles.html)
 1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
 1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
+1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -357,7 +358,7 @@ preventCollision: ?boolean = false,
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
 isDroppable: ?boolean = false,
-// Defines which resize handles should be rendered
+// Defines which resize handles should be rendered.
 // Allows for any combination of:
 // 's' - South handle (bottom-center)
 // 'w' - West handle (left-center)
@@ -367,6 +368,8 @@ isDroppable: ?boolean = false,
 // 'nw' - Northwest handle (top-left)
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
+//
+// Note that changing this property dynamically does not work due to a restriction in react-resizable.
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se'],
 // Custom component for resize handles
 // See `handle` as used in https://github.com/react-grid-layout/react-resizable#resize-handle
@@ -468,6 +471,8 @@ RGL supports the following properties on grid items or layout items. When initia
 build a layout array (as in the first example above), or attach this object as the `data-grid` property
 to each of your child elements (as in the second example).
 
+If `data-grid` is provided on an item, it will take precedence over an item in the `layout` with the same key (`i`).
+
 Note that if a grid item is provided but incomplete (missing one of `x, y, w, or h`), an error
 will be thrown so you can correct your layout.
 
@@ -504,12 +509,26 @@ will be draggable, even if the item is marked `static: true`.
   // If false, will not be resizable. Overrides `static`.
   isResizable: ?boolean = true,
   // By default, a handle is only shown on the bottom-right (southeast) corner.
-  // Note that resizing from the top or left is generally not intuitive.
+  // As of RGL >= 1.4.0, resizing on any corner works just fine!
   resizeHandles?: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
   // If true and draggable, item will be moved only within grid.
   isBounded: ?boolean = false
 }
 ```
+
+### Grid Item Heights and Widths
+
+Grid item widths are based on container and number of columns. The size of a grid unit's height is based on `rowHeight`.
+
+Note that an item that has `h=2` is _not exactly twice as tall as one with `h=1` unless you have no `margin`_!
+
+In order for the grid to not be ragged, when an item spans grid units, it must also span margins. So you must add the height or width or the margin you are spanning for each unit. So actual pixel height is `(rowHeight * h) + (marginH * (h - 1)`.
+
+For example, with `rowHeight=30`, `margin=[10,10]` and a unit with height 4, the calculation is `(30 * 4) + (10 * 3)`
+
+![margin](margin.png)
+
+If this is a problem for you, set `margin=[0,0]` and handle visual spacing between your elements inside the elements' content.
 
 ### Performance
 
@@ -546,23 +565,33 @@ function MyGrid(props) {
 
 Because the `children` prop doesn't change between rerenders, updates to `<MyGrid>` won't result in new renders, improving performance.
 
+### React Hooks Performance
+
+Using hooks to save your layout state on change will cause the layouts to re-render as the ResponsiveGridLayout will change it's value on every render.
+To avoid this you should wrap your WidthProvider in a useMemo:
+
+```js
+const ResponsiveReactGridLayout = useMemo(() => WidthProvider(Responsive), []);
+```
+
 ### Custom Child Components and Draggable Handles
 
 If you use React Components as grid children, they need to do a few things:
 
 1. Forward refs to an underlying DOM node, and
-2. Forward `style` and `className` to that same DOM node.
+2. Forward `style`,`className`, `onMouseDown`, `onMouseUp` and `onTouchEnd` to that same DOM node.
 
 For example:
 
 ```js
-const CustomGridItemComponent = React.forwardRef(({style, className, ...props}, ref) => {
+const CustomGridItemComponent = React.forwardRef(({style, className, onMouseDown, onMouseUp, onTouchEnd, children, ...props}, ref) => {
   return (
-    <div style={{ /* styles */, ...style}} className={className} ref={ref}>
+    <div style={{ /* styles */, ...style}} className={className} ref={ref} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onTouchEnd={onTouchEnd}>
       {/* Some other content */}
+      {children} {/* Make sure to include children to add resizable handle */}
     </div>
   );
-}
+})
 ```
 
 The same is true of custom elements as draggable handles using the `draggableHandle` prop. This is so that

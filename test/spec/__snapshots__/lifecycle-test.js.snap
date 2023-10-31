@@ -628,6 +628,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
         class="react-resizable-handle react-resizable-handle-se"
       />
     </div>
+
   </div>
 </DocumentFragment>
 `;
@@ -636,7 +637,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
 <ShowcaseLayout
   className="layout"
   cols={
-    Object {
+    {
       "lg": 12,
       "md": 10,
       "sm": 6,
@@ -670,10 +671,16 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
     >
       Change Compaction Type
     </button>
+    <button
+      onClick={[Function]}
+    >
+      Resize 
+      All Corners
+    </button>
     <WidthProvider
       className="layout"
       cols={
-        Object {
+        {
           "lg": 12,
           "md": 10,
           "sm": 6,
@@ -683,203 +690,278 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
       }
       compactType="vertical"
       layouts={
-        Object {
-          "lg": Array [
-            Object {
+        {
+          "lg": [
+            {
               "h": 2,
               "i": "0",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
               "y": 0,
             },
-            Object {
+            {
               "h": 3,
               "i": "1",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
               "y": 0,
             },
-            Object {
+            {
               "h": 4,
               "i": "2",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
               "y": 0,
             },
-            Object {
+            {
               "h": 5,
               "i": "3",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 0,
               "y": 0,
             },
-            Object {
+            {
               "h": 2,
               "i": "4",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
               "y": 0,
             },
-            Object {
+            {
               "h": 3,
               "i": "5",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
               "y": 0,
             },
-            Object {
+            {
               "h": 5,
               "i": "6",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 10,
               "y": 5,
             },
-            Object {
+            {
               "h": 2,
               "i": "7",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
               "y": 2,
             },
-            Object {
+            {
               "h": 3,
               "i": "8",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
               "y": 3,
             },
-            Object {
+            {
               "h": 4,
               "i": "9",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
               "y": 4,
             },
-            Object {
+            {
               "h": 5,
               "i": "10",
+              "resizeHandles": [
+                "se",
+              ],
               "static": true,
               "w": 2,
               "x": 10,
               "y": 5,
             },
-            Object {
+            {
               "h": 2,
               "i": "11",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
               "y": 2,
             },
-            Object {
+            {
               "h": 3,
               "i": "12",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
               "y": 6,
             },
-            Object {
+            {
               "h": 4,
               "i": "13",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
               "y": 8,
             },
-            Object {
+            {
               "h": 5,
               "i": "14",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 0,
               "y": 10,
             },
-            Object {
+            {
               "h": 2,
               "i": "15",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
               "y": 4,
             },
-            Object {
+            {
               "h": 3,
               "i": "16",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
               "y": 6,
             },
-            Object {
+            {
               "h": 5,
               "i": "17",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 10,
               "y": 10,
             },
-            Object {
+            {
               "h": 2,
               "i": "18",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
               "y": 6,
             },
-            Object {
+            {
               "h": 3,
               "i": "19",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
               "y": 9,
             },
-            Object {
+            {
               "h": 4,
               "i": "20",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
               "y": 12,
             },
-            Object {
+            {
               "h": 5,
               "i": "21",
+              "resizeHandles": [
+                "se",
+              ],
               "static": true,
               "w": 2,
               "x": 10,
               "y": 15,
             },
-            Object {
+            {
               "h": 2,
               "i": "22",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
               "y": 6,
             },
-            Object {
+            {
               "h": 3,
               "i": "23",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
               "y": 9,
             },
-            Object {
+            {
               "h": 4,
               "i": "24",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
@@ -899,7 +981,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
       <ResponsiveReactGridLayout
         allowOverlap={false}
         breakpoints={
-          Object {
+          {
             "lg": 1200,
             "md": 996,
             "sm": 768,
@@ -909,7 +991,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
         }
         className="layout"
         cols={
-          Object {
+          {
             "lg": 12,
             "md": 10,
             "sm": 6,
@@ -919,7 +1001,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
         }
         compactType="vertical"
         containerPadding={
-          Object {
+          {
             "lg": null,
             "md": null,
             "sm": null,
@@ -928,7 +1010,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           }
         }
         innerRef={
-          Object {
+          {
             "current": <div
               class="react-grid-layout layout"
               style="height: 1010px;"
@@ -1266,203 +1348,278 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           }
         }
         layouts={
-          Object {
-            "lg": Array [
-              Object {
+          {
+            "lg": [
+              {
                 "h": 2,
                 "i": "0",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "1",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "2",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "3",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "4",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "5",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "6",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
                 "y": 5,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "7",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 2,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "8",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 3,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "9",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 4,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "10",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
                 "y": 5,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "11",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 2,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "12",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "13",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 8,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "14",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
                 "y": 10,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "15",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 4,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "16",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "17",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
                 "y": 10,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "18",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "19",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 9,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "20",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 12,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "21",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
                 "y": 15,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "22",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "23",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 9,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "24",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -1472,7 +1629,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           }
         }
         margin={
-          Array [
+          [
             10,
             10,
           ]
@@ -1496,14 +1653,14 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           draggableCancel=""
           draggableHandle=""
           droppingItem={
-            Object {
+            {
               "h": 1,
               "i": "__dropping-elem__",
               "w": 1,
             }
           }
           innerRef={
-            Object {
+            {
               "current": <div
                 class="react-grid-layout layout"
                 style="height: 1010px;"
@@ -1845,8 +2002,8 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           isDroppable={false}
           isResizable={true}
           layout={
-            Array [
-              Object {
+            [
+              {
                 "h": 2,
                 "i": "0",
                 "isBounded": undefined,
@@ -1857,13 +2014,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "1",
                 "isBounded": undefined,
@@ -1874,13 +2033,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "2",
                 "isBounded": undefined,
@@ -1891,13 +2052,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "3",
                 "isBounded": undefined,
@@ -1908,13 +2071,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "4",
                 "isBounded": undefined,
@@ -1925,13 +2090,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "5",
                 "isBounded": undefined,
@@ -1942,13 +2109,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 0,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "6",
                 "isBounded": undefined,
@@ -1959,13 +2128,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
                 "y": 5,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "7",
                 "isBounded": undefined,
@@ -1976,13 +2147,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 2,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "8",
                 "isBounded": undefined,
@@ -1993,13 +2166,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 3,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "9",
                 "isBounded": undefined,
@@ -2010,13 +2185,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 4,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "10",
                 "isBounded": undefined,
@@ -2027,13 +2204,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
                 "y": 5,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "11",
                 "isBounded": undefined,
@@ -2044,13 +2223,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 2,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "12",
                 "isBounded": undefined,
@@ -2061,13 +2242,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "13",
                 "isBounded": undefined,
@@ -2078,13 +2261,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 8,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "14",
                 "isBounded": undefined,
@@ -2095,13 +2280,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
                 "y": 10,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "15",
                 "isBounded": undefined,
@@ -2112,13 +2299,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 4,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "16",
                 "isBounded": undefined,
@@ -2129,13 +2318,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "17",
                 "isBounded": undefined,
@@ -2146,13 +2337,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
                 "y": 10,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "18",
                 "isBounded": undefined,
@@ -2163,13 +2356,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "19",
                 "isBounded": undefined,
@@ -2180,13 +2375,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
                 "y": 9,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "20",
                 "isBounded": undefined,
@@ -2197,13 +2394,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
                 "y": 12,
               },
-              Object {
+              {
                 "h": 5,
                 "i": "21",
                 "isBounded": undefined,
@@ -2214,13 +2413,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
                 "y": 15,
               },
-              Object {
+              {
                 "h": 2,
                 "i": "22",
                 "isBounded": undefined,
@@ -2231,13 +2432,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
                 "y": 6,
               },
-              Object {
+              {
                 "h": 3,
                 "i": "23",
                 "isBounded": undefined,
@@ -2248,13 +2451,15 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
                 "y": 9,
               },
-              Object {
+              {
                 "h": 4,
                 "i": "24",
                 "isBounded": undefined,
@@ -2265,7 +2470,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -2274,7 +2481,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             ]
           }
           margin={
-            Array [
+            [
               10,
               10,
             ]
@@ -2291,12 +2498,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
           onResizeStop={[Function]}
           preventCollision={false}
           resizeHandles={
-            Array [
+            [
               "se",
             ]
           }
           rowHeight={30}
-          style={Object {}}
+          style={{}}
           transformScale={1}
           useCSSTransforms={true}
           verticalCompact={true}
@@ -2309,7 +2516,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             onDragOver={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "height": "1010px",
               }
             }
@@ -2319,7 +2526,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2333,7 +2540,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$0"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2350,7 +2557,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -2370,7 +2577,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(222px,10px);"
@@ -2395,12 +2602,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -2408,13 +2615,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      1048,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -2426,7 +2633,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -2440,7 +2647,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(222px,10px)",
                         "OTransform": "translate(222px,10px)",
                         "WebkitTransform": "translate(222px,10px)",
@@ -2463,7 +2670,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -2491,7 +2698,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2505,7 +2712,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$1"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2522,7 +2729,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -2542,7 +2749,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(645px,10px);"
@@ -2567,12 +2774,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -2580,13 +2787,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      625,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -2598,7 +2805,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -2612,7 +2819,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(645px,10px)",
                         "OTransform": "translate(645px,10px)",
                         "WebkitTransform": "translate(645px,10px)",
@@ -2635,7 +2842,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -2663,7 +2870,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2677,7 +2884,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$2"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2694,7 +2901,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -2714,7 +2921,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 150px; position: absolute; transform: translate(857px,10px);"
@@ -2739,12 +2946,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -2752,13 +2959,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={150}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      413,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -2770,7 +2977,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -2784,7 +2991,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(857px,10px)",
                         "OTransform": "translate(857px,10px)",
                         "WebkitTransform": "translate(857px,10px)",
@@ -2807,7 +3014,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -2835,7 +3042,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2849,7 +3056,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$3"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -2866,7 +3073,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -2886,7 +3093,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 190px; position: absolute; transform: translate(10px,10px);"
@@ -2911,12 +3118,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -2924,13 +3131,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={190}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
+                    [
                       1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -2942,7 +3149,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -2956,7 +3163,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(10px,10px)",
                         "OTransform": "translate(10px,10px)",
                         "WebkitTransform": "translate(10px,10px)",
@@ -2979,7 +3186,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -3007,7 +3214,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3021,7 +3228,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$4"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3038,7 +3245,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -3058,7 +3265,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(433px,10px);"
@@ -3083,12 +3290,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -3096,13 +3303,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      837,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -3114,7 +3321,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -3128,7 +3335,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(433px,10px)",
                         "OTransform": "translate(433px,10px)",
                         "WebkitTransform": "translate(433px,10px)",
@@ -3151,7 +3358,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -3179,7 +3386,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3193,7 +3400,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$5"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3210,7 +3417,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -3230,7 +3437,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(645px,130px);"
@@ -3255,12 +3462,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -3268,13 +3475,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      625,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -3286,7 +3493,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -3300,7 +3507,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(645px,130px)",
                         "OTransform": "translate(645px,130px)",
                         "WebkitTransform": "translate(645px,130px)",
@@ -3323,7 +3530,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -3351,7 +3558,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3365,7 +3572,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$6"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3382,7 +3589,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -3402,7 +3609,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,10px);"
@@ -3427,12 +3634,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -3440,13 +3647,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={190}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      202,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -3458,7 +3665,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -3472,7 +3679,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(1068px,10px)",
                         "OTransform": "translate(1068px,10px)",
                         "WebkitTransform": "translate(1068px,10px)",
@@ -3495,7 +3702,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -3523,7 +3730,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3537,7 +3744,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$7"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3554,7 +3761,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -3574,7 +3781,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(222px,90px);"
@@ -3599,12 +3806,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -3612,13 +3819,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      1048,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -3630,7 +3837,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -3644,7 +3851,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(222px,90px)",
                         "OTransform": "translate(222px,90px)",
                         "WebkitTransform": "translate(222px,90px)",
@@ -3667,7 +3874,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -3695,7 +3902,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3709,7 +3916,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$8"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3726,7 +3933,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -3746,7 +3953,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(433px,90px);"
@@ -3771,12 +3978,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -3784,13 +3991,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      837,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -3802,7 +4009,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -3816,7 +4023,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(433px,90px)",
                         "OTransform": "translate(433px,90px)",
                         "WebkitTransform": "translate(433px,90px)",
@@ -3839,7 +4046,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -3867,7 +4074,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3881,7 +4088,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$9"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -3898,7 +4105,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -3918,7 +4125,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 150px; position: absolute; transform: translate(857px,170px);"
@@ -3943,12 +4150,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -3956,13 +4163,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={150}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      413,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -3974,7 +4181,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -3988,7 +4195,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(857px,170px)",
                         "OTransform": "translate(857px,170px)",
                         "WebkitTransform": "translate(857px,170px)",
@@ -4011,7 +4218,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -4039,7 +4246,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4053,7 +4260,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={false}
               key=".$10"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4070,7 +4277,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -4090,7 +4297,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
                       style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,410px);"
@@ -4118,12 +4325,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   axis="both"
                   className="react-resizable-hide"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": true,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -4131,13 +4338,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={190}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      202,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -4149,7 +4356,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -4163,7 +4370,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(1068px,410px)",
                         "OTransform": "translate(1068px,410px)",
                         "WebkitTransform": "translate(1068px,410px)",
@@ -4188,7 +4395,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -4216,7 +4423,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4230,7 +4437,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$11"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4247,7 +4454,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -4267,7 +4474,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(222px,170px);"
@@ -4292,12 +4499,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -4305,13 +4512,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      1048,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -4323,7 +4530,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -4337,7 +4544,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(222px,170px)",
                         "OTransform": "translate(222px,170px)",
                         "WebkitTransform": "translate(222px,170px)",
@@ -4360,7 +4567,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -4388,7 +4595,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4402,7 +4609,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$12"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4419,7 +4626,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -4439,7 +4646,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(645px,250px);"
@@ -4464,12 +4671,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -4477,13 +4684,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      625,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -4495,7 +4702,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -4509,7 +4716,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(645px,250px)",
                         "OTransform": "translate(645px,250px)",
                         "WebkitTransform": "translate(645px,250px)",
@@ -4532,7 +4739,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -4560,7 +4767,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4574,7 +4781,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$13"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4591,7 +4798,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -4611,7 +4818,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 150px; position: absolute; transform: translate(857px,330px);"
@@ -4636,12 +4843,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -4649,13 +4856,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={150}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      413,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -4667,7 +4874,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -4681,7 +4888,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(857px,330px)",
                         "OTransform": "translate(857px,330px)",
                         "WebkitTransform": "translate(857px,330px)",
@@ -4704,7 +4911,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -4732,7 +4939,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4746,7 +4953,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$14"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4763,7 +4970,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -4783,7 +4990,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 190px; position: absolute; transform: translate(10px,210px);"
@@ -4808,12 +5015,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -4821,13 +5028,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={190}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
+                    [
                       1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -4839,7 +5046,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -4853,7 +5060,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(10px,210px)",
                         "OTransform": "translate(10px,210px)",
                         "WebkitTransform": "translate(10px,210px)",
@@ -4876,7 +5083,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -4904,7 +5111,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4918,7 +5125,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$15"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -4935,7 +5142,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -4955,7 +5162,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(433px,210px);"
@@ -4980,12 +5187,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -4993,13 +5200,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      837,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -5011,7 +5218,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -5025,7 +5232,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(433px,210px)",
                         "OTransform": "translate(433px,210px)",
                         "WebkitTransform": "translate(433px,210px)",
@@ -5048,7 +5255,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -5076,7 +5283,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5090,7 +5297,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$16"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5107,7 +5314,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -5127,7 +5334,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(645px,370px);"
@@ -5152,12 +5359,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -5165,13 +5372,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      625,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -5183,7 +5390,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -5197,7 +5404,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(645px,370px)",
                         "OTransform": "translate(645px,370px)",
                         "WebkitTransform": "translate(645px,370px)",
@@ -5220,7 +5427,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -5248,7 +5455,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5262,7 +5469,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$17"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5279,7 +5486,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -5299,7 +5506,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,810px);"
@@ -5324,12 +5531,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -5337,13 +5544,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={190}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      202,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -5355,7 +5562,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -5369,7 +5576,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(1068px,810px)",
                         "OTransform": "translate(1068px,810px)",
                         "WebkitTransform": "translate(1068px,810px)",
@@ -5392,7 +5599,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -5420,7 +5627,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5434,7 +5641,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$18"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5451,7 +5658,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -5471,7 +5678,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(222px,250px);"
@@ -5496,12 +5703,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -5509,13 +5716,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      1048,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -5527,7 +5734,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -5541,7 +5748,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(222px,250px)",
                         "OTransform": "translate(222px,250px)",
                         "WebkitTransform": "translate(222px,250px)",
@@ -5564,7 +5771,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -5592,7 +5799,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5606,7 +5813,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$19"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5623,7 +5830,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -5643,7 +5850,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(433px,290px);"
@@ -5668,12 +5875,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -5681,13 +5888,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      837,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -5699,7 +5906,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -5713,7 +5920,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(433px,290px)",
                         "OTransform": "translate(433px,290px)",
                         "WebkitTransform": "translate(433px,290px)",
@@ -5736,7 +5943,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -5764,7 +5971,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5778,7 +5985,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$20"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5795,7 +6002,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -5815,7 +6022,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 150px; position: absolute; transform: translate(857px,490px);"
@@ -5840,12 +6047,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -5853,13 +6060,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={150}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      413,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -5871,7 +6078,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -5885,7 +6092,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(857px,490px)",
                         "OTransform": "translate(857px,490px)",
                         "WebkitTransform": "translate(857px,490px)",
@@ -5908,7 +6115,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -5936,7 +6143,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5950,7 +6157,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={false}
               key=".$21"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -5967,7 +6174,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -5987,7 +6194,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item static static cssTransforms react-resizable-hide react-resizable"
                       style="width: 202px; height: 190px; position: absolute; transform: translate(1068px,610px);"
@@ -6015,12 +6222,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   axis="both"
                   className="react-resizable-hide"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": true,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -6028,13 +6235,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={190}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      202,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -6046,7 +6253,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -6060,7 +6267,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(1068px,610px)",
                         "OTransform": "translate(1068px,610px)",
                         "WebkitTransform": "translate(1068px,610px)",
@@ -6085,7 +6292,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -6113,7 +6320,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -6127,7 +6334,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$22"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -6144,7 +6351,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -6164,7 +6371,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 70px; position: absolute; transform: translate(222px,330px);"
@@ -6189,12 +6396,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -6202,13 +6409,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={70}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      1048,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -6220,7 +6427,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -6234,7 +6441,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(222px,330px)",
                         "OTransform": "translate(222px,330px)",
                         "WebkitTransform": "translate(222px,330px)",
@@ -6257,7 +6464,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -6285,7 +6492,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -6299,7 +6506,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$23"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -6316,7 +6523,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -6336,7 +6543,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 110px; position: absolute; transform: translate(645px,490px);"
@@ -6361,12 +6568,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -6374,13 +6581,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={110}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      625,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -6392,7 +6599,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -6406,7 +6613,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(645px,490px)",
                         "OTransform": "translate(645px,490px)",
                         "WebkitTransform": "translate(645px,490px)",
@@ -6429,7 +6636,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
@@ -6457,7 +6664,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               className=""
               cols={12}
               containerPadding={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -6471,7 +6678,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               isResizable={true}
               key=".$24"
               margin={
-                Array [
+                [
                   10,
                   10,
                 ]
@@ -6488,7 +6695,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               onResizeStart={[Function]}
               onResizeStop={[Function]}
               resizeHandles={
-                Array [
+                [
                   "se",
                 ]
               }
@@ -6508,7 +6715,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 enableUserSelectHack={true}
                 handle=""
                 nodeRef={
-                  Object {
+                  {
                     "current": <div
                       class="react-grid-item react-draggable cssTransforms react-resizable"
                       style="width: 202px; height: 150px; position: absolute; transform: translate(857px,650px);"
@@ -6533,12 +6740,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 <Resizable
                   axis="both"
                   draggableOpts={
-                    Object {
+                    {
                       "disabled": false,
                     }
                   }
                   handleSize={
-                    Array [
+                    [
                       20,
                       20,
                     ]
@@ -6546,13 +6753,13 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   height={150}
                   lockAspectRatio={false}
                   maxConstraints={
-                    Array [
-                      413,
+                    [
+                      1260,
                       Infinity,
                     ]
                   }
                   minConstraints={
-                    Array [
+                    [
                       96,
                       30,
                     ]
@@ -6564,7 +6771,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   onResizeStop={[Function]}
                   onTouchEnd={[Function]}
                   resizeHandles={
-                    Array [
+                    [
                       "se",
                     ]
                   }
@@ -6578,7 +6785,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     style={
-                      Object {
+                      {
                         "MozTransform": "translate(857px,650px)",
                         "OTransform": "translate(857px,650px)",
                         "WebkitTransform": "translate(857px,650px)",
@@ -6601,7 +6808,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
                       nodeRef={
-                        Object {
+                        {
                           "current": <span
                             class="react-resizable-handle react-resizable-handle-se"
                           />,
