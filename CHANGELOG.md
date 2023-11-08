@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.3 (Nov 8, 2023)
+
+### Bugfixes
+
+- Set `activeDrag` in `onDragStart`. Fixes issues where, if no drag is performed, the `onDragStop` handler would error out and the drag would freeze. [#1923](https://github.com/react-grid-layout/react-grid-layout/pull/1923)
+  - THis fixes some broader issues with React 18 but testing library support is still not complete.
+
 ## 1.4.2 (Sep 22, 2023)
 
 ### Bugfixes
