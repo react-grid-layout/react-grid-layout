@@ -58,6 +58,7 @@ RGL is React-only and does not require jQuery.
 1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
 1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
 1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html)
+1. [Single Row Horizontal](https://react-grid-layout.github.io/react-grid-layout/examples/21-horizontal.html)
 
 #### Projects Using React-Grid-Layout
 

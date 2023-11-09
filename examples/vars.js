@@ -174,5 +174,12 @@ module.exports = [
     paragraphs: [
       "This shows a grid with all resizable handles enabled. See the prop `resizableHandles` on the grid and grid items in the README."
     ]
-  }
+  },
+  {
+    title: "Single Row Horizontal",
+    source: "horizontal",
+    paragraphs: [
+      "This demonstrates how to constrain the elements to a single row."
+    ]
+  },
 ];
