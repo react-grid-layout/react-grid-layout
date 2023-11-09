@@ -714,8 +714,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
 
     const { layout } = this.state;
-    // This is relative to the DOM element that this event fired for.
-    const { layerX, layerY } = e.nativeEvent;
+
+    const gridRect = e.currentTarget.getBoundingClientRect() // The grid's position in the viewport
+
+    // Calculate the mouse position relative to the grid
+    const layerX = e.clientX - gridRect.left 
+    const layerY = e.clientY - gridRect.top 
     const droppingPosition = {
       left: layerX / transformScale,
       top: layerY / transformScale,
