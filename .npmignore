@@ -16,3 +16,6 @@ flow-typed/
 interfaces/
 .husky
 .travis.yml
+*.png
+*.jpg
+.packj.yaml

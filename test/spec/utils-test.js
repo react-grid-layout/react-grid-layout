@@ -642,15 +642,15 @@ describe("calcWH", () => {
     maxRows: 3
   };
   it("return { w: 1, h: 1 }", () => {
-    const res = calcWH(mockPositionParams, 100, 200, 1, 1);
+    const res = calcWH(mockPositionParams, 100, 200, 1, 1, "e");
     expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 1, h: 1 }));
   });
   it("return { w: 2, h: 1 }", () => {
-    const res = calcWH(mockPositionParams, 200, 200, 1, 1);
+    const res = calcWH(mockPositionParams, 200, 200, 1, 1, "e");
     expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 2, h: 1 }));
   });
   it("return { w: 1, h: 2 }", () => {
-    const res = calcWH(mockPositionParams, 100, 400, 1, 1);
+    const res = calcWH(mockPositionParams, 100, 400, 1, 1, "se");
     expect(JSON.stringify(res)).toBe(JSON.stringify({ w: 1, h: 2 }));
   });
 });

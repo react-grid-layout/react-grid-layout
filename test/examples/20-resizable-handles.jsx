@@ -42,7 +42,7 @@ export default class ResizableHandles extends React.PureComponent {
         w: 2,
         h: y,
         i: i.toString(),
-        resizeHandles: _.shuffle(availableHandles).slice(0, _.random(1, availableHandles.length-1))
+        resizeHandles: availableHandles
       };
     });
   }

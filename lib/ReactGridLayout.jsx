@@ -47,6 +47,7 @@ type State = {
   oldDragItem: ?LayoutItem,
   oldLayout: ?Layout,
   oldResizeItem: ?LayoutItem,
+  resizing: boolean,
   droppingDOMNode: ?ReactElement<any>,
   droppingPosition?: DroppingPosition,
   // Mirrored props
@@ -132,6 +133,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     oldDragItem: null,
     oldLayout: null,
     oldResizeItem: null,
+    resizing: false,
     droppingDOMNode: null,
     children: []
   };
@@ -249,10 +251,21 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const { layout } = this.state;
     const l = getLayoutItem(layout, i);
     if (!l) return;
+    
+    // Create placeholder (display only)
+    const placeholder = {
+      w: l.w,
+      h: l.h,
+      x: l.x,
+      y: l.y,
+      placeholder: true,
+      i: i
+    };
 
     this.setState({
       oldDragItem: cloneLayoutItem(l),
-      oldLayout: layout
+      oldLayout: layout,
+      activeDrag: placeholder
     });
 
     return this.props.onDragStart(layout, l, l, null, e, node);
@@ -386,7 +399,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     this.setState({
       oldResizeItem: cloneLayoutItem(l),
-      oldLayout: this.state.layout
+      oldLayout: this.state.layout,
+      resizing: true
     });
 
     this.props.onResizeStart(layout, l, l, null, e, node);
@@ -396,47 +410,85 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     i,
     w,
     h,
-    { e, node }
+    { e, node, size, handle }
   ) => {
-    const { layout, oldResizeItem } = this.state;
+    const { oldResizeItem } = this.state;
+    let { layout } = this.state;
     const { cols, preventCollision, allowOverlap } = this.props;
 
+    let shouldMoveItem = false;
+    let finalLayout;
+    let x;
+    let y;
+
     const [newLayout, l] = withLayoutItem(layout, i, l => {
+      let hasCollisions;
+      x = l.x;
+      y = l.y;
+      if (["sw", "w", "nw", "n", "ne"].indexOf(handle) !== -1) {
+        if (["sw", "nw", "w"].indexOf(handle) !== -1) {
+          x = l.x + (l.w - w);
+          w = l.x !== x && x < 0 ? l.w : w;
+          x = x < 0 ? 0 : x;
+        }
+
+        if (["ne", "n", "nw"].indexOf(handle) !== -1) {
+          y = l.y + (l.h - h);
+          h = l.y !== y && y < 0 ? l.h : h;
+          y = y < 0 ? 0 : y;
+        }
+
+        shouldMoveItem = true;
+      }
+
       // Something like quad tree should be used
       // to find collisions faster
-      let hasCollisions;
       if (preventCollision && !allowOverlap) {
-        const collisions = getAllCollisions(layout, { ...l, w, h }).filter(
-          layoutItem => layoutItem.i !== l.i
-        );
+        const collisions = getAllCollisions(layout, {
+          ...l,
+          w,
+          h,
+          x,
+          y
+        }).filter(layoutItem => layoutItem.i !== l.i);
         hasCollisions = collisions.length > 0;
 
         // If we're colliding, we need adjust the placeholder.
         if (hasCollisions) {
-          // adjust w && h to maximum allowed space
-          let leastX = Infinity,
-            leastY = Infinity;
-          collisions.forEach(layoutItem => {
-            if (layoutItem.x > l.x) leastX = Math.min(leastX, layoutItem.x);
-            if (layoutItem.y > l.y) leastY = Math.min(leastY, layoutItem.y);
-          });
-
-          if (Number.isFinite(leastX)) l.w = leastX - l.x;
-          if (Number.isFinite(leastY)) l.h = leastY - l.y;
+          // Reset layoutItem dimensions if there were collisions
+          y = l.y;
+          h = l.h;
+          x = l.x;
+          w = l.w;
+          shouldMoveItem = false;
         }
       }
 
-      if (!hasCollisions) {
-        // Set new width and height.
-        l.w = w;
-        l.h = h;
-      }
+      l.w = w;
+      l.h = h;
 
       return l;
     });
 
     // Shouldn't ever happen, but typechecking makes it necessary
     if (!l) return;
+
+    finalLayout = newLayout;
+    if (shouldMoveItem) {
+      // Move the element to the new position.
+      const isUserAction = true;
+      finalLayout = moveElement(
+        newLayout,
+        l,
+        x,
+        y,
+        isUserAction,
+        this.props.preventCollision,
+        compactType(this.props),
+        cols,
+        allowOverlap
+      );
+    }
 
     // Create placeholder element (display only)
     const placeholder = {
@@ -448,13 +500,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       i: i
     };
 
-    this.props.onResize(newLayout, oldResizeItem, l, placeholder, e, node);
+    this.props.onResize(finalLayout, oldResizeItem, l, placeholder, e, node);
 
     // Re-compact the newLayout and set the drag placeholder.
     this.setState({
       layout: allowOverlap
-        ? newLayout
-        : compact(newLayout, compactType(this.props), cols),
+        ? finalLayout
+        : compact(finalLayout, compactType(this.props), cols),
       activeDrag: placeholder
     });
   };
@@ -481,7 +533,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       layout: newLayout,
       oldResizeItem: null,
-      oldLayout: null
+      oldLayout: null,
+      resizing: false
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
@@ -513,7 +566,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         x={activeDrag.x}
         y={activeDrag.y}
         i={activeDrag.i}
-        className="react-grid-placeholder"
+        className={`react-grid-placeholder ${
+          this.state.resizing ? "placeholder-resizing" : ""
+        }`}
         containerWidth={width}
         cols={cols}
         margin={margin}

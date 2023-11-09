@@ -1,5 +1,51 @@
 # Changelog
 
+## 1.4.3 (Nov 8, 2023)
+
+### Bugfixes
+
+- Set `activeDrag` in `onDragStart`. Fixes issues where, if no drag is performed, the `onDragStop` handler would error out and the drag would freeze. [#1923](https://github.com/react-grid-layout/react-grid-layout/pull/1923)
+  - THis fixes some broader issues with React 18 but testing library support is still not complete.
+
+## 1.4.2 (Sep 22, 2023)
+
+### Bugfixes
+
+- Resizing in every directionnow obeys preventCollision restrictions [#1937](https://github.com/react-grid-layout/react-grid-layout/pull/1937)
+
+## 1.4.1 (Sep 12, 2023)
+
+### Bugfixes
+
+- Fixed bug where height/width could not be resized if `h = 0` or `w = 0` and 0 `containerPadding`. [#1931](https://github.com/react-grid-layout/react-grid-layout/pull/1931)
+- Revert `fast-equals` to @4. Fixes incompatibility with `Create-React-App@5`.
+
+## 1.4.0 (Sep 11, 2023)
+
+Hey, it's been a long time! Taking a year and a half off is a pretty "open-source" thing to do, thanks for bearing with me.
+
+### New Features
+
+- **Grid items can now be resized left and up!** Thanks to @ludovic and @dseif for all the hard work they did on this. [#1917](https://github.com/react-grid-layout/react-grid-layout/pull/1917)
+  - To use, specify `resizeHandles` directions on your `<GridItem>`s. See [the example](/test/examples/20-resizable-handles.jsx) for more on how to do this.
+  - See also [the demo](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html).
+- `<WidthProvider>` now uses a `ResizeObserver` instead of hooking into the window's `'resize'` event. [#1839](https://github.com/react-grid-layout/react-grid-layout/pull/1839)
+  - This should not be breaking for any users but introduces a new dependency, [resize-observer-polyfill](https://www.npmjs.com/package/resize-observer-polyfill). It will not be imported unless you use `<WidthProvider>`.
+
+### Bugfixes
+
+- Fixed `horizontal` compact not always moving grid elements as far left as possible. [#1822](https://github.com/react-grid-layout/react-grid-layout/pull/1822)
+- Fixed a bug when `allowOverlap={true}` and `compactType={null}`, where collisions would still be processed. [#1782](https://github.com/react-grid-layout/react-grid-layout/pull/1782)
+- Fixed `onResizeStop` and `onDragStop` callbacks not returning updated layout. [#1613](https://github.com/react-grid-layout/react-grid-layout/pull/1613)
+- An item will now rerender when `data-grid` props change. [#718](https://github.com/react-grid-layout/react-grid-layout/issues/718)
+- Corrected draggableHandle configuration in static elements example [#1826](https://github.com/react-grid-layout/react-grid-layout/pull/1826)
+
+### Internal Changes
+
+- Various dependency upgrades and upgraded tests.
+- Removed long-deprecated `_grid` property.
+- Various doc updates.
+
 ## 1.3.4 (Feb 21, 2022)
 
 ### Bugfixes

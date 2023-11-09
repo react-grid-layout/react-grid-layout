@@ -1052,7 +1052,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -1224,7 +1224,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  837,
+                  1260,
                   Infinity,
                 ]
               }
@@ -1396,7 +1396,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  625,
+                  1260,
                   Infinity,
                 ]
               }
@@ -1568,7 +1568,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  413,
+                  1260,
                   Infinity,
                 ]
               }
@@ -1740,7 +1740,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  202,
+                  1260,
                   Infinity,
                 ]
               }
@@ -2084,7 +2084,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -2256,7 +2256,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  837,
+                  1260,
                   Infinity,
                 ]
               }
@@ -2428,7 +2428,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  625,
+                  1260,
                   Infinity,
                 ]
               }
@@ -2600,7 +2600,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  413,
+                  1260,
                   Infinity,
                 ]
               }
@@ -2772,7 +2772,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  202,
+                  1260,
                   Infinity,
                 ]
               }
@@ -3116,7 +3116,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -3288,7 +3288,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  837,
+                  1260,
                   Infinity,
                 ]
               }
@@ -3460,7 +3460,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  625,
+                  1260,
                   Infinity,
                 ]
               }
@@ -3632,7 +3632,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  413,
+                  1260,
                   Infinity,
                 ]
               }
@@ -3804,7 +3804,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  202,
+                  1260,
                   Infinity,
                 ]
               }
@@ -4148,7 +4148,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -5134,7 +5134,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -5306,7 +5306,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  837,
+                  1260,
                   Infinity,
                 ]
               }
@@ -5478,7 +5478,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  625,
+                  1260,
                   Infinity,
                 ]
               }
@@ -5650,7 +5650,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  413,
+                  1260,
                   Infinity,
                 ]
               }
@@ -5822,7 +5822,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  202,
+                  1260,
                   Infinity,
                 ]
               }
@@ -6166,7 +6166,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -6338,7 +6338,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  837,
+                  1260,
                   Infinity,
                 ]
               }
@@ -6510,7 +6510,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  625,
+                  1260,
                   Infinity,
                 ]
               }
@@ -6682,7 +6682,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  413,
+                  1260,
                   Infinity,
                 ]
               }
@@ -6854,7 +6854,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  202,
+                  1260,
                   Infinity,
                 ]
               }
@@ -7198,7 +7198,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -7370,7 +7370,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  837,
+                  1260,
                   Infinity,
                 ]
               }
@@ -7542,7 +7542,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  625,
+                  1260,
                   Infinity,
                 ]
               }
@@ -7714,7 +7714,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  413,
+                  1260,
                   Infinity,
                 ]
               }
@@ -7886,7 +7886,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  202,
+                  1260,
                   Infinity,
                 ]
               }
@@ -8230,7 +8230,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
               lockAspectRatio={false}
               maxConstraints={
                 [
-                  1048,
+                  1260,
                   Infinity,
                 ]
               }
@@ -8986,7 +8986,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
           lockAspectRatio={false}
           maxConstraints={
             [
-              783,
+              1180,
               Infinity,
             ]
           }
@@ -9401,7 +9401,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
           lockAspectRatio={false}
           maxConstraints={
             [
-              783,
+              1180,
               Infinity,
             ]
           }
@@ -9524,6 +9524,12 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
     >
       Change Compaction Type
     </button>
+    <button
+      onClick={[Function]}
+    >
+      Resize 
+      All Corners
+    </button>
     <WidthProvider
       className="layout"
       cols={
@@ -9542,6 +9548,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "0",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
@@ -9550,6 +9559,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "1",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
@@ -9558,6 +9570,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 4,
               "i": "2",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
@@ -9566,6 +9581,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 5,
               "i": "3",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 0,
@@ -9574,6 +9592,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "4",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
@@ -9582,6 +9603,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "5",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
@@ -9590,6 +9614,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 5,
               "i": "6",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 10,
@@ -9598,6 +9625,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "7",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
@@ -9606,6 +9636,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "8",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
@@ -9614,6 +9647,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 4,
               "i": "9",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
@@ -9622,6 +9658,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 5,
               "i": "10",
+              "resizeHandles": [
+                "se",
+              ],
               "static": true,
               "w": 2,
               "x": 10,
@@ -9630,6 +9669,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "11",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
@@ -9638,6 +9680,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "12",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
@@ -9646,6 +9691,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 4,
               "i": "13",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
@@ -9654,6 +9702,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 5,
               "i": "14",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 0,
@@ -9662,6 +9713,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "15",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
@@ -9670,6 +9724,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "16",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
@@ -9678,6 +9735,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 5,
               "i": "17",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 10,
@@ -9686,6 +9746,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "18",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
@@ -9694,6 +9757,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "19",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 4,
@@ -9702,6 +9768,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 4,
               "i": "20",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
@@ -9710,6 +9779,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 5,
               "i": "21",
+              "resizeHandles": [
+                "se",
+              ],
               "static": true,
               "w": 2,
               "x": 10,
@@ -9718,6 +9790,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 2,
               "i": "22",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 2,
@@ -9726,6 +9801,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 3,
               "i": "23",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 6,
@@ -9734,6 +9812,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             {
               "h": 4,
               "i": "24",
+              "resizeHandles": [
+                "se",
+              ],
               "static": false,
               "w": 2,
               "x": 8,
@@ -10125,6 +10206,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "0",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10133,6 +10217,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "1",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10141,6 +10228,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 4,
                 "i": "2",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10149,6 +10239,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 5,
                 "i": "3",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -10157,6 +10250,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "4",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10165,6 +10261,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "5",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10173,6 +10272,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 5,
                 "i": "6",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
@@ -10181,6 +10283,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "7",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10189,6 +10294,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "8",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10197,6 +10305,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 4,
                 "i": "9",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10205,6 +10316,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 5,
                 "i": "10",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
@@ -10213,6 +10327,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "11",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10221,6 +10338,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "12",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10229,6 +10349,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 4,
                 "i": "13",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10237,6 +10360,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 5,
                 "i": "14",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -10245,6 +10371,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "15",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10253,6 +10382,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "16",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10261,6 +10393,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 5,
                 "i": "17",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
@@ -10269,6 +10404,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "18",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10277,6 +10415,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "19",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10285,6 +10426,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 4,
                 "i": "20",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10293,6 +10437,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 5,
                 "i": "21",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
@@ -10301,6 +10448,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 2,
                 "i": "22",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10309,6 +10459,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 3,
                 "i": "23",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10317,6 +10470,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
               {
                 "h": 4,
                 "i": "24",
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10711,7 +10867,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10728,7 +10886,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10745,7 +10905,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10762,7 +10924,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -10779,7 +10943,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10796,7 +10962,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10813,7 +10981,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
@@ -10830,7 +11000,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10847,7 +11019,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10864,7 +11038,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10881,7 +11057,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
@@ -10898,7 +11076,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -10915,7 +11095,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -10932,7 +11114,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -10949,7 +11133,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 0,
@@ -10966,7 +11152,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -10983,7 +11171,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -11000,7 +11190,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 10,
@@ -11017,7 +11209,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -11034,7 +11228,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 4,
@@ -11051,7 +11247,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -11068,7 +11266,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": true,
                 "w": 2,
                 "x": 10,
@@ -11085,7 +11285,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 2,
@@ -11102,7 +11304,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 6,
@@ -11119,7 +11323,9 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                 "minH": undefined,
                 "minW": undefined,
                 "moved": false,
-                "resizeHandles": undefined,
+                "resizeHandles": [
+                  "se",
+                ],
                 "static": false,
                 "w": 2,
                 "x": 8,
@@ -11263,7 +11469,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      1048,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -11435,7 +11641,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      625,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -11607,7 +11813,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      413,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -11951,7 +12157,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      837,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -12123,7 +12329,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      625,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -12295,7 +12501,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      202,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -12467,7 +12673,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      1048,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -12639,7 +12845,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      837,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -12811,7 +13017,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      413,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -12986,7 +13192,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      202,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -13160,7 +13366,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      1048,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -13332,7 +13538,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      625,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -13504,7 +13710,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      413,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -13848,7 +14054,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      837,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -14020,7 +14226,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      625,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -14192,7 +14398,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      202,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -14364,7 +14570,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      1048,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -14536,7 +14742,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      837,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -14708,7 +14914,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      413,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -14883,7 +15089,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      202,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -15057,7 +15263,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      1048,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -15229,7 +15435,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      625,
+                      1260,
                       Infinity,
                     ]
                   }
@@ -15401,7 +15607,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                   lockAspectRatio={false}
                   maxConstraints={
                     [
-                      413,
+                      1260,
                       Infinity,
                     ]
                   }

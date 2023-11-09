@@ -57,7 +57,8 @@ RGL is React-only and does not require jQuery.
 1. [Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/17-resizable-handles.html)
 1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
 1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
-1. [Single Row Horizontal](https://react-grid-layout.github.io/react-grid-layout/examples/20-horizontal.html)
+1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html)
+1. [Single Row Horizontal](https://react-grid-layout.github.io/react-grid-layout/examples/21-horizontal.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -297,7 +298,7 @@ draggableCancel: ?string = '',
 draggableHandle: ?string = '',
 
 // Compaction type.
-compactType: ?('vertical' | 'horizontal') = 'vertical';
+compactType: ?('vertical' | 'horizontal' | null) = 'vertical';
 
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}
@@ -358,7 +359,7 @@ preventCollision: ?boolean = false,
 // onDragStart attribute is required for Firefox for a dragging initialization
 // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
 isDroppable: ?boolean = false,
-// Defines which resize handles should be rendered
+// Defines which resize handles should be rendered.
 // Allows for any combination of:
 // 's' - South handle (bottom-center)
 // 'w' - West handle (left-center)
@@ -368,6 +369,8 @@ isDroppable: ?boolean = false,
 // 'nw' - Northwest handle (top-left)
 // 'se' - Southeast handle (bottom-right)
 // 'ne' - Northeast handle (top-right)
+//
+// Note that changing this property dynamically does not work due to a restriction in react-resizable.
 resizeHandles: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se'],
 // Custom component for resize handles
 // See `handle` as used in https://github.com/react-grid-layout/react-resizable#resize-handle
@@ -507,7 +510,7 @@ will be draggable, even if the item is marked `static: true`.
   // If false, will not be resizable. Overrides `static`.
   isResizable: ?boolean = true,
   // By default, a handle is only shown on the bottom-right (southeast) corner.
-  // Note that resizing from the top or left is generally not intuitive.
+  // As of RGL >= 1.4.0, resizing on any corner works just fine!
   resizeHandles?: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
   // If true and draggable, item will be moved only within grid.
   isBounded: ?boolean = false
