@@ -79,6 +79,7 @@ RGL is React-only and does not require jQuery.
 - [Ubidots](https://help.ubidots.com/en/articles/2400308-create-dashboards-and-widgets)
 - [Statsout](https://statsout.com/)
 - [Datto RMM](https://www.datto.com/uk/products/rmm/)
+- [SquaredUp](https://squaredup.com/)
 
 _Know of others? Create a PR to let me know!_
 
