@@ -297,7 +297,7 @@ draggableCancel: ?string = '',
 draggableHandle: ?string = '',
 
 // Compaction type.
-compactType: ?('vertical' | 'horizontal') = 'vertical';
+compactType: ?('vertical' | 'horizontal' | null) = 'vertical';
 
 // Layout is an array of object with the format:
 // {x: number, y: number, w: number, h: number}
