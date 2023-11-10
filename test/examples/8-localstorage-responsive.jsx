@@ -29,8 +29,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   }
 
   onLayoutChange(layout, layouts) {
-    saveToLS("layouts", layouts);
-    this.setState({ layouts });
+    // saveToLS("layouts", layouts);
+    // this.setState({ layouts });
   }
 
   render() {

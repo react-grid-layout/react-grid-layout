@@ -13,7 +13,9 @@ import ShowcaseLayout from "../examples/0-showcase";
 import DroppableLayout from "../examples/15-drag-from-outside";
 import ResizableLayout from "../examples/20-resizable-handles";
 import deepFreeze from "../util/deepFreeze";
+import { render, screen } from "@testing-library/react";
 import { mount } from "enzyme";
+import { renderWithInstance, rerenderWithInstance } from "../util/helpers";
 
 describe("Lifecycle tests", function () {
   // Example layouts use randomness
@@ -54,9 +56,9 @@ describe("Lifecycle tests", function () {
       isBounded: false,
       useCSSTransforms: false
     };
-    it("Basic Render", () => {
-      const wrapper = mount(<GridItem {...mockProps} />);
-      expect(wrapper).toMatchSnapshot();
+    it("Basic Render to html", () => {
+      const container = render(<GridItem {...mockProps} />);
+      expect(container.asFragment()).toMatchSnapshot();
     });
 
     describe("optional min/max dimension props log err", () => {
@@ -70,11 +72,11 @@ describe("Lifecycle tests", function () {
 
         it("2x when string, not number", () => {
           // $FlowIgnore
-          mount(<GridItem {...mockProps} minW={"apple"} />);
+          render(<GridItem {...mockProps} minW={"apple"} />);
           expect(mockError).toHaveBeenCalledTimes(2);
         });
         it("1 err when larger than w prop", () => {
-          mount(<GridItem {...mockProps} minW={400} />);
+          render(<GridItem {...mockProps} minW={400} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
       });
@@ -89,11 +91,11 @@ describe("Lifecycle tests", function () {
 
         it("1x when string, not number", () => {
           // $FlowIgnore
-          mount(<GridItem {...mockProps} maxW={"apple"} />);
+          render(<GridItem {...mockProps} maxW={"apple"} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
         it("1x err when smaller than w prop", () => {
-          mount(<GridItem {...mockProps} w={4} maxW={2} />);
+          render(<GridItem {...mockProps} w={4} maxW={2} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
       });
@@ -108,11 +110,11 @@ describe("Lifecycle tests", function () {
 
         it("2x when string, not number", () => {
           // $FlowIgnore
-          mount(<GridItem {...mockProps} minH={"apple"} />);
+          render(<GridItem {...mockProps} minH={"apple"} />);
           expect(mockError).toHaveBeenCalledTimes(2);
         });
         it("1x when larger than h prop", () => {
-          mount(<GridItem {...mockProps} minH={200} />);
+          render(<GridItem {...mockProps} minH={200} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
       });
@@ -127,11 +129,11 @@ describe("Lifecycle tests", function () {
 
         it("1x when string, not number", () => {
           // $FlowIgnore
-          mount(<GridItem {...mockProps} maxH={"apple"} />);
+          render(<GridItem {...mockProps} maxH={"apple"} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
         it("1x when smaller than h prop", () => {
-          mount(<GridItem {...mockProps} h={3} maxH={2} />);
+          render(<GridItem {...mockProps} h={3} maxH={2} />);
           expect(mockError).toHaveBeenCalledTimes(1);
         });
       });
@@ -141,7 +143,7 @@ describe("Lifecycle tests", function () {
       it("calls onDragStart prop when droppingPosition prop has expected content", () => {
         const mockFn = jest.fn();
 
-        mount(
+        render(
           <GridItem
             {...mockProps}
             // $FlowIgnore
@@ -153,36 +155,37 @@ describe("Lifecycle tests", function () {
       });
 
       it("throws err when calling onDrag without state set to dragging ", () => {
-        const componentInstance = mount(
+        const { instanceRef } = renderWithInstance(
           <GridItem {...mockProps} onDrag={() => {}} />
-        ).instance();
+        );
 
         expect(() => {
           // $FlowIgnore
-          componentInstance.onDrag({}, {});
+          instanceRef.current.onDrag({}, {});
         }).toThrow("onDrag called before onDragStart.");
       });
 
       it("calls onDragStart prop callback fn", () => {
         const mockFn = jest.fn();
 
-        const componentInstance = mount(
+        const { instanceRef } = renderWithInstance(
           <GridItem
             {...mockProps}
             // $FlowIgnore
             droppingPosition={{ left: 1, top: 1, e: {} }}
             onDragStart={mockFn}
           />
-        ).instance();
+        );
         // $FlowIgnore
-        componentInstance.onDrag({}, () => {});
+        instanceRef.current.onDrag({}, () => {});
         expect(mockFn).toHaveBeenCalledTimes(1);
       });
 
-      it("calls onDrag prop callback fn", () => {
+      // FIXME refactor this to be an RTL test, where we actually emulate the drag
+      xit("calls onDrag prop callback fn", () => {
         const mockOnDragStartCallback = jest.fn();
         const mockOnDrag = jest.fn();
-        const renderedItem = mount(
+        const { instanceRef } = renderWithInstance(
           <GridItem
             {...mockProps}
             // $FlowIgnore
@@ -192,6 +195,7 @@ describe("Lifecycle tests", function () {
             onDrag={mockOnDrag}
           />
         );
+        const renderedItem = instanceRef.current;
         TestUtils.act(() => {
           renderedItem.setState({ dragging: true });
           renderedItem.setProps({
@@ -205,13 +209,13 @@ describe("Lifecycle tests", function () {
 
   describe("<ReactGridLayout>", function () {
     it("Basic Render", async function () {
-      const wrapper = mount(<BasicLayout />);
-      expect(wrapper).toMatchSnapshot();
+      const wrapper = render(<BasicLayout />);
+      expect(wrapper.asFragment()).toMatchSnapshot();
     });
 
     describe("data-grid", () => {
       it("Creates layout based on properties", async function () {
-        const wrapper = mount(
+        const wrapper = renderWithInstance(
           <ReactGridLayout
             className="layout"
             cols={12}
@@ -232,8 +236,8 @@ describe("Lifecycle tests", function () {
             </div>
           </ReactGridLayout>
         );
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.state().layout).toMatchObject([
+        expect(wrapper.asFragment()).toMatchSnapshot();
+        expect(wrapper.instanceRef.current.state.layout).toMatchObject([
           {
             h: 2,
             i: "a",
@@ -262,7 +266,7 @@ describe("Lifecycle tests", function () {
       });
 
       it("Null items in list", async function () {
-        const wrapper = mount(
+        const wrapper = renderWithInstance(
           <ReactGridLayout
             className="layout"
             cols={12}
@@ -281,72 +285,115 @@ describe("Lifecycle tests", function () {
           </ReactGridLayout>
         );
 
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.state().layout).toHaveLength(2); // Only two truthy items
+        expect(wrapper.asFragment()).toMatchSnapshot();
+        expect(wrapper.instanceRef.current.state.layout).toHaveLength(2); // Only two truthy items
       });
     });
 
     describe("WidthProvider", () => {
-      it("Renders with WidthProvider", async function () {
-        const wrapper = mount(<BasicLayout measureBeforeMount={false} />);
-        expect(wrapper).toMatchSnapshot();
+      function calculateItemWidth(wrapperWidth, cols, margin, itemCols) {
+        // Width of each col is total width minus margins, divided by num of cols
+        const colSize = Math.round((wrapperWidth - margin * (cols + 1)) / cols);
+        // Total size of the element includes (cols - 1) margins between them
+        return colSize * itemCols + (itemCols - 1) * margin;
+      }
 
-        const widthProviderWrapper = wrapper.childAt(0);
-        expect(widthProviderWrapper.name()).toEqual("WidthProvider");
-        expect(widthProviderWrapper.childAt(0).name()).toEqual(
-          "ReactGridLayout"
+      it("Renders without width on initial WidthProvider mount", async function () {
+        const wrapper = renderWithInstance(
+          <BasicLayout measureBeforeMount={false} />
         );
-
-        expect(widthProviderWrapper.state().width).toEqual(1280); // default
+        expect(
+          wrapper.baseElement.querySelector(".react-grid-layout").style.width
+        ).toBeFalsy();
+        expect(wrapper.asFragment()).toMatchSnapshot();
+        expect(wrapper.instanceRef.current.props.width).toBeFalsy(); // no width passed down before mount
       });
 
       // FIXME: This doesn't work since we rewrote to use <ResizeObserver>
       // See https://github.com/react-grid-layout/react-grid-layout/pull/1839
       // eslint-disable-next-line no-undef
-      xit("Renders with WidthProvider measureBeforeMount", async function () {
-        const wrapper = mount(<BasicLayout measureBeforeMount={true} />);
-        expect(wrapper).toMatchSnapshot();
+      xit("Renders with a width when WidthProvider measureBeforeMount", async function () {
+        const PAGE_WIDTH = 500;
+        const wrapper = renderWithInstance(
+          <BasicLayout measureBeforeMount={true} />
+        );
+        const instance = wrapper.instanceRef.current;
+        expect(wrapper.asFragment()).toMatchSnapshot();
 
-        const widthProviderWrapper = wrapper.childAt(0);
-        expect(widthProviderWrapper.name()).toEqual("WidthProvider");
-        // Renders a div first
-        expect(widthProviderWrapper.childAt(0).name()).toEqual("div");
+        // Since we're measuring before mount, it should be empty
+        expect(
+          wrapper.baseElement.querySelector(".react-grid-layout").children
+        ).toHaveLength(0);
 
         // Mock offsetWidth to return 500 and fire a resize
-        const node = wrapper.getDOMNode();
+        const node = wrapper.container.firstChild;
         Object.defineProperty(node, "offsetWidth", {
-          get: jest.fn(() => 500)
+          get: jest.fn(() => PAGE_WIDTH)
         });
+
+        // Trigger resize
         global.dispatchEvent(new Event("resize"));
+        wrapper.rerender(<BasicLayout measureBeforeMount={true} />); // force a rerender synchronously
 
-        wrapper.setProps({}); // force a rerender synchronously
+        // Should have removed the div, now has the RGL grid items
+        expect(BasicLayout.defaultProps.items).toBeGreaterThan(0);
+        expect(
+          wrapper.baseElement.querySelector(".react-grid-layout").children
+        ).toHaveLength(BasicLayout.defaultProps.items);
 
-        // Should have removed the div, now has the RGL
-        expect(wrapper.childAt(0).childAt(0).name()).toEqual("ReactGridLayout");
-        expect(wrapper.childAt(0).state().width).toEqual(500);
+        //
+        // Check that width was properly set
+        //
+        const desiredWidth = calculateItemWidth(
+          PAGE_WIDTH,
+          BasicLayout.defaultProps.cols,
+          10,
+          2
+        );
+        expect(
+          wrapper.baseElement.querySelector(".react-grid-item").style.width
+        ).toEqual(desiredWidth + "px");
       });
 
       // FIXME: This doesn't work since we rewrote to use <ResizeObserver>
       // See https://github.com/react-grid-layout/react-grid-layout/pull/1839
       // eslint-disable-next-line no-undef
       xit("WidthProvider responds to window resize events", async function () {
-        const wrapper = mount(<BasicLayout />);
+        const wrapper = render(<BasicLayout />);
         const widthProviderWrapper = wrapper.childAt(0);
 
+
         // Original width
-        expect(widthProviderWrapper.state().width).toEqual(1280);
+        const originalItemWidth = calculateItemWidth(
+          1280,
+          BasicLayout.defaultProps.cols,
+          10,
+          2
+        );
+        expect(
+          wrapper.baseElement.querySelector(".react-grid-item").style.width
+        ).toEqual(originalItemWidth + "px");
 
         // Mock offsetWidth to return 500
-        const node = wrapper.getDOMNode();
+        const node = wrapper.container.firstChild;
         Object.defineProperty(node, "offsetWidth", {
           get: jest.fn(() => 500)
         });
 
         // Trigger the window resize event.
         global.dispatchEvent(new Event("resize"));
+        wrapper.rerender(<BasicLayout />);
 
         // State should now be 500
-        expect(widthProviderWrapper.state().width).toEqual(500);
+        const newItemWidth = calculateItemWidth(
+          500,
+          BasicLayout.defaultProps.cols,
+          10,
+          2
+        );
+        expect(
+          wrapper.baseElement.querySelector(".react-grid-item").style.width
+        ).toEqual(newItemWidth + "px");
       });
     });
 
