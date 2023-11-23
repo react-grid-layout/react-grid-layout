@@ -110,7 +110,7 @@ _Know of others? Create a PR to let me know!_
 
 ## Installation
 
-Install the React-Grid-Layout [package](https://www.npmjs.org/package/react-grid-layout) package using [npm](https://www.npmjs.com/):
+Install the React-Grid-Layout [package](https://www.npmjs.org/package/react-grid-layout) using [npm](https://www.npmjs.com/):
 
 ```bash
 npm install react-grid-layout
