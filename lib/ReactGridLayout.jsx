@@ -251,7 +251,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const { layout } = this.state;
     const l = getLayoutItem(layout, i);
     if (!l) return;
-    
+
     // Create placeholder (display only)
     const placeholder = {
       w: l.w,
@@ -715,11 +715,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const { layout } = this.state;
 
-    const gridRect = e.currentTarget.getBoundingClientRect() // The grid's position in the viewport
+    // $FlowIgnore missing def
+    const gridRect = e.currentTarget.getBoundingClientRect(); // The grid's position in the viewport
 
     // Calculate the mouse position relative to the grid
-    const layerX = e.clientX - gridRect.left 
-    const layerY = e.clientY - gridRect.top 
+    const layerX = e.clientX - gridRect.left;
+    const layerY = e.clientY - gridRect.top;
     const droppingPosition = {
       left: layerX / transformScale,
       top: layerY / transformScale,

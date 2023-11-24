@@ -520,7 +520,13 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Call callback with this data
     const { containerPadding } = this.props;
-    const { x, y } = calcXY(positionParams, top - containerPadding[1], left - containerPadding[0], w, h);
+    const { x, y } = calcXY(
+      positionParams,
+      top - containerPadding[1],
+      left - containerPadding[0],
+      w,
+      h
+    );
     return onDrag.call(this, i, x, y, {
       e,
       node,
@@ -545,7 +551,13 @@ export default class GridItem extends React.Component<Props, State> {
     const newPosition: PartialPosition = { top, left };
     this.setState({ dragging: null });
 
-    const { x, y } = calcXY(this.getPositionParams(), top - containerPadding[1], left - containerPadding[0], w, h);
+    const { x, y } = calcXY(
+      this.getPositionParams(),
+      top - containerPadding[1],
+      left - containerPadding[0],
+      w,
+      h
+    );
 
     return onDragStop.call(this, i, x, y, {
       e,
