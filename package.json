@@ -13,8 +13,8 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "flow": "flow",
-    "fmt": "prettier --write ./**.{json,js,jsx,yml,md}",
-    "fmt:check": "prettier --check ./**.{json,js,jsx,yml,md}"
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
