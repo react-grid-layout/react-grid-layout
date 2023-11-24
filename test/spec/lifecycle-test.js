@@ -356,10 +356,13 @@ describe("Lifecycle tests", function () {
         const droppable = wrapper.find(".droppable-element");
 
         TestUtils.Simulate.dragOver(gridLayout.getDOMNode(), {
+          currentTarget: {
+            getBoundingClientRect: () => ({ left: 0, top: 0 })
+          },
+          clientX: x,
+          clientY: y,
           nativeEvent: {
-            target: droppable.getDOMNode(),
-            layerX: x,
-            layerY: y
+            target: droppable.getDOMNode()
           }
         });
       }
@@ -890,6 +893,7 @@ describe("Lifecycle tests", function () {
 
       describe("preventCollision=true and no compaction (#1933)", () => {
         const resizeHandles = ["n", "e", "s", "w"];
+        // eslint-disable-next-line react/prop-types
         const PreventCollisionContainer = ({ layoutA, layoutB }) => (
           <ReactGridLayout
             className="layout"
