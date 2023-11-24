@@ -503,15 +503,15 @@ export default class GridItem extends React.Component<Props, State> {
       const { offsetParent } = node;
 
       if (offsetParent) {
-        const { margin, rowHeight } = this.props;
+        const { margin, rowHeight, containerPadding } = this.props;
         const bottomBoundary =
           offsetParent.clientHeight - calcGridItemWHPx(h, rowHeight, margin[1]);
-        top = clamp(top, 0, bottomBoundary);
+        top = clamp(top - containerPadding[1], 0, bottomBoundary);
 
         const colWidth = calcGridColWidth(positionParams);
         const rightBoundary =
           containerWidth - calcGridItemWHPx(w, colWidth, margin[0]);
-        left = clamp(left, 0, rightBoundary);
+        left = clamp(left - containerPadding[0], 0, rightBoundary);
       }
     }
 
@@ -519,7 +519,8 @@ export default class GridItem extends React.Component<Props, State> {
     this.setState({ dragging: newPosition });
 
     // Call callback with this data
-    const { x, y } = calcXY(positionParams, top, left, w, h);
+    const { containerPadding } = this.props;
+    const { x, y } = calcXY(positionParams, top - containerPadding[1], left - containerPadding[0], w, h);
     return onDrag.call(this, i, x, y, {
       e,
       node,
@@ -539,12 +540,12 @@ export default class GridItem extends React.Component<Props, State> {
     if (!this.state.dragging) {
       throw new Error("onDragEnd called before onDragStart.");
     }
-    const { w, h, i } = this.props;
+    const { w, h, i, containerPadding } = this.props;
     const { left, top } = this.state.dragging;
     const newPosition: PartialPosition = { top, left };
     this.setState({ dragging: null });
 
-    const { x, y } = calcXY(this.getPositionParams(), top, left, w, h);
+    const { x, y } = calcXY(this.getPositionParams(), top - containerPadding[1], left - containerPadding[0], w, h);
 
     return onDragStop.call(this, i, x, y, {
       e,
