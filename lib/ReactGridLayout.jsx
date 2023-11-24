@@ -413,7 +413,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     { e, node, size, handle }
   ) => {
     const { oldResizeItem } = this.state;
-    let { layout } = this.state;
+    const { layout } = this.state;
     const { cols, preventCollision, allowOverlap } = this.props;
 
     let shouldMoveItem = false;
