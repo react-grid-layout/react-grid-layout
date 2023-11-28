@@ -384,7 +384,7 @@ resizeHandle?: ReactElement<any> | ((resizeHandleAxis: ResizeHandleAxis, ref: Re
 //
 
 // Callback so you can save the layout.
-// Calls back with (currentLayout) after every drag or resize stop.
+// Calls back with (currentLayout) when layout props change, at mount and after every drag or resize stop.
 onLayoutChange: (layout: Layout) => void,
 
 //
