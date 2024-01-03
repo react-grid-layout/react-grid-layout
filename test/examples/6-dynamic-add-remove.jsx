@@ -1,53 +1,47 @@
-import React from "react";
-import { WidthProvider, Responsive } from "react-grid-layout";
-import _ from "lodash";
+import React, { useState } from 'react';
+import { WidthProvider, Responsive } from 'react-grid-layout';
+import '/node_modules/react-grid-layout/css/styles.css';
+import '/node_modules/react-resizable/css/styles.css';
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
+const defaultProps = {
+  className: 'layout',
+  cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+  rowHeight: 20
+};
 
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-export default class AddRemoveLayout extends React.PureComponent {
-  static defaultProps = {
-    className: "layout",
-    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    rowHeight: 100
-  };
+export function App(props = defaultProps) {
+  const [data, setData] = useState({
+    items: [0, 1, 2, 3, 4].map((i, key, list) => ({
+      i: i.toString(),
+      x: i,
+      y: 0,
+      w: 1,
+      h: 1,
+      add: i === list.length - 1
+    })),
+    newCounter: 0
+  });
+  console.log(data);
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      items: [0, 1, 2, 3, 4].map(function(i, key, list) {
-        return {
-          i: i.toString(),
-          x: i * 2,
-          y: 0,
-          w: 2,
-          h: 2,
-          add: i === (list.length - 1)
-        };
-      }),
-      newCounter: 0
-    };
-
-    this.onAddItem = this.onAddItem.bind(this);
-    this.onBreakpointChange = this.onBreakpointChange.bind(this);
-  }
-
-  createElement(el) {
+  function createElement(el) {
     const removeStyle = {
-      position: "absolute",
-      right: "2px",
+      position: 'absolute',
+      right: '2px',
       top: 0,
-      cursor: "pointer"
+      cursor: 'pointer'
     };
-    const i = el.add ? "+" : el.i;
+    const i = el.add ? '+' : el.i;
     return (
       <div key={i} data-grid={el}>
         {el.add ? (
           <span
             className="add text"
-            onClick={this.onAddItem}
+            onClick={onAddItem}
             title="You can add an item by clicking here, too."
           >
             Add +
@@ -55,66 +49,56 @@ export default class AddRemoveLayout extends React.PureComponent {
         ) : (
           <span className="text">{i}</span>
         )}
-        <span
-          className="remove"
-          style={removeStyle}
-          onClick={this.onRemoveItem.bind(this, i)}
-        >
+        <span className="remove" style={removeStyle} onClick={onRemoveItem}>
           x
         </span>
       </div>
     );
   }
 
-  onAddItem() {
-    /*eslint no-console: 0*/
-    console.log("adding", "n" + this.state.newCounter);
-    this.setState({
+  function onAddItem() {
+    console.log('adding', 'n' + data.newCounter);
+    setData({
       // Add a new item. It must have a unique key!
-      items: this.state.items.concat({
-        i: "n" + this.state.newCounter,
-        x: (this.state.items.length * 2) % (this.state.cols || 12),
+      items: data.items.concat({
+        i: 'n' + data.newCounter,
+        x: (data.items.length * 2) % (data.cols || 12),
         y: Infinity, // puts it at the bottom
-        w: 2,
-        h: 2
+        w: 1,
+        h: 1
       }),
-      // Increment the counter to ensure key is always unique.
-      newCounter: this.state.newCounter + 1
+       // Increment the counter to ensure key is always unique.
+      newCounter: data.newCounter + 1
     });
   }
 
-  // We're using the cols coming back from this to calculate where to add new items.
-  onBreakpointChange(breakpoint, cols) {
-    this.setState({
-      breakpoint: breakpoint,
-      cols: cols
-    });
+    // We're using the cols coming back from this to calculate where to add new items.
+  function onBreakpointChange(breakpoint, cols) {
+    setData({ ...data, breakpoint: breakpoint, cols: cols });
   }
 
-  onLayoutChange(layout) {
-    this.props.onLayoutChange(layout);
-    this.setState({ layout: layout });
+  function onLayoutChange(layout) {
+    typeof props.onLayoutChange === 'function' && props.onLayoutChange(layout);
+    setData({ ...data, layout: layout });
   }
 
-  onRemoveItem(i) {
-    console.log("removing", i);
-    this.setState({ items: _.reject(this.state.items, { i: i }) });
+  function onRemoveItem(i) {
+    console.log('removing', i);
+    setData({ items: data.items.filter({ i: i }) });
   }
 
-  render() {
-    return (
-      <div>
-        <button onClick={this.onAddItem}>Add Item</button>
-        <ResponsiveReactGridLayout
-          onLayoutChange={this.onLayoutChange}
-          onBreakpointChange={this.onBreakpointChange}
-          {...this.props}
-        >
-          {_.map(this.state.items, el => this.createElement(el))}
-        </ResponsiveReactGridLayout>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <button onClick={onAddItem}>Add Item</button>
+      <ResponsiveReactGridLayout
+        onLayoutChange={onLayoutChange}
+        onBreakpointChange={onBreakpointChange}
+        {...props}
+      >
+        {data.items.map((el) => createElement(el))}
+      </ResponsiveReactGridLayout>
+    </div>
+  );
 }
 
 if (process.env.STATIC_EXAMPLES === true) {
