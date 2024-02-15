@@ -63,6 +63,7 @@ type Props<Breakpoint: string = string> = {|
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
+  onLayoutInit?: ?(layout: Layout) => void,
   onLayoutChange: OnLayoutChangeCallback,
   onWidthChange: (
     containerWidth: number,
@@ -83,6 +84,7 @@ type DefaultProps = Pick<
     margin: 0,
     onBreakpointChange: 0,
     onLayoutChange: 0,
+    onLayoutInit: 0,
     onWidthChange: 0
   |}
 >;
@@ -243,6 +245,12 @@ export default class ResponsiveReactGridLayout extends React.Component<
     });
   };
 
+  onLayoutInit : Layout => void = (layout: Layout) => {
+    if(this.props.onLayoutInit){
+      this.props.onLayoutInit(layout);
+    }
+  }
+
   /**
    * When the width changes work through breakpoints and reset state with the new width & breakpoint.
    * Width changes are necessary to figure out the widget widths.
@@ -341,6 +349,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
           this.state.breakpoint
         )}
         onLayoutChange={this.onLayoutChange}
+        onLayoutInit={this.onLayoutInit}
         layout={this.state.layout}
         cols={this.state.cols}
       />
