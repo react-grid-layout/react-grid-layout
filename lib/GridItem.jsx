@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import { flushSync } from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
@@ -459,7 +460,9 @@ export default class GridItem extends React.Component<Props, State> {
     const pTop = parentRect.top / transformScale;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
-    this.setState({ dragging: newPosition });
+    flushSync(() => {
+      this.setState({ dragging: newPosition });
+    });
 
     // Call callback with this data
     const { x, y } = calcXY(
@@ -516,7 +519,9 @@ export default class GridItem extends React.Component<Props, State> {
     }
 
     const newPosition: PartialPosition = { top, left };
-    this.setState({ dragging: newPosition });
+    flushSync(() => {
+      this.setState({ dragging: newPosition });
+    });
 
     // Call callback with this data
     const { containerPadding } = this.props;
@@ -549,7 +554,9 @@ export default class GridItem extends React.Component<Props, State> {
     const { w, h, i, containerPadding } = this.props;
     const { left, top } = this.state.dragging;
     const newPosition: PartialPosition = { top, left };
-    this.setState({ dragging: null });
+    flushSync(() => {
+      this.setState({ dragging: null });
+    });
 
     const { x, y } = calcXY(
       this.getPositionParams(),
@@ -605,8 +612,10 @@ export default class GridItem extends React.Component<Props, State> {
         size,
         containerWidth
       );
-      this.setState({
-        resizing: handlerName === "onResizeStop" ? null : updatedSize
+      flushSync(() => {
+        this.setState({
+          resizing: handlerName === "onResizeStop" ? null : updatedSize
+        });
       });
     }
 
