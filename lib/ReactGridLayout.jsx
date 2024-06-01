@@ -59,7 +59,7 @@ type State = {
 import type { Props, DefaultProps } from "./ReactGridLayoutPropTypes";
 
 // End Types
-
+//TODO T-123 Maybe this will fail
 const layoutClassName = "react-grid-layout";
 let isFirefox = false;
 // Try...catch will protect from navigator not existing (e.g. node) or a bad implementation of navigator

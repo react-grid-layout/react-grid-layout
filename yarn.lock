@@ -3233,6 +3233,11 @@ eslint-plugin-flowtype@^8.0.3:
     lodash "^4.17.21"
     string-natural-compare "^3.0.1"
 
+eslint-plugin-jira-ticket-todo-comment@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jira-ticket-todo-comment/-/eslint-plugin-jira-ticket-todo-comment-1.0.5.tgz#714b3f1d9fa06e27aaef348b63d5a336a713683d"
+  integrity sha512-s2EAhHo3+x5Ct9Z0Z4qJhvRQhHzpRLT3sjSUyD4aopNmCd1cjb8ivlD2cTWsLLWx2L7Pju6kbC8+wEA8yh+Lyg==
+
 eslint-plugin-mocha@^10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-10.2.0.tgz#15b05ce5be4b332bb0d76826ec1c5ebf67102ad6"

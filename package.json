@@ -38,6 +38,7 @@
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
     "clsx": "^2.0.0",
+    "eslint-plugin-jira-ticket-todo-comment": "^1.0.5",
     "fast-equals": "^4.0.3",
     "prop-types": "^15.8.1",
     "react-draggable": "^4.4.5",
