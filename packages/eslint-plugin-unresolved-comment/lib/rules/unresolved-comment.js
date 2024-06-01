@@ -23,10 +23,9 @@ module.exports = {
                                 const message = messageOption ? { message: messageOption } : { messageId: `addJiraTicketNumber`};
                                 context.report({ data: { ticketNumber: `${projectKey ? projectKey : `MP`}-123` }, ...message, node });
                               }*/
-                    if (value.toLowerCase().startsWith(`todo`) && process.env.BRANCH===`master`) {
+                    if (value.toLowerCase().startsWith(`todo`) && process.env.BRANCH===`test-neven`) {
                         const message = false ? {message: ""} : {messageId: `unresolvedComment`};
-                        context.report({ data: { ticketNumber: `${`MP`}-123` }, ...message, node });
-
+                        context.report({ data: { branchName: `${process.env.BRANCH}` }, ...message, node });
                     }
                 }
             },
@@ -40,7 +39,7 @@ module.exports = {
             url: `https://github.com/bamboechop/eslint-plugin-jira-ticket-todo-comment`,
         },
         messages: {
-            "unresolvedComment": `branch name matches todo ticket id, resolve the comment`,
+            "unresolvedComment": `branch name matches todo ticket id, resolve the comment - branch {{ branchName }}`,
             addJiraTicketNumber: `Add a JIRA ticket number to the TODO comment (e.g. {{ ticketNumber }})`,
             bothOptionsProvided: `Both projectKey and regex are set. Please only specify one of those properties.`,
         },
