@@ -30,6 +30,9 @@ jobs:
       - name: fail branch name
         run: SOMETHING="NEVEN"
 
+      - name: output env
+        run: echo $SOMETHING
+
       - name: Run Prettier
         run: yarn fmt:check `echo $SOMETHING`
 
