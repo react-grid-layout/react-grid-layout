@@ -28,7 +28,7 @@ jobs:
         run: yarn
 
       - name: fail branch name
-        run: git branch --show-curent
+        run: env
 
       - name: Run Prettier
         run: yarn fmt:check
