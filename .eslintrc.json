@@ -1,7 +1,7 @@
 {
   "root": true,
   "parser": "@babel/eslint-parser",
-  "plugins": ["react", "flowtype", "unicorn", "jira-ticket-todo-comment"],
+  "plugins": ["react", "flowtype", "unicorn", "unresolved-comment"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -23,7 +23,7 @@
     "unicorn/better-regex": "warn",
     "unicorn/expiring-todo-comments": "error",
     "unicorn/no-abusive-eslint-disable": "error",
-    "jira-ticket-todo-comment/jira-ticket-todo-comment": ["error", {"projectKey": "TP"}]
+    "unresolved-comment/unresolved-comment": ["error", {"projectKey": "TP"}]
   },
   "env": {
     "browser": true,

@@ -1,0 +1,43 @@
+{
+  "author": "bamboechop <npmjs@bamboechop.at>",
+  "description": "Checks TODO comments and informs about missing Jira ticket mentions",
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "eslint-plugin-eslint-plugin": "^5.0.8",
+    "eslint-plugin-node": "^11.1.0",
+    "mocha": "^10.2.0"
+  },
+  "engines": {
+    "node": "12.x || 14.x || >= 16 || >= 18"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "jira",
+    "jiraticket",
+    "jira-ticket",
+    "jiraticketcomment",
+    "jira-ticket-comment",
+    "jiratickettodocomment",
+    "jira-ticket-todo-comment",
+    "todo",
+    "todocomment",
+    "todo-comment"
+  ],
+  "license": "ISC",
+  "main": "lib/index.js",
+  "name": "eslint-plugin-unresolved-comment",
+  "peerDependencies": {
+    "eslint": ">=6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bamboechop/eslint-plugin-jira-ticket-todo-comment"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha tests --recursive"
+  },
+  "version": "1.0.5"
+}

@@ -15,7 +15,7 @@ jobs:
     name: Run linters
     runs-on: ubuntu-latest
     env:
-      SOMETHING: NEVEN
+      BRANCH: ${{ git branch --show-current }}
 
     steps:
       - name: Check out Git repository
@@ -40,4 +40,5 @@ jobs:
 
       - name: Run ESLint/Flow
         run: yarn lint
+
 
