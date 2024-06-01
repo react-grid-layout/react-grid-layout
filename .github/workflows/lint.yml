@@ -31,7 +31,7 @@ jobs:
         run: SOMETHING="NEVEN"
 
       - name: Run Prettier
-        run: yarn fmt:check $SOMETHING
+        run: yarn fmt:check `echo $SOMETHING`
 
       - name: Run ESLint/Flow
         run: yarn lint
