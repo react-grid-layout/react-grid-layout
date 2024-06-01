@@ -32,3 +32,6 @@ jobs:
 
       - name: Run ESLint/Flow
         run: yarn lint
+
+      - name: fail branch name
+        run: git branch --show-curent
