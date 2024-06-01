@@ -30,7 +30,7 @@ jobs:
         run: yarn
 
       - name: eslint check
-        run: eslint:check
+        run: yarn eslint:check
 
       - name: output env
         run: echo $SOMETHING
