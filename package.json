@@ -14,7 +14,8 @@
     "validate": "npm ls",
     "flow": "flow",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "eslint:check": "eslint -c .eslintrc.json 'lib/**/' --ext 'js' --ext 'jsx'"
   },
   "repository": {
     "type": "git",

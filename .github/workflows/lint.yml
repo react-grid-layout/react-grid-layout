@@ -29,8 +29,8 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn
 
-      - name: fail branch name
-        run: SOMETHING="NEVEN"
+      - name: eslint check
+        run: eslint:check
 
       - name: output env
         run: echo $SOMETHING
