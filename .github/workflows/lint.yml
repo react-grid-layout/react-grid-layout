@@ -28,10 +28,10 @@ jobs:
         run: yarn
 
       - name: fail branch name
-        run: env
+        run: SOMETHING="NEVEN"
 
       - name: Run Prettier
-        run: yarn fmt:check
+        run: yarn fmt:check $SOMETHING
 
       - name: Run ESLint/Flow
         run: yarn lint
