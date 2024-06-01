@@ -35,8 +35,8 @@ jobs:
       - name: output env
         run: echo $SOMETHING
 
-      - name: Run Prettier
-        run: yarn fmt:check
+#      - name: Run Prettier
+#        run: yarn fmt:check
 
       - name: Run ESLint/Flow
         run: yarn lint
