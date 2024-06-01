@@ -39,6 +39,6 @@ jobs:
 #        run: yarn fmt:check
 
       - name: Run ESLint/Flow
-        run: yarn lint
+        run: yarn eslint:check
 
 
