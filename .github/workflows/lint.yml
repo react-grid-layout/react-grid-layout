@@ -15,7 +15,7 @@ jobs:
     name: Run linters
     runs-on: ubuntu-latest
     env:
-      BRANCH: ${{ git branch --show-current }}
+      BRANCH: ${{ github.head_ref }}
 
     steps:
       - name: Check out Git repository
