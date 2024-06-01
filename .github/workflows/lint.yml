@@ -27,11 +27,12 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn
 
+      - name: fail branch name
+        run: git branch --show-curent
+
       - name: Run Prettier
         run: yarn fmt:check
 
       - name: Run ESLint/Flow
         run: yarn lint
 
-      - name: fail branch name
-        run: git branch --show-curent
