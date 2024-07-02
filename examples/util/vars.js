@@ -148,10 +148,10 @@ module.exports = [
     ]
   },
   {
-    title: "Resizable Handles",
-    source: "resizable-handles",
+    title: "Bootstrap-style Responsive Grid",
+    source: "responsive-bootstrap-style",
     paragraphs: [
-      "This demonstrates how to implement resizable handles for any corner."
+      "This demonstrates how to use ResponsiveGridLayout to create a Bootstrap-style responsive grid."
     ]
   },
   {

@@ -13,11 +13,39 @@ export default class BootstrapStyleLayout extends React.PureComponent {
     items: 20,
     rowHeight: 30,
     onLayoutChange: function() {},
-    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }
+    cols: {lg: 12, md: 12, sm: 12, xs: 12, xxs: 12}
+  };
+
+  state = {
+    layouts: this.generateLayouts()
   };
 
   onLayoutChange(layout) {
     this.props.onLayoutChange(layout);
+  }
+
+  generateDOM() {
+    return [...Array(this.props.items)].map((_, i) => (
+      <div key={i}>
+        <span className="text">{i}</span>
+      </div>
+    ));
+  }
+
+  // Create responsive layouts. Similar to bootstrap, increase the pseudo width as
+  // the viewport shrinks
+  generateLayouts() {
+    const times = [...Array(this.props.items)];
+    const widths = {lg: 3, md: 4, sm: 6, xs: 12, xxs: 12};
+    return Object.keys(widths).reduce((memo, breakpoint) => {
+      const width = widths[breakpoint];
+      const cols = this.props.cols[breakpoint];
+      memo[breakpoint] = [
+        // You can set y to 0, the collision algo will figure it out.
+        ...times.map((_, i) => ({x: (i * width) % cols, y: 0, w: width, h: 4, i: String(i)}))
+      ];
+      return memo;
+    }, {});
   }
 
   render() {
@@ -25,15 +53,9 @@ export default class BootstrapStyleLayout extends React.PureComponent {
       <ResponsiveReactGridLayout
         onLayoutChange={this.onLayoutChange}
         {...this.props}
+        layouts={this.state.layouts}
       >
-        <div
-          data-grid={{
-            w: { lg: 6, md: 5, sm: 3, xs: 4, xxs: 2 },
-            h: { lg: 4, xxs: 3 }
-          }}
-        >
-          0
-        </div>
+        {this.generateDOM()}
       </ResponsiveReactGridLayout>
     );
   }

@@ -19,12 +19,12 @@
       <li><a href="https://github.com/react-grid-layout/react-grid-layout">View project on GitHub</a></li>
       <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/<%= index %>-<%= source %>.jsx">View this example's source</a></li>
     <%_ if (previous) { -%>
-      <li><a href="<%= index - 1 %>-<%= previous.source %>.html"><b>⇠</b> View the previous example: "<%= previous.title %>"</a></li>
+      <li><a href="<%= previous.index %>-<%= previous.source %>.html"><b>⇠</b> View the previous example: "<%= previous.title %>"</a></li>
     <%_ } else { -%>
       <li><b>⇠</b></li>
     <%_ } -%>
     <%_ if (next) { -%>
-      <li><a href="<%= index + 1 %>-<%= next.source %>.html"><b>⇢ </b>View the next example: "<%= next.title %>"</a></li>
+      <li><a href="<%= next.index %>-<%= next.source %>.html"><b>⇢ </b>View the next example: "<%= next.title %>"</a></li>
     <%_ } -%>
     </ul>
     <%_ for(var i = 0; i < paragraphs.length; i++) { -%>
