@@ -1,16 +1,9 @@
 // @flow
 import React from "react";
-import { flushSync } from "react-dom";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
-import {
-  fastPositionEqual,
-  perc,
-  resizeItemInDirection,
-  setTopLeft,
-  setTransform
-} from "./utils";
+import { perc, resizeItemInDirection, setTopLeft, setTransform } from "./utils";
 import {
   calcGridItemPosition,
   calcGridItemWHPx,
@@ -59,8 +52,8 @@ type GridItemResizeCallback = (
 ) => void;
 
 type State = {
-  resizing: ?{ top: number, left: number, width: number, height: number },
-  dragging: ?{ top: number, left: number },
+  resizing: boolean,
+  dragging: boolean,
   className: string
 };
 
@@ -222,10 +215,15 @@ export default class GridItem extends React.Component<Props, State> {
   };
 
   state: State = {
-    resizing: null,
-    dragging: null,
+    resizing: false,
+    dragging: false,
     className: ""
   };
+
+  // Instance variables for position tracking - avoid state for easier testing with React 18
+  dragPosition: PartialPosition = { left: 0, top: 0 };
+  resizePosition: { top: number, left: number, width: number, height: number } =
+    { top: 0, left: 0, width: 0, height: 0 };
 
   elementRef: ReactRef<HTMLDivElement> = React.createRef();
 
@@ -234,27 +232,8 @@ export default class GridItem extends React.Component<Props, State> {
     // use this optimization.
     if (this.props.children !== nextProps.children) return true;
     if (this.props.droppingPosition !== nextProps.droppingPosition) return true;
-    // TODO memoize these calculations so they don't take so long?
-    const oldPosition = calcGridItemPosition(
-      this.getPositionParams(this.props),
-      this.props.x,
-      this.props.y,
-      this.props.w,
-      this.props.h,
-      this.state
-    );
-    const newPosition = calcGridItemPosition(
-      this.getPositionParams(nextProps),
-      nextProps.x,
-      nextProps.y,
-      nextProps.w,
-      nextProps.h,
-      nextState
-    );
-    return (
-      !fastPositionEqual(oldPosition, newPosition) ||
-      this.props.useCSSTransforms !== nextProps.useCSSTransforms
-    );
+    if (this.props.useCSSTransforms !== nextProps.useCSSTransforms) return true;
+    return true;
   }
 
   componentDidMount() {
@@ -278,31 +257,27 @@ export default class GridItem extends React.Component<Props, State> {
       left: 0,
       top: 0
     };
-    const { dragging } = this.state;
 
     const shouldDrag =
-      (dragging && droppingPosition.left !== prevDroppingPosition.left) ||
+      (this.state.dragging &&
+        droppingPosition.left !== prevDroppingPosition.left) ||
       droppingPosition.top !== prevDroppingPosition.top;
 
-    if (!dragging) {
+    if (!this.state.dragging) {
       this.onDragStart(droppingPosition.e, {
         node,
         deltaX: droppingPosition.left,
         deltaY: droppingPosition.top
       });
     } else if (shouldDrag) {
-      const deltaX = droppingPosition.left - dragging.left;
-      const deltaY = droppingPosition.top - dragging.top;
+      const deltaX = droppingPosition.left - this.dragPosition.left;
+      const deltaY = droppingPosition.top - this.dragPosition.top;
 
-      this.onDrag(
-        droppingPosition.e,
-        {
-          node,
-          deltaX,
-          deltaY
-        },
-        true // dontFLush: avoid flushSync to temper warnings
-      );
+      this.onDrag(droppingPosition.e, {
+        node,
+        deltaX,
+        deltaY
+      });
     }
   }
 
@@ -464,7 +439,8 @@ export default class GridItem extends React.Component<Props, State> {
     const pTop = parentRect.top / transformScale;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
-    this.setState({ dragging: newPosition });
+    this.dragPosition = newPosition;
+    this.setState({ dragging: true });
 
     // Call callback with this data
     const { x, y } = calcXY(
@@ -486,12 +462,10 @@ export default class GridItem extends React.Component<Props, State> {
    * onDrag event handler
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node, delta and position information
-   * @param  {boolean} dontFlush    if true, will not call flushSync
    */
-  onDrag: (Event, ReactDraggableCallbackData, boolean) => void = (
+  onDrag: (Event, ReactDraggableCallbackData) => void = (
     e,
-    { node, deltaX, deltaY },
-    dontFlush
+    { node, deltaX, deltaY }
   ) => {
     const { onDrag } = this.props;
     if (!onDrag) return;
@@ -499,8 +473,8 @@ export default class GridItem extends React.Component<Props, State> {
     if (!this.state.dragging) {
       throw new Error("onDrag called before onDragStart.");
     }
-    let top = this.state.dragging.top + deltaY;
-    let left = this.state.dragging.left + deltaX;
+    let top = this.dragPosition.top + deltaY;
+    let left = this.dragPosition.left + deltaX;
 
     const { isBounded, i, w, h, containerWidth } = this.props;
     const positionParams = this.getPositionParams();
@@ -522,16 +496,7 @@ export default class GridItem extends React.Component<Props, State> {
       }
     }
 
-    const newPosition: PartialPosition = { top, left };
-
-    // dontFlush is set if we're calling from inside
-    if (dontFlush) {
-      this.setState({ dragging: newPosition });
-    } else {
-      flushSync(() => {
-        this.setState({ dragging: newPosition });
-      });
-    }
+    const newPosition = (this.dragPosition = { top, left });
 
     // Call callback with this data
     const { x, y } = calcXY(positionParams, top, left, w, h);
@@ -555,9 +520,10 @@ export default class GridItem extends React.Component<Props, State> {
       throw new Error("onDragEnd called before onDragStart.");
     }
     const { w, h, i } = this.props;
-    const { left, top } = this.state.dragging;
+    const { left, top } = this.dragPosition;
     const newPosition: PartialPosition = { top, left };
-    this.setState({ dragging: null });
+    this.setState({ dragging: false });
+    this.dragPosition = { left: 0, top: 0 };
 
     const { x, y } = calcXY(this.getPositionParams(), top, left, w, h);
 
@@ -573,12 +539,17 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  onResizeStop: GridItemResizeCallback = (e, callbackData, position) =>
+  onResizeStop: GridItemResizeCallback = (e, callbackData, position) => {
+    this.setState({ resizing: false });
+    this.resizePosition = { top: 0, left: 0, width: 0, height: 0 };
     this.onResizeHandler(e, callbackData, position, "onResizeStop");
+  };
 
   // onResizeStart event handler
-  onResizeStart: GridItemResizeCallback = (e, callbackData, position) =>
+  onResizeStart: GridItemResizeCallback = (e, callbackData, position) => {
+    this.setState({ resizing: true });
     this.onResizeHandler(e, callbackData, position, "onResizeStart");
+  };
 
   // onResize event handler
   onResize: GridItemResizeCallback = (e, callbackData, position) =>
@@ -598,7 +569,7 @@ export default class GridItem extends React.Component<Props, State> {
     const { x, y, i, maxH, minH, containerWidth } = this.props;
     const { minW, maxW } = this.props;
 
-    // Clamping of dimensions based on resize direction
+    // Sizing and clamping of dimensions based on resize direction
     let updatedSize = size;
     if (node) {
       updatedSize = resizeItemInDirection(
@@ -607,12 +578,8 @@ export default class GridItem extends React.Component<Props, State> {
         size,
         containerWidth
       );
-      flushSync(() => {
-        this.setState({
-          resizing: handlerName === "onResizeStop" ? null : updatedSize
-        });
-      });
     }
+    this.resizePosition = updatedSize;
 
     // Get new XY based on pixel size
     let { w, h } = calcWH(
@@ -650,7 +617,8 @@ export default class GridItem extends React.Component<Props, State> {
       y,
       w,
       h,
-      this.state
+      this.state.dragging ? this.dragPosition : null,
+      this.state.resizing ? this.resizePosition : null
     );
     const child = React.Children.only(this.props.children);
 

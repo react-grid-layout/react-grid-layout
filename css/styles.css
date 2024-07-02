@@ -46,7 +46,13 @@
   position: absolute;
   width: 20px;
   height: 20px;
+  opacity: 0;
 }
+
+.react-grid-item:hover > .react-resizable-handle {
+  opacity: 1;
+}
+
 
 .react-grid-item > .react-resizable-handle::after {
   content: "";
