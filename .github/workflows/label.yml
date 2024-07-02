@@ -1,16 +1,13 @@
 ---
 name: Pull request labeler
 on:
-  schedule:
-    - cron: "*/5 * * * *"
+  - pull_request_target
 jobs:
   labeler:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - uses: paulfantom/periodic-labeler@master
-        permissions:
-          issues: write
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          LABEL_MAPPINGS_FILE: .github/labeler.yml
+      - id: label-the-PR
+        uses: actions/labeler@v5
