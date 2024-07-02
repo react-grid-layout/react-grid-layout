@@ -1,29 +1,41 @@
 documentation:
-  - test/examples/**/*
-  - README.md
-  - examples/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - test/examples/**/*
+          - README.md
+          - examples/**/*
 
 core:
-  - lib/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - lib/**/*
 
 release:
-  - dist/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - dist/**/*
 
 tests:
-  - test/spec/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - test/spec/**/*
 
 deps:
-  - yarn.lock
+  - changed-files:
+      - any-glob-to-any-file:
+          - yarn.lock
 
 infrastructure:
-  - .github/**/*
-  - .babelrc
-  - .eslintignore
-  - .eslintrc.json
-  - .flowconfig
-  - .gitignore
-  - .npmignore
-  - .travis.yml
-  - build.sh
-  - package.json
-  - webpack*
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/**/*
+          - .babelrc
+          - .eslintignore
+          - .eslintrc.json
+          - .flowconfig
+          - .gitignore
+          - .npmignore
+          - .travis.yml
+          - build.sh
+          - package.json
+          - webpack*
