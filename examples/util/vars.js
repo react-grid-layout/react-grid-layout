@@ -148,7 +148,7 @@ module.exports = [
     ]
   },
   {
-    title: "Responsive Style",
+    title: "Bootstrap-style Responsive Grid",
     source: "responsive-bootstrap-style",
     paragraphs: [
       "This demonstrates how to use ResponsiveGridLayout to create a Bootstrap-style responsive grid."

@@ -37,16 +37,16 @@ RGL is React-only and does not require jQuery.
 
 ## Demos
 
-1. [Showcase](https://react-grid-layout.github.io/react-grid-layout/examples/0-showcase.html)
-1. [Basic](https://react-grid-layout.github.io/react-grid-layout/examples/1-basic.html)
-1. [No Dragging/Resizing (Layout Only)](https://react-grid-layout.github.io/react-grid-layout/examples/2-no-dragging.html)
-1. [Messy Layout Autocorrect](https://react-grid-layout.github.io/react-grid-layout/examples/3-messy.html)
-1. [Layout Defined on Children](https://react-grid-layout.github.io/react-grid-layout/examples/4-grid-property.html)
-1. [Static Elements](https://react-grid-layout.github.io/react-grid-layout/examples/5-static-elements.html)
-1. [Adding/Removing Elements](https://react-grid-layout.github.io/react-grid-layout/examples/6-dynamic-add-remove.html)
-1. [Saving Layout to LocalStorage](https://react-grid-layout.github.io/react-grid-layout/examples/7-localstorage.html)
-1. [Saving a Responsive Layout to LocalStorage](https://react-grid-layout.github.io/react-grid-layout/examples/8-localstorage-responsive.html)
-1. [Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/9-min-max-wh.html)
+1. [Showcase](https://react-grid-layout.github.io/react-grid-layout/examples/00-showcase.html)
+1. [Basic](https://react-grid-layout.github.io/react-grid-layout/examples/01-basic.html)
+1. [No Dragging/Resizing (Layout Only)](https://react-grid-layout.github.io/react-grid-layout/examples/02-no-dragging.html)
+1. [Messy Layout Autocorrect](https://react-grid-layout.github.io/react-grid-layout/examples/03-messy.html)
+1. [Layout Defined on Children](https://react-grid-layout.github.io/react-grid-layout/examples/04-grid-property.html)
+1. [Static Elements](https://react-grid-layout.github.io/react-grid-layout/examples/05-static-elements.html)
+1. [Adding/Removing Elements](https://react-grid-layout.github.io/react-grid-layout/examples/06-dynamic-add-remove.html)
+1. [Saving Layout to LocalStorage](https://react-grid-layout.github.io/react-grid-layout/examples/07-localstorage.html)
+1. [Saving a Responsive Layout to LocalStorage](https://react-grid-layout.github.io/react-grid-layout/examples/08-localstorage-responsive.html)
+1. [Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/09-min-max-wh.html)
 1. [Dynamic Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/10-dynamic-min-max-wh.html)
 1. [No Vertical Compacting (Free Movement)](https://react-grid-layout.github.io/react-grid-layout/examples/11-no-vertical-compact.html)
 1. [Prevent Collision](https://react-grid-layout.github.io/react-grid-layout/examples/12-prevent-collision.html)
@@ -54,7 +54,7 @@ RGL is React-only and does not require jQuery.
 1. [Toolbox](https://react-grid-layout.github.io/react-grid-layout/examples/14-toolbox.html)
 1. [Drag From Outside](https://react-grid-layout.github.io/react-grid-layout/examples/15-drag-from-outside.html)
 1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/16-bounded.html)
-1. [Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/17-resizable-handles.html)
+1. [Responsive Bootstrap-style Layout](https://react-grid-layout.github.io/react-grid-layout/examples/17-responsive-bootstrap-style.html)
 1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
 1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
 1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html)
@@ -301,13 +301,11 @@ draggableHandle: ?string = '',
 // Compaction type.
 compactType: ?('vertical' | 'horizontal' | null) = 'vertical';
 
-// Layout is an array of object with the format:
-// {x: number, y: number, w: number, h: number}
+// Layout is an array of objects with the format:
 // The index into the layout must match the key used on each item component.
 // If you choose to use custom keys, you can specify that key in the layout
-// array objects like so:
-// {i: string, x: number, y: number, w: number, h: number}
-layout: ?array = null, // If not provided, use data-grid props on children
+// array objects using the `i` prop.
+layout: ?Array<{i?: string, x: number, y: number, w: number, h: number}> = null, // If not provided, use data-grid props on children
 
 // Margin between items [x, y] in px.
 margin: ?[number, number] = [10, 10],

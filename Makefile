@@ -15,7 +15,10 @@ MIN_MAP = $(DIST)/react-grid-layout.min.js.map
 build: clean build-js $(MIN)
 
 clean:
-	rm -rf $(BUILD) $(DIST) $(EXAMPLES)
+	rm -rf $(BUILD) $(DIST)
+
+clean-example:
+	rm -rf $(EXAMPLES)
 
 dev:
 	@$(EXEC) webpack serve --config webpack-dev-server.config.js \
@@ -33,16 +36,15 @@ build-js:
 	@$(EXEC) babel --out-dir $(BUILD) $(LIB)
 
 # Will build for use on github pages. Full url of page is
-# https://react-grid-layout.github.io/react-grid-layout/examples/0-showcase.html
+# https://react-grid-layout.github.io/react-grid-layout/examples/00-showcase.html
 # so the CONTENT_BASE should adapt.
-build-example: clean
+build-example: build clean-example
 	@$(EXEC) webpack --config webpack-examples.config.js
-	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
+	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js
 
 # Note: this doesn't hot reload, you need to re-run to update files.
 # TODO fix that
-view-example: clean
-	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/generate.js
+view-example: build-example
 	@$(EXEC) webpack serve --config webpack-examples.config.js --progress
 
 # FIXME flow is usually global
