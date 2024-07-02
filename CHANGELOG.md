@@ -5,7 +5,7 @@
 ### Bugfixes
 
 - Fix position logic when draggable item is dragged into the grid. We no longer use the deprecated / non-standard `e.nativeEvent.layer{X,Y}` properties. [#1915](https://github.com/react-grid-layout/react-grid-layout/pull/1915)
-- Fix drag values according to containerPadding. Previously, when dragging an item, the intuited position within the grid was *not* modified by `containerPadding`, causing it to off by that value. On most grids, this is only set to `[10, 10]`, so this may not have been noticeable, but for higher values it was very obvious. Thanks @hywlss9. [#1323](https://github.com/react-grid-layout/react-grid-layout/pull/1323)
+- Fix drag values according to containerPadding. Previously, when dragging an item, the intuited position within the grid was _not_ modified by `containerPadding`, causing it to off by that value. On most grids, this is only set to `[10, 10]`, so this may not have been noticeable, but for higher values it was very obvious. Thanks @hywlss9. [#1323](https://github.com/react-grid-layout/react-grid-layout/pull/1323)
 - Various lint/dependency fixes.
 
 ## 1.4.3 (Nov 8, 2023)
