@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "style-loader!css-loader!../css/styles.css";
-import "style-loader!css-loader!../examples/example-styles.css";
+import "style-loader!css-loader!../examples/util/example-styles.css";
 typeof window !== "undefined" && (window.React = React); // for devtools
 
 export default function makeLayout(Layout) {

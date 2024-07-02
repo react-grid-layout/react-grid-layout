@@ -26,14 +26,16 @@ export default class BootstrapStyleLayout extends React.PureComponent {
         onLayoutChange={this.onLayoutChange}
         {...this.props}
       >
-        <div
-          data-grid={{
-            w: { lg: 6, md: 5, sm: 3, xs: 4, xxs: 2 },
-            h: { lg: 4, xxs: 3 }
-          }}
-        >
-          0
-        </div>
+        {[1,2,3,4,5].map(i => (
+          <div
+            data-grid={{
+              w: { lg: 6, md: 5, sm: 3, xs: 4, xxs: 2 },
+              h: { lg: 4, xxs: 3 }
+            }}
+          >
+            {i}
+          </div>
+        ))}
       </ResponsiveReactGridLayout>
     );
   }
