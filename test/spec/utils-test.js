@@ -657,35 +657,38 @@ describe("calcWH", () => {
 
 describe("calcXY", () => {
   const mockPositionParams = {
-    margin: [0, 0],
-    containerPadding: [0, 0],
-    containerWidth: 500,
+    margin: [20, 20],
+    containerPadding: [50, 50],
+    containerWidth: 560,
     cols: 4,
     rowHeight: 100,
     maxRows: 3
   };
 
   it("return {x:0, y:0}", () => {
-    const TOP = 10;
-    const LEFT = 10;
-    const W = 300;
-    const H = 100;
+    // Midpoint between x=0 and x=1 is at 110
+    const LEFT = 109;
+    const TOP = 100;
+    const W = 1;
+    const H = 1;
     const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
     expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 0 }));
   });
   it("return {x:1, y:0}", () => {
+    // Midpoint between x=0 and x=1 is at 110
+    const LEFT = 111;
     const TOP = 0;
-    const LEFT = 100;
-    const W = 0;
-    const H = 0;
+    const W = 1;
+    const H = 1;
     const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
     expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 1, y: 0 }));
   });
   it("return {x:0, y:1}", () => {
-    const TOP = 110;
-    const LEFT = 0;
-    const W = 0;
-    const H = 0;
+    // Midpoint of x=0, y=1 is at (100, 220)
+    const LEFT = 50;
+    const TOP = 170;
+    const W = 1;
+    const H = 1;
     const res = calcXY(mockPositionParams, TOP, LEFT, W, H);
     expect(JSON.stringify(res)).toBe(JSON.stringify({ x: 0, y: 1 }));
   });
