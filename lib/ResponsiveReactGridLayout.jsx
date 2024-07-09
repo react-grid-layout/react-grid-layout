@@ -31,7 +31,7 @@ const type = obj => Object.prototype.toString.call(obj);
  * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
  * @return {Array}
  */
-function getIndentationValue<T: ?[number, number]>(
+function getIndentationValue<T: ?[number, number] | ?[number, number, number, number]>(
   param: { [key: string]: T } | T,
   breakpoint: string
 ): T {
@@ -59,7 +59,7 @@ type Props<Breakpoint: string = string> = {|
   width: number,
   margin: { [key: Breakpoint]: [number, number] } | [number, number],
   /* prettier-ignore */
-  containerPadding: { [key: Breakpoint]: ?[number, number] } | ?[number, number],
+  containerPadding: { [key: Breakpoint]: ?[number, number] | ?[number, number, number, number] } | ?[number, number] | ?[number, number, number, number],
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -68,7 +68,7 @@ type Props<Breakpoint: string = string> = {|
     containerWidth: number,
     margin: [number, number],
     cols: number,
-    containerPadding: ?[number, number]
+    containerPadding: ?[number, number] | ?[number, number, number, number]
   ) => void
 |};
 
