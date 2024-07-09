@@ -227,7 +227,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       ? this.props.containerPadding.length === 2
         ? this.props.containerPadding[1] * 2
         : this.props.containerPadding[0] + this.props.containerPadding[2]
-      : this.props.margin[1];
+      : this.props.margin[1] * 2;
     return (
       nbRow * this.props.rowHeight +
       (nbRow - 1) * this.props.margin[1] +
