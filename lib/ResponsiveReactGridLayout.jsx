@@ -118,7 +118,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
 
     // # of containerPadding. This is a breakpoint -> containerPadding map
     // e.g. { lg: [5, 5], md: [10, 10], sm: [15, 15] }
-    // Padding inside the container [x, y] in px
+    // Padding inside the container [x, y] or [top, right, bottom, left] in px
     // e.g. [10, 10]
     containerPadding: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 
