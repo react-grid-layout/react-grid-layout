@@ -375,14 +375,14 @@ describe("Lifecycle tests", function () {
         expect(gridLayout.state("droppingDOMNode")).toEqual(null);
 
         // Drag the droppable over the grid layout.
-        dragDroppableTo(wrapper, 200, 150);
+        dragDroppableTo(wrapper, 200, 140);
 
         // We should have the position in our state.
         expect(gridLayout.state("droppingPosition")).toHaveProperty(
           "left",
           200
         );
-        expect(gridLayout.state("droppingPosition")).toHaveProperty("top", 150);
+        expect(gridLayout.state("droppingPosition")).toHaveProperty("top", 140);
         // We should now have the placeholder element in our state.
         expect(gridLayout.state("droppingDOMNode")).toHaveProperty(
           "type",
