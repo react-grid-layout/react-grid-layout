@@ -31,10 +31,9 @@ const type = obj => Object.prototype.toString.call(obj);
  * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
  * @return {Array}
  */
-function getIndentationValue<T: ?[number, number] | ?[number, number, number, number]>(
-  param: { [key: string]: T } | T,
-  breakpoint: string
-): T {
+function getIndentationValue<
+  T: ?[number, number] | ?[number, number, number, number]
+>(param: { [key: string]: T } | T, breakpoint: string): T {
   // $FlowIgnore TODO fix this typedef
   if (param == null) return null;
   // $FlowIgnore TODO fix this typedef
