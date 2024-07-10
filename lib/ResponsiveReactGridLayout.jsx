@@ -1,25 +1,23 @@
 // @flow
-import * as React from "react";
-import PropTypes from "prop-types";
 import { deepEqual } from "fast-equals";
+import PropTypes from "prop-types";
+import * as React from "react";
 
+import ReactGridLayout from "./ReactGridLayout";
+import {
+  findOrGenerateResponsiveLayout,
+  getBreakpointFromWidth,
+  getColsFromBreakpoint,
+  type ResponsiveLayout
+} from "./responsiveUtils";
 import {
   cloneLayout,
+  noop,
   synchronizeLayoutWithChildren,
   validateLayout,
-  noop,
   type Layout,
   type Pick
 } from "./utils";
-import {
-  getBreakpointFromWidth,
-  getColsFromBreakpoint,
-  findOrGenerateResponsiveLayout,
-  type ResponsiveLayout,
-  type OnLayoutChangeCallback,
-  type Breakpoints
-} from "./responsiveUtils";
-import ReactGridLayout from "./ReactGridLayout";
 
 // $FlowFixMe[method-unbinding]
 const type = obj => Object.prototype.toString.call(obj);
@@ -175,7 +173,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
   state: State = this.generateInitialState();
 
   generateInitialState(): State {
-    const { width, breakpoints, layouts, cols } = this.props;
+    const { width, breakpoints, layouts, cols, maxRows } = this.props;
     const breakpoint = getBreakpointFromWidth(breakpoints, width);
     const colNo = getColsFromBreakpoint(breakpoint, cols);
     // verticalCompact compatibility, now deprecated
@@ -189,7 +187,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
       breakpoint,
       breakpoint,
       colNo,
-      compactType
+      compactType,
+      maxRows
     );
 
     return {
@@ -215,7 +214,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
         breakpoint,
         breakpoint,
         cols,
-        nextProps.compactType
+        nextProps.compactType,
+        nextProps.maxRows
       );
       return { layout: newLayout, layouts: nextProps.layouts };
     }
@@ -248,7 +248,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
    * Width changes are necessary to figure out the widget widths.
    */
   onWidthChange(prevProps: Props<*>) {
-    const { breakpoints, cols, layouts, compactType } = this.props;
+    const { breakpoints, cols, layouts, compactType, maxRows } = this.props;
     const newBreakpoint =
       this.props.breakpoint ||
       getBreakpointFromWidth(this.props.breakpoints, this.props.width);
@@ -274,7 +274,8 @@ export default class ResponsiveReactGridLayout extends React.Component<
         newBreakpoint,
         lastBreakpoint,
         newCols,
-        compactType
+        compactType,
+        maxRows
       );
 
       // This adds missing items.
