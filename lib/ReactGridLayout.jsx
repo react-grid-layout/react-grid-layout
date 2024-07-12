@@ -552,6 +552,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols,
       margin,
       containerPadding,
+      enableUserSelectHack,
       rowHeight,
       maxRows,
       useCSSTransforms,
@@ -571,6 +572,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         }`}
         containerWidth={width}
         cols={cols}
+        enableUserSelectHack={enableUserSelectHack}
         margin={margin}
         containerPadding={containerPadding || margin}
         maxRows={maxRows}
