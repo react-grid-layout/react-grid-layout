@@ -1,9 +1,10 @@
 "use strict";
 const fs = require("fs");
 const ejs = require("ejs");
+const path = require("path");
 const data = require("./vars");
 const tpl = fs.readFileSync(__dirname + "/template.ejs").toString();
-const version = require('../package.json').version;
+const version = require('../../package.json').version;
 
 const base = process.env.CONTENT_BASE;
 if (typeof base !== "string") {
@@ -15,11 +16,14 @@ const banner =
 
 data.forEach(function(datum, i) {
   datum.base = base.replace(/\/$/, ""); // trim trailing slash
-  datum.index = i;
+  datum.index = (i).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
   datum.banner = banner;
   datum.previous = data[i - 1];
   datum.next = data[i + 1];
   datum.version = version;
+});
+
+data.forEach(function(datum, i) {
   const html = ejs.render(tpl, datum);
-  fs.writeFileSync(__dirname + "/" + i + "-" + datum.source + ".html", html);
+  fs.writeFileSync(path.resolve(__dirname, '..', `${datum.index}-${datum.source}.html`), html);
 });

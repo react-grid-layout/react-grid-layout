@@ -148,10 +148,10 @@ module.exports = [
     ]
   },
   {
-    title: "Resizable Handles",
-    source: "resizable-handles",
+    title: "Bootstrap-style Responsive Grid",
+    source: "responsive-bootstrap-style",
     paragraphs: [
-      "This demonstrates how to implement resizable handles for any corner."
+      "This demonstrates how to use ResponsiveGridLayout to create a Bootstrap-style responsive grid."
     ]
   },
   {
@@ -174,5 +174,12 @@ module.exports = [
     paragraphs: [
       "This shows a grid with all resizable handles enabled. See the prop `resizableHandles` on the grid and grid items in the README."
     ]
-  }
+  },
+  {
+    title: "Single Row Horizontal",
+    source: "horizontal",
+    paragraphs: [
+      "This demonstrates how to constrain the elements to a single row."
+    ]
+  },
 ];
