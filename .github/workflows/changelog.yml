@@ -1,4 +1,6 @@
 name: "changelog"
+permissions:
+  contents: write
 on:
   push:
     tags:
@@ -17,8 +19,6 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v2
         with:
           configuration: ".github/changelog-configuration.json"
-        permissions:
-          contents: write
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -28,7 +28,5 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           body: ${{steps.github_release.outputs.changelog}}
-        permissions:
-          contents: write
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
