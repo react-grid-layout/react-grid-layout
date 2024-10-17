@@ -80,6 +80,7 @@ RGL is React-only and does not require jQuery.
 - [Statsout](https://statsout.com/)
 - [Datto RMM](https://www.datto.com/uk/products/rmm/)
 - [SquaredUp](https://squaredup.com/)
+- [MINEO](https://mineo.app/)
 
 _Know of others? Create a PR to let me know!_
 
