@@ -704,7 +704,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     } = this.props;
     // Allow user to customize the dropping item or short-circuit the drop based on the results
     // of the `onDragOver(e: Event)` callback.
-    const onDragOverResult = onDropDragOver?.(e);
+    const { dragOffsetX = 0, ...onDragOverResult } = onDropDragOver?.(e) ?? {};
     if (onDragOverResult === false) {
       if (this.state.droppingDOMNode) {
         this.removeDroppingPlaceholder();
@@ -719,9 +719,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const gridRect = e.currentTarget.getBoundingClientRect(); // The grid's position in the viewport
 
     // Calculate the mouse position relative to the grid
+
     const xUnitInPixels = width / cols;
     const yUnitInPixels = rowHeight;
-    const layerX = Math.max(0, Math.round(e.clientX - gridRect.left - ((finalDroppingItem.w / 2) * xUnitInPixels)));
+    const layerX = Math.max(0, Math.round(e.clientX - gridRect.left + dragOffsetX - ((finalDroppingItem.w / 2) * xUnitInPixels)));
     const layerY = Math.max(0, Math.round(e.clientY - gridRect.top - ((finalDroppingItem.h / 2) * yUnitInPixels)));
     const droppingPosition = {
       left: layerX / transformScale,
