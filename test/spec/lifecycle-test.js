@@ -462,7 +462,7 @@ describe("Lifecycle tests", function () {
         });
       });
 
-      it("should translate correctly when isBounded is true", () => {
+      it("should transform output correctly when isBounded is true", () => {
         let transform = "transform";
 
         const wrapper = mount(
