@@ -503,10 +503,10 @@ export default class GridItem extends React.Component<Props, State> {
       const { offsetParent } = node;
 
       if (offsetParent) {
-        const { margin, rowHeight,  } = this.props;
+        const { margin, rowHeight } = this.props;
         const bottomBoundary =
           offsetParent.clientHeight - calcGridItemWHPx(h, rowHeight, margin[1]);
-        top = clamp(top , 0, bottomBoundary);
+        top = clamp(top, 0, bottomBoundary);
 
         const colWidth = calcGridColWidth(positionParams);
         const rightBoundary =
