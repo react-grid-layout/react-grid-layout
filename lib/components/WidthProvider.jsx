@@ -58,6 +58,7 @@ export default function WidthProvideRGL<Config>(
     };
 
     elementRef: ReactRef<HTMLDivElement> = React.createRef();
+    prevRefValue: HTMLDivElement | null = null;
     mounted: boolean = false;
     resizeObserver: ResizeObserver;
 
@@ -74,6 +75,21 @@ export default function WidthProvideRGL<Config>(
       if (node instanceof HTMLElement) {
         this.resizeObserver.observe(node);
       }
+    }
+
+    componentDidUpdate() {
+      const currentRefValue = this.elementRef.current;
+
+      if (this.prevRefValue !== currentRefValue) {
+        const node = this.elementRef.current;
+        if (node instanceof HTMLElement) {
+          this.resizeObserver.unobserve(node);
+          this.resizeObserver.disconnect();
+          this.resizeObserver.observe(node);
+        }
+      }
+
+      this.prevRefValue = currentRefValue;
     }
 
     componentWillUnmount() {
