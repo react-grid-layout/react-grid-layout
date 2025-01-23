@@ -97,11 +97,11 @@
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-w {
   left: 0;
-  transform: rotate(270deg);
+  transform: rotate(deg);
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
   right: 0;
-  transform: rotate(270deg);
+  transform: rotate(315deg);
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-n,
 .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
@@ -111,7 +111,7 @@
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-n {
   top: 0;
-  transform: rotate(270deg);
+  transform: rotate(225deg);
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
   bottom: 0;
