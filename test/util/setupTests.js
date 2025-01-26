@@ -22,3 +22,25 @@ Object.defineProperty(HTMLElement.prototype, "offsetParent", {
     return this.parentNode;
   }
 });
+
+// Mock ResizeObserver globally to simulate element resize events in tests
+global.ResizeObserver = class {
+  constructor(callback) {
+    this.callback = callback;
+    this.observations = new Map();
+  }
+  observe(element) {
+    this.observations.set(element, {});
+  }
+  unobserve(element) {
+    this.observations.delete(element);
+  }
+  disconnect() {
+    this.observations.clear();
+  }
+  // Simulate a resize event
+  resize(element, size) {
+    if (this.observations.has(element)) {
+      this.callback([{ target: element, contentRect: size }]);
+    }
+  }}
