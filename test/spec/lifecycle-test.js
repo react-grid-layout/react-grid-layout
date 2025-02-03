@@ -3,7 +3,6 @@
 
 import React from "react";
 import _ from "lodash";
-import TestUtils from "react-dom/test-utils";
 import ReactGridLayout from "../../lib/ReactGridLayout";
 import { calcGridItemPosition } from "../../lib/calculateUtils";
 import GridItem from "../../lib/GridItem";
@@ -192,7 +191,7 @@ describe("Lifecycle tests", function () {
             onDrag={mockOnDrag}
           />
         );
-        TestUtils.act(() => {
+        React.act(() => {
           renderedItem.setState({ dragging: true });
           renderedItem.setProps({
             droppingPosition: { left: 700, top: 300, e: {} }
