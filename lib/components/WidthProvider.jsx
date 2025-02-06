@@ -1,7 +1,6 @@
 // @flow
 import * as React from "react";
 import PropTypes from "prop-types";
-import ResizeObserver from "resize-observer-polyfill";
 import clsx from "clsx";
 import type { ReactRef } from "../ReactGridLayoutPropTypes";
 
@@ -9,15 +8,10 @@ type WPDefaultProps = {|
   measureBeforeMount: boolean
 |};
 
-// eslint-disable-next-line no-unused-vars
 type WPProps = {|
   className?: string,
   style?: Object,
   ...WPDefaultProps
-|};
-
-type WPState = {|
-  width: number
 |};
 
 type ComposedProps<Config> = {|
@@ -30,81 +24,70 @@ type ComposedProps<Config> = {|
 
 const layoutClassName = "react-grid-layout";
 
-/*
- * A simple HOC that provides facility for listening to container resizes.
- *
- * The Flow type is pretty janky here. I can't just spread `WPProps` into this returned object - I wish I could - but it triggers
- * a flow bug of some sort that causes it to stop typechecking.
- */
+// Functional HOC that provides width measurement using ResizeObserver and hooks.
 export default function WidthProvideRGL<Config>(
-  ComposedComponent: React.AbstractComponent<Config>
-): React.AbstractComponent<ComposedProps<Config>> {
-  return class WidthProvider extends React.Component<
-    ComposedProps<Config>,
-    WPState
-  > {
-    static defaultProps: WPDefaultProps = {
-      measureBeforeMount: false
-    };
+  ComposedComponent: React.ComponentType<Config>
+): React.ComponentType<ComposedProps<Config>> {
+  function WidthProvider(props: ComposedProps<Config>) {
+    const { measureBeforeMount, className, style, ...rest } = props;
 
-    static propTypes = {
-      // If true, will not render children until mounted. Useful for getting the exact width before
-      // rendering, to prevent any unsightly resizing.
-      measureBeforeMount: PropTypes.bool
-    };
+    // Use state to hold measured width, initially 1280 as default.
+    const [width, setWidth] = React.useState(1280);
+    // Track mounted state to conditionally render children.
+    const [mounted, setMounted] = React.useState(false);
+    // Reference to the DOM node.
+    const elementRef: React.RefObject<?HTMLDivElement> = React.useRef(null);
 
-    state: WPState = {
-      width: 1280
-    };
-
-    elementRef: ReactRef<HTMLDivElement> = React.createRef();
-    mounted: boolean = false;
-    resizeObserver: ResizeObserver;
-
-    componentDidMount() {
-      this.mounted = true;
-      this.resizeObserver = new ResizeObserver(entries => {
-        const node = this.elementRef.current;
-        if (node instanceof HTMLElement) {
-          const width = entries[0].contentRect.width;
-          this.setState({ width });
+    React.useEffect(() => {
+      setMounted(true);
+      // Create a ResizeObserver instance to measure width changes.
+      const resizeObserver = new ResizeObserver(entries => {
+        if (entries.length === 0) return;
+        const entry = entries[0];
+        if (entry && entry.contentRect) {
+          setWidth(entry.contentRect.width);
         }
       });
-      const node = this.elementRef.current;
+      const node = elementRef.current;
       if (node instanceof HTMLElement) {
-        this.resizeObserver.observe(node);
+        resizeObserver.observe(node);
       }
-    }
+      // Cleanup function: unobserve and disconnect the observer.
+      return () => {
+        if (node instanceof HTMLElement) {
+          resizeObserver.unobserve(node);
+        }
+        resizeObserver.disconnect();
+      };
+    }, []);
 
-    componentWillUnmount() {
-      this.mounted = false;
-      const node = this.elementRef.current;
-      if (node instanceof HTMLElement) {
-        this.resizeObserver.unobserve(node);
-      }
-      this.resizeObserver.disconnect();
-    }
-
-    render() {
-      const { measureBeforeMount, ...rest } = this.props;
-      if (measureBeforeMount && !this.mounted) {
-        return (
-          <div
-            className={clsx(this.props.className, layoutClassName)}
-            style={this.props.style}
-            // $FlowIgnore ref types
-            ref={this.elementRef}
-          />
-        );
-      }
-
+    // If measureBeforeMount is true and component is not mounted yet,
+    // render a placeholder div with the same className and style.
+    if (measureBeforeMount && !mounted) {
       return (
-        <ComposedComponent
-          innerRef={this.elementRef}
-          {...rest}
-          {...this.state}
+        <div
+          className={clsx(className, layoutClassName)}
+          style={style}
+          ref={elementRef}
         />
       );
     }
+
+    // Render the composed component passing the measured width and innerRef.
+    return <ComposedComponent innerRef={elementRef} {...rest} width={width} />;
+  }
+
+  // Set default props for the HOC.
+  WidthProvider.defaultProps = {
+    measureBeforeMount: false
   };
+
+  // PropTypes validation.
+  WidthProvider.propTypes = {
+    measureBeforeMount: PropTypes.bool,
+    className: PropTypes.string,
+    style: PropTypes.object
+  };
+
+  return WidthProvider;
 }

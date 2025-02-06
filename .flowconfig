@@ -1,5 +1,5 @@
 [version]
-^0.172.0
+^0.259.1
 
 [ignore]
 <PROJECT_ROOT>/build/.*

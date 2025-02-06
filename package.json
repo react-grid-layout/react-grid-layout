@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "^1.5.0",
     "clsx": "^2.0.0",
     "fast-equals": "^5.2.2",
     "prop-types": "^15.8.1",
