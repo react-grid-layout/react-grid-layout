@@ -157,11 +157,22 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       return null;
     }
 
+    const hasParentSetNewLayout =
+      (!deepEqual(nextProps.layout, prevState.propsLayout) ||
+        !deepEqual(prevState.layout, prevState.propsLayout) ||
+        nextProps.compactType !== prevState.compactType) && !prevState.resizing &&
+      !prevState.layout.some(l => l.i === "__dropping-elem__");
+
+    // console.log("old logic = ", !deepEqual(nextProps.layout, prevState.propsLayout));
+    // console.log('prevState.resizing = ', prevState.resizing);
+    // console.log('nextProps.resizing = ', nextProps.resizing);
+    // console.log("new addition should be false = ", !deepEqual(prevState.layout, prevState.propsLayout));
+
     // Legacy support for compactType
     // Allow parent to set layout directly.
     if (
       !deepEqual(nextProps.layout, prevState.propsLayout) ||
-      nextProps.compactType !== prevState.compactType
+      nextProps.compactType !== prevState.compactType || hasParentSetNewLayout
     ) {
       newLayoutBase = nextProps.layout;
     } else if (!childrenEqual(nextProps.children, prevState.children)) {
@@ -173,6 +184,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // We need to regenerate the layout.
     if (newLayoutBase) {
+      // console.log('NOT SKIPPED');
       const newLayout = synchronizeLayoutWithChildren(
         newLayoutBase,
         nextProps.children,
@@ -187,6 +199,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         // getDerivedStateFromProps instead of componentDidMount (in which we would get extra rerender)
         compactType: nextProps.compactType,
         children: nextProps.children,
+        // If the user has updated the layout keep the update to prevent stale state,
+        // for example the user's this.props.onDragStop implementation updates the layout
         propsLayout: nextProps.layout
       };
     }
