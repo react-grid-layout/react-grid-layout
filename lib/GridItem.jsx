@@ -322,13 +322,13 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} pos Position object with width, height, left, top.
    * @return {Object}     Style object.
    */
-  createStyle(pos: Position): { [key: string]: ?string } {
+  createStyle(pos: Position, isDraggable: boolean): { [key: string]: ?string } {
     const { usePercentages, containerWidth, useCSSTransforms } = this.props;
 
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos);
+      style = setTransform(pos, isDraggable);
     } else {
       // top,left (slow)
       style = setTopLeft(pos);
@@ -657,7 +657,7 @@ export default class GridItem extends React.Component<Props, State> {
       style: {
         ...this.props.style,
         ...child.props.style,
-        ...this.createStyle(pos)
+        ...this.createStyle(pos, isDraggable)
       }
     });
 
