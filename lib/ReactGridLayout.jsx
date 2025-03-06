@@ -848,7 +848,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         {isDroppable &&
           this.state.droppingDOMNode &&
           this.processGridItem(this.state.droppingDOMNode, true)}
-        {this.placeholder()}
+        {/* {this.placeholder()} */}
       </div>
     );
   }
