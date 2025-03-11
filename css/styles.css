@@ -97,7 +97,7 @@
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-w {
   left: 0;
-  transform: rotate(135deg);
+  transform: rotate(deg);
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
   right: 0;
