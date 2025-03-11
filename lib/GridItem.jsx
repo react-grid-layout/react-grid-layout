@@ -294,11 +294,15 @@ export default class GridItem extends React.Component<Props, State> {
       const deltaX = droppingPosition.left - dragging.left;
       const deltaY = droppingPosition.top - dragging.top;
 
-      this.onDrag(droppingPosition.e, {
-        node,
-        deltaX,
-        deltaY
-      });
+      this.onDrag(
+        droppingPosition.e,
+        {
+          node,
+          deltaX,
+          deltaY
+        },
+        true // dontFLush: avoid flushSync to temper warnings
+      );
     }
   }
 
@@ -460,9 +464,7 @@ export default class GridItem extends React.Component<Props, State> {
     const pTop = parentRect.top / transformScale;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
-    flushSync(() => {
-      this.setState({ dragging: newPosition });
-    });
+    this.setState({ dragging: newPosition });
 
     // Call callback with this data
     const { x, y } = calcXY(
@@ -484,10 +486,12 @@ export default class GridItem extends React.Component<Props, State> {
    * onDrag event handler
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node, delta and position information
+   * @param  {boolean} dontFlush    if true, will not call flushSync
    */
-  onDrag: (Event, ReactDraggableCallbackData) => void = (
+  onDrag: (Event, ReactDraggableCallbackData, boolean) => void = (
     e,
-    { node, deltaX, deltaY }
+    { node, deltaX, deltaY },
+    dontFlush
   ) => {
     const { onDrag } = this.props;
     if (!onDrag) return;
@@ -519,9 +523,15 @@ export default class GridItem extends React.Component<Props, State> {
     }
 
     const newPosition: PartialPosition = { top, left };
-    flushSync(() => {
+
+    // dontFlush is set if we're calling from inside
+    if (dontFlush) {
       this.setState({ dragging: newPosition });
-    });
+    } else {
+      flushSync(() => {
+        this.setState({ dragging: newPosition });
+      });
+    }
 
     // Call callback with this data
     const { x, y } = calcXY(positionParams, top, left, w, h);
@@ -547,9 +557,7 @@ export default class GridItem extends React.Component<Props, State> {
     const { w, h, i } = this.props;
     const { left, top } = this.state.dragging;
     const newPosition: PartialPosition = { top, left };
-    flushSync(() => {
-      this.setState({ dragging: null });
-    });
+    this.setState({ dragging: null });
 
     const { x, y } = calcXY(this.getPositionParams(), top, left, w, h);
 
