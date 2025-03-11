@@ -14,6 +14,8 @@ MIN_MAP = $(DIST)/react-grid-layout.min.js.map
 
 build: clean build-js $(MIN)
 
+build-dev: clean build-js-dev $(MIN)
+
 clean:
 	rm -rf $(BUILD) $(DIST)
 
@@ -34,6 +36,9 @@ dist/%.min.js: $(LIB) $(BIN)
 
 build-js:
 	@$(EXEC) babel --out-dir $(BUILD) $(LIB)
+
+build-js-dev:
+	@$(EXEC) babel --watch --out-dir $(BUILD) $(LIB)
 
 # Will build for use on github pages. Full url of page is
 # https://react-grid-layout.github.io/react-grid-layout/examples/00-showcase.html

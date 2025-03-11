@@ -9,6 +9,7 @@ import {
   cloneLayoutItem,
   compact,
   compactType,
+  correctFixLayout,
   fastRGLPropsEqual,
   getAllCollisions,
   getLayoutItem,
@@ -201,6 +202,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       // handle changes properly, performance will increase.
       this.props.children !== nextProps.children ||
       !fastRGLPropsEqual(this.props, nextProps, deepEqual) ||
+      !fastRGLPropsEqual(this.state, nextState, deepEqual) ||
       this.state.activeDrag !== nextState.activeDrag ||
       this.state.mounted !== nextState.mounted ||
       this.state.droppingPosition !== nextState.droppingPosition
@@ -211,9 +213,13 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (!this.state.activeDrag) {
       const newLayout = this.state.layout;
       const oldLayout = prevState.layout;
+      const dom = document.getElementById('js_canvas')
 
-      this.onLayoutMaybeChanged(newLayout, oldLayout);
+      const layout = correctFixLayout(newLayout, { cols: this.props.cols }, dom?.clientHeight || 0)
+      this.setState({ layout })
+      this.onLayoutMaybeChanged(layout, oldLayout);
     }
+  
   }
 
   /**
@@ -253,7 +259,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (!l) return;
 
     // Create placeholder (display only)
-    const placeholder = {
+    let placeholder = {
       w: l.w,
       h: l.h,
       x: l.x,
@@ -261,6 +267,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       placeholder: true,
       i: i
     };
+
+    if (!node) {
+      placeholder = null
+    }
 
     this.setState({
       oldDragItem: cloneLayoutItem(l),
@@ -544,47 +554,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
    * Create a placeholder object.
    * @return {Element} Placeholder div.
    */
-  placeholder(): ?ReactElement<any> {
-    const { activeDrag } = this.state;
-    if (!activeDrag) return null;
-    const {
-      width,
-      cols,
-      margin,
-      containerPadding,
-      rowHeight,
-      maxRows,
-      useCSSTransforms,
-      transformScale
-    } = this.props;
-
-    // {...this.state.activeDrag} is pretty slow, actually
-    return (
-      <GridItem
-        w={activeDrag.w}
-        h={activeDrag.h}
-        x={activeDrag.x}
-        y={activeDrag.y}
-        i={activeDrag.i}
-        className={`react-grid-placeholder ${
-          this.state.resizing ? "placeholder-resizing" : ""
-        }`}
-        containerWidth={width}
-        cols={cols}
-        margin={margin}
-        containerPadding={containerPadding || margin}
-        maxRows={maxRows}
-        rowHeight={rowHeight}
-        isDraggable={false}
-        isResizable={false}
-        isBounded={false}
-        useCSSTransforms={useCSSTransforms}
-        transformScale={transformScale}
-      >
-        <div />
-      </GridItem>
-    );
-  }
 
   /**
    * Given a grid item, set its style attributes & surround in a <Draggable>.
@@ -613,13 +582,19 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       draggableCancel,
       draggableHandle,
       resizeHandles,
-      resizeHandle
+      resizeHandle,
+      isAdaptable,
     } = this.props;
     const { mounted, droppingPosition } = this.state;
 
     // Determine user manipulations possible.
     // If an item is static, it can't be manipulated by default.
     // Any properties defined directly on the grid item will take precedence.
+    const adaptable =
+      typeof l.isAdaptable === "boolean"
+        ? l.isAdaptable
+        : !l.static && isAdaptable;
+    const fixLayout = l.fixLayout ? l.fixLayout : { isFix: false, bottom: 0, left: 0, top: 0, right: 0 };
     const draggable =
       typeof l.isDraggable === "boolean"
         ? l.isDraggable
@@ -650,7 +625,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         onResize={this.onResize}
         onResizeStop={this.onResizeStop}
         isDraggable={draggable}
+        fixLayout={fixLayout}
         isResizable={resizable}
+        isAdaptable={adaptable}
         isBounded={bounded}
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
@@ -831,7 +808,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       height: this.containerHeight(),
       ...style
     };
-
     return (
       <div
         ref={innerRef}

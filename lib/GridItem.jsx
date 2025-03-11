@@ -31,7 +31,8 @@ import type {
   GridResizeEvent,
   DroppingPosition,
   Position,
-  ResizeHandleAxis
+  ResizeHandleAxis,
+  FixLayout,
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";
@@ -73,6 +74,8 @@ type Props = {
   maxRows: number,
   isDraggable: boolean,
   isResizable: boolean,
+  fixLayout: FixLayout,
+  isAdaptable?: boolean,
   isBounded: boolean,
   static?: boolean,
   useCSSTransforms?: boolean,
@@ -188,6 +191,8 @@ export default class GridItem extends React.Component<Props, State> {
     // Flags
     isDraggable: PropTypes.bool.isRequired,
     isResizable: PropTypes.bool.isRequired,
+    isAdaptable: PropTypes.bool,
+    fixLayout: PropTypes.object,
     isBounded: PropTypes.bool.isRequired,
     static: PropTypes.bool,
 
@@ -322,13 +327,13 @@ export default class GridItem extends React.Component<Props, State> {
    * @param  {Object} pos Position object with width, height, left, top.
    * @return {Object}     Style object.
    */
-  createStyle(pos: Position, isDraggable: boolean): { [key: string]: ?string } {
+  createStyle(pos: Position, isAdaptable: boolean, fixLayout: FixLayout): { [key: string]: ?string } {
     const { usePercentages, containerWidth, useCSSTransforms } = this.props;
 
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos, isDraggable);
+      style = setTransform(pos, isAdaptable, fixLayout);
     } else {
       // top,left (slow)
       style = setTopLeft(pos);
@@ -353,21 +358,23 @@ export default class GridItem extends React.Component<Props, State> {
     isDraggable: boolean
   ): ReactElement<any> {
     return (
-      <DraggableCore
-        disabled={!isDraggable}
-        onStart={this.onDragStart}
-        onDrag={this.onDrag}
-        onStop={this.onDragStop}
-        handle={this.props.handle}
-        cancel={
-          ".react-resizable-handle" +
-          (this.props.cancel ? "," + this.props.cancel : "")
-        }
-        scale={this.props.transformScale}
-        nodeRef={this.elementRef}
-      >
-        {child}
-      </DraggableCore>
+        <DraggableCore
+          disabled={!isDraggable}
+          onStart={this.onDragStart}
+          onDrag={this.onDrag}
+          onStop={this.onDragStop}
+          handle={this.props.handle}
+          cancel={
+            ".react-resizable-handle" +
+            (this.props.cancel ? "," + this.props.cancel : "")
+          }
+          scale={this.props.transformScale}
+          nodeRef={this.elementRef}
+        >
+          <div onClick={this.handleClick}>
+            {child}
+          </div>
+        </DraggableCore>
     );
   }
 
@@ -437,6 +444,19 @@ export default class GridItem extends React.Component<Props, State> {
     );
   }
 
+  handleClick: (Event) => void = (e) => {
+    if (!this.props.fixLayout.isFix) {
+      return;
+    }
+    const { onDragStart } = this.props;
+    if (!onDragStart) return;
+    onDragStart.call(this, this.props.i, this.props.x, this.props.y, {});
+  };
+
+
+  
+
+
   /**
    * onDragStart event handler
    * @param  {Event}  e             event data
@@ -450,7 +470,13 @@ export default class GridItem extends React.Component<Props, State> {
 
     // TODO: this wont work on nested parents
     const { offsetParent } = node;
-    if (!offsetParent) return;
+    if (!offsetParent) {
+      return onDragStart.call(this, this.props.i, this.props.x, this.props.y, {
+        e,
+        node,
+        newPosition
+      });
+    }
     const parentRect = offsetParent.getBoundingClientRect();
     const clientRect = node.getBoundingClientRect();
     const cLeft = clientRect.left / transformScale;
@@ -459,6 +485,7 @@ export default class GridItem extends React.Component<Props, State> {
     const pTop = parentRect.top / transformScale;
     newPosition.left = cLeft - pLeft + offsetParent.scrollLeft;
     newPosition.top = cTop - pTop + offsetParent.scrollTop;
+
     this.setState({ dragging: newPosition });
 
     // Call callback with this data
@@ -490,7 +517,8 @@ export default class GridItem extends React.Component<Props, State> {
     if (!onDrag) return;
 
     if (!this.state.dragging) {
-      throw new Error("onDrag called before onDragStart.");
+      // throw new Error("onDrag called before onDragStart.");
+      return;
     }
     let top = this.state.dragging.top + deltaY;
     let left = this.state.dragging.left + deltaX;
@@ -537,7 +565,8 @@ export default class GridItem extends React.Component<Props, State> {
     if (!onDragStop) return;
 
     if (!this.state.dragging) {
-      throw new Error("onDragEnd called before onDragStart.");
+      // throw new Error("onDragEnd called before onDragStart.");
+      return;
     }
     const { w, h, i } = this.props;
     const { left, top } = this.state.dragging;
@@ -624,7 +653,9 @@ export default class GridItem extends React.Component<Props, State> {
       isDraggable,
       isResizable,
       droppingPosition,
-      useCSSTransforms
+      useCSSTransforms,
+      isAdaptable = false,
+      fixLayout = { isFix: false, bottom: 0, left: 0, top: 0, right: 0 },
     } = this.props;
 
     const pos = calcGridItemPosition(
@@ -657,7 +688,7 @@ export default class GridItem extends React.Component<Props, State> {
       style: {
         ...this.props.style,
         ...child.props.style,
-        ...this.createStyle(pos, isDraggable)
+        ...this.createStyle(pos, isAdaptable, fixLayout)
       }
     });
 

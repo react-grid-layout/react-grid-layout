@@ -1,6 +1,6 @@
 {
   "name": "react-grid-layout-plus",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "validate": "npm ls",
     "flow": "flow",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "build-watch": "make build-js-dev"
   },
   "repository": {
     "type": "git",
