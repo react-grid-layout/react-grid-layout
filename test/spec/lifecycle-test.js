@@ -302,8 +302,7 @@ describe("Lifecycle tests", function () {
 
       // FIXME: This doesn't work since we rewrote to use <ResizeObserver>
       // See https://github.com/react-grid-layout/react-grid-layout/pull/1839
-      // eslint-disable-next-line no-undef
-      xit("Renders with WidthProvider measureBeforeMount", async function () {
+      it("Renders with WidthProvider measureBeforeMount", async function () {
         const wrapper = mount(<BasicLayout measureBeforeMount={true} />);
         expect(wrapper).toMatchSnapshot();
 
@@ -312,12 +311,10 @@ describe("Lifecycle tests", function () {
         // Renders a div first
         expect(widthProviderWrapper.childAt(0).name()).toEqual("div");
 
-        // Mock offsetWidth to return 500 and fire a resize
+        // Simulate a resize event using the mocked ResizeObserver and set width to 500
         const node = wrapper.getDOMNode();
-        Object.defineProperty(node, "offsetWidth", {
-          get: jest.fn(() => 500)
-        });
-        global.dispatchEvent(new Event("resize"));
+        const resizeObserverInstance = widthProviderWrapper.instance().resizeObserver       
+        resizeObserverInstance.resize(node, { width: 500 })
 
         wrapper.setProps({}); // force a rerender synchronously
 
@@ -328,23 +325,17 @@ describe("Lifecycle tests", function () {
 
       // FIXME: This doesn't work since we rewrote to use <ResizeObserver>
       // See https://github.com/react-grid-layout/react-grid-layout/pull/1839
-      // eslint-disable-next-line no-undef
-      xit("WidthProvider responds to window resize events", async function () {
+      it("WidthProvider responds to element resize events", async function () {
         const wrapper = mount(<BasicLayout />);
         const widthProviderWrapper = wrapper.childAt(0);
 
         // Original width
         expect(widthProviderWrapper.state().width).toEqual(1280);
 
-        // Mock offsetWidth to return 500
+        // Simulate a resize event using the mocked ResizeObserver and set width to 500
         const node = wrapper.getDOMNode();
-        Object.defineProperty(node, "offsetWidth", {
-          get: jest.fn(() => 500)
-        });
-
-        // Trigger the window resize event.
-        global.dispatchEvent(new Event("resize"));
-
+        const resizeObserverInstance = widthProviderWrapper.instance().resizeObserver       
+        resizeObserverInstance.resize(node, { width: 500 })
         // State should now be 500
         expect(widthProviderWrapper.state().width).toEqual(500);
       });
