@@ -14,6 +14,39 @@ import DroppableLayout from "../examples/15-drag-from-outside";
 import ResizableLayout from "../examples/20-resizable-handles";
 import deepFreeze from "../util/deepFreeze";
 import { mount } from "enzyme";
+import { IsBounded } from "../examples/test_demo.jsx";
+
+function mouseMove(x, y, node) {
+  const doc = node ? node.ownerDocument : document;
+  const evt = doc.createEvent("MouseEvents");
+  evt.initMouseEvent(
+    "mousemove",
+    true,
+    true,
+    window,
+    0,
+    0,
+    0,
+    x,
+    y,
+    false,
+    false,
+    false,
+    false,
+    0,
+    null
+  );
+  doc.dispatchEvent(evt);
+  return evt;
+}
+function simulateMovementFromTo(drag, fromX, fromY, toX, toY) {
+  TestUtils.Simulate.mouseDown(drag, {
+    clientX: fromX,
+    clientY: fromY
+  });
+  mouseMove(toX, toY, drag);
+  TestUtils.Simulate.mouseUp(drag);
+}
 
 describe("Lifecycle tests", function () {
   // Example layouts use randomness
@@ -427,6 +460,22 @@ describe("Lifecycle tests", function () {
           static: false,
           isDraggable: true
         });
+      });
+
+      it("should transform output correctly when isBounded is true", () => {
+        let transform = "transform";
+
+        const wrapper = mount(
+          <IsBounded
+            onDragStop={(_, __, ___, ____, _____, element) => {
+              transform = element.style.transform;
+            }}
+          />
+        );
+        const Item = wrapper.find("GridItem").at(1);
+
+        simulateMovementFromTo(Item.getDOMNode(), 0, 0, 10, 0);
+        expect(transform).toBe("translate(10px,0px)");
       });
 
       it("Allows customizing the droppable placeholder", function () {
