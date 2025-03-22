@@ -31,10 +31,9 @@ const type = obj => Object.prototype.toString.call(obj);
  * @param  {String} breakpoint   Breakpoint: lg, md, sm, xs and etc.
  * @return {Array}
  */
-function getIndentationValue<T: ?[number, number]>(
-  param: { [key: string]: T } | T,
-  breakpoint: string
-): T {
+function getIndentationValue<
+  T: ?[number, number] | ?[number, number, number, number]
+>(param: { [key: string]: T } | T, breakpoint: string): T {
   // $FlowIgnore TODO fix this typedef
   if (param == null) return null;
   // $FlowIgnore TODO fix this typedef
@@ -59,7 +58,7 @@ type Props<Breakpoint: string = string> = {|
   width: number,
   margin: { [key: Breakpoint]: [number, number] } | [number, number],
   /* prettier-ignore */
-  containerPadding: { [key: Breakpoint]: ?[number, number] } | ?[number, number],
+  containerPadding: { [key: Breakpoint]: ?[number, number] | ?[number, number, number, number] } | ?[number, number] | ?[number, number, number, number],
 
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
@@ -68,7 +67,7 @@ type Props<Breakpoint: string = string> = {|
     containerWidth: number,
     margin: [number, number],
     cols: number,
-    containerPadding: ?[number, number]
+    containerPadding: ?[number, number] | ?[number, number, number, number]
   ) => void
 |};
 
@@ -118,7 +117,7 @@ export default class ResponsiveReactGridLayout extends React.Component<
 
     // # of containerPadding. This is a breakpoint -> containerPadding map
     // e.g. { lg: [5, 5], md: [10, 10], sm: [15, 15] }
-    // Padding inside the container [x, y] in px
+    // Padding inside the container [x, y] or [top, right, bottom, left] in px
     // e.g. [10, 10]
     containerPadding: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 

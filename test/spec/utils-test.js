@@ -545,6 +545,15 @@ describe("calcGridColWidth", () => {
     expect(calcGridColWidth(positionParams)).toEqual(75);
   });
 
+  it("should consider individual container padding", () => {
+    const positionParams = {
+      ...basePositionParams,
+      containerPadding: [0, 100, 0, 200]
+    };
+    // (800 - 100 - 200 ) / 8
+    expect(calcGridColWidth(positionParams)).toEqual(62.5);
+  });
+
   it("should consider margin and padding", () => {
     const positionParams = {
       ...basePositionParams,

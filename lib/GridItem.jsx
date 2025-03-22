@@ -69,7 +69,7 @@ type Props = {
   cols: number,
   containerWidth: number,
   margin: [number, number],
-  containerPadding: [number, number],
+  containerPadding: [number, number] | [number, number, number, number],
   rowHeight: number,
   maxRows: number,
   isDraggable: boolean,
@@ -513,12 +513,20 @@ export default class GridItem extends React.Component<Props, State> {
         const { margin, rowHeight, containerPadding } = this.props;
         const bottomBoundary =
           offsetParent.clientHeight - calcGridItemWHPx(h, rowHeight, margin[1]);
-        top = clamp(top - containerPadding[1], 0, bottomBoundary);
+        const containerPaddingTop =
+          containerPadding.length === 2
+            ? containerPadding[1]
+            : containerPadding[0];
+        top = clamp(top - containerPaddingTop, 0, bottomBoundary);
 
         const colWidth = calcGridColWidth(positionParams);
         const rightBoundary =
           containerWidth - calcGridItemWHPx(w, colWidth, margin[0]);
-        left = clamp(left - containerPadding[0], 0, rightBoundary);
+        const containerPaddingLeft =
+          containerPadding.length === 2
+            ? containerPadding[0]
+            : containerPadding[3];
+        left = clamp(left - containerPaddingLeft, 0, rightBoundary);
       }
     }
 
