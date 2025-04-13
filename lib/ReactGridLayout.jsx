@@ -116,7 +116,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     onResize: noop,
     onResizeStop: noop,
     onDrop: noop,
-    onDropDragOver: noop
+    onDropDragOver: noop,
+    onItemStyleOverride: undefined
   };
 
   state: State = {
@@ -613,7 +614,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       draggableCancel,
       draggableHandle,
       resizeHandles,
-      resizeHandle
+      resizeHandle,
+      onItemStyleOverride
     } = this.props;
     const { mounted, droppingPosition } = this.state;
 
@@ -668,6 +670,12 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         droppingPosition={isDroppingItem ? droppingPosition : undefined}
         resizeHandles={resizeHandlesOptions}
         resizeHandle={resizeHandle}
+        styleOverrides={onItemStyleOverride ? 
+          (styles) => onItemStyleOverride(styles, { ...l, 
+            isDraggable: draggable, 
+            isResizable: resizable 
+          }) : 
+          undefined}
       >
         {child}
       </GridItem>

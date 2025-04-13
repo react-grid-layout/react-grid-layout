@@ -106,7 +106,10 @@ type Props = {
   onDragStop?: GridItemCallback<GridDragEvent>,
   onResize?: GridItemCallback<GridResizeEvent>,
   onResizeStart?: GridItemCallback<GridResizeEvent>,
-  onResizeStop?: GridItemCallback<GridResizeEvent>
+  onResizeStop?: GridItemCallback<GridResizeEvent>,
+
+  // Add new prop for style overrides
+  styleOverrides?: (styles: Object) => Object,
 };
 
 type DefaultProps = {
@@ -207,7 +210,10 @@ export default class GridItem extends React.Component<Props, State> {
       e: PropTypes.object.isRequired,
       left: PropTypes.number.isRequired,
       top: PropTypes.number.isRequired
-    })
+    }),
+
+    // Add prop type for style overrides
+    styleOverrides: PropTypes.func,
   };
 
   static defaultProps: DefaultProps = {
@@ -328,7 +334,7 @@ export default class GridItem extends React.Component<Props, State> {
    * @return {Object}     Style object.
    */
   createStyle(pos: Position): { [key: string]: ?string } {
-    const { usePercentages, containerWidth, useCSSTransforms } = this.props;
+    const { usePercentages, containerWidth, useCSSTransforms, styleOverrides } = this.props;
 
     let style;
     // CSS Transforms support (default)
@@ -343,6 +349,11 @@ export default class GridItem extends React.Component<Props, State> {
         style.left = perc(pos.left / containerWidth);
         style.width = perc(pos.width / containerWidth);
       }
+    }
+
+    // Allow style overrides
+    if (styleOverrides) {
+      style = styleOverrides(style);
     }
 
     return style;
