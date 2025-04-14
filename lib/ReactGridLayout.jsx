@@ -96,6 +96,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isBounded: false,
     isDraggable: true,
     isResizable: true,
+    isAdaptable: false,
     allowOverlap: false,
     isDroppable: false,
     useCSSTransforms: true,

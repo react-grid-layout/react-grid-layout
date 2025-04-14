@@ -333,7 +333,10 @@ export default class GridItem extends React.Component<Props, State> {
     let style;
     // CSS Transforms support (default)
     if (useCSSTransforms) {
-      style = setTransform(pos, isAdaptable, fixLayout);
+      style = setTransform({
+        ...pos,
+        i: this.props.i
+      }, isAdaptable, fixLayout);
     } else {
       // top,left (slow)
       style = setTopLeft(pos);
