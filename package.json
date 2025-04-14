@@ -1,6 +1,6 @@
 {
-  "name": "react-grid-layout",
-  "version": "1.5.0",
+  "name": "@incmix/react-grid-layout",
+  "version": "1.5.1",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "scripts": {
@@ -37,7 +37,6 @@
   },
   "homepage": "https://github.com/STRML/react-grid-layout",
   "dependencies": {
-    "@atlaskit/pragmatic-drag-and-drop": "^1.5.0",
     "clsx": "^2.0.0",
     "fast-equals": "^5.2.2",
     "prop-types": "^15.8.1",
