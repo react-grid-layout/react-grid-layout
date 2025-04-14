@@ -1,3 +1,4 @@
+import { createRoot } from "react-dom/client";
 import React from "react";
 import ReactDOM from "react-dom";
 import "style-loader!css-loader!../css/styles.css";
@@ -44,10 +45,8 @@ export default function makeLayout(Layout) {
   function run() {
     const contentDiv = document.getElementById("content");
     const gridProps = window.gridProps || {};
-    ReactDOM.render(
-      React.createElement(ListeningLayout, gridProps),
-      contentDiv
-    );
+    const root = createRoot(contentDiv);
+    root.render(React.createElement(ListeningLayout, gridProps));
   }
   if (!document.getElementById("content")) {
     document.addEventListener("DOMContentLoaded", run);
