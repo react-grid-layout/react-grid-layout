@@ -100,6 +100,8 @@ type Props = {
   maxH: number,
   i: string,
 
+  halfPage: string,
+
   resizeHandles?: ResizeHandleAxis[],
   resizeHandle?: ResizeHandle,
 
@@ -336,7 +338,7 @@ export default class GridItem extends React.Component<Props, State> {
       style = setTransform({
         ...pos,
         i: this.props.i
-      }, isAdaptable, fixLayout);
+      }, isAdaptable, fixLayout, this.props.halfPage);
     } else {
       // top,left (slow)
       style = setTopLeft(pos);

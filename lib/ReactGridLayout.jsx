@@ -103,6 +103,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     transformScale: 1,
     verticalCompact: true,
     compactType: "vertical",
+    halfPage: '',
     preventCollision: false,
     droppingItem: {
       i: "__dropping-elem__",
@@ -619,6 +620,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         rowHeight={rowHeight}
         cancel={draggableCancel}
         handle={draggableHandle}
+        halfPage={this.props.halfPage}
         onDragStop={this.onDragStop}
         onDragStart={this.onDragStart}
         onDrag={this.onDrag}
