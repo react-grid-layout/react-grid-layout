@@ -7,7 +7,7 @@ const ReactGridLayout = WidthProvider(RGL);
 export default class NoCompactingLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
-    items: 50,
+    items: 3,
     cols: 12,
     rowHeight: 30,
     onLayoutChange: function() {},
