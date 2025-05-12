@@ -1,6 +1,6 @@
 {
   "name": "@incmix/react-grid-layout",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
   "main": "index.js",
   "types": "index.d.ts",

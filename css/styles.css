@@ -117,3 +117,21 @@
   bottom: 0;
   transform: rotate(45deg);
 }
+
+.nested-grid {
+  height: 100%;
+  width: 100%;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.nested-grid-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

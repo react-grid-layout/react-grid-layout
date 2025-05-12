@@ -19,7 +19,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   static get defaultProps() {
     return {
       className: "layout",
-      cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+      cols: { lg: 12, md: 10, sm: 6 },
       rowHeight: 30
     };
   }
@@ -39,7 +39,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
         <button onClick={() => this.resetLayout()}>Reset Layout</button>
         <ResponsiveReactGridLayout
           className="layout"
-          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+          cols={{ lg: 12, md: 10, sm: 6 }}
           rowHeight={30}
           layouts={this.state.layouts}
           onLayoutChange={(layout, layouts) =>

@@ -276,9 +276,9 @@ ResponsiveReactGridLayout.propTypes = {
 };
 
 ResponsiveReactGridLayout.defaultProps = {
-  breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
-  cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-  containerPadding: { lg: null, md: null, sm: null, xs: null, xxs: null },
+  breakpoints: { lg: 1200, md: 996, sm: 768 },
+  cols: { lg: 12, md: 10, sm: 6 },
+  containerPadding: { lg: null, md: null, sm: null },
   layouts: {},
   margin: [10, 10],
   allowOverlap: false,

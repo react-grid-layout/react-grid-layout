@@ -13,7 +13,7 @@ export default class BootstrapStyleLayout extends React.PureComponent {
     items: 20,
     rowHeight: 30,
     onLayoutChange: function() {},
-    cols: {lg: 12, md: 12, sm: 12, xs: 12, xxs: 12}
+    cols: {lg: 12, md: 12, sm: 12}
   };
 
   state = {
@@ -36,7 +36,7 @@ export default class BootstrapStyleLayout extends React.PureComponent {
   // the viewport shrinks
   generateLayouts() {
     const times = [...Array(this.props.items)];
-    const widths = {lg: 3, md: 4, sm: 6, xs: 12, xxs: 12};
+    const widths = {lg: 3, md: 4, sm: 6};
     return Object.keys(widths).reduce((memo, breakpoint) => {
       const width = widths[breakpoint];
       const cols = this.props.cols[breakpoint];

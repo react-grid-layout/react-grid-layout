@@ -304,7 +304,7 @@ function GridItem(props: Props): ReactNode {
       e: Event,
       data: ResizeCallbackData,
       position: Position,
-      handlerName: string
+      handlerName: "onResizeStart" | "onResize" | "onResizeStop"
     ) => {
       const handler = props[handlerName];
       if (!handler) return;
