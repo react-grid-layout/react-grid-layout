@@ -5,7 +5,7 @@ import ReactGridLayout from "./ReactGridLayout";
 import type { Layout, LayoutItem } from "./utils";
 
 type NestedLayoutItem = LayoutItem & {
-  layouts?: { [key: string]: Layout }
+  layouts?: { [key: string]: NestedLayout }
 };
 
 type NestedLayout = { [key: string]: NestedLayoutItem };
@@ -13,7 +13,7 @@ type NestedLayout = { [key: string]: NestedLayoutItem };
 type Props = {
   ...React.ElementConfig<typeof ReactGridLayout>,
   layouts: NestedLayout,
-  children: React.ChildrenArray<React.ElementType>
+  children: React.Node
 };
 
 function NestedGridLayout(props: Props): React.Node {
@@ -63,6 +63,7 @@ function NestedGridLayout(props: Props): React.Node {
   return <ReactGridLayout {...rest}>{processedChildren}</ReactGridLayout>;
 }
 
+// $FlowFixMe: Flow doesn't understand the propTypes
 NestedGridLayout.propTypes = {
   ...ReactGridLayout.propTypes,
   layouts: PropTypes.objectOf(
