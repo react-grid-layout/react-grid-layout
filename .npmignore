@@ -19,3 +19,17 @@ interfaces/
 *.png
 *.jpg
 .packj.yaml
+lib
+.babelrc
+index.js.flow
+margin.png
+.packj.yaml
+.prettierrc
+.prettierignore
+.eslintrc
+.eslintignore
+.editorconfig
+.gitignore
+.npmignore
+.yarnignore
+
