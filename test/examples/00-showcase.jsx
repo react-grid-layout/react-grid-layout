@@ -124,7 +124,6 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
           onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={this.onLayoutChange}
           onDrop={this.onDrop}
-         
           // WidthProvider option
           measureBeforeMount={false}
           // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
@@ -140,7 +139,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
   }
 }
 
-function generateLayout(resizeHandles: Array<string>) {
+function generateLayout(resizeHandles) {
   return _.map(_.range(0, 25), function(item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
@@ -155,6 +154,6 @@ function generateLayout(resizeHandles: Array<string>) {
   });
 }
 
-if (Boolean(process.env.STATIC_EXAMPLES)) {
+if (process.env.STATIC_EXAMPLES === true) {
   import("../test-hook.jsx").then(fn => fn.default(ShowcaseLayout));
 }

@@ -6,4 +6,3 @@ module.exports.Responsive =
 module.exports.Responsive.utils = require("./build/responsiveUtils");
 module.exports.WidthProvider =
   require("./build/components/WidthProvider").default;
-module.exports.NestedGridLayout = require("./build/NestedGridLayout").default;

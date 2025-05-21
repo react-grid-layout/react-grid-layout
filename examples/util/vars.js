@@ -182,11 +182,4 @@ module.exports = [
       "This demonstrates how to constrain the elements to a single row."
     ]
   },
-  {
-    title: "Nested Grid",
-    source: "nested-grid",
-    paragraphs: [
-      "This demonstrates how to constrain the elements to a single row."
-    ]
-  },
 ];

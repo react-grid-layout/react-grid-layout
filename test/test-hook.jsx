@@ -1,6 +1,5 @@
-import { createRoot } from "react-dom/client";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "style-loader!css-loader!../css/styles.css";
 import "style-loader!css-loader!../examples/util/example-styles.css";
 typeof window !== "undefined" && (window.React = React); // for devtools
