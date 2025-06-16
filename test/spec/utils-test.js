@@ -458,6 +458,113 @@ describe("compact vertical", () => {
       expect(out.includes(item)).toEqual(false);
     });
   });
+
+  it("Does not produce overlaps for random layouts", () => {
+    // Increase this during dev to test more layouts.
+    const numLayouts = 10;
+
+    for (let cols = 1; cols <= 6; ++cols) {
+      for (let numItems = 2; numItems <= 20; ++numItems) {
+        for (let numStatics = 0; numStatics <= numItems; ++numStatics) {
+          for (let i = 0; i < numLayouts; ++i) {
+            const layout = [];
+
+            for (let i = 0; i < numItems; ++i) {
+              const x = Math.floor(Math.random() * cols);
+              const y = Math.floor(Math.random() * numItems * 1.5);
+              const w = Math.min(Math.ceil(Math.random() * cols), cols - x);
+              const h = Math.ceil(Math.random() * cols);
+
+              layout.push({
+                x,
+                y,
+                w,
+                h,
+                static: i < numStatics,
+                i: i.toString()
+              });
+            }
+
+            const out = compact(layout, "vertical", cols);
+
+            for (let i = 0; i < out.length; ++i) {
+              for (let j = i + 1; j < out.length; ++j) {
+                const a = out[i];
+                const b = out[j];
+
+                if ((!a.static || !b.static) && collides(a, b)) {
+                  console.log(
+                    "compact vertical produced an overlap for:",
+                    layout
+                  );
+
+                  throw new Error("compact vertical produced an overlap");
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  it("Test case from lifecycle-test.ts / <ResponsiveReactGridLayout/> / Basic Render", () => {
+    const layout = [
+      { x: 2, y: 0, w: 2, h: 2, i: "0" },
+      { x: 6, y: 0, w: 2, h: 3, i: "1" },
+      { x: 8, y: 0, w: 2, h: 4, i: "2" },
+      { x: 0, y: 0, w: 2, h: 5, i: "3" },
+      { x: 4, y: 0, w: 2, h: 2, i: "4" },
+      { x: 6, y: 0, w: 2, h: 3, i: "5" },
+      { x: 10, y: 5, w: 2, h: 5, i: "6" },
+      { x: 2, y: 2, w: 2, h: 2, i: "7" },
+      { x: 4, y: 3, w: 2, h: 3, i: "8" },
+      { x: 8, y: 4, w: 2, h: 4, i: "9" },
+      { x: 10, y: 5, w: 2, h: 5, i: "10", static: true },
+      { x: 2, y: 2, w: 2, h: 2, i: "11" },
+      { x: 6, y: 6, w: 2, h: 3, i: "12" },
+      { x: 8, y: 8, w: 2, h: 4, i: "13" },
+      { x: 0, y: 10, w: 2, h: 5, i: "14" },
+      { x: 4, y: 4, w: 2, h: 2, i: "15" },
+      { x: 6, y: 6, w: 2, h: 3, i: "16" },
+      { x: 10, y: 10, w: 2, h: 5, i: "17" },
+      { x: 2, y: 6, w: 2, h: 2, i: "18" },
+      { x: 4, y: 9, w: 2, h: 3, i: "19" },
+      { x: 8, y: 12, w: 2, h: 4, i: "20" },
+      { x: 10, y: 15, w: 2, h: 5, i: "21", static: true },
+      { x: 2, y: 6, w: 2, h: 2, i: "22" },
+      { x: 6, y: 9, w: 2, h: 3, i: "23" },
+      { x: 8, y: 16, w: 2, h: 4, i: "24" }
+    ];
+
+    expect(compact(layout, "vertical", 12)).toEqual([
+      { x: 2, y: 0, w: 2, h: 2, i: "0", moved: false, static: false },
+      { x: 6, y: 0, w: 2, h: 3, i: "1", moved: false, static: false },
+      { x: 8, y: 0, w: 2, h: 4, i: "2", moved: false, static: false },
+      { x: 0, y: 0, w: 2, h: 5, i: "3", moved: false, static: false },
+      { x: 4, y: 0, w: 2, h: 2, i: "4", moved: false, static: false },
+      { x: 6, y: 3, w: 2, h: 3, i: "5", moved: false, static: false },
+      { x: 10, y: 10, w: 2, h: 5, i: "6", moved: false, static: false },
+      { x: 2, y: 2, w: 2, h: 2, i: "7", moved: false, static: false },
+      { x: 4, y: 2, w: 2, h: 3, i: "8", moved: false, static: false },
+      { x: 8, y: 4, w: 2, h: 4, i: "9", moved: false, static: false },
+      { x: 10, y: 5, w: 2, h: 5, i: "10", moved: false, static: true },
+      { x: 2, y: 4, w: 2, h: 2, i: "11", moved: false, static: false },
+      { x: 6, y: 6, w: 2, h: 3, i: "12", moved: false, static: false },
+      { x: 8, y: 8, w: 2, h: 4, i: "13", moved: false, static: false },
+      { x: 0, y: 5, w: 2, h: 5, i: "14", moved: false, static: false },
+      { x: 4, y: 5, w: 2, h: 2, i: "15", moved: false, static: false },
+      { x: 6, y: 9, w: 2, h: 3, i: "16", moved: false, static: false },
+      { x: 10, y: 20, w: 2, h: 5, i: "17", moved: false, static: false },
+      { x: 2, y: 6, w: 2, h: 2, i: "18", moved: false, static: false },
+      { x: 4, y: 7, w: 2, h: 3, i: "19", moved: false, static: false },
+      { x: 8, y: 12, w: 2, h: 4, i: "20", moved: false, static: false },
+      { x: 10, y: 15, w: 2, h: 5, i: "21", moved: false, static: true },
+      { x: 2, y: 8, w: 2, h: 2, i: "22", moved: false, static: false },
+      { x: 6, y: 12, w: 2, h: 3, i: "23", moved: false, static: false },
+      { x: 8, y: 16, w: 2, h: 4, i: "24", moved: false, static: false }
+    ]);
+  });
 });
 
 describe("compact horizontal", () => {
