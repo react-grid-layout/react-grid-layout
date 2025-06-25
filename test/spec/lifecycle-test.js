@@ -19,6 +19,7 @@ import { IsBounded } from "../examples/test_demo.jsx";
 function mouseMove(x, y, node) {
   const doc = node ? node.ownerDocument : document;
   const evt = doc.createEvent("MouseEvents");
+  // $FlowIgnore
   evt.initMouseEvent(
     "mousemove",
     true,
