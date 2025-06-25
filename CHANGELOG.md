@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.5.2 (Jun 25, 2025)
+
+- Fix `calcXY` when `isBounded=true` moving items incorrectly. Likely related to #2059. Thanks @wanpan11. [#2102](https://github.com/react-grid-layout/react-grid-layout/pull/2102)
+
+## 1.5.1 (Mar 11, 2025)
+
+- Fix for React 18: wrap state calls in `flushSync`. Thanks @ashharrison90. [#2043](https://github.com/react-grid-layout/react-grid-layout/pull/2043)
+
+## 1.5.0 (Oct 9, 2024)
+
+- Fix `calcXY` moving grid items slightly above and to the left of where they should be. Thanks @MaxMusing. [#2059](https://github.com/react-grid-layout/react-grid-layout/pull/2059)
+- Change `onBreakpointChange`/`onLayoutChange` event order. `onBreakpointChange` now fires first. This should make managing responsive layouts easier, as you can set the current breakpoint in storage, then save the new layout to it.
+
 ## 1.4.4 (Nov 28, 2023)
 
 ### Bugfixes
