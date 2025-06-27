@@ -459,7 +459,7 @@ describe("compact vertical", () => {
     });
   });
 
-  it("Does not produce overlaps for random layouts", () => {
+  it("Does not produce overlaps for random layouts, and is idemptotent", () => {
     // Increase this during dev to test more layouts.
     const numLayouts = 10;
 
@@ -502,6 +502,11 @@ describe("compact vertical", () => {
                 }
               }
             }
+
+            // Test for idempotence
+            const out2 = compact(out, "vertical", cols);
+
+            expect(out2).toEqual(out);
           }
         }
       }
@@ -563,6 +568,38 @@ describe("compact vertical", () => {
       { x: 2, y: 8, w: 2, h: 2, i: "22", moved: false, static: false },
       { x: 6, y: 12, w: 2, h: 3, i: "23", moved: false, static: false },
       { x: 8, y: 16, w: 2, h: 4, i: "24", moved: false, static: false }
+    ]);
+  });
+
+  it("Diff with legacy compaction #1 (more compact)", () => {
+    const layout = [
+      { x: 0, y: 2, w: 2, h: 2, moved: false, static: true, i: "0" },
+      { x: 1, y: 1, w: 1, h: 2, moved: false, static: false, i: "1" }
+    ];
+
+    expect(compact(layout, "vertical", 10)).toEqual([
+      { x: 0, y: 2, w: 2, h: 2, moved: false, static: true, i: "0" },
+      // With legacy compaction, the following item would have y: 4,
+      // leaving an unnecessary gap; the first two rows would be left empty.
+      // => Fast vertical compaction produces a more compact layout.
+      { x: 1, y: 0, w: 1, h: 2, moved: false, static: false, i: "1" }
+    ]);
+  });
+
+  it("Diff with legacy compaction #2 (less compact)", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 2, moved: false, static: false, i: "0" },
+      { x: 0, y: 1, w: 2, h: 2, moved: false, static: false, i: "1" },
+      { x: 1, y: 1, w: 1, h: 1, moved: false, static: false, i: "2" }
+    ];
+
+    expect(compact(layout, "vertical", 10)).toEqual([
+      { x: 0, y: 0, w: 1, h: 2, moved: false, static: false, i: "0" },
+      { x: 0, y: 2, w: 2, h: 2, moved: false, static: false, i: "1" },
+      // With legacy compaction, the following item would have y: 0,
+      // as item 2 fits into the first row.
+      // => Fast vertical compaction produces a less compact layout.
+      { x: 1, y: 4, w: 1, h: 1, moved: false, static: false, i: "2" }
     ]);
   });
 });
