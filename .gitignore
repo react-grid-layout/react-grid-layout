@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+dist
 dist/*
 !dist/react-grid-layout.min*
 !dist/*.html
