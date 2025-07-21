@@ -1,59 +1,28 @@
-name: release
-
+name: Releases
 on:
-  workflow_dispatch:
-    inputs:
-      semver:
-        description: "The semver to use"
-        required: true
-        default: "patch"
-        type: choice
-        options:
-          - auto
-          - patch
-          - minor
-          - major
-          - prerelease
-          - prepatch
-          - preminor
-          - premajor
-      baseTag:
-        description: "base release tag"
-      tag:
-        description: "The npm tag"
-        required: false
-        default: "latest"
-      commit-message:
-        description: "The commit message template"
-        required: false
-        default: "Release {version}"
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - release
 
 jobs:
-  release:
+  changelog:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      # optional: `id-token: write` permission is required if `provenance: true` is set below
-      id-token: write
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
         with:
-          node-version: 18
-
-      - uses: nearform-actions/optic-release-automation-action@v4
+          ref: release
+      - name: Conventional Changelog Action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3.7.1
         with:
-          commit-message: ${{ github.event.inputs.commit-message }}
-          semver: ${{ github.event.inputs.semver }}
-          npm-tag: ${{ github.event.inputs.tag }}
-          # optional: set this secret in your repo config for publishing to NPM
-          npm-token: ${{ secrets.NPM_TOKEN }}
-          # optional: NPM will generate provenance statement, or abort release if it can't
-          provenance: true
-          build-command: |
-            yarn
-            yarn build
+          github-token: ${{ secrets.PA_TOKEN }}
+          version-file: './package.json'
+          skip-on-empty: true
+      - name: create release
+        uses: softprops/action-gh-release@v2
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+          token: ${{ secrets.PA_TOKEN }}

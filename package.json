@@ -18,12 +18,21 @@
     "build-example": "make build-example",
     "view-example": "make view-example",
     "dev": "make dev",
-    "prepublishOnly": "make build",
+    "build:publish": "make build && pnpm publish --access public",
     "validate": "npm ls",
     "flow": "flow",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check ."
   },
+  "publishConfig": {
+    "branches": [
+      "release"
+    ]
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "packageManager": "pnpm@9.15.4",
   "repository": {
     "type": "git",
     "url": "git@github.com:STRML/react-grid-layout.git"
@@ -102,9 +111,6 @@
   "peerDependencies": {
     "react": "19.1.0",
     "react-dom": "19.1.0"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
   },
   "jest": {
     "setupFilesAfterEnv": [
