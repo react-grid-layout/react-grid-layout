@@ -455,7 +455,7 @@ export default class GridItem extends React.Component<Props, State> {
     }
     const { onDragStart } = this.props;
     if (!onDragStart) return;
-    onDragStart.call(this, this.props.i, this.props.x, this.props.y, {});
+    onDragStart.call(this, this.props.i, this.props.x, this.props.y, {e});
   };
 
 
