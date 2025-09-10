@@ -440,7 +440,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 ---
 
 - Fix React PropTypes & createClass warnings
-
   - See https://github.com/facebook/react/issues/10583
 
     0.15.0 (Aug 21, 2017)
@@ -456,7 +455,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 ---
 
 - Fixed a dragging bug when the grid container is scrollable. Thanks @chultquist.
-
   - Ref: https://github.com/STRML/react-grid-layout/pull/555
 
     0.14.6 (Apr 19, 2017)
@@ -531,7 +529,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 #### Fixes:
 
 - Fixed sorting of layout items, which could be different in IE if two items have the same x & y coordinate.
-
   - See [#369](https://github.com/STRML/react-grid-layout/issues/369).
 
     0.13.8 (Oct 13, 2016)
@@ -541,7 +538,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 #### Fixes:
 
 - Fixed breakage introduced in `0.13.7` when items are added without a layout or `data-grid` property.
-
   - See [#368](https://github.com/STRML/react-grid-layout/issues/368).
 
     0.13.7 (Oct 3, 2016)
@@ -579,7 +575,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 
 - Fixed potential call to `ReactDOM.findDOMNode(this)` after unmount of `WidthProvider`.
 - Fixed an issue where layout items using `data-grid` could rearrange on mount depending on how they were ordered.
-
   - See [#342](https://github.com/STRML/react-grid-layout/pull/342) for reference.
 
     0.13.3 (Aug 31, 2016)
@@ -602,7 +597,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
   - I'm aware this could be a breaking change if you were relying on this bad behavior. If so, please
     use your own `WidthProvider`-style HOC.
 - `babel-plugin-transform-flow-comments` had limited support for defining types like transpiled classes.
-
   - This has been updated to instead copy source to `.js.flow` files, which preserves all type information.
 
     0.13.1 (Aug 16, 2016)
@@ -650,7 +644,6 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 ---
 
 - Update to React-Draggable v2. Fixes: #241, #239, #24
-
   - v2 contains a number of bugfixes & enhancements for touchscreens, multitouch, and scrolling containers.
 
     0.12.3 (May 3, 2016)
@@ -828,7 +821,6 @@ Other changes:
 - Upgraded to Babel 6.
 - Full typechecking via Flow.
 - Lots of misc bugfixes.
-
   - See beta releases below for more details.
 
     0.10.0-beta1
