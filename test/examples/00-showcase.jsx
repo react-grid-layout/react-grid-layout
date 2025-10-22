@@ -111,6 +111,9 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
           Compaction type:{" "}
           {_.capitalize(this.state.compactType) || "No Compaction"}
         </div>
+        <div style={{color: 'red', fontWeight: 'bold'}}>
+          🎯 Resize Step: 3 (Elements resize in steps of 3: 3, 6, 9, 12...)
+        </div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
@@ -131,6 +134,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
           useCSSTransforms={this.state.mounted}
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
+          resizeStep={3}
         >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>

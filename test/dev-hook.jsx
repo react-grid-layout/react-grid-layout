@@ -1,6 +1,6 @@
 import "react-hot-loader";
 import { hot } from "react-hot-loader/root";
-import DevLayout from "./examples/00-showcase.jsx";
+import DevLayout from "./examples/23-resize-step-test.jsx";
 import makeLayout from "./test-hook";
 
 const Layout = makeLayout(DevLayout);

@@ -119,7 +119,8 @@ type DefaultProps = {
   minW: number,
   maxH: number,
   maxW: number,
-  transformScale: number
+  transformScale: number,
+  resizeStep: number
 };
 
 /**

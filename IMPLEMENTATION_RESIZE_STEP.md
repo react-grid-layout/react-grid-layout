@@ -6,6 +6,31 @@ Ce document détaille toutes les modifications nécessaires pour ajouter la prop
 
 La prop `resizeStep` permet de contraindre le redimensionnement des éléments de la grille à des multiples d'une valeur donnée. Par exemple, avec `resizeStep={3}`, un élément ne peut être redimensionné qu'aux valeurs 3, 6, 9, 12, etc.
 
+## Prérequis et dépendances
+
+### **Installation des dépendances nécessaires :**
+
+```bash
+# Installer les dépendances de développement
+npm install -D webpack-cli webpack-dev-server
+
+# Ou si vous utilisez yarn
+yarn add -D webpack-cli webpack-dev-server
+```
+
+### **Vérification de l'environnement :**
+
+```bash
+# Vérifier que Node.js est installé
+node --version
+
+# Vérifier que npm fonctionne
+npm --version
+
+# Installer les dépendances du projet
+npm install
+```
+
 ## Modifications à apporter
 
 ### 1. Ajout de la prop aux types et PropTypes
@@ -237,7 +262,25 @@ type Props = {
 };
 ```
 
-**3.2. Ajouter la validation PropTypes**
+**3.2. Ajouter `resizeStep` au type DefaultProps**
+
+Localisez la définition du type `DefaultProps` (ligne ~114) et ajoutez :
+
+```javascript
+type DefaultProps = {
+  className: string,
+  cancel: string,
+  handle: string,
+  minH: number,
+  minW: number,
+  maxH: number,
+  maxW: number,
+  transformScale: number,
+  resizeStep: number  // ← AJOUTER CETTE LIGNE
+};
+```
+
+**3.3. Ajouter la validation PropTypes**
 
 Localisez la section des PropTypes (ligne ~178) et ajoutez :
 
@@ -253,7 +296,7 @@ Localisez la section des PropTypes (ligne ~178) et ajoutez :
     onDragStop: PropTypes.func,
 ```
 
-**3.3. Ajouter aux defaultProps**
+**3.4. Ajouter aux defaultProps**
 
 Localisez la section `static defaultProps` (ligne ~217) et ajoutez :
 
@@ -539,13 +582,124 @@ Pour tester l'implémentation :
 - Elle s'applique uniquement lors du redimensionnement, pas du déplacement
 - Compatible avec tous les handles de redimensionnement (`se`, `sw`, `ne`, `nw`, etc.)
 
+## Tests et débogage
+
+### **Lancer le serveur de développement :**
+
+```bash
+# Démarrer le serveur de développement
+npx webpack serve --config webpack-dev-server.config.js
+
+# Ou avec un port spécifique
+npx webpack serve --config webpack-dev-server.config.js --port 4002
+```
+
+### **Accéder aux tests :**
+
+1. Ouvrez votre navigateur sur `http://localhost:4002/index-dev.html`
+2. Vous devriez voir l'interface de test avec `resizeStep=3`
+3. Testez le redimensionnement des éléments
+4. Ouvrez la console (F12) pour voir les logs de redimensionnement
+
+### **Tests de la fonction `applyResizeStep` :**
+
+Créez un fichier `test-resize-step.js` pour tester la fonction :
+
+```javascript
+function clamp(num, lowerBound, upperBound) {
+  return Math.max(Math.min(num, upperBound), lowerBound);
+}
+
+function applyResizeStep(w, h, resizeStep, minW, minH, maxW, maxH) {
+  if (resizeStep <= 0) return { w, h };
+  
+  const snappedW = Math.round(w / resizeStep) * resizeStep;
+  const finalW = clamp(snappedW, minW, maxW);
+  
+  const snappedH = Math.round(h / resizeStep) * resizeStep;
+  const finalH = clamp(snappedH, minH, maxH);
+  
+  return { w: finalW, h: finalH };
+}
+
+// Tests
+console.log('Test 1:', applyResizeStep(5, 4, 3, 1, 1, 12, 12)); // {w: 6, h: 3}
+console.log('Test 2:', applyResizeStep(6, 6, 3, 1, 1, 12, 12)); // {w: 6, h: 6}
+console.log('Test 3:', applyResizeStep(7, 8, 3, 1, 1, 12, 12)); // {w: 6, h: 9}
+```
+
+Puis exécutez : `node test-resize-step.js`
+
 ## Fichiers modifiés
 
 1. `lib/ReactGridLayoutPropTypes.js` - Types et PropTypes
 2. `lib/ReactGridLayout.jsx` - Props et transmission
 3. `lib/GridItem.jsx` - Logique de redimensionnement
 4. `lib/calculateUtils.js` - Fonction utilitaire
-5. `test/examples/22-resize-step.jsx` - Exemple de test (nouveau fichier)
+5. `test/examples/23-resize-step-test.jsx` - Exemple de test (nouveau fichier)
+6. `test/dev-hook.jsx` - Chargement du test (modifié)
+
+## Corrections importantes pour éviter les erreurs
+
+### ⚠️ **Erreur courante : `Cannot read properties of undefined (reading 'resizeStep')`**
+
+Cette erreur peut survenir si `resizeStep` n'est pas correctement défini. Voici les corrections à appliquer :
+
+#### **Correction 1 : Ajouter `resizeStep` au type DefaultProps dans GridItem.jsx**
+
+```javascript
+type DefaultProps = {
+  className: string,
+  cancel: string,
+  handle: string,
+  minH: number,
+  minW: number,
+  maxH: number,
+  maxW: number,
+  transformScale: number,
+  resizeStep: number  // ← AJOUTER CETTE LIGNE
+};
+```
+
+#### **Correction 2 : Dans les composants de test, utiliser une propriété d'instance**
+
+Au lieu d'utiliser `this.props.resizeStep`, créez une propriété d'instance :
+
+```javascript
+constructor(props) {
+  super(props);
+  
+  // Ensure resizeStep has a default value
+  this.resizeStep = props.resizeStep || 3;
+  
+  const layout = this.generateLayout();
+  this.state = { layout };
+}
+
+// Puis utiliser this.resizeStep au lieu de this.props.resizeStep
+onResize(layout, oldItem, newItem) {
+  console.log('Resize event:', {
+    resizeStep: this.resizeStep,  // ← Utiliser this.resizeStep
+    // ... autres propriétés
+  });
+}
+```
+
+#### **Correction 3 : Vérifier la transmission des props**
+
+Assurez-vous que `resizeStep` est bien passé au composant :
+
+```javascript
+<ReactGridLayout
+  layout={this.state.layout}
+  onLayoutChange={this.onLayoutChange}
+  onResize={this.onResize}
+  resizeStep={this.resizeStep}  // ← Utiliser this.resizeStep
+  isResizable={true}
+  isDraggable={true}
+  {...this.props}
+>
+```
 
 ## Validation
 
@@ -555,3 +709,4 @@ Après avoir appliqué toutes les modifications :
 2. Testez avec différents valeurs de `resizeStep` (1, 3, 5, etc.)
 3. Vérifiez que les contraintes min/max sont respectées
 4. Testez avec le composant ResponsiveReactGridLayout
+5. **Vérifiez qu'il n'y a pas d'erreurs `undefined` dans la console**
