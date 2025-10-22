@@ -17,7 +17,8 @@ import {
   calcGridColWidth,
   calcXY,
   calcWH,
-  clamp
+  clamp,
+  applyResizeStep
 } from "./calculateUtils";
 import {
   resizeHandleAxesType,
@@ -100,6 +101,7 @@ type Props = {
 
   resizeHandles?: ResizeHandleAxis[],
   resizeHandle?: ResizeHandle,
+  resizeStep?: number,
 
   onDrag?: GridItemCallback<GridDragEvent>,
   onDragStart?: GridItemCallback<GridDragEvent>,
@@ -178,6 +180,9 @@ export default class GridItem extends React.Component<Props, State> {
     resizeHandles: resizeHandleAxesType,
     resizeHandle: resizeHandleType,
 
+    // Resize step for snapping resize to specific increments
+    resizeStep: PropTypes.number,
+
     // Functions
     onDragStop: PropTypes.func,
     onDragStart: PropTypes.func,
@@ -218,7 +223,8 @@ export default class GridItem extends React.Component<Props, State> {
     minW: 1,
     maxH: Infinity,
     maxW: Infinity,
-    transformScale: 1
+    transformScale: 1,
+    resizeStep: 1
   };
 
   state: State = {
@@ -595,7 +601,7 @@ export default class GridItem extends React.Component<Props, State> {
   ): void {
     const handler = this.props[handlerName];
     if (!handler) return;
-    const { x, y, i, maxH, minH, containerWidth } = this.props;
+    const { x, y, i, maxH, minH, containerWidth, resizeStep } = this.props;
     const { minW, maxW } = this.props;
 
     // Clamping of dimensions based on resize direction
@@ -628,6 +634,13 @@ export default class GridItem extends React.Component<Props, State> {
     // minW should be at least 1 (TODO propTypes validation?)
     w = clamp(w, Math.max(minW, 1), maxW);
     h = clamp(h, minH, maxH);
+
+    // Apply resize step snapping if resizeStep is defined and > 0
+    if (resizeStep && resizeStep > 0) {
+      const snapped = applyResizeStep(w, h, resizeStep, Math.max(minW, 1), minH, maxW, maxH);
+      w = snapped.w;
+      h = snapped.h;
+    }
 
     handler.call(this, i, w, h, { e, node, size: updatedSize, handle });
   }
