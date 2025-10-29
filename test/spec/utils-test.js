@@ -184,8 +184,8 @@ describe("moveElement", () => {
         10 // compactType, cols
       )
     ).toEqual([
-      expect.objectContaining({ x: 0, y: 1, w: 1, h: 10, i: "A" }),
-      expect.objectContaining({ x: 0, y: 0, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 0, w: 1, h: 10, i: "A" }),
+      expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
       expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
     ]);
   });
@@ -212,7 +212,7 @@ describe("moveElement", () => {
       )
     ).toEqual([
       expect.objectContaining({ x: 0, y: 2, w: 1, h: 10, i: "A" }),
-      expect.objectContaining({ x: 0, y: 1, w: 1, h: 1, i: "B" }),
+      expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "B" }),
       expect.objectContaining({ x: 0, y: 12, w: 1, h: 1, i: "C" })
     ]);
   });
@@ -266,8 +266,8 @@ describe("moveElement", () => {
       )
     ).toEqual([
       { y: 0, x: 2, h: 1, w: 10, moved: true, i: "A" },
-      { y: 0, x: 1, h: 1, w: 1, moved: true, i: "B" },
-      { y: 0, x: 12, h: 1, w: 1, i: "C" }
+      { y: 0, x: 12, h: 1, w: 1, moved: true, i: "B" },
+      { y: 0, x: 13, h: 1, w: 1, moved: true, i: "C" }
     ]);
   });
 
