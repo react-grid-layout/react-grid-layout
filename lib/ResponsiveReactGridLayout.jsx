@@ -64,6 +64,7 @@ type Props<Breakpoint: string = string> = {|
   // Callbacks
   onBreakpointChange: (Breakpoint, cols: number) => void,
   onLayoutChange: OnLayoutChangeCallback,
+  background?: 'none' | 'grid',
   onWidthChange: (
     containerWidth: number,
     margin: [number, number],

@@ -11,6 +11,7 @@ import {
   compactType,
   fastRGLPropsEqual,
   getAllCollisions,
+  getBackgroundSvgString,
   getLayoutItem,
   moveElement,
   noop,
@@ -57,6 +58,7 @@ type State = {
 };
 
 import type { Props, DefaultProps } from "./ReactGridLayoutPropTypes";
+import { merge } from "lodash";
 
 // End Types
 
@@ -823,12 +825,40 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrop(layout, item, e);
   };
 
+  getBackgroundStyle = () => {
+    const { background, containerPadding, margin } = this.props;
+    if (!background) {
+      return undefined;
+    }
+
+    const backgroundSvg = getBackgroundSvgString({
+      cols: this.props.cols,
+      margin: this.props.margin,
+      rowHeight: this.props.rowHeight,
+      containerWidth:
+        this.props.innerRef?.current?.getBoundingClientRect()?.width,
+      padding: this.props.containerPadding
+    });
+    const encodedSvg = window.encodeURIComponent(backgroundSvg);
+    return {
+      backgroundImage: this.props.background
+        ? `url('data:image/svg+xml,${encodedSvg}')`
+        : "none",
+      backgroundRepeat: "repeat-y",
+      "background-position": `0 ${
+        containerPadding ? containerPadding[1] : margin[1]
+      }`
+    };
+  };
+
   render(): React.Element<"div"> {
     const { className, style, isDroppable, innerRef } = this.props;
 
     const mergedClassName = clsx(layoutClassName, className);
+
     const mergedStyle = {
       height: this.containerHeight(),
+      ...this.getBackgroundStyle(),
       ...style
     };
 
