@@ -827,35 +827,37 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   };
 
   getBackgroundStyle = () => {
-    const { background, containerPadding, margin } = this.props;
+    const { background, containerPadding, margin, width } = this.props;
+
     if (!background) {
       return undefined;
     }
 
-    const containerWidth =
-      this.props.innerRef?.current?.getBoundingClientRect()?.width;
+    const { bgColor, gridColor } = background;
 
-    const backgroundSvg = getBackgroundGridSvgString({
+    const containerWidth = width;
+    const backgroundGridSvg = getBackgroundGridSvgString({
       cols: this.props.cols,
       margin: this.props.margin,
       rowHeight: this.props.rowHeight,
       containerWidth,
-      padding: this.props.containerPadding
+      padding: this.props.containerPadding,
+      gridColor
     });
     const paddingSvg = getBgPaddingSvgString({
       containerWidth,
       margin: this.props.margin,
       padding: this.props.containerPadding,
-      bgColor: "#eee"
+      bgColor
     });
-    const encodedSvg = window.encodeURIComponent(backgroundSvg);
+    const encodedGridSvg = window.encodeURIComponent(backgroundGridSvg);
     const encodedPaddingSvg = window.encodeURIComponent(paddingSvg);
     return {
       backgroundImage: this.props.background
-        ? `url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml,${encodedSvg}')`
+        ? `url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml,${encodedGridSvg}')`
         : "none",
       backgroundRepeat: "no-repeat, no-repeat, repeat-y",
-      "background-position": `top, bottom, 0 ${
+      backgroundPosition: `top, bottom, 0 ${
         containerPadding ? containerPadding[1] : margin[1]
       }`
     };

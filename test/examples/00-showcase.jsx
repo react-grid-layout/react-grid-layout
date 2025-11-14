@@ -23,6 +23,11 @@ type State = {|
 
 const availableHandles = ["s", "w", "e", "n", "sw", "nw", "se", "ne"];
 
+const defaultBackground = {
+  bgColor: '#eee',
+  gridColor: '#ddd'
+}
+
 export default class ShowcaseLayout extends React.Component<Props, State> {
   static defaultProps: Props = {
     className: "layout",
@@ -36,7 +41,8 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     compactType: "vertical",
     resizeHandles: ['se'],
     mounted: false,
-    layouts: { lg: generateLayout(['se']) }
+    layouts: { lg: generateLayout(['se']) },
+    background: defaultBackground
   };
 
   componentDidMount() {
@@ -84,6 +90,12 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     this.setState({resizeHandles, layouts: {lg: generateLayout(resizeHandles)}});
   };
 
+  onToggleBackground: () => void = () => {
+    this.setState({
+      background: this.state.background ? undefined : defaultBackground
+    }) 
+  }
+
 
   onLayoutChange: OnLayoutChangeCallback = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
@@ -118,6 +130,9 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
         <button onClick={this.onResizeTypeChange}>
           Resize {this.state.resizeHandles === availableHandles ? "One Corner" : "All Corners"}
         </button>
+        <button onClick={this.onToggleBackground}>
+          Toggle Background
+        </button>
         <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -134,7 +149,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
           containerPadding={[10,30]}
           margin={[20,10]}
           rowHeight={130}
-          background="grid"
+          background={this.state.background}
         >
           {this.generateDOM()}
         </ResponsiveReactGridLayout>
