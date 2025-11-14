@@ -146,7 +146,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
           useCSSTransforms={this.state.mounted}
           compactType={this.state.compactType}
           preventCollision={!this.state.compactType}
-          containerPadding={[10,30]}
+          containerPadding={[20,30]}
           margin={[20,10]}
           rowHeight={130}
           background={this.state.background}
