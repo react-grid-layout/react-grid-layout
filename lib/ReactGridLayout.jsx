@@ -11,7 +11,8 @@ import {
   compactType,
   fastRGLPropsEqual,
   getAllCollisions,
-  getBackgroundSvgString,
+  getBackgroundGridSvgString,
+  getBgPaddingSvgString,
   getLayoutItem,
   moveElement,
   noop,
@@ -831,21 +832,30 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       return undefined;
     }
 
-    const backgroundSvg = getBackgroundSvgString({
+    const containerWidth =
+      this.props.innerRef?.current?.getBoundingClientRect()?.width;
+
+    const backgroundSvg = getBackgroundGridSvgString({
       cols: this.props.cols,
       margin: this.props.margin,
       rowHeight: this.props.rowHeight,
-      containerWidth:
-        this.props.innerRef?.current?.getBoundingClientRect()?.width,
+      containerWidth,
       padding: this.props.containerPadding
     });
+    const paddingSvg = getBgPaddingSvgString({
+      containerWidth,
+      margin: this.props.margin,
+      padding: this.props.containerPadding,
+      bgColor: "#eee"
+    });
     const encodedSvg = window.encodeURIComponent(backgroundSvg);
+    const encodedPaddingSvg = window.encodeURIComponent(paddingSvg);
     return {
       backgroundImage: this.props.background
-        ? `url('data:image/svg+xml,${encodedSvg}')`
+        ? `url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml,${encodedSvg}')`
         : "none",
-      backgroundRepeat: "repeat-y",
-      "background-position": `0 ${
+      backgroundRepeat: "no-repeat, no-repeat, repeat-y",
+      "background-position": `top, bottom, 0 ${
         containerPadding ? containerPadding[1] : margin[1]
       }`
     };

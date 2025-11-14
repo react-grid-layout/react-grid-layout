@@ -3,8 +3,8 @@ import * as React from "react";
 import _ from "lodash";
 import Responsive from '../../lib/ResponsiveReactGridLayout';
 import WidthProvider from '../../lib/components/WidthProvider';
-import type {CompactType, Layout, LayoutItem, ReactChildren} from '../../lib/utils';
-import type {Breakpoint, OnLayoutChangeCallback} from '../../lib/responsiveUtils';
+import type {Layout, LayoutItem, ReactChildren} from '../../lib/utils';
+import type {OnLayoutChangeCallback} from '../../lib/responsiveUtils';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 type Props = {|
