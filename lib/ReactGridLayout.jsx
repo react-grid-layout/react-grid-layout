@@ -59,7 +59,6 @@ type State = {
 };
 
 import type { Props, DefaultProps } from "./ReactGridLayoutPropTypes";
-import { merge } from "lodash";
 
 // End Types
 
