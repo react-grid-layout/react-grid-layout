@@ -825,14 +825,24 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrop(layout, item, e);
   };
 
-  getBackgroundStyle = () => {
+  getBackgroundStyle(): ?{
+    backgroundImage: string,
+    backgroundRepeat: string,
+    backgroundPosition: string
+  } {
     const { background, containerPadding, margin, width } = this.props;
 
     if (!background) {
       return undefined;
     }
 
-    const { bgColor, gridColor } = background;
+    const { bgColor, gridColor } =
+      typeof background === "boolean"
+        ? {
+            bgColor: "#fff",
+            gridColor: "#ddd"
+          }
+        : background;
 
     const containerWidth = width;
     const backgroundGridSvg = getBackgroundGridSvgString({
@@ -860,7 +870,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         containerPadding ? containerPadding[1] : margin[1]
       }`
     };
-  };
+  }
 
   render(): React.Element<"div"> {
     const { className, style, isDroppable, innerRef } = this.props;

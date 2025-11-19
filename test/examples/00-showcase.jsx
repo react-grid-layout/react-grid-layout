@@ -18,7 +18,11 @@ type State = {|
   compactType: CompactType,
   mounted: boolean,
   resizeHandles: string[],
-  layouts: {[string]: Layout}
+  layouts: {[string]: Layout},
+  background?: {
+    bgColor?: string,
+    gridColor?: string
+  } | boolean,
 |};
 
 const availableHandles = ["s", "w", "e", "n", "sw", "nw", "se", "ne"];
