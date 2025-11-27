@@ -62,6 +62,7 @@ RGL is React-only and does not require jQuery.
 
 #### Projects Using React-Grid-Layout
 
+- [Basedash](https://www.basedash.com)
 - [BitMEX](https://www.bitmex.com/)
 - [AWS CloudFront Dashboards](https://aws.amazon.com/blogs/aws/cloudwatch-dashboards-create-use-customized-metrics-views/)
 - [Grafana](https://grafana.com/)
