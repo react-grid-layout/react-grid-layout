@@ -704,7 +704,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     } = this.props;
     // Allow user to customize the dropping item or short-circuit the drop based on the results
     // of the `onDragOver(e: Event)` callback.
-    const onDragOverResult = onDropDragOver?.(e);
+    const { dragOffsetX = 0, ...onDragOverResult } = onDropDragOver?.(e) ?? {};
     if (onDragOverResult === false) {
       if (this.state.droppingDOMNode) {
         this.removeDroppingPlaceholder();
@@ -719,11 +719,27 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const gridRect = e.currentTarget.getBoundingClientRect(); // The grid's position in the viewport
 
     // Calculate the mouse position relative to the grid
-    const layerX = e.clientX - gridRect.left;
-    const layerY = e.clientY - gridRect.top;
+
+    // Grid dimensions in pixels
+    const gridCellWidth = width / cols;
+    const gridCellHeight = rowHeight;
+
+    // Center the dropping item by offsetting by half its size
+    const itemCenterOffsetX = (finalDroppingItem.w / 2) * gridCellWidth;
+    const itemCenterOffsetY = (finalDroppingItem.h / 2) * gridCellHeight;
+
+    // Calculate mouse position relative to grid, accounting for drag offset and item centering
+    const rawGridX = e.clientX - gridRect.left + dragOffsetX - itemCenterOffsetX;
+    const rawGridY = e.clientY - gridRect.top - itemCenterOffsetY;
+
+    // Clamp to grid bounds and round to nearest pixel
+    const clampedGridX = Math.max(0, Math.round(rawGridX));
+    const clampedGridY = Math.max(0, Math.round(rawGridY));
+
+    // Apply transform scaling for final position
     const droppingPosition = {
-      left: layerX / transformScale,
-      top: layerY / transformScale,
+      left: clampedGridX / transformScale,
+      top: clampedGridY / transformScale,
       e
     };
 
@@ -739,8 +755,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
       const calculatedPosition = calcXY(
         positionParams,
-        layerY,
-        layerX,
+        clampedGridY,
+        clampedGridX,
         finalDroppingItem.w,
         finalDroppingItem.h
       );
@@ -761,7 +777,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       });
     } else if (this.state.droppingPosition) {
       const { left, top } = this.state.droppingPosition;
-      const shouldUpdatePosition = left != layerX || top != layerY;
+      const shouldUpdatePosition = left != clampedGridX || top != clampedGridY;
       if (shouldUpdatePosition) {
         this.setState({ droppingPosition });
       }

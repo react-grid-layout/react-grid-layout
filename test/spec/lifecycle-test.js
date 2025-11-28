@@ -414,9 +414,9 @@ describe("Lifecycle tests", function () {
         // We should have the position in our state.
         expect(gridLayout.state("droppingPosition")).toHaveProperty(
           "left",
-          200
+          147
         );
-        expect(gridLayout.state("droppingPosition")).toHaveProperty("top", 140);
+        expect(gridLayout.state("droppingPosition")).toHaveProperty("top", 125);
         // We should now have the placeholder element in our state.
         expect(gridLayout.state("droppingDOMNode")).toHaveProperty(
           "type",
@@ -435,8 +435,8 @@ describe("Lifecycle tests", function () {
           i: "__dropping-elem__",
           h: 1,
           w: 1,
-          x: 2,
-          y: 4,
+          x: 1,
+          y: 3,
           static: false,
           isDraggable: true
         });
@@ -446,7 +446,7 @@ describe("Lifecycle tests", function () {
 
         // State should change.
         expect(gridLayout.state("droppingPosition")).toHaveProperty("left", 0);
-        expect(gridLayout.state("droppingPosition")).toHaveProperty("top", 300);
+        expect(gridLayout.state("droppingPosition")).toHaveProperty("top", 285);
 
         layoutItem = gridLayout
           .state("layout")
@@ -496,8 +496,8 @@ describe("Lifecycle tests", function () {
           i: "__dropping-elem__",
           h: 2,
           w: 2,
-          x: 2,
-          y: 4,
+          x: 1,
+          y: 3,
           static: false,
           isDraggable: true
         });
