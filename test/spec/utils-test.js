@@ -578,6 +578,60 @@ describe("calcGridItemPosition", () => {
       width: 143 // 2x colWidth + margin, rounded
     });
   });
+
+  it("should complete consistent calculation with 1px margins", () => {
+    const layout = [
+      {
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 4
+      },
+      {
+        x: 4,
+        y: 0,
+        w: 2,
+        h: 4
+      }
+    ];
+
+    const resizing = null;
+    const dragging = null;
+
+    const widths = [1803, 1805];
+
+    while (widths.length) {
+      const containerWidth = widths.pop();
+      const positionParams = {
+        ...basePositionParams,
+        containerWidth,
+        margin: [1, 1],
+        rowHeight: 30,
+        containerPadding: [1, 1],
+        cols: 12,
+        maxRows: Infinity
+      };
+
+      const first = calcGridItemPosition(
+        positionParams,
+        layout[0].x,
+        layout[0].y,
+        layout[0].w,
+        layout[0].h,
+        { resizing, dragging }
+      );
+      const second = calcGridItemPosition(
+        positionParams,
+        layout[1].x,
+        layout[1].y,
+        layout[1].w,
+        layout[1].h,
+        { resizing, dragging }
+      );
+
+      expect(second.left - (first.left + first.width)).toEqual(1); // as margin is 1
+    }
+  });
 });
 
 describe("fastRGLPropsEqual", () => {
