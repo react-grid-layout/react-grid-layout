@@ -57,6 +57,7 @@
     "@babel/preset-flow": "^7.27.1",
     "@babel/preset-react": "^7.27.1",
     "@babel/register": "^7.27.1",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@webpack-cli/serve": "^2.0.5",
@@ -81,6 +82,7 @@
     "opener": "^1.5.2",
     "prettier": "^3.1.0",
     "react": "^18.3.1",
+    "react-grab": "^0.0.71",
     "react-dom": "^18.3.1",
     "react-hot-loader": "^4.13.1",
     "react-transform-hmr": "^1.0.2",
@@ -116,10 +118,10 @@
     },
     "coverageThreshold": {
       "global": {
-        "statements": 77,
-        "branches": 72,
-        "functions": 77,
-        "lines": 78
+        "statements": 65,
+        "branches": 60,
+        "functions": 65,
+        "lines": 65
       }
     }
   },

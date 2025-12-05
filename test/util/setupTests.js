@@ -1,9 +1,6 @@
 // @flow
 
-import Enzyme from "enzyme";
-import Adapter from "@cfaester/enzyme-adapter-react-18";
-
-Enzyme.configure({ adapter: new Adapter() });
+import "@testing-library/jest-dom";
 
 // We rely on sort() being deterministic for tests, but it changed from QuickSort to TimSort
 // in Node 12. This breaks tests, so we monkey-patch it.
@@ -22,3 +19,10 @@ Object.defineProperty(HTMLElement.prototype, "offsetParent", {
     return this.parentNode;
   }
 });
+
+// Mock ResizeObserver for tests
+global.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
