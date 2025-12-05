@@ -38,6 +38,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
 >
   <DraggableCore
     allowAnyClick={false}
+    allowMobileScroll={false}
     cancel=".react-resizable-handle"
     disabled={true}
     enableUserSelectHack={true}
@@ -121,6 +122,7 @@ exports[`Lifecycle tests <GridItem > Basic Render 1`] = `
         test child
         <DraggableCore
           allowAnyClick={false}
+          allowMobileScroll={false}
           disabled={true}
           enableUserSelectHack={true}
           key="resizableHandle-se"
@@ -836,6 +838,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -930,6 +933,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -1008,6 +1012,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -1102,6 +1107,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -1180,6 +1186,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -1274,6 +1281,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -1352,6 +1360,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -1446,6 +1455,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -1524,6 +1534,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -1618,6 +1629,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -1696,6 +1708,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -1790,6 +1803,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -1868,6 +1882,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -1962,6 +1977,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -2040,6 +2056,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -2134,6 +2151,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -2212,6 +2230,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -2306,6 +2325,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -2384,6 +2404,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -2478,6 +2499,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -2556,6 +2578,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -2650,6 +2673,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -2728,6 +2752,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -2822,6 +2847,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -2900,6 +2926,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -2994,6 +3021,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -3072,6 +3100,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -3166,6 +3195,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -3244,6 +3274,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -3338,6 +3369,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -3416,6 +3448,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -3510,6 +3543,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -3588,6 +3622,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -3682,6 +3717,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -3760,6 +3796,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -3854,6 +3891,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -3932,6 +3970,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -4026,6 +4065,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -4104,6 +4144,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -4198,6 +4239,7 @@ exports[`Lifecycle tests <ReactGridLayout> Basic Render 1`] = `
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -4918,6 +4960,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -5012,6 +5055,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -5090,6 +5134,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -5184,6 +5229,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -5262,6 +5308,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -5356,6 +5403,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -5434,6 +5482,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -5528,6 +5577,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -5606,6 +5656,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -5700,6 +5751,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -5778,6 +5830,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -5872,6 +5925,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -5950,6 +6004,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -6044,6 +6099,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -6122,6 +6178,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -6216,6 +6273,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -6294,6 +6352,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -6388,6 +6447,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -6466,6 +6526,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -6560,6 +6621,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -6638,6 +6700,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -6732,6 +6795,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -6810,6 +6874,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -6904,6 +6969,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -6982,6 +7048,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -7076,6 +7143,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -7154,6 +7222,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -7248,6 +7317,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -7326,6 +7396,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -7420,6 +7491,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -7498,6 +7570,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -7592,6 +7665,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -7670,6 +7744,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -7764,6 +7839,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -7842,6 +7918,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -7936,6 +8013,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -8014,6 +8092,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -8108,6 +8187,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -8186,6 +8266,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
         >
           <DraggableCore
             allowAnyClick={false}
+            allowMobileScroll={false}
             cancel=".react-resizable-handle"
             disabled={false}
             enableUserSelectHack={true}
@@ -8280,6 +8361,7 @@ exports[`Lifecycle tests <ReactGridLayout> WidthProvider Renders with WidthProvi
                 </span>
                 <DraggableCore
                   allowAnyClick={false}
+                  allowMobileScroll={false}
                   disabled={false}
                   enableUserSelectHack={true}
                   key="resizableHandle-se"
@@ -8595,6 +8677,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
     >
       <DraggableCore
         allowAnyClick={false}
+        allowMobileScroll={false}
         cancel=".react-resizable-handle"
         disabled={true}
         enableUserSelectHack={true}
@@ -8692,6 +8775,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             a
             <DraggableCore
               allowAnyClick={false}
+              allowMobileScroll={false}
               disabled={true}
               enableUserSelectHack={true}
               key="resizableHandle-se"
@@ -8770,6 +8854,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
     >
       <DraggableCore
         allowAnyClick={false}
+        allowMobileScroll={false}
         cancel=".react-resizable-handle"
         disabled={false}
         enableUserSelectHack={true}
@@ -8867,6 +8952,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             b
             <DraggableCore
               allowAnyClick={false}
+              allowMobileScroll={false}
               disabled={false}
               enableUserSelectHack={true}
               key="resizableHandle-se"
@@ -8945,6 +9031,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
     >
       <DraggableCore
         allowAnyClick={false}
+        allowMobileScroll={false}
         cancel=".react-resizable-handle"
         disabled={false}
         enableUserSelectHack={true}
@@ -9040,6 +9127,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Creates layout based on pro
             c
             <DraggableCore
               allowAnyClick={false}
+              allowMobileScroll={false}
               disabled={false}
               enableUserSelectHack={true}
               key="resizableHandle-se"
@@ -9185,6 +9273,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
     >
       <DraggableCore
         allowAnyClick={false}
+        allowMobileScroll={false}
         cancel=".react-resizable-handle"
         disabled={true}
         enableUserSelectHack={true}
@@ -9282,6 +9371,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
             a
             <DraggableCore
               allowAnyClick={false}
+              allowMobileScroll={false}
               disabled={true}
               enableUserSelectHack={true}
               key="resizableHandle-se"
@@ -9360,6 +9450,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
     >
       <DraggableCore
         allowAnyClick={false}
+        allowMobileScroll={false}
         cancel=".react-resizable-handle"
         disabled={false}
         enableUserSelectHack={true}
@@ -9455,6 +9546,7 @@ exports[`Lifecycle tests <ReactGridLayout> data-grid Null items in list 1`] = `
             c
             <DraggableCore
               allowAnyClick={false}
+              allowMobileScroll={false}
               disabled={false}
               enableUserSelectHack={true}
               key="resizableHandle-se"
@@ -11425,6 +11517,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -11519,6 +11612,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -11597,6 +11691,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -11691,6 +11786,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -11769,6 +11865,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -11863,6 +11960,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -11941,6 +12039,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -12035,6 +12134,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -12113,6 +12213,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -12207,6 +12308,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -12285,6 +12387,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -12379,6 +12482,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -12457,6 +12561,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -12551,6 +12656,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -12629,6 +12735,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -12723,6 +12830,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -12801,6 +12909,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -12895,6 +13004,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -12973,6 +13083,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -13067,6 +13178,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -13145,6 +13257,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={true}
                 enableUserSelectHack={true}
@@ -13244,6 +13357,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={true}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -13322,6 +13436,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -13416,6 +13531,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -13494,6 +13610,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -13588,6 +13705,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -13666,6 +13784,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -13760,6 +13879,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -13838,6 +13958,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -13932,6 +14053,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -14010,6 +14132,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -14104,6 +14227,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -14182,6 +14306,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -14276,6 +14401,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -14354,6 +14480,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -14448,6 +14575,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -14526,6 +14654,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -14620,6 +14749,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -14698,6 +14828,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -14792,6 +14923,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -14870,6 +15002,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -14964,6 +15097,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -15042,6 +15176,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={true}
                 enableUserSelectHack={true}
@@ -15141,6 +15276,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={true}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -15219,6 +15355,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -15313,6 +15450,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -15391,6 +15529,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -15485,6 +15624,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"
@@ -15563,6 +15703,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
             >
               <DraggableCore
                 allowAnyClick={false}
+                allowMobileScroll={false}
                 cancel=".react-resizable-handle"
                 disabled={false}
                 enableUserSelectHack={true}
@@ -15657,6 +15798,7 @@ exports[`Lifecycle tests <ResponsiveReactGridLayout> Basic Render 1`] = `
                     </span>
                     <DraggableCore
                       allowAnyClick={false}
+                      allowMobileScroll={false}
                       disabled={false}
                       enableUserSelectHack={true}
                       key="resizableHandle-se"

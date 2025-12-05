@@ -1,0 +1,65 @@
+name: Dependency Audit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  audit:
+    name: Audit Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      # For PRs: compare base vs head
+      - name: Audit base branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git checkout ${{ github.event.pull_request.base.sha }}
+          yarn install --frozen-lockfile
+          # Capture advisory IDs from base branch (yarn audit exits non-zero on vulns)
+          yarn audit --json 2>/dev/null | grep '"type":"auditAdvisory"' | jq -r '.data.advisory.id' | sort -u > /tmp/base_advisories.txt || true
+          echo "Base branch advisories:"
+          cat /tmp/base_advisories.txt || echo "(none)"
+
+      - name: Audit PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git checkout ${{ github.event.pull_request.head.sha }}
+          yarn install --frozen-lockfile
+          # Capture advisory IDs from PR branch
+          yarn audit --json 2>/dev/null | grep '"type":"auditAdvisory"' | jq -r '.data.advisory.id' | sort -u > /tmp/pr_advisories.txt || true
+          echo "PR branch advisories:"
+          cat /tmp/pr_advisories.txt || echo "(none)"
+
+      - name: Check for new vulnerabilities
+        if: github.event_name == 'pull_request'
+        run: |
+          # Find advisories in PR that aren't in base
+          new_advisories=$(comm -23 /tmp/pr_advisories.txt /tmp/base_advisories.txt)
+          if [ -n "$new_advisories" ]; then
+            echo "❌ New vulnerabilities introduced by this PR:"
+            echo "$new_advisories"
+            echo ""
+            echo "Run 'yarn audit' locally for details."
+            exit 1
+          else
+            echo "✅ No new vulnerabilities introduced by this PR."
+          fi
+
+      # For pushes to master: just run audit for visibility
+      - name: Audit (informational)
+        if: github.event_name == 'push'
+        run: |
+          yarn install --frozen-lockfile
+          yarn audit || echo "⚠️ Vulnerabilities found. Run 'yarn audit' for details."
