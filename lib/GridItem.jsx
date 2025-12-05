@@ -259,9 +259,9 @@ export default class GridItem extends React.Component<Props, State> {
     };
 
     const shouldDrag =
-      (this.state.dragging &&
-        droppingPosition.left !== prevDroppingPosition.left) ||
-      droppingPosition.top !== prevDroppingPosition.top;
+      this.state.dragging &&
+      (droppingPosition.left !== prevDroppingPosition.left ||
+        droppingPosition.top !== prevDroppingPosition.top);
 
     if (!this.state.dragging) {
       this.onDragStart(droppingPosition.e, {
