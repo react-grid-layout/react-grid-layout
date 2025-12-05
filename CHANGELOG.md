@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.3 (Dec 5, 2025)
+
+- Fix collision detection y-coordinate offset. [#2173](https://github.com/react-grid-layout/react-grid-layout/pull/2173)
+- Memoize bottom computation in compact for performance. [#2115](https://github.com/react-grid-layout/react-grid-layout/pull/2115)
+- Make `b` param in `compactItem` optional. [#2165](https://github.com/react-grid-layout/react-grid-layout/pull/2165)
+- Fix example animations and rework example styles.
+- Various devDependency updates and security fixes. [#2179](https://github.com/react-grid-layout/react-grid-layout/pull/2179)
+
 ## 1.5.2 (Jun 25, 2025)
 
 - Fix `calcXY` when `isBounded=true` moving items incorrectly. Likely related to #2059. Thanks @wanpan11. [#2102](https://github.com/react-grid-layout/react-grid-layout/pull/2102)
