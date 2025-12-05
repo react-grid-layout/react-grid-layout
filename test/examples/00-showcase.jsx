@@ -100,7 +100,6 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
   };
 
   render(): React.Node {
-    // eslint-disable-next-line no-unused-vars
     return (
       <div>
         <div>

@@ -4,7 +4,6 @@
 // This is better than Object.freeze() as we can create coherent error messages
 // and easily only deliver frozen subobjects when they are accessed. We can
 // even add custom logic, like warning if you access a property that doesn't exist.
-/* eslint-disable no-console */
 export default function deepFreeze<T: { [key: string]: any }>(
   inputObj: T,
   options: { get: boolean, set: boolean } = { get: true, set: true }

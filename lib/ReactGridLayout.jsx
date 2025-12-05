@@ -65,7 +65,7 @@ let isFirefox = false;
 // Try...catch will protect from navigator not existing (e.g. node) or a bad implementation of navigator
 try {
   isFirefox = /firefox/i.test(navigator.userAgent);
-} catch (e) {
+} catch {
   /* Ignore */
 }
 
@@ -410,7 +410,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     i,
     w,
     h,
-    { e, node, size, handle }
+    { e, node, size: _size, handle }
   ) => {
     const { oldResizeItem } = this.state;
     const { layout } = this.state;

@@ -430,7 +430,7 @@ describe("Lifecycle tests", function () {
 
         // Get first grid item's initial transform
         const gridItem = container.querySelector(".react-grid-item");
-        const initialStyle = gridItem.getAttribute("style");
+        const _initialStyle = gridItem.getAttribute("style");
 
         // Now change the mock width and trigger resize
         Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
@@ -1264,7 +1264,6 @@ describe("Lifecycle tests", function () {
       });
 
       describe("preventCollision=true and no compaction", () => {
-        /* eslint-disable react/prop-types */
         const PreventCollisionContainer = ({
           layoutA,
           layoutB,
@@ -1288,7 +1287,6 @@ describe("Lifecycle tests", function () {
             </div>
           </ReactGridLayout>
         );
-        /* eslint-enable react/prop-types */
 
         it("Does not allow elements to move when resizing with no free space", () => {
           const onLayoutChange = jest.fn();
@@ -1503,7 +1501,7 @@ describe("Lifecycle tests", function () {
         </ResponsiveReactGridLayout>
       );
 
-      expect(frozenLayouts).not.toContain("md");
+      expect(frozenLayouts).not.toHaveProperty("md");
     });
   });
 
