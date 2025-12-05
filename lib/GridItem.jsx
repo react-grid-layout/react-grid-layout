@@ -3,7 +3,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DraggableCore } from "react-draggable";
 import { Resizable } from "react-resizable";
-import { perc, resizeItemInDirection, setTopLeft, setTransform } from "./utils";
+import {
+  fastPositionEqual,
+  perc,
+  resizeItemInDirection,
+  setTopLeft,
+  setTransform
+} from "./utils";
 import {
   calcGridItemPosition,
   calcGridItemWHPx,
@@ -233,7 +239,28 @@ export default class GridItem extends React.Component<Props, State> {
     if (this.props.children !== nextProps.children) return true;
     if (this.props.droppingPosition !== nextProps.droppingPosition) return true;
     if (this.props.useCSSTransforms !== nextProps.useCSSTransforms) return true;
-    return true;
+
+    // Compare calculated positions - this catches all prop changes that affect rendering
+    const oldPosition = calcGridItemPosition(
+      this.getPositionParams(this.props),
+      this.props.x,
+      this.props.y,
+      this.props.w,
+      this.props.h,
+      this.state.dragging ? this.dragPosition : null,
+      this.state.resizing ? this.resizePosition : null
+    );
+    const newPosition = calcGridItemPosition(
+      this.getPositionParams(nextProps),
+      nextProps.x,
+      nextProps.y,
+      nextProps.w,
+      nextProps.h,
+      nextState.dragging ? this.dragPosition : null,
+      nextState.resizing ? this.resizePosition : null
+    );
+
+    return !fastPositionEqual(oldPosition, newPosition);
   }
 
   componentDidMount() {
