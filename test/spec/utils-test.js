@@ -605,15 +605,23 @@ describe("calcGridItemPosition", () => {
     const y = 1;
     const w = 2;
     const h = 2;
-    const resizing = null;
-    const dragging = null;
+    const dragPosition = null;
+    const resizePosition = null;
     const positionParams = {
       ...basePositionParams,
       margin: [10, 10],
       containerPadding: [100, 100]
     };
     expect(
-      calcGridItemPosition(positionParams, x, y, w, h, { resizing, dragging })
+      calcGridItemPosition(
+        positionParams,
+        x,
+        y,
+        w,
+        h,
+        dragPosition,
+        resizePosition
+      )
     ).toEqual({
       height: 110, // 50 * 2 + margin of 10
       left: 176, // 100 + colWidth (66.25) + margin. Rounded to complete pixel

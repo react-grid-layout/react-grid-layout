@@ -1,5 +1,35 @@
 # Changelog
 
+## Unreleased
+
+### React 18 Compatibility
+
+- **Full React 18 support.** The library now works seamlessly with React 18's automatic batching without any `flushSync` warnings. [#2049](https://github.com/react-grid-layout/react-grid-layout/pull/2049)
+- Removed `flushSync` usage from drag and resize handlers. This was a workaround that caused console warnings in React 18. The library now works naturally with React 18's automatic batching while remaining compatible with React 16 and 17.
+
+### Bugfixes
+
+- Fixed operator precedence bug in `moveDroppingItem` where `shouldDrag` would incorrectly evaluate to `true` when only the `top` position changed, regardless of dragging state.
+- Fixed resize position calculation when `node` is falsy in `onResizeHandler`. Previously this would cause `NaN` values in CSS positioning.
+
+### Internal Changes
+
+- **Migrated test suite from Enzyme to React Testing Library.** Enzyme does not support React 18.
+- Removed snapshot tests in favor of behavioral tests.
+- `GridItem` now uses instance variables (`dragPosition`, `resizePosition`) instead of state for position tracking during drag/resize operations. This simplifies React 18 compatibility.
+- Removed `shouldComponentUpdate` from `GridItem`. React 18's automatic batching makes this optimization unnecessary and it was incompatible with instance variable position tracking.
+- Removed `fastPositionEqual` utility (was only used by `shouldComponentUpdate`).
+- `calcGridItemPosition` signature changed: now takes separate `dragPosition` and `resizePosition` parameters instead of a `state` object.
+- Enhanced `ResizeObserver` mock in test setup to be controllable for testing width changes.
+- CSS cleanup: consolidated vendor-prefixed `user-select` properties, added hover effect for resize handles.
+- Updated various devDependencies.
+
+### Notes for Library Consumers
+
+Most users should not need to change any code when upgrading. The changes are primarily internal.
+
+If you were relying on `GridItem`'s internal `state.dragging` or `state.resizing` containing position objects, note that these are now booleans. The position data is stored in instance variables instead. (This is not part of the public API and should not affect typical usage.)
+
 ## 1.5.3 (Dec 5, 2025)
 
 - Fix collision detection y-coordinate offset. [#2173](https://github.com/react-grid-layout/react-grid-layout/pull/2173)
