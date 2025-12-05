@@ -11,7 +11,7 @@
     "check-build-example": "bash check-build-example.sh",
     "view-example": "make view-example",
     "dev": "make dev",
-    "prepublish": "echo \"Don't publish this branch!\" && exit 1",
+    "prepublishOnly": "echo \"Don't publish this branch!\" && exit 1",
     "validate": "npm ls",
     "flow": "flow"
   },
