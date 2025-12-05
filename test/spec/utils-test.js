@@ -11,7 +11,8 @@ import {
   sortLayoutItemsByRowCol,
   validateLayout,
   compactType,
-  synchronizeLayoutWithChildren
+  synchronizeLayoutWithChildren,
+  resizeItemInDirection
 } from "../../lib/utils";
 import * as React from "react";
 import {
@@ -868,5 +869,70 @@ describe("synchronizeLayoutWithChildren", () => {
       expect.objectContaining({ w: 1, h: 1, x: 0, y: 10, i: "B" }),
       expect.objectContaining({ w: 2, h: 2, x: 0, y: 11, i: "C" })
     ]);
+  });
+});
+
+describe("resizeItemInDirection", () => {
+  const containerWidth = 1200;
+
+  describe("west resize", () => {
+    it("should preserve the right edge when resizing west", () => {
+      // Original position: left=100, width=200, so right edge = 300
+      const currentSize = { left: 100, top: 50, width: 200, height: 100 };
+      // User drags west handle to make width=250
+      const newSize = { left: 0, top: 50, width: 250, height: 100 };
+
+      const result = resizeItemInDirection(
+        "w",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Right edge should remain at 300 (100 + 200)
+      // So with width=250, left should be 50 (300 - 250)
+      const rightEdgeBefore = currentSize.left + currentSize.width; // 300
+      const rightEdgeAfter = result.left + result.width;
+
+      expect(rightEdgeAfter).toBe(rightEdgeBefore);
+    });
+
+    it("should not shift element leftward unexpectedly during west resize", () => {
+      // Regression test for https://github.com/react-grid-layout/react-grid-layout/issues/2027
+      const currentSize = { left: 200, top: 0, width: 400, height: 100 };
+      // Simulate dragging west handle to increase width by 50px
+      const newSize = { left: 0, top: 0, width: 450, height: 100 };
+
+      const result = resizeItemInDirection(
+        "w",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Original right edge: 200 + 400 = 600
+      // Expected: left = 150, width = 450, right edge = 600
+      expect(result.left + result.width).toBe(600);
+      expect(result.width).toBe(450);
+      expect(result.left).toBe(150);
+    });
+
+    it("should clamp width when resizing past container left edge", () => {
+      // Element near left edge
+      const currentSize = { left: 50, top: 0, width: 200, height: 100 };
+      // Try to resize to width=300 (would need left=-50)
+      const newSize = { left: 0, top: 0, width: 300, height: 100 };
+
+      const result = resizeItemInDirection(
+        "w",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Should clamp: left=0, width=250 (original right edge was 250)
+      expect(result.left).toBe(0);
+      expect(result.left + result.width).toBe(250); // right edge preserved
+    });
   });
 });
