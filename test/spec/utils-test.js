@@ -7,6 +7,7 @@ import {
   compact,
   fastRGLPropsEqual,
   moveElement,
+  moveElementAwayFromCollision,
   sortLayoutItemsByRowCol,
   validateLayout,
   compactType,
@@ -408,6 +409,48 @@ describe("moveElement", () => {
       true // allowOverlap
     );
     expect(Object.is(layout, modifiedLayout)).toBe(false);
+  });
+});
+
+describe("moveElementAwayFromCollision", () => {
+  it("Uses correct y-coordinate offset when moving item down due to collision north (#2173)", () => {
+    // This test verifies the fix for issue #2173
+    // Bug: when collisionNorth is true during vertical compaction, the code used
+    // collidesWith.y + 1 instead of itemToMove.y + 1, causing items to jump to wrong positions.
+    //
+    // Layout scenario:
+    // - A at y=0, h=6: a tall item that blocks the space above B
+    // - B at y=5, h=2: the item that was moved (collidesWith) - note: overlaps with A's bottom
+    // - C at y=7, h=2: the item that needs to move away (itemToMove)
+    //
+    // When C tries to move above B, it collides with A (collisionNorth).
+    // C should move down from its own position (y=7 -> y=8), not from B's position.
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 6, i: "A" },
+      { x: 0, y: 5, w: 1, h: 2, i: "B" }, // collidesWith - positioned to trigger collision
+      { x: 0, y: 7, w: 1, h: 2, i: "C" } // itemToMove
+    ];
+    const collidesWith = layout[1]; // B
+    const itemToMove = layout[2]; // C
+
+    const result = moveElementAwayFromCollision(
+      layout,
+      collidesWith,
+      itemToMove,
+      true, // isUserAction - required to trigger the collisionNorth branch
+      "vertical", // compactType
+      10 // cols
+    );
+
+    // Find itemToMove (C) in the result
+    const movedItem = result.find(item => item.i === "C");
+    expect(movedItem).toBeDefined();
+
+    // With the bug (collidesWith.y + 1 = 5 + 1 = 6), C would be at y=6
+    // With the fix (itemToMove.y + 1 = 7 + 1 = 8), C should be at y=8
+    // C should move down from its own position, not jump to collidesWith.y + 1
+    // $FlowFixMe: movedItem is checked above
+    expect(movedItem.y).toBe(8);
   });
 });
 
