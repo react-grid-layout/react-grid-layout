@@ -1202,6 +1202,67 @@ describe("Lifecycle tests", function () {
         expect(onResizeStop).toHaveBeenCalled();
       });
 
+      it("does not produce NaN values in position during resize", () => {
+        // Regression test: when node is falsy in onResizeHandler,
+        // updatedSize must still have valid top/left values
+        const onResize = jest.fn();
+        const onResizeStop = jest.fn();
+        const { container } = render(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            onResize={onResize}
+            onResizeStop={onResizeStop}
+            resizeHandles={["se"]}
+          >
+            <div key="a" data-grid={{ x: 0, y: 0, w: 2, h: 2 }}>
+              a
+            </div>
+          </ReactGridLayout>
+        );
+
+        const gridItem = container.querySelector(".react-grid-item");
+        const handle = container.querySelector(".react-resizable-handle-se");
+
+        // Start resize
+        act(() => {
+          dispatchMouseEvent(handle, "mousedown", {
+            clientX: 200,
+            clientY: 60
+          });
+        });
+
+        // Move during resize
+        act(() => {
+          mouseMove(300, 120, handle);
+        });
+
+        // Check that the grid item's style doesn't contain NaN
+        const style = gridItem.getAttribute("style");
+        expect(style).not.toContain("NaN");
+
+        // Complete resize
+        act(() => {
+          const mouseUpEvent = new MouseEvent("mouseup", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+            clientX: 300,
+            clientY: 120,
+            button: 0
+          });
+          document.dispatchEvent(mouseUpEvent);
+        });
+
+        // Verify style still doesn't contain NaN after resize
+        const finalStyle = gridItem.getAttribute("style");
+        expect(finalStyle).not.toContain("NaN");
+
+        expect(onResizeStop).toHaveBeenCalled();
+      });
+
       describe("preventCollision=true and no compaction", () => {
         /* eslint-disable react/prop-types */
         const PreventCollisionContainer = ({

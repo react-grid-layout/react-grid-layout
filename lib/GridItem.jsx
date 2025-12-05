@@ -561,7 +561,7 @@ export default class GridItem extends React.Component<Props, State> {
     const { minW, maxW } = this.props;
 
     // Sizing and clamping of dimensions based on resize direction
-    let updatedSize = size;
+    let updatedSize;
     if (node) {
       updatedSize = resizeItemInDirection(
         handle,
@@ -569,6 +569,13 @@ export default class GridItem extends React.Component<Props, State> {
         size,
         containerWidth
       );
+    } else {
+      // When node is not available, use existing position for top/left
+      updatedSize = {
+        ...size,
+        top: position.top,
+        left: position.left
+      };
     }
     this.resizePosition = updatedSize;
 
