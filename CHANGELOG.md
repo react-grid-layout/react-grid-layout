@@ -4,7 +4,7 @@
 
 ### React 18 Compatibility
 
-- **Full React 18 support.** The library now works seamlessly with React 18's automatic batching without any `flushSync` warnings.
+- **Full React 18 support.** The library now works seamlessly with React 18's automatic batching without any `flushSync` warnings. [#2049](https://github.com/react-grid-layout/react-grid-layout/pull/2049)
 - Removed `flushSync` usage from drag and resize handlers. This was a workaround that caused console warnings in React 18. The library now works naturally with React 18's automatic batching while remaining compatible with React 16 and 17.
 
 ### Bugfixes
