@@ -33,9 +33,9 @@
   "author": "Samuel Reed <samuel.trace.reed@gmail.com> (http://strml.net/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/STRML/react-grid-layout/issues"
+    "url": "https://github.com/react-grid-layout/react-grid-layout/issues"
   },
-  "homepage": "https://github.com/STRML/react-grid-layout",
+  "homepage": "https://github.com/react-grid-layout/react-grid-layout",
   "dependencies": {
     "clsx": "^2.1.1",
     "fast-equals": "^4.0.3",
