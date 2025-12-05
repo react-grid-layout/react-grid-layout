@@ -14,3 +14,4 @@ examples/*.js
 !examples/vars.js
 .vscode
 *.tgz
+yarn-error.log

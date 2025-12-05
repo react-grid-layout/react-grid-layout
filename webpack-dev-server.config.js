@@ -36,6 +36,7 @@ module.exports = {
   devServer: {
     compress: true,
     port: 4002,
+    host: "localhost",
     open: "index-dev.html",
     client: {
       overlay: true
