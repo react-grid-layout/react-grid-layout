@@ -1,0 +1,13 @@
+name: "code-coverage-report"
+on: push
+  # pull_request:
+  #   branches:
+  #     - '*'
+jobs:
+  run-jest-with-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ArtiomTr/jest-coverage-report-action@v2.0-rc.6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
