@@ -422,6 +422,14 @@ onDropDragOver: (e: DragOverEvent) => ?({|w?: number, h?: number|} | false),
 // Note that this type is React.Ref<HTMLDivElement> in TypeScript, Flow has a bug here
 // https://github.com/facebook/flow/issues/8671#issuecomment-862634865
 innerRef: {current: null | HTMLDivElement},
+
+// add responsive svg background for the layout. By default is undefined. When the prop is set to boolean true, it
+// adds a svg background with white background and "#ddd" grid to the layout
+background?: | {
+        bgColor?: string,
+        gridColor?: string
+      }
+    | boolean
 ```
 
 ### Responsive Grid Layout Props

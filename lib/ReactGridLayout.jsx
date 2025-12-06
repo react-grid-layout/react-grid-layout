@@ -11,6 +11,8 @@ import {
   compactType,
   fastRGLPropsEqual,
   getAllCollisions,
+  getBackgroundGridSvgString,
+  getBgPaddingSvgString,
   getLayoutItem,
   moveElement,
   noop,
@@ -823,12 +825,61 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.props.onDrop(layout, item, e);
   };
 
+  getBackgroundStyle(): ?{
+    backgroundImage: string,
+    backgroundRepeat: string,
+    backgroundPosition: string
+  } {
+    const { background, containerPadding, margin, width } = this.props;
+
+    if (!background) {
+      return undefined;
+    }
+
+    const { bgColor, gridColor } =
+      typeof background === "boolean"
+        ? {
+            bgColor: "#fff",
+            gridColor: "#ddd"
+          }
+        : background;
+
+    const containerWidth = width;
+    const backgroundGridSvg = getBackgroundGridSvgString({
+      cols: this.props.cols,
+      margin: this.props.margin,
+      rowHeight: this.props.rowHeight,
+      containerWidth,
+      padding: this.props.containerPadding,
+      gridColor
+    });
+    const paddingSvg = getBgPaddingSvgString({
+      containerWidth,
+      margin: this.props.margin,
+      padding: this.props.containerPadding,
+      bgColor
+    });
+    const encodedGridSvg = window.encodeURIComponent(backgroundGridSvg);
+    const encodedPaddingSvg = window.encodeURIComponent(paddingSvg);
+    return {
+      backgroundImage: this.props.background
+        ? `url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml, ${encodedPaddingSvg}'), url('data:image/svg+xml,${encodedGridSvg}')`
+        : "none",
+      backgroundRepeat: "no-repeat, no-repeat, repeat-y",
+      backgroundPosition: `top, bottom, 0 ${
+        containerPadding ? containerPadding[1] : margin[1]
+      }`
+    };
+  }
+
   render(): React.Element<"div"> {
     const { className, style, isDroppable, innerRef } = this.props;
 
     const mergedClassName = clsx(layoutClassName, className);
+
     const mergedStyle = {
       height: this.containerHeight(),
+      ...this.getBackgroundStyle(),
       ...style
     };
 
