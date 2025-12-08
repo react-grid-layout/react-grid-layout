@@ -135,3 +135,30 @@ export {
   perc,
   resizeItemInDirection
 } from "./position.js";
+
+// =============================================================================
+// Grid Calculations
+// =============================================================================
+
+export type { PositionParams } from "./calculate.js";
+
+export {
+  calcGridColWidth,
+  calcGridItemWHPx,
+  calcGridItemPosition,
+  calcXY,
+  calcWH,
+  clamp
+} from "./calculate.js";
+
+// =============================================================================
+// Responsive Utilities
+// =============================================================================
+
+export {
+  sortBreakpoints,
+  getBreakpointFromWidth,
+  getColsFromBreakpoint,
+  findOrGenerateResponsiveLayout,
+  getIndentationValue
+} from "./responsive.js";
