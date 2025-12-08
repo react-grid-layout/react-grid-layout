@@ -1617,6 +1617,54 @@ function MyGrid() {
 
 ---
 
+## Baseline Performance Metrics
+
+Established 2025-12-08 on Apple M4 Pro (Node.js, Jest). These metrics serve as regression benchmarks for the v2 rewrite.
+
+### Compaction Algorithm
+
+| Operation             | 100 items | 500 items | 1000 items |
+| --------------------- | --------- | --------- | ---------- |
+| Vertical compaction   | 280µs     | 4.9ms     | 23ms       |
+| Horizontal compaction | 340µs     | 13.7ms    | 72ms       |
+
+**Note**: Horizontal compaction is ~3x slower than vertical at scale. The "rising tide" algorithm from PR #2152 should significantly improve these numbers.
+
+### Layout Operations
+
+| Operation                       | Time  |
+| ------------------------------- | ----- |
+| Move element (100-500 items)    | ~7µs  |
+| Sort layout (100 items)         | 4.5µs |
+| Sort layout (500 items)         | 26µs  |
+| Sort layout (1000 items)        | 66µs  |
+| Correct bounds (100-1000 items) | 2-4µs |
+
+### React Component Rendering
+
+| Items | Render Time |
+| ----- | ----------- |
+| 50    | 9ms         |
+| 100   | 15ms        |
+| 200   | 29ms        |
+
+### Interaction Simulation
+
+| Operation                                  | Time  |
+| ------------------------------------------ | ----- |
+| Full drag (100 items, 20 position updates) | 3.7ms |
+
+**Target for 60fps**: Each interaction frame must complete in <16ms. Current drag simulation at 3.7ms for 20 steps means ~0.19ms per position update, well within budget.
+
+### Test Files
+
+- `test/spec/benchmark-test.js` - Performance benchmarks
+- `test/spec/backcompat-test.js` - API contract tests (49 tests)
+
+Run benchmarks: `NODE_ENV=test npx jest --testPathPatterns=benchmark`
+
+---
+
 ## Implementation Plan
 
 ### Phase 1: Setup & Core Types (Week 1)
@@ -1686,7 +1734,7 @@ function MyGrid() {
    - _Recommendation_: Use `useSyncExternalStore` with `getServerSnapshot` for SSR safety
 
 5. **Performance benchmarks**: Should we establish performance benchmarks before the rewrite to ensure we don't regress?
-   - _Recommendation_: Yes, benchmark with 100+ items, measure render time and interaction latency
+   - _Resolution_: ✅ Done. See "Baseline Performance Metrics" section above. Benchmarks cover compaction, rendering, and drag simulation.
 
 6. **Default export**: What should `import X from 'react-grid-layout'` return?
    - _Recommendation_: New `GridLayout` component (breaking change), legacy available at `/legacy`
