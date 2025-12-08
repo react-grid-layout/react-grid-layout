@@ -108,7 +108,22 @@ export {
 // Compaction
 // =============================================================================
 
-export { compact, compactItem } from "./compact.js";
+// Compactor implementations
+export {
+  verticalCompactor,
+  horizontalCompactor,
+  noCompactor,
+  verticalOverlapCompactor,
+  horizontalOverlapCompactor,
+  getCompactor,
+  // Helpers for custom compactors
+  resolveCompactionCollision,
+  compactItemVertical,
+  compactItemHorizontal
+} from "./compactors.js";
+
+// Legacy/convenience functions (backwards compatibility)
+export { compact, compactItem, applyCompactor } from "./compact-compat.js";
 
 // =============================================================================
 // Position Calculations
