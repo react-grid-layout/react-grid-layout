@@ -5,7 +5,10 @@
  * No React dependencies - can be used with any framework.
  */
 
-// Re-export all types
+// =============================================================================
+// Types
+// =============================================================================
+
 export type {
   // Resize handles
   ResizeHandleAxis,
@@ -56,8 +59,64 @@ export type {
   ArrayElement
 } from "./types.js";
 
-// Layout algorithm functions will be added here:
-// export { compact, moveElement, correctBounds } from './layout.js';
-// export { sortLayoutItems, sortLayoutItemsByRowCol } from './sort.js';
-// export { collides, getFirstCollision, getAllCollisions } from './collision.js';
-// export { calcPosition, calcGridPosition, calcWH } from './position.js';
+// =============================================================================
+// Collision Detection
+// =============================================================================
+
+export { collides, getFirstCollision, getAllCollisions } from "./collision.js";
+
+// =============================================================================
+// Sorting
+// =============================================================================
+
+export {
+  sortLayoutItems,
+  sortLayoutItemsByRowCol,
+  sortLayoutItemsByColRow
+} from "./sort.js";
+
+// =============================================================================
+// Layout Utilities
+// =============================================================================
+
+export {
+  // Queries
+  bottom,
+  getLayoutItem,
+  getStatics,
+
+  // Cloning
+  cloneLayoutItem,
+  cloneLayout,
+
+  // Modification
+  modifyLayout,
+  withLayoutItem,
+
+  // Bounds
+  correctBounds,
+
+  // Movement
+  moveElement,
+  moveElementAwayFromCollision,
+
+  // Validation
+  validateLayout
+} from "./layout.js";
+
+// =============================================================================
+// Compaction
+// =============================================================================
+
+export { compact, compactItem } from "./compact.js";
+
+// =============================================================================
+// Position Calculations
+// =============================================================================
+
+export {
+  setTransform,
+  setTopLeft,
+  perc,
+  resizeItemInDirection
+} from "./position.js";
