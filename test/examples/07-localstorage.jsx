@@ -73,7 +73,7 @@ function getFromLS(key) {
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rgl-7")) || {};
-    } catch (e) {
+    } catch {
       /*Ignore*/
     }
   }
