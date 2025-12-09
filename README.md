@@ -20,14 +20,16 @@ RGL is React-only and does not require jQuery.
 ## Table of Contents
 
 - [What's New in v2](#whats-new-in-v2)
+- [Migrating from v1](#migrating-from-v1)
 - [Demos](#demos)
 - [Features](#features)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Responsive Usage](#responsive-usage)
 - [Providing Grid Width](#providing-grid-width)
+- [Hooks API](#hooks-api)
 - [API Reference](#api-reference)
-- [Migrating from v1](#migrating-from-v1)
+- [Extending: Custom Compactors & Position Strategies](#extending-custom-compactors--position-strategies)
 - [Performance](#performance)
 - [Contribute](#contribute)
 
@@ -54,6 +56,89 @@ Version 2 is a complete TypeScript rewrite with a modernized API:
 - `width` prop is now required (use `useContainerWidth` hook or provide your own)
 - Removed UMD/script tag bundle - use a bundler like Vite, webpack, or esbuild
 - `verticalCompact` prop removed - use `compactType={null}` instead
+
+## Migrating from v1
+
+### Quick Migration (Use Legacy API)
+
+The easiest migration path is to change your imports to use the legacy compatibility layer:
+
+```diff
+- import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
++ import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout/legacy';
+```
+
+This provides **100% API compatibility** with v1. Your existing code will work unchanged.
+
+### Full Migration to v2 API
+
+For new projects or when you want to modernize:
+
+**1. Update imports:**
+
+```diff
+- import GridLayout from 'react-grid-layout';
++ import ReactGridLayout, { useContainerWidth } from 'react-grid-layout';
+```
+
+**2. Add width handling:**
+
+```diff
+function MyGrid() {
++  const { width, containerRef, mounted } = useContainerWidth();
++
+   return (
+-    <GridLayout width={1200}>
++    <div ref={containerRef}>
++      {mounted && (
++        <ReactGridLayout width={width}>
+           ...
+-    </GridLayout>
++        </ReactGridLayout>
++      )}
++    </div>
+   );
+}
+```
+
+**3. Migrate to composable interfaces (optional but recommended):**
+
+```diff
+- <GridLayout
+-   cols={12}
+-   rowHeight={30}
+-   isDraggable={true}
+-   draggableHandle=".handle"
+-   isResizable={true}
+-   resizeHandles={['se', 'sw']}
+-   compactType="vertical"
+- >
++ <ReactGridLayout
++   gridConfig={{ cols: 12, rowHeight: 30 }}
++   dragConfig={{ enabled: true, handle: '.handle' }}
++   resizeConfig={{ enabled: true, handles: ['se', 'sw'] }}
++   compactor={verticalCompactor}
++ >
+```
+
+**4. Update deprecated props:**
+
+```diff
+<ReactGridLayout
+-  verticalCompact={false}
++  compactor={noCompactor}
+>
+```
+
+### When to Use v2 vs Legacy API
+
+| Use Case                         | Recommendation                                    |
+| -------------------------------- | ------------------------------------------------- |
+| Existing v1 codebase             | Use `react-grid-layout/legacy` for easy migration |
+| New project                      | Use v2 API with hooks for cleaner code            |
+| Need custom compaction logic     | Use v2 API with custom `Compactor`                |
+| Server-side rendering            | Use v2 API with `measureBeforeMount: true`        |
+| Maximum bundle size optimization | Use v2 API - tree-shakeable                       |
 
 ## Demos
 
@@ -263,6 +348,293 @@ function MyGrid() {
 }
 ```
 
+## Hooks API
+
+The v2 API provides three hooks for different use cases. Choose based on your needs:
+
+| Hook                  | Use When                                                             |
+| --------------------- | -------------------------------------------------------------------- |
+| `useContainerWidth`   | You need responsive width measurement (most common)                  |
+| `useGridLayout`       | You're building a custom grid component or need direct state control |
+| `useResponsiveLayout` | You're building a custom responsive grid with breakpoint logic       |
+
+### useContainerWidth
+
+Observes container width using ResizeObserver and provides reactive width updates. This is the recommended way to provide width to the grid.
+
+**Why use it instead of WidthProvider?**
+
+- Hooks are more composable and easier to test
+- No HOC wrapper means simpler component tree
+- Explicit control over when to render (via `mounted`)
+- Works better with SSR
+
+```tsx
+import { useContainerWidth } from "react-grid-layout";
+
+function MyGrid() {
+  const { width, containerRef, mounted, measureWidth } = useContainerWidth({
+    measureBeforeMount: false, // Set true for SSR
+    initialWidth: 1280 // Width before first measurement
+  });
+
+  return (
+    <div ref={containerRef}>{mounted && <ReactGridLayout width={width} />}</div>
+  );
+}
+```
+
+**Type Definitions:**
+
+```ts
+interface UseContainerWidthOptions {
+  /** Delay render until width is measured. Useful for SSR. Default: false */
+  measureBeforeMount?: boolean;
+  /** Initial width before measurement. Default: 1280 */
+  initialWidth?: number;
+}
+
+interface UseContainerWidthResult {
+  /** Current container width in pixels */
+  width: number;
+  /** Whether the container has been measured at least once */
+  mounted: boolean;
+  /** Ref to attach to the container element */
+  containerRef: RefObject<HTMLDivElement | null>;
+  /** Manually trigger a width measurement */
+  measureWidth: () => void;
+}
+```
+
+### useGridLayout
+
+Core layout state management hook. Use this when you need direct control over drag/resize/drop state, or when building a custom grid component.
+
+**Why use it instead of the component?**
+
+- Full control over layout state and updates
+- Access to drag/resize/drop state for custom UIs
+- Can integrate with external state management
+- Build headless grid implementations
+
+```tsx
+import { useGridLayout } from "react-grid-layout";
+
+function CustomGrid({ initialLayout }) {
+  const {
+    layout,
+    setLayout,
+    dragState,
+    resizeState,
+    onDragStart,
+    onDrag,
+    onDragStop,
+    onResizeStart,
+    onResize,
+    onResizeStop,
+    containerHeight,
+    isInteracting,
+    compactor
+  } = useGridLayout({
+    layout: initialLayout,
+    cols: 12,
+    compactType: "vertical",
+    allowOverlap: false,
+    preventCollision: false,
+    onLayoutChange: newLayout => console.log("Layout changed:", newLayout)
+  });
+
+  // Access drag state for custom placeholder rendering
+  const placeholder = dragState.activeDrag;
+
+  // Check if any interaction is happening
+  if (isInteracting) {
+    // Disable other UI during drag/resize
+  }
+
+  return (
+    <div style={{ height: containerHeight * rowHeight }}>
+      {layout.map(item => (
+        <div
+          key={item.i}
+          onMouseDown={() => onDragStart(item.i, item.x, item.y)}
+        >
+          {item.i}
+        </div>
+      ))}
+      {placeholder && <div className="placeholder" />}
+    </div>
+  );
+}
+```
+
+**Type Definitions:**
+
+```ts
+interface UseGridLayoutOptions {
+  /** Initial layout */
+  layout: Layout;
+  /** Number of columns */
+  cols: number;
+  /** Compaction type: 'vertical', 'horizontal', or null */
+  compactType?: CompactType;
+  /** Allow items to overlap */
+  allowOverlap?: boolean;
+  /** Prevent collisions when moving items */
+  preventCollision?: boolean;
+  /** Called when layout changes */
+  onLayoutChange?: (layout: Layout) => void;
+}
+
+interface UseGridLayoutResult {
+  /** Current layout */
+  layout: Layout;
+  /** Set layout directly */
+  setLayout: (layout: Layout) => void;
+  /** Current drag state (activeDrag, oldDragItem, oldLayout) */
+  dragState: DragState;
+  /** Current resize state (resizing, oldResizeItem, oldLayout) */
+  resizeState: ResizeState;
+  /** Current drop state (droppingDOMNode, droppingPosition) */
+  dropState: DropState;
+  /** Start dragging an item */
+  onDragStart: (itemId: string, x: number, y: number) => LayoutItem | null;
+  /** Update drag position */
+  onDrag: (itemId: string, x: number, y: number) => void;
+  /** Stop dragging */
+  onDragStop: (itemId: string, x: number, y: number) => void;
+  /** Start resizing an item */
+  onResizeStart: (itemId: string) => LayoutItem | null;
+  /** Update resize dimensions */
+  onResize: (
+    itemId: string,
+    w: number,
+    h: number,
+    x?: number,
+    y?: number
+  ) => void;
+  /** Stop resizing */
+  onResizeStop: (itemId: string, w: number, h: number) => void;
+  /** Handle external drag over */
+  onDropDragOver: (
+    droppingItem: LayoutItem,
+    position: DroppingPosition
+  ) => void;
+  /** Handle external drag leave */
+  onDropDragLeave: () => void;
+  /** Complete external drop */
+  onDrop: (droppingItem: LayoutItem) => void;
+  /** Container height in grid rows */
+  containerHeight: number;
+  /** Whether any drag/resize/drop is active */
+  isInteracting: boolean;
+  /** The compactor being used */
+  compactor: Compactor;
+}
+```
+
+### useResponsiveLayout
+
+Manages responsive breakpoints and generates layouts for different screen sizes. Use this when building a custom responsive grid.
+
+**Why use it instead of the Responsive component?**
+
+- Direct access to current breakpoint
+- Control over layout generation for new breakpoints
+- Can update layouts for specific breakpoints
+- Build custom breakpoint UIs
+
+```tsx
+import { useContainerWidth, useResponsiveLayout } from "react-grid-layout";
+
+function CustomResponsiveGrid() {
+  const { width, containerRef, mounted } = useContainerWidth();
+
+  const {
+    layout, // Current layout for active breakpoint
+    layouts, // All layouts by breakpoint
+    breakpoint, // Current active breakpoint ('lg', 'md', etc.)
+    cols, // Column count for current breakpoint
+    setLayoutForBreakpoint,
+    setLayouts,
+    sortedBreakpoints
+  } = useResponsiveLayout({
+    width,
+    breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
+    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+    layouts: {
+      lg: [{ i: "1", x: 0, y: 0, w: 2, h: 2 }],
+      md: [{ i: "1", x: 0, y: 0, w: 3, h: 2 }]
+    },
+    compactType: "vertical",
+    onBreakpointChange: (bp, cols) =>
+      console.log(`Now at ${bp} (${cols} cols)`),
+    onLayoutChange: (layout, allLayouts) => saveToServer(allLayouts)
+  });
+
+  // Show current breakpoint in UI
+  return (
+    <div ref={containerRef}>
+      <div>
+        Current breakpoint: {breakpoint} ({cols} columns)
+      </div>
+      {mounted && (
+        <GridLayout width={width} cols={cols} layout={layout}>
+          {/* children */}
+        </GridLayout>
+      )}
+    </div>
+  );
+}
+```
+
+**Type Definitions:**
+
+```ts
+interface UseResponsiveLayoutOptions<B extends string = DefaultBreakpoints> {
+  /** Current container width */
+  width: number;
+  /** Breakpoint definitions (name → min-width). Default: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0} */
+  breakpoints?: Record<B, number>;
+  /** Column counts per breakpoint. Default: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2} */
+  cols?: Record<B, number>;
+  /** Layouts for each breakpoint */
+  layouts?: Partial<Record<B, Layout>>;
+  /** Compaction type */
+  compactType?: "vertical" | "horizontal" | null;
+  /** Called when breakpoint changes */
+  onBreakpointChange?: (newBreakpoint: B, cols: number) => void;
+  /** Called when layout changes */
+  onLayoutChange?: (layout: Layout, layouts: Record<B, Layout>) => void;
+  /** Called when width changes */
+  onWidthChange?: (
+    width: number,
+    margin: [number, number],
+    cols: number,
+    padding: [number, number] | null
+  ) => void;
+}
+
+interface UseResponsiveLayoutResult<B extends string = DefaultBreakpoints> {
+  /** Current layout for the active breakpoint */
+  layout: Layout;
+  /** All layouts by breakpoint */
+  layouts: Partial<Record<B, Layout>>;
+  /** Current active breakpoint */
+  breakpoint: B;
+  /** Column count for the current breakpoint */
+  cols: number;
+  /** Update layout for a specific breakpoint */
+  setLayoutForBreakpoint: (breakpoint: B, layout: Layout) => void;
+  /** Update all layouts */
+  setLayouts: (layouts: Partial<Record<B, Layout>>) => void;
+  /** Sorted array of breakpoint names (smallest to largest) */
+  sortedBreakpoints: B[];
+}
+
+type DefaultBreakpoints = "lg" | "md" | "sm" | "xs" | "xxs";
+```
+
 ## API Reference
 
 ### ReactGridLayout Props
@@ -440,48 +812,6 @@ interface LayoutItem {
 }
 ```
 
-### Hooks
-
-#### useContainerWidth
-
-Observes container width changes using ResizeObserver:
-
-```ts
-interface UseContainerWidthOptions {
-  measureBeforeMount?: boolean; // Delay render until measured (default: false)
-  initialWidth?: number; // Initial width before measurement (default: 1280)
-}
-
-interface UseContainerWidthResult {
-  width: number; // Current container width
-  mounted: boolean; // Whether container has been measured
-  containerRef: RefObject<HTMLDivElement>; // Ref to attach to container
-  measureWidth: () => void; // Manually trigger measurement
-}
-
-function useContainerWidth(
-  options?: UseContainerWidthOptions
-): UseContainerWidthResult;
-```
-
-#### useGridLayout
-
-Core layout state management (advanced):
-
-```ts
-function useGridLayout(options: UseGridLayoutOptions): UseGridLayoutResult;
-```
-
-#### useResponsiveLayout
-
-Responsive breakpoint management (advanced):
-
-```ts
-function useResponsiveLayout(
-  options: UseResponsiveLayoutOptions
-): UseResponsiveLayoutResult;
-```
-
 ### Core Utilities
 
 Import pure layout functions from `react-grid-layout/core`:
@@ -497,75 +827,288 @@ import {
 } from "react-grid-layout/core";
 ```
 
-## Migrating from v1
+## Extending: Custom Compactors & Position Strategies
 
-### Minimal Changes (Use Legacy API)
+### Creating a Custom Compactor
 
-The easiest migration path is to use the legacy compatibility layer:
+Compactors control how items are arranged after drag/resize. Create your own for custom layouts like masonry, gravity, or shelf-packing.
 
-```diff
-- import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
-+ import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout/legacy';
-```
+**The Compactor Interface:**
 
-This provides 100% API compatibility with v1.
+```ts
+interface Compactor {
+  /** Identifies the compaction type */
+  type: "vertical" | "horizontal" | null | string;
 
-### Full Migration to v2
+  /** Whether this compactor allows overlapping items */
+  allowOverlap: boolean;
 
-1. **Update imports:**
+  /** Prevent items from moving when another item is dragged into them */
+  preventCollision?: boolean;
 
-```diff
-- import GridLayout from 'react-grid-layout';
-+ import ReactGridLayout, { useContainerWidth } from 'react-grid-layout';
-```
+  /**
+   * Compact the entire layout.
+   * Called after any layout change to fill gaps.
+   *
+   * @param layout - Array of layout items (clone before mutating!)
+   * @param cols - Number of grid columns
+   * @returns New compacted layout
+   */
+  compact(layout: Layout, cols: number): Layout;
 
-2. **Add width handling:**
-
-```diff
-function MyGrid() {
-+  const { width, containerRef, mounted } = useContainerWidth();
-+
-   return (
--    <GridLayout width={1200}>
-+    <div ref={containerRef}>
-+      {mounted && (
-+        <ReactGridLayout width={width}>
-           ...
--    </GridLayout>
-+        </ReactGridLayout>
-+      )}
-+    </div>
-   );
+  /**
+   * Handle moving an item.
+   * Called during drag to preview the new position.
+   *
+   * @param layout - Current layout
+   * @param item - Item being moved
+   * @param x - New X position in grid units
+   * @param y - New Y position in grid units
+   * @param cols - Number of grid columns
+   * @returns Updated layout with item at new position
+   */
+  onMove(
+    layout: Layout,
+    item: LayoutItem,
+    x: number,
+    y: number,
+    cols: number
+  ): Layout;
 }
 ```
 
-3. **Migrate to composable interfaces (optional but recommended):**
+**Example: Gravity Compactor (items fall to bottom)**
 
-```diff
-- <GridLayout
--   cols={12}
--   rowHeight={30}
--   isDraggable={true}
--   draggableHandle=".handle"
--   isResizable={true}
--   resizeHandles={['se', 'sw']}
--   compactType="vertical"
-- >
-+ <ReactGridLayout
-+   gridConfig={{ cols: 12, rowHeight: 30 }}
-+   dragConfig={{ enabled: true, handle: '.handle' }}
-+   resizeConfig={{ enabled: true, handles: ['se', 'sw'] }}
-+   compactor={verticalCompactor}
-+ >
+```ts
+import { cloneLayout, cloneLayoutItem, getStatics, bottom } from "react-grid-layout/core";
+
+const gravityCompactor: Compactor = {
+  type: "gravity",
+  allowOverlap: false,
+
+  compact(layout, cols) {
+    const statics = getStatics(layout);
+    const maxY = 100; // arbitrary max height
+    const out = [];
+
+    // Sort by Y descending (process bottom items first)
+    const sorted = [...layout].sort((a, b) => b.y - a.y);
+
+    for (const item of sorted) {
+      const l = cloneLayoutItem(item);
+
+      if (!l.static) {
+        // Move down as far as possible
+        while (l.y < maxY && !collides(l, statics)) {
+          l.y++;
+        }
+        l.y--; // Back up one
+      }
+
+      out.push(l);
+    }
+
+    return out;
+  },
+
+  onMove(layout, item, x, y, cols) {
+    const newLayout = cloneLayout(layout);
+    const movedItem = newLayout.find(l => l.i === item.i);
+    if (movedItem) {
+      movedItem.x = x;
+      movedItem.y = y;
+      movedItem.moved = true;
+    }
+    return newLayout;
+  }
+};
+
+// Usage
+<GridLayout compactor={gravityCompactor} />
 ```
 
-4. **Update deprecated props:**
+**Example: Single Row Compactor (horizontal shelf)**
 
-```diff
-<ReactGridLayout
--  verticalCompact={false}
-+  compactor={noCompactor}
->
+```ts
+const singleRowCompactor: Compactor = {
+  type: "shelf",
+  allowOverlap: false,
+
+  compact(layout, cols) {
+    let x = 0;
+    const out = [];
+
+    // Sort by original X position
+    const sorted = [...layout].sort((a, b) => a.x - b.x);
+
+    for (const item of sorted) {
+      const l = cloneLayoutItem(item);
+      if (!l.static) {
+        l.x = x;
+        l.y = 0; // All items on row 0
+        x += l.w;
+
+        // Wrap to next row if overflow
+        if (x > cols) {
+          l.x = 0;
+          x = l.w;
+        }
+      }
+      out.push(l);
+    }
+
+    return out;
+  },
+
+  onMove(layout, item, x, y, cols) {
+    // Same as default - just update position
+    const newLayout = cloneLayout(layout);
+    const movedItem = newLayout.find(l => l.i === item.i);
+    if (movedItem) {
+      movedItem.x = x;
+      movedItem.y = 0; // Force row 0
+      movedItem.moved = true;
+    }
+    return newLayout;
+  }
+};
+```
+
+**Using Helper Functions:**
+
+The core module exports helpers for building compactors:
+
+```ts
+import {
+  resolveCompactionCollision, // Move items to resolve overlaps
+  compactItemVertical, // Compact one item upward
+  compactItemHorizontal, // Compact one item leftward
+  getFirstCollision, // Find first collision
+  collides, // Check if two items collide
+  getStatics, // Get static items from layout
+  cloneLayout, // Clone layout array
+  cloneLayoutItem // Clone single item
+} from "react-grid-layout/core";
+```
+
+### Creating a Custom Position Strategy
+
+Position strategies control how items are positioned via CSS. Create custom strategies for special transform handling.
+
+**The PositionStrategy Interface:**
+
+```ts
+interface PositionStrategy {
+  /** Type identifier */
+  type: "transform" | "absolute" | string;
+
+  /** Scale factor for coordinate calculations */
+  scale: number;
+
+  /**
+   * Generate CSS styles for positioning an item.
+   *
+   * @param pos - Position with top, left, width, height in pixels
+   * @returns CSS properties object
+   */
+  calcStyle(pos: Position): React.CSSProperties;
+
+  /**
+   * Calculate drag position from mouse coordinates.
+   * Used during drag to convert screen coords to grid coords.
+   *
+   * @param clientX - Mouse X position
+   * @param clientY - Mouse Y position
+   * @param offsetX - Offset from item left edge
+   * @param offsetY - Offset from item top edge
+   * @returns Calculated left/top position
+   */
+  calcDragPosition(
+    clientX: number,
+    clientY: number,
+    offsetX: number,
+    offsetY: number
+  ): { left: number; top: number };
+}
+```
+
+**Example: Rotated Container Strategy**
+
+```ts
+const createRotatedStrategy = (angleDegrees: number): PositionStrategy => {
+  const angleRad = (angleDegrees * Math.PI) / 180;
+  const cos = Math.cos(angleRad);
+  const sin = Math.sin(angleRad);
+
+  return {
+    type: "rotated",
+    scale: 1,
+
+    calcStyle(pos) {
+      // Apply rotation to position
+      const rotatedX = pos.left * cos - pos.top * sin;
+      const rotatedY = pos.left * sin + pos.top * cos;
+
+      return {
+        transform: `translate(${rotatedX}px, ${rotatedY}px)`,
+        width: `${pos.width}px`,
+        height: `${pos.height}px`,
+        position: "absolute"
+      };
+    },
+
+    calcDragPosition(clientX, clientY, offsetX, offsetY) {
+      // Reverse the rotation for drag calculations
+      const x = clientX - offsetX;
+      const y = clientY - offsetY;
+
+      return {
+        left: x * cos + y * sin,
+        top: -x * sin + y * cos
+      };
+    }
+  };
+};
+
+// Usage: grid inside a rotated container
+<div style={{ transform: 'rotate(45deg)' }}>
+  <GridLayout positionStrategy={createRotatedStrategy(45)} />
+</div>
+```
+
+**Example: 3D Perspective Strategy**
+
+```ts
+const create3DStrategy = (
+  perspective: number,
+  rotateX: number
+): PositionStrategy => ({
+  type: "3d",
+  scale: 1,
+
+  calcStyle(pos) {
+    return {
+      transform: `
+        perspective(${perspective}px)
+        rotateX(${rotateX}deg)
+        translate3d(${pos.left}px, ${pos.top}px, 0)
+      `,
+      width: `${pos.width}px`,
+      height: `${pos.height}px`,
+      position: "absolute",
+      transformStyle: "preserve-3d"
+    };
+  },
+
+  calcDragPosition(clientX, clientY, offsetX, offsetY) {
+    // Adjust for perspective foreshortening
+    const perspectiveFactor = 1 + clientY / perspective;
+    return {
+      left: (clientX - offsetX) / perspectiveFactor,
+      top: (clientY - offsetY) / perspectiveFactor
+    };
+  }
+});
 ```
 
 ## Performance
