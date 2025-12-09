@@ -187,15 +187,16 @@ export function withLayoutItem(
  * - Items overflowing left are moved to x=0 and clamped to grid width
  * - Static items that collide with other statics are moved down
  *
- * Note: This function mutates the layout items for performance.
- * Clone the layout first if you need immutability.
+ * **IMPORTANT**: This function mutates the layout items in place for performance.
+ * The type signature uses `Mutable<LayoutItem>[]` to make this explicit.
+ * Clone the layout first (e.g., with `cloneLayout()`) if you need immutability.
  *
- * @param layout - Layout to correct (items may be mutated)
+ * @param layout - Layout to correct (items WILL be mutated)
  * @param bounds - Grid bounds
  * @returns The same layout array (for chaining)
  */
 export function correctBounds(
-  layout: LayoutItem[],
+  layout: Mutable<LayoutItem>[],
   bounds: { cols: number }
 ): LayoutItem[] {
   const collidesWith = getStatics(layout);
@@ -238,8 +239,12 @@ export function correctBounds(
  * Handles collision detection and cascading movements.
  * Does not compact the layout - call `compact()` separately.
  *
+ * **Note**: This function mutates the `l` parameter directly for performance.
+ * The item's x, y, and moved properties will be modified. Callers should
+ * ideally pass a cloned item if they need to preserve the original.
+ *
  * @param layout - Full layout
- * @param l - Item to move
+ * @param l - Item to move (will be mutated)
  * @param x - New X position (or undefined to keep current)
  * @param y - New Y position (or undefined to keep current)
  * @param isUserAction - True if this is a direct user action (affects collision resolution)
@@ -273,7 +278,7 @@ export function moveElement(
   const oldX = l.x;
   const oldY = l.y;
 
-  // Update position (mutates l, but l should be a clone)
+  // Update position (mutates l directly - see JSDoc note)
   if (typeof x === "number") (l as Mutable<LayoutItem>).x = x;
   if (typeof y === "number") (l as Mutable<LayoutItem>).y = y;
   (l as Mutable<LayoutItem>).moved = true;
