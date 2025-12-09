@@ -199,9 +199,10 @@ export interface DragOverEvent extends MouseEvent {
  * Type of compaction to apply to the layout.
  * - 'vertical': Items compact upward (default)
  * - 'horizontal': Items compact leftward
+ * - 'wrap': Items arranged in wrapped-paragraph style (like words in text)
  * - null: No compaction (free-form positioning)
  */
-export type CompactType = "horizontal" | "vertical" | null;
+export type CompactType = "horizontal" | "vertical" | "wrap" | null;
 
 // ============================================================================
 // Callback Types

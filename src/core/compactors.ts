@@ -5,7 +5,13 @@
  * Use the Compactor interface to create custom compaction algorithms.
  */
 
-import type { Compactor, Layout, LayoutItem, Mutable } from "./types.js";
+import type {
+  Compactor,
+  CompactType,
+  Layout,
+  LayoutItem,
+  Mutable
+} from "./types.js";
 import { getFirstCollision } from "./collision.js";
 import { sortLayoutItemsByRowCol, sortLayoutItemsByColRow } from "./sort.js";
 import { bottom, cloneLayoutItem, getStatics, cloneLayout } from "./layout.js";
@@ -336,12 +342,16 @@ export const horizontalOverlapCompactor: Compactor = {
  * This is a convenience function for backwards compatibility with the
  * string-based compactType API.
  *
- * @param compactType - 'vertical', 'horizontal', or null
+ * Note: For 'wrap' mode, import `wrapCompactor` from 'react-grid-layout/extras'
+ * and pass it directly to the `compactor` prop. This function returns
+ * `noCompactor` for 'wrap' type since the wrap compactor is tree-shakeable.
+ *
+ * @param compactType - 'vertical', 'horizontal', 'wrap', or null
  * @param allowOverlap - Whether to allow overlapping items
  * @returns The appropriate Compactor
  */
 export function getCompactor(
-  compactType: "vertical" | "horizontal" | null,
+  compactType: CompactType,
   allowOverlap: boolean = false,
   preventCollision: boolean = false
 ): Compactor {
@@ -355,6 +365,8 @@ export function getCompactor(
   } else {
     if (compactType === "vertical") baseCompactor = verticalCompactor;
     else if (compactType === "horizontal") baseCompactor = horizontalCompactor;
+    // For 'wrap' and null, use noCompactor
+    // Users wanting wrap mode should import wrapCompactor from extras
     else baseCompactor = noCompactor;
   }
 
