@@ -95,16 +95,34 @@ src/
 
 ```typescript
 // New v2 API (recommended)
-import {
-  GridLayout,
-  ResponsiveGridLayout,
-  useContainerWidth
+import ReactGridLayout, {
+  Responsive,
+  useContainerWidth,
+  verticalCompactor,
+  horizontalCompactor
 } from "react-grid-layout";
 
-// Core utilities (framework-agnostic)
-import { compact, moveElement, collides } from "react-grid-layout/core";
+// With composable interfaces
+<ReactGridLayout
+  width={width}
+  layout={layout}
+  gridConfig={{ cols: 12, rowHeight: 30 }}
+  dragConfig={{ enabled: true, handle: '.handle' }}
+  resizeConfig={{ enabled: true, handles: ['se'] }}
+  compactor={verticalCompactor}
+/>
 
-// Legacy v1 API (100% backwards compatible)
+// Core utilities (framework-agnostic)
+import {
+  compact,
+  moveElement,
+  collides,
+  transformStrategy,
+  absoluteStrategy,
+  createScaledStrategy
+} from "react-grid-layout/core";
+
+// Legacy v1 API (100% backwards compatible, flat props)
 import ReactGridLayout, {
   WidthProvider,
   Responsive
@@ -255,6 +273,15 @@ dist/
 
 Users should reproduce bugs in CodeSandbox: https://codesandbox.io/s/staging-bush-3lvt7
 
-## RFC
+## RFC & Design Document
 
-See `rfcs/0001-v2-typescript-rewrite.md` for the original design document. Note that the implementation simplified some of the proposed interfaces (e.g., kept flat props instead of composable config objects).
+**Important**: See `rfcs/0001-v2-typescript-rewrite.md` for the complete design document. This RFC defines:
+
+- Breaking changes (drag threshold, immutable callbacks, data-grid deprecation)
+- Composable configuration interfaces (GridConfig, DragConfig, ResizeConfig, DropConfig)
+- PositionStrategy interface (transform vs absolute positioning)
+- Compactor interface (pluggable compaction algorithms)
+- Fast compaction algorithms (rising tide - O(n log n))
+- Migration guide from v1 to v2
+
+The v2 implementation follows the RFC with composable interfaces now fully implemented.
