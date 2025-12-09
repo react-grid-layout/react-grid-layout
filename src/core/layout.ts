@@ -300,11 +300,12 @@ export function moveElement(
   }
 
   // Handle prevent collision mode - revert position
+  // Return same reference to signal no change occurred
   if (hasCollisions && preventCollision) {
     (l as Mutable<LayoutItem>).x = oldX;
     (l as Mutable<LayoutItem>).y = oldY;
     (l as Mutable<LayoutItem>).moved = false;
-    return [...layout];
+    return layout as LayoutItem[];
   }
 
   // Resolve collisions by moving other items

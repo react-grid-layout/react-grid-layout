@@ -15,13 +15,13 @@
 
 import * as React from "react";
 import { render, act } from "@testing-library/react";
-import ReactGridLayout from "../../lib/ReactGridLayout";
+import ReactGridLayout from "../../src/legacy/ReactGridLayout";
 import {
   compact,
   moveElement,
   sortLayoutItemsByRowCol,
   correctBounds
-} from "../../lib/utils";
+} from "../../src/legacy/utils-compat";
 
 // Generate a layout with n items
 function generateLayout(n: number, cols: number = 12): Array<Object> {

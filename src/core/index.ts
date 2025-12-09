@@ -123,7 +123,7 @@ export {
 } from "./compactors.js";
 
 // Legacy/convenience functions (backwards compatibility)
-export { compact, compactItem, applyCompactor } from "./compact-compat.js";
+export { compact, compactItem } from "./compact-compat.js";
 
 // =============================================================================
 // Position Calculations

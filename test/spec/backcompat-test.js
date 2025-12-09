@@ -10,14 +10,14 @@
 
 import * as React from "react";
 import { render, act, fireEvent } from "@testing-library/react";
-import ReactGridLayout from "../../lib/ReactGridLayout";
-import ResponsiveReactGridLayout from "../../lib/ResponsiveReactGridLayout";
-import WidthProvider from "../../lib/components/WidthProvider";
+import ReactGridLayout from "../../src/legacy/ReactGridLayout";
+import ResponsiveReactGridLayout from "../../src/legacy/ResponsiveReactGridLayout";
+import WidthProvider from "../../src/legacy/WidthProvider";
 import {
   synchronizeLayoutWithChildren,
   compact,
   moveElement
-} from "../../lib/utils";
+} from "../../src/legacy/utils-compat";
 
 describe("Backwards Compatibility: Callback Signatures", () => {
   const baseLayout = [

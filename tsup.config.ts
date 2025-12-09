@@ -3,8 +3,9 @@ import { defineConfig } from "tsup";
 export default defineConfig({
   entry: {
     index: "src/index.ts",
-    core: "src/core/index.ts"
-    // legacy: "src/legacy/index.ts", // Will be added later
+    core: "src/core/index.ts",
+    react: "src/react/index.ts",
+    legacy: "src/legacy/index.ts"
   },
   format: ["esm", "cjs"],
   dts: true,
@@ -12,6 +13,12 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   treeshake: true,
-  external: ["react", "react-dom"]
-  // Note: Add "use client" banner when React components are added
+  external: [
+    "react",
+    "react-dom",
+    "react-draggable",
+    "react-resizable",
+    "clsx",
+    "fast-equals"
+  ]
 });

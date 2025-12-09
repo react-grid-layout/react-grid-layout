@@ -13,14 +13,14 @@ import {
   compactType,
   synchronizeLayoutWithChildren,
   resizeItemInDirection
-} from "../../lib/utils";
+} from "../../src/legacy/utils-compat";
 import * as React from "react";
 import {
   calcGridColWidth,
   calcGridItemPosition,
   calcWH,
   calcXY
-} from "../../lib/calculateUtils";
+} from "../../src/legacy/calculate-compat";
 import { deepEqual } from "fast-equals";
 import deepFreeze from "./../util/deepFreeze";
 

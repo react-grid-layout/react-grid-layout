@@ -1,10 +1,10 @@
 // @flow
 import * as React from "react";
 import _ from "lodash";
-import Responsive from '../../lib/ResponsiveReactGridLayout';
-import WidthProvider from '../../lib/components/WidthProvider';
-import type {CompactType, Layout, LayoutItem, ReactChildren} from '../../lib/utils';
-import type {Breakpoint, OnLayoutChangeCallback} from '../../lib/responsiveUtils';
+import Responsive from '../../src/legacy/ResponsiveReactGridLayout';
+import WidthProvider from '../../src/legacy/WidthProvider';
+import type {CompactType, Layout, LayoutItem, ReactChildren} from '../../src/legacy/utils-compat';
+import type {Breakpoint, OnLayoutChangeCallback} from '../../src/legacy/responsive-compat';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 type Props = {|

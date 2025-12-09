@@ -1,9 +1,9 @@
 // @flow
 import * as React from "react";
 import _ from "lodash";
-import RGL from '../../lib/ReactGridLayout';
-import WidthProvider from '../../lib/components/WidthProvider';
-import type {Layout, ReactChildren} from '../../lib/utils';
+import RGL from '../../src/legacy/ReactGridLayout';
+import WidthProvider from '../../src/legacy/WidthProvider';
+import type {Layout, ReactChildren} from '../../src/legacy/utils-compat';
 
 const ReactGridLayout = WidthProvider(RGL);
 

@@ -2,7 +2,61 @@
   "name": "react-grid-layout",
   "version": "1.5.3",
   "description": "A draggable and resizable grid layout with responsive breakpoints, for React.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./core": {
+      "import": {
+        "types": "./dist/core.d.mts",
+        "default": "./dist/core.mjs"
+      },
+      "require": {
+        "types": "./dist/core.d.ts",
+        "default": "./dist/core.js"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.mts",
+        "default": "./dist/react.mjs"
+      },
+      "require": {
+        "types": "./dist/react.d.ts",
+        "default": "./dist/react.js"
+      }
+    },
+    "./legacy": {
+      "import": {
+        "types": "./dist/legacy.d.mts",
+        "default": "./dist/legacy.mjs"
+      },
+      "require": {
+        "types": "./dist/legacy.d.ts",
+        "default": "./dist/legacy.js"
+      }
+    },
+    "./css/styles.css": "./css/styles.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "css",
+    "index.js",
+    "index-dev.js"
+  ],
   "scripts": {
     "lint": "make lint",
     "test": "make test",
@@ -59,6 +113,7 @@
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-flow": "^7.27.1",
     "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.28.5",
     "@babel/register": "^7.27.1",
     "@eslint/compat": "^1.2.0",
     "@eslint/js": "^9.0.0",
@@ -120,7 +175,9 @@
       "<rootDir>test/util/setupTests.js"
     ],
     "testMatch": [
-      "<rootDir>/test/spec/*.js"
+      "<rootDir>/test/spec/*.js",
+      "<rootDir>/test/spec/*.ts",
+      "<rootDir>/test/spec/*.tsx"
     ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
@@ -133,6 +190,27 @@
         "functions": 65,
         "lines": 65
       }
+    },
+    "transform": {
+      "^.+\\.(js|jsx)$": "babel-jest",
+      "^.+\\.(ts|tsx)$": [
+        "babel-jest",
+        {
+          "presets": [
+            "@babel/preset-typescript"
+          ]
+        }
+      ]
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
     }
   },
   "lint-staged": {

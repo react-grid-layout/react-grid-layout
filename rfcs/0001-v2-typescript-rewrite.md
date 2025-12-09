@@ -1,6 +1,6 @@
 # RFC 0001: React-Grid-Layout v2 TypeScript Rewrite
 
-- **Status**: Draft
+- **Status**: Implemented (with simplifications)
 - **Author**: @STRML
 - **Created**: 2025-12-08
 

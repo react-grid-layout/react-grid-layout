@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 React-Grid-Layout is a draggable and resizable grid layout system for React with responsive breakpoints. It's a pure React implementation (no jQuery) used in production by BitMEX, Grafana, Metabase, HubSpot, and many others.
 
+**Version 2** is a complete TypeScript rewrite with a modern hooks-based API while maintaining backwards compatibility through a dedicated legacy wrapper.
+
 ## Development Commands
 
 ### Testing
@@ -18,14 +20,14 @@ npm test
 # Watch mode for development
 make test-watch
 
-# Update test snapshots
-make test-update-snapshots
+# Run specific test file
+NODE_ENV=test npx jest --testPathPatterns="compactors"
 ```
 
 ### Building
 
 ```bash
-# Build the library (transpiles lib/ to build/, creates dist/ bundle)
+# Build the library (ESM, CJS, and TypeScript declarations)
 make build
 npm run build
 
@@ -36,172 +38,180 @@ make clean
 ### Development Server
 
 ```bash
-# Start development server with hot reload
+# Start development server with hot reload (port 4002)
 make dev
 npm run dev
-
-# Build and view examples
-make build-example
-make view-example
 ```
 
 ### Linting & Formatting
 
 ```bash
-# Run Flow type checker and ESLint
-make lint
+# Run ESLint
 npm run lint
 
 # Format code with Prettier
 npm run fmt
-
-# Check formatting without modifying
-npm run fmt:check
 ```
 
-## Architecture
+## Architecture (v2)
+
+### Package Structure
+
+```
+src/
+├── core/                    # Pure TypeScript, no React dependencies
+│   ├── types.ts             # All type definitions
+│   ├── layout.ts            # Layout manipulation (move, clone, validate)
+│   ├── collision.ts         # Collision detection
+│   ├── sort.ts              # Sorting algorithms
+│   ├── compactors.ts        # Compaction algorithms (vertical, horizontal)
+│   ├── compact-compat.ts    # Legacy compact() function wrapper
+│   ├── calculate.ts         # Grid calculations (grid units <-> pixels)
+│   ├── position.ts          # CSS positioning helpers
+│   ├── responsive.ts        # Breakpoint utilities
+│   └── index.ts             # Core exports
+│
+├── react/                   # React bindings
+│   ├── hooks/
+│   │   ├── useContainerWidth.ts   # Container width measurement
+│   │   ├── useGridLayout.ts       # Grid state management
+│   │   └── useResponsiveLayout.ts # Responsive breakpoint handling
+│   └── components/
+│       ├── GridItem.tsx           # Individual grid item
+│       ├── GridLayout.tsx         # Main grid component
+│       ├── ResponsiveGridLayout.tsx
+│       └── WidthProvider.tsx      # Width measurement HOC (internal)
+│
+├── legacy/                  # v1 API compatibility
+│   ├── ReactGridLayout.tsx        # Legacy component wrapper
+│   ├── ResponsiveReactGridLayout.tsx
+│   ├── WidthProvider.tsx          # Re-exports for backwards compat
+│   └── index.ts
+│
+└── index.ts                 # Main entry point
+```
+
+### Entry Points
+
+```typescript
+// New v2 API (recommended)
+import {
+  GridLayout,
+  ResponsiveGridLayout,
+  useContainerWidth
+} from "react-grid-layout";
+
+// Core utilities (framework-agnostic)
+import { compact, moveElement, collides } from "react-grid-layout/core";
+
+// Legacy v1 API (100% backwards compatible)
+import ReactGridLayout, {
+  WidthProvider,
+  Responsive
+} from "react-grid-layout/legacy";
+```
 
 ### Core Components
 
-**ReactGridLayout** (`lib/ReactGridLayout.jsx`)
+**GridLayout** (`src/react/components/GridLayout.tsx`)
 
-- Main grid layout component
+- Main grid layout component (functional, hooks-based)
 - Manages layout state, drag/drop, and resize operations
 - Handles compaction (vertical, horizontal, or none)
-- Uses `shouldComponentUpdate` optimization that relies on memoized children
-- All grid items must have a unique `i` (id) property
+- All grid items must have a unique `key` prop matching `i` in layout
 
-**ResponsiveReactGridLayout** (`lib/ResponsiveReactGridLayout.jsx`)
+**ResponsiveGridLayout** (`src/react/components/ResponsiveGridLayout.tsx`)
 
-- Wraps ReactGridLayout with responsive breakpoint support
-- Manages multiple layouts keyed by breakpoint (e.g., `{lg: layout1, md: layout2}`)
-- Automatically generates missing breakpoint layouts by interpolating from the largest provided layout
-- Handles breakpoint transitions and fires callbacks for layout changes
+- Wraps GridLayout with responsive breakpoint support
+- Manages multiple layouts keyed by breakpoint
+- Automatically generates missing breakpoint layouts
 
-**GridItem** (`lib/GridItem.jsx`)
+**GridItem** (`src/react/components/GridItem.tsx`)
 
-- Individual grid item wrapper component
-- Integrates with react-draggable (via DraggableCore) and react-resizable
-- Handles positioning via CSS transforms (default) or absolute positioning
-- Supports drag handles and custom resize handles
-- Manages item-level props like `static`, `isDraggable`, `isResizable`, `isBounded`
+- Individual grid item wrapper
+- Integrates with react-draggable and react-resizable
+- Handles positioning via CSS transforms (default)
 
-**WidthProvider** (`lib/components/WidthProvider.jsx`)
+### Core Algorithms
 
-- HOC that provides automatic width measurement using ResizeObserver
-- Eliminates need to manually pass `width` prop to grid layouts
-- Use `measureBeforeMount={true}` to prevent initial resizing animation
-- **Important for hooks users**: Wrap in `useMemo` to prevent re-renders: `const ResponsiveGridLayout = useMemo(() => WidthProvider(Responsive), [])`
+**Compaction** (`src/core/compactors.ts`)
 
-### Utility Modules
+- `verticalCompactor`: Items float up (default)
+- `horizontalCompactor`: Items float left
+- `noCompactor`: Free positioning
+- All implement the `Compactor` interface
 
-**utils.js** (`lib/utils.js`)
+**Collision Detection** (`src/core/collision.ts`)
 
-- Core layout algorithms: compaction, collision detection, movement
-- Layout manipulation: `compact()`, `moveElement()`, `getAllCollisions()`
-- Layout item helpers: `getLayoutItem()`, `synchronizeLayoutWithChildren()`
-- Compaction types: `'vertical'` (default), `'horizontal'`, or `null`
-- Performance optimization: `fastRGLPropsEqual()` for shouldComponentUpdate
+- `collides()`: Check if two items overlap
+- `getFirstCollision()`: Find first collision
+- `getAllCollisions()`: Find all collisions
 
-**calculateUtils.js** (`lib/calculateUtils.js`)
+**Layout Utilities** (`src/core/layout.ts`)
 
-- Grid coordinate calculations between pixels and grid units
-- `calcXY()`: Converts pixel position to grid coordinates
-- `calcWH()`: Converts pixel dimensions to grid units
-- `calcGridItemPosition()`: Converts grid coordinates to pixel position
-- All calculations account for margins and container padding
-
-**responsiveUtils.js** (`lib/responsiveUtils.js`)
-
-- Breakpoint management utilities
-- `getBreakpointFromWidth()`: Determines active breakpoint from width
-- `findOrGenerateResponsiveLayout()`: Creates layouts for missing breakpoints
-- Layout interpolation and generation logic
+- `moveElement()`: Move item with collision handling
+- `cloneLayout()`: Deep copy layout array
+- `validateLayout()`: Validate layout structure
 
 ### Key Concepts
 
 **Layout Structure**
 
-- A layout is an array of layout items
-- Each layout item has: `{i: string, x: number, y: number, w: number, h: number, ...optional props}`
-- Layout can be provided via `layout` prop or `data-grid` attribute on children
-- `data-grid` on children takes precedence over `layout` prop
+```typescript
+interface LayoutItem {
+  i: string; // Unique identifier
+  x: number; // X position in grid units
+  y: number; // Y position in grid units
+  w: number; // Width in grid units
+  h: number; // Height in grid units
+  minW?: number; // Min width
+  maxW?: number; // Max width
+  minH?: number; // Min height
+  maxH?: number; // Max height
+  static?: boolean; // Cannot be moved/resized
+  isDraggable?: boolean;
+  isResizable?: boolean;
+}
 
-**Grid Dimensions**
+type Layout = LayoutItem[];
+```
 
-- Grid uses 12 columns by default (configurable via `cols` prop)
-- `rowHeight` defines height of one grid unit (default: 150px)
-- Actual pixel height = `(rowHeight * h) + (margin[1] * (h - 1))`
-- Margins add space between items and must be accounted for in calculations
+**Width Handling**
 
-**Drag and Resize Flow**
+```typescript
+// v2: Use the hook
+const { width, containerRef, mounted } = useContainerWidth();
+return (
+  <div ref={containerRef}>
+    {mounted && <GridLayout width={width} ... />}
+  </div>
+);
 
-1. User interaction starts (onDragStart/onResizeStart)
-2. Movement occurs (onDrag/onResize) - layout compacts in real-time
-3. Interaction ends (onDragStop/onResizeStop) - final layout is saved
-4. `onLayoutChange` callback fires with new layout
-
-**Compaction**
-
-- `vertical`: Items compact upward (default behavior)
-- `horizontal`: Items compact leftward
-- `null`: No compaction, free movement (requires `preventCollision={true}`)
-
-**Collision Handling**
-
-- By default, items push each other out of the way during drag/resize
-- `preventCollision={true}`: Items cannot overlap, blocks movement instead
-- `allowOverlap={true}`: Items can overlap freely (new in recent versions)
+// Legacy: Use WidthProvider HOC
+import { WidthProvider } from 'react-grid-layout/legacy';
+const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
+```
 
 ## Technology Stack
 
-- **Language**: JavaScript with Flow type annotations
-- **Build**: Babel (transpiles to ES5), Webpack (UMD bundle)
+- **Language**: TypeScript
+- **Build**: tsup (ESM + CJS + DTS)
 - **Testing**: Jest with @testing-library/react
-- **Linting**: ESLint 9 with flat config (eslint.config.js)
-- **Formatting**: Prettier with lint-staged pre-commit hooks
-- **Type Checking**: Flow (v0.172.0)
-
-## File Structure
-
-```
-lib/                          Source code (Flow typed)
-├── ReactGridLayout.jsx       Main grid component
-├── ResponsiveReactGridLayout.jsx  Responsive wrapper
-├── GridItem.jsx              Individual grid item
-├── utils.js                  Core layout algorithms
-├── calculateUtils.js         Coordinate calculations
-├── responsiveUtils.js        Breakpoint utilities
-├── fastRGLPropsEqual.js      Performance optimization
-├── ReactGridLayoutPropTypes.js  PropTypes & Flow types
-└── components/
-    └── WidthProvider.jsx     Auto-width HOC
-
-build/                        Transpiled output (for npm)
-dist/                         UMD bundle (for CDN)
-test/
-├── spec/                     Test files
-│   ├── lifecycle-test.js
-│   └── utils-test.js
-└── util/                     Test utilities
-
-examples/                     Demo examples (not included in repo, generated)
-```
+- **Linting**: ESLint 9 with flat config
+- **Formatting**: Prettier
 
 ## Testing Guidelines
 
 - Tests are in `test/spec/`
 - Use `@testing-library/react` for component testing
-- Snapshot tests for layout calculations
-- Coverage thresholds: 65% statements/functions, 60% branches
-- Run single test: `npm test -- --testNamePattern="test name"`
+- Run single test: `NODE_ENV=test npx jest --testPathPatterns="pattern"`
 
 ## Important Implementation Notes
 
 ### Performance
 
-- Parent components should memoize the `children` array passed to ReactGridLayout
-- ReactGridLayout's `shouldComponentUpdate` checks `this.props.children !== nextProps.children`
+- Memoize the `children` array passed to GridLayout
+- GridLayout compares children by reference for optimization
 - Without memoization, every parent re-render will re-render the entire grid
 
 ### Custom Components as Grid Items
@@ -209,37 +219,42 @@ examples/                     Demo examples (not included in repo, generated)
 Custom React components used as grid children must:
 
 1. Forward refs to an underlying DOM node
-2. Forward these props to the same DOM node: `style`, `className`, `onMouseDown`, `onMouseUp`, `onTouchEnd`
+2. Forward these props: `style`, `className`, `onMouseDown`, `onMouseUp`, `onTouchEnd`
 3. Include `{children}` to render the resize handle
 
-### Resize Handles
-
-- Default: `['se']` (southeast/bottom-right corner)
-- Can use any combination: `'s'`, `'w'`, `'e'`, `'n'`, `'sw'`, `'nw'`, `'se'`, `'ne'`
-- Changing `resizeHandles` dynamically doesn't work due to react-resizable limitation
-- Custom resize handles must have class `.react-resizable-handle`
+```typescript
+const CustomItem = forwardRef<HTMLDivElement, Props>(
+  ({ style, className, onMouseDown, onMouseUp, onTouchEnd, children, ...props }, ref) => (
+    <div ref={ref} style={style} className={className}
+         onMouseDown={onMouseDown} onMouseUp={onMouseUp} onTouchEnd={onTouchEnd}>
+      {children}
+    </div>
+  )
+);
+```
 
 ### Common Pitfalls
 
-- **Forgetting unique keys**: Each grid item needs a unique `key` prop that matches the `i` in the layout
+- **Forgetting unique keys**: Each grid item needs a unique `key` matching the `i` in layout
 - **Layout/children mismatch**: Number of layout items must match number of children
-- **Missing width**: ReactGridLayout requires a `width` prop (use WidthProvider HOC to auto-calculate)
-- **Incomplete layout items**: All items must have `x`, `y`, `w`, `h` (missing any will throw error)
-- **Margin confusion**: Item size includes margins between items, not just grid units
+- **Missing width**: GridLayout requires a `width` prop (use `useContainerWidth` hook)
 
-### Flow Type Checking
+## Build Output
 
-- All source files use Flow annotations
-- Run `make lint` or `npm run flow` to type check
-- Flow version is pinned to 0.172.0 in package.json
-- Type definitions exported for library consumers
-
-### Build Process
-
-1. `babel` transpiles `lib/` to `build/` (preserves Flow comments)
-2. `webpack` bundles into `dist/react-grid-layout.min.js` (UMD format)
-3. npm publishes both `build/` (main entry) and `dist/` (browser)
+```
+dist/
+├── index.js          # CJS main entry
+├── index.mjs         # ESM main entry
+├── index.d.ts        # TypeScript declarations
+├── core.js/mjs/d.ts  # Core-only (no React)
+├── react.js/mjs/d.ts # React components
+└── legacy.js/mjs/d.ts # v1 API compatibility
+```
 
 ## Bug Reporting
 
-Users should reproduce bugs in CodeSandbox: https://codesandbox.io/s/staging-bush-3lvt7?file=/src/ShowcaseLayout.js
+Users should reproduce bugs in CodeSandbox: https://codesandbox.io/s/staging-bush-3lvt7
+
+## RFC
+
+See `rfcs/0001-v2-typescript-rewrite.md` for the original design document. Note that the implementation simplified some of the proposed interfaces (e.g., kept flat props instead of composable config objects).
