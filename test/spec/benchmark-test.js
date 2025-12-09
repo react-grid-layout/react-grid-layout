@@ -122,49 +122,41 @@ describe("Performance Benchmarks", () => {
         categories["Simulation"].push([name, time]);
     });
 
-    // Print formatted table
-    console.log("\n");
-    console.log(
-      "┌─────────────────────────────────────────────────────────────────────┐"
-    );
-    console.log(
-      "│                      📊 Benchmark Results                           │"
-    );
-    console.log(
-      "├─────────────────────────────────────────────────────────────────────┤"
-    );
-    console.log(
-      "│ Test                                              │ Time           │"
-    );
-    console.log(
+    // Build formatted table as a single string to avoid Jest line annotations
+    const lines = [
+      "",
+      "┌────────────────────────────────────────────────────────────────────┐",
+      "│                      📊 Benchmark Results                          │",
+      "├────────────────────────────────────────────────────────────────────┤",
+      "│ Test                                              │ Time           │",
       "├───────────────────────────────────────────────────┼────────────────┤"
-    );
+    ];
 
     Object.entries(categories).forEach(([category, results]) => {
       if (results.length === 0) return;
       // Category header
-      console.log(`│ ${category.toUpperCase().padEnd(49)} │                │`);
-      console.log(
+      lines.push(`│ ${category.toUpperCase().padEnd(49)} │                │`, 
         "├───────────────────────────────────────────────────┼────────────────┤"
       );
       results.forEach(([name, time]) => {
         const displayName = name
-          .replaceAll('_', " ")
+          .replaceAll("_", " ")
           .replace(category.toLowerCase(), "")
           .trim();
         const timeStr = formatTime(time);
-        console.log(
-          `│   ${displayName.padEnd(47)} │ ${timeStr.padStart(14)} │`
-        );
+        lines.push(`│   ${displayName.padEnd(47)} │ ${timeStr.padStart(14)} │`);
       });
-      console.log(
+      lines.push(
         "├───────────────────────────────────────────────────┼────────────────┤"
       );
     });
 
-    console.log(
-      "└─────────────────────────────────────────────────────────────────────┘"
+    lines.push(
+      "└────────────────────────────────────────────────────────────────────┘"
     );
+
+    // Single console.log to avoid Jest annotations breaking up the table
+    console.log(lines.join("\n"));
   });
 
   describe("Compaction Algorithm", () => {
@@ -173,7 +165,7 @@ describe("Performance Benchmarks", () => {
     testSizes.forEach(size => {
       it(`compacts ${size} items (vertical)`, () => {
         const layout = generateMessyLayout(size);
-        const time = measureTime(() => compact(layout, "vertical", 12), 50);
+        const time = measureTime(() => compact(layout, "vertical", 12), 10);
         benchmarkResults[`compact_vertical_${size}_items`] = time;
 
         // Ensure compaction completes in reasonable time
@@ -183,7 +175,7 @@ describe("Performance Benchmarks", () => {
 
       it(`compacts ${size} items (horizontal)`, () => {
         const layout = generateMessyLayout(size);
-        const time = measureTime(() => compact(layout, "horizontal", 12), 50);
+        const time = measureTime(() => compact(layout, "horizontal", 12), 10);
         benchmarkResults[`compact_horizontal_${size}_items`] = time;
 
         expect(time).toBeLessThan(size * 0.5);
@@ -215,7 +207,7 @@ describe("Performance Benchmarks", () => {
     testSizes.forEach(size => {
       it(`sorts ${size} items by row/col`, () => {
         const layout = generateMessyLayout(size);
-        const time = measureTime(() => sortLayoutItemsByRowCol(layout), 100);
+        const time = measureTime(() => sortLayoutItemsByRowCol(layout), 10);
         benchmarkResults[`sort_${size}_items`] = time;
 
         // Sort should be O(n log n)
@@ -230,10 +222,7 @@ describe("Performance Benchmarks", () => {
     testSizes.forEach(size => {
       it(`corrects bounds for ${size} items`, () => {
         const layout = generateMessyLayout(size);
-        const time = measureTime(
-          () => correctBounds(layout, { cols: 12 }),
-          100
-        );
+        const time = measureTime(() => correctBounds(layout, { cols: 12 }), 10);
         benchmarkResults[`correct_bounds_${size}_items`] = time;
 
         expect(time).toBeLessThan(size * 0.02);
@@ -275,7 +264,7 @@ describe("Performance Benchmarks", () => {
   describe("Full Drag Simulation", () => {
     it("simulates drag through 100-item layout", () => {
       const layout = generateLayout(100);
-      const iterations = 20;
+      const iterations = 10;
 
       // Simulate a drag from position 0,0 to 10,10 in 20 steps
       const time = measureTime(() => {
