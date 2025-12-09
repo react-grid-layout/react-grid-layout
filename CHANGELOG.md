@@ -1,34 +1,218 @@
 # Changelog
 
-## Unreleased
+## 2.0.0 (Dec 9, 2025)
+
+Version 2 is a complete TypeScript rewrite with a modernized hooks-based API. See the [RFC](./rfcs/0001-v2-typescript-rewrite.md) for the full design document.
+
+### Highlights
+
+- **Full TypeScript support** - First-class types, no more `@types/react-grid-layout` needed
+- **React Hooks API** - New `useContainerWidth`, `useGridLayout`, and `useResponsiveLayout` hooks
+- **Composable Configuration** - Group related props into focused interfaces (`gridConfig`, `dragConfig`, `resizeConfig`, `positionStrategy`, `compactor`)
+- **Modular Architecture** - Tree-shakeable ESM and CJS builds with multiple entry points
+- **Legacy Compatibility** - 100% backwards compatible via `react-grid-layout/legacy`
+
+### Breaking Changes
+
+See the [migration section in the README](./README.md#migrating-from-v1) for detailed examples.
+
+#### `width` Prop Required
+
+The grid no longer auto-measures width. Use the new `useContainerWidth` hook:
+
+```tsx
+import ReactGridLayout, { useContainerWidth } from "react-grid-layout";
+
+function MyGrid() {
+  const { width, containerRef, mounted } = useContainerWidth();
+  return (
+    <div ref={containerRef}>
+      {mounted && <ReactGridLayout width={width} ... />}
+    </div>
+  );
+}
+```
+
+Or use the legacy wrapper for backwards compatibility:
+
+```tsx
+import ReactGridLayout, { WidthProvider } from "react-grid-layout/legacy";
+const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
+```
+
+#### `onDragStart` Threshold
+
+`onDragStart` now fires after 3px of mouse movement, not on `mousedown`. This fixes [#1341](https://github.com/react-grid-layout/react-grid-layout/issues/1341) and [#1401](https://github.com/react-grid-layout/react-grid-layout/issues/1401). Use `onMouseDown` directly on grid items if you need immediate response.
+
+#### Immutable Callback Parameters
+
+Callback parameters (`layoutItem`, `placeholder`) are now read-only. Mutating them in `onResize`/`onDrag` callbacks no longer works. Use `onLayoutChange` or item constraints (`minW`, `maxW`, etc.) instead.
+
+#### `data-grid` Prop in Legacy Only
+
+The v2 API requires explicit `layout` prop. The `data-grid` pattern is only available via the legacy wrapper (`react-grid-layout/legacy`).
+
+#### Fast Compaction Algorithm
+
+The default compaction algorithm is now O(n log n) instead of O(n²). It produces identical results for most layouts but may differ in edge cases. Use the `compact()` function from `react-grid-layout/core` if you need exact v1 behavior.
+
+#### Other Breaking Changes
+
+- **UMD bundle removed** - Use a bundler (Vite, webpack, esbuild)
+- **`verticalCompact` prop removed** - Use `compactType={null}` or `compactor={noCompactor}`
+- **React 18+ required** - React 16/17 support is available only via the legacy wrapper
+
+### New Features
+
+#### Entry Points
+
+```typescript
+// v2 API (recommended)
+import ReactGridLayout, {
+  Responsive,
+  useContainerWidth
+} from "react-grid-layout";
+
+// Core utilities (framework-agnostic, no React)
+import { compact, moveElement, collides } from "react-grid-layout/core";
+
+// Legacy v1 API (100% backwards compatible)
+import ReactGridLayout, {
+  WidthProvider,
+  Responsive
+} from "react-grid-layout/legacy";
+
+// Optional extras
+import { GridBackground } from "react-grid-layout/extras";
+```
+
+#### Hooks
+
+- `useContainerWidth()` - Reactive container width measurement with ResizeObserver
+- `useGridLayout()` - Core layout state management for custom implementations
+- `useResponsiveLayout()` - Responsive breakpoint management
+
+#### Composable Configuration Interfaces
+
+```tsx
+<ReactGridLayout
+  width={width}
+  layout={layout}
+  gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
+  dragConfig={{ enabled: true, handle: ".handle", bounded: true }}
+  resizeConfig={{ enabled: true, handles: ["se", "sw"] }}
+  positionStrategy={transformStrategy}
+  compactor={verticalCompactor}
+/>
+```
+
+#### Pluggable Compactors
+
+Create custom compaction algorithms by implementing the `Compactor` interface:
+
+```typescript
+import {
+  verticalCompactor,
+  horizontalCompactor,
+  noCompactor
+} from "react-grid-layout/core";
+
+// Or create custom compactors
+const myCompactor: Compactor = {
+  type: "custom",
+  allowOverlap: false,
+  compact(layout, cols) {
+    /* ... */
+  },
+  onMove(layout, item, x, y, cols) {
+    /* ... */
+  }
+};
+```
+
+#### Position Strategies
+
+Control CSS positioning with the `PositionStrategy` interface:
+
+```typescript
+import { transformStrategy, absoluteStrategy, createScaledStrategy } from "react-grid-layout/core";
+
+// For scaled containers
+<div style={{ transform: "scale(0.5)" }}>
+  <ReactGridLayout positionStrategy={createScaledStrategy(0.5)} />
+</div>
+```
+
+#### GridBackground Component
+
+New optional component to visualize the grid structure:
+
+```tsx
+import { GridBackground } from "react-grid-layout/extras";
+
+<GridBackground
+  width={width}
+  cols={12}
+  rowHeight={30}
+  rows={10}
+  color="#f0f0f0"
+/>;
+```
+
+#### Core Utilities
+
+New `calcGridCellDimensions` utility for building custom grid overlays:
+
+```typescript
+import { calcGridCellDimensions } from "react-grid-layout/core";
+
+const dims = calcGridCellDimensions({
+  width: 1200,
+  cols: 12,
+  rowHeight: 30,
+  margin: [10, 10]
+});
+// { cellWidth, cellHeight, offsetX, offsetY, gapX, gapY, cols, containerWidth }
+```
 
 ### React 18 Compatibility
 
-- **Full React 18 support.** The library now works seamlessly with React 18's automatic batching without any `flushSync` warnings. [#2049](https://github.com/react-grid-layout/react-grid-layout/pull/2049)
-- Removed `flushSync` usage from drag and resize handlers. This was a workaround that caused console warnings in React 18. The library now works naturally with React 18's automatic batching while remaining compatible with React 16 and 17.
+- **Full React 18 support.** The library now works seamlessly with React 18's automatic batching without any `flushSync` warnings.
+- Removed `flushSync` usage from drag and resize handlers.
 
 ### Bugfixes
 
-- Fixed operator precedence bug in `moveDroppingItem` where `shouldDrag` would incorrectly evaluate to `true` when only the `top` position changed, regardless of dragging state.
-- Fixed resize position calculation when `node` is falsy in `onResizeHandler`. Previously this would cause `NaN` values in CSS positioning.
+- Fixed operator precedence bug in `moveDroppingItem` where `shouldDrag` would incorrectly evaluate to `true` when only the `top` position changed.
+- Fixed resize position calculation when `node` is falsy in `onResizeHandler`.
 
 ### Internal Changes
 
-- **Migrated test suite from Enzyme to React Testing Library.** Enzyme does not support React 18.
-- Removed snapshot tests in favor of behavioral tests.
-- `GridItem` now uses instance variables (`dragPosition`, `resizePosition`) instead of state for position tracking during drag/resize operations. This simplifies React 18 compatibility.
-- Removed `shouldComponentUpdate` from `GridItem`. React 18's automatic batching makes this optimization unnecessary and it was incompatible with instance variable position tracking.
-- Removed `fastPositionEqual` utility (was only used by `shouldComponentUpdate`).
-- `calcGridItemPosition` signature changed: now takes separate `dragPosition` and `resizePosition` parameters instead of a `state` object.
-- Enhanced `ResizeObserver` mock in test setup to be controllable for testing width changes.
-- CSS cleanup: consolidated vendor-prefixed `user-select` properties, added hover effect for resize handles.
-- Updated various devDependencies.
+- **Complete TypeScript rewrite** - All code is now TypeScript with full type coverage
+- **Migrated from Flow to TypeScript** - Removed all Flow annotations
+- **Modular package structure** - `src/core/` (pure TS), `src/react/` (React bindings), `src/legacy/` (v1 compatibility)
+- **Build system** - Now uses tsup for ESM, CJS, and declaration file generation
+- **Migrated test suite from Enzyme to React Testing Library**
+- **ESLint 9** with flat config
+- Removed `lib/` folder and Flow configuration
+- Removed snapshot tests in favor of behavioral tests
 
-### Notes for Library Consumers
+### Migration Guide
 
-Most users should not need to change any code when upgrading. The changes are primarily internal.
+**Quick migration** (no code changes):
 
-If you were relying on `GridItem`'s internal `state.dragging` or `state.resizing` containing position objects, note that these are now booleans. The position data is stored in instance variables instead. (This is not part of the public API and should not affect typical usage.)
+```diff
+- import GridLayout from 'react-grid-layout';
++ import GridLayout from 'react-grid-layout/legacy';
+```
+
+**Full migration** (recommended for new features):
+
+1. Replace `WidthProvider` HOC with `useContainerWidth` hook
+2. Replace `data-grid` props with explicit `layout` prop
+3. Use configuration interfaces (`gridConfig`, `dragConfig`, etc.) for cleaner props
+4. Update any code that mutates callback parameters to use `onLayoutChange` instead
+
+See the [README](./README.md#migrating-from-v1) for detailed examples
 
 ## 1.5.3 (Dec 5, 2025)
 
