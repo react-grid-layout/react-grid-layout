@@ -23,7 +23,7 @@ data.forEach(function(datum, i) {
   datum.version = version;
 });
 
-data.forEach(function(datum, i) {
+data.forEach(function(datum) {
   const html = ejs.render(tpl, datum);
   fs.writeFileSync(path.resolve(__dirname, '..', `${datum.index}-${datum.source}.html`), html);
 });
