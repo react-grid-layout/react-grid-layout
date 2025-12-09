@@ -89,20 +89,82 @@ describe("Performance Benchmarks", () => {
   const benchmarkResults: { [key: string]: number } = {};
 
   afterAll(() => {
-    // Log results in a readable format
-    console.log("\n📊 Benchmark Results:");
-    console.log("─".repeat(60));
+    // Format time value with appropriate units
+    const formatTime = time => {
+      if (typeof time !== "number") return String(time);
+      if (time < 0.001) return `${(time * 1_000_000).toFixed(2)} ns`;
+      if (time < 1) return `${(time * 1000).toFixed(2)} µs`;
+      if (time < 1000) return `${time.toFixed(2)} ms`;
+      return `${(time / 1000).toFixed(2)} s`;
+    };
+
+    // Group benchmarks by category
+    const categories = {
+      Compaction: [],
+      Move: [],
+      Sort: [],
+      Bounds: [],
+      Render: [],
+      Simulation: []
+    };
+
     // $FlowIgnore - Object.entries returns mixed but we know values are numbers
     Object.entries(benchmarkResults).forEach(([name, time]) => {
-      const timeStr =
-        typeof time === "number"
-          ? time < 1
-            ? `${(time * 1000).toFixed(2)}µs`
-            : `${time.toFixed(2)}ms`
-          : String(time);
-      console.log(`  ${name.padEnd(45)} ${timeStr}`);
+      if (name.startsWith("compact_"))
+        categories["Compaction"].push([name, time]);
+      else if (name.startsWith("move_")) categories["Move"].push([name, time]);
+      else if (name.startsWith("sort_")) categories["Sort"].push([name, time]);
+      else if (name.startsWith("correct_"))
+        categories["Bounds"].push([name, time]);
+      else if (name.startsWith("render_"))
+        categories["Render"].push([name, time]);
+      else if (name.startsWith("drag_"))
+        categories["Simulation"].push([name, time]);
     });
-    console.log("─".repeat(60));
+
+    // Print formatted table
+    console.log("\n");
+    console.log(
+      "┌─────────────────────────────────────────────────────────────────────┐"
+    );
+    console.log(
+      "│                      📊 Benchmark Results                           │"
+    );
+    console.log(
+      "├─────────────────────────────────────────────────────────────────────┤"
+    );
+    console.log(
+      "│ Test                                              │ Time           │"
+    );
+    console.log(
+      "├───────────────────────────────────────────────────┼────────────────┤"
+    );
+
+    Object.entries(categories).forEach(([category, results]) => {
+      if (results.length === 0) return;
+      // Category header
+      console.log(`│ ${category.toUpperCase().padEnd(49)} │                │`);
+      console.log(
+        "├───────────────────────────────────────────────────┼────────────────┤"
+      );
+      results.forEach(([name, time]) => {
+        const displayName = name
+          .replaceAll('_', " ")
+          .replace(category.toLowerCase(), "")
+          .trim();
+        const timeStr = formatTime(time);
+        console.log(
+          `│   ${displayName.padEnd(47)} │ ${timeStr.padStart(14)} │`
+        );
+      });
+      console.log(
+        "├───────────────────────────────────────────────────┼────────────────┤"
+      );
+    });
+
+    console.log(
+      "└─────────────────────────────────────────────────────────────────────┘"
+    );
   });
 
   describe("Compaction Algorithm", () => {
