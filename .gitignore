@@ -1,8 +1,6 @@
 .DS_Store
 node_modules
-dist/*
-!dist/react-grid-layout.min*
-!dist/*.html
+dist/
 npm-debug.log
 build/
 .idea

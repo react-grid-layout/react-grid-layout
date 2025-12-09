@@ -1,0 +1,120 @@
+/**
+ * WidthProvider HOC
+ *
+ * A Higher-Order Component that provides width measurement to grid layouts.
+ * This wraps any component and provides the container width as a prop.
+ */
+
+import React, { useState, useRef, useEffect, type ComponentType } from "react";
+import clsx from "clsx";
+
+// ============================================================================
+// Types
+// ============================================================================
+
+export interface WidthProviderProps {
+  /** If true, will not render children until mounted */
+  measureBeforeMount?: boolean;
+  /** Additional class name */
+  className?: string;
+  /** Additional styles */
+  style?: React.CSSProperties;
+}
+
+type WithWidthProps<P> = Omit<P, "width"> & WidthProviderProps;
+
+// ============================================================================
+// Constants
+// ============================================================================
+
+const layoutClassName = "react-grid-layout";
+
+// ============================================================================
+// WidthProvider HOC
+// ============================================================================
+
+/**
+ * WidthProvider - HOC that provides container width
+ *
+ * A simple HOC that provides facility for listening to container resizes.
+ * Wraps the provided component and passes down a `width` prop.
+ *
+ * @example
+ * ```tsx
+ * import { GridLayout, WidthProvider } from 'react-grid-layout';
+ *
+ * const GridLayoutWithWidth = WidthProvider(GridLayout);
+ *
+ * function MyGrid() {
+ *   return (
+ *     <GridLayoutWithWidth cols={12} rowHeight={30}>
+ *       <div key="a">a</div>
+ *     </GridLayoutWithWidth>
+ *   );
+ * }
+ * ```
+ */
+export function WidthProvider<P extends { width: number }>(
+  ComposedComponent: ComponentType<P>
+): ComponentType<WithWidthProps<P>> {
+  function WidthProviderWrapper(props: WithWidthProps<P>) {
+    const { measureBeforeMount = false, className, style, ...rest } = props;
+
+    const [width, setWidth] = useState(1280);
+    const [mounted, setMounted] = useState(false);
+    const elementRef = useRef<HTMLDivElement>(null);
+    const resizeObserverRef = useRef<ResizeObserver | null>(null);
+
+    useEffect(() => {
+      setMounted(true);
+
+      // Set up ResizeObserver
+      resizeObserverRef.current = new ResizeObserver(entries => {
+        const node = elementRef.current;
+        if (node instanceof HTMLElement && entries[0]) {
+          const newWidth = entries[0].contentRect.width;
+          setWidth(newWidth);
+        }
+      });
+
+      const node = elementRef.current;
+      if (node instanceof HTMLElement) {
+        resizeObserverRef.current.observe(node);
+      }
+
+      return () => {
+        if (node instanceof HTMLElement && resizeObserverRef.current) {
+          resizeObserverRef.current.unobserve(node);
+        }
+        resizeObserverRef.current?.disconnect();
+      };
+    }, []);
+
+    // If measureBeforeMount is true and not yet mounted, render placeholder
+    if (measureBeforeMount && !mounted) {
+      return (
+        <div
+          className={clsx(className, layoutClassName)}
+          style={style}
+          ref={elementRef}
+        />
+      );
+    }
+
+    return (
+      <ComposedComponent
+        innerRef={elementRef}
+        className={className}
+        style={style}
+        {...(rest as unknown as P)}
+        width={width}
+      />
+    );
+  }
+
+  WidthProviderWrapper.displayName = `WidthProvider(${ComposedComponent.displayName || ComposedComponent.name || "Component"})`;
+
+  return WidthProviderWrapper;
+}
+
+export default WidthProvider;
