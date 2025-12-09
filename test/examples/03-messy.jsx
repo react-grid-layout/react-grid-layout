@@ -1,25 +1,12 @@
-// @flow
 import * as React from "react";
 import _ from "lodash";
 import RGL from '../../src/legacy/ReactGridLayout';
 import WidthProvider from '../../src/legacy/WidthProvider';
-import type {Layout, ReactChildren} from '../../src/legacy/utils-compat';
 
 const ReactGridLayout = WidthProvider(RGL);
 
-type Props = {|
-  className: string,
-  cols: number,
-  items: number,
-  onLayoutChange: Function,
-  rowHeight: number,
-|};
-type State = {|
-  layout: Layout
-|};
-
-export default class MessyLayout extends React.PureComponent<Props, State> {
-  static defaultProps: Props = {
+export default class MessyLayout extends React.PureComponent {
+  static defaultProps = {
     className: "layout",
     cols: 12,
     items: 20,
@@ -27,11 +14,11 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     rowHeight: 30,
   };
 
-  state: State = {
+  state = {
     layout: this.generateLayout()
   };
 
-  generateDOM(): ReactChildren {
+  generateDOM() {
     return _.map(_.range(this.props.items), function(i) {
       return (
         <div key={i}>
@@ -41,7 +28,7 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     });
   }
 
-  generateLayout(): Layout {
+  generateLayout() {
     const p = this.props;
     return _.map(new Array(p.items), function(item, i) {
       const w = Math.ceil(Math.random() * 4);
@@ -56,11 +43,11 @@ export default class MessyLayout extends React.PureComponent<Props, State> {
     });
   }
 
-  onLayoutChange: (Layout) => void = (layout: Layout) => {
+  onLayoutChange = (layout) => {
     this.props.onLayoutChange(layout);
   };
 
-  render(): React.Node {
+  render() {
     // eslint-disable-next-line no-unused-vars
     const {items, ...props} = this.props;
     return (

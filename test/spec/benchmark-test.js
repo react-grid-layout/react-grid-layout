@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env jest */
 
 /**
@@ -24,7 +23,7 @@ import {
 } from "../../src/legacy/utils-compat";
 
 // Generate a layout with n items
-function generateLayout(n: number, cols: number = 12): Array<Object> {
+function generateLayout(n, cols = 12) {
   const layout = [];
   for (let i = 0; i < n; i++) {
     layout.push({
@@ -39,7 +38,7 @@ function generateLayout(n: number, cols: number = 12): Array<Object> {
 }
 
 // Generate a messy (uncompacted) layout
-function generateMessyLayout(n: number, cols: number = 12): Array<Object> {
+function generateMessyLayout(n, cols = 12) {
   const layout = [];
   for (let i = 0; i < n; i++) {
     layout.push({
@@ -54,7 +53,7 @@ function generateMessyLayout(n: number, cols: number = 12): Array<Object> {
 }
 
 // Measure execution time of a function
-function measureTime(fn: () => mixed, iterations: number = 100): number {
+function measureTime(fn, iterations = 100) {
   const start = performance.now();
   for (let i = 0; i < iterations; i++) {
     fn();
@@ -64,11 +63,7 @@ function measureTime(fn: () => mixed, iterations: number = 100): number {
 }
 
 // Render component and measure time
-function measureRenderTime(
-  Component: React.ComponentType<any>,
-  props: Object,
-  iterations: number = 10
-): number {
+function measureRenderTime(Component, props, iterations = 10) {
   const times = [];
 
   for (let i = 0; i < iterations; i++) {
@@ -86,7 +81,7 @@ function measureRenderTime(
 
 describe("Performance Benchmarks", () => {
   // Store results for snapshot comparison
-  const benchmarkResults: { [key: string]: number } = {};
+  const benchmarkResults = {};
 
   afterAll(() => {
     // Format time value with appropriate units
@@ -108,7 +103,6 @@ describe("Performance Benchmarks", () => {
       Simulation: []
     };
 
-    // $FlowIgnore - Object.entries returns mixed but we know values are numbers
     Object.entries(benchmarkResults).forEach(([name, time]) => {
       if (name.startsWith("compact_"))
         categories["Compaction"].push([name, time]);
@@ -135,7 +129,8 @@ describe("Performance Benchmarks", () => {
     Object.entries(categories).forEach(([category, results]) => {
       if (results.length === 0) return;
       // Category header
-      lines.push(`│ ${category.toUpperCase().padEnd(49)} │                │`, 
+      lines.push(
+        `│ ${category.toUpperCase().padEnd(49)} │                │`,
         "├───────────────────────────────────────────────────┼────────────────┤"
       );
       results.forEach(([name, time]) => {

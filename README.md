@@ -364,7 +364,7 @@ CSS positioning strategy. Built-in options:
 
 ```ts
 import {
-  transformStrategy, // Default: use CSS transforms (better performance)
+  transformStrategy, // Default: use CSS transforms
   absoluteStrategy, // Use top/left positioning
   createScaledStrategy // For scaled containers
 } from "react-grid-layout/core";

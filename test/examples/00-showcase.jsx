@@ -1,37 +1,21 @@
-// @flow
 import * as React from "react";
 import _ from "lodash";
 import Responsive from '../../src/legacy/ResponsiveReactGridLayout';
 import WidthProvider from '../../src/legacy/WidthProvider';
-import type {CompactType, Layout, LayoutItem, ReactChildren} from '../../src/legacy/utils-compat';
-import type {Breakpoint, OnLayoutChangeCallback} from '../../src/legacy/responsive-compat';
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-type Props = {|
-  className: string,
-  cols: {[string]: number},
-  onLayoutChange: Function,
-  rowHeight: number,
-|};
-type State = {|
-  currentBreakpoint: string,
-  compactType: CompactType,
-  mounted: boolean,
-  resizeHandles: string[],
-  layouts: {[string]: Layout}
-|};
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 const availableHandles = ["s", "w", "e", "n", "sw", "nw", "se", "ne"];
 
-export default class ShowcaseLayout extends React.Component<Props, State> {
-  static defaultProps: Props = {
+export default class ShowcaseLayout extends React.Component {
+  static defaultProps = {
     className: "layout",
     rowHeight: 30,
     onLayoutChange: function() {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   };
 
-  state: State = {
+  state = {
     currentBreakpoint: "lg",
     compactType: "vertical",
     resizeHandles: ['se'],
@@ -43,7 +27,7 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     this.setState({ mounted: true });
   }
 
-  generateDOM(): ReactChildren {
+  generateDOM() {
     return _.map(this.state.layouts.lg, function(l, i) {
       return (
         <div key={i} className={l.static ? "static" : ""}>
@@ -62,13 +46,13 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     });
   }
 
-  onBreakpointChange: (Breakpoint) => void = (breakpoint) => {
+  onBreakpointChange = (breakpoint) => {
     this.setState({
       currentBreakpoint: breakpoint
     });
   };
 
-  onCompactTypeChange: () => void = () => {
+  onCompactTypeChange = () => {
     const { compactType: oldCompactType } = this.state;
     const compactType =
       oldCompactType === "horizontal"
@@ -79,27 +63,27 @@ export default class ShowcaseLayout extends React.Component<Props, State> {
     this.setState({ compactType });
   };
 
-  onResizeTypeChange: () => void = () => {
+  onResizeTypeChange = () => {
     const resizeHandles = this.state.resizeHandles === availableHandles ? ['se'] : availableHandles;
     this.setState({resizeHandles, layouts: {lg: generateLayout(resizeHandles)}});
   };
 
 
-  onLayoutChange: OnLayoutChangeCallback = (layout, layouts) => {
+  onLayoutChange = (layout, layouts) => {
     this.props.onLayoutChange(layout, layouts);
   };
 
-  onNewLayout: EventHandler = () => {
+  onNewLayout = () => {
     this.setState({
       layouts: { lg: generateLayout(this.state.resizeHandles) }
     });
   };
 
-  onDrop: (layout: Layout, item: ?LayoutItem, e: Event) => void = (elemParams) => {
+  onDrop = (elemParams) => {
     alert(`Element parameters: ${JSON.stringify(elemParams)}`);
   };
 
-  render(): React.Node {
+  render() {
     return (
       <div>
         <div>
