@@ -360,11 +360,15 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const allowOverlap = compactor.allowOverlap;
   const preventCollision = compactor.preventCollision ?? false;
 
-  // Resolve dropping item
-  const droppingItem = droppingItemProp ?? {
-    i: "__dropping-elem__",
-    ...defaultDropItem
-  };
+  // Resolve dropping item - memoized to avoid unstable reference in useCallback dependencies
+  const droppingItem = useMemo(
+    () =>
+      droppingItemProp ?? {
+        i: "__dropping-elem__",
+        ...defaultDropItem
+      },
+    [droppingItemProp, defaultDropItem]
+  );
 
   // Position strategy values
   const useCSSTransforms = positionStrategy.type === "transform";

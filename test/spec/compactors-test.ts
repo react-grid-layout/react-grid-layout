@@ -9,9 +9,11 @@ import {
   horizontalCompactor,
   noCompactor,
   getCompactor,
+  verticalOverlapCompactor,
+  horizontalOverlapCompactor,
   type Compactor
 } from "../../src/core/compactors";
-import type { Layout, LayoutItem } from "../../src/core/types";
+import type { Layout } from "../../src/core/types";
 
 describe("Compactors", () => {
   describe("verticalCompactor", () => {
@@ -272,6 +274,194 @@ describe("Compactors", () => {
           expect(item?.maxH).toBe(6);
         });
       });
+    });
+  });
+
+  describe("onMove implementations", () => {
+    it("verticalCompactor.onMove updates item position", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false },
+        { i: "b", x: 2, y: 0, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const item = layout[0]!;
+      const result = verticalCompactor.onMove(layout, item, 4, 2, 12);
+
+      const movedItem = result.find(l => l.i === "a");
+      expect(movedItem?.x).toBe(4);
+      expect(movedItem?.y).toBe(2);
+      expect(movedItem?.moved).toBe(true);
+    });
+
+    it("horizontalCompactor.onMove updates item position", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false },
+        { i: "b", x: 2, y: 0, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const item = layout[0]!;
+      const result = horizontalCompactor.onMove(layout, item, 6, 3, 12);
+
+      const movedItem = result.find(l => l.i === "a");
+      expect(movedItem?.x).toBe(6);
+      expect(movedItem?.y).toBe(3);
+      expect(movedItem?.moved).toBe(true);
+    });
+
+    it("noCompactor.onMove updates item position", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const item = layout[0]!;
+      const result = noCompactor.onMove(layout, item, 5, 5, 12);
+
+      const movedItem = result.find(l => l.i === "a");
+      expect(movedItem?.x).toBe(5);
+      expect(movedItem?.y).toBe(5);
+      expect(movedItem?.moved).toBe(true);
+    });
+
+    it("onMove returns new layout (immutable)", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const item = layout[0]!;
+      const result = verticalCompactor.onMove(layout, item, 1, 1, 12);
+
+      expect(result).not.toBe(layout);
+      expect(result[0]).not.toBe(layout[0]);
+    });
+
+    it("onMove handles non-existent item gracefully", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const nonExistentItem = {
+        i: "z",
+        x: 0,
+        y: 0,
+        w: 1,
+        h: 1,
+        static: false,
+        moved: false
+      };
+      const result = verticalCompactor.onMove(
+        layout,
+        nonExistentItem,
+        1,
+        1,
+        12
+      );
+
+      // Should return cloned layout without changes
+      expect(result).toHaveLength(1);
+      expect(result[0]?.i).toBe("a");
+    });
+  });
+
+  describe("Overlap-allowing compactors", () => {
+    it("verticalOverlapCompactor has allowOverlap true", () => {
+      expect(verticalOverlapCompactor.allowOverlap).toBe(true);
+      expect(verticalOverlapCompactor.type).toBe("vertical");
+    });
+
+    it("horizontalOverlapCompactor has allowOverlap true", () => {
+      expect(horizontalOverlapCompactor.allowOverlap).toBe(true);
+      expect(horizontalOverlapCompactor.type).toBe("horizontal");
+    });
+
+    it("verticalOverlapCompactor.compact clones without moving", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 5, w: 2, h: 2, static: false, moved: false },
+        { i: "b", x: 0, y: 10, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const result = verticalOverlapCompactor.compact(layout, 12);
+
+      // Items should stay where they are (no compaction)
+      const itemA = result.find(l => l.i === "a");
+      const itemB = result.find(l => l.i === "b");
+      expect(itemA?.y).toBe(5);
+      expect(itemB?.y).toBe(10);
+    });
+
+    it("horizontalOverlapCompactor.compact clones without moving", () => {
+      const layout: Layout = [
+        { i: "a", x: 5, y: 0, w: 2, h: 2, static: false, moved: false },
+        { i: "b", x: 10, y: 0, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const result = horizontalOverlapCompactor.compact(layout, 12);
+
+      // Items should stay where they are (no compaction)
+      const itemA = result.find(l => l.i === "a");
+      const itemB = result.find(l => l.i === "b");
+      expect(itemA?.x).toBe(5);
+      expect(itemB?.x).toBe(10);
+    });
+  });
+
+  describe("getCompactor with allowOverlap", () => {
+    it("returns verticalOverlapCompactor for vertical with allowOverlap", () => {
+      const compactor = getCompactor("vertical", true);
+      expect(compactor.type).toBe("vertical");
+      expect(compactor.allowOverlap).toBe(true);
+    });
+
+    it("returns horizontalOverlapCompactor for horizontal with allowOverlap", () => {
+      const compactor = getCompactor("horizontal", true);
+      expect(compactor.type).toBe("horizontal");
+      expect(compactor.allowOverlap).toBe(true);
+    });
+
+    it("returns noCompactor for null with allowOverlap", () => {
+      const compactor = getCompactor(null, true);
+      expect(compactor.type).toBe(null);
+    });
+
+    it("returns compactor with preventCollision flag", () => {
+      const compactor = getCompactor("vertical", false, true);
+      expect(compactor.type).toBe("vertical");
+      expect(compactor.preventCollision).toBe(true);
+    });
+  });
+
+  describe("Collision resolution", () => {
+    it("resolves collision by moving items down", () => {
+      // Create a layout where items need to push each other
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false },
+        { i: "b", x: 0, y: 0, w: 2, h: 2, static: false, moved: false } // Overlapping!
+      ];
+
+      const compacted = verticalCompactor.compact(layout, 12);
+
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+
+      // One should be at y=0, other at y=2
+      expect(itemA?.y).toBe(0);
+      expect(itemB?.y).toBe(2);
+    });
+
+    it("horizontal compactor resolves collisions by moving right", () => {
+      // Create items that collide horizontally
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 4, h: 1, static: false, moved: false },
+        { i: "b", x: 0, y: 0, w: 4, h: 1, static: false, moved: false } // Same position as a
+      ];
+
+      const compacted = horizontalCompactor.compact(layout, 12);
+
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+
+      // Items should not overlap - b should be pushed to x=4
+      expect(itemA?.x).toBe(0);
+      expect(itemB?.x).toBe(4);
     });
   });
 

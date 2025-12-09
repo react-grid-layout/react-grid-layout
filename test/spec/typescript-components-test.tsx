@@ -43,20 +43,6 @@ function dispatchMouseEvent(
   return event;
 }
 
-// Helper to simulate mouse movement
-function mouseMove(x: number, y: number, node?: Element) {
-  const doc = node ? node.ownerDocument : document;
-  const mouseEvent = new MouseEvent("mousemove", {
-    bubbles: true,
-    cancelable: true,
-    button: 0,
-    clientX: x,
-    clientY: y
-  });
-  doc.dispatchEvent(mouseEvent);
-  return mouseEvent;
-}
-
 describe("TypeScript Components", () => {
   describe("<GridItem>", () => {
     const mockProps: GridItemProps = {
