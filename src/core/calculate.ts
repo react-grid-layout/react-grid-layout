@@ -225,3 +225,106 @@ export function clamp(
 ): number {
   return Math.max(Math.min(num, upperBound), lowerBound);
 }
+
+// ============================================================================
+// Grid Background Calculations
+// ============================================================================
+
+/**
+ * Grid cell dimension information for rendering backgrounds or overlays.
+ */
+export interface GridCellDimensions {
+  /** Width of a single cell in pixels */
+  readonly cellWidth: number;
+  /** Height of a single cell in pixels */
+  readonly cellHeight: number;
+  /** Horizontal offset from container edge to first cell */
+  readonly offsetX: number;
+  /** Vertical offset from container edge to first cell */
+  readonly offsetY: number;
+  /** Horizontal gap between cells */
+  readonly gapX: number;
+  /** Vertical gap between cells */
+  readonly gapY: number;
+  /** Number of columns */
+  readonly cols: number;
+  /** Total container width */
+  readonly containerWidth: number;
+}
+
+/**
+ * Configuration for grid cell dimension calculation.
+ */
+export interface GridCellConfig {
+  /** Container width in pixels */
+  width: number;
+  /** Number of columns */
+  cols: number;
+  /** Row height in pixels */
+  rowHeight: number;
+  /** Margin between items [x, y] */
+  margin?: readonly [number, number];
+  /** Container padding [x, y], defaults to margin if not specified */
+  containerPadding?: readonly [number, number] | null;
+}
+
+/**
+ * Calculate grid cell dimensions for rendering backgrounds or overlays.
+ *
+ * This function provides all the measurements needed to render a visual
+ * grid background that aligns with the actual grid cells.
+ *
+ * @param config - Grid configuration
+ * @returns Cell dimensions and offsets
+ *
+ * @example
+ * ```tsx
+ * import { calcGridCellDimensions } from 'react-grid-layout/core';
+ *
+ * const dims = calcGridCellDimensions({
+ *   width: 1200,
+ *   cols: 12,
+ *   rowHeight: 30,
+ *   margin: [10, 10],
+ *   containerPadding: [10, 10]
+ * });
+ *
+ * // dims.cellWidth = 88.33...
+ * // dims.cellHeight = 30
+ * // dims.offsetX = 10 (containerPadding[0])
+ * // dims.offsetY = 10 (containerPadding[1])
+ * // dims.gapX = 10 (margin[0])
+ * // dims.gapY = 10 (margin[1])
+ * ```
+ */
+export function calcGridCellDimensions(
+  config: GridCellConfig
+): GridCellDimensions {
+  const {
+    width,
+    cols,
+    rowHeight,
+    margin = [10, 10],
+    containerPadding
+  } = config;
+
+  // Container padding defaults to margin if not specified
+  const padding = containerPadding ?? margin;
+
+  // Calculate cell width: total width minus padding and gaps, divided by columns
+  // Formula: width = 2*padding + cols*cellWidth + (cols-1)*gap
+  // Solving for cellWidth: cellWidth = (width - 2*padding - (cols-1)*gap) / cols
+  const cellWidth = (width - padding[0] * 2 - margin[0] * (cols - 1)) / cols;
+  const cellHeight = rowHeight;
+
+  return {
+    cellWidth,
+    cellHeight,
+    offsetX: padding[0],
+    offsetY: padding[1],
+    gapX: margin[0],
+    gapY: margin[1],
+    cols,
+    containerWidth: width
+  };
+}

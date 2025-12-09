@@ -204,6 +204,7 @@ describe("Compactors", () => {
 
     it("returns noCompactor for undefined", () => {
       // @ts-expect-error Testing runtime behavior
+      // eslint-disable-next-line unicorn/no-useless-undefined
       const compactor = getCompactor(undefined);
       expect(compactor.type).toBe(null);
     });

@@ -25,6 +25,7 @@ import {
   calcXY,
   calcWH,
   clamp,
+  calcGridCellDimensions,
 
   // Position style functions
   setTransform,
@@ -607,6 +608,120 @@ describe("Core Functions", () => {
 
     it("handles values greater than 1", () => {
       expect(perc(1.5)).toBe("150%");
+    });
+  });
+
+  // ==========================================================================
+  // Grid Cell Dimension Functions (for backgrounds/overlays)
+  // ==========================================================================
+
+  describe("calcGridCellDimensions", () => {
+    it("calculates cell dimensions correctly", () => {
+      const dims = calcGridCellDimensions({
+        width: 1200,
+        cols: 12,
+        rowHeight: 30,
+        margin: [10, 10],
+        containerPadding: [10, 10]
+      });
+
+      // (1200 - 20 - 110) / 12 = 1070/12 ≈ 89.17
+      expect(dims.cellWidth).toBeCloseTo(89.17, 1);
+      expect(dims.cellHeight).toBe(30);
+      expect(dims.offsetX).toBe(10);
+      expect(dims.offsetY).toBe(10);
+      expect(dims.gapX).toBe(10);
+      expect(dims.gapY).toBe(10);
+      expect(dims.cols).toBe(12);
+      expect(dims.containerWidth).toBe(1200);
+    });
+
+    it("uses margin for padding when containerPadding is null", () => {
+      const dims = calcGridCellDimensions({
+        width: 1200,
+        cols: 12,
+        rowHeight: 30,
+        margin: [15, 20],
+        containerPadding: null
+      });
+
+      expect(dims.offsetX).toBe(15);
+      expect(dims.offsetY).toBe(20);
+      expect(dims.gapX).toBe(15);
+      expect(dims.gapY).toBe(20);
+    });
+
+    it("uses default margin when not specified", () => {
+      const dims = calcGridCellDimensions({
+        width: 1200,
+        cols: 12,
+        rowHeight: 30
+      });
+
+      expect(dims.gapX).toBe(10);
+      expect(dims.gapY).toBe(10);
+      expect(dims.offsetX).toBe(10);
+      expect(dims.offsetY).toBe(10);
+    });
+
+    it("calculates cell width correctly with no margins", () => {
+      const dims = calcGridCellDimensions({
+        width: 1200,
+        cols: 12,
+        rowHeight: 30,
+        margin: [0, 0],
+        containerPadding: [0, 0]
+      });
+
+      // 1200 / 12 = 100
+      expect(dims.cellWidth).toBe(100);
+      expect(dims.offsetX).toBe(0);
+      expect(dims.offsetY).toBe(0);
+      expect(dims.gapX).toBe(0);
+      expect(dims.gapY).toBe(0);
+    });
+
+    it("calculates cell width with different margin and padding", () => {
+      const dims = calcGridCellDimensions({
+        width: 1000,
+        cols: 10,
+        rowHeight: 50,
+        margin: [10, 10],
+        containerPadding: [20, 20]
+      });
+
+      // (1000 - 40 - 90) / 10 = 870/10 = 87
+      expect(dims.cellWidth).toBe(87);
+      expect(dims.cellHeight).toBe(50);
+      expect(dims.offsetX).toBe(20);
+      expect(dims.offsetY).toBe(20);
+      expect(dims.gapX).toBe(10);
+      expect(dims.gapY).toBe(10);
+    });
+
+    it("cell widths match calcGridColWidth calculation", () => {
+      const config = {
+        width: 1200,
+        cols: 12,
+        rowHeight: 30,
+        margin: [10, 10] as [number, number],
+        containerPadding: [10, 10] as [number, number]
+      };
+
+      const dims = calcGridCellDimensions(config);
+
+      const params: PositionParams = {
+        cols: config.cols,
+        containerPadding: config.containerPadding,
+        containerWidth: config.width,
+        margin: config.margin,
+        maxRows: 100,
+        rowHeight: config.rowHeight
+      };
+
+      const colWidth = calcGridColWidth(params);
+
+      expect(dims.cellWidth).toBeCloseTo(colWidth, 5);
     });
   });
 });

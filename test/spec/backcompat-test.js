@@ -16,7 +16,7 @@ import WidthProvider from "../../src/legacy/WidthProvider";
 import {
   synchronizeLayoutWithChildren,
   compact,
-  moveElement
+  moveElement as _moveElement
 } from "../../src/legacy/utils-compat";
 
 describe("Backwards Compatibility: Callback Signatures", () => {

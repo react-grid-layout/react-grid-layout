@@ -13,7 +13,7 @@
  */
 
 import * as React from "react";
-import { render, act } from "@testing-library/react";
+import { render, act as _act } from "@testing-library/react";
 import ReactGridLayout from "../../src/legacy/ReactGridLayout";
 import {
   compact,

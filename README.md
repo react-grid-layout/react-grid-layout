@@ -30,6 +30,7 @@ RGL is React-only and does not require jQuery.
 - [Hooks API](#hooks-api)
 - [API Reference](#api-reference)
 - [Extending: Custom Compactors & Position Strategies](#extending-custom-compactors--position-strategies)
+- [Extras](#extras)
 - [Performance](#performance)
 - [Contribute](#contribute)
 
@@ -49,6 +50,7 @@ Version 2 is a complete TypeScript rewrite with a modernized API:
   - `react-grid-layout` - React components and hooks (v2 API)
   - `react-grid-layout/core` - Pure layout algorithms (framework-agnostic)
   - `react-grid-layout/legacy` - v1 flat props API for migration
+  - `react-grid-layout/extras` - Optional components like `GridBackground`
 - **Smaller bundle** - Tree-shakeable ESM and CJS builds
 
 ### Breaking Changes
@@ -1110,6 +1112,99 @@ const create3DStrategy = (
   }
 });
 ```
+
+## Extras
+
+The `react-grid-layout/extras` entry point provides optional components that extend react-grid-layout. These are tree-shakeable and won't be included in your bundle unless explicitly imported.
+
+### GridBackground
+
+Renders an SVG grid background that aligns with GridLayout cells. Use this to visualize the grid structure behind your layout.
+
+> Based on [PR #2175](https://github.com/react-grid-layout/react-grid-layout/pull/2175) by [@nicosayer](https://github.com/nicosayer).
+
+```tsx
+import { GridBackground } from "react-grid-layout/extras";
+import ReactGridLayout, { useContainerWidth } from "react-grid-layout";
+
+function MyGrid() {
+  const { width, containerRef, mounted } = useContainerWidth();
+
+  return (
+    <div ref={containerRef} style={{ position: "relative" }}>
+      {mounted && (
+        <>
+          <GridBackground
+            width={width}
+            cols={12}
+            rowHeight={30}
+            margin={[10, 10]}
+            rows={10}
+            color="#f0f0f0"
+            borderRadius={4}
+          />
+          <ReactGridLayout
+            width={width}
+            gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
+          >
+            {children}
+          </ReactGridLayout>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+**Props:**
+
+```ts
+interface GridBackgroundProps {
+  // Required - must match your GridLayout config
+  width: number; // Container width
+  cols: number; // Number of columns
+  rowHeight: number; // Row height in pixels
+
+  // Optional
+  margin?: [number, number]; // Gap between cells (default: [10, 10])
+  containerPadding?: [number, number] | null; // Container padding (default: uses margin)
+  rows?: number | "auto"; // Number of rows to display (default: 10)
+  height?: number; // Used when rows="auto" to calculate row count
+  color?: string; // Cell background color (default: "#e0e0e0")
+  borderRadius?: number; // Cell border radius (default: 4)
+  className?: string; // Additional CSS class
+  style?: React.CSSProperties; // Additional inline styles
+}
+```
+
+### calcGridCellDimensions (Core Utility)
+
+For building custom grid overlays or backgrounds, use the `calcGridCellDimensions` utility from `react-grid-layout/core`:
+
+```ts
+import { calcGridCellDimensions } from "react-grid-layout/core";
+
+const dims = calcGridCellDimensions({
+  width: 1200,
+  cols: 12,
+  rowHeight: 30,
+  margin: [10, 10],
+  containerPadding: [20, 20]
+});
+
+// dims = {
+//   cellWidth: 88.33,  // Width of each cell
+//   cellHeight: 30,     // Height of each cell (= rowHeight)
+//   offsetX: 20,        // Left padding
+//   offsetY: 20,        // Top padding
+//   gapX: 10,           // Horizontal gap between cells
+//   gapY: 10,           // Vertical gap between cells
+//   cols: 12,           // Column count
+//   containerWidth: 1200
+// }
+```
+
+This is useful for building custom visualizations, snap-to-grid functionality, or integrating with canvas/WebGL renderers.
 
 ## Performance
 

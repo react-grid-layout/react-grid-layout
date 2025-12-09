@@ -153,7 +153,11 @@ export {
 // Grid Calculations
 // =============================================================================
 
-export type { PositionParams } from "./calculate.js";
+export type {
+  PositionParams,
+  GridCellDimensions,
+  GridCellConfig
+} from "./calculate.js";
 
 export {
   calcGridColWidth,
@@ -161,7 +165,8 @@ export {
   calcGridItemPosition,
   calcXY,
   calcWH,
-  clamp
+  clamp,
+  calcGridCellDimensions
 } from "./calculate.js";
 
 // =============================================================================
