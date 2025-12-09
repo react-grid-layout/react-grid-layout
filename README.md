@@ -55,92 +55,61 @@ Version 2 is a complete TypeScript rewrite with a modernized API:
 
 ### Breaking Changes
 
-- `width` prop is now required (use `useContainerWidth` hook or provide your own)
-- Removed UMD/script tag bundle - use a bundler like Vite, webpack, or esbuild
-- `verticalCompact` prop removed - use `compactType={null}` instead
+See the [RFC](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2) for detailed migration examples.
+
+| Change                                                                                                               | Description                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [`width` prop required](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2)                                 | Use `useContainerWidth` hook or provide your own measurement                                      |
+| [`onDragStart` threshold](./rfcs/0001-v2-typescript-rewrite.md#1-ondragstart-no-longer-fires-on-click-only-events)   | Now fires after 3px movement, not on mousedown. Use `onMouseDown` for immediate response          |
+| [Immutable callbacks](./rfcs/0001-v2-typescript-rewrite.md#2-immutable-callback-parameters)                          | Callback parameters are read-only. Use `onLayoutChange` or constraints instead of mutation        |
+| [`data-grid` in legacy only](./rfcs/0001-v2-typescript-rewrite.md#3-data-grid-prop-only-available-in-legacy-wrapper) | v2 requires explicit `layout` prop. Use legacy wrapper for `data-grid`                            |
+| [Fast compaction](./rfcs/0001-v2-typescript-rewrite.md#4-fast-compaction-algorithm-by-default)                       | O(n log n) algorithm may differ in edge cases. Use `compact()` from `/core` for exact v1 behavior |
+| UMD bundle removed                                                                                                   | Use a bundler (Vite, webpack, esbuild)                                                            |
+| `verticalCompact` removed                                                                                            | Use `compactType={null}` or `compactor={noCompactor}`                                             |
 
 ## Migrating from v1
 
-### Quick Migration (Use Legacy API)
-
-The easiest migration path is to change your imports to use the legacy compatibility layer:
+**Quick migration** - change your import to use the legacy wrapper:
 
 ```diff
 - import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 + import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout/legacy';
 ```
 
-This provides **100% API compatibility** with v1. Your existing code will work unchanged.
+This provides **100% API compatibility** with v1.
 
-### Full Migration to v2 API
+**Full migration** - adopt the v2 API for new features and better tree-shaking:
 
-For new projects or when you want to modernize:
+```typescript
+import ReactGridLayout, { useContainerWidth, verticalCompactor } from 'react-grid-layout';
 
-**1. Update imports:**
-
-```diff
-- import GridLayout from 'react-grid-layout';
-+ import ReactGridLayout, { useContainerWidth } from 'react-grid-layout';
-```
-
-**2. Add width handling:**
-
-```diff
 function MyGrid() {
-+  const { width, containerRef, mounted } = useContainerWidth();
-+
-   return (
--    <GridLayout width={1200}>
-+    <div ref={containerRef}>
-+      {mounted && (
-+        <ReactGridLayout width={width}>
-           ...
--    </GridLayout>
-+        </ReactGridLayout>
-+      )}
-+    </div>
-   );
+  const { width, containerRef, mounted } = useContainerWidth();
+
+  return (
+    <div ref={containerRef}>
+      {mounted && (
+        <ReactGridLayout
+          width={width}
+          layout={layout}
+          gridConfig={{ cols: 12, rowHeight: 30 }}
+          dragConfig={{ enabled: true, handle: '.handle' }}
+          compactor={verticalCompactor}
+        >
+          {children}
+        </ReactGridLayout>
+      )}
+    </div>
+  );
 }
 ```
 
-**3. Migrate to composable interfaces (optional but recommended):**
-
-```diff
-- <GridLayout
--   cols={12}
--   rowHeight={30}
--   isDraggable={true}
--   draggableHandle=".handle"
--   isResizable={true}
--   resizeHandles={['se', 'sw']}
--   compactType="vertical"
-- >
-+ <ReactGridLayout
-+   gridConfig={{ cols: 12, rowHeight: 30 }}
-+   dragConfig={{ enabled: true, handle: '.handle' }}
-+   resizeConfig={{ enabled: true, handles: ['se', 'sw'] }}
-+   compactor={verticalCompactor}
-+ >
-```
-
-**4. Update deprecated props:**
-
-```diff
-<ReactGridLayout
--  verticalCompact={false}
-+  compactor={noCompactor}
->
-```
-
-### When to Use v2 vs Legacy API
-
-| Use Case                         | Recommendation                                    |
-| -------------------------------- | ------------------------------------------------- |
-| Existing v1 codebase             | Use `react-grid-layout/legacy` for easy migration |
-| New project                      | Use v2 API with hooks for cleaner code            |
-| Need custom compaction logic     | Use v2 API with custom `Compactor`                |
-| Server-side rendering            | Use v2 API with `measureBeforeMount: true`        |
-| Maximum bundle size optimization | Use v2 API - tree-shakeable                       |
+| Use Case             | Recommendation                     |
+| -------------------- | ---------------------------------- |
+| Existing v1 codebase | `react-grid-layout/legacy`         |
+| New project          | v2 API with hooks                  |
+| Custom compaction    | v2 with custom `Compactor`         |
+| SSR                  | v2 with `measureBeforeMount: true` |
 
 ## Demos
 
