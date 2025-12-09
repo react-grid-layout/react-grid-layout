@@ -7,3 +7,8 @@
 
 export { GridBackground } from "./GridBackground.js";
 export type { GridBackgroundProps } from "./GridBackground.js";
+
+export {
+  fastVerticalCompactor,
+  fastVerticalOverlapCompactor
+} from "./fastVerticalCompactor.js";
