@@ -3,7 +3,6 @@
 EXEC = npm exec --
 DIST = ./dist
 BUILD = ./build
-LIB = ./lib
 TEST = ./test
 EXAMPLES = ./examples/*.{js,html}
 

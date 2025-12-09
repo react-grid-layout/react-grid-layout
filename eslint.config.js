@@ -3,35 +3,11 @@ import globals from "globals";
 import babelParser from "@babel/eslint-parser";
 import reactPlugin from "eslint-plugin-react";
 import unicornPlugin from "eslint-plugin-unicorn";
-import flowtypePlugin from "eslint-plugin-flowtype";
-import { fixupPluginRules } from "@eslint/compat";
-
-// Flow type globals that ESLint doesn't know about
-const flowGlobals = {
-  $Shape: "readonly",
-  $Diff: "readonly",
-  $Exact: "readonly",
-  $ObjMapi: "readonly",
-  $ElementType: "readonly",
-  $ReadOnly: "readonly",
-  $ReadOnlyArray: "readonly",
-  $Keys: "readonly",
-  K: "readonly",
-  V: "readonly",
-  ReactPropsChainableTypeChecker: "readonly",
-  EventHandler: "readonly"
-};
 
 export default [
   // Global ignores (replaces .eslintignore)
   {
-    ignores: [
-      "node_modules/**/*",
-      "build/**/*",
-      "dist/**/*",
-      "flow-typed/**/*",
-      "coverage/**/*"
-    ]
+    ignores: ["node_modules/**/*", "build/**/*", "dist/**/*", "coverage/**/*"]
   },
 
   // Base recommended config
@@ -50,19 +26,17 @@ export default [
       parserOptions: {
         requireConfigFile: false,
         babelOptions: {
-          presets: ["@babel/preset-react", "@babel/preset-flow"]
+          presets: ["@babel/preset-react"]
         }
       },
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.es2021,
-        ...flowGlobals
+        ...globals.es2021
       }
     },
     plugins: {
-      react: reactPlugin,
-      flowtype: fixupPluginRules(flowtypePlugin)
+      react: reactPlugin
     },
     settings: {
       react: {
@@ -87,10 +61,6 @@ export default [
       ...reactPlugin.configs.recommended.rules,
       "react/jsx-boolean-value": ["error", "always"],
       "react/no-unknown-property": ["error", { ignore: ["unselectable"] }],
-
-      // Flowtype rules
-      "flowtype/define-flow-type": "warn",
-      "flowtype/use-flow-type": "warn",
 
       // Unicorn rule overrides (on top of recommended)
       "unicorn/better-regex": "warn",
