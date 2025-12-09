@@ -342,15 +342,25 @@ export const horizontalOverlapCompactor: Compactor = {
  */
 export function getCompactor(
   compactType: "vertical" | "horizontal" | null,
-  allowOverlap: boolean = false
+  allowOverlap: boolean = false,
+  preventCollision: boolean = false
 ): Compactor {
+  let baseCompactor: Compactor;
+
   if (allowOverlap) {
-    if (compactType === "vertical") return verticalOverlapCompactor;
-    if (compactType === "horizontal") return horizontalOverlapCompactor;
-    return noCompactor;
+    if (compactType === "vertical") baseCompactor = verticalOverlapCompactor;
+    else if (compactType === "horizontal")
+      baseCompactor = horizontalOverlapCompactor;
+    else baseCompactor = noCompactor;
+  } else {
+    if (compactType === "vertical") baseCompactor = verticalCompactor;
+    else if (compactType === "horizontal") baseCompactor = horizontalCompactor;
+    else baseCompactor = noCompactor;
   }
 
-  if (compactType === "vertical") return verticalCompactor;
-  if (compactType === "horizontal") return horizontalCompactor;
-  return noCompactor;
+  // Return with preventCollision if specified
+  if (preventCollision) {
+    return { ...baseCompactor, preventCollision };
+  }
+  return baseCompactor;
 }

@@ -295,149 +295,173 @@ export interface Compactor {
 }
 
 /**
- * Interface for position calculation strategies.
+ * Interface for CSS positioning strategies.
  *
- * Implement this interface to customize how grid positions
- * are converted to pixel positions (e.g., CSS Grid, Flexbox).
+ * Implement this interface to customize how items are positioned in the DOM.
+ * Built-in strategies: transformStrategy, absoluteStrategy.
+ *
+ * @example
+ * ```typescript
+ * // Use transform-based positioning (default, better performance)
+ * <GridLayout positionStrategy={transformStrategy} />
+ *
+ * // Use top/left positioning (for environments where transforms cause issues)
+ * <GridLayout positionStrategy={absoluteStrategy} />
+ *
+ * // Use scaled transforms (for scaled containers)
+ * <GridLayout positionStrategy={createScaledStrategy(0.5)} />
+ * ```
  */
 export interface PositionStrategy {
-  /**
-   * Calculate pixel position from grid position.
-   *
-   * @param item - The layout item
-   * @param colWidth - Width of a single column in pixels
-   * @param rowHeight - Height of a single row in pixels
-   * @param margin - [horizontal, vertical] margin in pixels
-   * @param containerPadding - [horizontal, vertical] padding in pixels
-   * @returns Pixel position and size
-   */
-  calcPosition(
-    item: LayoutItem,
-    colWidth: number,
-    rowHeight: number,
-    margin: [number, number],
-    containerPadding: [number, number]
-  ): Position;
+  /** Strategy type identifier */
+  readonly type: "transform" | "absolute";
+
+  /** Scale factor for drag/resize calculations */
+  readonly scale: number;
 
   /**
-   * Calculate grid position from pixel position.
+   * Convert pixel position to CSS style object.
    *
-   * @param left - Left position in pixels
-   * @param top - Top position in pixels
-   * @param colWidth - Width of a single column in pixels
-   * @param rowHeight - Height of a single row in pixels
-   * @param margin - [horizontal, vertical] margin in pixels
-   * @param containerPadding - [horizontal, vertical] padding in pixels
-   * @param cols - Number of columns
-   * @returns Grid x, y position
+   * @param pos - Position in pixels
+   * @returns CSS properties for positioning the element
    */
-  calcGridPosition(
-    left: number,
-    top: number,
-    colWidth: number,
-    rowHeight: number,
-    margin: [number, number],
-    containerPadding: [number, number],
-    cols: number
-  ): { x: number; y: number };
+  calcStyle(pos: Position): React.CSSProperties;
 
   /**
-   * Calculate width and height from grid units.
+   * Calculate position during drag operations, accounting for transforms and scale.
    *
-   * @param w - Width in grid units
-   * @param h - Height in grid units
-   * @param colWidth - Width of a single column in pixels
-   * @param rowHeight - Height of a single row in pixels
-   * @param margin - [horizontal, vertical] margin in pixels
-   * @returns Width and height in pixels
+   * @param clientX - Mouse client X position
+   * @param clientY - Mouse client Y position
+   * @param offsetX - Offset from element origin X
+   * @param offsetY - Offset from element origin Y
+   * @returns Adjusted left/top position
    */
-  calcWH(
-    w: number,
-    h: number,
-    colWidth: number,
-    rowHeight: number,
-    margin: [number, number]
-  ): Size;
+  calcDragPosition(
+    clientX: number,
+    clientY: number,
+    offsetX: number,
+    offsetY: number
+  ): PartialPosition;
 }
 
 // ============================================================================
-// Grid Configuration Types
+// Grid Configuration Types (v2 Composable Interfaces)
 // ============================================================================
 
 /**
- * Core grid configuration (framework-agnostic).
+ * Grid measurement configuration.
+ * Groups all grid metrics (columns, row height, margins).
  */
 export interface GridConfig {
-  /** Number of columns in the grid */
+  /** Number of columns in the grid (default: 12) */
   cols: number;
 
-  /** Height of a single row in pixels */
+  /** Height of a single row in pixels (default: 150) */
   rowHeight: number;
 
-  /** Width of the container in pixels */
-  width: number;
+  /** [horizontal, vertical] margin between items in pixels (default: [10, 10]) */
+  margin: readonly [number, number];
 
-  /** [horizontal, vertical] margin between items in pixels */
-  margin: [number, number];
+  /** [horizontal, vertical] padding inside the container (default: null, uses margin) */
+  containerPadding: readonly [number, number] | null;
 
-  /** [horizontal, vertical] padding inside the container in pixels */
-  containerPadding: [number, number];
-
-  /** Maximum number of rows */
+  /** Maximum number of rows (default: Infinity) */
   maxRows: number;
 }
 
+/** Default grid configuration */
+export const defaultGridConfig: GridConfig = {
+  cols: 12,
+  rowHeight: 150,
+  margin: [10, 10],
+  containerPadding: null,
+  maxRows: Infinity
+};
+
 /**
- * Drag configuration options.
+ * Drag behavior configuration.
+ * Groups all drag-related settings.
  */
 export interface DragConfig {
-  /** Whether items can be dragged */
-  isDraggable: boolean;
+  /** Whether items can be dragged (default: true) */
+  enabled: boolean;
 
-  /** Whether items are bounded to the container */
-  isBounded: boolean;
+  /** Whether items are bounded to the container (default: false) */
+  bounded: boolean;
 
   /** CSS selector for drag handle (e.g., '.drag-handle') */
-  draggableHandle?: string;
+  handle?: string;
 
   /** CSS selector for elements that should not trigger drag */
-  draggableCancel?: string;
-
-  /** Allow dragging with a touch gesture */
-  allowTouchDrag?: boolean;
+  cancel?: string;
 
   /**
    * Minimum pixels to move before drag starts.
-   * Helps distinguish click from drag.
+   * Helps distinguish click from drag (fixes #1341, #1401).
    * @default 3
    */
-  dragThreshold?: number;
+  threshold: number;
 }
 
+/** Default drag configuration */
+export const defaultDragConfig: DragConfig = {
+  enabled: true,
+  bounded: false,
+  threshold: 3
+};
+
 /**
- * Resize configuration options.
+ * Resize behavior configuration.
+ * Groups all resize-related settings.
  */
 export interface ResizeConfig {
-  /** Whether items can be resized */
-  isResizable: boolean;
+  /** Whether items can be resized (default: true) */
+  enabled: boolean;
 
-  /** Which resize handles to show */
-  resizeHandles: ResizeHandleAxis[];
+  /** Which resize handles to show (default: ['se']) */
+  handles: readonly ResizeHandleAxis[];
 
-  /** Custom resize handle component */
-  resizeHandle?: React.ReactNode;
+  /**
+   * Custom resize handle component.
+   * Can be a React node or a function that receives the axis.
+   */
+  handleComponent?:
+    | React.ReactNode
+    | ((
+        axis: ResizeHandleAxis,
+        ref: React.Ref<HTMLElement>
+      ) => React.ReactNode);
 }
+
+/** Default resize configuration */
+export const defaultResizeConfig: ResizeConfig = {
+  enabled: true,
+  handles: ["se"]
+};
 
 /**
- * Drop configuration options (for dropping external elements).
+ * Drop configuration (for dropping external elements).
+ * Groups all drop-related settings.
  */
 export interface DropConfig {
-  /** Whether external elements can be dropped on the grid */
-  isDroppable: boolean;
+  /** Whether external elements can be dropped on the grid (default: false) */
+  enabled: boolean;
 
-  /** Default size for dropped items */
-  droppingItem?: Partial<LayoutItem>;
+  /** Default size for dropped items (default: { w: 1, h: 1 }) */
+  defaultItem: { w: number; h: number };
+
+  /**
+   * Called when dragging over the grid.
+   * Return dimensions to override defaultItem, or false to reject the drop.
+   */
+  onDragOver?: (e: DragEvent) => { w?: number; h?: number } | false | void;
 }
+
+/** Default drop configuration */
+export const defaultDropConfig: DropConfig = {
+  enabled: false,
+  defaultItem: { w: 1, h: 1 }
+};
 
 // ============================================================================
 // Responsive Types

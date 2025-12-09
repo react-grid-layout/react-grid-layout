@@ -15,14 +15,25 @@
 
 export {
   GridItem,
-  GridLayout,
-  ResponsiveGridLayout,
+  GridLayout as ReactGridLayout,
+  ResponsiveGridLayout as Responsive,
   type GridItemProps,
   type GridItemCallback,
   type ResizeHandle,
+  type GridLayoutProps as ReactGridLayoutProps,
+  type ResponsiveGridLayoutProps as ResponsiveProps
+} from "./react/components/index.js";
+
+// Also export with internal names for advanced use cases
+export {
+  GridLayout,
+  ResponsiveGridLayout,
   type GridLayoutProps,
   type ResponsiveGridLayoutProps
 } from "./react/components/index.js";
+
+// Default export for common usage: import ReactGridLayout from 'react-grid-layout'
+export { GridLayout as default } from "./react/components/index.js";
 
 // =============================================================================
 // React Hooks

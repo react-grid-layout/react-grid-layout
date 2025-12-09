@@ -20,7 +20,8 @@ import type {
   Breakpoint,
   Breakpoints,
   ResponsiveLayouts,
-  CompactType
+  CompactType,
+  Compactor
 } from "../../core/types.js";
 import { cloneLayout, correctBounds } from "../../core/layout.js";
 import {
@@ -30,6 +31,7 @@ import {
   getIndentationValue
 } from "../../core/responsive.js";
 import { compact } from "../../core/compact-compat.js";
+import { getCompactor } from "../../core/compactors.js";
 import { bottom } from "../../core/layout.js";
 
 import { GridLayout, type GridLayoutProps } from "./GridLayout.js";
@@ -40,10 +42,7 @@ import { GridLayout, type GridLayoutProps } from "./GridLayout.js";
 
 export interface ResponsiveGridLayoutProps<
   B extends Breakpoint = string
-> extends Omit<
-  GridLayoutProps,
-  "cols" | "layout" | "margin" | "containerPadding" | "onLayoutChange"
-> {
+> extends Omit<GridLayoutProps, "gridConfig" | "layout" | "onLayoutChange"> {
   /** Current breakpoint (optional, auto-detected from width) */
   breakpoint?: B;
   /** Breakpoint definitions (name → min-width) */
@@ -52,6 +51,10 @@ export interface ResponsiveGridLayoutProps<
   cols?: Breakpoints<B>;
   /** Layouts for each breakpoint */
   layouts?: ResponsiveLayouts<B>;
+  /** Row height (default: 150) */
+  rowHeight?: number;
+  /** Maximum rows (default: Infinity) */
+  maxRows?: number;
   /** Margin between items - can be fixed or per-breakpoint */
   margin?:
     | readonly [number, number]
@@ -61,6 +64,8 @@ export interface ResponsiveGridLayoutProps<
     | readonly [number, number]
     | Partial<Record<B, readonly [number, number] | null>>
     | null;
+  /** Compactor for layout compaction */
+  compactor?: Compactor;
   /** Called when breakpoint changes */
   onBreakpointChange?: (newBreakpoint: B, cols: number) => void;
   /** Called when layout changes */
@@ -181,15 +186,21 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     breakpoints = DEFAULT_BREAKPOINTS as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as Breakpoints<B>,
     layouts: propsLayouts = {} as ResponsiveLayouts<B>,
+    rowHeight = 150,
+    maxRows = Infinity,
     margin: propMargin = [10, 10] as readonly [number, number],
     containerPadding: propContainerPadding = null,
-    compactType = "vertical",
-    allowOverlap = false,
+    compactor: compactorProp,
     onBreakpointChange = noop,
     onLayoutChange = noop,
     onWidthChange = noop,
     ...restProps
   } = props;
+
+  // Get compactor (use provided or default to vertical)
+  const compactor = compactorProp ?? getCompactor("vertical");
+  const compactType = compactor.type;
+  const allowOverlap = compactor.allowOverlap;
 
   // Calculate initial state
   const initialBreakpoint = useMemo(() => {
@@ -411,17 +422,26 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     );
   }, [propContainerPadding, breakpoint]);
 
+  // Build grid config for current breakpoint
+  const gridConfig = useMemo(
+    () => ({
+      cols,
+      rowHeight,
+      maxRows,
+      margin: currentMargin,
+      containerPadding: currentContainerPadding
+    }),
+    [cols, rowHeight, maxRows, currentMargin, currentContainerPadding]
+  );
+
   return (
     <GridLayout
       {...restProps}
       width={width}
-      margin={currentMargin}
-      containerPadding={currentContainerPadding}
+      gridConfig={gridConfig}
+      compactor={compactor}
       onLayoutChange={handleLayoutChange}
       layout={layout}
-      cols={cols}
-      compactType={compactType}
-      allowOverlap={allowOverlap}
     >
       {children}
     </GridLayout>

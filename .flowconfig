@@ -9,6 +9,10 @@
 # Speeds parsing:
 .*/node_modules/@babel.*
 .*/node_modules/babel.*
+# TypeScript source files - type checking handled by TypeScript
+<PROJECT_ROOT>/src/.*\.tsx?
+# Test files that import from TypeScript
+<PROJECT_ROOT>/test/.*
 
 [include]
 

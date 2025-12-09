@@ -5,7 +5,12 @@
  * and generate CSS styles for grid items.
  */
 
-import type { Position, ResizeHandleAxis } from "./types.js";
+import type {
+  Position,
+  PartialPosition,
+  ResizeHandleAxis,
+  PositionStrategy
+} from "./types.js";
 
 // ============================================================================
 // CSS Style Generation
@@ -246,3 +251,106 @@ export function resizeItemInDirection(
 
   return handler(currentSize, { ...currentSize, ...newSize }, containerWidth);
 }
+
+// ============================================================================
+// Position Strategies (v2 Composable Interface)
+// ============================================================================
+
+/**
+ * CSS transform-based positioning strategy.
+ *
+ * Uses CSS transforms for positioning, which is more performant
+ * as it doesn't trigger layout recalculations.
+ *
+ * This is the default strategy.
+ */
+export const transformStrategy: PositionStrategy = {
+  type: "transform",
+  scale: 1,
+
+  calcStyle(pos: Position): React.CSSProperties {
+    return setTransform(pos) as React.CSSProperties;
+  },
+
+  calcDragPosition(
+    clientX: number,
+    clientY: number,
+    offsetX: number,
+    offsetY: number
+  ): PartialPosition {
+    return {
+      left: clientX - offsetX,
+      top: clientY - offsetY
+    };
+  }
+};
+
+/**
+ * Absolute (top/left) positioning strategy.
+ *
+ * Uses CSS top/left for positioning. Use this when CSS transforms
+ * cause issues (e.g., printing, certain child element positioning).
+ */
+export const absoluteStrategy: PositionStrategy = {
+  type: "absolute",
+  scale: 1,
+
+  calcStyle(pos: Position): React.CSSProperties {
+    return setTopLeft(pos) as React.CSSProperties;
+  },
+
+  calcDragPosition(
+    clientX: number,
+    clientY: number,
+    offsetX: number,
+    offsetY: number
+  ): PartialPosition {
+    return {
+      left: clientX - offsetX,
+      top: clientY - offsetY
+    };
+  }
+};
+
+/**
+ * Create a scaled transform strategy.
+ *
+ * Use this when the grid container is inside a scaled element
+ * (e.g., `transform: scale(0.5)`). The scale factor adjusts
+ * drag/resize calculations to account for the parent transform.
+ *
+ * @param scale - Scale factor (e.g., 0.5 for half size)
+ * @returns Position strategy with scaled calculations
+ *
+ * @example
+ * ```tsx
+ * <div style={{ transform: 'scale(0.5)' }}>
+ *   <GridLayout positionStrategy={createScaledStrategy(0.5)} />
+ * </div>
+ * ```
+ */
+export function createScaledStrategy(scale: number): PositionStrategy {
+  return {
+    type: "transform",
+    scale,
+
+    calcStyle(pos: Position): React.CSSProperties {
+      return setTransform(pos) as React.CSSProperties;
+    },
+
+    calcDragPosition(
+      clientX: number,
+      clientY: number,
+      offsetX: number,
+      offsetY: number
+    ): PartialPosition {
+      return {
+        left: (clientX - offsetX) / scale,
+        top: (clientY - offsetY) / scale
+      };
+    }
+  };
+}
+
+/** Default position strategy (transform-based) */
+export const defaultPositionStrategy = transformStrategy;

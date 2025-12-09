@@ -59,6 +59,14 @@ export type {
   ArrayElement
 } from "./types.js";
 
+// Default configuration objects
+export {
+  defaultGridConfig,
+  defaultDragConfig,
+  defaultResizeConfig,
+  defaultDropConfig
+} from "./types.js";
+
 // =============================================================================
 // Collision Detection
 // =============================================================================
@@ -133,7 +141,12 @@ export {
   setTransform,
   setTopLeft,
   perc,
-  resizeItemInDirection
+  resizeItemInDirection,
+  // Position strategies
+  transformStrategy,
+  absoluteStrategy,
+  createScaledStrategy,
+  defaultPositionStrategy
 } from "./position.js";
 
 // =============================================================================

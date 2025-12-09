@@ -5,7 +5,7 @@
  * to maintain backwards compatibility with imports from lib/utils.
  */
 
-import React, { type ReactNode, type ReactElement } from "react";
+import React, { type ReactNode } from "react";
 import { deepEqual } from "fast-equals";
 
 import type { Layout, LayoutItem, CompactType } from "../core/types.js";

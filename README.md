@@ -37,12 +37,17 @@ Version 2 is a complete TypeScript rewrite with a modernized API:
 
 - **Full TypeScript support** - First-class types, no more `@types/react-grid-layout`
 - **React Hooks** - New `useContainerWidth`, `useGridLayout`, and `useResponsiveLayout` hooks
+- **Composable Configuration** - Group related props into focused interfaces:
+  - `gridConfig` - cols, rowHeight, margin, padding
+  - `dragConfig` - enable, handle, cancel, bounded
+  - `resizeConfig` - enable, handles
+  - `positionStrategy` - transform vs absolute positioning
+  - `compactor` - vertical, horizontal, or custom algorithms
 - **Modular architecture** - Import only what you need:
-  - `react-grid-layout` - React components and hooks
+  - `react-grid-layout` - React components and hooks (v2 API)
   - `react-grid-layout/core` - Pure layout algorithms (framework-agnostic)
-  - `react-grid-layout/legacy` - v1 API compatibility
+  - `react-grid-layout/legacy` - v1 flat props API for migration
 - **Smaller bundle** - Tree-shakeable ESM and CJS builds
-- **Cleaner API** - Simplified component names (`GridLayout` instead of `ReactGridLayout`)
 
 ### Breaking Changes
 
@@ -133,7 +138,7 @@ Or link them directly:
 ## Quick Start
 
 ```tsx
-import { GridLayout, useContainerWidth } from "react-grid-layout";
+import ReactGridLayout, { useContainerWidth } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
@@ -149,11 +154,15 @@ function MyGrid() {
   return (
     <div ref={containerRef}>
       {mounted && (
-        <GridLayout layout={layout} cols={12} rowHeight={30} width={width}>
+        <ReactGridLayout
+          layout={layout}
+          width={width}
+          gridConfig={{ cols: 12, rowHeight: 30 }}
+        >
           <div key="a">a</div>
           <div key="b">b</div>
           <div key="c">c</div>
-        </GridLayout>
+        </ReactGridLayout>
       )}
     </div>
   );
@@ -163,7 +172,7 @@ function MyGrid() {
 You can also define layout on children using `data-grid`:
 
 ```tsx
-<GridLayout cols={12} rowHeight={30} width={width}>
+<ReactGridLayout width={width} gridConfig={{ cols: 12, rowHeight: 30 }}>
   <div key="a" data-grid={{ x: 0, y: 0, w: 1, h: 2, static: true }}>
     a
   </div>
@@ -173,15 +182,15 @@ You can also define layout on children using `data-grid`:
   <div key="c" data-grid={{ x: 4, y: 0, w: 1, h: 2 }}>
     c
   </div>
-</GridLayout>
+</ReactGridLayout>
 ```
 
 ## Responsive Usage
 
-Use `ResponsiveGridLayout` for automatic breakpoint handling:
+Use `Responsive` for automatic breakpoint handling:
 
 ```tsx
-import { ResponsiveGridLayout, useContainerWidth } from "react-grid-layout";
+import { Responsive, useContainerWidth } from "react-grid-layout";
 
 function MyResponsiveGrid() {
   const { width, containerRef, mounted } = useContainerWidth();
@@ -194,7 +203,7 @@ function MyResponsiveGrid() {
   return (
     <div ref={containerRef}>
       {mounted && (
-        <ResponsiveGridLayout
+        <Responsive
           layouts={layouts}
           breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
           cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
@@ -203,7 +212,7 @@ function MyResponsiveGrid() {
           <div key="1">1</div>
           <div key="2">2</div>
           <div key="3">3</div>
-        </ResponsiveGridLayout>
+        </Responsive>
       )}
     </div>
   );
@@ -217,14 +226,14 @@ The `width` prop is required. You have several options:
 ### Option 1: useContainerWidth Hook (Recommended)
 
 ```tsx
-import { GridLayout, useContainerWidth } from "react-grid-layout";
+import ReactGridLayout, { useContainerWidth } from "react-grid-layout";
 
 function MyGrid() {
   const { width, containerRef, mounted } = useContainerWidth();
 
   return (
     <div ref={containerRef}>
-      {mounted && <GridLayout width={width}>...</GridLayout>}
+      {mounted && <ReactGridLayout width={width}>...</ReactGridLayout>}
     </div>
   );
 }
@@ -233,7 +242,7 @@ function MyGrid() {
 ### Option 2: Fixed Width
 
 ```tsx
-<GridLayout width={1200}>...</GridLayout>
+<ReactGridLayout width={1200}>...</ReactGridLayout>
 ```
 
 ### Option 3: CSS Container Queries or ResizeObserver
@@ -256,46 +265,33 @@ function MyGrid() {
 
 ## API Reference
 
-### GridLayout Props
+### ReactGridLayout Props
+
+The v2 API uses composable configuration interfaces for cleaner prop organization:
 
 ```ts
-interface GridLayoutProps {
+interface ReactGridLayoutProps {
   // Required
   children: React.ReactNode;
   width: number; // Container width in pixels
 
-  // Grid configuration
-  cols?: number; // Number of columns (default: 12)
-  rowHeight?: number; // Height of each row in pixels (default: 150)
-  maxRows?: number; // Maximum number of rows (default: Infinity)
-  margin?: [number, number]; // Margin between items [x, y] (default: [10, 10])
-  containerPadding?: [number, number] | null; // Padding inside container (default: margin)
+  // Configuration interfaces (see below for details)
+  gridConfig?: Partial<GridConfig>; // Grid measurement settings
+  dragConfig?: Partial<DragConfig>; // Drag behavior settings
+  resizeConfig?: Partial<ResizeConfig>; // Resize behavior settings
+  dropConfig?: Partial<DropConfig>; // External drop settings
+  positionStrategy?: PositionStrategy; // CSS positioning strategy
+  compactor?: Compactor; // Layout compaction strategy
+
+  // Layout data
   layout?: Layout; // Layout definition
-
-  // Behavior
-  compactType?: "vertical" | "horizontal" | null; // Compaction direction (default: 'vertical')
-  autoSize?: boolean; // Auto-size container height (default: true)
-  isDraggable?: boolean; // Enable dragging (default: true)
-  isResizable?: boolean; // Enable resizing (default: true)
-  isBounded?: boolean; // Keep items within container (default: false)
-  isDroppable?: boolean; // Allow external drops (default: false)
-  preventCollision?: boolean; // Prevent items from colliding (default: false)
-  allowOverlap?: boolean; // Allow items to overlap (default: false)
-
-  // Transforms
-  useCSSTransforms?: boolean; // Use CSS transforms (default: true)
-  transformScale?: number; // Scale factor for transforms (default: 1)
-
-  // Drag handles
-  draggableHandle?: string; // CSS selector for drag handle
-  draggableCancel?: string; // CSS selector to cancel dragging
-
-  // Resize handles
-  resizeHandles?: Array<"s" | "w" | "e" | "n" | "sw" | "nw" | "se" | "ne">;
-  resizeHandle?: ResizeHandle; // Custom resize handle component
-
-  // Dropping
   droppingItem?: LayoutItem; // Item configuration when dropping from outside
+
+  // Container
+  autoSize?: boolean; // Auto-size container height (default: true)
+  className?: string;
+  style?: React.CSSProperties;
+  innerRef?: React.Ref<HTMLDivElement>;
 
   // Callbacks
   onLayoutChange?: (layout: Layout) => void;
@@ -307,12 +303,89 @@ interface GridLayoutProps {
   onResizeStop?: EventCallback;
   onDrop?: (layout: Layout, item: LayoutItem | undefined, e: Event) => void;
   onDropDragOver?: (e: DragEvent) => { w?: number; h?: number } | false | void;
-
-  // Styling
-  className?: string;
-  style?: React.CSSProperties;
-  innerRef?: React.Ref<HTMLDivElement>;
 }
+```
+
+### GridConfig
+
+Grid measurement configuration:
+
+```ts
+interface GridConfig {
+  cols: number; // Number of columns (default: 12)
+  rowHeight: number; // Row height in pixels (default: 150)
+  margin: [number, number]; // [x, y] margin between items (default: [10, 10])
+  containerPadding: [number, number] | null; // Container padding (default: null, uses margin)
+  maxRows: number; // Maximum rows (default: Infinity)
+}
+```
+
+### DragConfig
+
+Drag behavior configuration:
+
+```ts
+interface DragConfig {
+  enabled: boolean; // Enable dragging (default: true)
+  bounded: boolean; // Keep items within container (default: false)
+  handle?: string; // CSS selector for drag handle
+  cancel?: string; // CSS selector to cancel dragging
+  threshold: number; // Pixels to move before drag starts (default: 3)
+}
+```
+
+### ResizeConfig
+
+Resize behavior configuration:
+
+```ts
+interface ResizeConfig {
+  enabled: boolean; // Enable resizing (default: true)
+  handles: ResizeHandleAxis[]; // Handle positions (default: ['se'])
+  handleComponent?: React.ReactNode | ((axis, ref) => React.ReactNode);
+}
+```
+
+### DropConfig
+
+External drop configuration:
+
+```ts
+interface DropConfig {
+  enabled: boolean; // Allow external drops (default: false)
+  defaultItem: { w: number; h: number }; // Default size (default: { w: 1, h: 1 })
+  onDragOver?: (e: DragEvent) => { w?: number; h?: number } | false | void;
+}
+```
+
+### PositionStrategy
+
+CSS positioning strategy. Built-in options:
+
+```ts
+import {
+  transformStrategy, // Default: use CSS transforms (better performance)
+  absoluteStrategy, // Use top/left positioning
+  createScaledStrategy // For scaled containers
+} from "react-grid-layout/core";
+
+// Example: scaled container
+<div style={{ transform: 'scale(0.5)' }}>
+  <ReactGridLayout positionStrategy={createScaledStrategy(0.5)} ... />
+</div>
+```
+
+### Compactor
+
+Layout compaction strategy. Built-in options:
+
+```ts
+import {
+  verticalCompactor, // Default: compact items upward
+  horizontalCompactor, // Compact items leftward
+  noCompactor, // No compaction (free positioning)
+  getCompactor // Factory: getCompactor('vertical', allowOverlap, preventCollision)
+} from "react-grid-layout/core";
 ```
 
 ### ResponsiveGridLayout Props
@@ -443,7 +516,7 @@ This provides 100% API compatibility with v1.
 
 ```diff
 - import GridLayout from 'react-grid-layout';
-+ import { GridLayout, useContainerWidth } from 'react-grid-layout';
++ import ReactGridLayout, { useContainerWidth } from 'react-grid-layout';
 ```
 
 2. **Add width handling:**
@@ -456,30 +529,43 @@ function MyGrid() {
 -    <GridLayout width={1200}>
 +    <div ref={containerRef}>
 +      {mounted && (
-+        <GridLayout width={width}>
++        <ReactGridLayout width={width}>
            ...
 -    </GridLayout>
-+        </GridLayout>
++        </ReactGridLayout>
 +      )}
 +    </div>
    );
 }
 ```
 
-3. **Update deprecated props:**
+3. **Migrate to composable interfaces (optional but recommended):**
 
 ```diff
-<GridLayout
--  verticalCompact={false}
-+  compactType={null}
->
+- <GridLayout
+-   cols={12}
+-   rowHeight={30}
+-   isDraggable={true}
+-   draggableHandle=".handle"
+-   isResizable={true}
+-   resizeHandles={['se', 'sw']}
+-   compactType="vertical"
+- >
++ <ReactGridLayout
++   gridConfig={{ cols: 12, rowHeight: 30 }}
++   dragConfig={{ enabled: true, handle: '.handle' }}
++   resizeConfig={{ enabled: true, handles: ['se', 'sw'] }}
++   compactor={verticalCompactor}
++ >
 ```
 
-4. **Update component names (optional):**
+4. **Update deprecated props:**
 
 ```diff
-- import { Responsive as ResponsiveGridLayout } from 'react-grid-layout/legacy';
-+ import { ResponsiveGridLayout } from 'react-grid-layout';
+<ReactGridLayout
+-  verticalCompact={false}
++  compactor={noCompactor}
+>
 ```
 
 ## Performance
@@ -489,7 +575,7 @@ function MyGrid() {
 The grid compares children by reference. Memoize them for better performance:
 
 ```tsx
-function MyGrid({ count }) {
+function MyGrid({ count, width }) {
   const children = useMemo(() => {
     return Array.from({ length: count }, (_, i) => (
       <div
@@ -500,31 +586,35 @@ function MyGrid({ count }) {
   }, [count]);
 
   return (
-    <GridLayout cols={12} width={width}>
+    <ReactGridLayout width={width} gridConfig={{ cols: 12 }}>
       {children}
-    </GridLayout>
+    </ReactGridLayout>
   );
 }
 ```
 
-### Avoid Creating Components in Render
+### Avoid Creating Components in Render (Legacy WidthProvider)
 
-Don't create the width-provided component during render:
+If using the legacy WidthProvider HOC, don't create the component during render:
 
 ```tsx
+import ReactGridLayout, { WidthProvider } from "react-grid-layout/legacy";
+
 // Bad - creates new component every render
 function MyGrid() {
-  const GridLayoutWithWidth = WidthProvider(GridLayout);
+  const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
   return <GridLayoutWithWidth>...</GridLayoutWithWidth>;
 }
 
 // Good - create once outside or with useMemo
-const GridLayoutWithWidth = WidthProvider(GridLayout);
+const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
 
 function MyGrid() {
   return <GridLayoutWithWidth>...</GridLayoutWithWidth>;
 }
 ```
+
+With the v2 API, use `useContainerWidth` hook instead to avoid this issue entirely.
 
 ## Custom Child Components
 

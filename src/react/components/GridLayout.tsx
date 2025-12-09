@@ -24,8 +24,19 @@ import type {
   DroppingPosition,
   GridDragEvent,
   GridResizeEvent,
-  ResizeHandleAxis,
-  Mutable
+  Mutable,
+  GridConfig,
+  DragConfig,
+  ResizeConfig,
+  DropConfig,
+  PositionStrategy,
+  Compactor
+} from "../../core/types.js";
+import {
+  defaultGridConfig,
+  defaultDragConfig,
+  defaultResizeConfig,
+  defaultDropConfig
 } from "../../core/types.js";
 import type { PositionParams } from "../../core/calculate.js";
 import {
@@ -38,7 +49,9 @@ import {
 } from "../../core/layout.js";
 import { getAllCollisions } from "../../core/collision.js";
 import { compact } from "../../core/compact-compat.js";
+import { getCompactor } from "../../core/compactors.js";
 import { calcXY } from "../../core/calculate.js";
+import { defaultPositionStrategy } from "../../core/position.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
 
@@ -56,75 +69,112 @@ export type EventCallback = (
 ) => void;
 
 export interface GridLayoutProps {
+  // ===========================================================================
+  // Required Props
+  // ===========================================================================
+
   /** Child elements to render in the grid */
   children: React.ReactNode;
+
   /** Width of the container in pixels */
   width: number;
-  /** Number of columns in the grid */
-  cols?: number;
-  /** Height of each row in pixels */
-  rowHeight?: number;
-  /** Maximum number of rows */
-  maxRows?: number;
-  /** Margin between items [x, y] */
-  margin?: readonly [number, number];
-  /** Padding inside the container [x, y] */
-  containerPadding?: readonly [number, number] | null;
+
+  // ===========================================================================
+  // Composable Configuration Interfaces (v2 API)
+  // ===========================================================================
+
+  /**
+   * Grid measurement configuration.
+   * @see GridConfig
+   */
+  gridConfig?: Partial<GridConfig>;
+
+  /**
+   * Drag behavior configuration.
+   * @see DragConfig
+   */
+  dragConfig?: Partial<DragConfig>;
+
+  /**
+   * Resize behavior configuration.
+   * @see ResizeConfig
+   */
+  resizeConfig?: Partial<ResizeConfig>;
+
+  /**
+   * External drop configuration.
+   * @see DropConfig
+   */
+  dropConfig?: Partial<DropConfig>;
+
+  /**
+   * CSS positioning strategy.
+   * Use transformStrategy (default), absoluteStrategy, or createScaledStrategy(scale).
+   * @see PositionStrategy
+   */
+  positionStrategy?: PositionStrategy;
+
+  /**
+   * Layout compaction strategy.
+   * Use verticalCompactor (default), horizontalCompactor, or noCompactor.
+   * @see Compactor
+   */
+  compactor?: Compactor;
+
+  // ===========================================================================
+  // Layout Data
+  // ===========================================================================
+
   /** Layout definition */
   layout?: Layout;
-  /** Compaction type */
-  compactType?: CompactType;
-  /** Whether to auto-size the container height */
-  autoSize?: boolean;
-  /** Whether items can be dragged */
-  isDraggable?: boolean;
-  /** Whether items can be resized */
-  isResizable?: boolean;
-  /** Whether items are bounded within the container */
-  isBounded?: boolean;
-  /** Whether external items can be dropped */
-  isDroppable?: boolean;
-  /** Whether to prevent collisions when moving */
-  preventCollision?: boolean;
-  /** Whether to allow overlapping items */
-  allowOverlap?: boolean;
-  /** Use CSS transforms instead of top/left */
-  useCSSTransforms?: boolean;
-  /** Scale factor for transforms */
-  transformScale?: number;
+
   /** Item to use when dropping from outside */
   droppingItem?: LayoutItem;
-  /** Which resize handles to show */
-  resizeHandles?: ResizeHandleAxis[];
-  /** Custom resize handle */
-  resizeHandle?: ResizeHandle;
-  /** CSS selector for draggable handle */
-  draggableHandle?: string;
-  /** CSS selector for cancel handle */
-  draggableCancel?: string;
+
+  // ===========================================================================
+  // Container Props
+  // ===========================================================================
+
+  /** Whether to auto-size the container height */
+  autoSize?: boolean;
+
   /** Additional class name */
   className?: string;
+
   /** Additional styles */
   style?: CSSProperties;
+
   /** Ref to the container element */
   innerRef?: React.Ref<HTMLDivElement>;
 
+  // ===========================================================================
+  // Callbacks
+  // ===========================================================================
+
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
+
   /** Called when drag starts */
   onDragStart?: EventCallback;
+
   /** Called during drag */
   onDrag?: EventCallback;
+
   /** Called when drag stops */
   onDragStop?: EventCallback;
+
   /** Called when resize starts */
   onResizeStart?: EventCallback;
+
   /** Called during resize */
   onResize?: EventCallback;
+
   /** Called when resize stops */
   onResizeStop?: EventCallback;
+
   /** Called when an item is dropped from outside */
   onDrop?: (layout: Layout, item: LayoutItem | undefined, e: Event) => void;
+
   /** Called when dragging over the grid */
   onDropDragOver?: (
     e: ReactDragEvent
@@ -145,19 +195,6 @@ try {
   isFirefox = /firefox/i.test(navigator.userAgent);
 } catch {
   /* Ignore */
-}
-
-/**
- * Get compact type from props (handles legacy verticalCompact)
- */
-function getCompactType(props: {
-  compactType?: CompactType;
-  verticalCompact?: boolean;
-}): CompactType {
-  const { compactType, verticalCompact } = props;
-  if (verticalCompact === false) return null;
-  // Use === undefined check instead of ?? because null is a valid compactType value
-  return compactType === undefined ? "vertical" : compactType;
 }
 
 /**
@@ -250,32 +287,29 @@ function synchronizeLayoutWithChildren(
  */
 export function GridLayout(props: GridLayoutProps): ReactElement {
   const {
+    // Required
     children,
     width,
-    cols = 12,
-    rowHeight = 150,
-    maxRows = Infinity,
-    margin = [10, 10],
-    containerPadding = null,
+
+    // Composable config interfaces
+    gridConfig: gridConfigProp,
+    dragConfig: dragConfigProp,
+    resizeConfig: resizeConfigProp,
+    dropConfig: dropConfigProp,
+    positionStrategy = defaultPositionStrategy,
+    compactor: compactorProp,
+
+    // Layout data
     layout: propsLayout = [],
-    compactType: propsCompactType = "vertical",
+    droppingItem: droppingItemProp,
+
+    // Container props
     autoSize = true,
-    isDraggable = true,
-    isResizable = true,
-    isBounded = false,
-    isDroppable = false,
-    preventCollision = false,
-    allowOverlap = false,
-    useCSSTransforms = true,
-    transformScale = 1,
-    droppingItem = { i: "__dropping-elem__", h: 1, w: 1 },
-    resizeHandles = ["se"],
-    resizeHandle,
-    draggableHandle = "",
-    draggableCancel = "",
     className = "",
     style = {},
     innerRef,
+
+    // Callbacks
     onLayoutChange = noop,
     onDragStart: onDragStartProp = noop,
     onDrag: onDragProp = noop,
@@ -287,7 +321,55 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     onDropDragOver: onDropDragOverProp = noop
   } = props;
 
-  const compactType = getCompactType({ compactType: propsCompactType });
+  // Resolve config interfaces with defaults
+  const gridConfig: GridConfig = useMemo(
+    () => ({ ...defaultGridConfig, ...gridConfigProp }),
+    [gridConfigProp]
+  );
+  const dragConfig: DragConfig = useMemo(
+    () => ({ ...defaultDragConfig, ...dragConfigProp }),
+    [dragConfigProp]
+  );
+  const resizeConfig: ResizeConfig = useMemo(
+    () => ({ ...defaultResizeConfig, ...resizeConfigProp }),
+    [resizeConfigProp]
+  );
+  const dropConfig: DropConfig = useMemo(
+    () => ({ ...defaultDropConfig, ...dropConfigProp }),
+    [dropConfigProp]
+  );
+
+  // Destructure resolved configs for convenience
+  const { cols, rowHeight, maxRows, margin, containerPadding } = gridConfig;
+  const {
+    enabled: isDraggable,
+    bounded: isBounded,
+    handle: draggableHandle,
+    cancel: draggableCancel
+  } = dragConfig;
+  const {
+    enabled: isResizable,
+    handles: resizeHandles,
+    handleComponent: resizeHandle
+  } = resizeConfig;
+  const { enabled: isDroppable, defaultItem: defaultDropItem } = dropConfig;
+
+  // Get compactor (use provided or get from type)
+  const compactor = compactorProp ?? getCompactor("vertical");
+  const compactType = compactor.type;
+  const allowOverlap = compactor.allowOverlap;
+  const preventCollision = compactor.preventCollision ?? false;
+
+  // Resolve dropping item
+  const droppingItem = droppingItemProp ?? {
+    i: "__dropping-elem__",
+    ...defaultDropItem
+  };
+
+  // Position strategy values
+  const useCSSTransforms = positionStrategy.type === "transform";
+  const transformScale = positionStrategy.scale;
+
   const effectiveContainerPadding = containerPadding ?? margin;
 
   // State
@@ -805,8 +887,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         typeof l.isResizable === "boolean"
           ? l.isResizable
           : !l.static && isResizable;
-      const resizeHandlesOptions = l.resizeHandles || resizeHandles;
+      const resizeHandlesOptions = l.resizeHandles || [...resizeHandles];
       const bounded = draggable && isBounded && l.isBounded !== false;
+
+      // Cast resize handle to expected type (function signature is compatible)
+      const resizeHandleElement = resizeHandle as ResizeHandle | undefined;
 
       return (
         <GridItem
@@ -843,7 +928,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           static={l.static}
           droppingPosition={isDroppingItem ? droppingPosition : undefined}
           resizeHandles={resizeHandlesOptions}
-          resizeHandle={resizeHandle}
+          resizeHandle={resizeHandleElement}
         >
           {child}
         </GridItem>
