@@ -41,16 +41,18 @@ export default class StaticElementsLayout extends React.PureComponent {
             x: 8,
             y: 0,
             w: 4,
-            h: 3
+            h: 8
           }}
         >
           <span className="text">
             4 - Draggable with Handle
-            <hr />
-            <hr />
-            <span className="react-grid-dragHandleExample">[DRAG HERE]</span>
-            <hr />
-            <hr />
+            <span className="react-grid-dragHandleExample">
+              <hr />
+              <hr />
+              [DRAG HERE]
+              <hr />
+              <hr />
+            </span>
           </span>
         </div>
       </ReactGridLayout>
