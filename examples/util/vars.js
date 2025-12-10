@@ -100,23 +100,6 @@ module.exports = [
     ]
   },
   {
-    title: "No Vertical Compacting (Free Movement)",
-    source: "no-vertical-compact",
-    paragraphs: [
-      "You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the " +
-        "property `compactType` to `null` to achieve this effect."
-    ]
-  },
-  {
-    title: "Prevent Collision",
-    source: "prevent-collision",
-    paragraphs: [
-      "You may want to turn off rearrangement so items don't move arround when dragging. Set the " +
-        "property `preventCollision` to `true` to achieve this effect. " +
-        "It's particularly useful with `compactType` set to `null`."
-    ]
-  },
-  {
     title: "Error Case",
     source: "error-case",
     paragraphs: [
@@ -176,10 +159,14 @@ module.exports = [
     ]
   },
   {
-    title: "Single Row Horizontal",
-    source: "horizontal",
+    title: "Compactor Showcase",
+    source: "compactors",
     paragraphs: [
-      "This demonstrates how to constrain the elements to a single row."
+      "This demo lets you compare all available compaction algorithms.",
+      "The standard <code>vertical</code> and <code>horizontal</code> compactors work well for most layouts. " +
+        "For large layouts (200+ items), the <code>fast</code> variants use an O(n log n) algorithm that can be " +
+        "significantly faster.",
+      "Select <code>None</code> to disable compaction entirely, allowing free placement of items."
     ]
   },
 ];
