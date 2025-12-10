@@ -261,10 +261,26 @@ export interface Compactor {
   /** Compaction type identifier */
   readonly type: CompactType;
 
-  /** Whether overlapping items are allowed */
+  /**
+   * Whether items can overlap (stack on top of each other).
+   *
+   * When true:
+   * - Items can be placed on top of other items
+   * - Dragging into another item does NOT push it away
+   * - Compaction is skipped after drag/resize
+   */
   readonly allowOverlap: boolean;
 
-  /** Whether to prevent collisions instead of pushing items */
+  /**
+   * Whether to block movement that would cause collision.
+   *
+   * When true (and allowOverlap is false):
+   * - Dragging into another item is blocked (item snaps back)
+   * - Other items are NOT pushed away
+   * - Only affects drag/resize, not compaction
+   *
+   * Has no effect when allowOverlap is true.
+   */
   readonly preventCollision?: boolean;
 
   /**

@@ -124,17 +124,15 @@ function MyGrid() {
 1. [Saving a Responsive Layout to LocalStorage](https://react-grid-layout.github.io/react-grid-layout/examples/08-localstorage-responsive.html)
 1. [Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/09-min-max-wh.html)
 1. [Dynamic Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/10-dynamic-min-max-wh.html)
-1. [No Vertical Compacting (Free Movement)](https://react-grid-layout.github.io/react-grid-layout/examples/11-no-vertical-compact.html)
-1. [Prevent Collision](https://react-grid-layout.github.io/react-grid-layout/examples/12-prevent-collision.html)
-1. [Error Case](https://react-grid-layout.github.io/react-grid-layout/examples/13-error-case.html)
-1. [Toolbox](https://react-grid-layout.github.io/react-grid-layout/examples/14-toolbox.html)
-1. [Drag From Outside](https://react-grid-layout.github.io/react-grid-layout/examples/15-drag-from-outside.html)
-1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/16-bounded.html)
-1. [Responsive Bootstrap-style Layout](https://react-grid-layout.github.io/react-grid-layout/examples/17-responsive-bootstrap-style.html)
-1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
-1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
-1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html)
-1. [Single Row Horizontal](https://react-grid-layout.github.io/react-grid-layout/examples/21-horizontal.html)
+1. [Error Case](https://react-grid-layout.github.io/react-grid-layout/examples/11-error-case.html)
+1. [Toolbox](https://react-grid-layout.github.io/react-grid-layout/examples/12-toolbox.html)
+1. [Drag From Outside](https://react-grid-layout.github.io/react-grid-layout/examples/13-drag-from-outside.html)
+1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/14-bounded.html)
+1. [Responsive Bootstrap-style Layout](https://react-grid-layout.github.io/react-grid-layout/examples/15-responsive-bootstrap-style.html)
+1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/16-scale.html)
+1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/17-allow-overlap.html)
+1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/18-resizable-handles.html)
+1. [Compactor Showcase](https://react-grid-layout.github.io/react-grid-layout/examples/19-compactors.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -449,9 +447,9 @@ interface UseGridLayoutOptions {
   cols: number;
   /** Compaction type: 'vertical', 'horizontal', or null */
   compactType?: CompactType;
-  /** Allow items to overlap */
+  /** Allow items to overlap (stack on top of each other) */
   allowOverlap?: boolean;
-  /** Prevent collisions when moving items */
+  /** Block movement into occupied space instead of pushing items (no effect if allowOverlap is true) */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
@@ -811,10 +809,30 @@ interface Compactor {
   /** Identifies the compaction type */
   type: "vertical" | "horizontal" | null | string;
 
-  /** Whether this compactor allows overlapping items */
+  /**
+   * Whether items can overlap each other.
+   *
+   * When true:
+   * - Items can be placed on top of other items
+   * - Dragging into another item does NOT push it away
+   * - Compaction is skipped after drag/resize
+   *
+   * Use for: layered dashboards, free-form layouts
+   */
   allowOverlap: boolean;
 
-  /** Prevent items from moving when another item is dragged into them */
+  /**
+   * Whether to block movement that would cause collision.
+   *
+   * When true (and allowOverlap is false):
+   * - Dragging into another item is blocked (item snaps back)
+   * - Other items are NOT pushed away
+   * - Only affects movement, not compaction
+   *
+   * Use with noCompactor for: fixed grids, slot-based layouts
+   *
+   * Note: Has no effect when allowOverlap is true.
+   */
   preventCollision?: boolean;
 
   /**

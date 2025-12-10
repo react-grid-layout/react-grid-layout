@@ -248,10 +248,10 @@ export function correctBounds(
  * @param x - New X position (or undefined to keep current)
  * @param y - New Y position (or undefined to keep current)
  * @param isUserAction - True if this is a direct user action (affects collision resolution)
- * @param preventCollision - True to prevent movement if it causes collision
+ * @param preventCollision - True to block movement into occupied space (item snaps back). No effect if allowOverlap is true.
  * @param compactType - Compaction type for collision resolution
  * @param cols - Number of columns in the grid
- * @param allowOverlap - True to allow items to overlap
+ * @param allowOverlap - True to allow items to stack on top of each other
  * @returns The updated layout
  */
 export function moveElement(

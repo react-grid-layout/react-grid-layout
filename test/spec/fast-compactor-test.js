@@ -10,7 +10,7 @@
  *   npm test -- --testPathPattern=fast-compactor
  */
 
-import { verticalCompactor, noCompactor } from "../../src/core/compactors";
+import { verticalCompactor } from "../../src/core/compactors";
 import {
   fastVerticalCompactor,
   fastVerticalOverlapCompactor
