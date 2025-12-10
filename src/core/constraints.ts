@@ -88,6 +88,10 @@ export const minMaxSize: LayoutConstraint = {
  *
  * Constrains items to stay within the visible container.
  * Use this as a replacement for the legacy `isBounded` prop.
+ *
+ * Unlike gridBounds which uses maxRows (which may be Infinity),
+ * this constraint calculates visible rows from the actual container height.
+ * Falls back to maxRows if containerHeight is 0 (auto-height grids).
  */
 export const containerBounds: LayoutConstraint = {
   name: "containerBounds",
@@ -96,11 +100,19 @@ export const containerBounds: LayoutConstraint = {
     item: LayoutItem,
     x: number,
     y: number,
-    { cols, maxRows }: ConstraintContext
+    { cols, maxRows, containerHeight, rowHeight, margin }: ConstraintContext
   ): { x: number; y: number } {
+    // Calculate visible rows from container height
+    // Formula: containerHeight = rows * rowHeight + (rows - 1) * margin
+    // Solving: rows = (containerHeight + margin) / (rowHeight + margin)
+    const visibleRows =
+      containerHeight > 0
+        ? Math.floor((containerHeight + margin[1]) / (rowHeight + margin[1]))
+        : maxRows;
+
     return {
       x: clamp(x, 0, Math.max(0, cols - item.w)),
-      y: clamp(y, 0, Math.max(0, maxRows - item.h))
+      y: clamp(y, 0, Math.max(0, visibleRows - item.h))
     };
   }
 };

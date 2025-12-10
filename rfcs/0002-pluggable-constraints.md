@@ -61,6 +61,8 @@ interface ConstraintContext {
   maxRows: number;
   containerWidth: number;
   containerHeight: number;
+  rowHeight: number;
+  margin: readonly [number, number];
   layout: Layout;
 }
 ```
@@ -91,12 +93,24 @@ export const minMaxSize: LayoutConstraint = {
 };
 
 // Container bounding (opt-in, replaces isBounded)
+// Uses containerHeight to calculate visible rows, falls back to maxRows if 0
 export const containerBounds: LayoutConstraint = {
   name: "containerBounds",
-  constrainPosition: (item, x, y, { cols, maxRows }) => ({
-    x: clamp(x, 0, cols - item.w),
-    y: clamp(y, 0, maxRows - item.h)
-  })
+  constrainPosition: (
+    item,
+    x,
+    y,
+    { cols, maxRows, containerHeight, rowHeight, margin }
+  ) => {
+    const visibleRows =
+      containerHeight > 0
+        ? Math.floor((containerHeight + margin[1]) / (rowHeight + margin[1]))
+        : maxRows;
+    return {
+      x: clamp(x, 0, cols - item.w),
+      y: clamp(y, 0, visibleRows - item.h)
+    };
+  }
 };
 
 // Axis-specific bounding

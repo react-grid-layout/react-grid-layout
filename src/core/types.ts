@@ -387,6 +387,12 @@ export interface ConstraintContext {
   /** Container height in pixels (may be 0 if auto-height) */
   containerHeight: number;
 
+  /** Row height in pixels */
+  rowHeight: number;
+
+  /** Margin between items [x, y] in pixels */
+  margin: readonly [number, number];
+
   /** Current layout state */
   layout: Layout;
 }

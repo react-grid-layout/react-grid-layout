@@ -70,6 +70,7 @@ src/
 │   ├── sort.ts              # Sorting algorithms
 │   ├── compactors.ts        # Compaction algorithms (vertical, horizontal)
 │   ├── compact-compat.ts    # Legacy compact() function wrapper
+│   ├── constraints.ts       # Layout constraints (position, size, aspect ratio)
 │   ├── calculate.ts         # Grid calculations (grid units <-> pixels)
 │   ├── position.ts          # CSS positioning helpers
 │   ├── responsive.ts        # Breakpoint utilities

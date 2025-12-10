@@ -268,9 +268,11 @@ export function GridItem(props: GridItemProps): ReactElement {
       maxRows,
       containerWidth,
       containerHeight: 0, // Auto-height grids don't have a fixed container height
+      rowHeight,
+      margin,
       layout
     }),
-    [cols, maxRows, containerWidth, layout]
+    [cols, maxRows, containerWidth, rowHeight, margin, layout]
   );
 
   // Effective layout item (use provided or create from props)

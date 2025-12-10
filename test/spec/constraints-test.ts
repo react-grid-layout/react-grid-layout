@@ -47,6 +47,8 @@ function createContext(
     maxRows: Infinity,
     containerWidth: 1200,
     containerHeight: 800,
+    rowHeight: 30,
+    margin: [10, 10] as [number, number],
     layout: [],
     ...overrides
   };
@@ -152,13 +154,33 @@ describe("Constraints", () => {
       expect(containerBounds.name).toBe("containerBounds");
     });
 
-    it("constrains position to container bounds", () => {
+    it("constrains position using container height to calculate visible rows", () => {
       const item = createItem({ w: 2, h: 2 });
-      const context = createContext({ cols: 12, maxRows: 10 });
+      // With containerHeight: 390, rowHeight: 30, margin: 10
+      // visibleRows = floor((390 + 10) / (30 + 10)) = floor(400 / 40) = 10
+      const context = createContext({
+        cols: 12,
+        containerHeight: 390,
+        rowHeight: 30,
+        margin: [10, 10]
+      });
 
       const result = containerBounds.constrainPosition!(item, 15, 15, context);
       expect(result.x).toBe(10);
-      expect(result.y).toBe(8);
+      expect(result.y).toBe(8); // visibleRows - h = 10 - 2 = 8
+    });
+
+    it("falls back to maxRows when containerHeight is 0 (auto-height)", () => {
+      const item = createItem({ w: 2, h: 2 });
+      const context = createContext({
+        cols: 12,
+        maxRows: 10,
+        containerHeight: 0 // Auto-height grid
+      });
+
+      const result = containerBounds.constrainPosition!(item, 15, 15, context);
+      expect(result.x).toBe(10);
+      expect(result.y).toBe(8); // maxRows - h = 10 - 2 = 8
     });
 
     it("does not have constrainSize", () => {
