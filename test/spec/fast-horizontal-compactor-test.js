@@ -10,7 +10,7 @@
  *   npm test -- --testPathPattern=fast-horizontal-compactor
  */
 
-import { horizontalCompactor, noCompactor } from "../../src/core/compactors";
+import { horizontalCompactor } from "../../src/core/compactors";
 import {
   fastHorizontalCompactor,
   fastHorizontalOverlapCompactor

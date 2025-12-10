@@ -27,19 +27,6 @@ import type { Compactor, Layout, LayoutItem, Mutable } from "../core/types.js";
 import { cloneLayout } from "../core/layout.js";
 
 /**
- * Check if two layout items collide (overlap).
- */
-function collides(l1: LayoutItem, l2: LayoutItem): boolean {
-  if (l1.i === l2.i) return false;
-  return (
-    l1.x < l2.x + l2.w &&
-    l1.x + l1.w > l2.x &&
-    l1.y < l2.y + l2.h &&
-    l1.y + l1.h > l2.y
-  );
-}
-
-/**
  * Ensure the tide array has enough rows.
  */
 function ensureTideRows(tide: number[], neededRows: number): void {
@@ -144,8 +131,8 @@ function compactHorizontalFast(
   const staticItems = layout.filter(item => item.static);
 
   // Safety limit for row wrapping (prevents infinite loops)
-  // Use a limit relative to layout size (at least 10000, or 100x the number of items)
-  const maxRowLimit = Math.max(10000, numItems * 100);
+  // Use a limit relative to layout size (at least 10_000, or 100x the number of items)
+  const maxRowLimit = Math.max(10_000, numItems * 100);
 
   for (let i = 0; i < numItems; i++) {
     const item = layout[i] as Mutable<LayoutItem>;
