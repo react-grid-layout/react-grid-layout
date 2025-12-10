@@ -10,7 +10,7 @@ const ReactGridLayout = WidthProvider(RGL);
  */
 const evenColumnsOnly = {
   name: "evenColumnsOnly",
-  constrainPosition(item, x, y, context) {
+  constrainPosition(_item, x, y, _context) {
     // Round x to nearest even number
     const evenX = Math.round(x / 2) * 2;
     return { x: evenX, y };
@@ -22,7 +22,7 @@ const evenColumnsOnly = {
  */
 const minHeightHalfWidth = {
   name: "minHeightHalfWidth",
-  constrainSize(item, w, h, handle, context) {
+  constrainSize(_item, w, h, _handle, _context) {
     const minH = Math.ceil(w / 2);
     return { w, h: Math.max(h, minH) };
   }
@@ -33,7 +33,7 @@ const minHeightHalfWidth = {
  */
 const maxArea = (area) => ({
   name: `maxArea(${area})`,
-  constrainSize(item, w, h, handle, context) {
+  constrainSize(_item, w, h, handle, _context) {
     const currentArea = w * h;
     if (currentArea <= area) {
       return { w, h };

@@ -606,10 +606,10 @@ describe("Constraints", () => {
       const item = createItem({ h: 2 });
       const context = createContext({ maxRows: Infinity });
 
-      const result = gridBounds.constrainPosition!(item, 0, 1000000, context);
+      const result = gridBounds.constrainPosition!(item, 0, 1_000_000, context);
 
       // Should allow any y position
-      expect(result.y).toBe(1000000);
+      expect(result.y).toBe(1_000_000);
     });
 
     it("handles negative proposed values", () => {
