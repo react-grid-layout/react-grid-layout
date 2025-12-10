@@ -52,9 +52,14 @@ Callback parameters (`layoutItem`, `placeholder`) are now read-only. Mutating th
 
 The v2 API requires explicit `layout` prop. The `data-grid` pattern is only available via the legacy wrapper (`react-grid-layout/legacy`).
 
-#### Fast Compaction Algorithm
+#### Pluggable Compaction Algorithms
 
-The default compaction algorithm is now O(n log n) instead of O(n²). It produces identical results for most layouts but may differ in edge cases. Use the `compact()` function from `react-grid-layout/core` if you need exact v1 behavior.
+Compaction is now pluggable via the `Compactor` interface. The default compaction algorithm remains the same as v1 for backwards compatibility. For large layouts (200+ items), an optional O(n log n) fast compactor is available in `react-grid-layout/extras`:
+
+```typescript
+import { fastVerticalCompactor } from 'react-grid-layout/extras';
+<GridLayout compactor={fastVerticalCompactor} />
+```
 
 #### Other Breaking Changes
 

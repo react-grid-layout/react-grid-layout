@@ -63,7 +63,7 @@ See the [RFC](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2) for d
 | [`onDragStart` threshold](./rfcs/0001-v2-typescript-rewrite.md#1-ondragstart-no-longer-fires-on-click-only-events)   | Now fires after 3px movement, not on mousedown. Use `onMouseDown` for immediate response          |
 | [Immutable callbacks](./rfcs/0001-v2-typescript-rewrite.md#2-immutable-callback-parameters)                          | Callback parameters are read-only. Use `onLayoutChange` or constraints instead of mutation        |
 | [`data-grid` in legacy only](./rfcs/0001-v2-typescript-rewrite.md#3-data-grid-prop-only-available-in-legacy-wrapper) | v2 requires explicit `layout` prop. Use legacy wrapper for `data-grid`                            |
-| [Fast compaction](./rfcs/0001-v2-typescript-rewrite.md#4-fast-compaction-algorithm-by-default)                       | O(n log n) algorithm may differ in edge cases. Use `compact()` from `/core` for exact v1 behavior |
+| [Pluggable compaction](./rfcs/0001-v2-typescript-rewrite.md#4-pluggable-compaction-algorithms)                       | Compaction is now pluggable via `Compactor` interface. Optional fast O(n log n) algorithm in `/extras` |
 | UMD bundle removed                                                                                                   | Use a bundler (Vite, webpack, esbuild)                                                            |
 | `verticalCompact` removed                                                                                            | Use `compactType={null}` or `compactor={noCompactor}`                                             |
 
