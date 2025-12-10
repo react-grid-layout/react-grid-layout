@@ -199,6 +199,48 @@ describe("Fast Horizontal Compactor", () => {
       expect(compacted.find(l => l.i === "b").x).toBe(0);
       expect(compacted.find(l => l.i === "c").x).toBe(0);
     });
+
+    it("wraps items to next row when they don't fit", () => {
+      const layout = [
+        { i: "a", x: 0, y: 0, w: 6, h: 1 },
+        { i: "b", x: 0, y: 0, w: 8, h: 1 } // Too wide to fit alongside a in 12 cols
+      ];
+
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+
+      // Item a should be at x=0, y=0
+      expect(itemA.x).toBe(0);
+      expect(itemA.y).toBe(0);
+
+      // Item b can't fit next to a (6 + 8 = 14 > 12), so it wraps to next row
+      expect(itemB.y).toBeGreaterThan(0);
+      expect(itemB.x).toBe(0); // Should compact to left of its new row
+    });
+
+    it("wraps multiple items when row is full", () => {
+      const layout = [
+        { i: "a", x: 0, y: 0, w: 5, h: 1 },
+        { i: "b", x: 0, y: 0, w: 5, h: 1 },
+        { i: "c", x: 0, y: 0, w: 5, h: 1 } // Only 2 items fit per row (5+5=10, 5+5+5=15>12)
+      ];
+
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+
+      // First two items should fit in row 0
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+      const itemC = compacted.find(l => l.i === "c");
+
+      expect(itemA.y).toBe(0);
+      expect(itemB.y).toBe(0);
+      expect(itemC.y).toBe(1); // Third item wraps to next row
+
+      // No overlaps
+      expect(hasOverlaps(compacted)).toBe(false);
+    });
   });
 
   describe("Performance Comparison", () => {

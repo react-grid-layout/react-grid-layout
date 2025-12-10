@@ -120,22 +120,32 @@ function compactHorizontalFast(
   // Sort items by column then row (same as standard horizontal compactor)
   // Static items are sorted first at each position to reduce collision checks
   layout.sort((a, b) => {
-    if (a.x < b.x) return -1;
-    if (a.x > b.x) return 1;
-    if (a.y < b.y) return -1;
-    if (a.y > b.y) return 1;
-    // Static items sorted first to reduce collision checks
-    if (a.static && !b.static) return -1;
-    if (!a.static && b.static) return 1;
+    if (a.x !== b.x) return a.x - b.x;
+    if (a.y !== b.y) return a.y - b.y;
+    if (a.static !== b.static) return a.static ? -1 : 1;
     return 0;
   });
 
+  // Calculate max row extent for pre-allocation
+  let maxRow = 0;
+  for (let i = 0; i < numItems; i++) {
+    const item = layout[i];
+    if (item !== undefined) {
+      const bottom = item.y + item.h;
+      if (bottom > maxRow) maxRow = bottom;
+    }
+  }
+
   // "Sweeping tide" - tracks the rightmost blocked column per row
-  // Starts with a reasonable size, will grow as needed
-  const tide: number[] = [];
+  // Pre-allocate based on max row extent to avoid repeated reallocations
+  const tide: number[] = new Array(maxRow).fill(0);
 
   // Collect static items for collision checking
   const staticItems = layout.filter(item => item.static);
+
+  // Safety limit for row wrapping (prevents infinite loops)
+  // Use a limit relative to layout size (at least 10000, or 100x the number of items)
+  const maxRowLimit = Math.max(10000, numItems * 100);
 
   for (let i = 0; i < numItems; i++) {
     const item = layout[i] as Mutable<LayoutItem>;
@@ -213,7 +223,13 @@ function compactHorizontalFast(
       }
 
       // Safety check to prevent infinite loops
-      if (targetY > 10000) {
+      if (targetY > maxRowLimit) {
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn(
+            `Fast horizontal compactor: Item "${item.i}" exceeded max row limit (${targetY}). ` +
+              `This may indicate a layout that cannot be compacted within grid bounds.`
+          );
+        }
         // Give up and place at current position
         targetX = 0;
         placed = true;
