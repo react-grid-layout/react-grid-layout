@@ -17,3 +17,4 @@ export {
   fastHorizontalCompactor,
   fastHorizontalOverlapCompactor
 } from "./fastHorizontalCompactor.js";
+export { wrapCompactor, wrapOverlapCompactor } from "./wrapCompactor.js";

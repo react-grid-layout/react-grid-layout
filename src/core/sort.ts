@@ -29,6 +29,10 @@ export function sortLayoutItems(
   if (compactType === "vertical") {
     return sortLayoutItemsByRowCol(layout);
   }
+  if (compactType === "wrap") {
+    // Wrap mode uses row-col order (reading order: left-to-right, top-to-bottom)
+    return sortLayoutItemsByRowCol(layout);
+  }
   // No compaction - return a copy to maintain immutability
   return [...layout];
 }

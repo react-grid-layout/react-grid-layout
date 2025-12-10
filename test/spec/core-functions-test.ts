@@ -499,6 +499,20 @@ describe("Core Functions", () => {
       const result = calcXY(params, -100, 0, 2, 2);
       expect(result.y).toBeGreaterThanOrEqual(0);
     });
+
+    it("clamps y to respect maxRows constraint", () => {
+      // Item with h=2, maxRows=10 means max y is 8
+      // calcXY signature: (params, top, left, w, h)
+      const result = calcXY(params, 5000, 0, 2, 2);
+      expect(result.y).toBeLessThanOrEqual(10 - 2); // maxRows - h
+      expect(result.y).toBe(8);
+    });
+
+    it("enforces maxRows with different item heights", () => {
+      // Item with h=5, maxRows=10 means max y is 5
+      const result = calcXY(params, 5000, 0, 2, 5);
+      expect(result.y).toBe(5);
+    });
   });
 
   describe("calcWH", () => {
@@ -530,6 +544,26 @@ describe("Core Functions", () => {
       // calcWH calculates raw values; callers clamp to minW/minH
       const result = calcWH(params, 100, 5, 0, 0, "se");
       expect(typeof result.h).toBe("number");
+    });
+
+    it("clamps height to respect maxRows constraint during resize", () => {
+      // Item at y=5, maxRows=10 means max h is 5
+      const result = calcWH(params, 200, 5000, 0, 5, "se");
+      expect(result.h).toBeLessThanOrEqual(10 - 5); // maxRows - y
+      expect(result.h).toBe(5);
+    });
+
+    it("enforces maxRows at different y positions", () => {
+      // Item at y=8, maxRows=10 means max h is 2
+      const result = calcWH(params, 200, 5000, 0, 8, "se");
+      expect(result.h).toBe(2);
+    });
+
+    it("allows full height resize with north handles", () => {
+      // North handles can resize to full height (item can move up)
+      const result = calcWH(params, 200, 5000, 0, 5, "n");
+      // Should be clamped to maxRows (10), not maxRows - y
+      expect(result.h).toBe(10);
     });
   });
 

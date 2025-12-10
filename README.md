@@ -1090,7 +1090,7 @@ The `react-grid-layout/extras` entry point provides optional components that ext
 
 Renders an SVG grid background that aligns with GridLayout cells. Use this to visualize the grid structure behind your layout.
 
-> Based on [PR #2175](https://github.com/react-grid-layout/react-grid-layout/pull/2175) by [@nicosayer](https://github.com/nicosayer).
+> Based on [PR #2175](https://github.com/react-grid-layout/react-grid-layout/pull/2175) by [@dmj900501](https://github.com/dmj900501).
 
 ```tsx
 import { GridBackground } from "react-grid-layout/extras";
