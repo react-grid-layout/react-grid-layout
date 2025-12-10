@@ -8,6 +8,10 @@ React-Grid-Layout is a draggable and resizable grid layout system for React with
 
 **Version 2** is a complete TypeScript rewrite with a modern hooks-based API while maintaining backwards compatibility through a dedicated legacy wrapper.
 
+## Package Manager
+
+**Always use `yarn`** instead of `npm` for all commands in this project.
+
 ## Development Commands
 
 ### Testing
@@ -15,7 +19,7 @@ React-Grid-Layout is a draggable and resizable grid layout system for React with
 ```bash
 # Run all tests with coverage
 make test
-npm test
+yarn test
 
 # Watch mode for development
 make test-watch
@@ -29,7 +33,7 @@ NODE_ENV=test npx jest --testPathPatterns="compactors"
 ```bash
 # Build the library (ESM, CJS, and TypeScript declarations)
 make build
-npm run build
+yarn build
 
 # Clean build artifacts
 make clean
@@ -40,14 +44,14 @@ make clean
 ```bash
 # Start development server with hot reload (port 4002)
 make dev
-npm run dev
+yarn dev
 ```
 
 ### Linting & Formatting
 
 ```bash
 # Run ESLint
-npm run lint
+yarn lint
 
 # Format code with Prettier
 npm run fmt

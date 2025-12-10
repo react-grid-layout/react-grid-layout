@@ -163,6 +163,30 @@ export function calcXY(
 }
 
 /**
+ * Translate pixel coordinates to grid units without clamping.
+ *
+ * Use this with the constraint system for custom boundary control.
+ *
+ * @param positionParams - Grid parameters
+ * @param top - Top position in pixels (relative to parent)
+ * @param left - Left position in pixels (relative to parent)
+ * @returns x and y in grid units (unclamped)
+ */
+export function calcXYRaw(
+  positionParams: PositionParams,
+  top: number,
+  left: number
+): { x: number; y: number } {
+  const { margin, containerPadding, rowHeight } = positionParams;
+  const colWidth = calcGridColWidth(positionParams);
+
+  const x = Math.round((left - containerPadding[0]) / (colWidth + margin[0]));
+  const y = Math.round((top - containerPadding[1]) / (rowHeight + margin[1]));
+
+  return { x, y };
+}
+
+/**
  * Calculate grid units from pixel dimensions.
  *
  * @param positionParams - Grid parameters
@@ -204,6 +228,38 @@ export function calcWH(
   }
 
   return { w: _w, h: _h };
+}
+
+/**
+ * Calculate grid units from pixel dimensions without clamping.
+ *
+ * Use this with the constraint system for custom size control.
+ *
+ * @param positionParams - Grid parameters
+ * @param width - Width in pixels
+ * @param height - Height in pixels
+ * @returns w, h in grid units (unclamped, minimum 1)
+ */
+export function calcWHRaw(
+  positionParams: PositionParams,
+  width: number,
+  height: number
+): { w: number; h: number } {
+  const { margin, rowHeight } = positionParams;
+  const colWidth = calcGridColWidth(positionParams);
+
+  // width = colWidth * w - (margin * (w - 1))
+  // w = (width + margin) / (colWidth + margin)
+  const w = Math.max(
+    1,
+    Math.round((width + margin[0]) / (colWidth + margin[0]))
+  );
+  const h = Math.max(
+    1,
+    Math.round((height + margin[1]) / (rowHeight + margin[1]))
+  );
+
+  return { w, h };
 }
 
 // ============================================================================

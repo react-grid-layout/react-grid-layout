@@ -20,7 +20,8 @@ import type {
   DragConfig,
   ResizeConfig,
   DropConfig,
-  PositionStrategy
+  PositionStrategy,
+  LayoutConstraint
 } from "../core/types.js";
 import { getCompactor } from "../core/compactors.js";
 import {
@@ -28,6 +29,7 @@ import {
   absoluteStrategy,
   createScaledStrategy
 } from "../core/position.js";
+import { defaultConstraints, containerBounds } from "../core/constraints.js";
 
 // ============================================================================
 // Legacy Props Interface
@@ -224,6 +226,12 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
   // Get compactor from type and options
   const compactor = getCompactor(compactType, allowOverlap, preventCollision);
 
+  // Build constraints array based on legacy props
+  // When isBounded is true, add containerBounds constraint
+  const constraints: LayoutConstraint[] = isBounded
+    ? [...defaultConstraints, containerBounds]
+    : defaultConstraints;
+
   return (
     <GridLayout
       width={width}
@@ -233,6 +241,7 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
       dropConfig={dropConfig}
       positionStrategy={positionStrategy}
       compactor={compactor}
+      constraints={constraints}
       layout={layout}
       droppingItem={droppingItem}
       autoSize={autoSize}

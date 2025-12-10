@@ -39,6 +39,8 @@ export type {
   // Composable interfaces
   Compactor,
   PositionStrategy,
+  LayoutConstraint,
+  ConstraintContext,
 
   // Configuration
   GridConfig,
@@ -165,9 +167,34 @@ export {
   calcGridItemPosition,
   calcXY,
   calcWH,
+  calcXYRaw,
+  calcWHRaw,
   clamp,
   calcGridCellDimensions
 } from "./calculate.js";
+
+// =============================================================================
+// Layout Constraints
+// =============================================================================
+
+export {
+  // Built-in constraints
+  gridBounds,
+  minMaxSize,
+  containerBounds,
+  boundedX,
+  boundedY,
+  // Constraint factories
+  aspectRatio,
+  snapToGrid,
+  minSize,
+  maxSize,
+  // Default constraints
+  defaultConstraints,
+  // Apply functions
+  applyPositionConstraints,
+  applySizeConstraints
+} from "./constraints.js";
 
 // =============================================================================
 // Responsive Utilities
