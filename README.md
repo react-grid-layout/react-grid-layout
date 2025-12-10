@@ -1146,6 +1146,58 @@ interface GridBackgroundProps {
 }
 ```
 
+### Fast Compactors
+
+For large layouts (200+ items), the standard compactors can become slow due to O(n²) collision resolution. The fast compactors use optimized algorithms with O(n log n) complexity.
+
+> Based on the "rising tide" algorithm from [PR #2152](https://github.com/react-grid-layout/react-grid-layout/pull/2152) by [@morris](https://github.com/morris).
+
+```tsx
+import {
+  fastVerticalCompactor,
+  fastHorizontalCompactor,
+  fastVerticalOverlapCompactor,
+  fastHorizontalOverlapCompactor
+} from "react-grid-layout/extras";
+
+<ReactGridLayout
+  compactor={fastVerticalCompactor}
+  // or compactor={fastHorizontalCompactor}
+  layout={layout}
+  width={width}
+/>
+```
+
+**Performance Benchmarks:**
+
+| Items | Standard Vertical | Fast Vertical | Speedup |
+|-------|------------------|---------------|---------|
+| 50    | 112 µs           | 19 µs         | **6x**  |
+| 100   | 203 µs           | 36 µs         | **6x**  |
+| 200   | 821 µs           | 51 µs         | **16x** |
+| 500   | 5.7 ms           | 129 µs        | **45x** |
+
+| Items | Standard Horizontal | Fast Horizontal | Speedup |
+|-------|---------------------|-----------------|---------|
+| 50    | 164 µs              | 12 µs           | **14x** |
+| 100   | 477 µs              | 25 µs           | **19x** |
+| 200   | 1.1 ms              | 42 µs           | **26x** |
+| 500   | 9.5 ms              | 128 µs          | **74x** |
+
+**Correctness:**
+
+The fast compactors produce layouts identical to the standard compactors:
+
+- **Vertical**: 0% height difference on deterministic 100-item layouts
+- **Horizontal**: 0% width difference on deterministic 100-item layouts
+- Both pass all correctness tests: no overlaps, idempotent, static item handling
+
+**When to use:**
+
+- Use fast compactors for dashboards with 200+ widgets
+- For smaller layouts (<100 items), standard compactors work equally well
+- Both standard and fast compactors produce valid, non-overlapping layouts
+
 ### calcGridCellDimensions (Core Utility)
 
 For building custom grid overlays or backgrounds, use the `calcGridCellDimensions` utility from `react-grid-layout/core`:

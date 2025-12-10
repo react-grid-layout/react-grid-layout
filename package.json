@@ -70,6 +70,7 @@
   "scripts": {
     "lint": "make lint",
     "test": "make test",
+    "test:match": "NODE_ENV=test npx jest --testPathPatterns",
     "build": "make build",
     "build:ts": "tsup",
     "build:ts:watch": "tsup --watch",
