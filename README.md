@@ -133,6 +133,9 @@ function MyGrid() {
 1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/17-allow-overlap.html)
 1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/18-resizable-handles.html)
 1. [Compactor Showcase](https://react-grid-layout.github.io/react-grid-layout/examples/19-compactors.html)
+1. [Pluggable Constraints](https://react-grid-layout.github.io/react-grid-layout/examples/20-constraints.html)
+1. [Aspect Ratio Constraints](https://react-grid-layout.github.io/react-grid-layout/examples/21-aspect-ratio.html)
+1. [Custom Constraints](https://react-grid-layout.github.io/react-grid-layout/examples/22-custom-constraints.html)
 
 #### Projects Using React-Grid-Layout
 

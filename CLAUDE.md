@@ -222,6 +222,46 @@ const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
 - **Linting**: ESLint 9 with flat config
 - **Formatting**: Prettier
 
+## Examples
+
+Interactive examples are located in `test/examples/`. When adding major features, always create corresponding examples.
+
+### Example Structure
+
+```
+test/examples/
+├── 00-showcase.jsx      # Main showcase demo
+├── 01-basic.jsx         # Basic usage
+├── ...
+└── 24-custom-constraints.jsx
+```
+
+### Adding New Examples
+
+1. **Create the example file**: `test/examples/NN-feature-name.jsx`
+   - Follow the pattern of existing examples (export class, hook into test-hook.jsx)
+   - Use the legacy API with `WidthProvider(RGL)` for compatibility
+
+2. **Register in vars.js**: Add entry to `examples/util/vars.js`:
+
+   ```js
+   {
+     title: "Feature Name",
+     source: "feature-name",  // matches filename without number prefix
+     paragraphs: ["Description of the example..."]
+   }
+   ```
+
+3. **Update README.md**: Add link to the examples list
+
+4. **Generate HTML**: Run `env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js`
+
+### Running Examples
+
+```bash
+yarn dev  # Start dev server at http://localhost:4002
+```
+
 ## Testing Guidelines
 
 - Tests are in `test/spec/`
