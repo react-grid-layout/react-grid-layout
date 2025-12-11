@@ -587,8 +587,7 @@ describe("Fast Horizontal Compactor", () => {
       // Widths should be similar (within 20%)
       const stdWidth = layoutWidth(stdCompacted);
       const fastWidth = layoutWidth(fastCompacted);
-      const widthDiff =
-        Math.abs(stdWidth - fastWidth) / Math.max(stdWidth, 1);
+      const widthDiff = Math.abs(stdWidth - fastWidth) / Math.max(stdWidth, 1);
 
       console.log(
         [

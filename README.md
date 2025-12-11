@@ -57,15 +57,15 @@ Version 2 is a complete TypeScript rewrite with a modernized API:
 
 See the [RFC](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2) for detailed migration examples.
 
-| Change                                                                                                               | Description                                                                                       |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [`width` prop required](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2)                                 | Use `useContainerWidth` hook or provide your own measurement                                      |
-| [`onDragStart` threshold](./rfcs/0001-v2-typescript-rewrite.md#1-ondragstart-no-longer-fires-on-click-only-events)   | Now fires after 3px movement, not on mousedown. Use `onMouseDown` for immediate response          |
-| [Immutable callbacks](./rfcs/0001-v2-typescript-rewrite.md#2-immutable-callback-parameters)                          | Callback parameters are read-only. Use `onLayoutChange` or constraints instead of mutation        |
-| [`data-grid` in legacy only](./rfcs/0001-v2-typescript-rewrite.md#3-data-grid-prop-only-available-in-legacy-wrapper) | v2 requires explicit `layout` prop. Use legacy wrapper for `data-grid`                            |
+| Change                                                                                                               | Description                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [`width` prop required](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2)                                 | Use `useContainerWidth` hook or provide your own measurement                                           |
+| [`onDragStart` threshold](./rfcs/0001-v2-typescript-rewrite.md#1-ondragstart-no-longer-fires-on-click-only-events)   | Now fires after 3px movement, not on mousedown. Use `onMouseDown` for immediate response               |
+| [Immutable callbacks](./rfcs/0001-v2-typescript-rewrite.md#2-immutable-callback-parameters)                          | Callback parameters are read-only. Use `onLayoutChange` or constraints instead of mutation             |
+| [`data-grid` in legacy only](./rfcs/0001-v2-typescript-rewrite.md#3-data-grid-prop-only-available-in-legacy-wrapper) | v2 requires explicit `layout` prop. Use legacy wrapper for `data-grid`                                 |
 | [Pluggable compaction](./rfcs/0001-v2-typescript-rewrite.md#4-pluggable-compaction-algorithms)                       | Compaction is now pluggable via `Compactor` interface. Optional fast O(n log n) algorithm in `/extras` |
-| UMD bundle removed                                                                                                   | Use a bundler (Vite, webpack, esbuild)                                                            |
-| `verticalCompact` removed                                                                                            | Use `compactType={null}` or `compactor={noCompactor}`                                             |
+| UMD bundle removed                                                                                                   | Use a bundler (Vite, webpack, esbuild)                                                                 |
+| `verticalCompact` removed                                                                                            | Use `compactType={null}` or `compactor={noCompactor}`                                                  |
 
 ## Migrating from v1
 
@@ -1183,20 +1183,20 @@ import {
   // or compactor={fastHorizontalCompactor}
   layout={layout}
   width={width}
-/>
+/>;
 ```
 
 **Performance Benchmarks:**
 
 | Items | Standard Vertical | Fast Vertical | Speedup |
-|-------|------------------|---------------|---------|
-| 50    | 112 µs           | 19 µs         | **6x**  |
-| 100   | 203 µs           | 36 µs         | **6x**  |
-| 200   | 821 µs           | 51 µs         | **16x** |
-| 500   | 5.7 ms           | 129 µs        | **45x** |
+| ----- | ----------------- | ------------- | ------- |
+| 50    | 112 µs            | 19 µs         | **6x**  |
+| 100   | 203 µs            | 36 µs         | **6x**  |
+| 200   | 821 µs            | 51 µs         | **16x** |
+| 500   | 5.7 ms            | 129 µs        | **45x** |
 
 | Items | Standard Horizontal | Fast Horizontal | Speedup |
-|-------|---------------------|-----------------|---------|
+| ----- | ------------------- | --------------- | ------- |
 | 50    | 164 µs              | 12 µs           | **14x** |
 | 100   | 477 µs              | 25 µs           | **19x** |
 | 200   | 1.1 ms              | 42 µs           | **26x** |

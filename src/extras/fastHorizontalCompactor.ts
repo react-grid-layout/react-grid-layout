@@ -38,11 +38,7 @@ function ensureTideRows(tide: number[], neededRows: number): void {
 /**
  * Find the maximum tide value for a range of rows.
  */
-function getMaxTideForItem(
-  tide: number[],
-  y: number,
-  h: number
-): number {
+function getMaxTideForItem(tide: number[], y: number, h: number): number {
   let maxTide = 0;
   for (let row = y; row < y + h; row++) {
     const tideValue = tide[row] ?? 0;
