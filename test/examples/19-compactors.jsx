@@ -27,12 +27,16 @@ const COMPACTORS = {
 
 function generateLayout(count) {
   return Array.from({ length: count }, (_, i) => {
-    const h = Math.ceil(Math.random() * 4) + 1;
+    // Smaller items (1-2 units tall) spread across more space
+    const h = Math.ceil(Math.random() * 2);
+    const w = Math.ceil(Math.random() * 2);
     return {
       i: i.toString(),
-      x: Math.round(Math.random() * 5) * 2,
-      y: Math.floor(i / 6) * h,
-      w: 2,
+      // Spread items across full width with gaps
+      x: Math.floor(Math.random() * 10),
+      // Spread items vertically with visible gaps
+      y: Math.floor(Math.random() * 8),
+      w,
       h
     };
   });
@@ -42,8 +46,8 @@ export default function CompactorShowcase() {
   const { width, containerRef, mounted } = useContainerWidth();
   const [selectedCompactor, setSelectedCompactor] = useState("vertical");
   const [preventCollision, setPreventCollision] = useState(false);
-  const [itemCount, setItemCount] = useState(20);
-  const [layout, setLayout] = useState(() => generateLayout(20));
+  const [itemCount, setItemCount] = useState(8);
+  const [layout, setLayout] = useState(() => generateLayout(8));
 
   const compactorConfig = COMPACTORS[selectedCompactor];
 
@@ -153,19 +157,20 @@ export default function CompactorShowcase() {
         style={{
           marginBottom: 10,
           padding: 10,
-          background: "#f5f5f5",
+          background: "#333",
+          color: "#fff",
           borderRadius: 4
         }}
       >
         <strong>Current:</strong> {compactorConfig.label}
         {preventCollision && " + Prevent Collision"}
         {selectedCompactor.startsWith("fast") && (
-          <span style={{ marginLeft: 10, color: "#666" }}>
+          <span style={{ marginLeft: 10, color: "#aaa" }}>
             (Optimized for large layouts with 200+ items)
           </span>
         )}
         {selectedCompactor === "none" && (
-          <span style={{ marginLeft: 10, color: "#666" }}>
+          <span style={{ marginLeft: 10, color: "#aaa" }}>
             (Items stay where placed, no auto-packing)
           </span>
         )}
