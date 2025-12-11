@@ -2,7 +2,7 @@
  * Tests for the new TypeScript React components in src/react/
  */
 
-import React from "react";
+import React, { StrictMode } from "react";
 import { render, screen, act } from "@testing-library/react";
 
 // Import from the new TypeScript modules
@@ -355,6 +355,164 @@ describe("TypeScript Components", () => {
       const call = onLayoutChange.mock.calls[0];
       expect(Array.isArray(call![0])).toBe(true); // layout
       expect(typeof call![1]).toBe("object"); // layouts
+    });
+
+    it("should not flicker when item is removed and re-added (toolbox pattern)", () => {
+      // Regression test for toolbox flickering bug
+      // When an item is removed from layout and re-added, it should retain its original size
+      // and not oscillate between sizes due to timing issues with useEffect vs useMemo.
+      //
+      // Bug manifestation: Before the fix, useEffect ran AFTER render, so GridLayout
+      // saw new children with stale layout state, created items with default 1x1 size,
+      // then effect fired updating to 2x2, triggering onLayoutChange callback, which
+      // updated parent props, causing an infinite render loop.
+      const onLayoutChange = jest.fn();
+
+      const initialLayouts = {
+        lg: [
+          { i: "a", x: 0, y: 0, w: 4, h: 3 },
+          { i: "b", x: 4, y: 0, w: 2, h: 2 }
+        ]
+      };
+
+      const { rerender } = render(
+        <ResponsiveGridLayout
+          width={1200}
+          layouts={initialLayouts}
+          breakpoint="lg"
+          onLayoutChange={onLayoutChange}
+        >
+          <div key="a">a</div>
+          <div key="b">b</div>
+        </ResponsiveGridLayout>
+      );
+
+      onLayoutChange.mockClear();
+
+      // Simulate removing item "b" (like putting it in toolbox)
+      const layoutsWithoutB = {
+        lg: [{ i: "a", x: 0, y: 0, w: 4, h: 3 }]
+      };
+
+      rerender(
+        <ResponsiveGridLayout
+          width={1200}
+          layouts={layoutsWithoutB}
+          breakpoint="lg"
+          onLayoutChange={onLayoutChange}
+        >
+          <div key="a">a</div>
+        </ResponsiveGridLayout>
+      );
+
+      onLayoutChange.mockClear();
+
+      // Simulate re-adding item "b" (like taking from toolbox)
+      // The key bug was that the item would be created with default w:1, h:1
+      // instead of the original w:2, h:2, causing infinite oscillation
+      const layoutsWithBRestored = {
+        lg: [
+          { i: "a", x: 0, y: 0, w: 4, h: 3 },
+          { i: "b", x: 4, y: 0, w: 2, h: 2 }
+        ]
+      };
+
+      rerender(
+        <ResponsiveGridLayout
+          width={1200}
+          layouts={layoutsWithBRestored}
+          breakpoint="lg"
+          onLayoutChange={onLayoutChange}
+        >
+          <div key="a">a</div>
+          <div key="b">b</div>
+        </ResponsiveGridLayout>
+      );
+
+      // Verify onLayoutChange was called a reasonable number of times (not infinite loop)
+      // In the buggy version, this would be called many times rapidly
+      expect(onLayoutChange.mock.calls.length).toBeLessThan(5);
+
+      // Verify the layout contains item "b" with correct dimensions
+      const lastCall =
+        onLayoutChange.mock.calls[onLayoutChange.mock.calls.length - 1];
+      if (lastCall) {
+        const layout = lastCall[0] as Layout;
+        const itemB = layout.find(item => item.i === "b");
+        expect(itemB).toBeDefined();
+        // The item should have its original size, not default 1x1
+        expect(itemB?.w).toBe(2);
+        expect(itemB?.h).toBe(2);
+      }
+    });
+
+    it("should work correctly in StrictMode (double-render compatibility)", () => {
+      // StrictMode in React 18+ intentionally double-renders components to detect side effects.
+      // This test verifies that the layout synchronization fix works correctly with double-renders.
+      const onLayoutChange = jest.fn();
+
+      const layouts = {
+        lg: [
+          { i: "a", x: 0, y: 0, w: 2, h: 2 },
+          { i: "b", x: 2, y: 0, w: 2, h: 2 }
+        ]
+      };
+
+      const { rerender } = render(
+        <StrictMode>
+          <ResponsiveGridLayout
+            width={1200}
+            layouts={layouts}
+            breakpoint="lg"
+            onLayoutChange={onLayoutChange}
+          >
+            <div key="a">a</div>
+            <div key="b">b</div>
+          </ResponsiveGridLayout>
+        </StrictMode>
+      );
+
+      // Clear initial render calls
+      onLayoutChange.mockClear();
+
+      // Update layouts (simulating toolbox add)
+      const updatedLayouts = {
+        lg: [
+          { i: "a", x: 0, y: 0, w: 2, h: 2 },
+          { i: "b", x: 2, y: 0, w: 2, h: 2 },
+          { i: "c", x: 4, y: 0, w: 3, h: 3 }
+        ]
+      };
+
+      rerender(
+        <StrictMode>
+          <ResponsiveGridLayout
+            width={1200}
+            layouts={updatedLayouts}
+            breakpoint="lg"
+            onLayoutChange={onLayoutChange}
+          >
+            <div key="a">a</div>
+            <div key="b">b</div>
+            <div key="c">c</div>
+          </ResponsiveGridLayout>
+        </StrictMode>
+      );
+
+      // In StrictMode, callbacks may be called more times due to double-rendering,
+      // but should still be bounded (not infinite)
+      expect(onLayoutChange.mock.calls.length).toBeLessThan(10);
+
+      // Verify the new item has correct dimensions
+      if (onLayoutChange.mock.calls.length > 0) {
+        const lastCall =
+          onLayoutChange.mock.calls[onLayoutChange.mock.calls.length - 1];
+        const layout = lastCall![0] as Layout;
+        const itemC = layout.find(item => item.i === "c");
+        expect(itemC).toBeDefined();
+        expect(itemC?.w).toBe(3);
+        expect(itemC?.h).toBe(3);
+      }
     });
   });
 

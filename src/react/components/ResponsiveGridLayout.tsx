@@ -236,10 +236,20 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
   const prevLayoutsRef = useRef(propsLayouts);
   const prevCompactTypeRef = useRef(compactType);
 
-  // Sync layouts from props
+  // Ref to always have current layouts value (avoids stale closure in callbacks)
+  const layoutsRef = useRef(layouts);
+
+  // Keep layoutsRef in sync with layouts state
   useEffect(() => {
+    layoutsRef.current = layouts;
+  }, [layouts]);
+
+  // Derive layout synchronously from props during render (not in useEffect which runs after render)
+  // This prevents the timing issue where GridLayout sees children before the layout is updated
+  const derivedLayout: Layout | null = useMemo(() => {
     if (!deepEqual(propsLayouts, prevLayoutsRef.current)) {
-      const newLayout = findOrGenerateResponsiveLayout(
+      // Props changed, derive new layout synchronously
+      return findOrGenerateResponsiveLayout(
         propsLayouts,
         breakpoints,
         breakpoint,
@@ -247,38 +257,50 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
         cols,
         compactType
       );
-      setLayout(newLayout);
+    }
+    return null; // No change needed
+  }, [propsLayouts, breakpoints, breakpoint, cols, compactType]);
+
+  // The effective layout to pass to GridLayout - use derived if available, else state
+  const effectiveLayout = derivedLayout ?? layout;
+
+  // Update state and refs in effect (for consistency on future renders)
+  useEffect(() => {
+    if (derivedLayout !== null) {
+      setLayout(derivedLayout);
       setLayouts(propsLayouts);
+      layoutsRef.current = propsLayouts;
       prevLayoutsRef.current = propsLayouts;
     }
-  }, [propsLayouts, breakpoints, breakpoint, cols, compactType]);
+  }, [derivedLayout, propsLayouts]);
 
   // Handle compactType changes
   useEffect(() => {
     if (compactType !== prevCompactTypeRef.current) {
       // Re-compact the current layout with the new compactType
+      // Use effectiveLayout to avoid stale data when layouts are being synced
       const newLayout = compact(
-        cloneLayout(layout),
+        cloneLayout(effectiveLayout),
         compactType,
         cols,
         allowOverlap
       );
       const newLayouts = {
-        ...layouts,
+        ...layoutsRef.current,
         [breakpoint]: newLayout
       } as ResponsiveLayouts<B>;
 
       setLayout(newLayout);
       setLayouts(newLayouts);
+      layoutsRef.current = newLayouts;
       onLayoutChange(newLayout, newLayouts);
       prevCompactTypeRef.current = compactType;
     }
   }, [
     compactType,
-    layout,
+    effectiveLayout,
     cols,
     allowOverlap,
-    layouts,
     breakpoint,
     onLayoutChange
   ]);
@@ -310,7 +332,7 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
         breakpointsChanged ||
         colsChanged
       ) {
-        const newLayouts = { ...layouts } as ResponsiveLayouts<B>;
+        const newLayouts = { ...layoutsRef.current } as ResponsiveLayouts<B>;
 
         // Preserve current layout if not in new layouts
         if (!newLayouts[lastBreakpoint]) {
@@ -345,6 +367,7 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
         setCols(newCols);
         setLayout(newLayout);
         setLayouts(newLayouts);
+        layoutsRef.current = newLayouts;
 
         // Callbacks
         onBreakpointChange(newBreakpoint, newCols);
@@ -380,7 +403,6 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     breakpoint,
     cols,
     layout,
-    layouts,
     children,
     compactType,
     allowOverlap,
@@ -394,16 +416,19 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
   // Handle layout change from GridLayout
   const handleLayoutChange = useCallback(
     (newLayout: Layout) => {
+      // Use layoutsRef.current to avoid stale closure issues
+      const currentLayouts = layoutsRef.current;
       const newLayouts = {
-        ...layouts,
+        ...currentLayouts,
         [breakpoint]: newLayout
       } as ResponsiveLayouts<B>;
 
       setLayout(newLayout);
       setLayouts(newLayouts);
+      layoutsRef.current = newLayouts;
       onLayoutChange(newLayout, newLayouts);
     },
-    [layouts, breakpoint, onLayoutChange]
+    [breakpoint, onLayoutChange]
   );
 
   // Get margin and padding for current breakpoint
@@ -441,7 +466,7 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
       gridConfig={gridConfig}
       compactor={compactor}
       onLayoutChange={handleLayoutChange}
-      layout={layout}
+      layout={effectiveLayout}
     >
       {children}
     </GridLayout>
