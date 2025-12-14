@@ -7,29 +7,70 @@
     <meta charset="UTF-8">
     <script src="<%= base %>/commons.js"></script>
     <script src="<%= base %>/<%= index %>-<%= source %>.js"></script>
-    <style>body { padding: 20px; }</style>
+    <link rel="stylesheet" href="<%= base %>/util/example-styles.css">
     <title>RGL Example <%= index %> - <%= title %></title>
   </head>
   <body>
-    <h3>React-Grid-Layout
-      <a href="https://www.npmjs.com/package/react-grid-layout/v/<%= version %>">v<%= version %></a>
-      Demo <%= index %> - <%= title %>
-    </h3>
-    <ul>
-      <li><a href="https://github.com/react-grid-layout/react-grid-layout">View project on GitHub</a></li>
-      <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/<%= index %>-<%= source %>.jsx">View this example's source</a></li>
-    <%_ if (previous) { -%>
-      <li><a href="<%= previous.index %>-<%= previous.source %>.html"><b>⇠</b> View the previous example: "<%= previous.title %>"</a></li>
-    <%_ } else { -%>
-      <li><b>⇠</b></li>
-    <%_ } -%>
-    <%_ if (next) { -%>
-      <li><a href="<%= next.index %>-<%= next.source %>.html"><b>⇢ </b>View the next example: "<%= next.title %>"</a></li>
-    <%_ } -%>
-    </ul>
-    <%_ for(var i = 0; i < paragraphs.length; i++) { -%>
-       <p><%- paragraphs[i] %></p>
-    <%_ } -%>
-    <div id="content"></div>
+    <nav class="sidebar">
+      <div class="sidebar__header">
+        <span class="sidebar__logo">◢ RGL</span>
+        <a class="sidebar__version" href="https://github.com/react-grid-layout/react-grid-layout/releases/tag/<%= version %>" target="_blank">v<%= version %></a>
+      </div>
+      <div class="sidebar__title">Examples</div>
+      <ul class="sidebar__nav">
+      <%_ for(var i = 0; i < allExamples.length; i++) { -%>
+        <li class="sidebar__item<%= allExamples[i].index === index ? ' sidebar__item--active' : '' %>">
+          <a href="<%= allExamples[i].index %>-<%= allExamples[i].source %>.html">
+            <span class="sidebar__item-index"><%= allExamples[i].index %></span>
+            <span class="sidebar__item-title"><%= allExamples[i].title %></span>
+          </a>
+        </li>
+      <%_ } -%>
+      </ul>
+      <div class="sidebar__footer">
+        <a href="https://github.com/react-grid-layout/react-grid-layout" target="_blank">GitHub</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <header class="main-header">
+        <h3>React-Grid-Layout - <%= title %></h3>
+        <a class="version-badge" href="https://github.com/react-grid-layout/react-grid-layout/releases/tag/<%= version %>" target="_blank">v<%= version %></a>
+      </header>
+      <ul class="nav-links">
+        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/<%= index %>-<%= source %>.jsx">View Source</a></li>
+      <%_ if (previous) { -%>
+        <li><a href="<%= previous.index %>-<%= previous.source %>.html"><b>⇠</b> <%= previous.title %></a></li>
+      <%_ } -%>
+      <%_ if (next) { -%>
+        <li><a href="<%= next.index %>-<%= next.source %>.html"><b>⇢</b> <%= next.title %></a></li>
+      <%_ } -%>
+      </ul>
+      <%_ for(var i = 0; i < paragraphs.length; i++) { -%>
+         <p><%- paragraphs[i] %></p>
+      <%_ } -%>
+      <div id="content"></div>
+    </main>
+    <script>
+      // Inject checkbox toggles for layoutJSON panels (CSS handles the collapse)
+      document.addEventListener('DOMContentLoaded', function() {
+        let counter = 0;
+        const observer = new MutationObserver(function() {
+          document.querySelectorAll('.layoutJSON:not([data-collapsible])').forEach(function(panel) {
+            panel.setAttribute('data-collapsible', 'true');
+            const id = 'layoutJSON-toggle-' + (counter++);
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = id;
+            checkbox.className = 'layoutJSON__checkbox';
+            const label = document.createElement('label');
+            label.htmlFor = id;
+            label.className = 'layoutJSON__toggle';
+            panel.insertBefore(label, panel.firstChild);
+            panel.insertBefore(checkbox, panel.firstChild);
+          });
+        });
+        observer.observe(document.getElementById('content'), { childList: true, subtree: true });
+      });
+    </script>
   </body>
 </html>

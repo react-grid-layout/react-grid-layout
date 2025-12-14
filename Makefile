@@ -4,7 +4,7 @@ EXEC = npm exec --
 DIST = ./dist
 BUILD = ./build
 TEST = ./test
-EXAMPLES = ./examples/*.{js,html}
+EXAMPLES = ./examples/*.{js,html,json}
 
 .PHONY: test dev lint build clean install link
 
@@ -14,7 +14,7 @@ clean:
 	rm -rf $(BUILD) $(DIST)
 
 clean-example:
-	rm -rf $(EXAMPLES)
+	rm -f $(EXAMPLES)
 
 dev:
 	@$(EXEC) webpack serve --config webpack-dev-server.config.js \
@@ -35,9 +35,9 @@ build-example: build clean-example
 	@$(EXEC) webpack --config webpack-examples.config.js
 	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js
 
-# Note: this doesn't hot reload, you need to re-run to update files.
-# TODO fix that
-view-example: build-example
+# View examples with hot reload - no library build needed since examples use index-dev.js
+view-example: clean-example
+	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js
 	@$(EXEC) webpack serve --config webpack-examples.config.js --progress
 
 lint:

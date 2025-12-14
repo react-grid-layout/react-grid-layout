@@ -50,12 +50,18 @@ module.exports = {
     compress: true,
     port: 4002,
     open: "/react-grid-layout/examples/00-showcase.html",
+    hot: true,
+    liveReload: true,
+    watchFiles: ["test/examples/**/*", "src/**/*"],
     client: {
       overlay: true
     },
     static: {
       directory: ".",
       publicPath: "/react-grid-layout"
+    },
+    devMiddleware: {
+      writeToDisk: true
     }
   },
   resolve: {

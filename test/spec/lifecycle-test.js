@@ -10,8 +10,8 @@ import { GridItem } from "../../src/react/components/GridItem";
 import ResponsiveReactGridLayout from "../../src/legacy/ResponsiveReactGridLayout";
 import BasicLayout from "../examples/01-basic";
 import ShowcaseLayout from "../examples/00-showcase";
-import DroppableLayout from "../examples/13-drag-from-outside";
-import ResizableLayout from "../examples/18-resizable-handles";
+import DroppableLayout from "../examples/12-drag-from-outside";
+import ResizableLayout from "../examples/17-resizable-handles";
 import deepFreeze from "../util/deepFreeze";
 
 // Helper to dispatch native mouse events (needed for react-draggable/react-resizable)
