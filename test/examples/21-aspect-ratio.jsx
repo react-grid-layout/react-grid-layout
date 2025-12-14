@@ -8,8 +8,25 @@ import {
 } from "react-grid-layout";
 
 /**
+ * Example 21: Aspect Ratio Constraints
+ *
  * This example demonstrates the aspectRatio constraint factory.
  * Each item maintains its aspect ratio during resize operations.
+ *
+ * For full documentation, see:
+ * https://github.com/react-grid-layout/react-grid-layout/blob/master/rfcs/0002-pluggable-constraints.md
+ *
+ * KEY CONCEPTS:
+ * -------------
+ * - aspectRatio(ratio) creates a constraint that maintains width:height ratio
+ * - The ratio is in PIXELS, not grid units (accounts for different col/row sizes)
+ * - Per-item constraints are applied via the `constraints` property on layout items
+ * - Grid-level constraints (gridBounds, minMaxSize) are applied to ALL items
+ *
+ * RELATED EXAMPLES:
+ * -----------------
+ * - Example 20: Built-in constraints (gridBounds, boundedX, etc.)
+ * - Example 22: Creating custom constraints
  */
 export default function AspectRatioLayout() {
   const { width, containerRef, mounted } = useContainerWidth();

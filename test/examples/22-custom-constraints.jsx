@@ -8,8 +8,37 @@ import {
 } from "react-grid-layout";
 
 /**
+ * Example 22: Custom Constraints
+ *
+ * This example demonstrates how to create your own constraint functions.
+ * For full documentation, see:
+ * https://github.com/react-grid-layout/react-grid-layout/blob/master/rfcs/0002-pluggable-constraints.md
+ *
+ * CREATING CUSTOM CONSTRAINTS:
+ * ----------------------------
+ * A constraint is an object with:
+ * - name: string identifier for debugging
+ * - constrainPosition?(item, x, y, context): constrain drag position
+ * - constrainSize?(item, w, h, handle, context): constrain resize dimensions
+ *
+ * CONSTRAINT CONTEXT:
+ * -------------------
+ * The context parameter provides:
+ * - cols: number of columns
+ * - maxRows: maximum rows
+ * - containerWidth/containerHeight: container dimensions in pixels
+ * - rowHeight: row height in pixels
+ * - margin: [horizontal, vertical] margins
+ * - layout: current layout array
+ *
+ * RELATED EXAMPLES:
+ * -----------------
+ * - Example 20: Built-in constraints (gridBounds, boundedX, etc.)
+ * - Example 21: Aspect ratio constraints (per-item)
+ */
+
+/**
  * Custom constraint: Items can only be placed in even columns.
- * Demonstrates how to create your own constraint functions.
  */
 const evenColumnsOnly = {
   name: "evenColumnsOnly",

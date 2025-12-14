@@ -4,6 +4,16 @@
 
 Add a `LayoutConstraint` interface to react-grid-layout v2, following the same patterns as `Compactor` and `PositionStrategy`. This enables pluggable position and size constraints, replacing hardcoded logic with composable, tree-shakeable constraint functions.
 
+## Live Examples
+
+See these examples to understand the constraint system in action:
+
+- **[Example 20: Constraints](../test/examples/20-constraints.jsx)** - Interactive demo of all built-in constraints with compaction toggle
+- **[Example 21: Aspect Ratio](../test/examples/21-aspect-ratio.jsx)** - Per-item aspect ratio constraints
+- **[Example 22: Custom Constraints](../test/examples/22-custom-constraints.jsx)** - How to create your own constraint functions
+
+Run the examples locally with `npm run dev` and navigate to the constraints examples.
+
 ## Motivation
 
 Currently, constraints are hardcoded in multiple places:
@@ -69,185 +79,213 @@ interface ConstraintContext {
 
 ### Built-in Constraints
 
+#### Position Constraints
+
 ```typescript
 // Grid boundary constraints (enabled by default)
-export const gridBounds: LayoutConstraint = {
-  name: "gridBounds",
-  constrainPosition: (item, x, y, { cols, maxRows }) => ({
-    x: clamp(x, 0, cols - item.w),
-    y: clamp(y, 0, maxRows - item.h)
-  }),
-  constrainSize: (item, w, h, handle, { cols, maxRows }) => ({
-    w: clamp(w, 1, cols - item.x),
-    h: clamp(h, 1, maxRows - item.y)
-  })
-};
-
-// Item min/max constraints (enabled by default)
-export const minMaxSize: LayoutConstraint = {
-  name: "minMaxSize",
-  constrainSize: (item, w, h) => ({
-    w: clamp(w, item.minW ?? 1, item.maxW ?? Infinity),
-    h: clamp(h, item.minH ?? 1, item.maxH ?? Infinity)
-  })
-};
+// Keeps items within 0 to cols (x) and 0 to maxRows (y)
+export const gridBounds: LayoutConstraint;
 
 // Container bounding (opt-in, replaces isBounded)
-// Uses containerHeight to calculate visible rows, falls back to maxRows if 0
-export const containerBounds: LayoutConstraint = {
-  name: "containerBounds",
-  constrainPosition: (
-    item,
-    x,
-    y,
-    { cols, maxRows, containerHeight, rowHeight, margin }
-  ) => {
-    const visibleRows =
-      containerHeight > 0
-        ? Math.floor((containerHeight + margin[1]) / (rowHeight + margin[1]))
-        : maxRows;
-    return {
-      x: clamp(x, 0, cols - item.w),
-      y: clamp(y, 0, visibleRows - item.h)
-    };
-  }
-};
+// Uses containerHeight to calculate visible rows
+export const containerBounds: LayoutConstraint;
 
 // Axis-specific bounding
-export const boundedX: LayoutConstraint = {
-  name: "boundedX",
-  constrainPosition: (item, x, y, { cols }) => ({
-    x: clamp(x, 0, cols - item.w),
-    y
-  })
-};
+export const boundedX: LayoutConstraint; // Only constrains X
+export const boundedY: LayoutConstraint; // Only constrains Y
+```
 
-export const boundedY: LayoutConstraint = {
-  name: "boundedY",
-  constrainPosition: (item, x, y, { maxRows }) => ({
-    x,
-    y: clamp(y, 0, maxRows - item.h)
-  })
-};
+#### Size Constraints
 
-// Aspect ratio constraint factory
-export const aspectRatio = (ratio: number): LayoutConstraint => ({
-  name: `aspectRatio(${ratio})`,
-  constrainSize: (item, w, h) => ({
-    w,
-    h: Math.max(1, Math.round(w / ratio))
-  })
-});
+```typescript
+// Item min/max constraints (enabled by default)
+// Enforces per-item minW/maxW/minH/maxH properties
+export const minMaxSize: LayoutConstraint;
+```
 
-// Snap-to-grid constraint factory
-export const snapToGrid = (
-  stepX: number,
-  stepY: number = stepX
-): LayoutConstraint => ({
-  name: `snapToGrid(${stepX}, ${stepY})`,
-  constrainPosition: (item, x, y) => ({
-    x: Math.round(x / stepX) * stepX,
-    y: Math.round(y / stepY) * stepY
-  })
-});
+#### Constraint Factories
+
+```typescript
+// Aspect ratio constraint (pixel-aware)
+// Maintains width:height ratio in actual pixels, accounting for
+// different column widths vs row heights
+export function aspectRatio(ratio: number): LayoutConstraint;
+
+// Snap-to-grid constraint
+// Snaps positions to multiples of step values
+export function snapToGrid(stepX: number, stepY?: number): LayoutConstraint;
+
+// Grid-wide min/max size
+export function minSize(minW: number, minH: number): LayoutConstraint;
+export function maxSize(maxW: number, maxH: number): LayoutConstraint;
 ```
 
 ### Usage
 
-**Grid-level constraints:**
+#### Grid-level Constraints
+
+Apply constraints to all items in the grid:
 
 ```tsx
-<GridLayout constraints={[gridBounds, minMaxSize, aspectRatio(16 / 9)]} />
+import {
+  GridLayout,
+  gridBounds,
+  minMaxSize,
+  aspectRatio
+} from "react-grid-layout";
+
+// Default behavior
+<GridLayout constraints={[gridBounds, minMaxSize]} />
+
+// Add aspect ratio to all items
+<GridLayout constraints={[gridBounds, minMaxSize, aspectRatio(16/9)]} />
+
+// No constraints (items can be positioned/sized freely)
+<GridLayout constraints={[]} />
 ```
 
-**Per-item constraints (via LayoutItem):**
+#### Per-item Constraints
+
+Apply constraints to specific items via the layout:
 
 ```typescript
-interface LayoutItem {
-  // ... existing props
-  constraints?: LayoutConstraint[];
-}
-
 const layout = [
+  // Video player with 16:9 aspect ratio
   { i: "video", x: 0, y: 0, w: 4, h: 2, constraints: [aspectRatio(16 / 9)] },
+
+  // Sidebar that can only move horizontally
   { i: "sidebar", x: 4, y: 0, w: 2, h: 4, constraints: [boundedX] }
 ];
 ```
 
-**Default constraints:**
+#### Creating Custom Constraints
+
+```typescript
+// Custom constraint: items can only be placed in even columns
+const evenColumnsOnly: LayoutConstraint = {
+  name: "evenColumnsOnly",
+  constrainPosition(item, x, y, context) {
+    const evenX = Math.round(x / 2) * 2;
+    return { x: evenX, y };
+  }
+};
+
+// Custom constraint: maximum area
+const maxArea = (area: number): LayoutConstraint => ({
+  name: `maxArea(${area})`,
+  constrainSize(item, w, h, handle, context) {
+    const currentArea = w * h;
+    if (currentArea <= area) return { w, h };
+
+    // Reduce the dimension being resized
+    if (handle.includes("e") || handle.includes("w")) {
+      return { w: Math.floor(area / h), h };
+    }
+    return { w, h: Math.floor(area / w) };
+  }
+});
+```
+
+See [Example 22](../test/examples/22-custom-constraints.jsx) for more custom constraint examples.
+
+### Default Constraints
 
 ```typescript
 export const defaultConstraints = [gridBounds, minMaxSize];
 ```
 
+When no `constraints` prop is provided, `defaultConstraints` is used, maintaining backwards compatibility.
+
 ### Application Order
 
 Constraints are applied in array order, allowing composition:
 
+1. Grid-level constraints are applied first (in array order)
+2. Per-item constraints are applied after (in array order)
+
 ```typescript
-function applyConstraints(
+// Order matters!
+// gridBounds runs first, then minMaxSize
+<GridLayout constraints={[gridBounds, minMaxSize]} />
+
+// If you want boundedX instead of full grid bounds,
+// use boundedX as the position constraint
+<GridLayout constraints={[boundedX, minMaxSize]} />
+```
+
+### Important: Constraints vs Compaction
+
+**Constraints** control where items can be positioned during drag/resize operations.
+
+**Compaction** runs AFTER drag/resize and can move items to fill gaps.
+
+With vertical compaction (default), items float up after being dropped. This can make position constraints like `boundedX` (free Y movement) less visible because compaction moves items back up.
+
+To see position constraints clearly, use `noCompactor`:
+
+```tsx
+import {
+  GridLayout,
+  noCompactor,
+  boundedX,
+  minMaxSize
+} from "react-grid-layout";
+
+<GridLayout constraints={[boundedX, minMaxSize]} compactor={noCompactor} />;
+```
+
+See [Example 20](../test/examples/20-constraints.jsx) which includes a "No Compaction" toggle.
+
+## Implementation Details
+
+### Constraint Application Functions
+
+```typescript
+// Apply position constraints
+function applyPositionConstraints(
   constraints: LayoutConstraint[],
   item: LayoutItem,
   x: number,
   y: number,
   context: ConstraintContext
-): { x: number; y: number } {
-  let result = { x, y };
-  for (const constraint of constraints) {
-    if (constraint.constrainPosition) {
-      result = constraint.constrainPosition(item, result.x, result.y, context);
-    }
-  }
-  return result;
-}
+): { x: number; y: number };
+
+// Apply size constraints
+function applySizeConstraints(
+  constraints: LayoutConstraint[],
+  item: LayoutItem,
+  w: number,
+  h: number,
+  handle: ResizeHandleAxis,
+  context: ConstraintContext
+): { w: number; h: number };
 ```
 
 ### Integration Points
 
-**In `calcXY` (calculate.ts):**
-
-```typescript
-// Replace hardcoded clamping with constraint application
-export function calcXY(
-  positionParams: PositionParams,
-  top: number,
-  left: number,
-  w: number,
-  h: number,
-  constraints: LayoutConstraint[] = defaultConstraints,
-  item?: LayoutItem
-): { x: number; y: number } {
-  // ... calculate raw x, y from pixels
-
-  // Apply constraints
-  const context = { cols, maxRows, ... };
-  const itemConstraints = [...constraints, ...(item?.constraints ?? [])];
-  return applyPositionConstraints(itemConstraints, item, x, y, context);
-}
-```
-
 **In GridItem.tsx:**
 
-- Remove hardcoded minW/maxW/minH/maxH clamping
-- Pass constraints to calcXY/calcWH
-- Apply per-item constraints
+- Constraints are applied after pixel-to-grid conversion
+- Per-item constraints are merged with grid-level constraints
+- react-resizable uses minimal constraints (1 grid unit minimum), letting our system handle all limits
 
 **In GridLayout.tsx:**
 
-- Add `constraints?: LayoutConstraint[]` prop
-- Default to `defaultConstraints`
-- Pass to calculation functions
+- `constraints` prop accepts `LayoutConstraint[]`
+- Defaults to `defaultConstraints`
+- Passed to GridItem via `processGridItem`
 
-## Files to Modify
+## Files
 
-1. **src/core/types.ts** - Add LayoutConstraint interface, ConstraintContext
-2. **src/core/constraints.ts** (new) - Built-in constraints, apply functions
-3. **src/core/calculate.ts** - Integrate constraint application
-4. **src/core/index.ts** - Export constraints
-5. **src/react/components/GridLayout.tsx** - Add constraints prop
-6. **src/react/components/GridItem.tsx** - Remove hardcoded min/max logic
-7. **src/legacy/ReactGridLayout.tsx** - Map isBounded → containerBounds
-8. **test/spec/constraints-test.ts** (new) - Test constraint system
+1. **src/core/types.ts** - LayoutConstraint interface, ConstraintContext
+2. **src/core/constraints.ts** - Built-in constraints, apply functions
+3. **src/core/index.ts** - Export constraints
+4. **src/react/components/GridLayout.tsx** - `constraints` prop
+5. **src/react/components/GridItem.tsx** - Constraint application in drag/resize
+6. **test/spec/constraints-test.ts** - Unit tests
+7. **test/examples/20-constraints.jsx** - Built-in constraints demo
+8. **test/examples/21-aspect-ratio.jsx** - Aspect ratio demo
+9. **test/examples/22-custom-constraints.jsx** - Custom constraints demo
 
 ## Backwards Compatibility
 
@@ -256,8 +294,8 @@ export function calcXY(
 - Legacy `minW/maxW/minH/maxH` continue to work via `minMaxSize` constraint
 - No breaking changes for existing users
 
-## Open Questions
+## Resolved Questions
 
-1. Should per-item constraints merge with or override grid-level constraints?
-2. Should constraints receive the full layout for collision-aware constraints?
-3. Should there be a `constrainDrop` method for external drag-drop?
+1. **Per-item constraints merge with grid-level constraints** - they are applied after, not replacing
+2. **Constraints receive the full layout** - via `ConstraintContext.layout` for collision-aware constraints
+3. **No constrainDrop method** - drop handling uses existing constraint system

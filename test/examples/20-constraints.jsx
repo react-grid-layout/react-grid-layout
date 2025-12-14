@@ -13,7 +13,11 @@ import {
 } from "react-grid-layout";
 
 /**
+ * Example 20: Pluggable Constraints
+ *
  * This example demonstrates the pluggable constraints system introduced in v2.
+ * For full documentation, see:
+ * https://github.com/react-grid-layout/react-grid-layout/blob/master/rfcs/0002-pluggable-constraints.md
  *
  * WHAT ARE CONSTRAINTS?
  * ---------------------
@@ -41,6 +45,11 @@ import {
  * 3. With boundedY, items can move past column 12 (no X constraint)
  * 4. With boundedX, items can move below row 10 (no Y constraint)
  * 5. Try resizing items 2 and 3 with different constraint options
+ *
+ * RELATED EXAMPLES:
+ * -----------------
+ * - Example 21: Aspect ratio constraints (per-item)
+ * - Example 22: Creating custom constraints
  */
 export default function ConstraintsLayout() {
   const { width, containerRef, mounted } = useContainerWidth();
