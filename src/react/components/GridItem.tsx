@@ -22,17 +22,26 @@ import type {
   DroppingPosition,
   ResizeHandleAxis,
   GridDragEvent,
-  GridResizeEvent
+  GridResizeEvent,
+  LayoutConstraint,
+  ConstraintContext,
+  Layout,
+  LayoutItem as LayoutItemType
 } from "../../core/types.js";
 import type { PositionParams } from "../../core/calculate.js";
 import {
   calcGridItemPosition,
   calcGridItemWHPx,
   calcGridColWidth,
-  calcXY,
-  calcWH,
+  calcXYRaw,
+  calcWHRaw,
   clamp
 } from "../../core/calculate.js";
+import {
+  applyPositionConstraints,
+  applySizeConstraints,
+  defaultConstraints
+} from "../../core/constraints.js";
 import {
   setTransform,
   setTopLeft,
@@ -145,6 +154,15 @@ export interface GridItemProps {
   /** Custom resize handle */
   resizeHandle?: ResizeHandle;
 
+  /** Layout constraints for position/size limiting */
+  constraints?: LayoutConstraint[];
+
+  /** The layout item data (for per-item constraints) */
+  layoutItem?: LayoutItemType;
+
+  /** Current layout (for constraint context) */
+  layout?: Layout;
+
   /** Called when drag starts */
   onDragStart?: GridItemCallback<GridDragEvent>;
   /** Called during drag */
@@ -200,6 +218,9 @@ export function GridItem(props: GridItemProps): ReactElement {
     i,
     resizeHandles,
     resizeHandle,
+    constraints = defaultConstraints,
+    layoutItem,
+    layout = [],
     onDragStart: onDragStartProp,
     onDrag: onDragProp,
     onDragStop: onDragStopProp,
@@ -238,6 +259,37 @@ export function GridItem(props: GridItemProps): ReactElement {
       rowHeight
     }),
     [cols, containerPadding, containerWidth, margin, maxRows, rowHeight]
+  );
+
+  // Constraint context for applying constraints
+  const constraintContext: ConstraintContext = useMemo(
+    () => ({
+      cols,
+      maxRows,
+      containerWidth,
+      containerHeight: 0, // Auto-height grids don't have a fixed container height
+      rowHeight,
+      margin,
+      layout
+    }),
+    [cols, maxRows, containerWidth, rowHeight, margin, layout]
+  );
+
+  // Effective layout item (use provided or create from props)
+  const effectiveLayoutItem: LayoutItemType = useMemo(
+    () =>
+      layoutItem ?? {
+        i,
+        x,
+        y,
+        w,
+        h,
+        minW,
+        maxW,
+        minH,
+        maxH
+      },
+    [layoutItem, i, x, y, w, h, minW, maxW, minH, maxH]
   );
 
   // ============================================================================
@@ -292,12 +344,18 @@ export function GridItem(props: GridItemProps): ReactElement {
       dragPositionRef.current = newPosition;
       setDragging(true);
 
-      const { x: newX, y: newY } = calcXY(
+      // Calculate raw position and apply constraints
+      const rawPos = calcXYRaw(
         positionParams,
         newPosition.top,
-        newPosition.left,
-        w,
-        h
+        newPosition.left
+      );
+      const { x: newX, y: newY } = applyPositionConstraints(
+        constraints,
+        effectiveLayoutItem,
+        rawPos.x,
+        rawPos.y,
+        constraintContext
       );
 
       onDragStartProp(i, newX, newY, {
@@ -306,7 +364,15 @@ export function GridItem(props: GridItemProps): ReactElement {
         newPosition
       });
     },
-    [onDragStartProp, transformScale, positionParams, w, h, i]
+    [
+      onDragStartProp,
+      transformScale,
+      positionParams,
+      constraints,
+      effectiveLayoutItem,
+      constraintContext,
+      i
+    ]
   );
 
   const onDrag: DraggableEventHandler = useCallback(
@@ -316,7 +382,7 @@ export function GridItem(props: GridItemProps): ReactElement {
       let top = dragPositionRef.current.top + deltaY;
       let left = dragPositionRef.current.left + deltaX;
 
-      // Boundary calculations
+      // Pixel-level boundary calculations (isBounded affects pixel position)
       if (isBounded) {
         const { offsetParent } = node;
         if (offsetParent) {
@@ -335,7 +401,16 @@ export function GridItem(props: GridItemProps): ReactElement {
       const newPosition: PartialPosition = { top, left };
       dragPositionRef.current = newPosition;
 
-      const { x: newX, y: newY } = calcXY(positionParams, top, left, w, h);
+      // Calculate raw position and apply constraints
+      const rawPos = calcXYRaw(positionParams, top, left);
+      const { x: newX, y: newY } = applyPositionConstraints(
+        constraints,
+        effectiveLayoutItem,
+        rawPos.x,
+        rawPos.y,
+        constraintContext
+      );
+
       onDragProp(i, newX, newY, {
         e: e as unknown as Event,
         node,
@@ -352,7 +427,10 @@ export function GridItem(props: GridItemProps): ReactElement {
       positionParams,
       containerWidth,
       w,
-      i
+      i,
+      constraints,
+      effectiveLayoutItem,
+      constraintContext
     ]
   );
 
@@ -366,14 +444,31 @@ export function GridItem(props: GridItemProps): ReactElement {
       setDragging(false);
       dragPositionRef.current = { left: 0, top: 0 };
 
-      const { x: newX, y: newY } = calcXY(positionParams, top, left, w, h);
+      // Calculate raw position and apply constraints
+      const rawPos = calcXYRaw(positionParams, top, left);
+      const { x: newX, y: newY } = applyPositionConstraints(
+        constraints,
+        effectiveLayoutItem,
+        rawPos.x,
+        rawPos.y,
+        constraintContext
+      );
+
       onDragStopProp(i, newX, newY, {
         e: e as unknown as Event,
         node,
         newPosition
       });
     },
-    [onDragStopProp, dragging, positionParams, w, h, i]
+    [
+      onDragStopProp,
+      dragging,
+      positionParams,
+      constraints,
+      effectiveLayoutItem,
+      constraintContext,
+      i
+    ]
   );
 
   // ============================================================================
@@ -415,19 +510,20 @@ export function GridItem(props: GridItemProps): ReactElement {
 
       resizePositionRef.current = updatedSize;
 
-      // Calculate new grid dimensions
-      let { w: newW, h: newH } = calcWH(
+      // Calculate raw grid dimensions and apply constraints
+      const rawSize = calcWHRaw(
         positionParams,
         updatedSize.width,
-        updatedSize.height,
-        x,
-        y,
-        resizeHandle
+        updatedSize.height
       );
-
-      // Min/max capping
-      newW = clamp(newW, Math.max(minW, 1), maxW);
-      newH = clamp(newH, minH, maxH);
+      const { w: newW, h: newH } = applySizeConstraints(
+        constraints,
+        effectiveLayoutItem,
+        rawSize.w,
+        rawSize.h,
+        resizeHandle,
+        constraintContext
+      );
 
       handler(i, newW, newH, {
         e: e.nativeEvent,
@@ -444,11 +540,10 @@ export function GridItem(props: GridItemProps): ReactElement {
       positionParams,
       x,
       y,
-      minW,
-      maxW,
-      minH,
-      maxH,
-      i
+      i,
+      constraints,
+      effectiveLayoutItem,
+      constraintContext
     ]
   );
 
@@ -560,14 +655,15 @@ export function GridItem(props: GridItemProps): ReactElement {
   const child = React.Children.only(children);
 
   // Calculate constraints for resizing
-  const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols, 0).width;
-  const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
-  const maxes = calcGridItemPosition(positionParams, 0, 0, maxW, maxH);
-  const minConstraints: [number, number] = [mins.width, mins.height];
-  const maxConstraints: [number, number] = [
-    Math.min(maxes.width, maxWidth),
-    Math.min(maxes.height, Infinity)
+  // Note: We use wide-open constraints for react-resizable and let our pluggable
+  // constraint system handle the actual limits. This allows constraints to be
+  // fully controllable via the constraints prop.
+  const minGridUnit = calcGridItemPosition(positionParams, 0, 0, 1, 1);
+  const minConstraints: [number, number] = [
+    minGridUnit.width,
+    minGridUnit.height
   ];
+  const maxConstraints: [number, number] = [Infinity, Infinity];
 
   // Get child props safely
   const childProps = (child as ReactElement<Record<string, unknown>>).props;

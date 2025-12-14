@@ -30,7 +30,8 @@ import type {
   ResizeConfig,
   DropConfig,
   PositionStrategy,
-  Compactor
+  Compactor,
+  LayoutConstraint
 } from "../../core/types.js";
 import {
   defaultGridConfig,
@@ -56,6 +57,7 @@ import {
   calcGridItemWHPx
 } from "../../core/calculate.js";
 import { defaultPositionStrategy } from "../../core/position.js";
+import { defaultConstraints } from "../../core/constraints.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
 
@@ -124,6 +126,14 @@ export interface GridLayoutProps {
    * @see Compactor
    */
   compactor?: Compactor;
+
+  /**
+   * Layout constraints for position and size limiting.
+   * Applied during drag/resize operations.
+   * Default: [gridBounds, minMaxSize]
+   * @see LayoutConstraint
+   */
+  constraints?: LayoutConstraint[];
 
   // ===========================================================================
   // Layout Data
@@ -305,6 +315,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     dropConfig: dropConfigProp,
     positionStrategy = defaultPositionStrategy,
     compactor: compactorProp,
+    constraints = defaultConstraints,
 
     // Layout data
     layout: propsLayout = [],
@@ -975,6 +986,9 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           droppingPosition={isDroppingItem ? droppingPosition : undefined}
           resizeHandles={resizeHandlesOptions}
           resizeHandle={resizeHandleElement}
+          constraints={constraints}
+          layoutItem={l}
+          layout={layout}
         >
           {child}
         </GridItem>
@@ -1004,7 +1018,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       transformScale,
       droppingPosition,
       resizeHandles,
-      resizeHandle
+      resizeHandle,
+      constraints
     ]
   );
 
@@ -1030,6 +1045,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         isBounded={false}
         useCSSTransforms={useCSSTransforms}
         transformScale={transformScale}
+        constraints={constraints}
+        layout={layout}
       >
         <div />
       </GridItem>

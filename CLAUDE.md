@@ -8,6 +8,10 @@ React-Grid-Layout is a draggable and resizable grid layout system for React with
 
 **Version 2** is a complete TypeScript rewrite with a modern hooks-based API while maintaining backwards compatibility through a dedicated legacy wrapper.
 
+## Package Manager
+
+**Always use `yarn`** instead of `npm` for all commands in this project.
+
 ## Development Commands
 
 ### Testing
@@ -15,7 +19,7 @@ React-Grid-Layout is a draggable and resizable grid layout system for React with
 ```bash
 # Run all tests with coverage
 make test
-npm test
+yarn test
 
 # Watch mode for development
 make test-watch
@@ -29,7 +33,7 @@ NODE_ENV=test npx jest --testPathPatterns="compactors"
 ```bash
 # Build the library (ESM, CJS, and TypeScript declarations)
 make build
-npm run build
+yarn build
 
 # Clean build artifacts
 make clean
@@ -40,14 +44,14 @@ make clean
 ```bash
 # Start development server with hot reload (port 4002)
 make dev
-npm run dev
+yarn dev
 ```
 
 ### Linting & Formatting
 
 ```bash
 # Run ESLint
-npm run lint
+yarn lint
 
 # Format code with Prettier
 npm run fmt
@@ -66,6 +70,7 @@ src/
 │   ├── sort.ts              # Sorting algorithms
 │   ├── compactors.ts        # Compaction algorithms (vertical, horizontal)
 │   ├── compact-compat.ts    # Legacy compact() function wrapper
+│   ├── constraints.ts       # Layout constraints (position, size, aspect ratio)
 │   ├── calculate.ts         # Grid calculations (grid units <-> pixels)
 │   ├── position.ts          # CSS positioning helpers
 │   ├── responsive.ts        # Breakpoint utilities
@@ -217,6 +222,47 @@ const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
 - **Testing**: Jest with @testing-library/react
 - **Linting**: ESLint 9 with flat config
 - **Formatting**: Prettier
+
+## Examples
+
+Interactive examples are located in `test/examples/`. When adding major features, always create corresponding examples.
+
+### Example Structure
+
+```
+test/examples/
+├── 00-showcase.jsx      # Main showcase demo
+├── 01-basic.jsx         # Basic usage
+├── ...
+└── 24-custom-constraints.jsx
+```
+
+### Adding New Examples
+
+1. **Create the example file**: `test/examples/NN-feature-name.jsx`
+   - Hook into test-hook.jsx at the end of the file
+   - Use the v2 API with `useContainerWidth` hook (see examples 19+)
+   - Export a functional component as default
+
+2. **Register in vars.js**: Add entry to `examples/util/vars.js`:
+
+   ```js
+   {
+     title: "Feature Name",
+     source: "feature-name",  // matches filename without number prefix
+     paragraphs: ["Description of the example..."]
+   }
+   ```
+
+3. **Update README.md**: Add link to the examples list
+
+4. **Generate HTML**: Run `env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js`
+
+### Running Examples
+
+```bash
+yarn dev  # Start dev server at http://localhost:4002
+```
 
 ## Testing Guidelines
 

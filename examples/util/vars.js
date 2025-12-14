@@ -169,4 +169,36 @@ module.exports = [
       "Select <code>None</code> to disable compaction entirely, allowing free placement of items."
     ]
   },
+  {
+    title: "Pluggable Constraints",
+    source: "constraints",
+    paragraphs: [
+      "This demonstrates the pluggable constraints system introduced in v2.",
+      "Constraints control position and size limits during drag/resize operations. " +
+        "Built-in constraints include <code>gridBounds</code>, <code>minMaxSize</code>, " +
+        "<code>containerBounds</code>, <code>boundedX</code>, and <code>boundedY</code>.",
+      "Try switching between different constraint configurations to see how they affect item behavior."
+    ]
+  },
+  {
+    title: "Aspect Ratio Constraints",
+    source: "aspect-ratio",
+    paragraphs: [
+      "This demonstrates the <code>aspectRatio</code> constraint factory.",
+      "Each item has a per-item constraint that maintains its aspect ratio during resize. " +
+        "Common ratios include 16:9 (video), 4:3 (photo), 1:1 (square), and 2:1 (banner).",
+      "Try resizing the items - they will maintain their configured aspect ratios."
+    ]
+  },
+  {
+    title: "Custom Constraints",
+    source: "custom-constraints",
+    paragraphs: [
+      "This demonstrates how to create custom constraint functions.",
+      "Constraints are simple objects with <code>constrainPosition</code> and/or " +
+        "<code>constrainSize</code> methods. You can implement any constraint logic you need.",
+      "Examples shown: even columns only, minimum height based on width, maximum area, " +
+        "top-half positioning, and snap-to-grid."
+    ]
+  },
 ];

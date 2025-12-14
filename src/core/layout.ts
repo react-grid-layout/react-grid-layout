@@ -94,6 +94,7 @@ export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
     isDraggable: layoutItem.isDraggable,
     isResizable: layoutItem.isResizable,
     resizeHandles: layoutItem.resizeHandles,
+    constraints: layoutItem.constraints,
     isBounded: layoutItem.isBounded
   };
 }

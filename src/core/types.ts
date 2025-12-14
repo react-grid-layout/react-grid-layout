@@ -98,6 +98,12 @@ export interface LayoutItem {
    * @internal
    */
   moved?: boolean;
+
+  /**
+   * Per-item layout constraints.
+   * Applied in addition to grid-level constraints.
+   */
+  constraints?: LayoutConstraint[];
 }
 
 /**
@@ -359,6 +365,94 @@ export interface PositionStrategy {
     offsetX: number,
     offsetY: number
   ): PartialPosition;
+}
+
+// ============================================================================
+// Layout Constraint Types
+// ============================================================================
+
+/**
+ * Context provided to constraint functions during drag/resize operations.
+ */
+export interface ConstraintContext {
+  /** Number of columns in the grid */
+  cols: number;
+
+  /** Maximum number of rows (Infinity if unbounded) */
+  maxRows: number;
+
+  /** Container width in pixels */
+  containerWidth: number;
+
+  /** Container height in pixels (may be 0 if auto-height) */
+  containerHeight: number;
+
+  /** Row height in pixels */
+  rowHeight: number;
+
+  /** Margin between items [x, y] in pixels */
+  margin: readonly [number, number];
+
+  /** Current layout state */
+  layout: Layout;
+}
+
+/**
+ * Interface for layout constraints.
+ *
+ * Implement this interface to create custom position/size constraints.
+ * Built-in constraints: gridBounds, minMaxSize, containerBounds, boundedX, boundedY.
+ *
+ * @example
+ * ```typescript
+ * // Grid-level constraints
+ * <GridLayout constraints={[gridBounds, minMaxSize, aspectRatio(16/9)]} />
+ *
+ * // Per-item constraints
+ * const layout = [
+ *   { i: 'video', x: 0, y: 0, w: 4, h: 2, constraints: [aspectRatio(16/9)] }
+ * ];
+ * ```
+ */
+export interface LayoutConstraint {
+  /** Constraint identifier for debugging */
+  readonly name: string;
+
+  /**
+   * Constrain position during drag operations.
+   * Called after grid unit conversion, before layout update.
+   *
+   * @param item - The item being dragged
+   * @param x - Proposed x position in grid units
+   * @param y - Proposed y position in grid units
+   * @param context - Grid context (cols, maxRows, etc.)
+   * @returns Constrained x, y position
+   */
+  constrainPosition?(
+    item: LayoutItem,
+    x: number,
+    y: number,
+    context: ConstraintContext
+  ): { x: number; y: number };
+
+  /**
+   * Constrain size during resize operations.
+   * Called after grid unit conversion, before layout update.
+   *
+   * @param item - The item being resized
+   * @param w - Proposed width in grid units
+   * @param h - Proposed height in grid units
+   * @param handle - Which resize handle is being used
+   * @param context - Grid context (cols, maxRows, etc.)
+   * @returns Constrained w, h size
+   */
+  constrainSize?(
+    item: LayoutItem,
+    w: number,
+    h: number,
+    handle: ResizeHandleAxis,
+    context: ConstraintContext
+  ): { w: number; h: number };
 }
 
 // ============================================================================
