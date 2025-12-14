@@ -2,18 +2,44 @@ changelog:
   exclude:
     labels:
       - ignore-for-release
-      - dependencies
+      - ignore_changelog
+      - stale
+      - duplicate
+      - invalid
+      - wontfix
     authors:
       - octocat
   categories:
-    - title: Breaking Changes 🛠
+    - title: 💥 Breaking Changes
       labels:
         - Semver-Major
         - breaking-change
-    - title: Exciting New Features 🎉
+    - title: ✨ New Features
       labels:
         - Semver-Minor
         - enhancement
+        - feature
+    - title: 🐛 Bug Fixes
+      labels:
+        - bug
+        - fix
+    - title: ⚡ Performance
+      labels:
+        - performance
+    - title: 📚 Documentation
+      labels:
+        - documentation
+    - title: 🧪 Tests
+      labels:
+        - tests
+        - test
+    - title: 🔧 Internal Changes
+      labels:
+        - infrastructure
+        - core
+        - deps
+        - dependencies
+        - chore
     - title: Other Changes
       labels:
         - "*"
