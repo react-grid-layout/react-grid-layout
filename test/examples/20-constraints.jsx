@@ -104,7 +104,7 @@ export default function ConstraintsLayout() {
           width={width}
           layout={layout}
           onLayoutChange={setLayout}
-          gridConfig={{ cols: 12, rowHeight: 30 }}
+          gridConfig={{ cols: 12, rowHeight: 30, maxRows: 10 }}
           dragConfig={{ enabled: true }}
           resizeConfig={{ enabled: true }}
           constraints={constraints}

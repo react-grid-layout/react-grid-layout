@@ -10,9 +10,6 @@ import {
 /**
  * This example demonstrates the aspectRatio constraint factory.
  * Each item maintains its aspect ratio during resize operations.
- *
- * Note: Initial layout heights are approximate. The constraint enforces
- * the correct pixel aspect ratio when you resize.
  */
 export default function AspectRatioLayout() {
   const { width, containerRef, mounted } = useContainerWidth();
@@ -79,9 +76,6 @@ export default function AspectRatioLayout() {
         <p>
           Each item has a per-item <code>aspectRatio</code> constraint.
           Try resizing them - they will maintain their aspect ratio <strong>in pixels</strong>.
-        </p>
-        <p style={{ marginTop: 5, fontStyle: "italic" }}>
-          Note: Initial heights are approximations. Resize any item to see the constraint enforce the correct pixel proportions.
         </p>
         <ul style={{ margin: "5px 0", paddingLeft: 20 }}>
           <li>
