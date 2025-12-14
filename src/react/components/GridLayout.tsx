@@ -50,7 +50,11 @@ import {
 import { getAllCollisions } from "../../core/collision.js";
 import { compact } from "../../core/compact-compat.js";
 import { getCompactor } from "../../core/compactors.js";
-import { calcXY } from "../../core/calculate.js";
+import {
+  calcXY,
+  calcGridColWidth,
+  calcGridItemWHPx
+} from "../../core/calculate.js";
 import { defaultPositionStrategy } from "../../core/position.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
@@ -178,7 +182,10 @@ export interface GridLayoutProps {
   /** Called when dragging over the grid */
   onDropDragOver?: (
     e: ReactDragEvent
-  ) => { w?: number; h?: number } | false | void;
+  ) =>
+    | { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number }
+    | false
+    | void;
 }
 
 // ============================================================================
@@ -763,39 +770,73 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         return false;
       }
 
-      const onDragOverResult = onDropDragOverProp(e);
-      if (onDragOverResult === false) {
+      // Extract dragOffsetX from result, or use empty object if void/undefined
+      const rawResult = onDropDragOverProp(e);
+      if (rawResult === false) {
         if (droppingDOMNode) {
           removeDroppingPlaceholder();
         }
         return false;
       }
+      const {
+        dragOffsetX = 0,
+        dragOffsetY = 0,
+        ...onDragOverResult
+      } = rawResult ?? {};
 
       const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
       const gridRect = e.currentTarget.getBoundingClientRect();
-      const layerX = e.clientX - gridRect.left;
-      const layerY = e.clientY - gridRect.top;
+
+      // Calculate position params for proper column width calculation
+      const positionParams: PositionParams = {
+        cols,
+        margin: margin as [number, number],
+        maxRows,
+        rowHeight,
+        containerWidth: width,
+        containerPadding: effectiveContainerPadding as [number, number]
+      };
+
+      // Calculate actual column width accounting for margins and padding
+      const actualColWidth = calcGridColWidth(positionParams);
+
+      // Calculate item dimensions in pixels including margins between cells
+      const itemPixelWidth = calcGridItemWHPx(
+        finalDroppingItem.w,
+        actualColWidth,
+        (margin as [number, number])[0]
+      );
+      const itemPixelHeight = calcGridItemWHPx(
+        finalDroppingItem.h,
+        rowHeight,
+        (margin as [number, number])[1]
+      );
+
+      // Center the dropping item by offsetting by half its size
+      const itemCenterOffsetX = itemPixelWidth / 2;
+      const itemCenterOffsetY = itemPixelHeight / 2;
+
+      // Calculate mouse position relative to grid, accounting for drag offset and item centering
+      const rawGridX =
+        e.clientX - gridRect.left + dragOffsetX - itemCenterOffsetX;
+      const rawGridY =
+        e.clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
+
+      // Clamp to prevent negative positions (calcXY handles upper bound clamping)
+      const clampedGridX = Math.max(0, rawGridX);
+      const clampedGridY = Math.max(0, rawGridY);
 
       const newDroppingPosition: DroppingPosition = {
-        left: layerX / transformScale,
-        top: layerY / transformScale,
+        left: clampedGridX / transformScale,
+        top: clampedGridY / transformScale,
         e: e.nativeEvent
       };
 
       if (!droppingDOMNode) {
-        const positionParams: PositionParams = {
-          cols,
-          margin: margin as [number, number],
-          maxRows,
-          rowHeight,
-          containerWidth: width,
-          containerPadding: effectiveContainerPadding as [number, number]
-        };
-
         const calculatedPosition = calcXY(
           positionParams,
-          layerY,
-          layerX,
+          clampedGridY,
+          clampedGridX,
           finalDroppingItem.w,
           finalDroppingItem.h
         );
@@ -814,7 +855,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         ]);
       } else if (droppingPosition) {
         const shouldUpdate =
-          droppingPosition.left !== layerX || droppingPosition.top !== layerY;
+          droppingPosition.left !== newDroppingPosition.left ||
+          droppingPosition.top !== newDroppingPosition.top;
         if (shouldUpdate) {
           setDroppingPosition(newDroppingPosition);
         }
