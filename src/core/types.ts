@@ -470,8 +470,11 @@ export interface DropConfig {
   /**
    * Called when dragging over the grid.
    * Return dimensions to override defaultItem, or false to reject the drop.
+   * Can also return dragOffsetX to specify horizontal cursor offset for centering.
    */
-  onDragOver?: (e: DragEvent) => { w?: number; h?: number } | false | void;
+  onDragOver?: (
+    e: DragEvent
+  ) => { w?: number; h?: number; dragOffsetX?: number } | false | void;
 }
 
 /** Default drop configuration */
