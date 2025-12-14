@@ -1,5 +1,69 @@
 # Changelog
 
+## 2.1.0 (Dec 14, 2025)
+
+### New Features
+
+#### Pluggable Layout Constraints System
+
+A new constraints system allows custom validation and transformation of layout items during drag and resize operations. [#2190](https://github.com/react-grid-layout/react-grid-layout/pull/2190)
+
+```typescript
+import { createConstraintEnforcer, aspectRatioConstraint, positionConstraint } from "react-grid-layout/core";
+
+const enforcer = createConstraintEnforcer([
+  aspectRatioConstraint(16 / 9),
+  positionConstraint({ minX: 0, maxX: 10 })
+]);
+
+<GridLayout constraintEnforcer={enforcer} />
+```
+
+#### Fast Compactors for Large Layouts
+
+New O(n log n) compactors in `react-grid-layout/extras` for layouts with 200+ items:
+
+- **`fastVerticalCompactor`** - Up to 45x faster than standard vertical compaction. [#2184](https://github.com/react-grid-layout/react-grid-layout/pull/2184)
+- **`fastHorizontalCompactor`** - Up to 74x faster than standard horizontal compaction. [#2189](https://github.com/react-grid-layout/react-grid-layout/pull/2189), [#2193](https://github.com/react-grid-layout/react-grid-layout/pull/2193)
+
+```typescript
+import { fastVerticalCompactor, fastHorizontalCompactor } from "react-grid-layout/extras";
+
+<GridLayout compactor={fastVerticalCompactor} />
+```
+
+#### Wrap Compactor
+
+New `wrapCompactor` for paragraph-style layouts where items flow left-to-right and wrap to the next row. [#2186](https://github.com/react-grid-layout/react-grid-layout/pull/2186)
+
+```typescript
+import { wrapCompactor } from "react-grid-layout/extras";
+
+<GridLayout compactor={wrapCompactor} />
+```
+
+#### Improved Examples
+
+- Added navigable sidebar to examples for easier exploration
+- New grid matrix panel for visualizing layout state. [#2197](https://github.com/react-grid-layout/react-grid-layout/pull/2197)
+
+### Bug Fixes
+
+- **WidthProvider**: Re-observe element after `measureBeforeMount` switches from placeholder. [#2198](https://github.com/react-grid-layout/react-grid-layout/pull/2198)
+- **Drop positioning**: Center dropped items on cursor position instead of top-left corner. [#2196](https://github.com/react-grid-layout/react-grid-layout/pull/2196)
+- **Margin calculation**: Ensure consistent margins between grid items. [#2195](https://github.com/react-grid-layout/react-grid-layout/pull/2195)
+- **Compaction**: Disable early break optimization when static items are present, fixing incorrect layouts. [#2194](https://github.com/react-grid-layout/react-grid-layout/pull/2194)
+- **Responsive layouts**: Prevent infinite layout oscillation in toolbox pattern. [#2192](https://github.com/react-grid-layout/react-grid-layout/pull/2192)
+- **CSS**: Remove `user-select: none` from grid items to restore auto-scroll behavior. [#2188](https://github.com/react-grid-layout/react-grid-layout/pull/2188)
+
+### Tests
+
+- Added maxRows enforcement tests for `calcXY` and `calcWH`. [#2185](https://github.com/react-grid-layout/react-grid-layout/pull/2185)
+
+### Internal Changes
+
+- Improved changelog action for better automated release notes. [#2199](https://github.com/react-grid-layout/react-grid-layout/pull/2199)
+
 ## 2.0.0 (Dec 9, 2025)
 
 Version 2 is a complete TypeScript rewrite with a modernized hooks-based API. See the [RFC](./rfcs/0001-v2-typescript-rewrite.md) for the full design document.
