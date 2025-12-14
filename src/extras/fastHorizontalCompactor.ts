@@ -170,6 +170,7 @@ function compactHorizontalFast(
           placed = true;
         } else {
           // Find the rightmost static collision and try past it
+          let maxStaticRight = targetX;
           let foundCollision = false;
           for (const staticItem of staticItems) {
             if (
@@ -178,9 +179,15 @@ function compactHorizontalFast(
               targetY < staticItem.y + staticItem.h &&
               targetY + item.h > staticItem.y
             ) {
-              targetX = staticItem.x + staticItem.w;
+              maxStaticRight = Math.max(
+                maxStaticRight,
+                staticItem.x + staticItem.w
+              );
               foundCollision = true;
             }
+          }
+          if (foundCollision) {
+            targetX = maxStaticRight;
           }
 
           // After moving past static, check if we still fit

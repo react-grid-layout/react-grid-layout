@@ -222,7 +222,7 @@ const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
 
 - Tests are in `test/spec/`
 - Use `@testing-library/react` for component testing
-- Run single test: `NODE_ENV=test npx jest --testPathPatterns="pattern"`
+- Run single test: `NODE_ENV=test npx jest --testPathPatterns="pattern"` (note: must use `--testPathPatterns` plural, not `--testPathPattern`)
 
 ## Important Implementation Notes
 
