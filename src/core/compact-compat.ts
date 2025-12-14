@@ -31,12 +31,16 @@ function resolveCompactionCollision(
   layout: Layout,
   item: LayoutItem,
   moveToCoord: number,
-  axis: "x" | "y"
+  axis: "x" | "y",
+  hasStatics?: boolean
 ): void {
   const sizeProp = heightWidth[axis];
   (item as Mutable<LayoutItem>)[axis] += 1;
 
   const itemIndex = layout.findIndex(l => l.i === item.i);
+
+  // Calculate hasStatics once if not provided
+  const layoutHasStatics = hasStatics ?? getStatics(layout).length > 0;
 
   // Go through each item we collide with
   for (let i = itemIndex + 1; i < layout.length; i++) {
@@ -47,15 +51,17 @@ function resolveCompactionCollision(
     if (otherItem.static) continue;
 
     // Optimization: we can break early if we know we're past this element
-    // We can do this because it's a sorted layout
-    if (otherItem.y > item.y + item.h) break;
+    // We can do this because it's a sorted layout - but only if there are
+    // no static items, which can be scattered throughout and affect ordering.
+    if (!layoutHasStatics && otherItem.y > item.y + item.h) break;
 
     if (collides(item, otherItem)) {
       resolveCompactionCollision(
         layout,
         otherItem,
         moveToCoord + item[sizeProp],
-        axis
+        axis,
+        layoutHasStatics
       );
     }
   }
