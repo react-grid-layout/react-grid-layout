@@ -855,8 +855,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         ]);
       } else if (droppingPosition) {
         const shouldUpdate =
-          droppingPosition.left !== clampedGridX ||
-          droppingPosition.top !== clampedGridY;
+          droppingPosition.left !== newDroppingPosition.left ||
+          droppingPosition.top !== newDroppingPosition.top;
         if (shouldUpdate) {
           setDroppingPosition(newDroppingPosition);
         }
