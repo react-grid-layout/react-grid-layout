@@ -33,12 +33,14 @@ import { collides } from "./collision.js";
  * @param item - Item being moved (will be mutated)
  * @param moveToCoord - Target coordinate
  * @param axis - Which axis to move on ('x' or 'y')
+ * @param hasStatics - Whether layout contains static items (disables early break optimization)
  */
 export function resolveCompactionCollision(
   layout: Layout,
   item: LayoutItem,
   moveToCoord: number,
-  axis: "x" | "y"
+  axis: "x" | "y",
+  hasStatics?: boolean
 ): void {
   const sizeProp = axis === "x" ? "w" : "h";
 
@@ -47,18 +49,25 @@ export function resolveCompactionCollision(
 
   const itemIndex = layout.findIndex(l => l.i === item.i);
 
+  // Calculate hasStatics once if not provided (for backwards compat)
+  const layoutHasStatics = hasStatics ?? getStatics(layout).length > 0;
+
   for (let i = itemIndex + 1; i < layout.length; i++) {
     const otherItem = layout[i];
     if (otherItem === undefined) continue;
     if (otherItem.static) continue;
-    if (otherItem.y > item.y + item.h) break;
+    // Optimization: break early if past this element, but only if no statics
+    // are present. Static items can be scattered throughout the layout,
+    // so we can't assume sort order guarantees no more collisions.
+    if (!layoutHasStatics && otherItem.y > item.y + item.h) break;
 
     if (collides(item, otherItem)) {
       resolveCompactionCollision(
         layout,
         otherItem,
         moveToCoord + item[sizeProp],
-        axis
+        axis,
+        layoutHasStatics
       );
     }
   }
