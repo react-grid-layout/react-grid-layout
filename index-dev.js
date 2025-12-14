@@ -16,3 +16,6 @@ module.exports.GridLayout =
   require("./src/react/components/GridLayout").GridLayout;
 module.exports.ResponsiveGridLayout =
   require("./src/react/components/ResponsiveGridLayout").ResponsiveGridLayout;
+
+// Constraint exports
+Object.assign(module.exports, require("./src/core/constraints"));

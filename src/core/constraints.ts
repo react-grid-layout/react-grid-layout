@@ -52,12 +52,26 @@ export const gridBounds: LayoutConstraint = {
     item: LayoutItem,
     w: number,
     h: number,
-    _handle: ResizeHandleAxis,
+    handle: ResizeHandleAxis,
     { cols, maxRows }: ConstraintContext
   ): { w: number; h: number } {
+    // For west-side resizes (w, nw, sw), max width is limited by the right edge position
+    // because the item expands leftward (x decreases as w increases)
+    const maxW =
+      handle === "w" || handle === "nw" || handle === "sw"
+        ? item.x + item.w // right edge = x + w, can expand left to x=0
+        : cols - item.x; // can expand right to cols
+
+    // For north-side resizes (n, nw, ne), max height is limited by the bottom edge position
+    // because the item expands upward (y decreases as h increases)
+    const maxH =
+      handle === "n" || handle === "nw" || handle === "ne"
+        ? item.y + item.h // bottom edge = y + h, can expand up to y=0
+        : maxRows - item.y; // can expand down to maxRows
+
     return {
-      w: clamp(w, 1, Math.max(1, cols - item.x)),
-      h: clamp(h, 1, Math.max(1, maxRows - item.y))
+      w: clamp(w, 1, Math.max(1, maxW)),
+      h: clamp(h, 1, Math.max(1, maxH))
     };
   }
 };
@@ -168,20 +182,20 @@ export const boundedY: LayoutConstraint = {
 /**
  * Create an aspect ratio constraint.
  *
- * Maintains a fixed width-to-height ratio during resize operations.
- * Height is calculated from width: h = w / ratio.
+ * Maintains a fixed width-to-height ratio **in pixels** during resize operations.
+ * Accounts for the different pixel sizes of grid columns vs rows.
  *
  * @param ratio - Width-to-height ratio (e.g., 16/9 for widescreen, 1 for square)
  * @returns A constraint that enforces the aspect ratio
  *
  * @example
  * ```typescript
- * // 16:9 aspect ratio
+ * // 16:9 aspect ratio (actual pixel proportions)
  * const layout = [
  *   { i: 'video', x: 0, y: 0, w: 4, h: 2, constraints: [aspectRatio(16/9)] }
  * ];
  *
- * // Square items
+ * // Square items (in pixels, not grid units)
  * <GridLayout constraints={[gridBounds, minMaxSize, aspectRatio(1)]} />
  * ```
  */
@@ -192,12 +206,34 @@ export function aspectRatio(ratio: number): LayoutConstraint {
     constrainSize(
       _item: LayoutItem,
       w: number,
-      _h: number
+      _h: number,
+      _handle: ResizeHandleAxis,
+      context: ConstraintContext
     ): { w: number; h: number } {
-      return {
-        w,
-        h: Math.max(1, Math.round(w / ratio))
-      };
+      const { cols, containerWidth, rowHeight, margin } = context;
+      // Calculate column width in pixels
+      // colWidth = (containerWidth - margin[0] * (cols - 1)) / cols
+      // Note: simplified formula assumes no container padding
+      const colWidth = (containerWidth - margin[0] * (cols - 1)) / cols;
+
+      // Calculate pixel width of the item
+      // pixelWidth = colWidth * w + margin[0] * (w - 1)
+      const pixelWidth = colWidth * w + margin[0] * Math.max(0, w - 1);
+
+      // Calculate required pixel height for aspect ratio
+      const pixelHeight = pixelWidth / ratio;
+
+      // Convert pixel height back to grid units
+      // pixelHeight = rowHeight * h + margin[1] * (h - 1)
+      // Solving for h:
+      // pixelHeight = h * (rowHeight + margin[1]) - margin[1]
+      // h = (pixelHeight + margin[1]) / (rowHeight + margin[1])
+      const h = Math.max(
+        1,
+        Math.round((pixelHeight + margin[1]) / (rowHeight + margin[1]))
+      );
+
+      return { w, h };
     }
   };
 }
@@ -225,6 +261,13 @@ export function snapToGrid(
   stepX: number,
   stepY: number = stepX
 ): LayoutConstraint {
+  // Validate step values to prevent division by zero or invalid snapping
+  if (stepX <= 0 || stepY <= 0) {
+    throw new Error(
+      `snapToGrid: step values must be positive (got stepX=${stepX}, stepY=${stepY})`
+    );
+  }
+
   return {
     name: `snapToGrid(${stepX}, ${stepY})`,
 

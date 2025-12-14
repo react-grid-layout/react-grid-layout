@@ -104,6 +104,64 @@ describe("Constraints", () => {
       expect(result.x).toBe(5);
       expect(result.y).toBe(5);
     });
+
+    it("constrains size for west-side handles based on right edge", () => {
+      // Item at x=2, w=3 has right edge at 5
+      // When resizing from west, can expand left to x=0, so max w = 2 + 3 = 5
+      const item = createItem({ x: 2, y: 0, w: 3, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      // Try to expand to w=6, should be clamped to 5
+      const resultW = gridBounds.constrainSize!(item, 6, 2, "w", context);
+      expect(resultW.w).toBe(5);
+
+      const resultNW = gridBounds.constrainSize!(item, 6, 2, "nw", context);
+      expect(resultNW.w).toBe(5);
+
+      const resultSW = gridBounds.constrainSize!(item, 6, 2, "sw", context);
+      expect(resultSW.w).toBe(5);
+    });
+
+    it("constrains size for north-side handles based on bottom edge", () => {
+      // Item at y=2, h=3 has bottom edge at 5
+      // When resizing from north, can expand up to y=0, so max h = 2 + 3 = 5
+      const item = createItem({ x: 0, y: 2, w: 2, h: 3 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      // Try to expand to h=6, should be clamped to 5
+      const resultN = gridBounds.constrainSize!(item, 2, 6, "n", context);
+      expect(resultN.h).toBe(5);
+
+      const resultNE = gridBounds.constrainSize!(item, 2, 6, "ne", context);
+      expect(resultNE.h).toBe(5);
+
+      const resultNW = gridBounds.constrainSize!(item, 2, 6, "nw", context);
+      expect(resultNW.h).toBe(5);
+    });
+
+    it("constrains size for east-side handles based on left edge", () => {
+      // Item at x=10 in 12-col grid, max w = 12 - 10 = 2
+      const item = createItem({ x: 10, y: 0, w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const resultE = gridBounds.constrainSize!(item, 5, 2, "e", context);
+      expect(resultE.w).toBe(2);
+
+      const resultSE = gridBounds.constrainSize!(item, 5, 2, "se", context);
+      expect(resultSE.w).toBe(2);
+    });
+
+    it("constrains size for south-side handles based on top edge", () => {
+      // Item at y=8 in 10-row grid, max h = 10 - 8 = 2
+      const item = createItem({ x: 0, y: 8, w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const resultS = gridBounds.constrainSize!(item, 2, 5, "s", context);
+      expect(resultS.h).toBe(2);
+
+      const resultSE = gridBounds.constrainSize!(item, 2, 5, "se", context);
+      expect(resultSE.h).toBe(2);
+    });
   });
 
   describe("minMaxSize", () => {
@@ -224,24 +282,36 @@ describe("Constraints", () => {
       expect(constraint.name).toBe(`aspectRatio(${16 / 9})`);
     });
 
-    it("maintains aspect ratio during resize", () => {
-      const constraint = aspectRatio(2); // 2:1 ratio (w:h)
+    it("maintains aspect ratio during resize (pixel-aware)", () => {
+      const constraint = aspectRatio(2); // 2:1 ratio (w:h) in pixels
       const item = createItem();
+      // Use context with cols=12, containerWidth=1200, rowHeight=30, margin=[10,10]
       const context = createContext();
 
+      // For w=4:
+      // colWidth = (1200 - 10*11) / 12 = 90.83 px
+      // pixelWidth = 90.83 * 4 + 10 * 3 = 393.33 px
+      // pixelHeight = 393.33 / 2 = 196.67 px
+      // h = (196.67 + 10) / 40 ≈ 5
       const result = constraint.constrainSize!(item, 4, 10, "se", context);
       expect(result.w).toBe(4);
-      expect(result.h).toBe(2); // 4 / 2 = 2
+      expect(result.h).toBe(5);
     });
 
-    it("creates square items with ratio of 1", () => {
+    it("creates square items with ratio of 1 (pixel-aware)", () => {
       const constraint = aspectRatio(1);
       const item = createItem();
+      // Use context with cols=12, containerWidth=1200, rowHeight=30, margin=[10,10]
       const context = createContext();
 
+      // For w=5:
+      // colWidth = 90.83 px
+      // pixelWidth = 90.83 * 5 + 10 * 4 = 494.17 px
+      // pixelHeight = 494.17 px (1:1 ratio)
+      // h = (494.17 + 10) / 40 ≈ 13
       const result = constraint.constrainSize!(item, 5, 10, "se", context);
       expect(result.w).toBe(5);
-      expect(result.h).toBe(5);
+      expect(result.h).toBe(13);
     });
 
     it("ensures minimum height of 1", () => {
@@ -298,6 +368,30 @@ describe("Constraints", () => {
     it("does not have constrainSize", () => {
       const constraint = snapToGrid(2);
       expect(constraint.constrainSize).toBeUndefined();
+    });
+
+    it("throws on zero stepX", () => {
+      expect(() => snapToGrid(0)).toThrow(
+        "snapToGrid: step values must be positive"
+      );
+    });
+
+    it("throws on negative stepX", () => {
+      expect(() => snapToGrid(-1)).toThrow(
+        "snapToGrid: step values must be positive"
+      );
+    });
+
+    it("throws on zero stepY", () => {
+      expect(() => snapToGrid(2, 0)).toThrow(
+        "snapToGrid: step values must be positive"
+      );
+    });
+
+    it("throws on negative stepY", () => {
+      expect(() => snapToGrid(2, -3)).toThrow(
+        "snapToGrid: step values must be positive"
+      );
     });
   });
 
