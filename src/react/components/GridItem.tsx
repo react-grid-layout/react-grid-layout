@@ -655,14 +655,15 @@ export function GridItem(props: GridItemProps): ReactElement {
   const child = React.Children.only(children);
 
   // Calculate constraints for resizing
-  const maxWidth = calcGridItemPosition(positionParams, 0, 0, cols, 0).width;
-  const mins = calcGridItemPosition(positionParams, 0, 0, minW, minH);
-  const maxes = calcGridItemPosition(positionParams, 0, 0, maxW, maxH);
-  const minConstraints: [number, number] = [mins.width, mins.height];
-  const maxConstraints: [number, number] = [
-    Math.min(maxes.width, maxWidth),
-    Math.min(maxes.height, Infinity)
+  // Note: We use wide-open constraints for react-resizable and let our pluggable
+  // constraint system handle the actual limits. This allows constraints to be
+  // fully controllable via the constraints prop.
+  const minGridUnit = calcGridItemPosition(positionParams, 0, 0, 1, 1);
+  const minConstraints: [number, number] = [
+    minGridUnit.width,
+    minGridUnit.height
   ];
+  const maxConstraints: [number, number] = [Infinity, Infinity];
 
   // Get child props safely
   const childProps = (child as ReactElement<Record<string, unknown>>).props;

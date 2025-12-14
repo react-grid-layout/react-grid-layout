@@ -696,6 +696,137 @@ describe("Constraints", () => {
     });
   });
 
+  describe("Empty constraints behavior", () => {
+    it("allows sizes outside item.minW/maxW when constraints are empty", () => {
+      // This is the key behavior: when using constraints=[], per-item limits
+      // should NOT be enforced by the constraint system
+      const item = createItem({ minW: 3, maxW: 5, minH: 2, maxH: 4 });
+      const context = createContext();
+
+      const result = applySizeConstraints([], item, 10, 10, "se", context);
+
+      // With empty constraints, minW/maxW from item are ignored
+      expect(result.w).toBe(10);
+      expect(result.h).toBe(10);
+    });
+
+    it("allows positions outside grid bounds when constraints are empty", () => {
+      const item = createItem({ w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const result = applyPositionConstraints([], item, 100, 100, context);
+
+      // With empty constraints, position is not limited
+      expect(result.x).toBe(100);
+      expect(result.y).toBe(100);
+    });
+
+    it("allows negative positions when constraints are empty", () => {
+      const item = createItem();
+      const context = createContext();
+
+      const result = applyPositionConstraints([], item, -5, -5, context);
+
+      // With empty constraints, even negative positions are allowed
+      expect(result.x).toBe(-5);
+      expect(result.y).toBe(-5);
+    });
+  });
+
+  describe("boundedX allows free Y movement", () => {
+    it("does not constrain Y to maxRows", () => {
+      const item = createItem({ w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const result = boundedX.constrainPosition!(item, 5, 100, context);
+
+      expect(result.x).toBe(5); // Within bounds
+      expect(result.y).toBe(100); // NOT constrained to maxRows
+    });
+
+    it("allows negative Y positions", () => {
+      const item = createItem({ w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const result = boundedX.constrainPosition!(item, 5, -10, context);
+
+      expect(result.x).toBe(5);
+      expect(result.y).toBe(-10); // Negative Y is allowed
+    });
+  });
+
+  describe("boundedY allows free X movement", () => {
+    it("does not constrain X to cols", () => {
+      const item = createItem({ w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const result = boundedY.constrainPosition!(item, 100, 5, context);
+
+      expect(result.x).toBe(100); // NOT constrained to cols
+      expect(result.y).toBe(5); // Within bounds
+    });
+
+    it("allows negative X positions", () => {
+      const item = createItem({ w: 2, h: 2 });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const result = boundedY.constrainPosition!(item, -10, 5, context);
+
+      expect(result.x).toBe(-10); // Negative X is allowed
+      expect(result.y).toBe(5);
+    });
+  });
+
+  describe("Constraint composition", () => {
+    it("gridBounds + minMaxSize together apply both limits", () => {
+      const item = createItem({
+        x: 10,
+        y: 0,
+        w: 2,
+        h: 2,
+        minW: 1,
+        maxW: 3
+      });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      // gridBounds limits w to 2 (cols - x = 12 - 10)
+      // minMaxSize limits w to 3 (maxW)
+      // Final result should be 2 (more restrictive)
+      const result = applySizeConstraints(
+        [gridBounds, minMaxSize],
+        item,
+        10, // Try to resize to 10
+        2,
+        "se",
+        context
+      );
+
+      expect(result.w).toBe(2); // Limited by gridBounds
+    });
+
+    it("without minMaxSize, item.maxW is not enforced", () => {
+      const item = createItem({
+        x: 0,
+        y: 0,
+        w: 2,
+        h: 2,
+        maxW: 3 // This should be ignored when minMaxSize is not in constraints
+      });
+      const context = createContext({ cols: 12, maxRows: 10 });
+
+      const result = applySizeConstraints(
+        [gridBounds], // Only gridBounds, no minMaxSize
+        item,
+        10,
+        2,
+        "se",
+        context
+      );
+
+      expect(result.w).toBe(10); // Limited only by gridBounds (12 - 0 = 12)
+    });
+  });
+
   describe("Edge cases", () => {
     it("handles item larger than grid", () => {
       const item = createItem({ w: 20, h: 20 });

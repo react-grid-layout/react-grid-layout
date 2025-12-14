@@ -19,3 +19,6 @@ module.exports.ResponsiveGridLayout =
 
 // Constraint exports
 Object.assign(module.exports, require("./src/core/constraints"));
+
+// Compactor exports
+Object.assign(module.exports, require("./src/core/compactors"));
