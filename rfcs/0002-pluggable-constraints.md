@@ -12,7 +12,7 @@ See these examples to understand the constraint system in action:
 - **[Example 21: Aspect Ratio](../test/examples/21-aspect-ratio.jsx)** - Per-item aspect ratio constraints
 - **[Example 22: Custom Constraints](../test/examples/22-custom-constraints.jsx)** - How to create your own constraint functions
 
-Run the examples locally with `npm run dev` and navigate to the constraints examples.
+Run the examples locally with `yarn dev` and navigate to the constraints examples.
 
 ## Motivation
 

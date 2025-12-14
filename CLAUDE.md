@@ -240,8 +240,9 @@ test/examples/
 ### Adding New Examples
 
 1. **Create the example file**: `test/examples/NN-feature-name.jsx`
-   - Follow the pattern of existing examples (export class, hook into test-hook.jsx)
-   - Use the legacy API with `WidthProvider(RGL)` for compatibility
+   - Hook into test-hook.jsx at the end of the file
+   - Use the v2 API with `useContainerWidth` hook (see examples 19+)
+   - Export a functional component as default
 
 2. **Register in vars.js**: Add entry to `examples/util/vars.js`:
 
