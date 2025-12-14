@@ -80,11 +80,11 @@ This provides **100% runtime API compatibility** with v1.
 
 **TypeScript users**: If you were using `@types/react-grid-layout`, note that v2 includes its own types with some naming changes:
 
-| Old (`@types/react-grid-layout`) | New (v2)            | Notes                          |
-| -------------------------------- | ------------------- | ------------------------------ |
-| `RGL.Layout`                     | `LayoutItem`        | Single grid item               |
-| `RGL.Layout[]`                   | `Layout`            | Array of items                 |
-| `RGL.Layouts`                    | `ResponsiveLayouts` | Breakpoint → layout map        |
+| Old (`@types/react-grid-layout`) | New (v2)            | Notes                   |
+| -------------------------------- | ------------------- | ----------------------- |
+| `RGL.Layout`                     | `LayoutItem`        | Single grid item        |
+| `RGL.Layout[]`                   | `Layout`            | Array of items          |
+| `RGL.Layouts`                    | `ResponsiveLayouts` | Breakpoint → layout map |
 
 ```diff
 - import RGL from 'react-grid-layout';
