@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   GridLayout,
   useContainerWidth,
@@ -13,7 +13,7 @@ import {
 } from "react-grid-layout";
 
 /**
- * Example 20: Pluggable Constraints
+ * Example 19: Pluggable Constraints
  *
  * This example demonstrates the pluggable constraints system introduced in v2.
  * For full documentation, see:
@@ -48,14 +48,14 @@ import {
  *
  * RELATED EXAMPLES:
  * -----------------
- * - Example 21: Aspect ratio constraints (per-item)
- * - Example 22: Creating custom constraints
+ * - Example 20: Aspect ratio constraints (per-item)
+ * - Example 21: Creating custom constraints
  */
-export default function ConstraintsLayout() {
+export default function ConstraintsLayout(props) {
   const { width, containerRef, mounted } = useContainerWidth();
   const [constraintType, setConstraintType] = useState("default");
   const [useNoCompaction, setUseNoCompaction] = useState(false);
-  const [layout, setLayout] = useState([
+  const [layout, setLayoutState] = useState([
     { i: "0", x: 0, y: 0, w: 2, h: 2 },
     { i: "1", x: 2, y: 0, w: 2, h: 3 },
     { i: "2", x: 4, y: 0, w: 2, h: 2, minW: 2, maxW: 4 },
@@ -66,6 +66,11 @@ export default function ConstraintsLayout() {
     { i: "7", x: 4, y: 4, w: 4, h: 2 },
     { i: "8", x: 8, y: 4, w: 4, h: 2 }
   ]);
+
+  const setLayout = useCallback((newLayout) => {
+    setLayoutState(newLayout);
+    props.onLayoutChange?.(newLayout);
+  }, [props]);
 
   const constraints = useMemo(() => {
     switch (constraintType) {

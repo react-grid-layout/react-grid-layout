@@ -31,8 +31,10 @@ export default function makeLayout(Layout) {
         <React.StrictMode>
           <div>
             <div className="layoutJSON">
-              Displayed as <code>[x, y, w, h]</code>:
               <div className="columns">{this.stringifyLayout()}</div>
+              <div className="layoutJSON__footnote">
+                format: <code>[x, y, w, h]</code>
+              </div>
             </div>
             <Layout onLayoutChange={this.onLayoutChange} />
           </div>

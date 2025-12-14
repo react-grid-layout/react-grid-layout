@@ -8,9 +8,9 @@ Add a `LayoutConstraint` interface to react-grid-layout v2, following the same p
 
 See these examples to understand the constraint system in action:
 
-- **[Example 20: Constraints](../test/examples/20-constraints.jsx)** - Interactive demo of all built-in constraints with compaction toggle
-- **[Example 21: Aspect Ratio](../test/examples/21-aspect-ratio.jsx)** - Per-item aspect ratio constraints
-- **[Example 22: Custom Constraints](../test/examples/22-custom-constraints.jsx)** - How to create your own constraint functions
+- **[Example 19: Constraints](../test/examples/19-constraints.jsx)** - Interactive demo of all built-in constraints with compaction toggle
+- **[Example 20: Aspect Ratio](../test/examples/20-aspect-ratio.jsx)** - Per-item aspect ratio constraints
+- **[Example 21: Custom Constraints](../test/examples/21-custom-constraints.jsx)** - How to create your own constraint functions
 
 Run the examples locally with `yarn dev` and navigate to the constraints examples.
 
@@ -186,7 +186,7 @@ const maxArea = (area: number): LayoutConstraint => ({
 });
 ```
 
-See [Example 22](../test/examples/22-custom-constraints.jsx) for more custom constraint examples.
+See [Example 21](../test/examples/21-custom-constraints.jsx) for more custom constraint examples.
 
 ### Default Constraints
 
@@ -234,7 +234,7 @@ import {
 <GridLayout constraints={[boundedX, minMaxSize]} compactor={noCompactor} />;
 ```
 
-See [Example 20](../test/examples/20-constraints.jsx) which includes a "No Compaction" toggle.
+See [Example 19](../test/examples/19-constraints.jsx) which includes a "No Compaction" toggle.
 
 ## Implementation Details
 
@@ -283,9 +283,9 @@ function applySizeConstraints(
 4. **src/react/components/GridLayout.tsx** - `constraints` prop
 5. **src/react/components/GridItem.tsx** - Constraint application in drag/resize
 6. **test/spec/constraints-test.ts** - Unit tests
-7. **test/examples/20-constraints.jsx** - Built-in constraints demo
-8. **test/examples/21-aspect-ratio.jsx** - Aspect ratio demo
-9. **test/examples/22-custom-constraints.jsx** - Custom constraints demo
+7. **test/examples/19-constraints.jsx** - Built-in constraints demo
+8. **test/examples/20-aspect-ratio.jsx** - Aspect ratio demo
+9. **test/examples/21-custom-constraints.jsx** - Custom constraints demo
 
 ## Backwards Compatibility
 

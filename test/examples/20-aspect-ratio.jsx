@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   GridLayout,
   useContainerWidth,
@@ -8,7 +8,7 @@ import {
 } from "react-grid-layout";
 
 /**
- * Example 21: Aspect Ratio Constraints
+ * Example 20: Aspect Ratio Constraints
  *
  * This example demonstrates the aspectRatio constraint factory.
  * Each item maintains its aspect ratio during resize operations.
@@ -25,10 +25,10 @@ import {
  *
  * RELATED EXAMPLES:
  * -----------------
- * - Example 20: Built-in constraints (gridBounds, boundedX, etc.)
- * - Example 22: Creating custom constraints
+ * - Example 19: Built-in constraints (gridBounds, boundedX, etc.)
+ * - Example 21: Creating custom constraints
  */
-export default function AspectRatioLayout() {
+export default function AspectRatioLayout(props) {
   const { width, containerRef, mounted } = useContainerWidth();
 
   // Pre-create constraint instances to avoid recreating on each render
@@ -37,7 +37,7 @@ export default function AspectRatioLayout() {
   const constraints4x3 = useMemo(() => [aspectRatio(4 / 3)], []);
   const constraints2x1 = useMemo(() => [aspectRatio(2)], []);
 
-  const [layout, setLayout] = useState([
+  const [layout, setLayoutState] = useState([
     // 16:9 widescreen items
     { i: "video1", x: 0, y: 0, w: 4, h: 6, constraints: constraints16x9 },
     { i: "video2", x: 4, y: 0, w: 4, h: 6, constraints: constraints16x9 },
@@ -52,6 +52,11 @@ export default function AspectRatioLayout() {
     // Unconstrained item for comparison
     { i: "free", x: 0, y: 12, w: 4, h: 3 }
   ]);
+
+  const setLayout = useCallback((newLayout) => {
+    setLayoutState(newLayout);
+    props.onLayoutChange?.(newLayout);
+  }, [props]);
 
   // Grid-level constraints (applied to all items)
   const gridConstraints = useMemo(() => [gridBounds, minMaxSize], []);

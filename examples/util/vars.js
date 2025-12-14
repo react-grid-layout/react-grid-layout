@@ -100,14 +100,6 @@ module.exports = [
     ]
   },
   {
-    title: "Error Case",
-    source: "error-case",
-    paragraphs: [
-      "This is an extra test case for a collision bug fixed in November 2017. When you drag 1 over 2, it should not " +
-        "move over 3."
-    ]
-  },
-  {
     title: "Toolbox",
     source: "toolbox",
     paragraphs: [

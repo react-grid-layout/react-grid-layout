@@ -42,12 +42,12 @@ function generateLayout(count) {
   });
 }
 
-export default function CompactorShowcase() {
+export default function CompactorShowcase(props) {
   const { width, containerRef, mounted } = useContainerWidth();
   const [selectedCompactor, setSelectedCompactor] = useState("vertical");
   const [preventCollision, setPreventCollision] = useState(false);
-  const [itemCount, setItemCount] = useState(8);
-  const [layout, setLayout] = useState(() => generateLayout(8));
+  const [itemCount, setItemCount] = useState(20);
+  const [layout, setLayout] = useState(() => generateLayout(20));
 
   const compactorConfig = COMPACTORS[selectedCompactor];
 
@@ -85,7 +85,8 @@ export default function CompactorShowcase() {
 
   const onLayoutChange = useCallback((newLayout) => {
     setLayout(newLayout);
-  }, []);
+    props.onLayoutChange?.(newLayout);
+  }, [props]);
 
   const children = useMemo(
     () =>

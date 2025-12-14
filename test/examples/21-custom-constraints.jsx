@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   GridLayout,
   useContainerWidth,
@@ -8,7 +8,7 @@ import {
 } from "react-grid-layout";
 
 /**
- * Example 22: Custom Constraints
+ * Example 21: Custom Constraints
  *
  * This example demonstrates how to create your own constraint functions.
  * For full documentation, see:
@@ -33,8 +33,8 @@ import {
  *
  * RELATED EXAMPLES:
  * -----------------
- * - Example 20: Built-in constraints (gridBounds, boundedX, etc.)
- * - Example 21: Aspect ratio constraints (per-item)
+ * - Example 19: Built-in constraints (gridBounds, boundedX, etc.)
+ * - Example 20: Aspect ratio constraints (per-item)
  */
 
 /**
@@ -128,10 +128,10 @@ const snapToGrid = (stepX, stepY = stepX) => ({
  * This example demonstrates custom constraint functions.
  * You can create any constraint logic you need.
  */
-export default function CustomConstraintsLayout() {
+export default function CustomConstraintsLayout(props) {
   const { width, containerRef, mounted } = useContainerWidth();
   const [customConstraint, setCustomConstraint] = useState("none");
-  const [layout, setLayout] = useState([
+  const [layout, setLayoutState] = useState([
     { i: "0", x: 0, y: 0, w: 2, h: 2 },
     { i: "1", x: 2, y: 0, w: 3, h: 2 },
     { i: "2", x: 5, y: 0, w: 2, h: 3 },
@@ -141,6 +141,11 @@ export default function CustomConstraintsLayout() {
     { i: "6", x: 4, y: 3, w: 4, h: 2 },
     { i: "7", x: 8, y: 3, w: 4, h: 2 }
   ]);
+
+  const setLayout = useCallback((newLayout) => {
+    setLayoutState(newLayout);
+    props.onLayoutChange?.(newLayout);
+  }, [props]);
 
   const getCustomConstraint = () => {
     switch (customConstraint) {

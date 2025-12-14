@@ -275,8 +275,8 @@ Hey, it's been a long time! Taking a year and a half off is a pretty "open-sourc
 ### New Features
 
 - **Grid items can now be resized left and up!** Thanks to @ludovic and @dseif for all the hard work they did on this. [#1917](https://github.com/react-grid-layout/react-grid-layout/pull/1917)
-  - To use, specify `resizeHandles` directions on your `<GridItem>`s. See [the example](/test/examples/20-resizable-handles.jsx) for more on how to do this.
-  - See also [the demo](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html).
+  - To use, specify `resizeHandles` directions on your `<GridItem>`s. See [the example](/test/examples/17-resizable-handles.jsx) for more on how to do this.
+  - See also [the demo](https://react-grid-layout.github.io/react-grid-layout/examples/17-resizable-handles.html).
 - `<WidthProvider>` now uses a `ResizeObserver` instead of hooking into the window's `'resize'` event. [#1839](https://github.com/react-grid-layout/react-grid-layout/pull/1839)
   - This should not be breaking for any users but introduces a new dependency, [resize-observer-polyfill](https://www.npmjs.com/package/resize-observer-polyfill). It will not be imported unless you use `<WidthProvider>`.
 
@@ -568,8 +568,8 @@ Thanks to @daynin and @n1ghtmare for taking an active role in maintaining RGL, a
 
 ### New Features
 
-- Added ability to drag items into the grid from outside. [#980](https://github.com/STRML/react-grid-layout/pull/980). See [the example](https://react-grid-layout.github.io/react-grid-layout/examples/15-drag-from-outside.html).
-  - This is especially exciting as it opens up new "widget toolbox" use cases such as [Example 14](https://react-grid-layout.github.io/react-grid-layout/examples/14-toolbox.html) with more intuitive interaction. Thanks @daynin.
+- Added ability to drag items into the grid from outside. [#980](https://github.com/STRML/react-grid-layout/pull/980). See [the example](https://react-grid-layout.github.io/react-grid-layout/examples/12-drag-from-outside.html).
+  - This is especially exciting as it opens up new "widget toolbox" use cases such as [Example 11](https://react-grid-layout.github.io/react-grid-layout/examples/11-toolbox.html) with more intuitive interaction. Thanks @daynin.
 - `transformScale` prop [#987](https://github.com/STRML/react-grid-layout/pull/987)
 - `<ResponsiveReactGridLayout>` now supports margin-per-breakpoint [#1016](https://github.com/STRML/react-grid-layout/pull/1016)
 
