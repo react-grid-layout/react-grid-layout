@@ -182,7 +182,10 @@ export interface GridLayoutProps {
   /** Called when dragging over the grid */
   onDropDragOver?: (
     e: ReactDragEvent
-  ) => { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number } | false | void;
+  ) =>
+    | { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number }
+    | false
+    | void;
 }
 
 // ============================================================================
@@ -775,7 +778,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         }
         return false;
       }
-      const { dragOffsetX = 0, dragOffsetY = 0, ...onDragOverResult } = rawResult ?? {};
+      const {
+        dragOffsetX = 0,
+        dragOffsetY = 0,
+        ...onDragOverResult
+      } = rawResult ?? {};
 
       const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
       const gridRect = e.currentTarget.getBoundingClientRect();
@@ -810,8 +817,10 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       const itemCenterOffsetY = itemPixelHeight / 2;
 
       // Calculate mouse position relative to grid, accounting for drag offset and item centering
-      const rawGridX = e.clientX - gridRect.left + dragOffsetX - itemCenterOffsetX;
-      const rawGridY = e.clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
+      const rawGridX =
+        e.clientX - gridRect.left + dragOffsetX - itemCenterOffsetX;
+      const rawGridY =
+        e.clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
 
       // Clamp to prevent negative positions (calcXY handles upper bound clamping)
       const clampedGridX = Math.max(0, rawGridX);

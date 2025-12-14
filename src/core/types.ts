@@ -474,7 +474,10 @@ export interface DropConfig {
    */
   onDragOver?: (
     e: DragEvent
-  ) => { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number } | false | void;
+  ) =>
+    | { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number }
+    | false
+    | void;
 }
 
 /** Default drop configuration */

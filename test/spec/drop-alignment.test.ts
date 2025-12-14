@@ -50,7 +50,11 @@ describe("PR #2167 - Drop item alignment", () => {
 
       // Calculate item pixel size
       const itemPixelWidth = calcGridItemWHPx(itemW, actualColWidth, 10);
-      const itemPixelHeight = calcGridItemWHPx(itemH, positionParams.rowHeight, 10);
+      const itemPixelHeight = calcGridItemWHPx(
+        itemH,
+        positionParams.rowHeight,
+        10
+      );
 
       // Centering offset
       const itemCenterOffsetX = itemPixelWidth / 2;
@@ -84,7 +88,11 @@ describe("PR #2167 - Drop item alignment", () => {
 
       // Calculate item pixel size (includes margin between cells)
       const itemPixelWidth = calcGridItemWHPx(itemW, actualColWidth, 10);
-      const itemPixelHeight = calcGridItemWHPx(itemH, positionParams.rowHeight, 10);
+      const itemPixelHeight = calcGridItemWHPx(
+        itemH,
+        positionParams.rowHeight,
+        10
+      );
 
       // For 2x2: width = 2*89.17 + 1*10 = 188.33, height = 2*30 + 1*10 = 70
       expect(itemPixelWidth).toBeCloseTo(188, 0);
@@ -96,13 +104,7 @@ describe("PR #2167 - Drop item alignment", () => {
       const centeredX = Math.max(0, cursorX - itemCenterOffsetX);
       const centeredY = Math.max(0, cursorY - itemCenterOffsetY);
 
-      const pos = calcXY(
-        positionParams,
-        centeredY,
-        centeredX,
-        itemW,
-        itemH
-      );
+      const pos = calcXY(positionParams, centeredY, centeredX, itemW, itemH);
 
       // centeredX = 300 - 94.17 ≈ 205.83
       // centeredY = 200 - 35 = 165
@@ -119,7 +121,11 @@ describe("PR #2167 - Drop item alignment", () => {
       const itemH = 2;
 
       const itemPixelWidth = calcGridItemWHPx(itemW, actualColWidth, 10);
-      const itemPixelHeight = calcGridItemWHPx(itemH, positionParams.rowHeight, 10);
+      const itemPixelHeight = calcGridItemWHPx(
+        itemH,
+        positionParams.rowHeight,
+        10
+      );
 
       const centeredX = Math.max(0, cursorX - itemPixelWidth / 2);
       const centeredY = Math.max(0, cursorY - itemPixelHeight / 2);
@@ -129,13 +135,7 @@ describe("PR #2167 - Drop item alignment", () => {
       // 20 - 35 = -15, clamped to 0
       expect(centeredY).toBe(0);
 
-      const pos = calcXY(
-        positionParams,
-        centeredY,
-        centeredX,
-        itemW,
-        itemH
-      );
+      const pos = calcXY(positionParams, centeredY, centeredX, itemW, itemH);
 
       // Should be at grid origin
       expect(pos.x).toBe(0);
@@ -152,7 +152,11 @@ describe("PR #2167 - Drop item alignment", () => {
       const itemH = 2;
 
       const itemPixelWidth = calcGridItemWHPx(itemW, actualColWidth, 10);
-      const itemPixelHeight = calcGridItemWHPx(itemH, positionParams.rowHeight, 10);
+      const itemPixelHeight = calcGridItemWHPx(
+        itemH,
+        positionParams.rowHeight,
+        10
+      );
 
       const adjustedX = cursorX + dragOffsetX - itemPixelWidth / 2;
       const adjustedY = cursorY - itemPixelHeight / 2;
@@ -182,7 +186,11 @@ describe("PR #2167 - Drop item alignment", () => {
       const itemH = 2;
 
       const itemPixelWidth = calcGridItemWHPx(itemW, actualColWidth, 10);
-      const itemPixelHeight = calcGridItemWHPx(itemH, positionParams.rowHeight, 10);
+      const itemPixelHeight = calcGridItemWHPx(
+        itemH,
+        positionParams.rowHeight,
+        10
+      );
 
       const adjustedX = cursorX + dragOffsetX - itemPixelWidth / 2;
       const adjustedY = cursorY + dragOffsetY - itemPixelHeight / 2;
