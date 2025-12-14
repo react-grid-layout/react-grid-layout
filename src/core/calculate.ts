@@ -127,6 +127,39 @@ export function calcGridItemPosition(
     left = Math.round((colWidth + margin[0]) * x + containerPadding[0]);
   }
 
+  // When not dragging or resizing, fix margin inconsistencies caused by rounding.
+  // Due to Math.round(), the gap between adjacent items can differ from the
+  // expected margin (e.g., 0px or 2px instead of 1px). We fix this by comparing
+  // where the next sibling would start vs where this item ends, and adjusting
+  // the width/height to maintain consistent margins.
+  if (!dragPosition && !resizePosition) {
+    if (Number.isFinite(w)) {
+      // Calculate where the next column's item would start
+      const siblingLeft = Math.round(
+        (colWidth + margin[0]) * (x + w) + containerPadding[0]
+      );
+      // Calculate actual margin: sibling start - (our left + our width)
+      const actualMarginRight = siblingLeft - left - width;
+      // Adjust width if margin doesn't match
+      if (actualMarginRight !== margin[0]) {
+        width += actualMarginRight - margin[0];
+      }
+    }
+
+    if (Number.isFinite(h)) {
+      // Calculate where the next row's item would start
+      const siblingTop = Math.round(
+        (rowHeight + margin[1]) * (y + h) + containerPadding[1]
+      );
+      // Calculate actual margin: sibling start - (our top + our height)
+      const actualMarginBottom = siblingTop - top - height;
+      // Adjust height if margin doesn't match
+      if (actualMarginBottom !== margin[1]) {
+        height += actualMarginBottom - margin[1];
+      }
+    }
+  }
+
   return { top, left, width, height };
 }
 
