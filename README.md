@@ -76,7 +76,24 @@ See the [RFC](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2) for d
 + import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout/legacy';
 ```
 
-This provides **100% API compatibility** with v1.
+This provides **100% runtime API compatibility** with v1.
+
+**TypeScript users**: If you were using `@types/react-grid-layout`, note that v2 includes its own types with some naming changes:
+
+| Old (`@types/react-grid-layout`) | New (v2)            | Notes                          |
+| -------------------------------- | ------------------- | ------------------------------ |
+| `RGL.Layout`                     | `LayoutItem`        | Single grid item               |
+| `RGL.Layout[]`                   | `Layout`            | Array of items                 |
+| `RGL.Layouts`                    | `ResponsiveLayouts` | Breakpoint → layout map        |
+
+```diff
+- import RGL from 'react-grid-layout';
+- const item: RGL.Layout = { i: 'a', x: 0, y: 0, w: 1, h: 1 };
+- const layouts: RGL.Layouts = { lg: [item] };
++ import { LayoutItem, ResponsiveLayouts } from 'react-grid-layout/legacy';
++ const item: LayoutItem = { i: 'a', x: 0, y: 0, w: 1, h: 1 };
++ const layouts: ResponsiveLayouts = { lg: [item] };
+```
 
 **Full migration** - adopt the v2 API for new features and better tree-shaking:
 
