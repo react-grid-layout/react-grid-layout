@@ -100,31 +100,6 @@ module.exports = [
     ]
   },
   {
-    title: "No Vertical Compacting (Free Movement)",
-    source: "no-vertical-compact",
-    paragraphs: [
-      "You may want to turn off vertical compacting so items can be placed anywhere in the grid. Set the " +
-        "property `compactType` to `null` to achieve this effect."
-    ]
-  },
-  {
-    title: "Prevent Collision",
-    source: "prevent-collision",
-    paragraphs: [
-      "You may want to turn off rearrangement so items don't move arround when dragging. Set the " +
-        "property `preventCollision` to `true` to achieve this effect. " +
-        "It's particularly useful with `compactType` set to `null`."
-    ]
-  },
-  {
-    title: "Error Case",
-    source: "error-case",
-    paragraphs: [
-      "This is an extra test case for a collision bug fixed in November 2017. When you drag 1 over 2, it should not " +
-        "move over 3."
-    ]
-  },
-  {
     title: "Toolbox",
     source: "toolbox",
     paragraphs: [
@@ -176,10 +151,46 @@ module.exports = [
     ]
   },
   {
-    title: "Single Row Horizontal",
-    source: "horizontal",
+    title: "Compactor Showcase",
+    source: "compactors",
     paragraphs: [
-      "This demonstrates how to constrain the elements to a single row."
+      "This demo lets you compare all available compaction algorithms.",
+      "The standard <code>vertical</code> and <code>horizontal</code> compactors work well for most layouts. " +
+        "For large layouts (200+ items), the <code>fast</code> variants use an O(n log n) algorithm that can be " +
+        "significantly faster.",
+      "Select <code>None</code> to disable compaction entirely, allowing free placement of items."
+    ]
+  },
+  {
+    title: "Pluggable Constraints",
+    source: "constraints",
+    paragraphs: [
+      "This demonstrates the pluggable constraints system introduced in v2.",
+      "Constraints control position and size limits during drag/resize operations. " +
+        "Built-in constraints include <code>gridBounds</code>, <code>minMaxSize</code>, " +
+        "<code>containerBounds</code>, <code>boundedX</code>, and <code>boundedY</code>.",
+      "Try switching between different constraint configurations to see how they affect item behavior."
+    ]
+  },
+  {
+    title: "Aspect Ratio Constraints",
+    source: "aspect-ratio",
+    paragraphs: [
+      "This demonstrates the <code>aspectRatio</code> constraint factory.",
+      "Each item has a per-item constraint that maintains its aspect ratio during resize. " +
+        "Common ratios include 16:9 (video), 4:3 (photo), 1:1 (square), and 2:1 (banner).",
+      "Try resizing the items - they will maintain their configured aspect ratios."
+    ]
+  },
+  {
+    title: "Custom Constraints",
+    source: "custom-constraints",
+    paragraphs: [
+      "This demonstrates how to create custom constraint functions.",
+      "Constraints are simple objects with <code>constrainPosition</code> and/or " +
+        "<code>constrainSize</code> methods. You can implement any constraint logic you need.",
+      "Examples shown: even columns only, minimum height based on width, maximum area, " +
+        "top-half positioning, and snap-to-grid."
     ]
   },
 ];

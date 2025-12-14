@@ -6,9 +6,9 @@
   <head>
     <meta charset="UTF-8">
     <script src="/react-grid-layout/examples/commons.js"></script>
-    <script src="/react-grid-layout/examples/08-localstorage-responsive.js"></script>
+    <script src="/react-grid-layout/examples/17-resizable-handles.js"></script>
     <link rel="stylesheet" href="/react-grid-layout/examples/util/example-styles.css">
-    <title>RGL Example 08 - Responsive with LocalStorage</title>
+    <title>RGL Example 17 - All Resizable Handles</title>
   </head>
   <body>
     <nav class="sidebar">
@@ -66,7 +66,7 @@
             <span class="sidebar__item-title">LocalStorage</span>
           </a>
         </li>
-        <li class="sidebar__item sidebar__item--active">
+        <li class="sidebar__item">
           <a href="08-localstorage-responsive.html">
             <span class="sidebar__item-index">08</span>
             <span class="sidebar__item-title">Responsive with LocalStorage</span>
@@ -120,7 +120,7 @@
             <span class="sidebar__item-title">Allow Overlap</span>
           </a>
         </li>
-        <li class="sidebar__item">
+        <li class="sidebar__item sidebar__item--active">
           <a href="17-resizable-handles.html">
             <span class="sidebar__item-index">17</span>
             <span class="sidebar__item-title">All Resizable Handles</span>
@@ -157,17 +157,15 @@
     </nav>
     <main class="main-content">
       <header class="main-header">
-        <h3>React-Grid-Layout - Responsive with LocalStorage</h3>
+        <h3>React-Grid-Layout - All Resizable Handles</h3>
         <a class="version-badge" href="https://github.com/react-grid-layout/react-grid-layout/releases/tag/2.1.0" target="_blank">v2.1.0</a>
       </header>
       <ul class="nav-links">
-        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/08-localstorage-responsive.jsx">View Source</a></li>
-        <li><a href="07-localstorage.html"><b>⇠</b> LocalStorage</a></li>
-        <li><a href="09-min-max-wh.html"><b>⇢</b> Minimum and Maximum Width/Height</a></li>
+        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/17-resizable-handles.jsx">View Source</a></li>
+        <li><a href="16-allow-overlap.html"><b>⇠</b> Allow Overlap</a></li>
+        <li><a href="18-compactors.html"><b>⇢</b> Compactor Showcase</a></li>
       </ul>
-         <p>This simple demo synchronizes to localStorage for each responsive breakpoint.</p>
-         <p>Try moving and resizing elements, changing window width, moving some more, and refreshing.</p>
-         <p>Each breakpoint has a separate layout. The <code>onLayoutChange</code> callback calls back with a hash of breakpoints to layouts, which is then synchronized to localStorage.</p>
+         <p>This shows a grid with all resizable handles enabled. See the prop `resizableHandles` on the grid and grid items in the README.</p>
       <div id="content"></div>
     </main>
     <script>

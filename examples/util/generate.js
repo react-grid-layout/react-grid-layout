@@ -23,7 +23,14 @@ data.forEach(function(datum, i) {
   datum.version = version;
 });
 
+// Generate navigation list for sidebar
+const allExamples = data.map(d => ({
+  index: d.index,
+  source: d.source,
+  title: d.title
+}));
+
 data.forEach(function(datum) {
-  const html = ejs.render(tpl, datum);
+  const html = ejs.render(tpl, { ...datum, allExamples });
   fs.writeFileSync(path.resolve(__dirname, '..', `${datum.index}-${datum.source}.html`), html);
 });

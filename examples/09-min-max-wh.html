@@ -7,23 +7,190 @@
     <meta charset="UTF-8">
     <script src="/react-grid-layout/examples/commons.js"></script>
     <script src="/react-grid-layout/examples/09-min-max-wh.js"></script>
-    <style>body { padding: 20px; }</style>
+    <link rel="stylesheet" href="/react-grid-layout/examples/util/example-styles.css">
     <title>RGL Example 09 - Minimum and Maximum Width/Height</title>
   </head>
   <body>
-    <h3>React-Grid-Layout
-      <a href="https://www.npmjs.com/package/react-grid-layout/v/2.0.0">v2.0.0</a>
-      Demo 09 - Minimum and Maximum Width/Height
-    </h3>
-    <ul>
-      <li><a href="https://github.com/react-grid-layout/react-grid-layout">View project on GitHub</a></li>
-      <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/09-min-max-wh.jsx">View this example's source</a></li>
-      <li><a href="08-localstorage-responsive.html"><b>⇠</b> View the previous example: "Responsive with LocalStorage"</a></li>
-      <li><a href="10-dynamic-min-max-wh.html"><b>⇢ </b>View the next example: "Dynamic Minimum and Maximum Width/Height"</a></li>
-    </ul>
-       <p>You can set min and max dimensions on a grid item by using the `minW`, `maxW`, `minH`, and `maxH` properties.</p>
-       <p>In this demo, the min and max dimensions are generated automatically. Try resizing the items below.</p>
-       <p>If your mins and maxes collide: for example min > max, or the initial dimensions are out of range, an error will be thrown.</p>
-    <div id="content"></div>
+    <nav class="sidebar">
+      <div class="sidebar__header">
+        <span class="sidebar__logo">◢ RGL</span>
+        <a class="sidebar__version" href="https://github.com/react-grid-layout/react-grid-layout/releases/tag/2.1.0" target="_blank">v2.1.0</a>
+      </div>
+      <div class="sidebar__title">Examples</div>
+      <ul class="sidebar__nav">
+        <li class="sidebar__item">
+          <a href="00-showcase.html">
+            <span class="sidebar__item-index">00</span>
+            <span class="sidebar__item-title">Showcase</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="01-basic.html">
+            <span class="sidebar__item-index">01</span>
+            <span class="sidebar__item-title">Basic</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="02-no-dragging.html">
+            <span class="sidebar__item-index">02</span>
+            <span class="sidebar__item-title">No Dragging</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="03-messy.html">
+            <span class="sidebar__item-index">03</span>
+            <span class="sidebar__item-title">Messy</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="04-grid-property.html">
+            <span class="sidebar__item-index">04</span>
+            <span class="sidebar__item-title">Grid Item Properties</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="05-static-elements.html">
+            <span class="sidebar__item-index">05</span>
+            <span class="sidebar__item-title">Static Elements</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="06-dynamic-add-remove.html">
+            <span class="sidebar__item-index">06</span>
+            <span class="sidebar__item-title">Dynamic Add/Remove</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="07-localstorage.html">
+            <span class="sidebar__item-index">07</span>
+            <span class="sidebar__item-title">LocalStorage</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="08-localstorage-responsive.html">
+            <span class="sidebar__item-index">08</span>
+            <span class="sidebar__item-title">Responsive with LocalStorage</span>
+          </a>
+        </li>
+        <li class="sidebar__item sidebar__item--active">
+          <a href="09-min-max-wh.html">
+            <span class="sidebar__item-index">09</span>
+            <span class="sidebar__item-title">Minimum and Maximum Width/Height</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="10-dynamic-min-max-wh.html">
+            <span class="sidebar__item-index">10</span>
+            <span class="sidebar__item-title">Dynamic Minimum and Maximum Width/Height</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="11-toolbox.html">
+            <span class="sidebar__item-index">11</span>
+            <span class="sidebar__item-title">Toolbox</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="12-drag-from-outside.html">
+            <span class="sidebar__item-index">12</span>
+            <span class="sidebar__item-title">Drag From Outside</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="13-bounded.html">
+            <span class="sidebar__item-index">13</span>
+            <span class="sidebar__item-title">Bounded</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="14-responsive-bootstrap-style.html">
+            <span class="sidebar__item-index">14</span>
+            <span class="sidebar__item-title">Bootstrap-style Responsive Grid</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="15-scale.html">
+            <span class="sidebar__item-index">15</span>
+            <span class="sidebar__item-title">Scale</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="16-allow-overlap.html">
+            <span class="sidebar__item-index">16</span>
+            <span class="sidebar__item-title">Allow Overlap</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="17-resizable-handles.html">
+            <span class="sidebar__item-index">17</span>
+            <span class="sidebar__item-title">All Resizable Handles</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="18-compactors.html">
+            <span class="sidebar__item-index">18</span>
+            <span class="sidebar__item-title">Compactor Showcase</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="19-constraints.html">
+            <span class="sidebar__item-index">19</span>
+            <span class="sidebar__item-title">Pluggable Constraints</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="20-aspect-ratio.html">
+            <span class="sidebar__item-index">20</span>
+            <span class="sidebar__item-title">Aspect Ratio Constraints</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="21-custom-constraints.html">
+            <span class="sidebar__item-index">21</span>
+            <span class="sidebar__item-title">Custom Constraints</span>
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar__footer">
+        <a href="https://github.com/react-grid-layout/react-grid-layout" target="_blank">GitHub</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <header class="main-header">
+        <h3>React-Grid-Layout - Minimum and Maximum Width/Height</h3>
+        <a class="version-badge" href="https://github.com/react-grid-layout/react-grid-layout/releases/tag/2.1.0" target="_blank">v2.1.0</a>
+      </header>
+      <ul class="nav-links">
+        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/09-min-max-wh.jsx">View Source</a></li>
+        <li><a href="08-localstorage-responsive.html"><b>⇠</b> Responsive with LocalStorage</a></li>
+        <li><a href="10-dynamic-min-max-wh.html"><b>⇢</b> Dynamic Minimum and Maximum Width/Height</a></li>
+      </ul>
+         <p>You can set min and max dimensions on a grid item by using the `minW`, `maxW`, `minH`, and `maxH` properties.</p>
+         <p>In this demo, the min and max dimensions are generated automatically. Try resizing the items below.</p>
+         <p>If your mins and maxes collide: for example min > max, or the initial dimensions are out of range, an error will be thrown.</p>
+      <div id="content"></div>
+    </main>
+    <script>
+      // Inject checkbox toggles for layoutJSON panels (CSS handles the collapse)
+      document.addEventListener('DOMContentLoaded', function() {
+        let counter = 0;
+        const observer = new MutationObserver(function() {
+          document.querySelectorAll('.layoutJSON:not([data-collapsible])').forEach(function(panel) {
+            panel.setAttribute('data-collapsible', 'true');
+            const id = 'layoutJSON-toggle-' + (counter++);
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = id;
+            checkbox.className = 'layoutJSON__checkbox';
+            const label = document.createElement('label');
+            label.htmlFor = id;
+            label.className = 'layoutJSON__toggle';
+            panel.insertBefore(label, panel.firstChild);
+            panel.insertBefore(checkbox, panel.firstChild);
+          });
+        });
+        observer.observe(document.getElementById('content'), { childList: true, subtree: true });
+      });
+    </script>
   </body>
 </html>

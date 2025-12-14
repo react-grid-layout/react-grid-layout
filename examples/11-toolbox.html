@@ -6,9 +6,9 @@
   <head>
     <meta charset="UTF-8">
     <script src="/react-grid-layout/examples/commons.js"></script>
-    <script src="/react-grid-layout/examples/08-localstorage-responsive.js"></script>
+    <script src="/react-grid-layout/examples/11-toolbox.js"></script>
     <link rel="stylesheet" href="/react-grid-layout/examples/util/example-styles.css">
-    <title>RGL Example 08 - Responsive with LocalStorage</title>
+    <title>RGL Example 11 - Toolbox</title>
   </head>
   <body>
     <nav class="sidebar">
@@ -66,7 +66,7 @@
             <span class="sidebar__item-title">LocalStorage</span>
           </a>
         </li>
-        <li class="sidebar__item sidebar__item--active">
+        <li class="sidebar__item">
           <a href="08-localstorage-responsive.html">
             <span class="sidebar__item-index">08</span>
             <span class="sidebar__item-title">Responsive with LocalStorage</span>
@@ -84,7 +84,7 @@
             <span class="sidebar__item-title">Dynamic Minimum and Maximum Width/Height</span>
           </a>
         </li>
-        <li class="sidebar__item">
+        <li class="sidebar__item sidebar__item--active">
           <a href="11-toolbox.html">
             <span class="sidebar__item-index">11</span>
             <span class="sidebar__item-title">Toolbox</span>
@@ -157,17 +157,15 @@
     </nav>
     <main class="main-content">
       <header class="main-header">
-        <h3>React-Grid-Layout - Responsive with LocalStorage</h3>
+        <h3>React-Grid-Layout - Toolbox</h3>
         <a class="version-badge" href="https://github.com/react-grid-layout/react-grid-layout/releases/tag/2.1.0" target="_blank">v2.1.0</a>
       </header>
       <ul class="nav-links">
-        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/08-localstorage-responsive.jsx">View Source</a></li>
-        <li><a href="07-localstorage.html"><b>⇠</b> LocalStorage</a></li>
-        <li><a href="09-min-max-wh.html"><b>⇢</b> Minimum and Maximum Width/Height</a></li>
+        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/11-toolbox.jsx">View Source</a></li>
+        <li><a href="10-dynamic-min-max-wh.html"><b>⇠</b> Dynamic Minimum and Maximum Width/Height</a></li>
+        <li><a href="12-drag-from-outside.html"><b>⇢</b> Drag From Outside</a></li>
       </ul>
-         <p>This simple demo synchronizes to localStorage for each responsive breakpoint.</p>
-         <p>Try moving and resizing elements, changing window width, moving some more, and refreshing.</p>
-         <p>Each breakpoint has a separate layout. The <code>onLayoutChange</code> callback calls back with a hash of breakpoints to layouts, which is then synchronized to localStorage.</p>
+         <p>This demonstrates how to implement a toolbox to add and remove widgets. Click the 'X' on a widget to move it into the toolbox.</p>
       <div id="content"></div>
     </main>
     <script>
