@@ -105,24 +105,24 @@ const layoutWithConstraints = layout.map(item => ({
 </GridLayout>
 ```
 
-### 4. Fast Compaction Algorithm by Default
+### 4. Pluggable Compaction Algorithms
 
 **Issue**: [PR #2152](https://github.com/react-grid-layout/react-grid-layout/pull/2152)
 
 **Problem**: The v1 compaction algorithm has O(n²) time complexity, causing noticeable lag with 200+ items.
 
-**v2 Behavior**: The new "rising tide" algorithm (O(n log n)) is used by default. This produces identical results for ~70% of layouts but may differ slightly in edge cases.
+**v2 Behavior**: The default compactor remains the same O(n²) algorithm for backwards compatibility. However, v2 introduces the `Compactor` interface, making compaction algorithms pluggable. A fast "rising tide" algorithm with O(n log n) complexity is available as an optional extra for large layouts.
 
 ```typescript
-// v2 default - uses fast algorithm
+// v2 default - same algorithm as v1
 <GridLayout compactor={verticalCompactor} />
 
-// For exact v1 behavior (slower but deterministic)
-import { legacyVerticalCompactor } from 'react-grid-layout';
-<GridLayout compactor={legacyVerticalCompactor} />
+// For large layouts (200+ items), use the fast compactor from extras
+import { fastVerticalCompactor } from 'react-grid-layout/extras';
+<GridLayout compactor={fastVerticalCompactor} />
 ```
 
-**Migration**: If your application depends on exact compaction behavior (e.g., for snapshot tests or layout persistence), use `legacyVerticalCompactor` or `legacyHorizontalCompactor`.
+**Note**: The fast compactor produces identical results for most layouts but may differ slightly in edge cases with complex overlapping items. If your application depends on exact compaction behavior (e.g., for snapshot tests or layout persistence), continue using the default `verticalCompactor`.
 
 ## Detailed Design
 
@@ -174,8 +174,8 @@ export interface GridConfig {
   rowHeight: number;
   /** Gap between items [x, y] in pixels */
   margin: readonly [number, number];
-  /** Padding inside container [x, y] in pixels */
-  containerPadding: readonly [number, number];
+  /** Padding inside container [x, y] in pixels, or null to use margin */
+  containerPadding: readonly [number, number] | null;
   /** Maximum number of rows (default: Infinity) */
   maxRows: number;
 }
@@ -184,7 +184,7 @@ export const defaultGridConfig: GridConfig = {
   cols: 12,
   rowHeight: 150,
   margin: [10, 10],
-  containerPadding: [10, 10],
+  containerPadding: null, // defaults to margin value
   maxRows: Infinity
 };
 
@@ -193,44 +193,44 @@ export const defaultGridConfig: GridConfig = {
 // ============================================================================
 
 export interface PositionStrategy {
-  /** Unique identifier for this strategy */
-  readonly type: string;
+  /** Strategy type identifier */
+  readonly type: "transform" | "absolute";
+
+  /** Scale factor for drag/resize calculations */
+  readonly scale: number;
 
   /**
-   * Calculate CSS style for positioning an item
+   * Convert pixel position to CSS style object.
    */
-  calcStyle(
-    item: LayoutItem,
-    config: GridConfig,
-    containerWidth: number
-  ): React.CSSProperties;
+  calcStyle(pos: Position): React.CSSProperties;
 
   /**
-   * Calculate position during drag (accounts for transforms, scale, etc.)
+   * Calculate position during drag operations, accounting for transforms and scale.
    */
   calcDragPosition(
-    event: MouseEvent,
-    initialPosition: Position,
-    scale: number
+    clientX: number,
+    clientY: number,
+    offsetX: number,
+    offsetY: number
   ): { left: number; top: number };
 }
 
 /** CSS transform-based positioning (default, better performance) */
 export const transformStrategy: PositionStrategy = {
   type: "transform",
-  calcStyle(item, config, containerWidth) {
-    const pos = calcGridItemPosition(config, containerWidth, item);
+  scale: 1,
+  calcStyle(pos) {
     return {
       transform: `translate(${pos.left}px, ${pos.top}px)`,
-      width: pos.width,
-      height: pos.height,
+      width: `${pos.width}px`,
+      height: `${pos.height}px`,
       position: "absolute"
     };
   },
-  calcDragPosition(event, initialPosition, scale) {
+  calcDragPosition(clientX, clientY, offsetX, offsetY) {
     return {
-      left: initialPosition.left + event.movementX / scale,
-      top: initialPosition.top + event.movementY / scale
+      left: clientX - offsetX,
+      top: clientY - offsetY
     };
   }
 };
@@ -238,20 +238,20 @@ export const transformStrategy: PositionStrategy = {
 /** Absolute top/left positioning (for environments where transforms cause issues) */
 export const absoluteStrategy: PositionStrategy = {
   type: "absolute",
-  calcStyle(item, config, containerWidth) {
-    const pos = calcGridItemPosition(config, containerWidth, item);
+  scale: 1,
+  calcStyle(pos) {
     return {
       left: pos.left,
       top: pos.top,
-      width: pos.width,
-      height: pos.height,
+      width: `${pos.width}px`,
+      height: `${pos.height}px`,
       position: "absolute"
     };
   },
-  calcDragPosition(event, initialPosition, scale) {
+  calcDragPosition(clientX, clientY, offsetX, offsetY) {
     return {
-      left: initialPosition.left + event.movementX / scale,
-      top: initialPosition.top + event.movementY / scale
+      left: clientX - offsetX,
+      top: clientY - offsetY
     };
   }
 };
@@ -263,8 +263,12 @@ export const absoluteStrategy: PositionStrategy = {
 export function createScaledStrategy(scale: number): PositionStrategy {
   return {
     ...transformStrategy,
-    calcDragPosition(event, initialPosition, _scale) {
-      return transformStrategy.calcDragPosition(event, initialPosition, scale);
+    scale,
+    calcDragPosition(clientX, clientY, offsetX, offsetY) {
+      return {
+        left: (clientX - offsetX) / scale,
+        top: (clientY - offsetY) / scale
+      };
     }
   };
 }
@@ -342,7 +346,7 @@ export const defaultDropConfig: DropConfig = {
 };
 
 // ============================================================================
-// Compactor (already defined, extended here)
+// Compactor Interface
 // ============================================================================
 
 export interface Compactor {
@@ -350,8 +354,8 @@ export interface Compactor {
   readonly type: CompactType;
   /** Whether items can overlap */
   readonly allowOverlap: boolean;
-  /** Whether to prevent collisions (no pushing) */
-  readonly preventCollision: boolean;
+  /** Whether to prevent collisions (no pushing) - optional */
+  readonly preventCollision?: boolean;
   /** Compact the layout */
   compact(layout: Layout, cols: number): Layout;
   /** Handle movement - returns new layout */
@@ -364,157 +368,44 @@ export interface Compactor {
   ): Layout;
 }
 
-export function createCompactor(options: {
-  type: CompactType;
-  allowOverlap?: boolean;
-  preventCollision?: boolean;
-}): Compactor {
-  return {
-    type: options.type,
-    allowOverlap: options.allowOverlap ?? false,
-    preventCollision: options.preventCollision ?? false,
-    compact(layout, cols) {
-      if (this.allowOverlap) return layout;
-      return compactLayout(layout, this.type, cols);
-    },
-    onMove(layout, item, x, y, cols) {
-      return moveElement(
-        layout,
-        item,
-        x,
-        y,
-        !this.preventCollision,
-        this.type,
-        cols,
-        this.allowOverlap
-      );
-    }
-  };
-}
+/**
+ * Get a compactor by type.
+ * Factory function for backwards compatibility with string-based compactType API.
+ */
+export function getCompactor(
+  compactType: CompactType,
+  allowOverlap?: boolean,
+  preventCollision?: boolean
+): Compactor;
 
-// Built-in compactors
-export const verticalCompactor = createCompactor({ type: "vertical" });
-export const horizontalCompactor = createCompactor({ type: "horizontal" });
-export const noCompactor = createCompactor({ type: null });
-export const overlapCompactor = createCompactor({
-  type: null,
-  allowOverlap: true
-});
+// Built-in compactors (defined as object literals in compactors.ts)
+export const verticalCompactor: Compactor;
+export const horizontalCompactor: Compactor;
+export const noCompactor: Compactor;
+
+// Overlap-allowing variants
+export const verticalOverlapCompactor: Compactor;
+export const horizontalOverlapCompactor: Compactor;
 
 // ============================================================================
-// Fast Compactor (PR #2152 - "Rising Tide" Algorithm)
+// Fast Compactor (available in react-grid-layout/extras)
 // ============================================================================
 
 /**
- * High-performance vertical compactor using "rising tide" algorithm.
- * Achieves O(n log n) time complexity vs O(n²) for legacy algorithm.
+ * For large layouts (200+ items), a high-performance "rising tide" compactor
+ * is available in react-grid-layout/extras. It achieves O(n log n) time
+ * complexity vs O(n²) for the standard algorithm.
  *
- * Note: Produces identical results for ~70% of layouts, but may differ
- * slightly in edge cases. Use `legacyVerticalCompactor` if exact v1
- * compatibility is required.
+ * Usage:
+ *   import { fastVerticalCompactor } from 'react-grid-layout/extras';
+ *   <GridLayout compactor={fastVerticalCompactor} />
+ *
+ * Note: Produces identical results for most layouts, but may differ
+ * slightly in edge cases with complex overlapping items.
  *
  * @see https://github.com/react-grid-layout/react-grid-layout/pull/2152
  * @see https://github.com/morris/fast-grid-layout
  */
-export const fastVerticalCompactor: Compactor = {
-  type: "vertical",
-  allowOverlap: false,
-  preventCollision: false,
-  compact(layout: Layout, cols: number): Layout {
-    // Rising tide algorithm - single pass after sorting
-    const sorted = sortByRowCol(layout);
-    const occupied = new Map<string, number>(); // column -> highest occupied row
-
-    return sorted.map(item => {
-      let targetY = 0;
-
-      // Find the lowest available Y for this item's columns
-      for (let col = item.x; col < item.x + item.w; col++) {
-        const colMax = occupied.get(String(col)) ?? 0;
-        targetY = Math.max(targetY, colMax);
-      }
-
-      // Update occupied map
-      for (let col = item.x; col < item.x + item.w; col++) {
-        occupied.set(String(col), targetY + item.h);
-      }
-
-      return { ...item, y: targetY };
-    });
-  },
-  onMove(layout, item, x, y, cols) {
-    return moveElement(layout, item, x, y, true, "vertical", cols, false);
-  }
-};
-
-/**
- * Fast horizontal compactor using similar "rising tide" approach.
- * Provides O(n log n) time complexity for horizontal layouts.
- */
-export const fastHorizontalCompactor: Compactor = {
-  type: "horizontal",
-  allowOverlap: false,
-  preventCollision: false,
-  compact(layout: Layout, cols: number): Layout {
-    const sorted = sortByColRow(layout);
-    const occupied = new Map<string, number>(); // row -> rightmost occupied column
-
-    return sorted.map(item => {
-      let targetX = 0;
-
-      // Find the leftmost available X for this item's rows
-      for (let row = item.y; row < item.y + item.h; row++) {
-        const rowMax = occupied.get(String(row)) ?? 0;
-        targetX = Math.max(targetX, rowMax);
-      }
-
-      // Ensure item fits within cols
-      if (targetX + item.w > cols) {
-        targetX = Math.max(0, cols - item.w);
-      }
-
-      // Update occupied map
-      for (let row = item.y; row < item.y + item.h; row++) {
-        occupied.set(String(row), targetX + item.w);
-      }
-
-      return { ...item, x: targetX };
-    });
-  },
-  onMove(layout, item, x, y, cols) {
-    return moveElement(layout, item, x, y, true, "horizontal", cols, false);
-  }
-};
-
-/**
- * Legacy compactors - exact v1 behavior (slower but deterministic)
- * Use these when you need exact backwards compatibility with v1 layouts.
- */
-export const legacyVerticalCompactor: Compactor = {
-  type: "vertical",
-  allowOverlap: false,
-  preventCollision: false,
-  compact(layout: Layout, cols: number): Layout {
-    return legacyCompact(layout, "vertical", cols);
-  },
-  onMove(layout, item, x, y, cols) {
-    return moveElement(layout, item, x, y, true, "vertical", cols, false);
-  }
-};
-
-/**
- * Default compactors use fast algorithms in v2.
- * For exact v1 behavior, use legacy* variants.
- */
-export const defaultCompactors = {
-  vertical: fastVerticalCompactor,
-  horizontal: fastHorizontalCompactor,
-  none: noCompactor,
-  overlap: overlapCompactor,
-  // Legacy variants for backwards compatibility
-  legacyVertical: legacyVerticalCompactor,
-  legacyHorizontal: horizontalCompactor // TODO: implement fast horizontal
-};
 
 // ============================================================================
 // Custom Compactor Example - Extensibility
@@ -529,11 +420,16 @@ export const defaultCompactors = {
  * resolvers throughout the codebase". By making Compactor a first-class
  * interface, we enable clean implementation of wrap mode and other algorithms.
  *
- * Built-in compactors:
- * - verticalCompactor: Standard vertical compaction (items float up)
+ * Built-in compactors (from react-grid-layout/core):
+ * - verticalCompactor: Standard vertical compaction (items float up) - default
  * - horizontalCompactor: Horizontal compaction (items float left)
- * - wrapCompactor: Items wrap to next row like flexbox (PR #1773)
  * - noCompactor: Free positioning, no automatic movement
+ *
+ * Optional compactors (from react-grid-layout/extras):
+ * - fastVerticalCompactor: O(n log n) vertical compaction for large layouts
+ *
+ * Custom compactor examples in this RFC:
+ * - wrapCompactor: Items wrap to next row like flexbox (PR #1773)
  *
  * @see https://github.com/react-grid-layout/react-grid-layout/pull/1773
  */
@@ -652,10 +548,7 @@ interface GridLayoutProps {
 <GridLayout
   layout={layout}
   width={1200}
-  compactor={createCompactor({
-    type: 'horizontal',
-    allowOverlap: true
-  })}
+  compactor={horizontalOverlapCompactor}
 >
   {children}
 </GridLayout>
@@ -705,22 +598,24 @@ interface GridLayoutProps {
 </GridLayout>
 ```
 
-#### Hooks for Interface Creation
+#### Example: Custom Hooks for Interface Creation
+
+These are example patterns you can use in your application - they are not exported by the library:
 
 ```typescript
-// Hook to create a memoized compactor
-function useCompactor(options: {
-  type: CompactType;
-  allowOverlap?: boolean;
-  preventCollision?: boolean;
-}): Compactor {
+// Example hook to memoize compactor selection
+function useCompactor(
+  compactType: CompactType,
+  allowOverlap?: boolean,
+  preventCollision?: boolean
+): Compactor {
   return useMemo(
-    () => createCompactor(options),
-    [options.type, options.allowOverlap, options.preventCollision]
+    () => getCompactor(compactType, allowOverlap, preventCollision),
+    [compactType, allowOverlap, preventCollision]
   );
 }
 
-// Hook to create scaled position strategy
+// Example hook to memoize scaled position strategy
 function useScaledStrategy(scale: number): PositionStrategy {
   return useMemo(() => createScaledStrategy(scale), [scale]);
 }
@@ -1029,14 +924,10 @@ export const noCompactor: Compactor = {
 /**
  * Get a compactor by type
  */
-export function getCompactor(type: CompactType): Compactor;
-
-/**
- * Create a custom compactor
- */
-export function createCompactor(
-  type: string,
-  compactFn: (layout: Layout, cols: number) => Layout
+export function getCompactor(
+  type: CompactType,
+  allowOverlap?: boolean,
+  preventCollision?: boolean
 ): Compactor;
 ```
 

@@ -57,15 +57,15 @@ Version 2 is a complete TypeScript rewrite with a modernized API:
 
 See the [RFC](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2) for detailed migration examples.
 
-| Change                                                                                                               | Description                                                                                       |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [`width` prop required](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2)                                 | Use `useContainerWidth` hook or provide your own measurement                                      |
-| [`onDragStart` threshold](./rfcs/0001-v2-typescript-rewrite.md#1-ondragstart-no-longer-fires-on-click-only-events)   | Now fires after 3px movement, not on mousedown. Use `onMouseDown` for immediate response          |
-| [Immutable callbacks](./rfcs/0001-v2-typescript-rewrite.md#2-immutable-callback-parameters)                          | Callback parameters are read-only. Use `onLayoutChange` or constraints instead of mutation        |
-| [`data-grid` in legacy only](./rfcs/0001-v2-typescript-rewrite.md#3-data-grid-prop-only-available-in-legacy-wrapper) | v2 requires explicit `layout` prop. Use legacy wrapper for `data-grid`                            |
-| [Fast compaction](./rfcs/0001-v2-typescript-rewrite.md#4-fast-compaction-algorithm-by-default)                       | O(n log n) algorithm may differ in edge cases. Use `compact()` from `/core` for exact v1 behavior |
-| UMD bundle removed                                                                                                   | Use a bundler (Vite, webpack, esbuild)                                                            |
-| `verticalCompact` removed                                                                                            | Use `compactType={null}` or `compactor={noCompactor}`                                             |
+| Change                                                                                                               | Description                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [`width` prop required](./rfcs/0001-v2-typescript-rewrite.md#breaking-changes-in-v2)                                 | Use `useContainerWidth` hook or provide your own measurement                                           |
+| [`onDragStart` threshold](./rfcs/0001-v2-typescript-rewrite.md#1-ondragstart-no-longer-fires-on-click-only-events)   | Now fires after 3px movement, not on mousedown. Use `onMouseDown` for immediate response               |
+| [Immutable callbacks](./rfcs/0001-v2-typescript-rewrite.md#2-immutable-callback-parameters)                          | Callback parameters are read-only. Use `onLayoutChange` or constraints instead of mutation             |
+| [`data-grid` in legacy only](./rfcs/0001-v2-typescript-rewrite.md#3-data-grid-prop-only-available-in-legacy-wrapper) | v2 requires explicit `layout` prop. Use legacy wrapper for `data-grid`                                 |
+| [Pluggable compaction](./rfcs/0001-v2-typescript-rewrite.md#4-pluggable-compaction-algorithms)                       | Compaction is now pluggable via `Compactor` interface. Optional fast O(n log n) algorithm in `/extras` |
+| UMD bundle removed                                                                                                   | Use a bundler (Vite, webpack, esbuild)                                                                 |
+| `verticalCompact` removed                                                                                            | Use `compactType={null}` or `compactor={noCompactor}`                                                  |
 
 ## Migrating from v1
 
@@ -124,17 +124,15 @@ function MyGrid() {
 1. [Saving a Responsive Layout to LocalStorage](https://react-grid-layout.github.io/react-grid-layout/examples/08-localstorage-responsive.html)
 1. [Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/09-min-max-wh.html)
 1. [Dynamic Minimum and Maximum Width/Height](https://react-grid-layout.github.io/react-grid-layout/examples/10-dynamic-min-max-wh.html)
-1. [No Vertical Compacting (Free Movement)](https://react-grid-layout.github.io/react-grid-layout/examples/11-no-vertical-compact.html)
-1. [Prevent Collision](https://react-grid-layout.github.io/react-grid-layout/examples/12-prevent-collision.html)
-1. [Error Case](https://react-grid-layout.github.io/react-grid-layout/examples/13-error-case.html)
-1. [Toolbox](https://react-grid-layout.github.io/react-grid-layout/examples/14-toolbox.html)
-1. [Drag From Outside](https://react-grid-layout.github.io/react-grid-layout/examples/15-drag-from-outside.html)
-1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/16-bounded.html)
-1. [Responsive Bootstrap-style Layout](https://react-grid-layout.github.io/react-grid-layout/examples/17-responsive-bootstrap-style.html)
-1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/18-scale.html)
-1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/19-allow-overlap.html)
-1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/20-resizable-handles.html)
-1. [Single Row Horizontal](https://react-grid-layout.github.io/react-grid-layout/examples/21-horizontal.html)
+1. [Error Case](https://react-grid-layout.github.io/react-grid-layout/examples/11-error-case.html)
+1. [Toolbox](https://react-grid-layout.github.io/react-grid-layout/examples/12-toolbox.html)
+1. [Drag From Outside](https://react-grid-layout.github.io/react-grid-layout/examples/13-drag-from-outside.html)
+1. [Bounded Layout](https://react-grid-layout.github.io/react-grid-layout/examples/14-bounded.html)
+1. [Responsive Bootstrap-style Layout](https://react-grid-layout.github.io/react-grid-layout/examples/15-responsive-bootstrap-style.html)
+1. [Scaled Containers](https://react-grid-layout.github.io/react-grid-layout/examples/16-scale.html)
+1. [Allow Overlap](https://react-grid-layout.github.io/react-grid-layout/examples/17-allow-overlap.html)
+1. [All Resizable Handles](https://react-grid-layout.github.io/react-grid-layout/examples/18-resizable-handles.html)
+1. [Compactor Showcase](https://react-grid-layout.github.io/react-grid-layout/examples/19-compactors.html)
 
 #### Projects Using React-Grid-Layout
 
@@ -449,9 +447,9 @@ interface UseGridLayoutOptions {
   cols: number;
   /** Compaction type: 'vertical', 'horizontal', or null */
   compactType?: CompactType;
-  /** Allow items to overlap */
+  /** Allow items to overlap (stack on top of each other) */
   allowOverlap?: boolean;
-  /** Prevent collisions when moving items */
+  /** Block movement into occupied space instead of pushing items (no effect if allowOverlap is true) */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
@@ -811,10 +809,30 @@ interface Compactor {
   /** Identifies the compaction type */
   type: "vertical" | "horizontal" | null | string;
 
-  /** Whether this compactor allows overlapping items */
+  /**
+   * Whether items can overlap each other.
+   *
+   * When true:
+   * - Items can be placed on top of other items
+   * - Dragging into another item does NOT push it away
+   * - Compaction is skipped after drag/resize
+   *
+   * Use for: layered dashboards, free-form layouts
+   */
   allowOverlap: boolean;
 
-  /** Prevent items from moving when another item is dragged into them */
+  /**
+   * Whether to block movement that would cause collision.
+   *
+   * When true (and allowOverlap is false):
+   * - Dragging into another item is blocked (item snaps back)
+   * - Other items are NOT pushed away
+   * - Only affects movement, not compaction
+   *
+   * Use with noCompactor for: fixed grids, slot-based layouts
+   *
+   * Note: Has no effect when allowOverlap is true.
+   */
   preventCollision?: boolean;
 
   /**
@@ -1145,6 +1163,58 @@ interface GridBackgroundProps {
   style?: React.CSSProperties; // Additional inline styles
 }
 ```
+
+### Fast Compactors
+
+For large layouts (200+ items), the standard compactors can become slow due to O(n²) collision resolution. The fast compactors use optimized algorithms with O(n log n) complexity.
+
+> Based on the "rising tide" algorithm from [PR #2152](https://github.com/react-grid-layout/react-grid-layout/pull/2152) by [@morris](https://github.com/morris).
+
+```tsx
+import {
+  fastVerticalCompactor,
+  fastHorizontalCompactor,
+  fastVerticalOverlapCompactor,
+  fastHorizontalOverlapCompactor
+} from "react-grid-layout/extras";
+
+<ReactGridLayout
+  compactor={fastVerticalCompactor}
+  // or compactor={fastHorizontalCompactor}
+  layout={layout}
+  width={width}
+/>;
+```
+
+**Performance Benchmarks:**
+
+| Items | Standard Vertical | Fast Vertical | Speedup |
+| ----- | ----------------- | ------------- | ------- |
+| 50    | 112 µs            | 19 µs         | **6x**  |
+| 100   | 203 µs            | 36 µs         | **6x**  |
+| 200   | 821 µs            | 51 µs         | **16x** |
+| 500   | 5.7 ms            | 129 µs        | **45x** |
+
+| Items | Standard Horizontal | Fast Horizontal | Speedup |
+| ----- | ------------------- | --------------- | ------- |
+| 50    | 164 µs              | 12 µs           | **14x** |
+| 100   | 477 µs              | 25 µs           | **19x** |
+| 200   | 1.1 ms              | 42 µs           | **26x** |
+| 500   | 9.5 ms              | 128 µs          | **74x** |
+
+**Correctness:**
+
+The fast compactors produce layouts identical to the standard compactors:
+
+- **Vertical**: 0% height difference on deterministic 100-item layouts
+- **Horizontal**: 0% width difference on deterministic 100-item layouts
+- Both pass all correctness tests: no overlaps, idempotent, static item handling
+
+**When to use:**
+
+- Use fast compactors for dashboards with 200+ widgets
+- For smaller layouts (<100 items), standard compactors work equally well
+- Both standard and fast compactors produce valid, non-overlapping layouts
 
 ### calcGridCellDimensions (Core Utility)
 

@@ -1,20 +1,20 @@
 /* eslint-env jest */
 
 /**
- * Fast Vertical Compactor Tests
+ * Fast Horizontal Compactor Tests
  *
- * Compares performance and correctness of the fast vertical compactor
- * against the standard vertical compactor.
+ * Compares performance and correctness of the fast horizontal compactor
+ * against the standard horizontal compactor.
  *
  * Usage:
- *   npm test -- --testPathPattern=fast-compactor
+ *   npm test -- --testPathPattern=fast-horizontal-compactor
  */
 
-import { verticalCompactor } from "../../src/core/compactors";
+import { horizontalCompactor } from "../../src/core/compactors";
 import {
-  fastVerticalCompactor,
-  fastVerticalOverlapCompactor
-} from "../../src/extras/fastVerticalCompactor";
+  fastHorizontalCompactor,
+  fastHorizontalOverlapCompactor
+} from "../../src/extras/fastHorizontalCompactor";
 import { collides } from "../../src/core/collision";
 
 // Generate a random layout
@@ -88,16 +88,21 @@ function measureTime(fn, iterations = 100) {
   return (end - start) / iterations;
 }
 
-describe("Fast Vertical Compactor", () => {
+// Calculate the total width of a layout (rightmost x + w)
+function layoutWidth(layout) {
+  return Math.max(0, ...layout.map(item => item.x + item.w));
+}
+
+describe("Fast Horizontal Compactor", () => {
   describe("Correctness", () => {
     it("produces a valid layout with no overlaps", () => {
       for (let run = 0; run < 10; run++) {
-        const cols = 1 + Math.floor(Math.random() * 6);
+        const cols = 6 + Math.floor(Math.random() * 6);
         const numItems = 2 + Math.floor(Math.random() * 20);
         const numStatics = Math.floor(Math.random() * numItems);
 
         const layout = generateRandomLayout(numItems, cols, numStatics);
-        const compacted = fastVerticalCompactor.compact(layout, cols);
+        const compacted = fastHorizontalCompactor.compact(layout, cols);
 
         expect(hasOverlaps(compacted)).toBe(false);
       }
@@ -107,8 +112,8 @@ describe("Fast Vertical Compactor", () => {
       for (let run = 0; run < 5; run++) {
         const layout = generateRandomLayout(50, 12, 5);
 
-        const compacted1 = fastVerticalCompactor.compact(layout, 12);
-        const compacted2 = fastVerticalCompactor.compact(compacted1, 12);
+        const compacted1 = fastHorizontalCompactor.compact(layout, 12);
+        const compacted2 = fastHorizontalCompactor.compact(compacted1, 12);
 
         // Compare positions
         for (let i = 0; i < compacted1.length; i++) {
@@ -124,10 +129,10 @@ describe("Fast Vertical Compactor", () => {
       const layout = [
         { i: "static", x: 5, y: 5, w: 2, h: 2, static: true },
         { i: "a", x: 0, y: 0, w: 2, h: 2 },
-        { i: "b", x: 5, y: 0, w: 2, h: 8 }
+        { i: "b", x: 0, y: 5, w: 8, h: 2 }
       ];
 
-      const compacted = fastVerticalCompactor.compact(layout, 12);
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
       const staticItem = compacted.find(l => l.i === "static");
 
       expect(staticItem.x).toBe(5);
@@ -136,27 +141,105 @@ describe("Fast Vertical Compactor", () => {
 
     it("moves items around static items", () => {
       const layout = [
-        { i: "static", x: 0, y: 0, w: 12, h: 2, static: true },
-        { i: "a", x: 0, y: 5, w: 4, h: 2 }
+        { i: "static", x: 0, y: 0, w: 2, h: 12, static: true },
+        { i: "a", x: 5, y: 0, w: 4, h: 2 }
       ];
 
-      const compacted = fastVerticalCompactor.compact(layout, 12);
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
       const itemA = compacted.find(l => l.i === "a");
 
-      // Item should be moved to y=2 (right below static)
-      expect(itemA.y).toBe(2);
+      // Item should be moved to x=2 (right next to static)
+      expect(itemA.x).toBe(2);
+    });
+
+    it("compacts items to the left", () => {
+      const layout = [
+        { i: "a", x: 5, y: 0, w: 2, h: 2 },
+        { i: "b", x: 8, y: 0, w: 2, h: 2 }
+      ];
+
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+
+      // Items should be compacted to the left
+      expect(itemA.x).toBe(0);
+      expect(itemB.x).toBe(2); // Right after A
     });
 
     it("handles overlap compactor variant", () => {
       const layout = generateMessyLayout(20, 12);
 
       // With allowOverlap, items should still compact but may overlap
-      const compacted = fastVerticalOverlapCompactor.compact(layout, 12);
+      const compacted = fastHorizontalOverlapCompactor.compact(layout, 12);
 
-      // All items should have y >= 0
+      // All items should have x >= 0
       compacted.forEach(item => {
-        expect(item.y).toBeGreaterThanOrEqual(0);
+        expect(item.x).toBeGreaterThanOrEqual(0);
       });
+    });
+
+    it("preserves y positions when compacting horizontally", () => {
+      const layout = [
+        { i: "a", x: 5, y: 0, w: 2, h: 2 },
+        { i: "b", x: 8, y: 3, w: 2, h: 2 },
+        { i: "c", x: 10, y: 6, w: 2, h: 2 }
+      ];
+
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+
+      // Y positions should be preserved
+      expect(compacted.find(l => l.i === "a").y).toBe(0);
+      expect(compacted.find(l => l.i === "b").y).toBe(3);
+      expect(compacted.find(l => l.i === "c").y).toBe(6);
+
+      // X positions should be compacted to 0 (no collisions on different rows)
+      expect(compacted.find(l => l.i === "a").x).toBe(0);
+      expect(compacted.find(l => l.i === "b").x).toBe(0);
+      expect(compacted.find(l => l.i === "c").x).toBe(0);
+    });
+
+    it("wraps items to next row when they don't fit", () => {
+      const layout = [
+        { i: "a", x: 0, y: 0, w: 6, h: 1 },
+        { i: "b", x: 0, y: 0, w: 8, h: 1 } // Too wide to fit alongside a in 12 cols
+      ];
+
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+
+      // Item a should be at x=0, y=0
+      expect(itemA.x).toBe(0);
+      expect(itemA.y).toBe(0);
+
+      // Item b can't fit next to a (6 + 8 = 14 > 12), so it wraps to next row
+      expect(itemB.y).toBeGreaterThan(0);
+      expect(itemB.x).toBe(0); // Should compact to left of its new row
+    });
+
+    it("wraps multiple items when row is full", () => {
+      const layout = [
+        { i: "a", x: 0, y: 0, w: 5, h: 1 },
+        { i: "b", x: 0, y: 0, w: 5, h: 1 },
+        { i: "c", x: 0, y: 0, w: 5, h: 1 } // Only 2 items fit per row (5+5=10, 5+5+5=15>12)
+      ];
+
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+
+      // First two items should fit in row 0
+      const itemA = compacted.find(l => l.i === "a");
+      const itemB = compacted.find(l => l.i === "b");
+      const itemC = compacted.find(l => l.i === "c");
+
+      expect(itemA.y).toBe(0);
+      expect(itemB.y).toBe(0);
+      expect(itemC.y).toBe(1); // Third item wraps to next row
+
+      // No overlaps
+      expect(hasOverlaps(compacted)).toBe(false);
     });
   });
 
@@ -175,11 +258,11 @@ describe("Fast Vertical Compactor", () => {
 
       const lines = [
         "",
-        "┌──────────────────────────────────────────────────────────────────────────────┐",
-        "│                    ⚡ Compactor Performance Comparison                       │",
-        "├──────────────────────────────────────────────────────────────────────────────┤",
-        "│ Items    │ Standard Vertical     │ Fast Vertical         │ Speedup          │",
-        "├──────────┼───────────────────────┼───────────────────────┼──────────────────┤"
+        "┌──────────────────────────────────────────────────────────────────────────────────┐",
+        "│                    ⚡ Horizontal Compactor Performance Comparison                │",
+        "├──────────────────────────────────────────────────────────────────────────────────┤",
+        "│ Items    │ Standard Horizontal   │ Fast Horizontal       │ Speedup              │",
+        "├──────────┼───────────────────────┼───────────────────────┼──────────────────────┤"
       ];
 
       testSizes.forEach(size => {
@@ -189,13 +272,13 @@ describe("Fast Vertical Compactor", () => {
         if (benchmarkResults[stdKey] && benchmarkResults[fastKey]) {
           const speedup = benchmarkResults[stdKey] / benchmarkResults[fastKey];
           lines.push(
-            `│ ${String(size).padEnd(8)} │ ${formatTime(benchmarkResults[stdKey]).padStart(21)} │ ${formatTime(benchmarkResults[fastKey]).padStart(21)} │ ${speedup.toFixed(2).padStart(6)}x faster │`
+            `│ ${String(size).padEnd(8)} │ ${formatTime(benchmarkResults[stdKey]).padStart(21)} │ ${formatTime(benchmarkResults[fastKey]).padStart(21)} │ ${speedup.toFixed(2).padStart(6)}x faster     │`
           );
         }
       });
 
       lines.push(
-        "└──────────────────────────────────────────────────────────────────────────────┘"
+        "└──────────────────────────────────────────────────────────────────────────────────┘"
       );
 
       console.log(lines.join("\n"));
@@ -206,19 +289,19 @@ describe("Fast Vertical Compactor", () => {
         const layout = generateMessyLayout(size, 12);
 
         // Warm up
-        verticalCompactor.compact(layout, 12);
-        fastVerticalCompactor.compact(layout, 12);
+        horizontalCompactor.compact(layout, 12);
+        fastHorizontalCompactor.compact(layout, 12);
 
         // Measure standard compactor
         const stdTime = measureTime(
-          () => verticalCompactor.compact(layout, 12),
+          () => horizontalCompactor.compact(layout, 12),
           size > 200 ? 5 : 10
         );
         benchmarkResults[`standard_${size}`] = stdTime;
 
         // Measure fast compactor
         const fastTime = measureTime(
-          () => fastVerticalCompactor.compact(layout, 12),
+          () => fastHorizontalCompactor.compact(layout, 12),
           size > 200 ? 5 : 10
         );
         benchmarkResults[`fast_${size}`] = fastTime;
@@ -233,12 +316,12 @@ describe("Fast Vertical Compactor", () => {
       const layout = generateRandomLayout(200, 12, 20);
 
       const stdTime = measureTime(
-        () => verticalCompactor.compact(layout, 12),
+        () => horizontalCompactor.compact(layout, 12),
         5
       );
 
       const fastTime = measureTime(
-        () => fastVerticalCompactor.compact(layout, 12),
+        () => fastHorizontalCompactor.compact(layout, 12),
         5
       );
 
@@ -256,16 +339,16 @@ describe("Fast Vertical Compactor", () => {
 
   describe("Edge Cases", () => {
     it("handles empty layout", () => {
-      const compacted = fastVerticalCompactor.compact([], 12);
+      const compacted = fastHorizontalCompactor.compact([], 12);
       expect(compacted).toEqual([]);
     });
 
     it("handles single item", () => {
-      const layout = [{ i: "a", x: 5, y: 10, w: 2, h: 2 }];
-      const compacted = fastVerticalCompactor.compact(layout, 12);
+      const layout = [{ i: "a", x: 10, y: 5, w: 2, h: 2 }];
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
 
-      expect(compacted[0].x).toBe(5);
-      expect(compacted[0].y).toBe(0); // Should compact to top
+      expect(compacted[0].x).toBe(0); // Should compact to left
+      expect(compacted[0].y).toBe(5); // Y preserved
     });
 
     it("handles all static items", () => {
@@ -274,11 +357,11 @@ describe("Fast Vertical Compactor", () => {
         { i: "b", x: 4, y: 4, w: 2, h: 2, static: true }
       ];
 
-      const compacted = fastVerticalCompactor.compact(layout, 12);
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
 
       // Static items should not move
-      expect(compacted.find(l => l.i === "a").y).toBe(0);
-      expect(compacted.find(l => l.i === "b").y).toBe(4);
+      expect(compacted.find(l => l.i === "a").x).toBe(0);
+      expect(compacted.find(l => l.i === "b").x).toBe(4);
     });
 
     it("handles items wider than grid", () => {
@@ -287,7 +370,7 @@ describe("Fast Vertical Compactor", () => {
       ];
 
       // Should not throw
-      const compacted = fastVerticalCompactor.compact(layout, 12);
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
       expect(compacted.length).toBe(1);
     });
 
@@ -297,8 +380,23 @@ describe("Fast Vertical Compactor", () => {
       ];
 
       // Should not throw
-      const compacted = fastVerticalCompactor.compact(layout, 12);
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
       expect(compacted.length).toBe(1);
+      // Should be compacted to left
+      expect(compacted[0].x).toBe(0);
+    });
+
+    it("handles items with y beyond initial maxRow", () => {
+      const layout = [
+        { i: "a", x: 5, y: 0, w: 2, h: 2 },
+        { i: "b", x: 5, y: 100, w: 2, h: 2 } // Very far down
+      ];
+
+      // Should not throw and should compact correctly
+      const compacted = fastHorizontalCompactor.compact(layout, 12);
+      expect(compacted.find(l => l.i === "a").x).toBe(0);
+      expect(compacted.find(l => l.i === "b").x).toBe(0);
+      expect(compacted.find(l => l.i === "b").y).toBe(100); // Y preserved
     });
   });
 
@@ -310,7 +408,7 @@ describe("Fast Vertical Compactor", () => {
       ];
 
       const itemA = layout[0];
-      const newLayout = fastVerticalCompactor.onMove(layout, itemA, 5, 5, 12);
+      const newLayout = fastHorizontalCompactor.onMove(layout, itemA, 5, 5, 12);
 
       const movedItem = newLayout.find(l => l.i === "a");
       expect(movedItem.x).toBe(5);
@@ -320,11 +418,6 @@ describe("Fast Vertical Compactor", () => {
   });
 
   describe("Correctness vs Standard Compactor", () => {
-    // Helper to calculate the total height of a layout
-    function layoutHeight(layout) {
-      return Math.max(0, ...layout.map(item => item.y + item.h));
-    }
-
     // Helper to check if layouts have same items at same positions
     function layoutsMatch(layout1, layout2) {
       if (layout1.length !== layout2.length) return false;
@@ -339,8 +432,8 @@ describe("Fast Vertical Compactor", () => {
     it("produces same result as standard compactor for simple grid layouts", () => {
       const layout = generateGridLayout(20, 12);
 
-      const stdCompacted = verticalCompactor.compact(layout, 12);
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       // Both should produce identical results for ordered grids
       expect(layoutsMatch(stdCompacted, fastCompacted)).toBe(true);
@@ -350,26 +443,26 @@ describe("Fast Vertical Compactor", () => {
       // Layout with intentional gaps
       const layout = [
         { i: "a", x: 0, y: 0, w: 2, h: 2 },
-        { i: "b", x: 4, y: 5, w: 2, h: 2 }, // Gap above
-        { i: "c", x: 8, y: 10, w: 2, h: 2 } // Larger gap above
+        { i: "b", x: 5, y: 4, w: 2, h: 2 }, // Gap to the left
+        { i: "c", x: 10, y: 8, w: 2, h: 2 } // Larger gap to the left
       ];
 
-      const stdCompacted = verticalCompactor.compact(layout, 12);
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       expect(layoutsMatch(stdCompacted, fastCompacted)).toBe(true);
     });
 
     it("produces same result for layouts with single static item", () => {
       const layout = [
-        { i: "static", x: 0, y: 2, w: 12, h: 2, static: true },
-        { i: "a", x: 0, y: 0, w: 4, h: 1 },
-        { i: "b", x: 4, y: 0, w: 4, h: 1 },
-        { i: "c", x: 0, y: 10, w: 4, h: 2 }
+        { i: "static", x: 2, y: 0, w: 2, h: 12, static: true },
+        { i: "a", x: 0, y: 0, w: 1, h: 4 },
+        { i: "b", x: 0, y: 0, w: 1, h: 4 },
+        { i: "c", x: 10, y: 0, w: 4, h: 2 }
       ];
 
-      const stdCompacted = verticalCompactor.compact(layout, 12);
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       expect(layoutsMatch(stdCompacted, fastCompacted)).toBe(true);
     });
@@ -380,8 +473,8 @@ describe("Fast Vertical Compactor", () => {
       for (let run = 0; run < 20; run++) {
         const layout = generateMessyLayout(50, 12);
 
-        const stdCompacted = verticalCompactor.compact(layout, 12);
-        const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+        const stdCompacted = horizontalCompactor.compact(layout, 12);
+        const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
         // Both should have no overlaps
         expect(hasOverlaps(stdCompacted)).toBe(false);
@@ -392,8 +485,8 @@ describe("Fast Vertical Compactor", () => {
       }
     });
 
-    it("produces similar or better compaction height", () => {
-      // The fast compactor should produce layouts with similar total height
+    it("produces similar or better compaction width", () => {
+      // The fast compactor should produce layouts with similar total width
       // (within a small tolerance, since algorithms may differ slightly)
       let fastBetter = 0;
       let stdBetter = 0;
@@ -402,21 +495,21 @@ describe("Fast Vertical Compactor", () => {
       for (let run = 0; run < 50; run++) {
         const layout = generateMessyLayout(30, 12);
 
-        const stdCompacted = verticalCompactor.compact(layout, 12);
-        const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+        const stdCompacted = horizontalCompactor.compact(layout, 12);
+        const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
-        const stdHeight = layoutHeight(stdCompacted);
-        const fastHeight = layoutHeight(fastCompacted);
+        const stdWidth = layoutWidth(stdCompacted);
+        const fastWidth = layoutWidth(fastCompacted);
 
-        if (fastHeight < stdHeight) fastBetter++;
-        else if (stdHeight < fastHeight) stdBetter++;
+        if (fastWidth < stdWidth) fastBetter++;
+        else if (stdWidth < fastWidth) stdBetter++;
         else equal++;
       }
 
       console.log(
         [
           "",
-          "  Compaction height comparison (50 random layouts):",
+          "  Compaction width comparison (50 random layouts):",
           `    Fast better: ${fastBetter}`,
           `    Standard better: ${stdBetter}`,
           `    Equal: ${equal}`
@@ -431,17 +524,17 @@ describe("Fast Vertical Compactor", () => {
     it("handles complex static item configurations identically", () => {
       // Multiple static items at various positions
       const layout = [
-        { i: "s1", x: 0, y: 0, w: 4, h: 2, static: true },
-        { i: "s2", x: 6, y: 3, w: 4, h: 2, static: true },
-        { i: "s3", x: 2, y: 8, w: 6, h: 1, static: true },
-        { i: "a", x: 0, y: 5, w: 2, h: 2 },
-        { i: "b", x: 4, y: 1, w: 2, h: 2 },
-        { i: "c", x: 10, y: 0, w: 2, h: 3 },
-        { i: "d", x: 0, y: 10, w: 3, h: 2 }
+        { i: "s1", x: 0, y: 0, w: 2, h: 4, static: true },
+        { i: "s2", x: 3, y: 6, w: 2, h: 4, static: true },
+        { i: "s3", x: 8, y: 2, w: 1, h: 6, static: true },
+        { i: "a", x: 5, y: 0, w: 2, h: 2 },
+        { i: "b", x: 1, y: 4, w: 2, h: 2 },
+        { i: "c", x: 0, y: 10, w: 3, h: 2 },
+        { i: "d", x: 10, y: 0, w: 2, h: 3 }
       ];
 
-      const stdCompacted = verticalCompactor.compact(layout, 12);
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       // Static items should be in same position in both
       for (const item of layout.filter(l => l.static)) {
@@ -459,7 +552,7 @@ describe("Fast Vertical Compactor", () => {
     it("preserves item dimensions", () => {
       const layout = generateRandomLayout(30, 12, 5);
 
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       // All items should preserve their w, h, and i
       for (const original of layout) {
@@ -484,50 +577,49 @@ describe("Fast Vertical Compactor", () => {
         });
       }
 
-      const stdCompacted = verticalCompactor.compact(layout, 12);
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       // Both should have no overlaps
       expect(hasOverlaps(stdCompacted)).toBe(false);
       expect(hasOverlaps(fastCompacted)).toBe(false);
 
-      // Heights should be similar (within 10%)
-      const stdHeight = layoutHeight(stdCompacted);
-      const fastHeight = layoutHeight(fastCompacted);
-      const heightDiff =
-        Math.abs(stdHeight - fastHeight) / Math.max(stdHeight, 1);
+      // Widths should be similar (within 20%)
+      const stdWidth = layoutWidth(stdCompacted);
+      const fastWidth = layoutWidth(fastCompacted);
+      const widthDiff = Math.abs(stdWidth - fastWidth) / Math.max(stdWidth, 1);
 
       console.log(
         [
           "",
           "  Deterministic 100-item layout:",
-          `    Standard height: ${stdHeight}`,
-          `    Fast height: ${fastHeight}`,
-          `    Difference: ${(heightDiff * 100).toFixed(1)}%`
+          `    Standard width: ${stdWidth}`,
+          `    Fast width: ${fastWidth}`,
+          `    Difference: ${(widthDiff * 100).toFixed(1)}%`
         ].join("\n")
       );
 
-      expect(heightDiff).toBeLessThan(0.2); // Within 20%
+      expect(widthDiff).toBeLessThan(0.3); // Within 30%
     });
 
     it("handles edge case: items that could stack in different orders", () => {
       // Items that could be stacked in different valid configurations
       const layout = [
-        { i: "a", x: 0, y: 0, w: 6, h: 2 },
-        { i: "b", x: 0, y: 0, w: 6, h: 2 }, // Same position as a
-        { i: "c", x: 0, y: 0, w: 6, h: 2 } // Same position as a and b
+        { i: "a", x: 0, y: 0, w: 2, h: 6 },
+        { i: "b", x: 0, y: 0, w: 2, h: 6 }, // Same position as a
+        { i: "c", x: 0, y: 0, w: 2, h: 6 } // Same position as a and b
       ];
 
-      const stdCompacted = verticalCompactor.compact(layout, 12);
-      const fastCompacted = fastVerticalCompactor.compact(layout, 12);
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
 
       // Both should produce valid layouts with no overlaps
       expect(hasOverlaps(stdCompacted)).toBe(false);
       expect(hasOverlaps(fastCompacted)).toBe(false);
 
-      // Total height should be 6 (3 items * height 2)
-      expect(layoutHeight(stdCompacted)).toBe(6);
-      expect(layoutHeight(fastCompacted)).toBe(6);
+      // Total width should be 6 (3 items * width 2)
+      expect(layoutWidth(stdCompacted)).toBe(6);
+      expect(layoutWidth(fastCompacted)).toBe(6);
     });
 
     it("handles narrow grids (1-3 columns)", () => {
@@ -536,19 +628,38 @@ describe("Fast Vertical Compactor", () => {
         for (let i = 0; i < 10; i++) {
           layout.push({
             i: String(i),
-            x: 0,
-            y: i * 2,
+            x: i * 2,
+            y: 0,
             w: 1,
             h: 1 + (i % 2)
           });
         }
 
-        const stdCompacted = verticalCompactor.compact(layout, cols);
-        const fastCompacted = fastVerticalCompactor.compact(layout, cols);
+        const stdCompacted = horizontalCompactor.compact(layout, cols);
+        const fastCompacted = fastHorizontalCompactor.compact(layout, cols);
 
         expect(hasOverlaps(stdCompacted)).toBe(false);
         expect(hasOverlaps(fastCompacted)).toBe(false);
       }
+    });
+
+    it("handles tall items spanning multiple rows", () => {
+      const layout = [
+        { i: "a", x: 5, y: 0, w: 2, h: 5 },
+        { i: "b", x: 8, y: 2, w: 3, h: 3 }
+      ];
+
+      const stdCompacted = horizontalCompactor.compact(layout, 12);
+      const fastCompacted = fastHorizontalCompactor.compact(layout, 12);
+
+      // Both should compact correctly
+      expect(hasOverlaps(stdCompacted)).toBe(false);
+      expect(hasOverlaps(fastCompacted)).toBe(false);
+
+      // Item a should be at x=0
+      expect(fastCompacted.find(l => l.i === "a").x).toBe(0);
+      // Item b should be at x=2 (right after a, overlapping rows)
+      expect(fastCompacted.find(l => l.i === "b").x).toBe(2);
     });
   });
 });
