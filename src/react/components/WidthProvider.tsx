@@ -65,30 +65,32 @@ export function WidthProvider<P extends { width: number }>(
     const elementRef = useRef<HTMLDivElement>(null);
     const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
+    // Set mounted state on first render
     useEffect(() => {
       setMounted(true);
+    }, []);
 
-      // Set up ResizeObserver
-      resizeObserverRef.current = new ResizeObserver(entries => {
-        const node = elementRef.current;
-        if (node instanceof HTMLElement && entries[0]) {
+    // Set up ResizeObserver - re-runs when mounted changes to observe the new element
+    // This fixes measureBeforeMount where the ref changes from placeholder to composed component
+    useEffect(() => {
+      const node = elementRef.current;
+      if (!(node instanceof HTMLElement)) return;
+
+      const observer = new ResizeObserver(entries => {
+        if (entries[0]) {
           const newWidth = entries[0].contentRect.width;
           setWidth(newWidth);
         }
       });
 
-      const node = elementRef.current;
-      if (node instanceof HTMLElement) {
-        resizeObserverRef.current.observe(node);
-      }
+      observer.observe(node);
+      resizeObserverRef.current = observer;
 
       return () => {
-        if (node instanceof HTMLElement && resizeObserverRef.current) {
-          resizeObserverRef.current.unobserve(node);
-        }
-        resizeObserverRef.current?.disconnect();
+        observer.unobserve(node);
+        observer.disconnect();
       };
-    }, []);
+    }, [mounted]);
 
     // If measureBeforeMount is true and not yet mounted, render placeholder
     if (measureBeforeMount && !mounted) {
