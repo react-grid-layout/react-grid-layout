@@ -78,6 +78,7 @@
     "build-example": "make build-example",
     "view-example": "make view-example",
     "dev": "make dev",
+    "prepare": "husky",
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "fmt": "prettier --write .",
