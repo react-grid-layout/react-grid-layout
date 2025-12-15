@@ -53,9 +53,11 @@ yarn dev
 # Run ESLint
 yarn lint
 
-# Format code with Prettier
-npm run fmt
+# Format code with Prettier (run before committing!)
+yarn fmt
 ```
+
+**Important**: Always run `yarn fmt` before committing. The CI will fail if code is not formatted.
 
 ## Architecture (v2)
 

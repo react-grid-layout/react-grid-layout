@@ -222,8 +222,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --ext .js,.jsx --fix"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
     ],
     "*": [
       "prettier --ignore-unknown --write"

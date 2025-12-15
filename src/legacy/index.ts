@@ -22,6 +22,10 @@ export {
 export { default as WidthProvider } from "./WidthProvider.js";
 
 // Re-export types from core
+// Note: Type names changed from @types/react-grid-layout:
+//   - RGL.Layout (single item) -> LayoutItem
+//   - RGL.Layout[] (array) -> Layout
+//   - RGL.Layouts -> ResponsiveLayouts
 export type {
   Layout,
   LayoutItem,
