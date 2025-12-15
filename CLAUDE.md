@@ -319,7 +319,7 @@ dist/
 
 ## Bug Reporting
 
-Users should reproduce bugs in CodeSandbox: https://codesandbox.io/s/staging-bush-3lvt7
+Users should reproduce bugs in CodeSandbox: https://codesandbox.io/p/sandbox/5ywf7c
 
 ## RFC & Design Document
 

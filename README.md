@@ -15,7 +15,7 @@ RGL is React-only and does not require jQuery.
 
 > GIF from production usage on [BitMEX.com](https://www.bitmex.com)
 
-[**[Demo](https://react-grid-layout.github.io/react-grid-layout/) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/s/5wy3rz5z1x?module=%2Fsrc%2FShowcaseLayout.js)**]
+[**[Demo](https://react-grid-layout.github.io/react-grid-layout/) | [Changelog](/CHANGELOG.md) | [CodeSandbox Editable demo](https://codesandbox.io/p/sandbox/5ywf7c)**]
 
 ## Table of Contents
 
@@ -1350,5 +1350,5 @@ const CustomItem = forwardRef<HTMLDivElement, CustomItemProps>(
 
 If you have a feature request, please add it as an issue or make a pull request.
 
-If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/s/staging-bush-3lvt7?file=/src/ShowcaseLayout.js) to help
+If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/p/sandbox/5ywf7c) to help
 us easily isolate it.
