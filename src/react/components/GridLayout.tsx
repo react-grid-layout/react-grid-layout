@@ -438,6 +438,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Sync layout from props
   useEffect(() => {
     if (activeDrag) return; // Don't update during drag
+    if (droppingDOMNode) return; // Don't update during drop from outside
 
     const layoutChanged = !deepEqual(propsLayout, prevPropsLayoutRef.current);
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
@@ -465,6 +466,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     compactType,
     allowOverlap,
     activeDrag,
+    droppingDOMNode,
     layout
   ]);
 
