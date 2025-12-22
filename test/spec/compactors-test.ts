@@ -11,6 +11,7 @@ import {
   getCompactor,
   verticalOverlapCompactor,
   horizontalOverlapCompactor,
+  noOverlapCompactor,
   type Compactor
 } from "../../src/core/compactors";
 import type { Layout } from "../../src/core/types";
@@ -373,6 +374,11 @@ describe("Compactors", () => {
       expect(horizontalOverlapCompactor.type).toBe("horizontal");
     });
 
+    it("noOverlapCompactor has allowOverlap true and type null", () => {
+      expect(noOverlapCompactor.allowOverlap).toBe(true);
+      expect(noOverlapCompactor.type).toBe(null);
+    });
+
     it("verticalOverlapCompactor.compact clones without moving", () => {
       const layout: Layout = [
         { i: "a", x: 0, y: 5, w: 2, h: 2, static: false, moved: false },
@@ -417,9 +423,10 @@ describe("Compactors", () => {
       expect(compactor.allowOverlap).toBe(true);
     });
 
-    it("returns noCompactor for null with allowOverlap", () => {
+    it("returns noOverlapCompactor for null with allowOverlap", () => {
       const compactor = getCompactor(null, true);
       expect(compactor.type).toBe(null);
+      expect(compactor.allowOverlap).toBe(true);
     });
 
     it("returns compactor with preventCollision flag", () => {

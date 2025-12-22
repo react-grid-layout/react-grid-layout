@@ -125,6 +125,7 @@ export {
   noCompactor,
   verticalOverlapCompactor,
   horizontalOverlapCompactor,
+  noOverlapCompactor,
   getCompactor,
   // Helpers for custom compactors
   resolveCompactionCollision,

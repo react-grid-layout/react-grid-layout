@@ -86,31 +86,35 @@ function compactItemInternal(
   const compactV = compactType === "vertical";
   const compactH = compactType === "horizontal";
 
-  if (compactV) {
-    // Bottom 'y' possible is the bottom of the layout.
-    // This allows you to do nice stuff like specify {y: Infinity}
-    if (typeof b === "number") {
-      (l as Mutable<LayoutItem>).y = Math.min(b, l.y);
-    } else {
-      (l as Mutable<LayoutItem>).y = Math.min(bottom(compareWith), l.y);
-    }
-    // Move the element up as far as it can go without colliding.
-    while (l.y > 0 && !getFirstCollision(compareWith, l)) {
-      (l as Mutable<LayoutItem>).y--;
-    }
-  } else if (compactH) {
-    // Move the element left as far as it can go without colliding.
-    while (l.x > 0 && !getFirstCollision(compareWith, l)) {
-      (l as Mutable<LayoutItem>).x--;
+  // When allowOverlap is true, skip all compaction movement.
+  // Items stay where they are placed.
+  if (!allowOverlap) {
+    if (compactV) {
+      // Bottom 'y' possible is the bottom of the layout.
+      // This allows you to do nice stuff like specify {y: Infinity}
+      if (typeof b === "number") {
+        (l as Mutable<LayoutItem>).y = Math.min(b, l.y);
+      } else {
+        (l as Mutable<LayoutItem>).y = Math.min(bottom(compareWith), l.y);
+      }
+      // Move the element up as far as it can go without colliding.
+      while (l.y > 0 && !getFirstCollision(compareWith, l)) {
+        (l as Mutable<LayoutItem>).y--;
+      }
+    } else if (compactH) {
+      // Move the element left as far as it can go without colliding.
+      while (l.x > 0 && !getFirstCollision(compareWith, l)) {
+        (l as Mutable<LayoutItem>).x--;
+      }
     }
   }
 
   // Move it down/right, and keep moving if it's colliding.
   let collision: LayoutItem | undefined;
-  // Checking the compactType null value to avoid breaking the layout when overlapping is allowed.
+  // When allowOverlap is true, skip collision resolution entirely.
   while (
     (collision = getFirstCollision(compareWith, l)) !== undefined &&
-    !(compactType === null && allowOverlap)
+    !allowOverlap
   ) {
     if (compactH) {
       resolveCompactionCollision(fullLayout, l, collision.x + collision.w, "x");

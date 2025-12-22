@@ -341,6 +341,16 @@ export const horizontalOverlapCompactor: Compactor = {
   }
 };
 
+/**
+ * No compaction, with overlapping allowed.
+ *
+ * Items stay where placed and can overlap each other.
+ */
+export const noOverlapCompactor: Compactor = {
+  ...noCompactor,
+  allowOverlap: true
+};
+
 // ============================================================================
 // Factory Function
 // ============================================================================
@@ -370,7 +380,7 @@ export function getCompactor(
     if (compactType === "vertical") baseCompactor = verticalOverlapCompactor;
     else if (compactType === "horizontal")
       baseCompactor = horizontalOverlapCompactor;
-    else baseCompactor = noCompactor;
+    else baseCompactor = noOverlapCompactor;
   } else {
     if (compactType === "vertical") baseCompactor = verticalCompactor;
     else if (compactType === "horizontal") baseCompactor = horizontalCompactor;
