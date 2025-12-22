@@ -804,6 +804,58 @@ describe("Lifecycle tests", function () {
         );
         expect(hasDroppedItem).toBe(false);
       });
+
+      it("does not cause Maximum update depth exceeded on drag over (#2204)", function () {
+        // This test verifies the fix for issue #2204 where dragOver would cause
+        // an infinite update loop because the sync useEffect would remove the
+        // dropping item from layout, which would trigger another render.
+        //
+        // The fix adds a check for droppingDOMNode in the sync useEffect to skip
+        // layout synchronization during drop-from-outside operations.
+        const onLayoutChange = jest.fn();
+        const onDropDragOver = jest.fn(() => ({ w: 2, h: 2 }));
+
+        const { container } = render(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            isDroppable={true}
+            onDropDragOver={onDropDragOver}
+            onLayoutChange={onLayoutChange}
+          >
+            <div key="a" data-grid={{ x: 0, y: 0, w: 2, h: 2 }}>
+              a
+            </div>
+          </ReactGridLayout>
+        );
+
+        const grid = container.querySelector(".react-grid-layout");
+
+        // Simulate a single dragOver event - if the bug exists, this would cause
+        // an infinite loop and the test would timeout
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 200,
+            clientY: 100,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+        });
+
+        // If we get here without timing out, the fix is working
+        // Verify that the dropping placeholder was added to layout
+        const layoutCalls = onLayoutChange.mock.calls;
+        const hasDroppedItem = layoutCalls.some(call =>
+          call[0].some(item => item.i === "__dropping-elem__")
+        );
+        expect(hasDroppedItem).toBe(true);
+      });
     });
 
     describe("Drag Callbacks", function () {

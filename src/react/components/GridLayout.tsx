@@ -424,6 +424,13 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const prevChildrenRef = useRef<React.ReactNode>(children);
   const prevCompactTypeRef = useRef<CompactType>(compactType);
 
+  // Ref to current layout - Critical for preventing infinite update loops (#2204).
+  // This allows callbacks to access the latest layout without including `layout`
+  // in dependency arrays, which would cause callbacks to be recreated on every
+  // layout change and trigger infinite re-renders via GridItem's useEffect.
+  const layoutRef = useRef<Layout>(layout);
+  layoutRef.current = layout;
+
   // Mount effect - call onLayoutChange with initial layout if it differs from props
   useEffect(() => {
     setMounted(true);
@@ -438,6 +445,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Sync layout from props
   useEffect(() => {
     if (activeDrag) return; // Don't update during drag
+    if (droppingDOMNode) return; // Don't update during drop from outside
 
     const layoutChanged = !deepEqual(propsLayout, prevPropsLayoutRef.current);
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
@@ -465,6 +473,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     compactType,
     allowOverlap,
     activeDrag,
+    droppingDOMNode,
     layout
   ]);
 
@@ -495,7 +504,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   const onDragStart = useCallback(
     (i: string, _x: number, _y: number, data: GridDragEvent) => {
-      const l = getLayoutItem(layout, i);
+      const currentLayout = layoutRef.current;
+      const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
       const placeholder: LayoutItem = {
@@ -507,18 +517,19 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       };
 
       oldDragItemRef.current = cloneLayoutItem(l);
-      oldLayoutRef.current = layout;
+      oldLayoutRef.current = currentLayout;
       setActiveDrag(placeholder);
 
-      onDragStartProp(layout, l, l, null, data.e, data.node);
+      onDragStartProp(currentLayout, l, l, null, data.e, data.node);
     },
-    [layout, onDragStartProp]
+    [onDragStartProp]
   );
 
   const onDrag = useCallback(
     (i: string, x: number, y: number, data: GridDragEvent) => {
+      const currentLayout = layoutRef.current;
       const oldDragItem = oldDragItemRef.current;
-      const l = getLayoutItem(layout, i);
+      const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
       const placeholder: LayoutItem = {
@@ -531,7 +542,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
       // Move the element
       const newLayout = moveElement(
-        layout,
+        currentLayout,
         l,
         x,
         y,
@@ -549,19 +560,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       );
       setActiveDrag(placeholder);
     },
-    [layout, preventCollision, compactType, cols, allowOverlap, onDragProp]
+    [preventCollision, compactType, cols, allowOverlap, onDragProp]
   );
 
   const onDragStop = useCallback(
     (i: string, x: number, y: number, data: GridDragEvent) => {
       if (!activeDrag) return;
 
+      const currentLayout = layoutRef.current;
       const oldDragItem = oldDragItemRef.current;
-      const l = getLayoutItem(layout, i);
+      const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
       const newLayout = moveElement(
-        layout,
+        currentLayout,
         l,
         x,
         y,
@@ -590,7 +602,6 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     },
     [
       activeDrag,
-      layout,
       preventCollision,
       compactType,
       cols,
@@ -606,20 +617,22 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   const onResizeStart = useCallback(
     (i: string, _w: number, _h: number, data: GridResizeEvent) => {
-      const l = getLayoutItem(layout, i);
+      const currentLayout = layoutRef.current;
+      const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
       oldResizeItemRef.current = cloneLayoutItem(l);
-      oldLayoutRef.current = layout;
+      oldLayoutRef.current = currentLayout;
       setResizing(true);
 
-      onResizeStartProp(layout, l, l, null, data.e, data.node);
+      onResizeStartProp(currentLayout, l, l, null, data.e, data.node);
     },
-    [layout, onResizeStartProp]
+    [onResizeStartProp]
   );
 
   const onResize = useCallback(
     (i: string, w: number, h: number, data: GridResizeEvent) => {
+      const currentLayout = layoutRef.current;
       const oldResizeItem = oldResizeItemRef.current;
       const { handle } = data;
 
@@ -627,7 +640,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       let newX: number | undefined;
       let newY: number | undefined;
 
-      const [newLayout, l] = withLayoutItem(layout, i, item => {
+      const [newLayout, l] = withLayoutItem(currentLayout, i, item => {
         newX = item.x;
         newY = item.y;
 
@@ -650,7 +663,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
         // Check for collisions if preventCollision is enabled
         if (preventCollision && !allowOverlap) {
-          const collisions = getAllCollisions(layout, {
+          const collisions = getAllCollisions(currentLayout, {
             ...item,
             w,
             h,
@@ -713,17 +726,18 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       );
       setActiveDrag(placeholder);
     },
-    [layout, preventCollision, allowOverlap, compactType, cols, onResizeProp]
+    [preventCollision, allowOverlap, compactType, cols, onResizeProp]
   );
 
   const onResizeStop = useCallback(
     (i: string, _w: number, _h: number, data: GridResizeEvent) => {
+      const currentLayout = layoutRef.current;
       const oldResizeItem = oldResizeItemRef.current;
-      const l = getLayoutItem(layout, i);
+      const l = getLayoutItem(currentLayout, i);
 
       const finalLayout = allowOverlap
-        ? layout
-        : compact(layout, compactType, cols);
+        ? currentLayout
+        : compact(currentLayout, compactType, cols);
 
       onResizeStopProp(
         finalLayout,
@@ -745,7 +759,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         onLayoutChange(finalLayout);
       }
     },
-    [layout, allowOverlap, compactType, cols, onResizeStopProp, onLayoutChange]
+    [allowOverlap, compactType, cols, onResizeStopProp, onLayoutChange]
   );
 
   // ============================================================================
@@ -753,8 +767,9 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // ============================================================================
 
   const removeDroppingPlaceholder = useCallback(() => {
+    const currentLayout = layoutRef.current;
     const newLayout = compact(
-      layout.filter(l => l.i !== droppingItem.i),
+      currentLayout.filter(l => l.i !== droppingItem.i),
       compactType,
       cols,
       allowOverlap
@@ -764,7 +779,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     setDroppingDOMNode(null);
     setActiveDrag(null);
     setDroppingPosition(undefined);
-  }, [layout, droppingItem.i, compactType, cols, allowOverlap]);
+  }, [droppingItem.i, compactType, cols, allowOverlap]);
 
   const handleDragOver = useCallback(
     (e: ReactDragEvent): void | false => {
@@ -855,7 +870,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         setDroppingDOMNode(<div key={finalDroppingItem.i} />);
         setDroppingPosition(newDroppingPosition);
         setLayout([
-          ...layout,
+          ...layoutRef.current,
           {
             ...finalDroppingItem,
             x: calculatedPosition.x,
@@ -885,8 +900,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       maxRows,
       rowHeight,
       width,
-      effectiveContainerPadding,
-      layout
+      effectiveContainerPadding
     ]
   );
 
@@ -914,12 +928,13 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       e.preventDefault();
       e.stopPropagation();
 
-      const item = layout.find(l => l.i === droppingItem.i);
+      const currentLayout = layoutRef.current;
+      const item = currentLayout.find(l => l.i === droppingItem.i);
       dragEnterCounterRef.current = 0;
       removeDroppingPlaceholder();
-      onDropProp(layout, item, e.nativeEvent);
+      onDropProp(currentLayout, item, e.nativeEvent);
     },
-    [layout, droppingItem.i, removeDroppingPlaceholder, onDropProp]
+    [droppingItem.i, removeDroppingPlaceholder, onDropProp]
   );
 
   // ============================================================================
