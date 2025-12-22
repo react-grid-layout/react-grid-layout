@@ -558,6 +558,47 @@ describe("React Hooks", () => {
       expect(result.current).toHaveProperty("layout");
     });
 
+    it("does not cause infinite re-renders with inline layouts object (#2202)", () => {
+      // This test verifies the fix for issue #2202 where passing an inline
+      // layouts object would cause an infinite re-render loop.
+      // The fix uses separate refs to track props vs state changes.
+      const initLayout = [
+        { i: "a", x: 0, y: 0, w: 4, h: 2, static: false, moved: false }
+      ];
+      const onLayoutChange = jest.fn();
+      let renderCount = 0;
+
+      // Component that passes inline layouts object (like the bug report)
+      function TestComponent() {
+        renderCount++;
+        const { layout } = useResponsiveLayout({
+          width: 1200,
+          breakpoints: { lg: 1200 },
+          cols: { lg: 12 },
+          // Inline object - new reference every render
+          layouts: { lg: initLayout },
+          compactType: "horizontal",
+          onLayoutChange
+        });
+        return <div data-testid="layout-length">{layout.length}</div>;
+      }
+
+      const { rerender } = render(<TestComponent />);
+
+      // Force a few re-renders
+      rerender(<TestComponent />);
+      rerender(<TestComponent />);
+      rerender(<TestComponent />);
+
+      // Should not have caused excessive renders (infinite loop would cause timeout)
+      // A reasonable number is initial + 3 rerenders = 4
+      expect(renderCount).toBeLessThanOrEqual(10);
+
+      // onLayoutChange should only be called once (initial layout)
+      // not on every render
+      expect(onLayoutChange.mock.calls.length).toBeLessThanOrEqual(2);
+    });
+
     it("determines breakpoint from width", () => {
       // lg breakpoint is 1200, so width > 1200 should be lg
       const { result } = renderHook(() =>
