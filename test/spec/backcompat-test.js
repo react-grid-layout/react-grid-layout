@@ -688,6 +688,165 @@ describe("Backwards Compatibility: WidthProvider", () => {
   });
 });
 
+describe("Backwards Compatibility: allowOverlap (#2205)", () => {
+  it("allowOverlap=true with compactType=null preserves overlapping items", () => {
+    const onLayoutChange = jest.fn();
+
+    // Create layout with intentionally overlapping items
+    const layout = [
+      { i: "a", x: 0, y: 0, w: 4, h: 4 },
+      { i: "b", x: 2, y: 2, w: 4, h: 4 } // Overlaps with 'a'
+    ];
+
+    render(
+      <ReactGridLayout
+        layout={layout}
+        width={1200}
+        cols={12}
+        compactType={null}
+        allowOverlap={true}
+        onLayoutChange={onLayoutChange}
+      >
+        <div key="a">A</div>
+        <div key="b">B</div>
+      </ReactGridLayout>
+    );
+
+    expect(onLayoutChange).toHaveBeenCalled();
+    const [resultLayout] = onLayoutChange.mock.calls[0];
+
+    // Items should remain in their original positions (overlapping)
+    const itemA = resultLayout.find(l => l.i === "a");
+    const itemB = resultLayout.find(l => l.i === "b");
+
+    expect(itemA.x).toBe(0);
+    expect(itemA.y).toBe(0);
+    expect(itemB.x).toBe(2);
+    expect(itemB.y).toBe(2);
+  });
+
+  it("allowOverlap=true with compactType='vertical' preserves overlapping items", () => {
+    const onLayoutChange = jest.fn();
+
+    // Create layout with overlapping items
+    const layout = [
+      { i: "a", x: 0, y: 0, w: 4, h: 4 },
+      { i: "b", x: 2, y: 2, w: 4, h: 4 } // Overlaps with 'a'
+    ];
+
+    render(
+      <ReactGridLayout
+        layout={layout}
+        width={1200}
+        cols={12}
+        compactType="vertical"
+        allowOverlap={true}
+        onLayoutChange={onLayoutChange}
+      >
+        <div key="a">A</div>
+        <div key="b">B</div>
+      </ReactGridLayout>
+    );
+
+    expect(onLayoutChange).toHaveBeenCalled();
+    const [resultLayout] = onLayoutChange.mock.calls[0];
+
+    // Items should remain overlapping (not pushed apart)
+    const itemA = resultLayout.find(l => l.i === "a");
+    const itemB = resultLayout.find(l => l.i === "b");
+
+    expect(itemA.x).toBe(0);
+    expect(itemA.y).toBe(0);
+    expect(itemB.x).toBe(2);
+    expect(itemB.y).toBe(2); // Should NOT be pushed to y=4
+  });
+
+  it("allowOverlap=true with compactType='horizontal' preserves overlapping items", () => {
+    const onLayoutChange = jest.fn();
+
+    // Create layout with overlapping items
+    const layout = [
+      { i: "a", x: 0, y: 0, w: 4, h: 4 },
+      { i: "b", x: 2, y: 2, w: 4, h: 4 } // Overlaps with 'a'
+    ];
+
+    render(
+      <ReactGridLayout
+        layout={layout}
+        width={1200}
+        cols={12}
+        compactType="horizontal"
+        allowOverlap={true}
+        onLayoutChange={onLayoutChange}
+      >
+        <div key="a">A</div>
+        <div key="b">B</div>
+      </ReactGridLayout>
+    );
+
+    expect(onLayoutChange).toHaveBeenCalled();
+    const [resultLayout] = onLayoutChange.mock.calls[0];
+
+    // Items should remain overlapping (not pushed apart)
+    const itemA = resultLayout.find(l => l.i === "a");
+    const itemB = resultLayout.find(l => l.i === "b");
+
+    expect(itemA.x).toBe(0);
+    expect(itemA.y).toBe(0);
+    expect(itemB.x).toBe(2); // Should NOT be pushed to x=4
+    expect(itemB.y).toBe(2);
+  });
+
+  it("allowOverlap=false (default) separates overlapping items", () => {
+    const onLayoutChange = jest.fn();
+
+    // Create layout with overlapping items
+    const layout = [
+      { i: "a", x: 0, y: 0, w: 4, h: 4 },
+      { i: "b", x: 2, y: 2, w: 4, h: 4 } // Overlaps with 'a'
+    ];
+
+    render(
+      <ReactGridLayout
+        layout={layout}
+        width={1200}
+        cols={12}
+        onLayoutChange={onLayoutChange}
+      >
+        <div key="a">A</div>
+        <div key="b">B</div>
+      </ReactGridLayout>
+    );
+
+    expect(onLayoutChange).toHaveBeenCalled();
+    const [resultLayout] = onLayoutChange.mock.calls[0];
+
+    const itemA = resultLayout.find(l => l.i === "a");
+    const itemB = resultLayout.find(l => l.i === "b");
+
+    // Items should NOT overlap - b should be pushed below a
+    const aBottom = itemA.y + itemA.h;
+    expect(itemB.y).toBeGreaterThanOrEqual(aBottom);
+  });
+
+  it("compact() respects allowOverlap=true", () => {
+    // Directly test the compact function with overlapping items
+    const layout = [
+      { i: "a", x: 0, y: 0, w: 4, h: 4 },
+      { i: "b", x: 2, y: 2, w: 4, h: 4 } // Overlaps with 'a'
+    ];
+
+    // With allowOverlap=true, positions should be preserved
+    const compactedWithOverlap = compact(layout, null, 12, true);
+    expect(compactedWithOverlap.find(l => l.i === "b").y).toBe(2);
+
+    // With allowOverlap=false (default), items should be separated
+    const compactedWithoutOverlap = compact(layout, null, 12, false);
+    // b should be pushed to y=4 (after a ends)
+    expect(compactedWithoutOverlap.find(l => l.i === "b").y).toBe(4);
+  });
+});
+
 describe("Backwards Compatibility: Grid Item Dimensions", () => {
   it("calculates item width based on cols and container width", () => {
     const { container } = render(
