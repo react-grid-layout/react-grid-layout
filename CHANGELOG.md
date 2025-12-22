@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.1 (Dec 21, 2025)
+
+### Bug Fixes
+
+- **Legacy API**: Fix `allowOverlap` not working in legacy mode. Added `noOverlapCompactor` for when `compactType=null` and `allowOverlap=true`. [#2207](https://github.com/react-grid-layout/react-grid-layout/pull/2207)
+- **GridLayout**: Fix "Maximum update depth exceeded" during drag/resize/drop operations. Used `layoutRef` pattern to prevent callbacks from being recreated on every layout change. [#2208](https://github.com/react-grid-layout/react-grid-layout/pull/2208)
+- **useResponsiveLayout**: Fix infinite re-render loop when passing inline objects as `layouts` prop. Added separate ref to track props vs state changes. [#2209](https://github.com/react-grid-layout/react-grid-layout/pull/2209)
+
 ## 2.1.0 (Dec 14, 2025)
 
 ### New Features

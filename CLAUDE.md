@@ -59,6 +59,21 @@ yarn fmt
 
 **Important**: Always run `yarn fmt` before committing. The CI will fail if code is not formatted.
 
+### Releasing
+
+```bash
+# Patch release (bug fixes) - bumps version, builds, publishes to npm
+make release-patch
+
+# Minor release (new features, backwards compatible)
+make release-minor
+
+# Major release (breaking changes)
+make release-major
+```
+
+**Important**: Always use `make release-*` commands, never `npm version` directly. The Makefile handles building, version bumping, and publishing correctly.
+
 ## Architecture (v2)
 
 ### Package Structure
