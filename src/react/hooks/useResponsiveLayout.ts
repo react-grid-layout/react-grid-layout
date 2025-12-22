@@ -178,6 +178,10 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
   const prevBreakpointRef = useRef(breakpoint);
+  // Separate refs for props vs state to prevent infinite loops (#2202)
+  // When using inline objects for layouts prop, we need to compare props to props
+  // and state to state, not mix them up.
+  const prevPropsLayoutsRef = useRef(propsLayouts);
   const prevLayoutsRef = useRef(layouts);
 
   // Current layout for the active breakpoint
@@ -264,9 +268,9 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
 
   // Sync with prop layouts when they change
   useEffect(() => {
-    if (!deepEqual(propsLayouts, prevLayoutsRef.current)) {
+    if (!deepEqual(propsLayouts, prevPropsLayoutsRef.current)) {
       setLayouts(propsLayouts);
-      prevLayoutsRef.current = propsLayouts;
+      prevPropsLayoutsRef.current = propsLayouts;
     }
   }, [propsLayouts, setLayouts]);
 
