@@ -6,6 +6,7 @@ import _ from "lodash";
 import TestUtils from "react-dom/test-utils";
 import { render, screen, act } from "@testing-library/react";
 import ReactGridLayout from "../../src/legacy/ReactGridLayout";
+import { GridLayout as GridLayoutV2 } from "../../src/react/components/GridLayout";
 import { GridItem } from "../../src/react/components/GridItem";
 import ResponsiveReactGridLayout from "../../src/legacy/ResponsiveReactGridLayout";
 import BasicLayout from "../examples/01-basic";
@@ -803,6 +804,51 @@ describe("Lifecycle tests", function () {
           call[0].some(item => item.i === "__dropping-elem__")
         );
         expect(hasDroppedItem).toBe(false);
+      });
+
+      // #2212 - dropConfig.onDragOver should be used
+      it("calls dropConfig.onDragOver when provided (v2 API) (#2212)", function () {
+        const onDragOver = jest.fn(() => ({ w: 3, h: 3 }));
+        const onLayoutChange = jest.fn();
+
+        // Use GridLayoutV2 (the v2 API component) directly to test dropConfig.onDragOver
+        const { container } = render(
+          <GridLayoutV2
+            className="layout"
+            gridConfig={{ cols: 12, rowHeight: 30 }}
+            width={1200}
+            layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
+            dropConfig={{ enabled: true, onDragOver }}
+            onLayoutChange={onLayoutChange}
+          >
+            <div key="a">a</div>
+          </GridLayoutV2>
+        );
+
+        const grid = container.querySelector(".react-grid-layout");
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 200,
+            clientY: 150,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+        });
+
+        // dropConfig.onDragOver should be called
+        expect(onDragOver).toHaveBeenCalled();
+        // The dropping placeholder should have been added with w:3, h:3
+        const layoutCalls = onLayoutChange.mock.calls;
+        const droppingItem = layoutCalls
+          .flatMap(call => call[0])
+          .find(item => item.i === "__dropping-elem__");
+        expect(droppingItem).toBeDefined();
+        expect(droppingItem.w).toBe(3);
+        expect(droppingItem.h).toBe(3);
       });
 
       it("does not cause Maximum update depth exceeded on drag over (#2204)", function () {

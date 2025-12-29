@@ -370,7 +370,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     handles: resizeHandles,
     handleComponent: resizeHandle
   } = resizeConfig;
-  const { enabled: isDroppable, defaultItem: defaultDropItem } = dropConfig;
+  const {
+    enabled: isDroppable,
+    defaultItem: defaultDropItem,
+    onDragOver: dropConfigOnDragOver
+  } = dropConfig;
 
   // Get compactor (use provided or get from type)
   const compactor = compactorProp ?? getCompactor("vertical");
@@ -796,8 +800,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         return false;
       }
 
-      // Extract dragOffsetX from result, or use empty object if void/undefined
-      const rawResult = onDropDragOverProp(e);
+      // Use dropConfig.onDragOver if provided, otherwise fall back to onDropDragOver prop (#2212)
+      // dropConfig.onDragOver uses native DragEvent, onDropDragOver uses React's DragEvent
+      const rawResult = dropConfigOnDragOver
+        ? dropConfigOnDragOver(e.nativeEvent as DragEvent)
+        : onDropDragOverProp(e);
       if (rawResult === false) {
         if (droppingDOMNode) {
           removeDroppingPlaceholder();
@@ -892,6 +899,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       droppingDOMNode,
       droppingPosition,
       droppingItem,
+      dropConfigOnDragOver,
       onDropDragOverProp,
       removeDroppingPlaceholder,
       transformScale,
