@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.0 (Dec 29, 2025)
+
+### Bug Fixes
+
+- **GridItem**: Fix infinite loop when dragging from outside then leaving the grid without releasing the mouse. Applied the same `layoutRef` pattern from GridLayout to GridItem's constraint context. [#2214](https://github.com/react-grid-layout/react-grid-layout/pull/2214), fixes [#2210](https://github.com/react-grid-layout/react-grid-layout/issues/2210)
+- **DropConfig**: Fix `dropConfig.onDragOver` being ignored. The v2 API's `onDragOver` callback is now properly called when provided. [#2215](https://github.com/react-grid-layout/react-grid-layout/pull/2215), fixes [#2212](https://github.com/react-grid-layout/react-grid-layout/issues/2212)
+- **Compactor**: Fix custom compactor's `compact()` method never being called. GridLayout was extracting properties but ignoring the method implementations. [#2216](https://github.com/react-grid-layout/react-grid-layout/pull/2216), fixes [#2213](https://github.com/react-grid-layout/react-grid-layout/issues/2213)
+- **PositionStrategy**: Fix custom `calcStyle()` and `calcDragPosition()` methods never being called. Custom position strategies can now fully override positioning behavior. [#2217](https://github.com/react-grid-layout/react-grid-layout/pull/2217)
+- **DragConfig**: Implement `threshold` property (default 3px for v2 API). Drag callbacks now wait until mouse moves the threshold distance before firing, preventing accidental drags on click. Legacy API uses threshold=0 for backwards compatibility. [#2217](https://github.com/react-grid-layout/react-grid-layout/pull/2217), fixes [#1341](https://github.com/react-grid-layout/react-grid-layout/issues/1341), [#1401](https://github.com/react-grid-layout/react-grid-layout/issues/1401)
+
 ## 2.1.1 (Dec 21, 2025)
 
 ### Bug Fixes
