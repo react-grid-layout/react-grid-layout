@@ -856,6 +856,123 @@ describe("Lifecycle tests", function () {
         );
         expect(hasDroppedItem).toBe(true);
       });
+
+      it("does not cause Maximum update depth exceeded when dragging in then out (#2210)", function () {
+        // This test verifies the fix for issue #2210 where dragging an item INTO
+        // the grid and then moving it OUTSIDE without releasing the mouse button
+        // would cause an infinite update loop.
+        //
+        // The scenario is:
+        // 1. Drag an external item over the grid (creates dropping placeholder)
+        // 2. Move the item outside the grid (triggers dragLeave)
+        // 3. The dropping placeholder is removed but this triggers state updates
+        //    that cause the GridItem's useEffect to fire with stale callbacks
+        const consoleError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        const onLayoutChange = jest.fn();
+        const onDropDragOver = jest.fn(() => ({ w: 2, h: 2 }));
+        const onDrag = jest.fn();
+        const onDragStart = jest.fn();
+
+        const { container } = render(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            isDroppable={true}
+            onDropDragOver={onDropDragOver}
+            onLayoutChange={onLayoutChange}
+            onDrag={onDrag}
+            onDragStart={onDragStart}
+          >
+            <div key="a" data-grid={{ x: 0, y: 0, w: 2, h: 2 }}>
+              a
+            </div>
+          </ReactGridLayout>
+        );
+
+        const grid = container.querySelector(".react-grid-layout");
+
+        // Step 1: Drag into the grid (creates dropping placeholder)
+        act(() => {
+          TestUtils.Simulate.dragEnter(grid, {
+            clientX: 200,
+            clientY: 100
+          });
+        });
+
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 200,
+            clientY: 100,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+        });
+
+        // Verify the dropping placeholder was added
+        let layoutCalls = onLayoutChange.mock.calls;
+        let hasDroppedItem = layoutCalls.some(call =>
+          call[0].some(item => item.i === "__dropping-elem__")
+        );
+        expect(hasDroppedItem).toBe(true);
+
+        // Record how many times onDrag was called
+        const _dragCallsBefore = onDrag.mock.calls.length;
+
+        // Step 2: Move the item around inside the grid (multiple moves)
+        for (let i = 0; i < 5; i++) {
+          act(() => {
+            TestUtils.Simulate.dragOver(grid, {
+              currentTarget: {
+                getBoundingClientRect: () => ({ left: 0, top: 0 })
+              },
+              clientX: 200 + i * 20,
+              clientY: 100 + i * 20,
+              nativeEvent: {
+                target: document.createElement("div")
+              }
+            });
+          });
+        }
+
+        // Step 3: Drag leave (move outside the grid without releasing)
+        // This is where the infinite loop would occur in #2210
+        act(() => {
+          TestUtils.Simulate.dragLeave(grid, {
+            clientX: -100,
+            clientY: -100
+          });
+        });
+
+        // If we get here without timing out, the fix is working
+        // The dropping placeholder should have been removed
+        layoutCalls = onLayoutChange.mock.calls;
+        const lastLayout = layoutCalls[layoutCalls.length - 1]?.[0] || [];
+        hasDroppedItem = lastLayout.some(
+          item => item.i === "__dropping-elem__"
+        );
+        expect(hasDroppedItem).toBe(false);
+
+        // Verify onDrag wasn't called excessively (would indicate infinite loop)
+        // We expect 5 drag calls from step 2, plus maybe a few more, but not 50+
+        const totalDragCalls = onDrag.mock.calls.length;
+        expect(totalDragCalls).toBeLessThan(50);
+
+        // Verify no "Maximum update depth exceeded" errors
+        const maxDepthErrors = consoleError.mock.calls.filter(call =>
+          call[0]?.includes?.("Maximum update depth exceeded")
+        );
+        expect(maxDepthErrors).toHaveLength(0);
+
+        consoleError.mockRestore();
+      });
     });
 
     describe("Drag Callbacks", function () {

@@ -57,6 +57,7 @@ You are an expert at fixing bugs in the react-grid-layout codebase. Follow this 
    - Include a comment referencing the issue number: `// #<issue-number>`
 
 2. **Verify the test fails:**
+
    ```bash
    NODE_ENV=test npx jest --testPathPatterns="<test-file>"
    ```

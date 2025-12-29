@@ -248,6 +248,13 @@ export function GridItem(props: GridItemProps): ReactElement {
     undefined
   );
 
+  // Ref to current layout - Critical for preventing infinite update loops (#2210).
+  // The dropping item effect depends on onDrag, which needs layout for constraints.
+  // If we included layout directly, onDrag would be recreated on every layout change,
+  // causing the effect to re-run and update layout again, creating an infinite loop.
+  const layoutRef = useRef<Layout>(layout);
+  layoutRef.current = layout;
+
   // Position parameters
   const positionParams: PositionParams = useMemo(
     () => ({
@@ -262,6 +269,8 @@ export function GridItem(props: GridItemProps): ReactElement {
   );
 
   // Constraint context for applying constraints
+  // Note: This does NOT include layout in its dependencies to prevent infinite loops (#2210).
+  // The layout is accessed via layoutRef.current inside the callbacks that use this context.
   const constraintContext: ConstraintContext = useMemo(
     () => ({
       cols,
@@ -270,9 +279,21 @@ export function GridItem(props: GridItemProps): ReactElement {
       containerHeight: 0, // Auto-height grids don't have a fixed container height
       rowHeight,
       margin,
-      layout
+      // Use empty layout here - the actual layout will be accessed via layoutRef when needed
+      // This prevents the context from changing when layout changes, avoiding callback recreation
+      layout: []
     }),
-    [cols, maxRows, containerWidth, rowHeight, margin, layout]
+    [cols, maxRows, containerWidth, rowHeight, margin]
+  );
+
+  // Create a getter for constraint context with current layout
+  // This is called inside callbacks to get fresh layout data without causing re-renders
+  const getConstraintContext = useCallback(
+    (): ConstraintContext => ({
+      ...constraintContext,
+      layout: layoutRef.current
+    }),
+    [constraintContext]
   );
 
   // Effective layout item (use provided or create from props)
@@ -355,7 +376,7 @@ export function GridItem(props: GridItemProps): ReactElement {
         effectiveLayoutItem,
         rawPos.x,
         rawPos.y,
-        constraintContext
+        getConstraintContext()
       );
 
       onDragStartProp(i, newX, newY, {
@@ -370,7 +391,7 @@ export function GridItem(props: GridItemProps): ReactElement {
       positionParams,
       constraints,
       effectiveLayoutItem,
-      constraintContext,
+      getConstraintContext,
       i
     ]
   );
@@ -408,7 +429,7 @@ export function GridItem(props: GridItemProps): ReactElement {
         effectiveLayoutItem,
         rawPos.x,
         rawPos.y,
-        constraintContext
+        getConstraintContext()
       );
 
       onDragProp(i, newX, newY, {
@@ -430,7 +451,7 @@ export function GridItem(props: GridItemProps): ReactElement {
       i,
       constraints,
       effectiveLayoutItem,
-      constraintContext
+      getConstraintContext
     ]
   );
 
@@ -451,7 +472,7 @@ export function GridItem(props: GridItemProps): ReactElement {
         effectiveLayoutItem,
         rawPos.x,
         rawPos.y,
-        constraintContext
+        getConstraintContext()
       );
 
       onDragStopProp(i, newX, newY, {
@@ -466,7 +487,7 @@ export function GridItem(props: GridItemProps): ReactElement {
       positionParams,
       constraints,
       effectiveLayoutItem,
-      constraintContext,
+      getConstraintContext,
       i
     ]
   );
@@ -522,7 +543,7 @@ export function GridItem(props: GridItemProps): ReactElement {
         rawSize.w,
         rawSize.h,
         resizeHandle,
-        constraintContext
+        getConstraintContext()
       );
 
       handler(i, newW, newH, {
@@ -538,12 +559,10 @@ export function GridItem(props: GridItemProps): ReactElement {
       onResizeStopProp,
       containerWidth,
       positionParams,
-      x,
-      y,
       i,
       constraints,
       effectiveLayoutItem,
-      constraintContext
+      getConstraintContext
     ]
   );
 
