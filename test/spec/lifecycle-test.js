@@ -1962,4 +1962,40 @@ describe("Lifecycle tests", function () {
       expect(styleAfter).not.toEqual(styleBefore);
     });
   });
+
+  // #2213 - Custom compactors should have their methods called
+  describe("Custom Compactors", function () {
+    it("calls custom compactor.compact() when layout changes (v2 API) (#2213)", function () {
+      const customCompact = jest.fn(layout => layout);
+      const customOnMove = jest.fn((layout, _item, _x, _y, _cols) => layout);
+
+      const customCompactor = {
+        type: "vertical",
+        allowOverlap: false,
+        preventCollision: false,
+        compact: customCompact,
+        onMove: customOnMove
+      };
+
+      render(
+        <GridLayoutV2
+          className="layout"
+          gridConfig={{ cols: 12, rowHeight: 30 }}
+          width={1200}
+          layout={[
+            { i: "a", x: 0, y: 0, w: 2, h: 2 },
+            { i: "b", x: 2, y: 0, w: 2, h: 2 }
+          ]}
+          compactor={customCompactor}
+        >
+          <div key="a">a</div>
+          <div key="b">b</div>
+        </GridLayoutV2>
+      );
+
+      // The custom compactor's compact method should have been called
+      // during initial layout processing
+      expect(customCompact).toHaveBeenCalled();
+    });
+  });
 });
