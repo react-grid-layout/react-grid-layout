@@ -362,7 +362,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     enabled: isDraggable,
     bounded: isBounded,
     handle: draggableHandle,
-    cancel: draggableCancel
+    cancel: draggableCancel,
+    threshold: dragThreshold
   } = dragConfig;
   const {
     enabled: isResizable,
@@ -984,6 +985,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           useCSSTransforms={useCSSTransforms && mounted}
           usePercentages={!mounted}
           transformScale={transformScale}
+          positionStrategy={positionStrategy}
+          dragThreshold={dragThreshold}
           w={l.w}
           h={l.h}
           x={l.x}
@@ -1027,6 +1030,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       useCSSTransforms,
       mounted,
       transformScale,
+      positionStrategy,
+      dragThreshold,
       droppingPosition,
       resizeHandles,
       resizeHandle,

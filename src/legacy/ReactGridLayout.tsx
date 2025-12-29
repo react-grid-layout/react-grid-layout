@@ -200,7 +200,10 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
     enabled: isDraggable,
     bounded: isBounded,
     handle: draggableHandle,
-    cancel: draggableCancel
+    cancel: draggableCancel,
+    // Set threshold to 0 for backwards compatibility with v1 API
+    // v2 API defaults to 3px threshold (fixes #1341, #1401)
+    threshold: 0
   };
 
   const resizeConfig: Partial<ResizeConfig> = {

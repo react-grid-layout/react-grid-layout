@@ -255,6 +255,8 @@ describe("TypeScript Components", () => {
           width={1200}
           onDragStart={onDragStart}
           layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
+          // Set threshold to 0 to test immediate callback (v2 default is 3px)
+          dragConfig={{ threshold: 0 }}
         >
           <div key="a">a</div>
         </GridLayout>
