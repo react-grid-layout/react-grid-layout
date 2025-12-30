@@ -12,7 +12,7 @@ import type {
   Breakpoint,
   Breakpoints,
   ResponsiveLayouts,
-  CompactType
+  Compactor
 } from "../../core/types.js";
 import { cloneLayout } from "../../core/layout.js";
 import {
@@ -21,6 +21,7 @@ import {
   findOrGenerateResponsiveLayout,
   sortBreakpoints
 } from "../../core/responsive.js";
+import { verticalCompactor } from "../../core/compactors.js";
 
 // ============================================================================
 // Types
@@ -58,8 +59,8 @@ export interface UseResponsiveLayoutOptions<
   cols?: Breakpoints<B>;
   /** Layouts for each breakpoint */
   layouts?: ResponsiveLayouts<B>;
-  /** Compaction type */
-  compactType?: CompactType;
+  /** Compactor for layout compaction (default: verticalCompactor) */
+  compactor?: Compactor;
   /** Called when breakpoint changes */
   onBreakpointChange?: (newBreakpoint: B, cols: number) => void;
   /** Called when layout changes */
@@ -135,7 +136,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     breakpoints = DEFAULT_BREAKPOINTS as unknown as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as unknown as Breakpoints<B>,
     layouts: propsLayouts = {} as ResponsiveLayouts<B>,
-    compactType = "vertical",
+    compactor = verticalCompactor,
     onBreakpointChange,
     onLayoutChange,
     onWidthChange
@@ -184,7 +185,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   const prevPropsLayoutsRef = useRef(propsLayouts);
   const prevLayoutsRef = useRef(layouts);
 
-  // Current layout for the active breakpoint
+  // Current layout for the active breakpoint - use compactor (#2213)
   const layout = useMemo(() => {
     return findOrGenerateResponsiveLayout(
       layouts,
@@ -192,9 +193,9 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       breakpoint,
       prevBreakpointRef.current,
       cols,
-      compactType
+      compactor
     );
-  }, [layouts, breakpoints, breakpoint, cols, compactType]);
+  }, [layouts, breakpoints, breakpoint, cols, compactor]);
 
   // Set layout for a specific breakpoint
   const setLayoutForBreakpoint = useCallback((bp: B, newLayout: Layout) => {
@@ -231,13 +232,14 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     // Check if breakpoint changed
     if (newBreakpoint !== breakpoint) {
       // Generate layout for new breakpoint
+      // Use compactor (#2213)
       const newLayout = findOrGenerateResponsiveLayout(
         layouts,
         breakpoints,
         newBreakpoint,
         breakpoint,
         newCols,
-        compactType
+        compactor
       );
 
       // Update layouts with the new breakpoint layout
@@ -261,7 +263,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     colsConfig,
     breakpoint,
     layouts,
-    compactType,
+    compactor,
     onBreakpointChange,
     onWidthChange
   ]);

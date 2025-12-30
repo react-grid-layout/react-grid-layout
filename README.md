@@ -406,7 +406,7 @@ Core layout state management hook. Use this when you need direct control over dr
 - Build headless grid implementations
 
 ```tsx
-import { useGridLayout } from "react-grid-layout";
+import { useGridLayout, horizontalCompactor } from "react-grid-layout";
 
 function CustomGrid({ initialLayout }) {
   const {
@@ -426,9 +426,7 @@ function CustomGrid({ initialLayout }) {
   } = useGridLayout({
     layout: initialLayout,
     cols: 12,
-    compactType: "vertical",
-    allowOverlap: false,
-    preventCollision: false,
+    compactor: horizontalCompactor, // default is verticalCompactor
     onLayoutChange: newLayout => console.log("Layout changed:", newLayout)
   });
 
@@ -464,14 +462,12 @@ interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
-  /** Compaction type: 'vertical', 'horizontal', or null */
-  compactType?: CompactType;
-  /** Allow items to overlap (stack on top of each other) */
-  allowOverlap?: boolean;
-  /** Block movement into occupied space instead of pushing items (no effect if allowOverlap is true) */
+  /** Block movement into occupied space instead of pushing items */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
+  /** Compactor for layout compaction (default: verticalCompactor) */
+  compactor?: Compactor;
 }
 
 interface UseGridLayoutResult {
@@ -554,7 +550,7 @@ function CustomResponsiveGrid() {
       lg: [{ i: "1", x: 0, y: 0, w: 2, h: 2 }],
       md: [{ i: "1", x: 0, y: 0, w: 3, h: 2 }]
     },
-    compactType: "vertical",
+    // compactor: verticalCompactor (default)
     onBreakpointChange: (bp, cols) =>
       console.log(`Now at ${bp} (${cols} cols)`),
     onLayoutChange: (layout, allLayouts) => saveToServer(allLayouts)
@@ -588,8 +584,8 @@ interface UseResponsiveLayoutOptions<B extends string = DefaultBreakpoints> {
   cols?: Record<B, number>;
   /** Layouts for each breakpoint */
   layouts?: Partial<Record<B, Layout>>;
-  /** Compaction type */
-  compactType?: "vertical" | "horizontal" | null;
+  /** Compactor for layout compaction (default: verticalCompactor) */
+  compactor?: Compactor;
   /** Called when breakpoint changes */
   onBreakpointChange?: (newBreakpoint: B, cols: number) => void;
   /** Called when layout changes */
@@ -806,7 +802,10 @@ Import pure layout functions from `react-grid-layout/core`:
 
 ```ts
 import {
-  compact,
+  verticalCompactor,
+  horizontalCompactor,
+  noCompactor,
+  getCompactor,
   moveElement,
   collides,
   getFirstCollision,
@@ -814,6 +813,8 @@ import {
   // ... and more
 } from "react-grid-layout/core";
 ```
+
+> **Note**: The `compact()` function is not exported. Use compactors instead: `verticalCompactor.compact(layout, cols)` or get one via `getCompactor('vertical')`.
 
 ## Extending: Custom Compactors & Position Strategies
 
@@ -863,25 +864,6 @@ interface Compactor {
    * @returns New compacted layout
    */
   compact(layout: Layout, cols: number): Layout;
-
-  /**
-   * Handle moving an item.
-   * Called during drag to preview the new position.
-   *
-   * @param layout - Current layout
-   * @param item - Item being moved
-   * @param x - New X position in grid units
-   * @param y - New Y position in grid units
-   * @param cols - Number of grid columns
-   * @returns Updated layout with item at new position
-   */
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    cols: number
-  ): Layout;
 }
 ```
 
@@ -917,17 +899,6 @@ const gravityCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(layout, item, x, y, cols) {
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
@@ -966,18 +937,6 @@ const singleRowCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(layout, item, x, y, cols) {
-    // Same as default - just update position
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = 0; // Force row 0
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 ```

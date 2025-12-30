@@ -93,6 +93,10 @@ export function compactItemVertical(
   fullLayout: Layout,
   maxY: number
 ): LayoutItem {
+  // Correct negative positions first
+  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
+  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
+
   // Limit Y to the current bottom
   (l as Mutable<LayoutItem>).y = Math.min(maxY, l.y);
 
@@ -130,6 +134,10 @@ export function compactItemHorizontal(
   cols: number,
   fullLayout: Layout
 ): LayoutItem {
+  // Correct negative positions first
+  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
+  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
+
   // Move left as far as possible
   while (l.x > 0 && !getFirstCollision(compareWith, l)) {
     (l as Mutable<LayoutItem>).x--;
@@ -195,24 +203,6 @@ export const verticalCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    // Simple move - compact() will be called after
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
@@ -252,23 +242,6 @@ export const horizontalCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
@@ -289,23 +262,6 @@ export const noCompactor: Compactor = {
   compact(layout: Layout, _cols: number): Layout {
     // No compaction - just clone to maintain immutability
     return cloneLayout(layout);
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 

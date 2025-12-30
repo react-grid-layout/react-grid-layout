@@ -2201,14 +2201,12 @@ describe("Lifecycle tests", function () {
   describe("Custom Compactors", function () {
     it("calls custom compactor.compact() when layout changes (v2 API) (#2213)", function () {
       const customCompact = jest.fn(layout => layout);
-      const customOnMove = jest.fn((layout, _item, _x, _y, _cols) => layout);
 
       const customCompactor = {
         type: "vertical",
         allowOverlap: false,
         preventCollision: false,
-        compact: customCompact,
-        onMove: customOnMove
+        compact: customCompact
       };
 
       render(

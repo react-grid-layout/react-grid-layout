@@ -7,12 +7,13 @@
 import type {
   Breakpoint,
   Breakpoints,
+  Compactor,
   CompactType,
   Layout,
   ResponsiveLayouts
 } from "./types.js";
 import { cloneLayout, correctBounds } from "./layout.js";
-import { compact } from "./compact-compat.js";
+import { getCompactor } from "./compactors.js";
 
 // ============================================================================
 // Breakpoint Utilities
@@ -103,7 +104,7 @@ export function getColsFromBreakpoint<B extends Breakpoint>(
  * @param breakpoint - Target breakpoint
  * @param lastBreakpoint - Previous breakpoint (for fallback)
  * @param cols - Column count for the target breakpoint
- * @param compactType - Compaction type
+ * @param compactTypeOrCompactor - Compaction type string (legacy) or Compactor object
  * @returns Layout for the breakpoint
  */
 export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
@@ -112,7 +113,7 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
   breakpoint: B,
   lastBreakpoint: B,
   cols: number,
-  compactType: CompactType
+  compactTypeOrCompactor: CompactType | Compactor
 ): Layout {
   // If it already exists, just return it
   const existingLayout = layouts[breakpoint];
@@ -143,8 +144,15 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
   // Clone layout so we don't modify existing items
   const clonedLayout = cloneLayout(layout || []);
 
-  // Correct bounds and compact
-  return compact(correctBounds(clonedLayout, { cols }), compactType, cols);
+  // Correct bounds and compact - use compactor.compact() (#2213)
+  // Handle both legacy compactType string and new Compactor object
+  const corrected = correctBounds(clonedLayout, { cols });
+  const compactor: Compactor =
+    typeof compactTypeOrCompactor === "object" &&
+    compactTypeOrCompactor !== null
+      ? compactTypeOrCompactor
+      : getCompactor(compactTypeOrCompactor);
+  return compactor.compact(corrected, cols);
 }
 
 // ============================================================================

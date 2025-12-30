@@ -20,7 +20,6 @@ import type {
   Breakpoint,
   Breakpoints,
   ResponsiveLayouts,
-  CompactType,
   Compactor
 } from "../../core/types.js";
 import { cloneLayout, correctBounds } from "../../core/layout.js";
@@ -30,7 +29,6 @@ import {
   findOrGenerateResponsiveLayout,
   getIndentationValue
 } from "../../core/responsive.js";
-import { compact } from "../../core/compact-compat.js";
 import { getCompactor } from "../../core/compactors.js";
 import { bottom } from "../../core/layout.js";
 
@@ -106,14 +104,13 @@ const noop = () => {};
 // ============================================================================
 
 /**
- * Synchronize layout with children
+ * Synchronize layout with children - use compactor.compact() (#2213)
  */
 function synchronizeLayoutWithChildren(
   initialLayout: Layout,
   children: React.ReactNode,
   cols: number,
-  compactType: CompactType,
-  allowOverlap: boolean
+  compactor: Compactor
 ): Layout {
   const layout: LayoutItem[] = [];
 
@@ -164,9 +161,9 @@ function synchronizeLayoutWithChildren(
     }
   });
 
-  // Correct bounds and compact
+  // Correct bounds and compact - use compactor.compact() (#2213)
   const corrected = correctBounds(layout, { cols });
-  return compact(corrected, compactType, cols, allowOverlap);
+  return compactor.compact(corrected, cols);
 }
 
 // ============================================================================
@@ -211,6 +208,8 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     return getColsFromBreakpoint(initialBreakpoint, colsConfig);
   }, [initialBreakpoint, colsConfig]);
 
+  // Use compactType for initial layout as compactor reference isn't stable here
+  // findOrGenerateResponsiveLayout accepts both CompactType and Compactor (#2213)
   const initialLayout = useMemo(() => {
     return findOrGenerateResponsiveLayout(
       propsLayouts,
@@ -246,6 +245,7 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
 
   // Derive layout synchronously from props during render (not in useEffect which runs after render)
   // This prevents the timing issue where GridLayout sees children before the layout is updated
+  // Use compactor directly (#2213)
   const derivedLayout: Layout | null = useMemo(() => {
     if (!deepEqual(propsLayouts, prevLayoutsRef.current)) {
       // Props changed, derive new layout synchronously
@@ -255,11 +255,11 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
         breakpoint,
         breakpoint,
         cols,
-        compactType
+        compactor
       );
     }
     return null; // No change needed
-  }, [propsLayouts, breakpoints, breakpoint, cols, compactType]);
+  }, [propsLayouts, breakpoints, breakpoint, cols, compactor]);
 
   // The effective layout to pass to GridLayout - use derived if available, else state
   const effectiveLayout = derivedLayout ?? layout;
@@ -274,17 +274,12 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     }
   }, [derivedLayout, propsLayouts]);
 
-  // Handle compactType changes
+  // Handle compactType changes - use compactor.compact() (#2213)
   useEffect(() => {
     if (compactType !== prevCompactTypeRef.current) {
       // Re-compact the current layout with the new compactType
       // Use effectiveLayout to avoid stale data when layouts are being synced
-      const newLayout = compact(
-        cloneLayout(effectiveLayout),
-        compactType,
-        cols,
-        allowOverlap
-      );
+      const newLayout = compactor.compact(cloneLayout(effectiveLayout), cols);
       const newLayouts = {
         ...layoutsRef.current,
         [breakpoint]: newLayout
@@ -298,6 +293,7 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     }
   }, [
     compactType,
+    compactor,
     effectiveLayout,
     cols,
     allowOverlap,
@@ -340,23 +336,22 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
             cloneLayout(layout);
         }
 
-        // Find or generate new layout
+        // Find or generate new layout - use compactor (#2213)
         let newLayout = findOrGenerateResponsiveLayout(
           newLayouts,
           breakpoints,
           newBreakpoint,
           lastBreakpoint,
           newCols,
-          compactType
+          compactor
         );
 
-        // Sync with children
+        // Sync with children - use compactor (#2213)
         newLayout = synchronizeLayoutWithChildren(
           newLayout,
           children,
           newCols,
-          compactType,
-          allowOverlap
+          compactor
         );
 
         // Store new layout
@@ -404,6 +399,7 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
     cols,
     layout,
     children,
+    compactor,
     compactType,
     allowOverlap,
     propMargin,

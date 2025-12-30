@@ -10,7 +10,6 @@ import { deepEqual } from "fast-equals";
 import type {
   Layout,
   LayoutItem,
-  CompactType,
   DroppingPosition,
   Compactor,
   Mutable
@@ -23,8 +22,7 @@ import {
   bottom,
   getLayoutItem
 } from "../../core/layout.js";
-import { compact } from "../../core/compact-compat.js";
-import { getCompactor } from "../../core/compactors.js";
+import { verticalCompactor } from "../../core/compactors.js";
 
 // ============================================================================
 // Types
@@ -60,14 +58,12 @@ export interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
-  /** Compaction type: 'vertical', 'horizontal', or null */
-  compactType?: CompactType;
-  /** Allow items to overlap */
-  allowOverlap?: boolean;
   /** Prevent collisions when moving items */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
+  /** Compactor for layout compaction (default: verticalCompactor) */
+  compactor?: Compactor;
 }
 
 export interface UseGridLayoutResult {
@@ -137,8 +133,7 @@ export interface UseGridLayoutResult {
  *     containerHeight
  *   } = useGridLayout({
  *     layout: initialLayout,
- *     cols: 12,
- *     compactType: 'vertical'
+ *     cols: 12
  *   });
  *
  *   return (
@@ -161,25 +156,18 @@ export function useGridLayout(
   const {
     layout: propsLayout,
     cols,
-    compactType = "vertical",
-    allowOverlap = false,
     preventCollision = false,
-    onLayoutChange
+    onLayoutChange,
+    compactor = verticalCompactor
   } = options;
-
-  // Get the appropriate compactor
-  const compactor = useMemo(
-    () => getCompactor(compactType, allowOverlap),
-    [compactType, allowOverlap]
-  );
 
   // Track if we're currently dragging to block prop updates
   const isDraggingRef = useRef(false);
 
-  // Initialize layout with compaction
+  // Initialize layout with compaction using the compactor
   const [layout, setLayoutState] = useState<Layout>(() => {
     const corrected = correctBounds(cloneLayout(propsLayout), { cols });
-    return compact(corrected, compactType, cols, allowOverlap);
+    return compactor.compact(corrected, cols);
   });
 
   // Drag state
@@ -205,14 +193,14 @@ export function useGridLayout(
   // Track previous layout for change detection
   const prevLayoutRef = useRef<Layout>(layout);
 
-  // Set layout with optional compaction
+  // Set layout with optional compaction - use compactor.compact() (#2213)
   const setLayout = useCallback(
     (newLayout: Layout) => {
       const corrected = correctBounds(cloneLayout(newLayout), { cols });
-      const compacted = compact(corrected, compactType, cols, allowOverlap);
+      const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
     },
-    [cols, compactType, allowOverlap]
+    [cols, compactor]
   );
 
   // Sync layout from props when not dragging
@@ -281,19 +269,17 @@ export function useGridLayout(
         y,
         true, // isUserAction
         preventCollision,
-        compactType,
+        compactor.type,
         cols,
-        allowOverlap
+        compactor.allowOverlap
       );
 
-      // Compact layout
-      const compacted = allowOverlap
-        ? newLayout
-        : compact(newLayout, compactType, cols);
+      // Compact layout - use compactor.compact() (#2213)
+      const compacted = compactor.compact(newLayout, cols);
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactType, preventCollision, allowOverlap]
+    [layout, cols, compactor, preventCollision]
   );
 
   const onDragStop = useCallback(
@@ -309,13 +295,13 @@ export function useGridLayout(
         y,
         true,
         preventCollision,
-        compactType,
+        compactor.type,
         cols,
-        allowOverlap
+        compactor.allowOverlap
       );
 
-      // Compact and finalize
-      const compacted = compact(newLayout, compactType, cols, allowOverlap);
+      // Compact and finalize - use compactor.compact() (#2213)
+      const compacted = compactor.compact(newLayout, cols);
 
       isDraggingRef.current = false;
 
@@ -327,7 +313,7 @@ export function useGridLayout(
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactType, preventCollision, allowOverlap]
+    [layout, cols, compactor, preventCollision]
   );
 
   // ============================================================================
@@ -366,13 +352,13 @@ export function useGridLayout(
         return item;
       });
 
-      // Correct bounds and compact
+      // Correct bounds and compact - use compactor.compact() (#2213)
       const corrected = correctBounds(newLayout, { cols });
-      const compacted = compact(corrected, compactType, cols, allowOverlap);
+      const compacted = compactor.compact(corrected, cols);
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactType, allowOverlap]
+    [layout, cols, compactor]
   );
 
   const onResizeStop = useCallback(
@@ -399,10 +385,10 @@ export function useGridLayout(
       const existingItem = getLayoutItem(layout, droppingItem.i);
 
       if (!existingItem) {
-        // Add dropping item to layout
+        // Add dropping item to layout - use compactor.compact() (#2213)
         const newLayout = [...layout, droppingItem];
         const corrected = correctBounds(newLayout, { cols });
-        const compacted = compact(corrected, compactType, cols, allowOverlap);
+        const compacted = compactor.compact(corrected, cols);
         setLayoutState(compacted);
       }
 
@@ -411,7 +397,7 @@ export function useGridLayout(
         droppingPosition: position
       });
     },
-    [layout, cols, compactType, allowOverlap]
+    [layout, cols, compactor]
   );
 
   const onDropDragLeave = useCallback(() => {
@@ -439,8 +425,9 @@ export function useGridLayout(
         return item;
       });
 
+      // Use compactor.compact() (#2213)
       const corrected = correctBounds(newLayout, { cols });
-      const compacted = compact(corrected, compactType, cols, allowOverlap);
+      const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
 
       setDropState({
@@ -448,7 +435,7 @@ export function useGridLayout(
         droppingPosition: null
       });
     },
-    [layout, cols, compactType, allowOverlap]
+    [layout, cols, compactor]
   );
 
   // ============================================================================
