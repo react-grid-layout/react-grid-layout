@@ -1019,6 +1019,240 @@ describe("Lifecycle tests", function () {
 
         consoleError.mockRestore();
       });
+
+      // #2210 - Test with v2 API GridLayout directly
+      it("does not cause Maximum update depth exceeded with v2 API GridLayout (#2210)", function () {
+        const consoleError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        const onLayoutChange = jest.fn();
+        const onDragOver = jest.fn(() => ({ w: 2, h: 2 }));
+        const onDrag = jest.fn();
+        const onDragStart = jest.fn();
+
+        const { container } = render(
+          <GridLayoutV2
+            className="layout"
+            gridConfig={{ cols: 12, rowHeight: 30 }}
+            width={1200}
+            layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
+            dropConfig={{ enabled: true, onDragOver }}
+            onLayoutChange={onLayoutChange}
+            onDrag={onDrag}
+            onDragStart={onDragStart}
+          >
+            <div key="a">a</div>
+          </GridLayoutV2>
+        );
+
+        const grid = container.querySelector(".react-grid-layout");
+
+        // Step 1: Drag into the grid (creates dropping placeholder)
+        act(() => {
+          TestUtils.Simulate.dragEnter(grid, {
+            clientX: 200,
+            clientY: 100
+          });
+        });
+
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 200,
+            clientY: 100,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+        });
+
+        // Step 2: Move around inside multiple times
+        for (let i = 0; i < 5; i++) {
+          act(() => {
+            TestUtils.Simulate.dragOver(grid, {
+              currentTarget: {
+                getBoundingClientRect: () => ({ left: 0, top: 0 })
+              },
+              clientX: 200 + i * 30,
+              clientY: 100 + i * 30,
+              nativeEvent: {
+                target: document.createElement("div")
+              }
+            });
+          });
+        }
+
+        // Step 3: Drag out
+        act(() => {
+          TestUtils.Simulate.dragLeave(grid, {
+            clientX: -100,
+            clientY: -100
+          });
+        });
+
+        // Verify no "Maximum update depth exceeded" errors
+        const maxDepthErrors = consoleError.mock.calls.filter(call =>
+          call[0]?.includes?.("Maximum update depth exceeded")
+        );
+        expect(maxDepthErrors).toHaveLength(0);
+
+        consoleError.mockRestore();
+      });
+
+      // #2210 - Test with ResponsiveReactGridLayout
+      it("does not cause Maximum update depth exceeded with ResponsiveReactGridLayout (#2210)", function () {
+        const consoleError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        const onLayoutChange = jest.fn();
+        const onDropDragOver = jest.fn(() => ({ w: 2, h: 2 }));
+
+        const { container } = render(
+          <ResponsiveReactGridLayout
+            className="layout"
+            cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+            breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+            rowHeight={30}
+            width={1200}
+            isDroppable={true}
+            onDropDragOver={onDropDragOver}
+            onLayoutChange={onLayoutChange}
+            layouts={{
+              lg: [{ i: "a", x: 0, y: 0, w: 2, h: 2 }]
+            }}
+          >
+            <div key="a">a</div>
+          </ResponsiveReactGridLayout>
+        );
+
+        const grid = container.querySelector(".react-grid-layout");
+
+        // Step 1: Drag into the grid (creates dropping placeholder)
+        act(() => {
+          TestUtils.Simulate.dragEnter(grid, {
+            clientX: 200,
+            clientY: 100
+          });
+        });
+
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 200,
+            clientY: 100,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+        });
+
+        // Step 2: Move around inside
+        for (let i = 0; i < 3; i++) {
+          act(() => {
+            TestUtils.Simulate.dragOver(grid, {
+              currentTarget: {
+                getBoundingClientRect: () => ({ left: 0, top: 0 })
+              },
+              clientX: 200 + i * 20,
+              clientY: 100 + i * 20,
+              nativeEvent: {
+                target: document.createElement("div")
+              }
+            });
+          });
+        }
+
+        // Step 3: Drag out
+        act(() => {
+          TestUtils.Simulate.dragLeave(grid, {
+            clientX: -100,
+            clientY: -100
+          });
+        });
+
+        // Verify no "Maximum update depth exceeded" errors
+        const maxDepthErrors = consoleError.mock.calls.filter(call =>
+          call[0]?.includes?.("Maximum update depth exceeded")
+        );
+        expect(maxDepthErrors).toHaveLength(0);
+
+        consoleError.mockRestore();
+      });
+
+      // #2210 - Test repeated drag in/out cycles
+      it("does not cause Maximum update depth exceeded during repeated drag in/out cycles (#2210)", function () {
+        // This test verifies that repeatedly dragging an item INTO and then OUT OF
+        // the grid (without releasing) doesn't cause infinite loops.
+        const consoleError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        const onLayoutChange = jest.fn();
+        const onDropDragOver = jest.fn(() => ({ w: 2, h: 2 }));
+
+        const { container } = render(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            isDroppable={true}
+            onDropDragOver={onDropDragOver}
+            onLayoutChange={onLayoutChange}
+          >
+            <div key="a" data-grid={{ x: 0, y: 0, w: 2, h: 2 }}>
+              a
+            </div>
+          </ReactGridLayout>
+        );
+
+        const grid = container.querySelector(".react-grid-layout");
+
+        // Perform multiple drag in/out cycles
+        for (let cycle = 0; cycle < 5; cycle++) {
+          // Drag in
+          act(() => {
+            TestUtils.Simulate.dragEnter(grid, {
+              clientX: 200,
+              clientY: 100
+            });
+          });
+
+          // Move around inside
+          act(() => {
+            TestUtils.Simulate.dragOver(grid, {
+              currentTarget: {
+                getBoundingClientRect: () => ({ left: 0, top: 0 })
+              },
+              clientX: 200 + cycle * 10,
+              clientY: 100 + cycle * 10,
+              nativeEvent: {
+                target: document.createElement("div")
+              }
+            });
+          });
+
+          // Drag out (without releasing)
+          act(() => {
+            TestUtils.Simulate.dragLeave(grid, {
+              clientX: -100,
+              clientY: -100
+            });
+          });
+        }
+
+        // If we get here without timing out or crashing, the fix is working
+        // Verify no "Maximum update depth exceeded" errors
+        const maxDepthErrors = consoleError.mock.calls.filter(call =>
+          call[0]?.includes?.("Maximum update depth exceeded")
+        );
+        expect(maxDepthErrors).toHaveLength(0);
+
+        consoleError.mockRestore();
+      });
     });
 
     describe("Drag Callbacks", function () {
