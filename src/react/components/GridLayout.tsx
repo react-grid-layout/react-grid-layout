@@ -761,7 +761,18 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // ============================================================================
 
   const removeDroppingPlaceholder = useCallback(() => {
+    // Guard against being called when there's no dropping item (#2210)
+    // This makes the function idempotent and safe to call multiple times
     const currentLayout = layoutRef.current;
+    const hasDroppingItem = currentLayout.some(l => l.i === droppingItem.i);
+    if (!hasDroppingItem) {
+      // Nothing to remove, just ensure state is clean
+      setDroppingDOMNode(null);
+      setActiveDrag(null);
+      setDroppingPosition(undefined);
+      return;
+    }
+
     // Use compactor.compact() - it handles allowOverlap internally (#2213)
     const newLayout = compactor.compact(
       currentLayout.filter(l => l.i !== droppingItem.i),
@@ -906,6 +917,12 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       e.preventDefault();
       e.stopPropagation();
       dragEnterCounterRef.current--;
+
+      // Guard against negative counter (#2210)
+      // This can happen in edge cases with event timing or bubbling
+      if (dragEnterCounterRef.current < 0) {
+        dragEnterCounterRef.current = 0;
+      }
 
       if (dragEnterCounterRef.current === 0) {
         removeDroppingPlaceholder();
