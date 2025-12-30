@@ -406,7 +406,7 @@ Core layout state management hook. Use this when you need direct control over dr
 - Build headless grid implementations
 
 ```tsx
-import { useGridLayout } from "react-grid-layout";
+import { useGridLayout, horizontalCompactor } from "react-grid-layout";
 
 function CustomGrid({ initialLayout }) {
   const {
@@ -426,9 +426,7 @@ function CustomGrid({ initialLayout }) {
   } = useGridLayout({
     layout: initialLayout,
     cols: 12,
-    compactType: "vertical",
-    allowOverlap: false,
-    preventCollision: false,
+    compactor: horizontalCompactor, // default is verticalCompactor
     onLayoutChange: newLayout => console.log("Layout changed:", newLayout)
   });
 
@@ -464,14 +462,12 @@ interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
-  /** Compaction type: 'vertical', 'horizontal', or null */
-  compactType?: CompactType;
-  /** Allow items to overlap (stack on top of each other) */
-  allowOverlap?: boolean;
-  /** Block movement into occupied space instead of pushing items (no effect if allowOverlap is true) */
+  /** Block movement into occupied space instead of pushing items */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
+  /** Compactor for layout compaction (default: verticalCompactor) */
+  compactor?: Compactor;
 }
 
 interface UseGridLayoutResult {
@@ -554,7 +550,7 @@ function CustomResponsiveGrid() {
       lg: [{ i: "1", x: 0, y: 0, w: 2, h: 2 }],
       md: [{ i: "1", x: 0, y: 0, w: 3, h: 2 }]
     },
-    compactType: "vertical",
+    // compactor: verticalCompactor (default)
     onBreakpointChange: (bp, cols) =>
       console.log(`Now at ${bp} (${cols} cols)`),
     onLayoutChange: (layout, allLayouts) => saveToServer(allLayouts)
@@ -588,8 +584,8 @@ interface UseResponsiveLayoutOptions<B extends string = DefaultBreakpoints> {
   cols?: Record<B, number>;
   /** Layouts for each breakpoint */
   layouts?: Partial<Record<B, Layout>>;
-  /** Compaction type */
-  compactType?: "vertical" | "horizontal" | null;
+  /** Compactor for layout compaction (default: verticalCompactor) */
+  compactor?: Compactor;
   /** Called when breakpoint changes */
   onBreakpointChange?: (newBreakpoint: B, cols: number) => void;
   /** Called when layout changes */

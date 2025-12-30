@@ -15,6 +15,11 @@ import {
   DEFAULT_COLS
 } from "../../src/react/hooks/index";
 
+import {
+  horizontalCompactor,
+  verticalOverlapCompactor
+} from "../../src/core/compactors";
+
 import type { Layout } from "../../src/core/types";
 
 // Store ResizeObserver callbacks and instances for testing
@@ -517,21 +522,19 @@ describe("React Hooks", () => {
         useGridLayout({
           layout: initialLayout,
           cols: 12,
-          width: 1200,
-          compactType: "horizontal"
+          compactor: horizontalCompactor
         })
       );
 
       expect(result.current.compactor.type).toBe("horizontal");
     });
 
-    it("respects allowOverlap option", () => {
+    it("respects allowOverlap on compactor", () => {
       const { result } = renderHook(() =>
         useGridLayout({
           layout: initialLayout,
           cols: 12,
-          width: 1200,
-          allowOverlap: true
+          compactor: verticalOverlapCompactor
         })
       );
 

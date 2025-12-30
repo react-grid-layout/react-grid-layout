@@ -10,7 +10,6 @@ import { deepEqual } from "fast-equals";
 import type {
   Layout,
   LayoutItem,
-  CompactType,
   DroppingPosition,
   Compactor,
   Mutable
@@ -23,7 +22,7 @@ import {
   bottom,
   getLayoutItem
 } from "../../core/layout.js";
-import { getCompactor } from "../../core/compactors.js";
+import { verticalCompactor } from "../../core/compactors.js";
 
 // ============================================================================
 // Types
@@ -59,15 +58,11 @@ export interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
-  /** Compaction type: 'vertical', 'horizontal', or null (ignored if compactor is provided) */
-  compactType?: CompactType;
-  /** Allow items to overlap (ignored if compactor is provided) */
-  allowOverlap?: boolean;
   /** Prevent collisions when moving items */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
-  /** Custom compactor (takes precedence over compactType/allowOverlap) */
+  /** Compactor for layout compaction (default: verticalCompactor) */
   compactor?: Compactor;
 }
 
@@ -138,8 +133,7 @@ export interface UseGridLayoutResult {
  *     containerHeight
  *   } = useGridLayout({
  *     layout: initialLayout,
- *     cols: 12,
- *     compactType: 'vertical'
+ *     cols: 12
  *   });
  *
  *   return (
@@ -162,29 +156,18 @@ export function useGridLayout(
   const {
     layout: propsLayout,
     cols,
-    compactType = "vertical",
-    allowOverlap = false,
     preventCollision = false,
     onLayoutChange,
-    compactor: customCompactor
+    compactor = verticalCompactor
   } = options;
-
-  // Get the appropriate compactor - use custom if provided, otherwise derive from compactType/allowOverlap
-  const compactor = useMemo(
-    () => customCompactor ?? getCompactor(compactType, allowOverlap),
-    [customCompactor, compactType, allowOverlap]
-  );
 
   // Track if we're currently dragging to block prop updates
   const isDraggingRef = useRef(false);
 
   // Initialize layout with compaction using the compactor
-  // Note: We need to compute the initial compactor here since hooks can't be called conditionally
-  const initialCompactor =
-    customCompactor ?? getCompactor(compactType, allowOverlap);
   const [layout, setLayoutState] = useState<Layout>(() => {
     const corrected = correctBounds(cloneLayout(propsLayout), { cols });
-    return initialCompactor.compact(corrected, cols);
+    return compactor.compact(corrected, cols);
   });
 
   // Drag state
@@ -286,9 +269,9 @@ export function useGridLayout(
         y,
         true, // isUserAction
         preventCollision,
-        compactType,
+        compactor.type,
         cols,
-        allowOverlap
+        compactor.allowOverlap
       );
 
       // Compact layout - use compactor.compact() (#2213)
@@ -296,7 +279,7 @@ export function useGridLayout(
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactor, preventCollision, compactType, allowOverlap]
+    [layout, cols, compactor, preventCollision]
   );
 
   const onDragStop = useCallback(
@@ -312,9 +295,9 @@ export function useGridLayout(
         y,
         true,
         preventCollision,
-        compactType,
+        compactor.type,
         cols,
-        allowOverlap
+        compactor.allowOverlap
       );
 
       // Compact and finalize - use compactor.compact() (#2213)
@@ -330,7 +313,7 @@ export function useGridLayout(
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactor, preventCollision, compactType, allowOverlap]
+    [layout, cols, compactor, preventCollision]
   );
 
   // ============================================================================

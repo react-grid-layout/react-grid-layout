@@ -12,7 +12,6 @@ import type {
   Breakpoint,
   Breakpoints,
   ResponsiveLayouts,
-  CompactType,
   Compactor
 } from "../../core/types.js";
 import { cloneLayout } from "../../core/layout.js";
@@ -22,7 +21,7 @@ import {
   findOrGenerateResponsiveLayout,
   sortBreakpoints
 } from "../../core/responsive.js";
-import { getCompactor } from "../../core/compactors.js";
+import { verticalCompactor } from "../../core/compactors.js";
 
 // ============================================================================
 // Types
@@ -60,9 +59,7 @@ export interface UseResponsiveLayoutOptions<
   cols?: Breakpoints<B>;
   /** Layouts for each breakpoint */
   layouts?: ResponsiveLayouts<B>;
-  /** Compaction type (ignored if compactor is provided) */
-  compactType?: CompactType;
-  /** Custom compactor (takes precedence over compactType) */
+  /** Compactor for layout compaction (default: verticalCompactor) */
   compactor?: Compactor;
   /** Called when breakpoint changes */
   onBreakpointChange?: (newBreakpoint: B, cols: number) => void;
@@ -139,18 +136,11 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     breakpoints = DEFAULT_BREAKPOINTS as unknown as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as unknown as Breakpoints<B>,
     layouts: propsLayouts = {} as ResponsiveLayouts<B>,
-    compactType = "vertical",
-    compactor: customCompactor,
+    compactor = verticalCompactor,
     onBreakpointChange,
     onLayoutChange,
     onWidthChange
   } = options;
-
-  // Get the appropriate compactor - use custom if provided, otherwise derive from compactType (#2213)
-  const compactor = useMemo(
-    () => customCompactor ?? getCompactor(compactType),
-    [customCompactor, compactType]
-  );
 
   // Sorted breakpoints for consistent ordering
   const sortedBreakpoints = useMemo(

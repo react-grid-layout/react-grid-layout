@@ -588,18 +588,6 @@ interface GridLayoutProps {
 These are example patterns you can use in your application - they are not exported by the library:
 
 ```typescript
-// Example hook to memoize compactor selection
-function useCompactor(
-  compactType: CompactType,
-  allowOverlap?: boolean,
-  preventCollision?: boolean
-): Compactor {
-  return useMemo(
-    () => getCompactor(compactType, allowOverlap, preventCollision),
-    [compactType, allowOverlap, preventCollision]
-  );
-}
-
 // Example hook to memoize scaled position strategy
 function useScaledStrategy(scale: number): PositionStrategy {
   return useMemo(() => createScaledStrategy(scale), [scale]);
@@ -616,6 +604,8 @@ function MyScaledGrid({ scale }) {
   );
 }
 ```
+
+Note: The v2 hooks (`useGridLayout`, `useResponsiveLayout`) accept a `compactor` prop directly. The `compactType`/`allowOverlap` props are only available on the component APIs for backwards compatibility.
 
 ### Package Structure
 
