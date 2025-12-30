@@ -358,14 +358,6 @@ export interface Compactor {
   readonly preventCollision?: boolean;
   /** Compact the layout */
   compact(layout: Layout, cols: number): Layout;
-  /** Handle movement - returns new layout */
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    cols: number
-  ): Layout;
 }
 
 /**
@@ -465,13 +457,6 @@ export function createWrapCompactor(): Compactor {
 
         return result;
       });
-    },
-    onMove(layout, item, x, y, cols) {
-      // Re-compact after move
-      return this.compact(
-        layout.map(l => (l.i === item.i ? { ...l, x, y } : l)),
-        cols
-      );
     }
   };
 }

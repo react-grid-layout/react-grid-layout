@@ -203,24 +203,6 @@ export const verticalCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    // Simple move - compact() will be called after
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
@@ -260,23 +242,6 @@ export const horizontalCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
@@ -297,23 +262,6 @@ export const noCompactor: Compactor = {
   compact(layout: Layout, _cols: number): Layout {
     // No compaction - just clone to maintain immutability
     return cloneLayout(layout);
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 

@@ -548,8 +548,7 @@ describe("React Hooks", () => {
         type: "vertical" as const,
         allowOverlap: false,
         preventCollision: false,
-        compact: customCompact,
-        onMove: jest.fn((layout: Layout) => layout)
+        compact: customCompact
       };
 
       renderHook(() =>
@@ -573,8 +572,7 @@ describe("React Hooks", () => {
         type: "vertical" as const,
         allowOverlap: false,
         preventCollision: false,
-        compact: customCompact,
-        onMove: jest.fn((layout: Layout) => layout)
+        compact: customCompact
       };
 
       const { result } = renderHook(() =>
@@ -609,8 +607,7 @@ describe("React Hooks", () => {
         type: "vertical" as const,
         allowOverlap: false,
         preventCollision: false,
-        compact: customCompact,
-        onMove: jest.fn((layout: Layout) => layout)
+        compact: customCompact
       };
 
       const { result } = renderHook(() =>

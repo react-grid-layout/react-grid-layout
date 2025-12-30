@@ -868,25 +868,6 @@ interface Compactor {
    * @returns New compacted layout
    */
   compact(layout: Layout, cols: number): Layout;
-
-  /**
-   * Handle moving an item.
-   * Called during drag to preview the new position.
-   *
-   * @param layout - Current layout
-   * @param item - Item being moved
-   * @param x - New X position in grid units
-   * @param y - New Y position in grid units
-   * @param cols - Number of grid columns
-   * @returns Updated layout with item at new position
-   */
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    cols: number
-  ): Layout;
 }
 ```
 
@@ -922,17 +903,6 @@ const gravityCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(layout, item, x, y, cols) {
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
@@ -971,18 +941,6 @@ const singleRowCompactor: Compactor = {
     }
 
     return out;
-  },
-
-  onMove(layout, item, x, y, cols) {
-    // Same as default - just update position
-    const newLayout = cloneLayout(layout);
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = 0; // Force row 0
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 ```

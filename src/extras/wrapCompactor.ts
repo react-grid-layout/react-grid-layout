@@ -43,14 +43,6 @@ function sortByWrapOrder(layout: Layout): LayoutItem[] {
 }
 
 /**
- * Get the linear position of an item in wrap order.
- * Position 0 is top-left, increasing left-to-right then top-to-bottom.
- */
-function getWrapPosition(item: LayoutItem, cols: number): number {
-  return item.y * cols + item.x;
-}
-
-/**
  * Convert a linear wrap position back to x,y coordinates.
  */
 function fromWrapPosition(pos: number, cols: number): { x: number; y: number } {
@@ -132,85 +124,6 @@ function compactWrap(layout: Layout, cols: number): LayoutItem[] {
 }
 
 /**
- * Move an item in wrap mode, shifting other items to maintain sequence.
- *
- * When moving an item:
- * - If moving to an earlier position: items between shift right/down
- * - If moving to a later position: items between shift left/up
- */
-function moveInWrapMode(
-  layout: Layout,
-  item: LayoutItem,
-  x: number,
-  y: number,
-  cols: number
-): Layout {
-  const newLayout = cloneLayout(layout) as Mutable<LayoutItem>[];
-  const movedItem = newLayout.find(l => l.i === item.i);
-
-  if (!movedItem) {
-    return newLayout;
-  }
-
-  const oldPos = getWrapPosition(movedItem, cols);
-  const newPos = getWrapPosition({ ...movedItem, x, y }, cols);
-
-  if (oldPos === newPos) {
-    // No actual movement in wrap order
-    movedItem.x = x;
-    movedItem.y = y;
-    movedItem.moved = true;
-    return newLayout;
-  }
-
-  const isMovingEarlier = newPos < oldPos;
-
-  // Get all non-static items sorted by wrap position
-  const sortedItems = newLayout
-    .filter(l => !l.static)
-    .sort((a, b) => getWrapPosition(a, cols) - getWrapPosition(b, cols));
-
-  if (isMovingEarlier) {
-    // Moving item earlier: shift items in [newPos, oldPos) to the right
-    for (const l of sortedItems) {
-      const pos = getWrapPosition(l, cols);
-      if (l.i === item.i) continue;
-
-      if (pos >= newPos && pos < oldPos) {
-        // Shift this item right by 1 position in wrap order
-        const shiftedPos = pos + 1;
-        const coords = fromWrapPosition(shiftedPos, cols);
-        l.x = coords.x;
-        l.y = coords.y;
-        l.moved = true;
-      }
-    }
-  } else {
-    // Moving item later: shift items in (oldPos, newPos] to the left
-    for (const l of sortedItems) {
-      const pos = getWrapPosition(l, cols);
-      if (l.i === item.i) continue;
-
-      if (pos > oldPos && pos <= newPos) {
-        // Shift this item left by 1 position in wrap order
-        const shiftedPos = pos - 1;
-        const coords = fromWrapPosition(shiftedPos, cols);
-        l.x = coords.x;
-        l.y = coords.y;
-        l.moved = true;
-      }
-    }
-  }
-
-  // Finally, move the dragged item to its new position
-  movedItem.x = x;
-  movedItem.y = y;
-  movedItem.moved = true;
-
-  return newLayout;
-}
-
-/**
  * Wrap compactor - arranges items like words in a paragraph.
  *
  * Items flow left-to-right and wrap to the next row when they
@@ -226,16 +139,6 @@ export const wrapCompactor: Compactor = {
 
   compact(layout: Layout, cols: number): Layout {
     return compactWrap(layout, cols);
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    cols: number
-  ): Layout {
-    return moveInWrapMode(layout, item, x, y, cols);
   }
 };
 

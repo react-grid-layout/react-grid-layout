@@ -425,23 +425,6 @@ describe("Fast Horizontal Compactor", () => {
     });
   });
 
-  describe("onMove", () => {
-    it("updates item position", () => {
-      const layout = [
-        { i: "a", x: 0, y: 0, w: 2, h: 2 },
-        { i: "b", x: 2, y: 0, w: 2, h: 2 }
-      ];
-
-      const itemA = layout[0];
-      const newLayout = fastHorizontalCompactor.onMove(layout, itemA, 5, 5, 12);
-
-      const movedItem = newLayout.find(l => l.i === "a");
-      expect(movedItem.x).toBe(5);
-      expect(movedItem.y).toBe(5);
-      expect(movedItem.moved).toBe(true);
-    });
-  });
-
   describe("Correctness vs Standard Compactor", () => {
     // Helper to check if layouts have same items at same positions
     function layoutsMatch(layout1, layout2) {

@@ -168,24 +168,6 @@ export const fastVerticalCompactor: Compactor = {
     const out = cloneLayout(layout) as LayoutItem[];
     compactVerticalFast(out, cols, false);
     return out;
-  },
-
-  onMove(
-    layout: Layout,
-    item: LayoutItem,
-    x: number,
-    y: number,
-    _cols: number
-  ): Layout {
-    // Simple move - compact() will be called after
-    const newLayout = cloneLayout(layout) as Mutable<LayoutItem>[];
-    const movedItem = newLayout.find(l => l.i === item.i);
-    if (movedItem) {
-      movedItem.x = x;
-      movedItem.y = y;
-      movedItem.moved = true;
-    }
-    return newLayout;
   }
 };
 
