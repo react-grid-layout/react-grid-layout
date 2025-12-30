@@ -8,6 +8,7 @@ coverage/
 # Ignore built example files
 examples/*.html
 examples/*.js
+examples/*.hot-update.json
 !examples/generate.js
 !examples/vars.js
 .vscode

@@ -262,6 +262,14 @@ export function GridItem(props: GridItemProps): ReactElement {
   const layoutRef = useRef<Layout>(layout);
   layoutRef.current = layout;
 
+  // Refs to callbacks for use in dropping item effect (#2210).
+  // The dropping item effect must NOT depend on onDragStart/onDrag callbacks because:
+  // 1. When dragging state changes, onDrag callback is recreated
+  // 2. When layout changes, effectiveLayoutItem changes, causing callbacks to recreate
+  // Using refs allows us to call the latest callback without the effect re-running.
+  const onDragStartRef = useRef<DraggableEventHandler | null>(null);
+  const onDragRef = useRef<DraggableEventHandler | null>(null);
+
   // Drag threshold tracking (#2217)
   // Tracks whether we're waiting to exceed the threshold before starting the drag
   const dragPendingRef = useRef(false);
@@ -595,6 +603,10 @@ export function GridItem(props: GridItemProps): ReactElement {
     ]
   );
 
+  // Update callback refs for use in dropping item effect (#2210)
+  onDragStartRef.current = onDragStart;
+  onDragRef.current = onDrag;
+
   // ============================================================================
   // Resize Handlers
   // ============================================================================
@@ -712,6 +724,9 @@ export function GridItem(props: GridItemProps): ReactElement {
   // Dropping Item Support
   // ============================================================================
 
+  // Dropping Item Support - uses refs to avoid callback dependency changes (#2210)
+  // The effect only depends on droppingPosition and dragging state.
+  // Callbacks are accessed via refs to get the latest version without triggering re-runs.
   useEffect(() => {
     if (!droppingPosition) return;
 
@@ -739,7 +754,11 @@ export function GridItem(props: GridItemProps): ReactElement {
         x: droppingPosition.left,
         y: droppingPosition.top
       };
-      onDragStart(droppingPosition.e as unknown as MouseEvent, fakeData);
+      // Use ref to get latest callback without dependency
+      onDragStartRef.current?.(
+        droppingPosition.e as unknown as MouseEvent,
+        fakeData
+      );
     } else if (shouldDrag) {
       // Continue drag
       const deltaX = droppingPosition.left - dragPositionRef.current.left;
@@ -754,11 +773,15 @@ export function GridItem(props: GridItemProps): ReactElement {
         x: droppingPosition.left,
         y: droppingPosition.top
       };
-      onDrag(droppingPosition.e as unknown as MouseEvent, fakeData);
+      // Use ref to get latest callback without dependency
+      onDragRef.current?.(
+        droppingPosition.e as unknown as MouseEvent,
+        fakeData
+      );
     }
 
     prevDroppingPositionRef.current = droppingPosition;
-  }, [droppingPosition, dragging, onDragStart, onDrag]);
+  }, [droppingPosition, dragging, i]);
 
   // ============================================================================
   // Render

@@ -457,7 +457,12 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         cols,
         compactor
       );
-      setLayout(newLayout);
+      // Only update if the layout actually changed (#2210)
+      // This prevents infinite loops when controlled state updates trigger
+      // sync effects that produce the same layout
+      if (!deepEqual(newLayout, layout)) {
+        setLayout(newLayout);
+      }
     }
 
     prevPropsLayoutRef.current = propsLayout;
@@ -478,9 +483,14 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   useEffect(() => {
     if (!activeDrag && !deepEqual(layout, prevLayoutRef.current)) {
       prevLayoutRef.current = layout;
-      onLayoutChange(layout);
+      // Filter out dropping placeholder - it's transient internal state only (#2210)
+      // The dropping item should not be exposed to users until the actual drop happens.
+      // This prevents infinite loops in controlled state patterns where children derive
+      // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
+      const publicLayout = layout.filter(l => l.i !== droppingItem.i);
+      onLayoutChange(publicLayout);
     }
-  }, [layout, activeDrag, onLayoutChange]);
+  }, [layout, activeDrag, onLayoutChange, droppingItem.i]);
 
   // ============================================================================
   // Container Height

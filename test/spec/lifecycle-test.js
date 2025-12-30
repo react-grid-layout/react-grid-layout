@@ -841,14 +841,17 @@ describe("Lifecycle tests", function () {
 
         // dropConfig.onDragOver should be called
         expect(onDragOver).toHaveBeenCalled();
-        // The dropping placeholder should have been added with w:3, h:3
+        // The dropping placeholder should be rendered in the DOM but NOT in onLayoutChange
+        // (it's transient internal state that shouldn't be exposed to users until drop)
+        // Verify it's in the DOM (internal state) - original + dropping
+        expect(container.querySelectorAll(".react-grid-item").length).toBe(2);
+
+        // But it should NOT be in onLayoutChange (public state)
         const layoutCalls = onLayoutChange.mock.calls;
-        const droppingItem = layoutCalls
+        const droppingItemInLayoutChange = layoutCalls
           .flatMap(call => call[0])
           .find(item => item.i === "__dropping-elem__");
-        expect(droppingItem).toBeDefined();
-        expect(droppingItem.w).toBe(3);
-        expect(droppingItem.h).toBe(3);
+        expect(droppingItemInLayoutChange).toBeUndefined();
       });
 
       it("does not cause Maximum update depth exceeded on drag over (#2204)", function () {
@@ -895,12 +898,19 @@ describe("Lifecycle tests", function () {
         });
 
         // If we get here without timing out, the fix is working
-        // Verify that the dropping placeholder was added to layout
+        // Verify that the dropping item was added to internal state (original item + dropping item + placeholder = 3)
+        // The grid has: 1 original item, 1 dropping item, and 1 active placeholder
+        expect(
+          container.querySelectorAll(".react-grid-item").length
+        ).toBeGreaterThanOrEqual(2);
+
+        // But the dropping item should NOT be in onLayoutChange (public state) - this is expected behavior
+        // since #2210 fix: dropping placeholder is transient internal state
         const layoutCalls = onLayoutChange.mock.calls;
-        const hasDroppedItem = layoutCalls.some(call =>
+        const hasDroppedItemInPublicLayout = layoutCalls.some(call =>
           call[0].some(item => item.i === "__dropping-elem__")
         );
-        expect(hasDroppedItem).toBe(true);
+        expect(hasDroppedItemInPublicLayout).toBe(false);
       });
 
       it("does not cause Maximum update depth exceeded when dragging in then out (#2210)", function () {
@@ -962,12 +972,19 @@ describe("Lifecycle tests", function () {
           });
         });
 
-        // Verify the dropping placeholder was added
+        // Verify the dropping placeholder is rendered in the DOM (internal state)
+        // The grid has: 1 original item, 1 dropping item, and 1 active placeholder = 3
+        expect(
+          container.querySelectorAll(".react-grid-item").length
+        ).toBeGreaterThanOrEqual(2);
+
+        // But it should NOT be in onLayoutChange (public state) - this is expected behavior
+        // since #2210 fix: dropping placeholder is transient internal state
         let layoutCalls = onLayoutChange.mock.calls;
-        let hasDroppedItem = layoutCalls.some(call =>
+        let hasDroppedItemInPublicLayout = layoutCalls.some(call =>
           call[0].some(item => item.i === "__dropping-elem__")
         );
-        expect(hasDroppedItem).toBe(true);
+        expect(hasDroppedItemInPublicLayout).toBe(false);
 
         // Record how many times onDrag was called
         const _dragCallsBefore = onDrag.mock.calls.length;
@@ -998,13 +1015,16 @@ describe("Lifecycle tests", function () {
         });
 
         // If we get here without timing out, the fix is working
-        // The dropping placeholder should have been removed
+        // The dropping placeholder should have been removed from internal state (only 1 item now)
+        expect(container.querySelectorAll(".react-grid-item").length).toBe(1);
+
+        // And still should not be in public layout
         layoutCalls = onLayoutChange.mock.calls;
         const lastLayout = layoutCalls[layoutCalls.length - 1]?.[0] || [];
-        hasDroppedItem = lastLayout.some(
+        hasDroppedItemInPublicLayout = lastLayout.some(
           item => item.i === "__dropping-elem__"
         );
-        expect(hasDroppedItem).toBe(false);
+        expect(hasDroppedItemInPublicLayout).toBe(false);
 
         // Verify onDrag wasn't called excessively (would indicate infinite loop)
         // We expect 5 drag calls from step 2, plus maybe a few more, but not 50+
@@ -1174,6 +1194,114 @@ describe("Lifecycle tests", function () {
           });
         });
 
+        // Verify no "Maximum update depth exceeded" errors
+        const maxDepthErrors = consoleError.mock.calls.filter(call =>
+          call[0]?.includes?.("Maximum update depth exceeded")
+        );
+        expect(maxDepthErrors).toHaveLength(0);
+
+        consoleError.mockRestore();
+      });
+
+      // #2210 - Test controlled state with children derived from layout
+      it("does not cause Maximum update depth exceeded with controlled state where children derive from layout (#2210)", function () {
+        // This test replicates the exact scenario from the bug report:
+        // - User has controlled state where onLayoutChange updates their layout state
+        // - Children are memoized and derived from that state
+        // - Items start at x:0, y:0 with only 2 columns (causing compaction on each drag)
+        // - Dragging in, moving around, then dragging out should NOT cause infinite loops
+        const consoleError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+
+        function ControlledDroppableGrid() {
+          const [layouts, setLayouts] = React.useState([
+            { i: "0", x: 0, y: 0, w: 1, h: 2 },
+            { i: "1", x: 0, y: 0, w: 1, h: 2 },
+            { i: "2", x: 0, y: 0, w: 1, h: 2 },
+            { i: "3", x: 0, y: 0, w: 1, h: 2 },
+            { i: "4", x: 0, y: 0, w: 1, h: 2 }
+          ]);
+
+          const handleLayoutChange = React.useCallback(layout => {
+            setLayouts(layout);
+          }, []);
+
+          // Children derived from layouts - key part of the bug reproduction
+          const children = React.useMemo(() => {
+            return layouts.map(l => (
+              <div key={l.i} className="grid-item">
+                {l.i}
+              </div>
+            ));
+          }, [layouts]);
+
+          return (
+            <GridLayoutV2
+              className="layout"
+              layout={layouts}
+              gridConfig={{ cols: 2, rowHeight: 30 }}
+              width={400}
+              onLayoutChange={handleLayoutChange}
+              dropConfig={{
+                enabled: true,
+                defaultItem: { w: 1, h: 2 }
+              }}
+            >
+              {children}
+            </GridLayoutV2>
+          );
+        }
+
+        const { container } = render(<ControlledDroppableGrid />);
+        const grid = container.querySelector(".react-grid-layout");
+
+        // Step 1: Drag into the grid
+        act(() => {
+          TestUtils.Simulate.dragEnter(grid, {
+            clientX: 100,
+            clientY: 50
+          });
+        });
+
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 100,
+            clientY: 50,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+        });
+
+        // Step 2: Move around inside the grid
+        for (let i = 0; i < 5; i++) {
+          act(() => {
+            TestUtils.Simulate.dragOver(grid, {
+              currentTarget: {
+                getBoundingClientRect: () => ({ left: 0, top: 0 })
+              },
+              clientX: 100 + i * 20,
+              clientY: 50 + i * 20,
+              nativeEvent: {
+                target: document.createElement("div")
+              }
+            });
+          });
+        }
+
+        // Step 3: Drag out without releasing (this is where the infinite loop occurred)
+        act(() => {
+          TestUtils.Simulate.dragLeave(grid, {
+            clientX: -100,
+            clientY: -100
+          });
+        });
+
+        // If we get here without timing out, the fix is working
         // Verify no "Maximum update depth exceeded" errors
         const maxDepthErrors = consoleError.mock.calls.filter(call =>
           call[0]?.includes?.("Maximum update depth exceeded")
