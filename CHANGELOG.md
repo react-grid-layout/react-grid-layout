@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.2.1 (Dec 30, 2025)
+
+### Bug Fixes
+
+- **Drag position**: Fix items jumping half a screen down when drag starts on a grid container offset from the page top. Removed `calcDragPosition` from default position strategies since react-draggable handles parent-relative coordinates correctly. [#2223](https://github.com/react-grid-layout/react-grid-layout/pull/2223)
+- **Compactor**: Ensure all internal v2 code uses `compactor.compact()` instead of the legacy `compact()` function. Added optional `compactor` prop to hooks (`useGridLayout`, `useResponsiveLayout`) that takes precedence over `compactType`/`allowOverlap`. Fixed negative coordinate handling in compactors. [#2222](https://github.com/react-grid-layout/react-grid-layout/pull/2222), fixes [#2213](https://github.com/react-grid-layout/react-grid-layout/issues/2213)
+- **Drag-from-outside**: Add defensive guards for edge cases with drag enter/leave counter synchronization. Made `removeDroppingPlaceholder` idempotent and prevented negative counter values. [#2220](https://github.com/react-grid-layout/react-grid-layout/pull/2220), fixes [#2210](https://github.com/react-grid-layout/react-grid-layout/issues/2210)
+
+### Internal Changes
+
+- Removed never-exported compat layers (`utils-compat.ts`, `responsive-compat.ts`, `calculate-compat.ts`). These were internal implementation details and were never part of the public API.
+- Removed `onMove()` method from `Compactor` interface. Custom compactors should implement only `compact()`.
+
 ## 2.2.0 (Dec 29, 2025)
 
 ### Bug Fixes
