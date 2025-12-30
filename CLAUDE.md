@@ -136,13 +136,16 @@ import ReactGridLayout, {
 
 // Core utilities (framework-agnostic)
 import {
-  compact,
   moveElement,
   collides,
   transformStrategy,
   absoluteStrategy,
-  createScaledStrategy
+  createScaledStrategy,
+  getCompactor,
+  verticalCompactor,
+  horizontalCompactor
 } from "react-grid-layout/core";
+// Note: compact() is not exported. Use compactor.compact() instead.
 
 // Legacy v1 API (100% backwards compatible, flat props)
 import ReactGridLayout, {
