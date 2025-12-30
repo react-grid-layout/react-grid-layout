@@ -805,3 +805,21 @@ button:focus {
   80% { transform: translate(2px, -2px); }
   100% { transform: translate(0); }
 }
+
+/* === PREVENT TEXT SELECTION DURING DRAG/RESIZE === */
+/* Apply user-select: none globally when any grid item is being dragged or resized */
+body:has(.react-draggable-dragging),
+body:has(.resizing) {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Also apply to grid items themselves to prevent selection on mousedown before drag starts */
+.react-grid-item {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
