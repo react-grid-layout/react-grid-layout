@@ -806,7 +806,10 @@ Import pure layout functions from `react-grid-layout/core`:
 
 ```ts
 import {
-  compact,
+  verticalCompactor,
+  horizontalCompactor,
+  noCompactor,
+  getCompactor,
   moveElement,
   collides,
   getFirstCollision,
@@ -814,6 +817,8 @@ import {
   // ... and more
 } from "react-grid-layout/core";
 ```
+
+> **Note**: The `compact()` function is not exported. Use compactors instead: `verticalCompactor.compact(layout, cols)` or get one via `getCompactor('vertical')`.
 
 ## Extending: Custom Compactors & Position Strategies
 

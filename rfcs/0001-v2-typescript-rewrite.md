@@ -693,7 +693,11 @@ Usage:
 import { useGridLayout, GridLayout } from "react-grid-layout";
 
 // Core only (for custom implementations)
-import { compact, moveElement, type Layout } from "react-grid-layout/core";
+import {
+  verticalCompactor,
+  moveElement,
+  type Layout
+} from "react-grid-layout/core";
 
 // Legacy API (backwards compatible)
 import ReactGridLayout, {

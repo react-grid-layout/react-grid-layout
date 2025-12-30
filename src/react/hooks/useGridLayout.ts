@@ -23,7 +23,6 @@ import {
   bottom,
   getLayoutItem
 } from "../../core/layout.js";
-import { compact } from "../../core/compact-compat.js";
 import { getCompactor } from "../../core/compactors.js";
 
 // ============================================================================
@@ -60,14 +59,16 @@ export interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
-  /** Compaction type: 'vertical', 'horizontal', or null */
+  /** Compaction type: 'vertical', 'horizontal', or null (ignored if compactor is provided) */
   compactType?: CompactType;
-  /** Allow items to overlap */
+  /** Allow items to overlap (ignored if compactor is provided) */
   allowOverlap?: boolean;
   /** Prevent collisions when moving items */
   preventCollision?: boolean;
   /** Called when layout changes */
   onLayoutChange?: (layout: Layout) => void;
+  /** Custom compactor (takes precedence over compactType/allowOverlap) */
+  compactor?: Compactor;
 }
 
 export interface UseGridLayoutResult {
@@ -164,22 +165,26 @@ export function useGridLayout(
     compactType = "vertical",
     allowOverlap = false,
     preventCollision = false,
-    onLayoutChange
+    onLayoutChange,
+    compactor: customCompactor
   } = options;
 
-  // Get the appropriate compactor
+  // Get the appropriate compactor - use custom if provided, otherwise derive from compactType/allowOverlap
   const compactor = useMemo(
-    () => getCompactor(compactType, allowOverlap),
-    [compactType, allowOverlap]
+    () => customCompactor ?? getCompactor(compactType, allowOverlap),
+    [customCompactor, compactType, allowOverlap]
   );
 
   // Track if we're currently dragging to block prop updates
   const isDraggingRef = useRef(false);
 
-  // Initialize layout with compaction
+  // Initialize layout with compaction using the compactor
+  // Note: We need to compute the initial compactor here since hooks can't be called conditionally
+  const initialCompactor =
+    customCompactor ?? getCompactor(compactType, allowOverlap);
   const [layout, setLayoutState] = useState<Layout>(() => {
     const corrected = correctBounds(cloneLayout(propsLayout), { cols });
-    return compact(corrected, compactType, cols, allowOverlap);
+    return initialCompactor.compact(corrected, cols);
   });
 
   // Drag state
@@ -205,14 +210,14 @@ export function useGridLayout(
   // Track previous layout for change detection
   const prevLayoutRef = useRef<Layout>(layout);
 
-  // Set layout with optional compaction
+  // Set layout with optional compaction - use compactor.compact() (#2213)
   const setLayout = useCallback(
     (newLayout: Layout) => {
       const corrected = correctBounds(cloneLayout(newLayout), { cols });
-      const compacted = compact(corrected, compactType, cols, allowOverlap);
+      const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
     },
-    [cols, compactType, allowOverlap]
+    [cols, compactor]
   );
 
   // Sync layout from props when not dragging
@@ -286,14 +291,12 @@ export function useGridLayout(
         allowOverlap
       );
 
-      // Compact layout
-      const compacted = allowOverlap
-        ? newLayout
-        : compact(newLayout, compactType, cols);
+      // Compact layout - use compactor.compact() (#2213)
+      const compacted = compactor.compact(newLayout, cols);
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactType, preventCollision, allowOverlap]
+    [layout, cols, compactor, preventCollision, compactType, allowOverlap]
   );
 
   const onDragStop = useCallback(
@@ -314,8 +317,8 @@ export function useGridLayout(
         allowOverlap
       );
 
-      // Compact and finalize
-      const compacted = compact(newLayout, compactType, cols, allowOverlap);
+      // Compact and finalize - use compactor.compact() (#2213)
+      const compacted = compactor.compact(newLayout, cols);
 
       isDraggingRef.current = false;
 
@@ -327,7 +330,7 @@ export function useGridLayout(
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactType, preventCollision, allowOverlap]
+    [layout, cols, compactor, preventCollision, compactType, allowOverlap]
   );
 
   // ============================================================================
@@ -366,13 +369,13 @@ export function useGridLayout(
         return item;
       });
 
-      // Correct bounds and compact
+      // Correct bounds and compact - use compactor.compact() (#2213)
       const corrected = correctBounds(newLayout, { cols });
-      const compacted = compact(corrected, compactType, cols, allowOverlap);
+      const compacted = compactor.compact(corrected, cols);
 
       setLayoutState(compacted);
     },
-    [layout, cols, compactType, allowOverlap]
+    [layout, cols, compactor]
   );
 
   const onResizeStop = useCallback(
@@ -399,10 +402,10 @@ export function useGridLayout(
       const existingItem = getLayoutItem(layout, droppingItem.i);
 
       if (!existingItem) {
-        // Add dropping item to layout
+        // Add dropping item to layout - use compactor.compact() (#2213)
         const newLayout = [...layout, droppingItem];
         const corrected = correctBounds(newLayout, { cols });
-        const compacted = compact(corrected, compactType, cols, allowOverlap);
+        const compacted = compactor.compact(corrected, cols);
         setLayoutState(compacted);
       }
 
@@ -411,7 +414,7 @@ export function useGridLayout(
         droppingPosition: position
       });
     },
-    [layout, cols, compactType, allowOverlap]
+    [layout, cols, compactor]
   );
 
   const onDropDragLeave = useCallback(() => {
@@ -439,8 +442,9 @@ export function useGridLayout(
         return item;
       });
 
+      // Use compactor.compact() (#2213)
       const corrected = correctBounds(newLayout, { cols });
-      const compacted = compact(corrected, compactType, cols, allowOverlap);
+      const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
 
       setDropState({
@@ -448,7 +452,7 @@ export function useGridLayout(
         droppingPosition: null
       });
     },
-    [layout, cols, compactType, allowOverlap]
+    [layout, cols, compactor]
   );
 
   // ============================================================================

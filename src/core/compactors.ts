@@ -93,6 +93,10 @@ export function compactItemVertical(
   fullLayout: Layout,
   maxY: number
 ): LayoutItem {
+  // Correct negative positions first
+  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
+  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
+
   // Limit Y to the current bottom
   (l as Mutable<LayoutItem>).y = Math.min(maxY, l.y);
 
@@ -130,6 +134,10 @@ export function compactItemHorizontal(
   cols: number,
   fullLayout: Layout
 ): LayoutItem {
+  // Correct negative positions first
+  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
+  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
+
   // Move left as far as possible
   while (l.x > 0 && !getFirstCollision(compareWith, l)) {
     (l as Mutable<LayoutItem>).x--;

@@ -133,8 +133,8 @@ export {
   compactItemHorizontal
 } from "./compactors.js";
 
-// Legacy/convenience functions (backwards compatibility)
-export { compact, compactItem } from "./compact-compat.js";
+// Note: compact and compactItem are NOT exported (#2213)
+// Use compactor.compact() instead via the Compactor interface
 
 // =============================================================================
 // Position Calculations

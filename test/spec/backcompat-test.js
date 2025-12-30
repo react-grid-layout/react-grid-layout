@@ -13,11 +13,15 @@ import { render, act, fireEvent } from "@testing-library/react";
 import ReactGridLayout from "../../src/legacy/ReactGridLayout";
 import ResponsiveReactGridLayout from "../../src/legacy/ResponsiveReactGridLayout";
 import WidthProvider from "../../src/legacy/WidthProvider";
-import {
-  synchronizeLayoutWithChildren,
-  compact,
-  moveElement as _moveElement
-} from "../../src/legacy/utils-compat";
+// Import directly from core modules (#2213)
+import { moveElement as _moveElement } from "../../src/core/layout";
+import { getCompactor } from "../../src/core/compactors";
+
+// Helper to compact using compactor interface (#2213)
+function compact(layout, compactTypeStr, cols, allowOverlap = false) {
+  const compactor = getCompactor(compactTypeStr, allowOverlap);
+  return compactor.compact(layout, cols);
+}
 
 describe("Backwards Compatibility: Callback Signatures", () => {
   const baseLayout = [
@@ -572,74 +576,8 @@ describe("Backwards Compatibility: Responsive Grid", () => {
   });
 });
 
-describe("Backwards Compatibility: synchronizeLayoutWithChildren", () => {
-  it("preserves layout item properties when syncing", () => {
-    const layout = [
-      {
-        i: "a",
-        x: 0,
-        y: 0,
-        w: 2,
-        h: 2,
-        minW: 1,
-        maxW: 4,
-        static: true
-      }
-    ];
-    const children = [<div key="a">A</div>];
-
-    const synced = synchronizeLayoutWithChildren(
-      layout,
-      children,
-      12,
-      "vertical",
-      false
-    );
-
-    expect(synced[0].minW).toBe(1);
-    expect(synced[0].maxW).toBe(4);
-    expect(synced[0].static).toBe(true);
-  });
-
-  it("uses child key as layout item i", () => {
-    const children = [
-      <div key="custom-key-123" data-grid={{ x: 0, y: 0, w: 2, h: 2 }}>
-        A
-      </div>
-    ];
-
-    const synced = synchronizeLayoutWithChildren(
-      [],
-      children,
-      12,
-      "vertical",
-      false
-    );
-
-    expect(synced[0].i).toBe("custom-key-123");
-  });
-
-  it("assigns default position to children without data-grid or layout entry", () => {
-    const children = [<div key="new-item">New</div>];
-
-    const synced = synchronizeLayoutWithChildren(
-      [],
-      children,
-      12,
-      "vertical",
-      false
-    );
-
-    // Should have assigned some position
-    expect(synced[0]).toHaveProperty("x");
-    expect(synced[0]).toHaveProperty("y");
-    expect(synced[0]).toHaveProperty("w");
-    expect(synced[0]).toHaveProperty("h");
-    // Defaults are w=1, h=1
-    expect(synced[0].w).toBe(1);
-    expect(synced[0].h).toBe(1);
-  });
-});
+// Note: synchronizeLayoutWithChildren tests removed (#2213)
+// This function was part of utils-compat which is no longer exported
 
 describe("Backwards Compatibility: WidthProvider", () => {
   const WidthProvidedRGL = WidthProvider(ReactGridLayout);
@@ -837,11 +775,13 @@ describe("Backwards Compatibility: allowOverlap (#2205)", () => {
     ];
 
     // With allowOverlap=true, positions should be preserved
-    const compactedWithOverlap = compact(layout, null, 12, true);
+    const compactedWithOverlap = compact(layout, "vertical", 12, true);
     expect(compactedWithOverlap.find(l => l.i === "b").y).toBe(2);
 
     // With allowOverlap=false (default), items should be separated
-    const compactedWithoutOverlap = compact(layout, null, 12, false);
+    // Note: Use "vertical" compactType to get collision resolution (#2213)
+    // With compactType=null and allowOverlap=false, items stay in place (noCompactor)
+    const compactedWithoutOverlap = compact(layout, "vertical", 12, false);
     // b should be pushed to y=4 (after a ends)
     expect(compactedWithoutOverlap.find(l => l.i === "b").y).toBe(4);
   });

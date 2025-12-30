@@ -2,11 +2,10 @@
 
 // Legacy API (default)
 module.exports = require("./src/legacy/ReactGridLayout").default;
-module.exports.utils = require("./src/legacy/utils-compat");
-module.exports.calculateUtils = require("./src/legacy/calculate-compat");
+// Note: utils, calculateUtils, responsive-utils are NOT exported (#2213)
+// They were never part of the official public API
 module.exports.Responsive =
   require("./src/legacy/ResponsiveReactGridLayout").default;
-module.exports.Responsive.utils = require("./src/legacy/responsive-compat");
 module.exports.WidthProvider = require("./src/legacy/WidthProvider").default;
 
 // v2 API additions

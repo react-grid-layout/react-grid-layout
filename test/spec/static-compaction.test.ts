@@ -5,7 +5,7 @@
  * optimization in resolveCompactionCollision could skip items that need
  * to be moved, causing incorrect compaction.
  */
-import { compact } from "../../src/core/compact-compat";
+import { verticalCompactor } from "../../src/core/compactors";
 
 describe("PR #1309 - Static items compaction", () => {
   it("should handle recursive collision with statics mixed throughout layout", () => {
@@ -23,7 +23,8 @@ describe("PR #1309 - Static items compaction", () => {
       { w: 20, h: 10, x: 20, y: 60, i: "I" }
     ];
 
-    const out = compact(layout, "vertical", 60);
+    // Use verticalCompactor.compact() instead of compact() (#2213)
+    const out = verticalCompactor.compact(layout, 60);
 
     // Static items should not move
     expect(out.find(item => item.i === "A")).toMatchObject({
@@ -66,7 +67,8 @@ describe("PR #1309 - Static items compaction", () => {
       { w: 2, h: 2, x: 0, y: 10, i: "C" } // Gap at y=7-9
     ];
 
-    const out = compact(layout, "vertical", 12);
+    // Use verticalCompactor.compact() instead of compact() (#2213)
+    const out = verticalCompactor.compact(layout, 12);
 
     // Items should compact upward filling gaps
     expect(out.find(item => item.i === "A")?.y).toBe(0);

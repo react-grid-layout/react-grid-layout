@@ -537,6 +537,104 @@ describe("React Hooks", () => {
 
       expect(result.current.compactor.allowOverlap).toBe(true);
     });
+
+    // #2213 - Custom compactors should be called (not the internal compact function)
+    // NOTE: useGridLayout needs to be updated to accept a `compactor` prop
+    // For now, this test verifies the fix is needed
+    it("accepts custom compactor and calls compactor.compact() on initialization (#2213)", () => {
+      const customCompact = jest.fn((layout: Layout) => layout);
+
+      const customCompactor = {
+        type: "vertical" as const,
+        allowOverlap: false,
+        preventCollision: false,
+        compact: customCompact,
+        onMove: jest.fn((layout: Layout) => layout)
+      };
+
+      renderHook(() =>
+        useGridLayout({
+          layout: initialLayout,
+          cols: 12,
+          compactor: customCompactor
+        })
+      );
+
+      // The custom compactor's compact method should have been called
+      // during initial layout processing
+      expect(customCompact).toHaveBeenCalled();
+    });
+
+    // #2213 - Custom compactors should be called during drag operations
+    it("calls custom compactor.compact() during drag (#2213)", () => {
+      const customCompact = jest.fn((layout: Layout) => layout);
+
+      const customCompactor = {
+        type: "vertical" as const,
+        allowOverlap: false,
+        preventCollision: false,
+        compact: customCompact,
+        onMove: jest.fn((layout: Layout) => layout)
+      };
+
+      const { result } = renderHook(() =>
+        useGridLayout({
+          layout: initialLayout,
+          cols: 12,
+          compactor: customCompactor
+        })
+      );
+
+      // Clear initial calls
+      customCompact.mockClear();
+
+      // Perform a drag operation
+      act(() => {
+        result.current.onDragStart("a", 0, 0);
+      });
+
+      act(() => {
+        result.current.onDrag("a", 2, 2);
+      });
+
+      // The custom compactor should have been called during drag
+      expect(customCompact).toHaveBeenCalled();
+    });
+
+    // #2213 - Custom compactors should be called on setLayout
+    it("calls custom compactor.compact() on setLayout (#2213)", () => {
+      const customCompact = jest.fn((layout: Layout) => layout);
+
+      const customCompactor = {
+        type: "vertical" as const,
+        allowOverlap: false,
+        preventCollision: false,
+        compact: customCompact,
+        onMove: jest.fn((layout: Layout) => layout)
+      };
+
+      const { result } = renderHook(() =>
+        useGridLayout({
+          layout: initialLayout,
+          cols: 12,
+          compactor: customCompactor
+        })
+      );
+
+      // Clear initial calls
+      customCompact.mockClear();
+
+      // Update layout via setLayout
+      act(() => {
+        result.current.setLayout([
+          { i: "a", x: 5, y: 5, w: 2, h: 2 },
+          { i: "b", x: 7, y: 5, w: 2, h: 2 }
+        ]);
+      });
+
+      // The custom compactor should have been called
+      expect(customCompact).toHaveBeenCalled();
+    });
   });
 
   describe("useResponsiveLayout", () => {

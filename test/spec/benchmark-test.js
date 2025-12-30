@@ -15,12 +15,16 @@
 import * as React from "react";
 import { render, act as _act } from "@testing-library/react";
 import ReactGridLayout from "../../src/legacy/ReactGridLayout";
-import {
-  compact,
-  moveElement,
-  sortLayoutItemsByRowCol,
-  correctBounds
-} from "../../src/legacy/utils-compat";
+// Import directly from core modules (#2213)
+import { moveElement, correctBounds } from "../../src/core/layout";
+import { sortLayoutItemsByRowCol } from "../../src/core/sort";
+import { getCompactor } from "../../src/core/compactors";
+
+// Helper to compact using compactor interface (#2213)
+function compact(layout, compactTypeStr, cols, allowOverlap = false) {
+  const compactor = getCompactor(compactTypeStr, allowOverlap);
+  return compactor.compact(layout, cols);
+}
 
 // Generate a layout with n items
 function generateLayout(n, cols = 12) {
