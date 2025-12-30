@@ -353,13 +353,17 @@ export interface PositionStrategy {
   /**
    * Calculate position during drag operations, accounting for transforms and scale.
    *
+   * This method is optional. When not provided, react-draggable uses its built-in
+   * parent-relative coordinate calculation. Only override this when you need custom
+   * coordinate handling, such as for scaled containers.
+   *
    * @param clientX - Mouse client X position
    * @param clientY - Mouse client Y position
    * @param offsetX - Offset from element origin X
    * @param offsetY - Offset from element origin Y
    * @returns Adjusted left/top position
    */
-  calcDragPosition(
+  calcDragPosition?(
     clientX: number,
     clientY: number,
     offsetX: number,
