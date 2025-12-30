@@ -1611,6 +1611,54 @@ describe("Lifecycle tests", function () {
         expect(onResizeStop).toHaveBeenCalled();
       });
 
+      it("west resize should not be affected by item y position", () => {
+        // Regression test for https://github.com/react-grid-layout/react-grid-layout/issues/2109
+        // Bug: react-resizable's onResizeStop provides stale size data when React batches
+        // state updates. The fix is to use the resize position stored during onResize.
+        //
+        // With 12 cols, 1200px width => 100px per column
+        // Item at x=2, y=1, w=2, h=2 starts at left=200px, width=200px
+        // Dragging west handle left to x=0 should result in x=0, w=4
+        const onResizeStop = jest.fn();
+        const onLayoutChange = jest.fn();
+        const { container } = render(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={30}
+            width={1200}
+            compactType={null}
+            onResizeStop={onResizeStop}
+            onLayoutChange={onLayoutChange}
+            resizeHandles={["w"]}
+          >
+            <div key="a" data-grid={{ x: 2, y: 1, w: 2, h: 2 }}>
+              a
+            </div>
+          </ReactGridLayout>
+        );
+
+        const handle = container.querySelector(".react-resizable-handle-w");
+        // Item starts at x=2 (200px from left) with w=2 (200px wide)
+        // Drag the west handle from 200px to 0px (i.e., to the container left edge)
+        act(() => {
+          simulateDrag(handle, 200, 60, 0, 60);
+        });
+
+        expect(onResizeStop).toHaveBeenCalled();
+
+        // After resize, item should be at x=0 with w=4 (expanded to fill 0-400px)
+        // The bug would cause x to stay at 2 or w to revert to 2
+        expect(onLayoutChange.mock.calls.length).toBeGreaterThan(0);
+        const finalLayout =
+          onLayoutChange.mock.calls[onLayoutChange.mock.calls.length - 1][0];
+        const item = finalLayout.find(l => l.i === "a");
+
+        // Item should have expanded to the left
+        expect(item.x).toBeLessThan(2);
+        expect(item.w).toBeGreaterThan(2);
+      });
+
       it("resizes from se handle", () => {
         const onResizeStop = jest.fn();
         const { container } = render(

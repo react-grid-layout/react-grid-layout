@@ -696,11 +696,25 @@ export function GridItem(props: GridItemProps): ReactElement {
 
   const handleResizeStop: ReactResizableCallback = useCallback(
     (e, data) => {
+      // Use the resize position stored during the last onResize call, not the data
+      // from react-resizable's onResizeStop. This is necessary because react-resizable
+      // reads the DOM element size for onResizeStop, but React hasn't re-rendered yet
+      // (state updates are batched), so the DOM still has the OLD size.
+      // See: https://github.com/react-grid-layout/react-grid-layout/issues/2109
+      const lastResizePosition = resizePositionRef.current;
       setResizing(false);
       resizePositionRef.current = { top: 0, left: 0, width: 0, height: 0 };
+
+      // Use stored resize position if available, otherwise fall back to data.size
+      const size =
+        lastResizePosition.width > 0 || lastResizePosition.height > 0
+          ? lastResizePosition
+          : data.size;
+
       const pos = calcGridItemPosition(positionParams, x, y, w, h);
       const typedData: ResizeCallbackData = {
         ...data,
+        size: { width: size.width, height: size.height },
         handle: data.handle as ResizeHandleAxis
       };
       onResizeHandler(e, typedData, pos, "onResizeStop");

@@ -725,22 +725,85 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   );
 
   const onResizeStop = useCallback(
-    (i: string, _w: number, _h: number, data: GridResizeEvent) => {
+    (i: string, w: number, h: number, data: GridResizeEvent) => {
       const currentLayout = layoutRef.current;
       const oldResizeItem = oldResizeItemRef.current;
-      const l = getLayoutItem(currentLayout, i);
+      const { handle } = data;
+
+      // Apply the resize changes (same logic as onResize)
+      // This is necessary because React batches state updates, so the layout
+      // state from onResize may not have been applied yet when onResizeStop fires.
+      let newX: number | undefined;
+      let newY: number | undefined;
+      let shouldMoveItem = false;
+
+      const [newLayout, l] = withLayoutItem(currentLayout, i, item => {
+        newX = item.x;
+        newY = item.y;
+
+        // Handle corner/edge resizing that affects position
+        if (["sw", "w", "nw", "n", "ne"].includes(handle)) {
+          if (["sw", "nw", "w"].includes(handle)) {
+            newX = item.x + (item.w - w);
+            w = item.x !== newX && newX < 0 ? item.w : w;
+            newX = newX < 0 ? 0 : newX;
+          }
+
+          if (["ne", "n", "nw"].includes(handle)) {
+            newY = item.y + (item.h - h);
+            h = item.y !== newY && newY < 0 ? item.h : h;
+            newY = newY < 0 ? 0 : newY;
+          }
+
+          shouldMoveItem = true;
+        }
+
+        // Check for collisions if preventCollision is enabled
+        if (preventCollision && !allowOverlap) {
+          const collisions = getAllCollisions(currentLayout, {
+            ...item,
+            w,
+            h,
+            x: newX ?? item.x,
+            y: newY ?? item.y
+          }).filter(layoutItem => layoutItem.i !== item.i);
+
+          if (collisions.length > 0) {
+            newY = item.y;
+            h = item.h;
+            newX = item.x;
+            w = item.w;
+            shouldMoveItem = false;
+          }
+        }
+
+        (item as Mutable<LayoutItem>).w = w;
+        (item as Mutable<LayoutItem>).h = h;
+
+        return item;
+      });
+
+      if (!l) return;
+
+      let layoutAfterMove = newLayout;
+      if (shouldMoveItem && newX !== undefined && newY !== undefined) {
+        layoutAfterMove = moveElement(
+          newLayout,
+          l,
+          newX,
+          newY,
+          true,
+          preventCollision,
+          compactType,
+          cols,
+          allowOverlap
+        );
+      }
 
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
-      const finalLayout = compactor.compact(currentLayout, cols);
+      const finalLayout = compactor.compact(layoutAfterMove, cols);
 
-      onResizeStopProp(
-        finalLayout,
-        oldResizeItem,
-        l ?? null,
-        null,
-        data.e,
-        data.node
-      );
+      onResizeStopProp(finalLayout, oldResizeItem, l, null, data.e, data.node);
 
       const oldLayout = oldLayoutRef.current;
       oldResizeItemRef.current = null;
@@ -753,7 +816,15 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         onLayoutChange(finalLayout);
       }
     },
-    [cols, compactor, onResizeStopProp, onLayoutChange]
+    [
+      cols,
+      preventCollision,
+      compactType,
+      allowOverlap,
+      compactor,
+      onResizeStopProp,
+      onLayoutChange
+    ]
   );
 
   // ============================================================================
