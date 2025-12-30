@@ -270,18 +270,6 @@ export const transformStrategy: PositionStrategy = {
 
   calcStyle(pos: Position): React.CSSProperties {
     return setTransform(pos) as React.CSSProperties;
-  },
-
-  calcDragPosition(
-    clientX: number,
-    clientY: number,
-    offsetX: number,
-    offsetY: number
-  ): PartialPosition {
-    return {
-      left: clientX - offsetX,
-      top: clientY - offsetY
-    };
   }
 };
 
@@ -297,18 +285,6 @@ export const absoluteStrategy: PositionStrategy = {
 
   calcStyle(pos: Position): React.CSSProperties {
     return setTopLeft(pos) as React.CSSProperties;
-  },
-
-  calcDragPosition(
-    clientX: number,
-    clientY: number,
-    offsetX: number,
-    offsetY: number
-  ): PartialPosition {
-    return {
-      left: clientX - offsetX,
-      top: clientY - offsetY
-    };
   }
 };
 
