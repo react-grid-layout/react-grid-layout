@@ -283,6 +283,24 @@ body {
   border-bottom: 1px solid rgba(0, 240, 255, 0.3);
 }
 
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-links a {
+  font-size: 13px;
+  color: var(--cyber-purple);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.header-links a:hover {
+  color: var(--cyber-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
 h3 {
   font-family: 'Orbitron', sans-serif;
   font-size: 20px;
