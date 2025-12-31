@@ -286,19 +286,25 @@ body {
 .header-links {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
-.header-links a {
+.header-links a:not(.version-badge) {
   font-size: 13px;
-  color: var(--cyber-purple);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cyber-cyan);
+  background: rgba(0, 240, 255, 0.08);
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 240, 255, 0.4);
   text-decoration: none;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
   transition: all 0.2s ease;
 }
 
-.header-links a:hover {
-  color: var(--cyber-cyan);
-  text-shadow: var(--glow-cyan);
+.header-links a:not(.version-badge):hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: rgba(0, 240, 255, 0.7);
+  box-shadow: var(--glow-cyan);
 }
 
 h3 {
