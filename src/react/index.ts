@@ -17,7 +17,6 @@ export {
   type GridItemCallback,
   type ResizeHandle,
   type GridLayoutProps,
-  type EventCallback,
   type ResponsiveGridLayoutProps
 } from "./components/index.js";
 
@@ -59,7 +58,8 @@ export type {
   Compactor,
   ResizeHandleAxis,
   GridDragEvent,
-  GridResizeEvent
+  GridResizeEvent,
+  EventCallback
 } from "../core/types.js";
 
 // =============================================================================
