@@ -242,6 +242,54 @@ describe("React Hooks", () => {
       // Note: Width shows as 0 because offsetWidth is 0 in jsdom
       // The initial measurement overrides the initialWidth
     });
+
+    // #1959 - ResizeObserver callback should defer state updates via requestAnimationFrame
+    // to avoid "ResizeObserver loop completed with undelivered notifications" error
+    it("defers ResizeObserver updates via requestAnimationFrame (#1959)", () => {
+      const widthChanges: number[] = [];
+      const onWidthChange = jest.fn((width: number) => {
+        widthChanges.push(width);
+      });
+
+      // Track requestAnimationFrame calls to verify RAF is being used
+      let rafCallCount = 0;
+      const originalRaf = global.requestAnimationFrame;
+      global.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+        rafCallCount++;
+        // Execute synchronously like the global mock, but track the call
+        cb(0);
+        return rafCallCount;
+      }) as unknown as typeof requestAnimationFrame;
+
+      render(
+        <TestContainerWidthComponent
+          onWidthChange={onWidthChange}
+          options={{ initialWidth: 500 }}
+        />
+      );
+
+      // Clear initial call count (from initial observation)
+      rafCallCount = 0;
+
+      // Simulate resize via ResizeObserver
+      const observer =
+        resizeObserverInstances[resizeObserverInstances.length - 1];
+      act(() => {
+        if (observer) {
+          observer.triggerResize(800);
+        }
+      });
+
+      // The update should have been queued through requestAnimationFrame
+      // This prevents the "ResizeObserver loop completed with undelivered notifications" error
+      expect(rafCallCount).toBeGreaterThan(0);
+
+      // Width should have been updated (RAF executes synchronously in test)
+      expect(widthChanges).toContain(800);
+
+      // Restore original requestAnimationFrame
+      global.requestAnimationFrame = originalRaf;
+    });
   });
 
   describe("useGridLayout", () => {

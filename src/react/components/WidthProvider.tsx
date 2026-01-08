@@ -76,10 +76,21 @@ export function WidthProvider<P extends { width: number }>(
       const node = elementRef.current;
       if (!(node instanceof HTMLElement)) return;
 
+      let rafId: number | null = null;
+
       const observer = new ResizeObserver(entries => {
         if (entries[0]) {
           const newWidth = entries[0].contentRect.width;
-          setWidth(newWidth);
+
+          // Defer state update to next paint cycle to avoid
+          // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+          if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+          }
+          rafId = requestAnimationFrame(() => {
+            setWidth(newWidth);
+            rafId = null;
+          });
         }
       });
 
@@ -87,6 +98,9 @@ export function WidthProvider<P extends { width: number }>(
       resizeObserverRef.current = observer;
 
       return () => {
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+        }
         observer.unobserve(node);
         observer.disconnect();
       };

@@ -83,3 +83,20 @@ global.triggerResize = (width, height = 0) => {
     observer.trigger(width, height);
   });
 };
+
+// Mock requestAnimationFrame and cancelAnimationFrame for tests
+// Execute callbacks synchronously to avoid timing issues in tests (#1959)
+let rafId = 0;
+const rafCallbacks = new Map();
+
+global.requestAnimationFrame = callback => {
+  const id = ++rafId;
+  // Execute synchronously in tests (jsdom default behavior)
+  // This ensures state updates happen within the same act() block
+  callback(performance.now());
+  return id;
+};
+
+global.cancelAnimationFrame = id => {
+  rafCallbacks.delete(id);
+};
