@@ -624,6 +624,38 @@ describe("Backwards Compatibility: WidthProvider", () => {
       callsBefore
     );
   });
+
+  // #1959 - WidthProvider should defer ResizeObserver updates via requestAnimationFrame
+  it("defers ResizeObserver updates via requestAnimationFrame (#1959)", () => {
+    // Track requestAnimationFrame calls
+    let rafCallCount = 0;
+    const originalRaf = global.requestAnimationFrame;
+    global.requestAnimationFrame = jest.fn(cb => {
+      rafCallCount++;
+      cb(0);
+      return rafCallCount;
+    });
+
+    render(
+      <WidthProvidedRGL layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]} cols={12}>
+        <div key="a">A</div>
+      </WidthProvidedRGL>
+    );
+
+    // Clear initial RAF calls
+    rafCallCount = 0;
+
+    // Trigger resize
+    act(() => {
+      global.triggerResize(800, 600);
+    });
+
+    // RAF should have been called to defer the state update
+    expect(rafCallCount).toBeGreaterThan(0);
+
+    // Restore
+    global.requestAnimationFrame = originalRaf;
+  });
 });
 
 describe("Backwards Compatibility: allowOverlap (#2205)", () => {

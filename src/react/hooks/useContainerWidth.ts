@@ -98,16 +98,38 @@ export function useContainerWidth(
 
     // Set up ResizeObserver
     if (typeof ResizeObserver !== "undefined") {
+      let rafId: number | null = null;
+
       observerRef.current = new ResizeObserver(entries => {
         const entry = entries[0];
         if (entry) {
           // Use contentRect.width for consistent measurements
           const newWidth = entry.contentRect.width;
-          setWidth(newWidth);
+
+          // Defer state update to next paint cycle to avoid
+          // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+          if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+          }
+          rafId = requestAnimationFrame(() => {
+            setWidth(newWidth);
+            rafId = null;
+          });
         }
       });
 
       observerRef.current.observe(node);
+
+      return () => {
+        // Cancel any pending RAF to prevent state updates on unmounted component
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+        }
+        if (observerRef.current) {
+          observerRef.current.disconnect();
+          observerRef.current = null;
+        }
+      };
     }
 
     return () => {

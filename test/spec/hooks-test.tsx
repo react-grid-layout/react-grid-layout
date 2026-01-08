@@ -210,6 +210,51 @@ describe("React Hooks", () => {
       expect(disconnectSpy).toHaveBeenCalled();
     });
 
+    // #1959 - Verify cancelAnimationFrame is called on unmount to prevent
+    // state updates on unmounted components
+    it("cancels pending RAF on unmount (#1959)", () => {
+      const onWidthChange = jest.fn();
+
+      // Track cancelAnimationFrame calls
+      let cancelRafCalled = false;
+      const originalCancelRaf = global.cancelAnimationFrame;
+      global.cancelAnimationFrame = jest.fn(() => {
+        cancelRafCalled = true;
+      });
+
+      // Use a custom RAF that doesn't execute synchronously to simulate pending RAF
+      let pendingCallback: FrameRequestCallback | null = null;
+      const originalRaf = global.requestAnimationFrame;
+      global.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+        pendingCallback = cb;
+        return 1;
+      }) as unknown as typeof requestAnimationFrame;
+
+      const { unmount } = render(
+        <TestContainerWidthComponent onWidthChange={onWidthChange} />
+      );
+
+      // Trigger a resize to queue a RAF callback
+      const observer =
+        resizeObserverInstances[resizeObserverInstances.length - 1];
+      if (observer) {
+        observer.triggerResize(800);
+      }
+
+      // Verify RAF was scheduled
+      expect(pendingCallback).not.toBeNull();
+
+      // Unmount while RAF is pending
+      unmount();
+
+      // cancelAnimationFrame should have been called
+      expect(cancelRafCalled).toBe(true);
+
+      // Restore mocks
+      global.requestAnimationFrame = originalRaf;
+      global.cancelAnimationFrame = originalCancelRaf;
+    });
+
     it("measureBeforeMount delays mounted state", () => {
       const mountedStates: boolean[] = [];
       const onWidthChange = jest.fn((_width: number, mounted: boolean) => {
@@ -241,6 +286,54 @@ describe("React Hooks", () => {
       expect(screen.getByTestId("container")).toBeInTheDocument();
       // Note: Width shows as 0 because offsetWidth is 0 in jsdom
       // The initial measurement overrides the initialWidth
+    });
+
+    // #1959 - ResizeObserver callback should defer state updates via requestAnimationFrame
+    // to avoid "ResizeObserver loop completed with undelivered notifications" error
+    it("defers ResizeObserver updates via requestAnimationFrame (#1959)", () => {
+      const widthChanges: number[] = [];
+      const onWidthChange = jest.fn((width: number) => {
+        widthChanges.push(width);
+      });
+
+      // Track requestAnimationFrame calls to verify RAF is being used
+      let rafCallCount = 0;
+      const originalRaf = global.requestAnimationFrame;
+      global.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+        rafCallCount++;
+        // Execute synchronously like the global mock, but track the call
+        cb(0);
+        return rafCallCount;
+      }) as unknown as typeof requestAnimationFrame;
+
+      render(
+        <TestContainerWidthComponent
+          onWidthChange={onWidthChange}
+          options={{ initialWidth: 500 }}
+        />
+      );
+
+      // Clear initial call count (from initial observation)
+      rafCallCount = 0;
+
+      // Simulate resize via ResizeObserver
+      const observer =
+        resizeObserverInstances[resizeObserverInstances.length - 1];
+      act(() => {
+        if (observer) {
+          observer.triggerResize(800);
+        }
+      });
+
+      // The update should have been queued through requestAnimationFrame
+      // This prevents the "ResizeObserver loop completed with undelivered notifications" error
+      expect(rafCallCount).toBeGreaterThan(0);
+
+      // Width should have been updated (RAF executes synchronously in test)
+      expect(widthChanges).toContain(800);
+
+      // Restore original requestAnimationFrame
+      global.requestAnimationFrame = originalRaf;
     });
   });
 
