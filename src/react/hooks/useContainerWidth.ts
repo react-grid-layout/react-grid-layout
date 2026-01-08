@@ -120,15 +120,11 @@ export function useContainerWidth(
 
       observerRef.current.observe(node);
 
-      // Cleanup function needs to cancel any pending RAF
-      const originalCleanup = () => {
+      return () => {
+        // Cancel any pending RAF to prevent state updates on unmounted component
         if (rafId !== null) {
           cancelAnimationFrame(rafId);
         }
-      };
-
-      return () => {
-        originalCleanup();
         if (observerRef.current) {
           observerRef.current.disconnect();
           observerRef.current = null;

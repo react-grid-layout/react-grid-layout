@@ -87,7 +87,6 @@ global.triggerResize = (width, height = 0) => {
 // Mock requestAnimationFrame and cancelAnimationFrame for tests
 // Execute callbacks synchronously to avoid timing issues in tests (#1959)
 let rafId = 0;
-const rafCallbacks = new Map();
 
 global.requestAnimationFrame = callback => {
   const id = ++rafId;
@@ -97,6 +96,6 @@ global.requestAnimationFrame = callback => {
   return id;
 };
 
-global.cancelAnimationFrame = id => {
-  rafCallbacks.delete(id);
+global.cancelAnimationFrame = () => {
+  // No-op since callbacks execute synchronously
 };

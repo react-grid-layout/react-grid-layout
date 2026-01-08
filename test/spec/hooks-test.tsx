@@ -210,6 +210,51 @@ describe("React Hooks", () => {
       expect(disconnectSpy).toHaveBeenCalled();
     });
 
+    // #1959 - Verify cancelAnimationFrame is called on unmount to prevent
+    // state updates on unmounted components
+    it("cancels pending RAF on unmount (#1959)", () => {
+      const onWidthChange = jest.fn();
+
+      // Track cancelAnimationFrame calls
+      let cancelRafCalled = false;
+      const originalCancelRaf = global.cancelAnimationFrame;
+      global.cancelAnimationFrame = jest.fn(() => {
+        cancelRafCalled = true;
+      });
+
+      // Use a custom RAF that doesn't execute synchronously to simulate pending RAF
+      let pendingCallback: FrameRequestCallback | null = null;
+      const originalRaf = global.requestAnimationFrame;
+      global.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+        pendingCallback = cb;
+        return 1;
+      }) as unknown as typeof requestAnimationFrame;
+
+      const { unmount } = render(
+        <TestContainerWidthComponent onWidthChange={onWidthChange} />
+      );
+
+      // Trigger a resize to queue a RAF callback
+      const observer =
+        resizeObserverInstances[resizeObserverInstances.length - 1];
+      if (observer) {
+        observer.triggerResize(800);
+      }
+
+      // Verify RAF was scheduled
+      expect(pendingCallback).not.toBeNull();
+
+      // Unmount while RAF is pending
+      unmount();
+
+      // cancelAnimationFrame should have been called
+      expect(cancelRafCalled).toBe(true);
+
+      // Restore mocks
+      global.requestAnimationFrame = originalRaf;
+      global.cancelAnimationFrame = originalCancelRaf;
+    });
+
     it("measureBeforeMount delays mounted state", () => {
       const mountedStates: boolean[] = [];
       const onWidthChange = jest.fn((_width: number, mounted: boolean) => {
