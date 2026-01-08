@@ -11,11 +11,7 @@ export {
 } from "./GridItem.js";
 
 // GridLayout
-export {
-  GridLayout,
-  type GridLayoutProps,
-  type EventCallback
-} from "./GridLayout.js";
+export { GridLayout, type GridLayoutProps } from "./GridLayout.js";
 
 // ResponsiveGridLayout
 export {

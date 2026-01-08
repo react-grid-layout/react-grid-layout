@@ -31,7 +31,8 @@ import type {
   DropConfig,
   PositionStrategy,
   Compactor,
-  LayoutConstraint
+  LayoutConstraint,
+  EventCallback
 } from "../../core/types.js";
 import {
   defaultGridConfig,
@@ -64,15 +65,6 @@ import { GridItem, type ResizeHandle } from "./GridItem.js";
 // ============================================================================
 // Types
 // ============================================================================
-
-export type EventCallback = (
-  layout: Layout,
-  oldItem: LayoutItem | null,
-  newItem: LayoutItem | null,
-  placeholder: LayoutItem | null,
-  event: Event,
-  element?: HTMLElement
-) => void;
 
 export interface GridLayoutProps {
   // ===========================================================================
