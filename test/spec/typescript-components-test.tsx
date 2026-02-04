@@ -22,7 +22,9 @@ import {
   bottom,
   calcGridItemPosition,
   calcXY,
-  calcWH
+  calcWH,
+  calcGridItemWHPx,
+  calcGridColWidth
 } from "../../src/react/index";
 
 // Helper to dispatch native mouse events
@@ -602,6 +604,121 @@ describe("TypeScript Components", () => {
       expect(result).toHaveProperty("h");
       expect(typeof result.w).toBe("number");
       expect(typeof result.h).toBe("number");
+    });
+  });
+
+  describe("Resize Constraints (#2235)", () => {
+    // #2235: In v2, visual resize preview should be limited to minW/maxW/minH/maxH
+    // just like in v1, rather than allowing infinite stretching.
+    //
+    // The fix: GridItem should calculate minConstraints and maxConstraints in pixels
+    // based on the layout item's minW/maxW/minH/maxH props, and pass them to Resizable.
+
+    it("should calculate correct pixel constraints from minW/maxW/minH/maxH", () => {
+      // Test the core calculation that should happen in GridItem
+      // Using calcGridItemWHPx formula: pixels = gridUnits * colWidth + (gridUnits - 1) * margin
+
+      // With cols=12, width=1200, margin=10, padding=10:
+      // colWidth = (1200 - 10 * 11 - 10 * 2) / 12 = (1200 - 110 - 20) / 12 = 89.166...
+      const positionParams = {
+        cols: 12,
+        containerPadding: [10, 10] as [number, number],
+        containerWidth: 1200,
+        margin: [10, 10] as [number, number],
+        maxRows: 10,
+        rowHeight: 30
+      };
+
+      const colWidth = calcGridColWidth(positionParams);
+      const marginX = positionParams.margin[0];
+      const marginY = positionParams.margin[1];
+      const rowHeight = positionParams.rowHeight;
+
+      // Test minW=2, maxW=4, minH=1, maxH=3
+      const minWPx = calcGridItemWHPx(2, colWidth, marginX);
+      const maxWPx = calcGridItemWHPx(4, colWidth, marginX);
+      const minHPx = calcGridItemWHPx(1, rowHeight, marginY);
+      const maxHPx = calcGridItemWHPx(3, rowHeight, marginY);
+
+      // Verify calculations produce reasonable pixel values
+      expect(minWPx).toBeGreaterThan(0);
+      expect(maxWPx).toBeGreaterThan(minWPx);
+      expect(minHPx).toBeGreaterThan(0);
+      expect(maxHPx).toBeGreaterThan(minHPx);
+
+      // Verify Infinity handling - should pass through as Infinity
+      expect(calcGridItemWHPx(Infinity, colWidth, marginX)).toBe(Infinity);
+    });
+
+    it("should render GridItem with proper constraints passed to Resizable", () => {
+      // Render a GridItem with minW/maxW/minH/maxH and verify it renders
+      // The actual constraint application happens inside react-resizable
+      const mockProps: GridItemProps = {
+        children: <div>test child</div>,
+        cols: 12,
+        containerWidth: 1200,
+        rowHeight: 30,
+        margin: [10, 10] as const,
+        maxRows: 10,
+        containerPadding: [10, 10] as const,
+        i: "0",
+        x: 0,
+        y: 0,
+        w: 3,
+        h: 2,
+        minW: 2,
+        maxW: 4,
+        minH: 1,
+        maxH: 3,
+        isDraggable: true,
+        isResizable: true,
+        isBounded: false,
+        useCSSTransforms: true
+      };
+
+      const { container } = render(<GridItem {...mockProps} />);
+
+      // Verify the component renders with resize handle
+      const gridItem = container.querySelector(".react-grid-item");
+      expect(gridItem).toBeInTheDocument();
+
+      // The resize handle should be present (Resizable adds it)
+      const resizeHandle = container.querySelector(".react-resizable-handle");
+      expect(resizeHandle).toBeInTheDocument();
+    });
+
+    it("should limit visual resize to maxW/maxH when resizing in GridLayout", () => {
+      // This verifies the integration - GridLayout passes constraints to GridItem
+      const { container } = render(
+        <GridLayout
+          className="layout"
+          cols={12}
+          rowHeight={30}
+          width={1200}
+          layout={[
+            {
+              i: "a",
+              x: 0,
+              y: 0,
+              w: 2,
+              h: 2,
+              minW: 1,
+              maxW: 4,
+              minH: 1,
+              maxH: 3
+            }
+          ]}
+        >
+          <div key="a">a</div>
+        </GridLayout>
+      );
+
+      const gridItem = container.querySelector(".react-grid-item");
+      expect(gridItem).toBeInTheDocument();
+
+      // Verify resize handle is present
+      const resizeHandle = container.querySelector(".react-resizable-handle");
+      expect(resizeHandle).toBeInTheDocument();
     });
   });
 

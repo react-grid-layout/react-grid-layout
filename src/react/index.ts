@@ -81,6 +81,8 @@ export {
 
   // Position utilities
   calcGridItemPosition,
+  calcGridColWidth,
+  calcGridItemWHPx,
   calcXY,
   calcWH,
   setTransform,
