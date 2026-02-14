@@ -22,10 +22,9 @@ import {
   bottom,
   calcGridItemPosition,
   calcXY,
-  calcWH,
-  calcGridItemWHPx,
-  calcGridColWidth
+  calcWH
 } from "../../src/react/index";
+import { calcGridItemWHPx, calcGridColWidth } from "../../src/core/calculate";
 
 // Helper to dispatch native mouse events
 function dispatchMouseEvent(

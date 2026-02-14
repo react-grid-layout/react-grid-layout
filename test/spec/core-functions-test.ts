@@ -430,6 +430,10 @@ describe("Core Functions", () => {
       const width = calcGridItemWHPx(1, 100, 10);
       expect(width).toBe(100);
     });
+
+    it("returns Infinity for non-finite gridUnits", () => {
+      expect(calcGridItemWHPx(Infinity, 100, 10)).toBe(Infinity);
+    });
   });
 
   describe("calcGridItemPosition", () => {
