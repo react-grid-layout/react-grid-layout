@@ -249,6 +249,13 @@ export function GridItem(props: GridItemProps): ReactElement {
     width: 0,
     height: 0
   });
+  // Track what width/height was last rendered to Resizable as props.
+  // This is needed to correctly extract deltas when React skips renders
+  // between mouse events (Resizable uses stale props.width + deltaX).
+  const lastRenderedResizeSizeRef = useRef<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
 
   // Previous dropping position for comparison
   const prevDroppingPositionRef = useRef<DroppingPosition | undefined>(
@@ -627,18 +634,35 @@ export function GridItem(props: GridItemProps): ReactElement {
 
       if (!handler) return;
 
+      // When React can't re-render between consecutive mouse events, Resizable
+      // computes `width = staleProps.width + deltaX` which loses intermediate
+      // deltas. To fix this, we extract the true delta from Resizable's output
+      // (size - lastRenderedPropSize) and accumulate it onto our own ref.
+      let correctedSize = size as Position;
+      if (handlerName === "onResize") {
+        const rendered = lastRenderedResizeSizeRef.current;
+        const prev = resizePositionRef.current;
+        // Only override width/height with accumulated delta; leave top/left
+        // from original size so resizeItemInDirection gets correct values.
+        correctedSize = {
+          ...(size as Position),
+          width: prev.width + (size.width - rendered.width),
+          height: prev.height + (size.height - rendered.height)
+        };
+      }
+
       // Sizing based on resize direction
       let updatedSize: Position;
       if (node) {
         updatedSize = resizeItemInDirection(
           resizeHandle,
           position,
-          size as Position,
+          correctedSize,
           containerWidth
         );
       } else {
         updatedSize = {
-          ...size,
+          ...correctedSize,
           top: position.top,
           left: position.left
         } as Position;
@@ -796,6 +820,10 @@ export function GridItem(props: GridItemProps): ReactElement {
     dragging ? dragPositionRef.current : null,
     resizing ? resizePositionRef.current : null
   );
+
+  // Track the width/height we actually render to Resizable, so that
+  // onResizeHandler can compute the true delta even when React skips renders.
+  lastRenderedResizeSizeRef.current = { width: pos.width, height: pos.height };
 
   const child = React.Children.only(children);
 
