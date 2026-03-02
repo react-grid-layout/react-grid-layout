@@ -781,6 +781,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       cols
     );
 
+    // Eagerly update layoutRef so that any onDrag callback fired in the same
+    // event loop (before React re-renders) will read the cleaned layout and
+    // bail out via its getLayoutItem() null check, preventing it from
+    // re-setting activeDrag after we clear it below.
+    layoutRef.current = newLayout;
     setLayout(newLayout);
     setDroppingDOMNode(null);
     setActiveDrag(null);
