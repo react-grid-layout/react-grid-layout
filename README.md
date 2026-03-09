@@ -163,6 +163,7 @@ function MyGrid() {
 - [HubSpot](http://www.hubspot.com)
 - [Kibana](https://www.elastic.co/products/kibana)
 - [Monday](https://support.monday.com/hc/en-us/articles/360002187819-What-are-the-Dashboards-)
+- [PostHog](https://posthog.com/)
 
 _Know of others? Create a PR to let me know!_
 
