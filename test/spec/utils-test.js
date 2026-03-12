@@ -1,26 +1,98 @@
 // @flow
 /* eslint-env jest */
 
+// Import directly from core modules (#2213)
 import {
   bottom,
-  collides,
-  compact,
-  fastRGLPropsEqual,
   moveElement,
-  sortLayoutItemsByRowCol,
-  validateLayout,
-  compactType,
-  synchronizeLayoutWithChildren
-} from "../../lib/utils";
-import * as React from "react";
+  moveElementAwayFromCollision,
+  validateLayout
+} from "../../src/core/layout";
+import { collides } from "../../src/core/collision";
+import { sortLayoutItemsByRowCol } from "../../src/core/sort";
+import { getCompactor } from "../../src/core/compactors";
+import { resizeItemInDirection } from "../../src/core/position";
 import {
   calcGridColWidth,
   calcGridItemPosition,
   calcWH,
   calcXY
-} from "../../lib/calculateUtils";
+} from "../../src/core/calculate";
 import { deepEqual } from "fast-equals";
 import deepFreeze from "./../util/deepFreeze";
+
+// Helper to compact using compactor interface (#2213)
+function compact(layout, compactTypeStr, cols, allowOverlap = false) {
+  const compactor = getCompactor(compactTypeStr, allowOverlap);
+  return compactor.compact(layout, cols);
+}
+
+// Legacy compactType helper (#2213)
+// Returns the appropriate compactType from legacy verticalCompact props
+function compactType(props) {
+  const { verticalCompact, compactType: ct } = props || {};
+  return verticalCompact === false ? null : (ct ?? null);
+}
+
+// fastRGLPropsEqual - simplified version for testing
+function fastRGLPropsEqual(a, b, isEqualImpl = deepEqual) {
+  if (a === b) return true;
+
+  // Props that use strict equality (primitives)
+  const primitiveProps = [
+    "className",
+    "width",
+    "autoSize",
+    "cols",
+    "draggableCancel",
+    "draggableHandle",
+    "rowHeight",
+    "maxRows",
+    "isBounded",
+    "isDraggable",
+    "isResizable",
+    "allowOverlap",
+    "preventCollision",
+    "useCSSTransforms",
+    "transformScale",
+    "isDroppable",
+    "onLayoutChange",
+    "onDragStart",
+    "onDrag",
+    "onDragStop",
+    "onResizeStart",
+    "onResize",
+    "onResizeStop",
+    "onDrop",
+    "onDropDragOver"
+  ];
+
+  // Props that use deep equality (objects/arrays)
+  const deepEqualProps = [
+    "style",
+    "verticalCompact",
+    "compactType",
+    "layout",
+    "margin",
+    "containerPadding",
+    "resizeHandles",
+    "resizeHandle",
+    "droppingItem",
+    "innerRef"
+  ];
+
+  // Compare primitives with ===
+  for (const key of primitiveProps) {
+    if (a[key] !== b[key]) return false;
+  }
+
+  // Compare complex types with deep equality
+  for (const key of deepEqualProps) {
+    if (!isEqualImpl(a[key], b[key])) return false;
+  }
+
+  return true;
+}
 
 describe("bottom", () => {
   it("Handles an empty layout as input", () => {
@@ -86,7 +158,7 @@ describe("validateLayout", () => {
         // $FlowFixMe: dynamic check
         { i: "2", x: 1, y: 2, w: 1 }
       ]);
-    }).toThrowError(/layout\[1]\.h must be a number!/i);
+    }).toThrow(/layout\[1]\.h must be a number!/i);
   });
 });
 
@@ -411,6 +483,48 @@ describe("moveElement", () => {
   });
 });
 
+describe("moveElementAwayFromCollision", () => {
+  it("Uses correct y-coordinate offset when moving item down due to collision north (#2173)", () => {
+    // This test verifies the fix for issue #2173
+    // Bug: when collisionNorth is true during vertical compaction, the code used
+    // collidesWith.y + 1 instead of itemToMove.y + 1, causing items to jump to wrong positions.
+    //
+    // Layout scenario:
+    // - A at y=0, h=6: a tall item that blocks the space above B
+    // - B at y=5, h=2: the item that was moved (collidesWith) - note: overlaps with A's bottom
+    // - C at y=7, h=2: the item that needs to move away (itemToMove)
+    //
+    // When C tries to move above B, it collides with A (collisionNorth).
+    // C should move down from its own position (y=7 -> y=8), not from B's position.
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 6, i: "A" },
+      { x: 0, y: 5, w: 1, h: 2, i: "B" }, // collidesWith - positioned to trigger collision
+      { x: 0, y: 7, w: 1, h: 2, i: "C" } // itemToMove
+    ];
+    const collidesWith = layout[1]; // B
+    const itemToMove = layout[2]; // C
+
+    const result = moveElementAwayFromCollision(
+      layout,
+      collidesWith,
+      itemToMove,
+      true, // isUserAction - required to trigger the collisionNorth branch
+      "vertical", // compactType
+      10 // cols
+    );
+
+    // Find itemToMove (C) in the result
+    const movedItem = result.find(item => item.i === "C");
+    expect(movedItem).toBeDefined();
+
+    // With the bug (collidesWith.y + 1 = 5 + 1 = 6), C would be at y=6
+    // With the fix (itemToMove.y + 1 = 7 + 1 = 8), C should be at y=8
+    // C should move down from its own position, not jump to collidesWith.y + 1
+    // $FlowFixMe: movedItem is checked above
+    expect(movedItem.y).toBe(8);
+  });
+});
+
 describe("compact vertical", () => {
   it("Removes empty vertical space above item", () => {
     const layout = [{ i: "1", x: 0, y: 1, w: 1, h: 1 }];
@@ -562,15 +676,23 @@ describe("calcGridItemPosition", () => {
     const y = 1;
     const w = 2;
     const h = 2;
-    const resizing = null;
-    const dragging = null;
+    const dragPosition = null;
+    const resizePosition = null;
     const positionParams = {
       ...basePositionParams,
       margin: [10, 10],
       containerPadding: [100, 100]
     };
     expect(
-      calcGridItemPosition(positionParams, x, y, w, h, { resizing, dragging })
+      calcGridItemPosition(
+        positionParams,
+        x,
+        y,
+        w,
+        h,
+        dragPosition,
+        resizePosition
+      )
     ).toEqual({
       height: 110, // 50 * 2 + margin of 10
       left: 176, // 100 + colWidth (66.25) + margin. Rounded to complete pixel
@@ -772,50 +894,70 @@ describe("deepFreeze", () => {
   });
 });
 
-describe("synchronizeLayoutWithChildren", () => {
-  const layout = [
-    { x: 0, y: 0, w: 1, h: 10, i: "A" },
-    { x: 0, y: 10, w: 1, h: 1, i: "B" },
-    { x: 0, y: 11, w: 1, h: 1, i: "C" }
-  ];
-  const cols = 6;
-  const compactType = "horizontal";
-  it("test", () => {
-    const children = [
-      <div key="A" />,
-      <div key="B" />,
-      <div key="C" />,
-      <div key="D" />
-    ];
-    const output = synchronizeLayoutWithChildren(
-      layout,
-      children,
-      cols,
-      compactType
-    );
-    expect(output).toEqual([
-      expect.objectContaining({ w: 1, h: 10, x: 0, y: 0, i: "A" }),
-      expect.objectContaining({ w: 1, h: 1, x: 0, y: 10, i: "B" }),
-      expect.objectContaining({ w: 1, h: 1, x: 0, y: 11, i: "C" }),
-      expect.objectContaining({ w: 1, h: 1, x: 0, y: 12, i: "D" })
-    ]);
-  });
-  it("Prefers data-grid over layout", () => {
-    const children = [
-      <div key="A" />,
-      <div key="B" />,
-      <div key="C" data-grid={{ x: 0, y: 11, w: 2, h: 2 }} />
-    ];
-    const output = synchronizeLayoutWithChildren(
-      layout,
-      children,
-      cols,
-      compactType
-    );
-    expect(output).toEqual([
-      expect.objectContaining({ w: 1, h: 10, x: 0, y: 0, i: "A" }),
-      expect.objectContaining({ w: 1, h: 1, x: 0, y: 10, i: "B" }),
-      expect.objectContaining({ w: 2, h: 2, x: 0, y: 11, i: "C" })
-    ]);
+// Note: synchronizeLayoutWithChildren tests removed (#2213)
+// This function was part of utils-compat which is no longer exported
+
+describe("resizeItemInDirection", () => {
+  const containerWidth = 1200;
+
+  describe("west resize", () => {
+    it("should preserve the right edge when resizing west", () => {
+      // Original position: left=100, width=200, so right edge = 300
+      const currentSize = { left: 100, top: 50, width: 200, height: 100 };
+      // User drags west handle to make width=250
+      const newSize = { left: 0, top: 50, width: 250, height: 100 };
+
+      const result = resizeItemInDirection(
+        "w",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Right edge should remain at 300 (100 + 200)
+      // So with width=250, left should be 50 (300 - 250)
+      const rightEdgeBefore = currentSize.left + currentSize.width; // 300
+      const rightEdgeAfter = result.left + result.width;
+
+      expect(rightEdgeAfter).toBe(rightEdgeBefore);
+    });
+
+    it("should not shift element leftward unexpectedly during west resize", () => {
+      // Regression test for https://github.com/react-grid-layout/react-grid-layout/issues/2027
+      const currentSize = { left: 200, top: 0, width: 400, height: 100 };
+      // Simulate dragging west handle to increase width by 50px
+      const newSize = { left: 0, top: 0, width: 450, height: 100 };
+
+      const result = resizeItemInDirection(
+        "w",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Original right edge: 200 + 400 = 600
+      // Expected: left = 150, width = 450, right edge = 600
+      expect(result.left + result.width).toBe(600);
+      expect(result.width).toBe(450);
+      expect(result.left).toBe(150);
+    });
+
+    it("should clamp width when resizing past container left edge", () => {
+      // Element near left edge
+      const currentSize = { left: 50, top: 0, width: 200, height: 100 };
+      // Try to resize to width=300 (would need left=-50)
+      const newSize = { left: 0, top: 0, width: 300, height: 100 };
+
+      const result = resizeItemInDirection(
+        "w",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Should clamp: left=0, width=250 (original right edge was 250)
+      expect(result.left).toBe(0);
+      expect(result.left + result.width).toBe(250); // right edge preserved
+    });
   });
 });

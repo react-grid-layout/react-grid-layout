@@ -1,31 +1,96 @@
 {
   "categories": [
     {
-      "title": "## 🚀 Features",
-      "labels": ["feature"]
+      "title": "## 💥 Breaking Changes",
+      "labels": ["breaking-change", "Semver-Major"]
     },
     {
-      "title": "## 🐛 Fixes",
-      "labels": ["fix"]
+      "title": "## ✨ New Features",
+      "labels": ["enhancement", "feature", "Semver-Minor"]
+    },
+    {
+      "title": "## 🐛 Bug Fixes",
+      "labels": ["bug", "fix"]
+    },
+    {
+      "title": "## ⚡ Performance",
+      "labels": ["performance"]
+    },
+    {
+      "title": "## 📚 Documentation",
+      "labels": ["documentation"]
     },
     {
       "title": "## 🧪 Tests",
-      "labels": ["test"]
+      "labels": ["tests", "test"]
+    },
+    {
+      "title": "## 🔧 Internal Changes",
+      "labels": ["infrastructure", "core", "deps", "dependencies", "chore"]
     }
   ],
-  "ignore_labels": ["ignore_changelog"],
+  "ignore_labels": [
+    "ignore_changelog",
+    "stale",
+    "duplicate",
+    "invalid",
+    "wontfix",
+    "WIP - Don't Merge"
+  ],
   "sort": "ASC",
-  "template": "${{CHANGELOG}}\n\n<details open>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
-  "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
-  "empty_template": "- no changes",
+  "template": "${{CHANGELOG}}${{UNCATEGORIZED}}",
+  "pr_template": "- **${{TITLE}}** - [#${{NUMBER}}](${{URL}}) by [@${{AUTHOR}}](https://github.com/${{AUTHOR}})",
+  "empty_template": "No notable changes in this release.",
   "label_extractor": [
     {
-      "pattern": "\\[Issue\\]",
+      "pattern": "^fix(\\(.+\\))?:",
       "on_property": "title",
-      "method": "match"
+      "method": "match",
+      "target": "bug"
+    },
+    {
+      "pattern": "^feat(\\(.+\\))?:",
+      "on_property": "title",
+      "method": "match",
+      "target": "enhancement"
+    },
+    {
+      "pattern": "^docs(\\(.+\\))?:",
+      "on_property": "title",
+      "method": "match",
+      "target": "documentation"
+    },
+    {
+      "pattern": "^chore(\\(.+\\))?:",
+      "on_property": "title",
+      "method": "match",
+      "target": "chore"
+    },
+    {
+      "pattern": "^test(\\(.+\\))?:",
+      "on_property": "title",
+      "method": "match",
+      "target": "tests"
+    },
+    {
+      "pattern": "^perf(\\(.+\\))?:",
+      "on_property": "title",
+      "method": "match",
+      "target": "performance"
+    },
+    {
+      "pattern": "^refactor(\\(.+\\))?:",
+      "on_property": "title",
+      "method": "match",
+      "target": "infrastructure"
     }
   ],
-  "transformers": [],
+  "transformers": [
+    {
+      "pattern": "^(fix|feat|docs|chore|test|perf|refactor)(\\(.+\\))?:\\s*",
+      "target": ""
+    }
+  ],
   "max_tags_to_fetch": 200,
   "max_pull_requests": 200,
   "max_back_track_time_days": 365,

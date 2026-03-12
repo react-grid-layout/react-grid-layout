@@ -34,10 +34,6 @@
   opacity: 0.2;
   transition-duration: 100ms;
   z-index: 2;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
   user-select: none;
 }
 
@@ -49,6 +45,11 @@
   position: absolute;
   width: 20px;
   height: 20px;
+  opacity: 0;
+}
+
+.react-grid-item:hover > .react-resizable-handle {
+  opacity: 1;
 }
 
 .react-grid-item > .react-resizable-handle::after {

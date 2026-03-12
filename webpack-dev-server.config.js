@@ -15,11 +15,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
           cacheDirectory: true,
+          presets: ["@babel/preset-typescript"],
           plugins: [["react-hot-loader/babel"]]
         }
       }
@@ -36,6 +37,7 @@ module.exports = {
   devServer: {
     compress: true,
     port: 4002,
+    host: "localhost",
     open: "index-dev.html",
     client: {
       overlay: true
@@ -45,7 +47,10 @@ module.exports = {
     }
   },
   resolve: {
-    extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
+    extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".jsx"],
+    extensionAlias: {
+      ".js": [".ts", ".tsx", ".js", ".jsx"]
+    },
     alias: {
       "react-grid-layout": path.join(__dirname, "/index-dev.js")
     }

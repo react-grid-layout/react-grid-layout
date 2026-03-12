@@ -27,11 +27,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.[jt]sx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
-          cacheDirectory: true
+          cacheDirectory: true,
+          presets: [
+            "@babel/preset-env",
+            "@babel/preset-react",
+            "@babel/preset-typescript"
+          ]
         }
       }
     ]
@@ -45,17 +50,27 @@ module.exports = {
     compress: true,
     port: 4002,
     open: "/react-grid-layout/examples/00-showcase.html",
+    hot: true,
+    liveReload: true,
+    watchFiles: ["test/examples/**/*", "src/**/*"],
     client: {
       overlay: true
     },
     static: {
       directory: ".",
       publicPath: "/react-grid-layout"
+    },
+    devMiddleware: {
+      writeToDisk: true
     }
   },
   resolve: {
-    extensions: [".js", ".jsx"],
-    alias: { "react-grid-layout": __dirname + "/index-dev.js" }
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    alias: { "react-grid-layout": __dirname + "/index-dev.js" },
+    extensionAlias: {
+      ".js": [".ts", ".tsx", ".js"],
+      ".mjs": [".mts", ".mjs"]
+    }
   }
 };
 

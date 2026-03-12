@@ -3,22 +3,18 @@
 EXEC = npm exec --
 DIST = ./dist
 BUILD = ./build
-LIB = ./lib
 TEST = ./test
-EXAMPLES = ./examples/*.{js,html}
-MIN = $(DIST)/react-grid-layout.min.js
-MIN_MAP = $(DIST)/react-grid-layout.min.js.map
+EXAMPLES = ./examples/*.{js,html,json}
 
 .PHONY: test dev lint build clean install link
 
-
-build: clean build-js $(MIN)
+build: clean build-ts
 
 clean:
 	rm -rf $(BUILD) $(DIST)
 
 clean-example:
-	rm -rf $(EXAMPLES)
+	rm -f $(EXAMPLES)
 
 dev:
 	@$(EXEC) webpack serve --config webpack-dev-server.config.js \
@@ -28,12 +24,9 @@ dev:
 install link:
 	@npm $@
 
-# Build browser module
-dist/%.min.js: $(LIB) $(BIN)
-	@$(EXEC) webpack
-
-build-js:
-	@$(EXEC) babel --out-dir $(BUILD) $(LIB)
+# Build TypeScript
+build-ts:
+	@$(EXEC) tsup
 
 # Will build for use on github pages. Full url of page is
 # https://react-grid-layout.github.io/react-grid-layout/examples/00-showcase.html
@@ -42,15 +35,13 @@ build-example: build clean-example
 	@$(EXEC) webpack --config webpack-examples.config.js
 	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js
 
-# Note: this doesn't hot reload, you need to re-run to update files.
-# TODO fix that
-view-example: build-example
+# View examples with hot reload - no library build needed since examples use index-dev.js
+view-example: clean-example
+	env CONTENT_BASE="/react-grid-layout/examples/" node ./examples/util/generate.js
 	@$(EXEC) webpack serve --config webpack-examples.config.js --progress
 
-# FIXME flow is usually global
 lint:
-	@$(EXEC) flow
-	@$(EXEC) eslint --ext .js,.jsx
+	@$(EXEC) eslint --ext .js,.jsx,.ts,.tsx
 
 test:
 	env NODE_ENV=test $(EXEC) jest --coverage
@@ -84,7 +75,7 @@ define release
 			var s = JSON.stringify(j, null, 2);\
 			require('fs').writeFileSync(fileName, s + '\\n');\
 		});" && \
-	git add package.json CHANGELOG.md $(MIN) $(MIN_MAP) && \
+	git add package.json CHANGELOG.md && \
 	git commit -nm "release $$NEXT_VERSION" && \
 	git tag "$$NEXT_VERSION" -m "release $$NEXT_VERSION"
 	npm pack --dry-run

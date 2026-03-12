@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "style-loader!css-loader!../css/styles.css";
 import "style-loader!css-loader!../examples/util/example-styles.css";
 typeof window !== "undefined" && (window.React = React); // for devtools
@@ -31,8 +31,10 @@ export default function makeLayout(Layout) {
         <React.StrictMode>
           <div>
             <div className="layoutJSON">
-              Displayed as <code>[x, y, w, h]</code>:
               <div className="columns">{this.stringifyLayout()}</div>
+              <div className="layoutJSON__footnote">
+                format: <code>[x, y, w, h]</code>
+              </div>
             </div>
             <Layout onLayoutChange={this.onLayoutChange} />
           </div>
@@ -43,11 +45,9 @@ export default function makeLayout(Layout) {
 
   function run() {
     const contentDiv = document.getElementById("content");
+    const root = createRoot(contentDiv);
     const gridProps = window.gridProps || {};
-    ReactDOM.render(
-      React.createElement(ListeningLayout, gridProps),
-      contentDiv
-    );
+    root.render(<ListeningLayout {...gridProps} />);
   }
   if (!document.getElementById("content")) {
     document.addEventListener("DOMContentLoaded", run);
