@@ -25,6 +25,12 @@ export interface UseContainerWidthOptions {
    * Defaults to 1280.
    */
   initialWidth?: number;
+
+  /**
+   * Timeout in milliseconds to delay the resizing of grid-items
+   * Defaults to 0
+   */
+  debounceTimeout?: number;
 }
 
 export interface UseContainerWidthResult {
@@ -71,7 +77,7 @@ export interface UseContainerWidthResult {
 export function useContainerWidth(
   options: UseContainerWidthOptions = {}
 ): UseContainerWidthResult {
-  const { measureBeforeMount = false, initialWidth = 1280 } = options;
+  const { measureBeforeMount = false, initialWidth = 1280, debounceTimeout = 0 } = options;
 
   const [width, setWidth] = useState(initialWidth);
   const [mounted, setMounted] = useState(!measureBeforeMount);
@@ -99,6 +105,7 @@ export function useContainerWidth(
     // Set up ResizeObserver
     if (typeof ResizeObserver !== "undefined") {
       let rafId: number | null = null;
+      let debounceTimeoutId: number | null = null;
 
       observerRef.current = new ResizeObserver(entries => {
         const entry = entries[0];
@@ -106,21 +113,47 @@ export function useContainerWidth(
           // Use contentRect.width for consistent measurements
           const newWidth = entry.contentRect.width;
 
-          // Defer state update to next paint cycle to avoid
-          // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+          // Clear any existing debounce timeout
+          if (debounceTimeoutId !== null) {
+            clearTimeout(debounceTimeoutId);
+          }
+
+          // Clear any existing RAF
           if (rafId !== null) {
             cancelAnimationFrame(rafId);
           }
-          rafId = requestAnimationFrame(() => {
-            setWidth(newWidth);
-            rafId = null;
-          });
+
+          // No debounce, update immediately on next RAF and return
+          if (debounceTimeout <= 0) {
+            // Defer state update to next paint cycle to avoid
+            // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+            rafId = requestAnimationFrame(() => {
+              setWidth(newWidth);
+              rafId = null;
+            });
+            return;
+          }
+
+          // Apply debounce before RAF
+          debounceTimeoutId = window.setTimeout(() => {
+            // Defer state update to next paint cycle to avoid
+            // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+            rafId = requestAnimationFrame(() => {
+              setWidth(newWidth);
+              rafId = null;
+              debounceTimeoutId = null;
+            });
+          }, debounceTimeout);
         }
       });
 
       observerRef.current.observe(node);
 
       return () => {
+        // Cancel any pending debounce timeout
+        if (debounceTimeoutId !== null) {
+          clearTimeout(debounceTimeoutId);
+        }
         // Cancel any pending RAF to prevent state updates on unmounted component
         if (rafId !== null) {
           cancelAnimationFrame(rafId);
