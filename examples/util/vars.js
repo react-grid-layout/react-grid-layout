@@ -193,4 +193,13 @@ module.exports = [
         "top-half positioning, and snap-to-grid."
     ]
   },
+    {
+    title: "Debounced Layout Change",
+    source: "debounced-layout-change",
+    paragraphs: [
+      "This demonstrates how to debounce triggering <code>onLayoutChange</code> event on browser width change.",
+      "Dragging and resizing items within the layout will trigger the <code>onLayoutChange</code> event immediately, " +
+      "but resizing the browser window will delay triggering <code>onLayoutChange</code> event by a specified timeout, in this case 500ms."
+    ]
+  },
 ];
