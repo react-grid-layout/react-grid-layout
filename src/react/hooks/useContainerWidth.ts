@@ -83,6 +83,8 @@ export function useContainerWidth(
   const [mounted, setMounted] = useState(!measureBeforeMount);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const debounceTimeoutIdRef = useRef<number | null>(null);
 
   const measureWidth = useCallback(() => {
     const node = containerRef.current;
@@ -104,9 +106,7 @@ export function useContainerWidth(
 
     // Set up ResizeObserver
     if (typeof ResizeObserver !== "undefined") {
-      let rafId: number | null = null;
-      let debounceTimeoutId: number | null = null;
-
+      
       observerRef.current = new ResizeObserver(entries => {
         const entry = entries[0];
         if (entry) {
@@ -114,64 +114,57 @@ export function useContainerWidth(
           const newWidth = entry.contentRect.width;
 
           // Clear any existing debounce timeout
-          if (debounceTimeoutId !== null) {
-            clearTimeout(debounceTimeoutId);
+          if (debounceTimeoutIdRef.current !== null) {
+            clearTimeout(debounceTimeoutIdRef.current);
           }
 
           // Clear any existing RAF
-          if (rafId !== null) {
-            cancelAnimationFrame(rafId);
+          if (rafIdRef.current !== null) {
+            cancelAnimationFrame(rafIdRef.current);
           }
 
           // No debounce, update immediately on next RAF and return
           if (debounceTimeout <= 0) {
             // Defer state update to next paint cycle to avoid
             // "ResizeObserver loop completed with undelivered notifications" error (#1959)
-            rafId = requestAnimationFrame(() => {
+            rafIdRef.current = requestAnimationFrame(() => {
               setWidth(newWidth);
-              rafId = null;
+              rafIdRef.current = null;
             });
             return;
           }
 
           // Apply debounce before RAF
-          debounceTimeoutId = window.setTimeout(() => {
+          debounceTimeoutIdRef.current = window.setTimeout(() => {
             // Defer state update to next paint cycle to avoid
             // "ResizeObserver loop completed with undelivered notifications" error (#1959)
-            rafId = requestAnimationFrame(() => {
+            rafIdRef.current = requestAnimationFrame(() => {
               setWidth(newWidth);
-              rafId = null;
-              debounceTimeoutId = null;
+              rafIdRef.current = null;
+              debounceTimeoutIdRef.current = null;
             });
           }, debounceTimeout);
         }
       });
 
       observerRef.current.observe(node);
-
-      return () => {
-        // Cancel any pending debounce timeout
-        if (debounceTimeoutId !== null) {
-          clearTimeout(debounceTimeoutId);
-        }
-        // Cancel any pending RAF to prevent state updates on unmounted component
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
-        }
-        if (observerRef.current) {
-          observerRef.current.disconnect();
-          observerRef.current = null;
-        }
-      };
     }
 
     return () => {
-      if (observerRef.current) {
+      // Cancel any pending debounce timeout
+      if (debounceTimeoutIdRef.current !== null) {
+        clearTimeout(debounceTimeoutIdRef.current);
+      }
+      // Cancel any pending RAF to prevent state updates on unmounted component
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+      if (observerRef.current !== null) {
         observerRef.current.disconnect();
         observerRef.current = null;
       }
     };
-  }, [measureWidth]);
+  }, [measureWidth, debounceTimeout]);
 
   return {
     width,
