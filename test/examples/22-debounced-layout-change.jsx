@@ -3,6 +3,7 @@ import _ from "lodash";
 import Responsive from '../../src/legacy/ResponsiveReactGridLayout';
 import WidthProvider from '../../src/legacy/WidthProvider';
 
+const debouncedTimeoutMs = 500;
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 export default class DebouncedLayout extends React.Component {
@@ -15,9 +16,10 @@ export default class DebouncedLayout extends React.Component {
 
   state = {
     currentBreakpoint: "lg",
-    debouncedTimeout: 500,
+    debouncedTimeout: debouncedTimeoutMs,
     mounted: false,
-    layouts: { lg: generateLayout(['se']) }
+    layouts: { lg: generateLayout(['se']) },
+    resizeHandles: ['se']
   };
 
   componentDidMount() {
@@ -49,8 +51,8 @@ export default class DebouncedLayout extends React.Component {
     });
   };
 
-  onDebouncedTimoutChange = () => {
-    const debouncedTimeout = this.state.debouncedTimeout === 0 ? 500 : 0;
+  onDebouncedTimeoutChange = () => {
+    const debouncedTimeout = this.state.debouncedTimeout === 0 ? debouncedTimeoutMs : 0;
     this.setState({debouncedTimeout});
   };
 
@@ -77,7 +79,7 @@ export default class DebouncedLayout extends React.Component {
           {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
         <button onClick={this.onNewLayout}>Generate New Layout</button>
-        <button onClick={this.onDebouncedTimoutChange}>
+        <button onClick={this.onDebouncedTimeoutChange}>
           {this.state.debouncedTimeout === 0 ? "No debouncing" : `Debouncing ${this.state.debouncedTimeout}ms`}
         </button>
         <ResponsiveReactGridLayout
@@ -115,6 +117,6 @@ function generateLayout(resizeHandles) {
   });
 }
 
-if (process.env.STATIC_EXAMPLES === true) {
+if (process.env.STATIC_EXAMPLES === "true") {
   import("../test-hook.jsx").then(fn => fn.default(DebouncedLayout));
 }
