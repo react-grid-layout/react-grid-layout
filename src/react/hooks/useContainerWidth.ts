@@ -25,6 +25,12 @@ export interface UseContainerWidthOptions {
    * Defaults to 1280.
    */
   initialWidth?: number;
+
+  /**
+   * Timeout in milliseconds to delay the resizing of grid-items
+   * Defaults to 0
+   */
+  debounceTimeout?: number;
 }
 
 export interface UseContainerWidthResult {
@@ -71,12 +77,14 @@ export interface UseContainerWidthResult {
 export function useContainerWidth(
   options: UseContainerWidthOptions = {}
 ): UseContainerWidthResult {
-  const { measureBeforeMount = false, initialWidth = 1280 } = options;
+  const { measureBeforeMount = false, initialWidth = 1280, debounceTimeout = 0 } = options;
 
   const [width, setWidth] = useState(initialWidth);
   const [mounted, setMounted] = useState(!measureBeforeMount);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const debounceTimeoutIdRef = useRef<number | null>(null);
 
   const measureWidth = useCallback(() => {
     const node = containerRef.current;
@@ -98,47 +106,65 @@ export function useContainerWidth(
 
     // Set up ResizeObserver
     if (typeof ResizeObserver !== "undefined") {
-      let rafId: number | null = null;
-
+      
       observerRef.current = new ResizeObserver(entries => {
         const entry = entries[0];
         if (entry) {
           // Use contentRect.width for consistent measurements
           const newWidth = entry.contentRect.width;
 
-          // Defer state update to next paint cycle to avoid
-          // "ResizeObserver loop completed with undelivered notifications" error (#1959)
-          if (rafId !== null) {
-            cancelAnimationFrame(rafId);
+          // Clear any existing debounce timeout
+          if (debounceTimeoutIdRef.current !== null) {
+            clearTimeout(debounceTimeoutIdRef.current);
           }
-          rafId = requestAnimationFrame(() => {
-            setWidth(newWidth);
-            rafId = null;
-          });
+
+          // Clear any existing RAF
+          if (rafIdRef.current !== null) {
+            cancelAnimationFrame(rafIdRef.current);
+          }
+
+          // No debounce, update immediately on next RAF and return
+          if (debounceTimeout <= 0) {
+            // Defer state update to next paint cycle to avoid
+            // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+            rafIdRef.current = requestAnimationFrame(() => {
+              setWidth(newWidth);
+              rafIdRef.current = null;
+            });
+            return;
+          }
+
+          // Apply debounce before RAF
+          debounceTimeoutIdRef.current = window.setTimeout(() => {
+            // Defer state update to next paint cycle to avoid
+            // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+            rafIdRef.current = requestAnimationFrame(() => {
+              setWidth(newWidth);
+              rafIdRef.current = null;
+              debounceTimeoutIdRef.current = null;
+            });
+          }, debounceTimeout);
         }
       });
 
       observerRef.current.observe(node);
-
-      return () => {
-        // Cancel any pending RAF to prevent state updates on unmounted component
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
-        }
-        if (observerRef.current) {
-          observerRef.current.disconnect();
-          observerRef.current = null;
-        }
-      };
     }
 
     return () => {
-      if (observerRef.current) {
+      // Cancel any pending debounce timeout
+      if (debounceTimeoutIdRef.current !== null) {
+        clearTimeout(debounceTimeoutIdRef.current);
+      }
+      // Cancel any pending RAF to prevent state updates on unmounted component
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+      if (observerRef.current !== null) {
         observerRef.current.disconnect();
         observerRef.current = null;
       }
     };
-  }, [measureWidth]);
+  }, [measureWidth, debounceTimeout]);
 
   return {
     width,

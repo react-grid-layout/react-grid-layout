@@ -15,6 +15,8 @@ import clsx from "clsx";
 export interface WidthProviderProps {
   /** If true, will not render children until mounted */
   measureBeforeMount?: boolean;
+  /** Timeout in milliseconds to delay the resizing of grid-items */
+  debounceTimeout?: number;
   /** Additional class name */
   className?: string;
   /** Additional styles */
@@ -58,12 +60,14 @@ export function WidthProvider<P extends { width: number }>(
   ComposedComponent: ComponentType<P>
 ): ComponentType<WithWidthProps<P>> {
   function WidthProviderWrapper(props: WithWidthProps<P>) {
-    const { measureBeforeMount = false, className, style, ...rest } = props;
+    const { measureBeforeMount = false, debounceTimeout = 0,className, style, ...rest } = props;
 
     const [width, setWidth] = useState(1280);
     const [mounted, setMounted] = useState(false);
     const elementRef = useRef<HTMLDivElement>(null);
     const resizeObserverRef = useRef<ResizeObserver | null>(null);
+    const rafIdRef = useRef<number | null>(null);
+    const debounceTimeoutIdRef = useRef<number | null>(null);
 
     // Set mounted state on first render
     useEffect(() => {
@@ -76,35 +80,63 @@ export function WidthProvider<P extends { width: number }>(
       const node = elementRef.current;
       if (!(node instanceof HTMLElement)) return;
 
-      let rafId: number | null = null;
+      resizeObserverRef.current = new ResizeObserver(entries => {
+        const entry = entries[0];
+        if (entry) {
+          // Use contentRect.width for consistent measurements
+          const newWidth = entry.contentRect.width;
 
-      const observer = new ResizeObserver(entries => {
-        if (entries[0]) {
-          const newWidth = entries[0].contentRect.width;
-
-          // Defer state update to next paint cycle to avoid
-          // "ResizeObserver loop completed with undelivered notifications" error (#1959)
-          if (rafId !== null) {
-            cancelAnimationFrame(rafId);
+          // Clear any existing debounce timeout
+          if (debounceTimeoutIdRef.current !== null) {
+            clearTimeout(debounceTimeoutIdRef.current);
           }
-          rafId = requestAnimationFrame(() => {
-            setWidth(newWidth);
-            rafId = null;
-          });
+
+          // Clear any existing RAF
+          if (rafIdRef.current !== null) {
+            cancelAnimationFrame(rafIdRef.current);
+          }
+
+          // No debounce, update immediately on next RAF and return
+          if (debounceTimeout <= 0) {
+            // Defer state update to next paint cycle to avoid
+            // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+            rafIdRef.current = requestAnimationFrame(() => {
+              setWidth(newWidth);
+              rafIdRef.current = null;
+            });
+            return;
+          }
+
+          // Apply debounce before RAF
+          debounceTimeoutIdRef.current = window.setTimeout(() => {
+            // Defer state update to next paint cycle to avoid
+            // "ResizeObserver loop completed with undelivered notifications" error (#1959)
+            rafIdRef.current = requestAnimationFrame(() => {
+              setWidth(newWidth);
+              rafIdRef.current = null;
+              debounceTimeoutIdRef.current = null;
+            });
+          }, debounceTimeout);
         }
       });
 
-      observer.observe(node);
-      resizeObserverRef.current = observer;
+      resizeObserverRef.current.observe(node);
 
       return () => {
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
+        // Cancel any pending debounce timeout
+        if (debounceTimeoutIdRef.current !== null) {
+          clearTimeout(debounceTimeoutIdRef.current);
         }
-        observer.unobserve(node);
-        observer.disconnect();
+        // Cancel any pending RAF to prevent state updates on unmounted component
+        if (rafIdRef.current !== null) {
+          cancelAnimationFrame(rafIdRef.current);
+        }
+        if (resizeObserverRef.current !== null) {
+          resizeObserverRef.current.unobserve(node);
+          resizeObserverRef.current.disconnect();
+        }
       };
-    }, [mounted]);
+    }, [mounted, debounceTimeout]);
 
     // If measureBeforeMount is true and not yet mounted, render placeholder
     if (measureBeforeMount && !mounted) {
