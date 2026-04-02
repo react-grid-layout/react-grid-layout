@@ -132,7 +132,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       compactType(this.props),
       this.props.allowOverlap
     ),
-    mounted: false,
+    mounted: true,
     oldDragItem: null,
     oldLayout: null,
     oldResizeItem: null,
@@ -144,9 +144,6 @@ export default class ReactGridLayout extends React.Component<Props, State> {
   dragEnterCounter: number = 0;
 
   componentDidMount() {
-    this.setState({ mounted: true });
-    // Possibly call back with layout on mount. This should be done after correcting the layout width
-    // to ensure we don't rerender with the wrong width.
     this.onLayoutMaybeChanged(this.state.layout, this.props.layout);
   }
 
