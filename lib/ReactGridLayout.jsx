@@ -215,13 +215,14 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     if (!this.state.activeDrag) {
       const newLayout = this.state.layout;
       const oldLayout = prevState.layout;
-      const dom = document.getElementById('js_canvas')
+      const dom = typeof document !== 'undefined' ? document.getElementById('js_canvas') : null;
 
-      const layout = correctFixLayout(newLayout, { cols: this.props.cols }, dom?.clientHeight || 0)
-      this.setState({ layout })
+      const layout = correctFixLayout(newLayout, { cols: this.props.cols }, dom?.clientHeight || 0);
+      if (!deepEqual(layout, newLayout)) {
+        this.setState({ layout });
+      }
       this.onLayoutMaybeChanged(layout, oldLayout);
     }
-  
   }
 
   /**
@@ -234,12 +235,11 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     const containerPaddingY = this.props.containerPadding
       ? this.props.containerPadding[1]
       : this.props.margin[1];
-    return (
+    const totalPx =
       nbRow * this.props.rowHeight +
       (nbRow - 1) * this.props.margin[1] +
-      containerPaddingY * 2 +
-      "px"
-    );
+      containerPaddingY * 2;
+    return (totalPx / 100) + "rem";
   }
 
   /**

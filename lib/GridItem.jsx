@@ -697,11 +697,13 @@ export default class GridItem extends React.Component<Props, State> {
       }
     });
 
-    // Resizable support. This is usually on but the user can toggle it off.
-    newChild = this.mixinResizable(newChild, pos, isResizable);
+    if (isResizable) {
+      newChild = this.mixinResizable(newChild, pos, isResizable);
+    }
 
-    // Draggable support. This is always on, except for with placeholders.
-    newChild = this.mixinDraggable(newChild, isDraggable);
+    if (isDraggable) {
+      newChild = this.mixinDraggable(newChild, isDraggable);
+    }
 
     return newChild;
   }
