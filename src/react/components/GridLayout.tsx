@@ -191,16 +191,7 @@ export interface GridLayoutProps {
     | false
     | void;
 
-  /**
-   * Cross-grid drag-and-drop configuration.
-   *
-   * Supply this prop together with a `CrossGridDragProvider` ancestor to allow
-   * items to be dragged seamlessly between multiple GridLayout instances.
-   * Each participating grid must have a unique `gridId`.
-   *
-   * @see CrossGridConfig
-   * @see CrossGridDragProvider
-   */
+  /** Cross-grid drag-and-drop configuration. */
   crossGridConfig?: CrossGridConfig;
 }
 
@@ -466,8 +457,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       if (typeof innerRef === "function") {
         innerRef(el);
       } else if (innerRef != null) {
-        (innerRef as React.MutableRefObject<HTMLDivElement | null>).current =
-          el;
+        (innerRef as { current: HTMLDivElement | null }).current = el;
       }
     },
     [innerRef]
