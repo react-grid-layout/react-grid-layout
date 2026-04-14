@@ -47,6 +47,7 @@ export type {
   DragConfig,
   ResizeConfig,
   DropConfig,
+  CrossGridConfig,
 
   // Responsive
   Breakpoint,

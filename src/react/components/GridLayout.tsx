@@ -32,7 +32,8 @@ import type {
   PositionStrategy,
   Compactor,
   LayoutConstraint,
-  EventCallback
+  EventCallback,
+  CrossGridConfig
 } from "../../core/types.js";
 import {
   defaultGridConfig,
@@ -61,6 +62,7 @@ import { defaultPositionStrategy } from "../../core/position.js";
 import { defaultConstraints } from "../../core/constraints.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
+import { useCrossGridDrag } from "../hooks/useCrossGridDrag.js";
 
 // ============================================================================
 // Types
@@ -188,6 +190,18 @@ export interface GridLayoutProps {
     | { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number }
     | false
     | void;
+
+  /**
+   * Cross-grid drag-and-drop configuration.
+   *
+   * Supply this prop together with a `CrossGridDragProvider` ancestor to allow
+   * items to be dragged seamlessly between multiple GridLayout instances.
+   * Each participating grid must have a unique `gridId`.
+   *
+   * @see CrossGridConfig
+   * @see CrossGridDragProvider
+   */
+  crossGridConfig?: CrossGridConfig;
 }
 
 // ============================================================================
@@ -197,6 +211,12 @@ export interface GridLayoutProps {
 const noop = () => {};
 
 const layoutClassName = "react-grid-layout";
+
+/**
+ * Internal item id used for the cross-grid ghost placeholder.
+ * Filtered out of every public layout callback — callers never see it.
+ */
+const CROSS_GRID_DROPPING_ID = "__cross-grid-dropping-elem__";
 
 // Check for Firefox
 let isFirefox = false;
@@ -327,7 +347,10 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     onResize: onResizeProp = noop,
     onResizeStop: onResizeStopProp = noop,
     onDrop: onDropProp = noop,
-    onDropDragOver: onDropDragOverProp = noop
+    onDropDragOver: onDropDragOverProp = noop,
+
+    // Cross-grid drag
+    crossGridConfig
   } = props;
 
   // Resolve config interfaces with defaults
@@ -404,6 +427,16 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     DroppingPosition | undefined
   >();
 
+  // Ghost item shown in this grid while a peer grid's item hovers over it.
+  // Kept separate from activeDrag so internal drag and incoming drag don't interfere.
+  const [crossGridGhostItem, setCrossGridGhostItem] =
+    useState<LayoutItem | null>(null);
+
+  // Ref used by the cross-grid incoming-drag effect to read the latest ghost
+  // without adding it to the effect's dependency array (which would cause loops).
+  const crossGridGhostItemRef = useRef<LayoutItem | null>(null);
+  crossGridGhostItemRef.current = crossGridGhostItem;
+
   // Refs for tracking previous state
   const oldDragItemRef = useRef<LayoutItem | null>(null);
   const oldResizeItemRef = useRef<LayoutItem | null>(null);
@@ -421,6 +454,250 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const layoutRef = useRef<Layout>(layout);
   layoutRef.current = layout;
 
+  // Internal ref for the grid container element.
+  // Used by cross-grid drag for hit-testing and position calculations.
+  // Composed with the user-provided `innerRef` via mergedRef below.
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Stable callback ref that writes both containerRef and the user's innerRef.
+  const mergedRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      containerRef.current = el;
+      if (typeof innerRef === "function") {
+        innerRef(el);
+      } else if (innerRef != null) {
+        (innerRef as React.MutableRefObject<HTMLDivElement | null>).current =
+          el;
+      }
+    },
+    [innerRef]
+  );
+
+  // ============================================================================
+  // Cross-Grid Drag Setup
+  // ============================================================================
+
+  /**
+   * Called synchronously by the provider when an item from a peer grid is
+   * dropped onto this grid.  Computes the grid-unit position from the viewport
+   * coordinates, places the item into the local layout, and fires callbacks.
+   */
+  const onIncomingDrop = useCallback(
+    (item: LayoutItem, clientX: number, clientY: number): void => {
+      const containerEl = containerRef.current;
+      if (!containerEl) return;
+
+      const rect = containerEl.getBoundingClientRect();
+
+      const positionParams: PositionParams = {
+        cols,
+        margin: margin as [number, number],
+        maxRows,
+        rowHeight,
+        containerWidth: width,
+        containerPadding: effectiveContainerPadding as [number, number]
+      };
+
+      // Mirror the centering offset used by the ghost effect so the item lands
+      // at the same grid position the ghost was displaying.
+      const actualColWidth = calcGridColWidth(positionParams);
+      const itemPixelWidth = calcGridItemWHPx(
+        item.w,
+        actualColWidth,
+        (margin as [number, number])[0]
+      );
+      const itemPixelHeight = calcGridItemWHPx(
+        item.h,
+        rowHeight,
+        (margin as [number, number])[1]
+      );
+      const rawGridX = Math.max(0, clientX - rect.left - itemPixelWidth / 2);
+      const rawGridY = Math.max(0, clientY - rect.top - itemPixelHeight / 2);
+
+      const { x, y } = calcXY(
+        positionParams,
+        rawGridY,
+        rawGridX,
+        item.w,
+        item.h
+      );
+
+      const newItem: LayoutItem = { ...item, x, y };
+
+      // Remove any cross-grid ghost and prevent duplicate item ids.
+      const baseLayout = layoutRef.current.filter(
+        l => l.i !== CROSS_GRID_DROPPING_ID && l.i !== item.i
+      );
+      const withNewItem = [...baseLayout, newItem];
+      const movedLayout = moveElement(
+        withNewItem,
+        newItem,
+        x,
+        y,
+        true,
+        preventCollision,
+        compactType,
+        cols,
+        allowOverlap
+      );
+      const finalLayout = compactor.compact(movedLayout, cols);
+
+      setCrossGridGhostItem(null);
+      setLayout(finalLayout);
+      // Update prevLayoutRef so the layout-change effect does not fire a
+      // duplicate onLayoutChange call after this synchronous one.
+      prevLayoutRef.current = finalLayout;
+      onLayoutChange(finalLayout);
+      crossGridConfig?.onItemDroppedIn?.(newItem, finalLayout);
+    },
+    [
+      cols,
+      margin,
+      maxRows,
+      rowHeight,
+      width,
+      effectiveContainerPadding,
+      preventCollision,
+      compactType,
+      allowOverlap,
+      compactor,
+      onLayoutChange,
+      crossGridConfig
+    ]
+  );
+
+  const { publishDrag, commitDrop, incomingDragState } = useCrossGridDrag(
+    crossGridConfig,
+    containerRef,
+    onIncomingDrop
+  );
+
+  // ============================================================================
+  // Incoming Cross-Grid Drag Effect
+  // ============================================================================
+
+  /**
+   * React to incoming drag state from a peer grid.
+   *
+   * When an item from another grid hovers over this grid's container, we:
+   *   1. Compute the grid-unit position where the item would land.
+   *   2. Add a ghost placeholder to the local layout (pushing other items aside).
+   *   3. Update the ghost position on every drag frame.
+   *
+   * When the drag leaves or ends, we remove the ghost and restore the layout.
+   */
+  useEffect(() => {
+    const currentGhost = crossGridGhostItemRef.current;
+
+    if (!incomingDragState) {
+      // Cross-grid drag ended or cursor left the provider — clean up ghost.
+      if (currentGhost) {
+        const restored = compactor.compact(
+          layoutRef.current.filter(l => l.i !== CROSS_GRID_DROPPING_ID),
+          cols
+        );
+        setLayout(restored);
+        setCrossGridGhostItem(null);
+      }
+      return;
+    }
+
+    const containerEl = containerRef.current;
+    if (!containerEl) return;
+
+    const rect = containerEl.getBoundingClientRect();
+    const { clientX, clientY, item } = incomingDragState;
+
+    // Only show the ghost while the cursor is actually within this grid.
+    const isOverGrid =
+      clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom;
+
+    if (!isOverGrid) {
+      if (currentGhost) {
+        const restored = compactor.compact(
+          layoutRef.current.filter(l => l.i !== CROSS_GRID_DROPPING_ID),
+          cols
+        );
+        setLayout(restored);
+        setCrossGridGhostItem(null);
+      }
+      return;
+    }
+
+    const positionParams: PositionParams = {
+      cols,
+      margin: margin as [number, number],
+      maxRows,
+      rowHeight,
+      containerWidth: width,
+      containerPadding: effectiveContainerPadding as [number, number]
+    };
+
+    // Center the ghost on the cursor (mirrors handleDragOver centering).
+    const actualColWidth = calcGridColWidth(positionParams);
+    const itemPixelWidth = calcGridItemWHPx(
+      item.w,
+      actualColWidth,
+      (margin as [number, number])[0]
+    );
+    const itemPixelHeight = calcGridItemWHPx(
+      item.h,
+      rowHeight,
+      (margin as [number, number])[1]
+    );
+    const rawGridX = Math.max(0, clientX - rect.left - itemPixelWidth / 2);
+    const rawGridY = Math.max(0, clientY - rect.top - itemPixelHeight / 2);
+
+    const { x, y } = calcXY(positionParams, rawGridY, rawGridX, item.w, item.h);
+
+    // Skip the layout update when the ghost hasn't moved to a new grid cell.
+    if (currentGhost && currentGhost.x === x && currentGhost.y === y) return;
+
+    const ghostItem: LayoutItem = {
+      ...item,
+      i: CROSS_GRID_DROPPING_ID,
+      x,
+      y,
+      static: false,
+      isDraggable: false,
+      isResizable: false
+    };
+
+    // Inject the ghost and run moveElement so other items move out of the way.
+    const baseLayout = layoutRef.current.filter(
+      l => l.i !== CROSS_GRID_DROPPING_ID
+    );
+    const withGhost = [...baseLayout, ghostItem];
+    const movedLayout = moveElement(
+      withGhost,
+      ghostItem,
+      x,
+      y,
+      true,
+      preventCollision,
+      compactType,
+      cols,
+      allowOverlap
+    );
+    setLayout(compactor.compact(movedLayout, cols));
+    setCrossGridGhostItem(ghostItem);
+  }, [
+    incomingDragState,
+    cols,
+    margin,
+    maxRows,
+    rowHeight,
+    width,
+    effectiveContainerPadding,
+    preventCollision,
+    compactType,
+    allowOverlap,
+    compactor
+  ]);
+
   // Mount effect - call onLayoutChange with initial layout if it differs from props
   useEffect(() => {
     setMounted(true);
@@ -436,6 +713,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   useEffect(() => {
     if (activeDrag) return; // Don't update during drag
     if (droppingDOMNode) return; // Don't update during drop from outside
+    if (crossGridGhostItem) return; // Don't update while a peer-grid ghost is shown
 
     const layoutChanged = !deepEqual(propsLayout, prevPropsLayoutRef.current);
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
@@ -468,21 +746,26 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     compactor,
     activeDrag,
     droppingDOMNode,
+    crossGridGhostItem,
     layout
   ]);
 
   // Layout change callback
   useEffect(() => {
-    if (!activeDrag && !deepEqual(layout, prevLayoutRef.current)) {
+    // Skip while dragging or while showing a cross-grid ghost — both are transient.
+    if (activeDrag || crossGridGhostItem) return;
+
+    if (!deepEqual(layout, prevLayoutRef.current)) {
       prevLayoutRef.current = layout;
-      // Filter out dropping placeholder - it's transient internal state only (#2210)
-      // The dropping item should not be exposed to users until the actual drop happens.
-      // This prevents infinite loops in controlled state patterns where children derive
-      // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
-      const publicLayout = layout.filter(l => l.i !== droppingItem.i);
+      // Filter out transient placeholders — callers must never see them.
+      // - droppingItem.i: external-drop ghost (#2210)
+      // - CROSS_GRID_DROPPING_ID: peer-grid incoming ghost
+      const publicLayout = layout.filter(
+        l => l.i !== droppingItem.i && l.i !== CROSS_GRID_DROPPING_ID
+      );
       onLayoutChange(publicLayout);
     }
-  }, [layout, activeDrag, onLayoutChange, droppingItem.i]);
+  }, [layout, activeDrag, crossGridGhostItem, onLayoutChange, droppingItem.i]);
 
   // ============================================================================
   // Container Height
@@ -520,8 +803,14 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       setActiveDrag(placeholder);
 
       onDragStartProp(currentLayout, l, l, null, data.e, data.node);
+
+      // Notify peer grids that a drag has started so they can prepare their ghost.
+      if (crossGridConfig) {
+        const mouseEvent = data.e as MouseEvent;
+        publishDrag(l, mouseEvent.clientX, mouseEvent.clientY);
+      }
     },
-    [onDragStartProp]
+    [onDragStartProp, crossGridConfig, publishDrag]
   );
 
   const onDrag = useCallback(
@@ -557,8 +846,24 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
       setLayout(compactor.compact(newLayout, cols));
       setActiveDrag(placeholder);
+
+      // Keep peer grids updated with the latest cursor position so they can
+      // show / update the ghost placeholder.
+      if (crossGridConfig) {
+        const mouseEvent = data.e as MouseEvent;
+        publishDrag(l, mouseEvent.clientX, mouseEvent.clientY);
+      }
     },
-    [preventCollision, compactType, cols, allowOverlap, compactor, onDragProp]
+    [
+      preventCollision,
+      compactType,
+      cols,
+      allowOverlap,
+      compactor,
+      onDragProp,
+      crossGridConfig,
+      publishDrag
+    ]
   );
 
   const onDragStop = useCallback(
@@ -585,6 +890,32 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
       const finalLayout = compactor.compact(newLayout, cols);
 
+      // Check whether the item was released on a peer grid.
+      if (crossGridConfig) {
+        const mouseEvent = data.e as MouseEvent;
+        const droppedOnPeer = commitDrop(
+          l,
+          mouseEvent.clientX,
+          mouseEvent.clientY
+        );
+
+        if (droppedOnPeer) {
+          // Remove the dragged item from this grid's layout.
+          const withoutItem = layoutRef.current.filter(li => li.i !== i);
+          const compactedWithout = compactor.compact(withoutItem, cols);
+
+          oldDragItemRef.current = null;
+          oldLayoutRef.current = null;
+          setActiveDrag(null);
+          setLayout(compactedWithout);
+          onLayoutChange(compactedWithout);
+          crossGridConfig.onItemDraggedOut?.(l);
+          return;
+        }
+        // Not dropped on a peer — fall through to normal drop handling.
+        // commitDrop already called publishDrag(null) to clear context state.
+      }
+
       onDragStopProp(finalLayout, oldDragItem, l, null, data.e, data.node);
 
       const oldLayout = oldLayoutRef.current;
@@ -605,7 +936,9 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       allowOverlap,
       compactor,
       onDragStopProp,
-      onLayoutChange
+      onLayoutChange,
+      crossGridConfig,
+      commitDrop
     ]
   );
 
@@ -1097,6 +1430,42 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     );
   };
 
+  /**
+   * Render the ghost placeholder shown in this grid while an item is being
+   * dragged in from a peer grid.  Uses the same visual style as the normal
+   * drag placeholder so users get a consistent drop-target indicator.
+   */
+  const renderCrossGridGhost = (): ReactElement | null => {
+    if (!crossGridGhostItem) return null;
+
+    return (
+      <GridItem
+        key={CROSS_GRID_DROPPING_ID}
+        w={crossGridGhostItem.w}
+        h={crossGridGhostItem.h}
+        x={crossGridGhostItem.x}
+        y={crossGridGhostItem.y}
+        i={CROSS_GRID_DROPPING_ID}
+        className="react-grid-placeholder"
+        containerWidth={width}
+        cols={cols}
+        margin={margin}
+        containerPadding={effectiveContainerPadding}
+        maxRows={maxRows}
+        rowHeight={rowHeight}
+        isDraggable={false}
+        isResizable={false}
+        isBounded={false}
+        useCSSTransforms={useCSSTransforms}
+        transformScale={transformScale}
+        constraints={constraints}
+        layout={layout}
+      >
+        <div />
+      </GridItem>
+    );
+  };
+
   // ============================================================================
   // Render
   // ============================================================================
@@ -1109,7 +1478,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   return (
     <div
-      ref={innerRef}
+      ref={mergedRef}
       className={mergedClassName}
       style={mergedStyle}
       onDrop={isDroppable ? handleDrop : undefined}
@@ -1123,6 +1492,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       })}
       {isDroppable && droppingDOMNode && processGridItem(droppingDOMNode, true)}
       {renderPlaceholder()}
+      {renderCrossGridGhost()}
     </div>
   );
 }

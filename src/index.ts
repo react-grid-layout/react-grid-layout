@@ -35,6 +35,12 @@ export {
 // Default export for common usage: import ReactGridLayout from 'react-grid-layout'
 export { GridLayout as default } from "./react/components/index.js";
 
+// Cross-grid drag-and-drop
+export {
+  CrossGridDragProvider,
+  type CrossGridDragProviderProps
+} from "./react/context/CrossGridDragProvider.js";
+
 // =============================================================================
 // React Hooks
 // =============================================================================
@@ -74,7 +80,8 @@ export type {
   ResizeHandleAxis,
   GridDragEvent,
   GridResizeEvent,
-  EventCallback
+  EventCallback,
+  CrossGridConfig
 } from "./core/types.js";
 
 // =============================================================================
