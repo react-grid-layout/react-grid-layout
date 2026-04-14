@@ -506,8 +506,14 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         rowHeight,
         (margin as [number, number])[1]
       );
-      const rawGridX = Math.max(0, clientX - rect.left - itemPixelWidth / 2);
-      const rawGridY = Math.max(0, clientY - rect.top - itemPixelHeight / 2);
+      const rawGridX = Math.max(
+        0,
+        (clientX - rect.left - itemPixelWidth / 2) / transformScale
+      );
+      const rawGridY = Math.max(
+        0,
+        (clientY - rect.top - itemPixelHeight / 2) / transformScale
+      );
 
       const { x, y } = calcXY(
         positionParams,
@@ -557,7 +563,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       allowOverlap,
       compactor,
       onLayoutChange,
-      crossGridConfig
+      crossGridConfig,
+      transformScale
     ]
   );
 
@@ -628,8 +635,14 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       rowHeight,
       (margin as [number, number])[1]
     );
-    const rawGridX = Math.max(0, clientX - rect.left - itemPixelWidth / 2);
-    const rawGridY = Math.max(0, clientY - rect.top - itemPixelHeight / 2);
+    const rawGridX = Math.max(
+      0,
+      (clientX - rect.left - itemPixelWidth / 2) / transformScale
+    );
+    const rawGridY = Math.max(
+      0,
+      (clientY - rect.top - itemPixelHeight / 2) / transformScale
+    );
 
     const { x, y } = calcXY(
       positionParams,
@@ -683,7 +696,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     preventCollision,
     compactType,
     allowOverlap,
-    compactor
+    compactor,
+    transformScale
   ]);
 
   // Mount effect - call onLayoutChange with initial layout if it differs from props
@@ -908,16 +922,24 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           const withoutItem = layoutRef.current.filter(li => li.i !== i);
           const compactedWithout = compactor.compact(withoutItem, cols);
 
+          onDragStopProp(
+            compactedWithout,
+            oldDragItem,
+            l,
+            null,
+            data.e,
+            data.node
+          );
+
           oldDragItemRef.current = null;
           oldLayoutRef.current = null;
           setActiveDrag(null);
           setLayout(compactedWithout);
+          prevLayoutRef.current = compactedWithout;
           onLayoutChange(compactedWithout);
           crossGridConfig.onItemDraggedOut?.(l);
           return;
         }
-        // Not dropped on a peer — fall through to normal drop handling.
-        // commitDrop already called publishDrag(null) to clear context state.
       }
 
       onDragStopProp(finalLayout, oldDragItem, l, null, data.e, data.node);
