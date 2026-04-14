@@ -556,11 +556,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     ]
   );
 
-  const { publishDrag, commitDrop, incomingDragState } = useCrossGridDrag(
-    crossGridConfig,
-    containerRef,
-    onIncomingDrop
-  );
+  const { publishDrag, commitDrop, incomingDragState, isDraggingOverPeer } =
+    useCrossGridDrag(crossGridConfig, containerRef, onIncomingDrop);
 
   // ============================================================================
   // Incoming Cross-Grid Drag Effect
@@ -592,30 +589,13 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       return;
     }
 
+    // incomingDragState is only non-null when the cursor is over this grid
+    // (the hook performs the bounds check).  No isOverGrid guard needed here.
     const containerEl = containerRef.current;
     if (!containerEl) return;
 
     const rect = containerEl.getBoundingClientRect();
     const { clientX, clientY, item } = incomingDragState;
-
-    // Only show the ghost while the cursor is actually within this grid.
-    const isOverGrid =
-      clientX >= rect.left &&
-      clientX <= rect.right &&
-      clientY >= rect.top &&
-      clientY <= rect.bottom;
-
-    if (!isOverGrid) {
-      if (currentGhost) {
-        const restored = compactor.compact(
-          layoutRef.current.filter(l => l.i !== CROSS_GRID_DROPPING_ID),
-          cols
-        );
-        setLayout(restored);
-        setCrossGridGhostItem(null);
-      }
-      return;
-    }
 
     const positionParams: PositionParams = {
       cols,
@@ -758,17 +738,33 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   }, [layout, activeDrag, crossGridGhostItem, onLayoutChange, droppingItem.i]);
 
   // ============================================================================
+  // Display Layout
+  // ============================================================================
+
+  const displayLayout = useMemo(() => {
+    if (isDraggingOverPeer && activeDrag) {
+      const draggedItem = layout.find(l => l.i === activeDrag.i);
+      const compactedOthers = compactor.compact(
+        layout.filter(l => l.i !== activeDrag.i),
+        cols
+      );
+      return draggedItem ? [...compactedOthers, draggedItem] : compactedOthers;
+    }
+    return layout;
+  }, [isDraggingOverPeer, activeDrag, layout, compactor, cols]);
+
+  // ============================================================================
   // Container Height
   // ============================================================================
 
   const containerHeight = useMemo((): string | undefined => {
     if (!autoSize) return undefined;
-    const nbRow = bottom(layout);
+    const nbRow = bottom(displayLayout);
     const containerPaddingY = effectiveContainerPadding[1];
     return (
       nbRow * rowHeight + (nbRow - 1) * margin[1] + containerPaddingY * 2 + "px"
     );
-  }, [autoSize, layout, rowHeight, margin, effectiveContainerPadding]);
+  }, [autoSize, displayLayout, rowHeight, margin, effectiveContainerPadding]);
 
   // ============================================================================
   // Drag Handlers
@@ -1296,7 +1292,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     ): ReactElement | null | undefined => {
       if (!child || !child.key) return null;
 
-      const l = getLayoutItem(layout, String(child.key));
+      const l = getLayoutItem(displayLayout, String(child.key));
       if (!l) return null;
 
       const draggable =
@@ -1353,14 +1349,14 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           resizeHandle={resizeHandleElement}
           constraints={constraints}
           layoutItem={l}
-          layout={layout}
+          layout={displayLayout}
         >
           {child}
         </GridItem>
       );
     },
     [
-      layout,
+      displayLayout,
       width,
       cols,
       margin,
@@ -1392,6 +1388,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   const renderPlaceholder = (): ReactElement | null => {
     if (!activeDrag) return null;
+    if (isDraggingOverPeer) return null;
 
     return (
       <GridItem

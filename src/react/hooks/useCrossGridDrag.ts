@@ -59,6 +59,16 @@ export interface UseCrossGridDragResult {
    * GridLayout uses this to show / update / hide the incoming ghost placeholder.
    */
   incomingDragState: CrossGridDragState | null;
+
+  /**
+   * True when this grid is the SOURCE of an active cross-grid drag and the
+   * cursor is currently over a registered peer grid.
+   *
+   * GridLayout uses this to hide its own `activeDrag` placeholder while the
+   * item is visually "claimed" by the target grid, giving clear feedback that
+   * the item will move rather than stay.
+   */
+  isDraggingOverPeer: boolean;
 }
 
 // ============================================================================
@@ -151,12 +161,45 @@ export function useCrossGridDrag(
   // Incoming Drag State
   // ============================================================================
 
-  // Expose raw drag state only when it originates from a different grid.
+  // Expose raw drag state only when it originates from a different grid AND the
+  // cursor is currently within this grid's container.  Returning null whenever
+  // the cursor is outside means the effect in GridLayout can use a single
+  // `!incomingDragState` check to remove the ghost — no separate isOverGrid
+  // block is needed.
   const rawDragState = context?.dragState ?? null;
-  const incomingDragState =
-    rawDragState && gridId && rawDragState.sourceGridId !== gridId
+  const incomingDragState = ((): CrossGridDragState | null => {
+    if (!rawDragState || !gridId || rawDragState.sourceGridId === gridId)
+      return null;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    const { clientX, clientY } = rawDragState;
+    return clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom
       ? rawDragState
       : null;
+  })();
 
-  return { publishDrag, clearDrag, commitDrop, incomingDragState };
+  // True when this grid is the source and the cursor is over a peer grid.
+  // Computed via getActiveTarget so it reuses the same rect hit-test logic.
+  const isDraggingOverPeer =
+    context != null &&
+    gridId != null &&
+    rawDragState != null &&
+    rawDragState.sourceGridId === gridId
+      ? context.getActiveTarget(
+          rawDragState.clientX,
+          rawDragState.clientY,
+          gridId
+        ) !== null
+      : false;
+
+  return {
+    publishDrag,
+    clearDrag,
+    commitDrop,
+    incomingDragState,
+    isDraggingOverPeer
+  };
 }
