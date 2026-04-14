@@ -488,16 +488,21 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         containerPadding: effectiveContainerPadding as [number, number]
       };
 
+      // Clamp incoming item dimensions to the target grid's bounds so the
+      // placed item does not overflow cols or maxRows.
+      const clampedW = Math.min(item.w, cols);
+      const clampedH = Math.min(item.h, maxRows);
+
       // Mirror the centering offset used by the ghost effect so the item lands
       // at the same grid position the ghost was displaying.
       const actualColWidth = calcGridColWidth(positionParams);
       const itemPixelWidth = calcGridItemWHPx(
-        item.w,
+        clampedW,
         actualColWidth,
         (margin as [number, number])[0]
       );
       const itemPixelHeight = calcGridItemWHPx(
-        item.h,
+        clampedH,
         rowHeight,
         (margin as [number, number])[1]
       );
@@ -508,11 +513,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         positionParams,
         rawGridY,
         rawGridX,
-        item.w,
-        item.h
+        clampedW,
+        clampedH
       );
 
-      const newItem: LayoutItem = { ...item, x, y };
+      const newItem: LayoutItem = { ...item, w: clampedW, h: clampedH, x, y };
 
       // Remove any cross-grid ghost and prevent duplicate item ids.
       const baseLayout = layoutRef.current.filter(
@@ -606,22 +611,33 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       containerPadding: effectiveContainerPadding as [number, number]
     };
 
+    // Clamp incoming item dimensions to the target grid's bounds so the ghost
+    // does not overflow cols or maxRows.
+    const clampedW = Math.min(item.w, cols);
+    const clampedH = Math.min(item.h, maxRows);
+
     // Center the ghost on the cursor (mirrors handleDragOver centering).
     const actualColWidth = calcGridColWidth(positionParams);
     const itemPixelWidth = calcGridItemWHPx(
-      item.w,
+      clampedW,
       actualColWidth,
       (margin as [number, number])[0]
     );
     const itemPixelHeight = calcGridItemWHPx(
-      item.h,
+      clampedH,
       rowHeight,
       (margin as [number, number])[1]
     );
     const rawGridX = Math.max(0, clientX - rect.left - itemPixelWidth / 2);
     const rawGridY = Math.max(0, clientY - rect.top - itemPixelHeight / 2);
 
-    const { x, y } = calcXY(positionParams, rawGridY, rawGridX, item.w, item.h);
+    const { x, y } = calcXY(
+      positionParams,
+      rawGridY,
+      rawGridX,
+      clampedW,
+      clampedH
+    );
 
     // Skip the layout update when the ghost hasn't moved to a new grid cell.
     if (currentGhost && currentGhost.x === x && currentGhost.y === y) return;
@@ -629,6 +645,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     const ghostItem: LayoutItem = {
       ...item,
       i: CROSS_GRID_DROPPING_ID,
+      w: clampedW,
+      h: clampedH,
       x,
       y,
       static: false,

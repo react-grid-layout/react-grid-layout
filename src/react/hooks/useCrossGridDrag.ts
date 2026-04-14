@@ -100,12 +100,14 @@ export function useCrossGridDrag(
   // Registration
   // ============================================================================
 
+  const registerGrid = context?.registerGrid;
+
   useEffect(() => {
-    if (!context || !crossGridConfig) return;
+    if (!registerGrid || !crossGridConfig) return;
 
     const { gridId } = crossGridConfig;
 
-    const unregister = context.registerGrid(gridId, {
+    const unregister = registerGrid(gridId, {
       getRect: () => containerRef.current?.getBoundingClientRect() ?? null,
       // Forward to the latest handler via the ref — avoids stale callbacks.
       onIncomingDrop: (item, clientX, clientY) => {
@@ -114,10 +116,10 @@ export function useCrossGridDrag(
     });
 
     return unregister;
-    // Re-register only when the gridId changes (rare) or the context mounts.
+    // Re-register only when the gridId changes (rare) or the provider mounts.
     // onIncomingDrop is intentionally excluded — it is read from the ref.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context, crossGridConfig?.gridId]);
+  }, [registerGrid, crossGridConfig?.gridId]);
 
   // ============================================================================
   // Stable Action Callbacks
@@ -144,9 +146,7 @@ export function useCrossGridDrag(
       const targetId = context.getActiveTarget(clientX, clientY, gridId);
 
       if (targetId) {
-        // Notify the target synchronously before clearing state, so the target's
-        // onIncomingDrop handler can read the drag state via the context ref.
-        context.notifyDrop(targetId);
+        context.notifyDrop(targetId, clientX, clientY);
         context.publishDrag(null);
         return true;
       }

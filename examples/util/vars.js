@@ -197,11 +197,11 @@ module.exports = [
     title: "Cross-Grid Drag-and-Drop",
     source: "cross-grid-drag",
     paragraphs: [
-      "This demonstrates how to drag items seamlessly between two independent GridLayout instances.",
+      "This demonstrates how to drag items seamlessly across multiple independent GridLayout instances.",
       "Wrap both grids in a <code>CrossGridDragProvider</code> and assign each a unique " +
         "<code>gridId</code> via <code>crossGridConfig</code>. " +
         "A ghost placeholder appears in the target grid as you drag so you can see exactly where the item will land.",
-      "Try dragging cards from the left grid to the right grid and back."
+      "Try dragging cards between any of the grids."
     ]
-  },
+  }
 ];

@@ -174,7 +174,7 @@ describe("CrossGridDragProvider", () => {
     });
 
     act(() => {
-      result.current.notifyDrop("right");
+      result.current.notifyDrop("right", 500, 100);
     });
 
     expect(dropRight).toHaveBeenCalledWith(itemA, 500, 100);
@@ -615,7 +615,7 @@ describe("GridLayout cross-grid drag integration", () => {
       });
     });
     act(() => {
-      result.current.notifyDrop("right");
+      result.current.notifyDrop("right", 500, 100);
     });
 
     expect(onItemDroppedIn).toHaveBeenCalledWith(
@@ -658,7 +658,7 @@ describe("GridLayout cross-grid drag integration", () => {
       });
     });
     act(() => {
-      result.current.notifyDrop("right");
+      result.current.notifyDrop("right", 500, 100);
     });
 
     expect(receivedLayout).not.toBeNull();

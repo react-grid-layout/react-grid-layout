@@ -118,15 +118,20 @@ export function CrossGridDragProvider({
 
   /**
    * Forward the drop event to the target grid.
-   * Reads the current dragState to get the item and final cursor coordinates.
+   * `clientX`/`clientY` are forwarded directly from the mouseup event so the
+   * target always receives the exact release-frame coordinates regardless of
+   * whether React has flushed the final drag-state update yet.
    */
-  const notifyDrop = useCallback((targetGridId: string): void => {
-    const current = dragStateRef.current;
-    if (!current) return;
-    const target = gridRegistry.current.get(targetGridId);
-    if (!target) return;
-    target.onIncomingDrop(current.item, current.clientX, current.clientY);
-  }, []);
+  const notifyDrop = useCallback(
+    (targetGridId: string, clientX: number, clientY: number): void => {
+      const current = dragStateRef.current;
+      if (!current) return;
+      const target = gridRegistry.current.get(targetGridId);
+      if (!target) return;
+      target.onIncomingDrop(current.item, clientX, clientY);
+    },
+    []
+  );
 
   // ============================================================================
   // Context Value

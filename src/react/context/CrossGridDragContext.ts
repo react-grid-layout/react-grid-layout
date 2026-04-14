@@ -96,9 +96,10 @@ export interface CrossGridDragContextValue {
 
   /**
    * Notify a peer grid that the dragged item was dropped on it.
-   * Reads the current dragState to get the item and cursor coordinates.
+   * `clientX`/`clientY` are the exact release coordinates from the mouseup
+   * event, passed directly so the target never reads stale ref values.
    */
-  notifyDrop: (targetGridId: string) => void;
+  notifyDrop: (targetGridId: string, clientX: number, clientY: number) => void;
 }
 
 // ============================================================================
