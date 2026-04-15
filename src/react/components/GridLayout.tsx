@@ -802,6 +802,21 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Drag Handlers
   // ============================================================================
 
+  function getEventClientCoords(e: Event): {
+    clientX: number;
+    clientY: number;
+  } {
+    if ("touches" in e) {
+      const te = e as TouchEvent;
+      const touch = te.touches[0] ?? te.changedTouches[0];
+      if (touch) {
+        return { clientX: touch.clientX, clientY: touch.clientY };
+      }
+    }
+    const mouseEvent = e as MouseEvent;
+    return { clientX: mouseEvent.clientX, clientY: mouseEvent.clientY };
+  }
+
   const onDragStart = useCallback(
     (i: string, _x: number, _y: number, data: GridDragEvent) => {
       const currentLayout = layoutRef.current;
@@ -824,8 +839,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
       // Notify peer grids that a drag has started so they can prepare their ghost.
       if (crossGridConfig) {
-        const mouseEvent = data.e as MouseEvent;
-        publishDrag(l, mouseEvent.clientX, mouseEvent.clientY);
+        const { clientX, clientY } = getEventClientCoords(data.e);
+        publishDrag(l, clientX, clientY);
       }
     },
     [onDragStartProp, crossGridConfig, publishDrag]
@@ -868,8 +883,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       // Keep peer grids updated with the latest cursor position so they can
       // show / update the ghost placeholder.
       if (crossGridConfig) {
-        const mouseEvent = data.e as MouseEvent;
-        publishDrag(l, mouseEvent.clientX, mouseEvent.clientY);
+        const { clientX, clientY } = getEventClientCoords(data.e);
+        publishDrag(l, clientX, clientY);
       }
     },
     [
