@@ -31,3 +31,9 @@ export {
   DEFAULT_BREAKPOINTS,
   DEFAULT_COLS
 } from "./useResponsiveLayout.js";
+
+// Cross-grid drag coordination
+export {
+  useCrossGridDrag,
+  type UseCrossGridDragResult
+} from "./useCrossGridDrag.js";

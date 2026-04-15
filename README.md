@@ -27,10 +27,12 @@ RGL is React-only and does not require jQuery.
 - [Quick Start](#quick-start)
 - [Responsive Usage](#responsive-usage)
 - [Providing Grid Width](#providing-grid-width)
+
 - [Hooks API](#hooks-api)
 - [API Reference](#api-reference)
 - [Extending: Custom Compactors & Position Strategies](#extending-custom-compactors--position-strategies)
 - [Extras](#extras)
+- [Cross Grid Drag](#cross-grid-drag)
 - [Performance](#performance)
 - [Contribute](#contribute)
 
@@ -1222,6 +1224,126 @@ const dims = calcGridCellDimensions({
 ```
 
 This is useful for building custom visualizations, snap-to-grid functionality, or integrating with canvas/WebGL renderers.
+
+## Cross Grid Drag
+
+Cross-grid drag lets users drag items between multiple independent `GridLayout` instances. All participating grids must be descendants of a shared `CrossGridDragProvider`.
+
+### Setup
+
+```tsx
+import ReactGridLayout, { useContainerWidth } from "react-grid-layout";
+import { CrossGridDragProvider } from "react-grid-layout";
+
+function TwoGrids() {
+  const {
+    width: leftWidth,
+    containerRef: leftRef,
+    mounted: leftMounted
+  } = useContainerWidth();
+  const {
+    width: rightWidth,
+    containerRef: rightRef,
+    mounted: rightMounted
+  } = useContainerWidth();
+
+  const [leftLayout, setLeftLayout] = useState([
+    { i: "a", x: 0, y: 0, w: 2, h: 2 },
+    { i: "b", x: 2, y: 0, w: 2, h: 2 }
+  ]);
+  const [rightLayout, setRightLayout] = useState([
+    { i: "c", x: 0, y: 0, w: 2, h: 2 }
+  ]);
+
+  return (
+    <CrossGridDragProvider>
+      <div style={{ display: "flex", gap: 16 }}>
+        <div ref={leftRef} style={{ flex: 1 }}>
+          {leftMounted && (
+            <ReactGridLayout
+              width={leftWidth}
+              layout={leftLayout}
+              gridConfig={{ cols: 6, rowHeight: 100 }}
+              crossGridConfig={{
+                gridId: "left",
+                onItemDraggedOut: item =>
+                  setLeftLayout(prev => prev.filter(l => l.i !== item.i)),
+                onItemDroppedIn: (_item, layout) => setLeftLayout(layout)
+              }}
+            >
+              <div key="a">A</div>
+              <div key="b">B</div>
+            </ReactGridLayout>
+          )}
+        </div>
+
+        <div ref={rightRef} style={{ flex: 1 }}>
+          {rightMounted && (
+            <ReactGridLayout
+              width={rightWidth}
+              layout={rightLayout}
+              gridConfig={{ cols: 6, rowHeight: 100 }}
+              crossGridConfig={{
+                gridId: "right",
+                onItemDraggedOut: item =>
+                  setRightLayout(prev => prev.filter(l => l.i !== item.i)),
+                onItemDroppedIn: (_item, layout) => setRightLayout(layout)
+              }}
+            >
+              <div key="c">C</div>
+            </ReactGridLayout>
+          )}
+        </div>
+      </div>
+    </CrossGridDragProvider>
+  );
+}
+```
+
+### How It Works
+
+1. **Provider**: `CrossGridDragProvider` maintains a registry of grids and coordinates the drag state between them.
+2. **Registration**: Each `GridLayout` with a `crossGridConfig` automatically registers itself when mounted and unregisters on unmount.
+3. **Dragging out**: While the user drags an item, the source grid publishes the cursor position. If the cursor enters a peer grid's bounds, that grid shows a ghost placeholder.
+4. **Dropping in**: When the drag ends over a peer grid:
+   - `onItemDraggedOut` fires on the **source** grid — remove the item from source state here.
+   - `onItemDroppedIn` fires on the **target** grid with the full updated layout — sync target state here.
+5. **No drop**: If the drag ends outside any peer grid, the item stays in the source grid as normal.
+
+### CrossGridConfig
+
+Pass this as the `crossGridConfig` prop to each participating `GridLayout`:
+
+```ts
+interface CrossGridConfig {
+  /**
+   * Unique identifier for this grid within the CrossGridDragProvider.
+   * Must be unique among all grids sharing the same provider.
+   */
+  gridId: string;
+
+  /**
+   * Called on the SOURCE grid after an item is successfully dropped on a peer.
+   * Use this to remove the item from the source grid's layout state.
+   */
+  onItemDraggedOut?: (item: LayoutItem) => void;
+
+  /**
+   * Called on the TARGET grid after an item from a peer grid is dropped.
+   * `layout` is the target grid's full updated layout including the new item.
+   * Use this to sync the target grid's layout state.
+   */
+  onItemDroppedIn?: (item: LayoutItem, layout: Layout) => void;
+}
+```
+
+### Requirements & Gotchas
+
+- **Unique `gridId`**: Every grid inside the same `CrossGridDragProvider` must have a unique `gridId`. A `console.warn` is emitted in development if a duplicate is detected.
+- **`dragConfig.bounded` must be `false`** (the default): Bounding items to the container prevents them from visually leaving the source grid during the drag.
+- **Import**: `CrossGridDragProvider` is exported from the main `react-grid-layout` package, not from `/core` or `/legacy`.
+- **State ownership**: You own both layouts. `onItemDraggedOut` and `onItemDroppedIn` are the only integration points — no internal state mutation occurs without calling these.
+- **Dropped item position**: The incoming item is placed at the grid position closest to where the cursor was released. The full updated layout is provided to `onItemDroppedIn`.
 
 ## Performance
 

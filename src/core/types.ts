@@ -562,6 +562,54 @@ export const defaultDropConfig: DropConfig = {
   defaultItem: { w: 1, h: 1 }
 };
 
+/**
+ * Cross-grid drag-and-drop configuration.
+ *
+ * Opt a GridLayout into cross-grid drag by providing this config together with
+ * a `CrossGridDragProvider` ancestor.  Each grid in the provider must have a
+ * unique `gridId`.
+ *
+ * **Important**: `dragConfig.bounded` must be `false` (the default) so items
+ * can visually leave the source grid's container during the drag.
+ *
+ * @example
+ * ```tsx
+ * <CrossGridDragProvider>
+ *   <GridLayout
+ *     crossGridConfig={{
+ *       gridId: "left",
+ *       onItemDraggedOut: (item) => setLeft(prev => prev.filter(l => l.i !== item.i)),
+ *       onItemDroppedIn: (_item, layout) => setLeft(layout),
+ *     }}
+ *   />
+ *   <GridLayout
+ *     crossGridConfig={{
+ *       gridId: "right",
+ *       onItemDraggedOut: (item) => setRight(prev => prev.filter(l => l.i !== item.i)),
+ *       onItemDroppedIn: (_item, layout) => setRight(layout),
+ *     }}
+ *   />
+ * </CrossGridDragProvider>
+ * ```
+ */
+export interface CrossGridConfig {
+  /** Unique identifier for this grid within the CrossGridDragProvider. */
+  gridId: string;
+
+  /**
+   * Called on the **source** grid after an item is successfully dropped on a
+   * peer grid.  Use this to remove the item from the source's layout state.
+   */
+  onItemDraggedOut?: (item: LayoutItem) => void;
+
+  /**
+   * Called on the **target** grid after an item from a peer grid is dropped.
+   * The `layout` argument is the target's full updated layout (including the
+   * newly placed item).  Use this to sync the target's external layout state.
+   */
+  onItemDroppedIn?: (item: LayoutItem, layout: Layout) => void;
+}
+
 // ============================================================================
 // Responsive Types
 // ============================================================================

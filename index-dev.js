@@ -21,3 +21,7 @@ Object.assign(module.exports, require("./src/core/constraints"));
 
 // Compactor exports
 Object.assign(module.exports, require("./src/core/compactors"));
+
+// Cross-grid drag provider
+module.exports.CrossGridDragProvider =
+  require("./src/react/context/CrossGridDragProvider").CrossGridDragProvider;

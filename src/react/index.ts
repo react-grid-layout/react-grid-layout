@@ -21,6 +21,15 @@ export {
 } from "./components/index.js";
 
 // =============================================================================
+// Cross-Grid Drag Provider
+// =============================================================================
+
+export {
+  CrossGridDragProvider,
+  type CrossGridDragProviderProps
+} from "./context/CrossGridDragProvider.js";
+
+// =============================================================================
 // Hooks
 // =============================================================================
 
@@ -59,7 +68,8 @@ export type {
   ResizeHandleAxis,
   GridDragEvent,
   GridResizeEvent,
-  EventCallback
+  EventCallback,
+  CrossGridConfig
 } from "../core/types.js";
 
 // =============================================================================
