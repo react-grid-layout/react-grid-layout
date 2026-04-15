@@ -925,12 +925,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
       // Check whether the item was released on a peer grid.
       if (crossGridConfig) {
-        const mouseEvent = data.e as MouseEvent;
-        const droppedOnPeer = commitDrop(
-          l,
-          mouseEvent.clientX,
-          mouseEvent.clientY
-        );
+        const { clientX, clientY } = getEventClientCoords(data.e);
+        const droppedOnPeer = commitDrop(l, clientX, clientY);
 
         if (droppedOnPeer) {
           // Remove the dragged item from this grid's layout.
