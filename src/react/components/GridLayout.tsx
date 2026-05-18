@@ -867,36 +867,43 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         e: e.nativeEvent
       };
 
-      if (!droppingDOMNode) {
-        const calculatedPosition = calcXY(
-          positionParams,
-          clampedGridY,
-          clampedGridX,
-          finalDroppingItem.w,
-          finalDroppingItem.h
-        );
+      const calculatedPosition = calcXY(
+        positionParams,
+        clampedGridY,
+        clampedGridX,
+        finalDroppingItem.w,
+        finalDroppingItem.h
+      );
+      const nextDroppingItem = {
+        ...finalDroppingItem,
+        x: calculatedPosition.x,
+        y: calculatedPosition.y,
+        static: false,
+        isDraggable: true
+      };
+      // Filter out any stale __dropping-elem__ before adding the new one.
+      // This prevents duplicate IDs caused by a race condition where
+      // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
+      // before a batched setLayout from a previous handleDragOver has
+      // rendered, leaving __dropping-elem__ in the layout while
+      // droppingDOMNode is null.
+      const baseLayout = layoutRef.current.filter(
+        l => l.i !== finalDroppingItem.i
+      );
 
+      if (
+        preventCollision &&
+        !allowOverlap &&
+        getAllCollisions(baseLayout, nextDroppingItem).length > 0
+      ) {
+        removeDroppingPlaceholder();
+        return false;
+      }
+
+      if (!droppingDOMNode) {
         setDroppingDOMNode(<div key={finalDroppingItem.i} />);
         setDroppingPosition(newDroppingPosition);
-        // Filter out any stale __dropping-elem__ before adding the new one.
-        // This prevents duplicate IDs caused by a race condition where
-        // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
-        // before a batched setLayout from a previous handleDragOver has
-        // rendered, leaving __dropping-elem__ in the layout while
-        // droppingDOMNode is null.
-        const baseLayout = layoutRef.current.filter(
-          l => l.i !== finalDroppingItem.i
-        );
-        setLayout([
-          ...baseLayout,
-          {
-            ...finalDroppingItem,
-            x: calculatedPosition.x,
-            y: calculatedPosition.y,
-            static: false,
-            isDraggable: true
-          }
-        ]);
+        setLayout([...baseLayout, nextDroppingItem]);
       } else if (droppingPosition) {
         const shouldUpdate =
           droppingPosition.left !== newDroppingPosition.left ||
@@ -919,7 +926,9 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       maxRows,
       rowHeight,
       width,
-      effectiveContainerPadding
+      effectiveContainerPadding,
+      preventCollision,
+      allowOverlap
     ]
   );
 
