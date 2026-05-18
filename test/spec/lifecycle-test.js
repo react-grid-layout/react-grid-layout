@@ -713,6 +713,63 @@ describe("Lifecycle tests", function () {
         expect(onDrop).toHaveBeenCalled();
       });
 
+      it("does not add an external drop placeholder on occupied cells when preventCollision is enabled", function () {
+        const onDrop = jest.fn();
+        const onLayoutChange = jest.fn();
+        const { container } = render(
+          <ReactGridLayout
+            className="layout"
+            cols={12}
+            rowHeight={100}
+            width={1200}
+            margin={[0, 0]}
+            containerPadding={[0, 0]}
+            compactType={null}
+            preventCollision={true}
+            isDroppable={true}
+            onDrop={onDrop}
+            onDropDragOver={() => ({ w: 2, h: 2 })}
+            onLayoutChange={onLayoutChange}
+          >
+            <div key="a" data-grid={{ x: 0, y: 0, w: 2, h: 2 }}>
+              a
+            </div>
+          </ReactGridLayout>
+        );
+
+        onLayoutChange.mockClear();
+
+        const grid = container.querySelector(".react-grid-layout");
+        act(() => {
+          TestUtils.Simulate.dragOver(grid, {
+            currentTarget: {
+              getBoundingClientRect: () => ({ left: 0, top: 0 })
+            },
+            clientX: 100,
+            clientY: 100,
+            nativeEvent: {
+              target: document.createElement("div")
+            }
+          });
+          TestUtils.Simulate.drop(grid, {
+            clientX: 100,
+            clientY: 100
+          });
+        });
+
+        expect(container.querySelectorAll(".react-grid-item")).toHaveLength(1);
+        expect(onDrop).toHaveBeenCalledWith(
+          [expect.objectContaining({ i: "a" })],
+          undefined,
+          expect.objectContaining({ type: "drop" })
+        );
+        expect(onLayoutChange).not.toHaveBeenCalledWith(
+          expect.arrayContaining([
+            expect.objectContaining({ i: "__dropping-elem__" })
+          ])
+        );
+      });
+
       it("Allows customizing the droppable placeholder size", function () {
         const onDropDragOver = jest.fn(() => ({ w: 2, h: 2 }));
         const onDrop = jest.fn();
