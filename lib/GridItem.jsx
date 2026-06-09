@@ -39,6 +39,7 @@ import type { PositionParams } from "./calculateUtils";
 import type { ResizeHandle, ReactRef } from "./ReactGridLayoutPropTypes";
 
 type PartialPosition = { top: number, left: number };
+type DragOffset = { top: number, left: number };
 type GridItemCallback<Data: GridDragEvent | GridResizeEvent> = (
   i: string,
   w: number,
@@ -81,6 +82,7 @@ type Props = {
   useCSSTransforms?: boolean,
   usePercentages?: boolean,
   transformScale: number,
+  dragOffset?: DragOffset,
   droppingPosition?: DroppingPosition,
 
   className: string,
@@ -201,6 +203,10 @@ export default class GridItem extends React.Component<Props, State> {
     // Use CSS transforms instead of top/left
     useCSSTransforms: PropTypes.bool.isRequired,
     transformScale: PropTypes.number,
+    dragOffset: PropTypes.shape({
+      left: PropTypes.number.isRequired,
+      top: PropTypes.number.isRequired
+    }),
 
     // Others
     className: PropTypes.string,
@@ -240,6 +246,8 @@ export default class GridItem extends React.Component<Props, State> {
     // use this optimization.
     if (this.props.children !== nextProps.children) return true;
     if (this.props.droppingPosition !== nextProps.droppingPosition) return true;
+    if (this.props.dragOffset?.left !== nextProps.dragOffset?.left) return true;
+    if (this.props.dragOffset?.top !== nextProps.dragOffset?.top) return true;
     // TODO memoize these calculations so they don't take so long?
     const oldPosition = calcGridItemPosition(
       this.getPositionParams(this.props),
@@ -455,7 +463,13 @@ export default class GridItem extends React.Component<Props, State> {
     }
     const { onDragStart } = this.props;
     if (!onDragStart) return;
-    onDragStart.call(this, this.props.i, this.props.x, this.props.y, {e});
+    const node = this.elementRef.current;
+    if (!node) return;
+    onDragStart.call(this, this.props.i, this.props.x, this.props.y, {
+      e,
+      node,
+      newPosition: { top: 0, left: 0 }
+    });
   };
 
 
@@ -671,6 +685,10 @@ export default class GridItem extends React.Component<Props, State> {
       h,
       this.state
     );
+    if (this.props.dragOffset && !this.state.dragging) {
+      pos.left += this.props.dragOffset.left;
+      pos.top += this.props.dragOffset.top;
+    }
     const child = React.Children.only(this.props.children);
 
     // Create the child element. We clone the existing element but modify its className and style.

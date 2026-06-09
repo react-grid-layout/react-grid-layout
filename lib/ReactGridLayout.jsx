@@ -19,7 +19,7 @@ import {
   withLayoutItem
 } from "./utils";
 
-import { calcXY } from "./calculateUtils";
+import { calcXY, clamp } from "./calculateUtils";
 
 import GridItem from "./GridItem";
 import ReactGridLayoutPropTypes from "./ReactGridLayoutPropTypes";
@@ -36,10 +36,18 @@ import type {
   DragOverEvent,
   Layout,
   DroppingPosition,
-  LayoutItem
+  LayoutItem,
+  PartialPosition
 } from "./utils";
 
 import type { PositionParams } from "./calculateUtils";
+
+type DragGroupOffset = {
+  activeId: string,
+  ids: string[],
+  left: number,
+  top: number
+};
 
 type State = {
   activeDrag: ?LayoutItem,
@@ -48,6 +56,8 @@ type State = {
   oldDragItem: ?LayoutItem,
   oldLayout: ?Layout,
   oldResizeItem: ?LayoutItem,
+  dragGroupStartPosition: ?PartialPosition,
+  dragGroupOffset: ?DragGroupOffset,
   resizing: boolean,
   droppingDOMNode: ?ReactElement<any>,
   droppingPosition?: DroppingPosition,
@@ -101,6 +111,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     isDroppable: false,
     useCSSTransforms: true,
     transformScale: 1,
+    dragGroupIds: [],
     verticalCompact: true,
     compactType: "vertical",
     halfPage: '',
@@ -136,6 +147,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     oldDragItem: null,
     oldLayout: null,
     oldResizeItem: null,
+    dragGroupStartPosition: null,
+    dragGroupOffset: null,
     resizing: false,
     droppingDOMNode: null,
     children: []
@@ -203,6 +216,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       !fastRGLPropsEqual(this.props, nextProps, deepEqual) ||
       !fastRGLPropsEqual(this.state, nextState, deepEqual) ||
       this.state.activeDrag !== nextState.activeDrag ||
+      !deepEqual(this.state.dragGroupOffset, nextState.dragGroupOffset) ||
+      !deepEqual(this.state.dragGroupStartPosition, nextState.dragGroupStartPosition) ||
       this.state.mounted !== nextState.mounted ||
       this.state.droppingPosition !== nextState.droppingPosition
     );
@@ -251,7 +266,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     i: string,
     x: number,
     y: number,
-    { e, node }: GridDragEvent
+    { e, node, newPosition }: GridDragEvent
   ) => {
     const { layout } = this.state;
     const l = getLayoutItem(layout, i);
@@ -274,7 +289,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     this.setState({
       oldDragItem: cloneLayoutItem(l),
       oldLayout: layout,
-      activeDrag: placeholder
+      activeDrag: placeholder,
+      dragGroupStartPosition: newPosition || null,
+      dragGroupOffset: null
     });
 
     return this.props.onDragStart(layout, l, l, null, e, node);
@@ -292,11 +309,15 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     i,
     x,
     y,
-    { e, node }
+    { e, node, newPosition }
   ) => {
-    const { oldDragItem } = this.state;
+    const { oldDragItem, dragGroupStartPosition } = this.state;
     let { layout } = this.state;
-    const { cols, allowOverlap, preventCollision } = this.props;
+    const {
+      cols,
+      allowOverlap,
+      preventCollision
+    } = this.props;
     const l = getLayoutItem(layout, i);
     if (!l) return;
 
@@ -324,13 +345,25 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       allowOverlap
     );
 
+    const dragGroupIds = this.getActiveDragGroupIds(i);
+    const dragGroupOffset =
+      dragGroupIds.length && oldDragItem && dragGroupStartPosition && newPosition
+        ? {
+          activeId: i,
+          ids: dragGroupIds,
+          left: newPosition.left - dragGroupStartPosition.left,
+          top: newPosition.top - dragGroupStartPosition.top
+        }
+        : null;
+
     this.props.onDrag(layout, oldDragItem, l, placeholder, e, node);
 
     this.setState({
       layout: allowOverlap
         ? layout
         : compact(layout, compactType(this.props), cols),
-      activeDrag: placeholder
+      activeDrag: placeholder,
+      dragGroupOffset
     });
   };
 
@@ -369,6 +402,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       cols,
       allowOverlap
     );
+    layout = this.moveDragGroup(layout, i, x, y);
 
     // Set state
     const newLayout = allowOverlap
@@ -382,11 +416,80 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       activeDrag: null,
       layout: newLayout,
       oldDragItem: null,
-      oldLayout: null
+      oldLayout: null,
+      dragGroupStartPosition: null,
+      dragGroupOffset: null
     });
 
     this.onLayoutMaybeChanged(newLayout, oldLayout);
   };
+
+  getActiveDragGroupIds(activeId: string): string[] {
+    const { dragGroupIds = [] } = this.props;
+    if (dragGroupIds.length < 2 || dragGroupIds.indexOf(activeId) === -1) {
+      return [];
+    }
+    return dragGroupIds.filter(id => id !== activeId);
+  }
+
+  getDragGroupRenderOffset(itemId: string): ?{ left: number, top: number } {
+    const { dragGroupOffset } = this.state;
+    if (!dragGroupOffset || dragGroupOffset.ids.indexOf(itemId) === -1) {
+      return null;
+    }
+    return {
+      left: dragGroupOffset.left,
+      top: dragGroupOffset.top
+    };
+  }
+
+  moveDragGroup(
+    layout: Layout,
+    activeId: string,
+    x: number,
+    y: number
+  ): Layout {
+    const { oldDragItem, oldLayout } = this.state;
+    if (!oldDragItem || !oldLayout) return layout;
+
+    const dragGroupIds = this.getActiveDragGroupIds(activeId);
+    if (!dragGroupIds.length) return layout;
+
+    const {
+      cols,
+      maxRows,
+      preventCollision,
+      allowOverlap
+    } = this.props;
+    const dx = x - oldDragItem.x;
+    const dy = y - oldDragItem.y;
+    let nextLayout = layout;
+
+    dragGroupIds.forEach(id => {
+      const oldItem = getLayoutItem(oldLayout, id);
+      const item = getLayoutItem(nextLayout, id);
+      if (!oldItem || !item) return;
+      if ((item.static && item.isDraggable !== true) || item.isDraggable === false) {
+        return;
+      }
+
+      const nextX = clamp(oldItem.x + dx, 0, cols - item.w);
+      const nextY = clamp(oldItem.y + dy, 0, maxRows - item.h);
+      nextLayout = moveElement(
+        nextLayout,
+        item,
+        nextX,
+        nextY,
+        true,
+        preventCollision,
+        compactType(this.props),
+        cols,
+        allowOverlap
+      );
+    });
+
+    return nextLayout;
+  }
 
   onLayoutMaybeChanged(newLayout: Layout, oldLayout: ?Layout) {
     if (!oldLayout) oldLayout = this.state.layout;
@@ -606,6 +709,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     // isBounded set on child if set on parent, and child is not explicitly false
     const bounded = draggable && isBounded && l.isBounded !== false;
+    const dragOffset = this.getDragGroupRenderOffset(l.i);
 
     return (
       <GridItem
@@ -617,7 +721,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         rowHeight={rowHeight}
         cancel={draggableCancel}
         handle={draggableHandle}
-        halfPage={this.props.halfPage}
+        halfPage={this.props.halfPage || ""}
         onDragStop={this.onDragStop}
         onDragStart={this.onDragStart}
         onDrag={this.onDrag}
@@ -632,6 +736,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         useCSSTransforms={useCSSTransforms && mounted}
         usePercentages={!mounted}
         transformScale={transformScale}
+        dragOffset={dragOffset || undefined}
         w={l.w}
         h={l.h}
         x={l.x}
