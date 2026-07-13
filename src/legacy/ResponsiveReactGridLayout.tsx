@@ -132,8 +132,17 @@ export interface LegacyResponsiveReactGridLayoutProps<
  *
  * Converts v1 flat props to v2 composable interfaces for backwards compatibility.
  */
-function ResponsiveReactGridLayout<B extends Breakpoint = string>(
-  props: LegacyResponsiveReactGridLayoutProps<B>
+function setRef<T>(ref: React.Ref<T> | undefined, value: T | null): void {
+  if (typeof ref === "function") {
+    ref(value);
+  } else if (ref) {
+    ref.current = value;
+  }
+}
+
+function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
+  props: LegacyResponsiveReactGridLayoutProps<B>,
+  forwardedRef: React.ForwardedRef<HTMLDivElement>
 ) {
   const {
     // Required
@@ -198,6 +207,14 @@ function ResponsiveReactGridLayout<B extends Breakpoint = string>(
     onDrop,
     onDropDragOver
   } = props;
+
+  const mergedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      setRef(innerRef, node);
+      setRef(forwardedRef, node);
+    },
+    [forwardedRef, innerRef]
+  );
 
   // Handle deprecated verticalCompact prop
   let compactType: CompactType =
@@ -264,7 +281,7 @@ function ResponsiveReactGridLayout<B extends Breakpoint = string>(
       autoSize={autoSize}
       className={className}
       style={style}
-      innerRef={innerRef}
+      innerRef={mergedRef}
       onBreakpointChange={onBreakpointChange}
       onLayoutChange={onLayoutChange}
       onWidthChange={onWidthChange}
@@ -283,7 +300,18 @@ function ResponsiveReactGridLayout<B extends Breakpoint = string>(
 }
 
 // Static properties for backwards compatibility
-ResponsiveReactGridLayout.displayName = "ResponsiveReactGridLayout";
+const ForwardedResponsiveReactGridLayout = React.forwardRef(
+  ResponsiveReactGridLayoutInner
+);
+ForwardedResponsiveReactGridLayout.displayName = "ResponsiveReactGridLayout";
+
+type ResponsiveReactGridLayoutComponent = <B extends Breakpoint = string>(
+  props: LegacyResponsiveReactGridLayoutProps<B> &
+    React.RefAttributes<HTMLDivElement>
+) => React.ReactElement | null;
+
+const ResponsiveReactGridLayout =
+  ForwardedResponsiveReactGridLayout as ResponsiveReactGridLayoutComponent;
 
 export default ResponsiveReactGridLayout;
 export { ResponsiveReactGridLayout, ResponsiveReactGridLayout as Responsive };
