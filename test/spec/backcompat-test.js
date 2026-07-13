@@ -484,6 +484,26 @@ describe("Backwards Compatibility: resizeHandles", () => {
 describe("Backwards Compatibility: Responsive Grid", () => {
   const ResponsiveRGL = WidthProvider(ResponsiveReactGridLayout);
 
+  it("forwards ref to the grid container while preserving innerRef", () => {
+    const ref = React.createRef();
+    const innerRef = React.createRef();
+
+    render(
+      <ResponsiveReactGridLayout
+        ref={ref}
+        innerRef={innerRef}
+        width={1200}
+        layouts={{ lg: [{ i: "a", x: 0, y: 0, w: 4, h: 2 }] }}
+      >
+        <div key="a">A</div>
+      </ResponsiveReactGridLayout>
+    );
+
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current).toBe(innerRef.current);
+    expect(ref.current).toHaveClass("react-grid-layout");
+  });
+
   it("uses correct layout for current breakpoint", () => {
     const onLayoutChange = jest.fn();
 
