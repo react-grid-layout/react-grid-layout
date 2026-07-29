@@ -6,9 +6,9 @@
   <head>
     <meta charset="UTF-8">
     <script src="/react-grid-layout/examples/commons.js"></script>
-    <script src="/react-grid-layout/examples/07-localstorage.js"></script>
+    <script src="/react-grid-layout/examples/15-scale.js"></script>
     <link rel="stylesheet" href="/react-grid-layout/examples/util/example-styles.css">
-    <title>RGL Example 07 - LocalStorage</title>
+    <title>RGL Example 15 - Scale</title>
   </head>
   <body>
     <nav class="sidebar">
@@ -60,7 +60,7 @@
             <span class="sidebar__item-title">Dynamic Add/Remove</span>
           </a>
         </li>
-        <li class="sidebar__item sidebar__item--active">
+        <li class="sidebar__item">
           <a href="07-localstorage.html">
             <span class="sidebar__item-index">07</span>
             <span class="sidebar__item-title">LocalStorage</span>
@@ -108,7 +108,7 @@
             <span class="sidebar__item-title">Bootstrap-style Responsive Grid</span>
           </a>
         </li>
-        <li class="sidebar__item">
+        <li class="sidebar__item sidebar__item--active">
           <a href="15-scale.html">
             <span class="sidebar__item-index">15</span>
             <span class="sidebar__item-title">Scale</span>
@@ -157,7 +157,7 @@
     </nav>
     <main class="main-content">
       <header class="main-header">
-        <h3>React-Grid-Layout - LocalStorage</h3>
+        <h3>React-Grid-Layout - Scale</h3>
         <nav class="header-links">
           <a href="https://react-grid-layout.github.io/react-draggable/" target="_blank">React-Draggable</a>
           <a href="https://react-grid-layout.github.io/react-resizable/" target="_blank">React-Resizable</a>
@@ -165,12 +165,11 @@
         </nav>
       </header>
       <ul class="nav-links">
-        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/07-localstorage.jsx">View Source</a></li>
-        <li><a href="06-dynamic-add-remove.html"><b>⇠</b> Dynamic Add/Remove</a></li>
-        <li><a href="08-localstorage-responsive.html"><b>⇢</b> Responsive with LocalStorage</a></li>
+        <li><a href="https://github.com/react-grid-layout/react-grid-layout/blob/master/test/examples/15-scale.jsx">View Source</a></li>
+        <li><a href="14-responsive-bootstrap-style.html"><b>⇠</b> Bootstrap-style Responsive Grid</a></li>
+        <li><a href="16-allow-overlap.html"><b>⇢</b> Allow Overlap</a></li>
       </ul>
-         <p>This simple demo synchronizes to localStorage.</p>
-         <p>Try moving and resizing elements, then reloading.</p>
+         <p>This demonstrates how to compensate for a scaled parent.</p>
       <div id="content"></div>
     </main>
     <script>
