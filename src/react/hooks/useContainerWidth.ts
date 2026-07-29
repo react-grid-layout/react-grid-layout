@@ -81,8 +81,10 @@ export function useContainerWidth(
   const measureWidth = useCallback(() => {
     const node = containerRef.current;
     if (node) {
-      const newWidth = node.offsetWidth;
-      setWidth(newWidth);
+      // offsetWidth is already whole-pixel; keep it consistent with the
+      // ResizeObserver path so the two sources cannot disagree (#2271).
+      const newWidth = Math.round(node.offsetWidth);
+      setWidth(prev => (prev === newWidth ? prev : newWidth));
       if (!mounted) {
         setMounted(true);
       }
@@ -103,8 +105,13 @@ export function useContainerWidth(
       observerRef.current = new ResizeObserver(entries => {
         const entry = entries[0];
         if (entry) {
-          // Use contentRect.width for consistent measurements
-          const newWidth = entry.contentRect.width;
+          // Round to whole pixels. At fractional devicePixelRatio (DevTools
+          // device-toolbar zoom at 75%/50%, OS display scaling) contentRect.width
+          // is fractional and drifts by sub-pixel amounts between notifications.
+          // Unrounded, every notification is a new value, so React never bails
+          // out: each one re-renders the grid, which changes the container
+          // height, which produces another notification (#2271).
+          const newWidth = Math.round(entry.contentRect.width);
 
           // Defer state update to next paint cycle to avoid
           // "ResizeObserver loop completed with undelivered notifications" error (#1959)
@@ -112,7 +119,7 @@ export function useContainerWidth(
             cancelAnimationFrame(rafId);
           }
           rafId = requestAnimationFrame(() => {
-            setWidth(newWidth);
+            setWidth(prev => (prev === newWidth ? prev : newWidth));
             rafId = null;
           });
         }
