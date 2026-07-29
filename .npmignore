@@ -19,3 +19,10 @@ interfaces/
 *.png
 *.jpg
 .packj.yaml
+
+# Stray local artifacts must never pack again (issue #2269). 1.5.0-1.5.3
+# shipped a compiled ip_fetcher binary, its curl-sample source, and a yarn
+# error log containing local paths, because none of them matched a rule above.
+ip_fetcher
+ip_fetcher.c
+*.log

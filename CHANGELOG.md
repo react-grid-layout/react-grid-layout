@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.5.4 (Jul 28, 2026)
+
+Packaging-only release. The library code is byte-identical to 1.5.3; nothing about
+runtime behaviour changes.
+
+- Stop publishing stray files from the working directory. 1.5.0 through 1.5.3 shipped
+  a compiled `ip_fetcher` binary and its `ip_fetcher.c` source (a curl documentation
+  sample that fetches the machine's public IP), and 1.5.3 additionally shipped a
+  `yarn-error.log` containing local filesystem paths. None of them were ever in the
+  repository; they were untracked local files, and the `.npmignore` at the time had no
+  rule that matched them. [#2269](https://github.com/react-grid-layout/react-grid-layout/issues/2269)
+- Restore the `dev` script to `make dev`. 1.5.3 shipped it as
+  `npx @react-grab/claude-code@latest && make dev`.
+
+Upgrading from 1.5.3 requires no code changes. Versions 1.5.0 through 1.5.3 are
+deprecated in favour of this release.
+
 ## 1.5.3 (Dec 5, 2025)
 
 - Fix collision detection y-coordinate offset. [#2173](https://github.com/react-grid-layout/react-grid-layout/pull/2173)
