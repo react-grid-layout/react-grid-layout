@@ -613,7 +613,7 @@ export function GridItem(props: GridItemProps): ReactElement {
 
   const onResizeHandler = useCallback(
     (
-      e: React.SyntheticEvent,
+      e: React.SyntheticEvent | Event,
       { node, size, handle: resizeHandle }: ResizeCallbackData,
       position: Position,
       handlerName: "onResizeStart" | "onResize" | "onResizeStop"
@@ -662,7 +662,11 @@ export function GridItem(props: GridItemProps): ReactElement {
       );
 
       handler(i, newW, newH, {
-        e: e.nativeEvent,
+        // react-resizable forwards react-draggable's callback event, which is
+        // already a native MouseEvent/TouchEvent and has no `nativeEvent`.
+        // Reading it unconditionally handed consumers `undefined` (#2264).
+        // The drag handlers above pass the raw event for the same reason.
+        e: (e as React.SyntheticEvent).nativeEvent ?? (e as Event),
         node,
         size: updatedSize,
         handle: resizeHandle
