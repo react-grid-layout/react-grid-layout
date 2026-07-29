@@ -80,7 +80,11 @@ export function WidthProvider<P extends { width: number }>(
 
       const observer = new ResizeObserver(entries => {
         if (entries[0]) {
-          const newWidth = entries[0].contentRect.width;
+          // Round to whole pixels. At fractional devicePixelRatio the measured
+          // width drifts sub-pixel between notifications; unrounded, every one
+          // is a new value that re-renders the grid and provokes the next
+          // notification (#2271).
+          const newWidth = Math.round(entries[0].contentRect.width);
 
           // Defer state update to next paint cycle to avoid
           // "ResizeObserver loop completed with undelivered notifications" error (#1959)
@@ -88,7 +92,7 @@ export function WidthProvider<P extends { width: number }>(
             cancelAnimationFrame(rafId);
           }
           rafId = requestAnimationFrame(() => {
-            setWidth(newWidth);
+            setWidth(prev => (prev === newWidth ? prev : newWidth));
             rafId = null;
           });
         }
