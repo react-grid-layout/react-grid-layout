@@ -17,3 +17,6 @@ yarn-error.log
 codemaps/
 .reports/
 .ccells-state.json
+
+# Serena MCP server cache
+.serena/

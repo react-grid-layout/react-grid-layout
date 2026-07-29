@@ -70,6 +70,94 @@ describe("#2271 sub-pixel width stability", () => {
     });
   });
 
+  // Follow-up to #2271: the two measurement sources must describe the same box.
+  // measureWidth() runs at mount and the ResizeObserver runs on every resize.
+  // ResizeObserver reports contentRect, the content box. measureWidth used
+  // offsetWidth, the border box, so a wrapper with padding or a border measured
+  // wider at mount than on the next resize and the grid jumped.
+  describe("useContainerWidth measurement box", () => {
+    const widths: number[] = [];
+    let remeasure: () => void = () => {};
+
+    function Probe() {
+      const { width, containerRef, measureWidth } = useContainerWidth();
+      widths.push(width);
+      React.useEffect(() => {
+        remeasure = measureWidth;
+      }, [measureWidth]);
+      return (
+        <div
+          ref={containerRef}
+          style={{ padding: "0 12px", border: "3px solid red" }}
+        />
+      );
+    }
+
+    beforeEach(() => {
+      widths.length = 0;
+    });
+
+    it("measures the content box, not the border box", () => {
+      const { container } = render(<Probe />);
+      const node = container.firstChild as HTMLElement;
+      // Padding box less the scrollbar; content box is this minus 12px each side.
+      Object.defineProperty(node, "clientWidth", {
+        value: 976,
+        configurable: true
+      });
+
+      act(() => {
+        remeasure();
+      });
+
+      expect(widths[widths.length - 1]).toBe(952);
+    });
+
+    // clientWidth is already rounded to a whole pixel, so subtracting fractional
+    // padding from it can land 1px off the true content box. The computed width
+    // is the used content-box width and keeps the fraction, so prefer it.
+    it("keeps sub-pixel precision by reading the computed width", () => {
+      const { container } = render(<Probe />);
+      const node = container.firstChild as HTMLElement;
+
+      // True content box 951.4 with 12.2px padding each side. Going via
+      // clientWidth would give round(976) - 24.4 = 951.6 -> 952.
+      node.style.width = "951.4px";
+      node.style.padding = "0 12.2px";
+      Object.defineProperty(node, "clientWidth", {
+        value: 976,
+        configurable: true
+      });
+
+      act(() => {
+        remeasure();
+      });
+
+      expect(widths[widths.length - 1]).toBe(951);
+    });
+
+    it("agrees with what the ResizeObserver reports for the same element", () => {
+      const { container } = render(<Probe />);
+      const node = container.firstChild as HTMLElement;
+      Object.defineProperty(node, "clientWidth", {
+        value: 976,
+        configurable: true
+      });
+
+      act(() => {
+        remeasure();
+      });
+      const atMount = widths[widths.length - 1];
+
+      // A real ResizeObserver reports the content box for this element: 952.
+      act(() => {
+        triggerResize(952);
+      });
+
+      expect(widths[widths.length - 1]).toBe(atMount);
+    });
+  });
+
   describe("WidthProvider", () => {
     const widths: number[] = [];
 
