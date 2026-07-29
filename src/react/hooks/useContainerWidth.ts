@@ -27,6 +27,39 @@ export interface UseContainerWidthOptions {
   initialWidth?: number;
 }
 
+/**
+ * Measure a node's content-box width, the same box ResizeObserver reports as
+ * `entry.contentRect.width`.
+ *
+ * `containerRef` is attached to the consumer's own wrapper element and the grid
+ * renders as an ordinary block child of it, so the width available to the grid
+ * is the wrapper's content box. `offsetWidth` is the border box, which adds the
+ * wrapper's padding and border and over-measures by that much.
+ *
+ * Derived from `clientWidth` rather than `getBoundingClientRect()` because
+ * `clientWidth` is a layout value: it ignores CSS transforms, so a scaled grid
+ * (see `transformScale`) still measures its true layout width.
+ */
+function getContentWidth(node: HTMLElement): number {
+  const style =
+    typeof globalThis.getComputedStyle === "function"
+      ? globalThis.getComputedStyle(node)
+      : null;
+  if (!style) return node.clientWidth;
+
+  const px = (value: string): number => {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  // clientWidth is the padding box less any scrollbar; drop padding to reach
+  // the content box.
+  return Math.max(
+    0,
+    node.clientWidth - px(style.paddingLeft) - px(style.paddingRight)
+  );
+}
+
 export interface UseContainerWidthResult {
   /**
    * Current container width in pixels.
@@ -81,9 +114,9 @@ export function useContainerWidth(
   const measureWidth = useCallback(() => {
     const node = containerRef.current;
     if (node) {
-      // offsetWidth is already whole-pixel; keep it consistent with the
-      // ResizeObserver path so the two sources cannot disagree (#2271).
-      const newWidth = Math.round(node.offsetWidth);
+      // Must measure the same box as the ResizeObserver path below, or mount
+      // and resize disagree by the wrapper's padding and border (#2271).
+      const newWidth = Math.round(getContentWidth(node));
       setWidth(prev => (prev === newWidth ? prev : newWidth));
       if (!mounted) {
         setMounted(true);
