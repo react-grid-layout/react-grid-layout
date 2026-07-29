@@ -222,5 +222,22 @@ export default [
     rules: {
       "react/prop-types": "off"
     }
+  },
+
+  // Build and release tooling. These are CommonJS scripts run directly by node,
+  // not part of the bundle, so they need the node globals and are exempt from
+  // the naming rules that apply to library source.
+  {
+    files: ["scripts/**/*.cjs", "scripts/**/*.js"],
+    languageOptions: {
+      sourceType: "commonjs",
+      globals: {
+        ...globals.node
+      }
+    },
+    rules: {
+      "unicorn/prevent-abbreviations": "off",
+      "unicorn/prefer-module": "off"
+    }
   }
 ];

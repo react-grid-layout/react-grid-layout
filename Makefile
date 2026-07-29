@@ -6,7 +6,8 @@ BUILD = ./build
 TEST = ./test
 EXAMPLES = ./examples/*.{js,html,json}
 
-.PHONY: test dev lint build clean install link
+.PHONY: test dev lint build clean install link publish check-release \
+        release-patch release-minor release-major
 
 build: clean build-ts
 
@@ -61,8 +62,18 @@ release-minor: build lint test
 release-major: build lint test
 	@$(call release,major)
 
-publish:
-	git push --tags origin HEAD:master
+# Standalone so you can ask "is this publishable?" without publishing.
+check-release:
+	@node scripts/check-release.cjs
+
+# `git push --tags origin HEAD:master` had no guard on what HEAD was. Checking
+# out a tag and running make publish detaches HEAD, and the push then tries to
+# move master backwards onto the tag and is rejected. Landing any commit after
+# the tag strands it the same way. check-release catches both before anything
+# leaves the machine. Cut the release LAST: release-* tags whatever HEAD is at
+# the time.
+publish: check-release
+	git push --follow-tags origin master
 	npm publish
 
 define release
