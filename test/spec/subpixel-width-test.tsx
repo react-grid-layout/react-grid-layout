@@ -113,6 +113,29 @@ describe("#2271 sub-pixel width stability", () => {
       expect(widths[widths.length - 1]).toBe(952);
     });
 
+    // clientWidth is already rounded to a whole pixel, so subtracting fractional
+    // padding from it can land 1px off the true content box. The computed width
+    // is the used content-box width and keeps the fraction, so prefer it.
+    it("keeps sub-pixel precision by reading the computed width", () => {
+      const { container } = render(<Probe />);
+      const node = container.firstChild as HTMLElement;
+
+      // True content box 951.4 with 12.2px padding each side. Going via
+      // clientWidth would give round(976) - 24.4 = 951.6 -> 952.
+      node.style.width = "951.4px";
+      node.style.padding = "0 12.2px";
+      Object.defineProperty(node, "clientWidth", {
+        value: 976,
+        configurable: true
+      });
+
+      act(() => {
+        remeasure();
+      });
+
+      expect(widths[widths.length - 1]).toBe(951);
+    });
+
     it("agrees with what the ResizeObserver reports for the same element", () => {
       const { container } = render(<Probe />);
       const node = container.firstChild as HTMLElement;

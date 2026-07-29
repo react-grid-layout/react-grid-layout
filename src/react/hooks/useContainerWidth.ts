@@ -36,9 +36,16 @@ export interface UseContainerWidthOptions {
  * is the wrapper's content box. `offsetWidth` is the border box, which adds the
  * wrapper's padding and border and over-measures by that much.
  *
- * Derived from `clientWidth` rather than `getBoundingClientRect()` because
- * `clientWidth` is a layout value: it ignores CSS transforms, so a scaled grid
- * (see `transformScale`) still measures its true layout width.
+ * Prefers the computed `width`, which is the used content-box width: fractional,
+ * and unaffected by CSS transforms, so a scaled grid (see `transformScale`)
+ * still measures its true layout width. `getBoundingClientRect()` would report
+ * the transformed width instead.
+ *
+ * Falls back to `clientWidth` minus horizontal padding when there is no computed
+ * width to read. That fallback is approximate: `clientWidth` is already rounded
+ * to a whole pixel, so subtracting fractional padding can land up to 1px away
+ * from the true content box. Precision lost upstream cannot be recovered here,
+ * which is why the computed width is tried first.
  */
 function getContentWidth(node: HTMLElement): number {
   const style =
@@ -52,8 +59,12 @@ function getContentWidth(node: HTMLElement): number {
     return Number.isFinite(parsed) ? parsed : 0;
   };
 
-  // clientWidth is the padding box less any scrollbar; drop padding to reach
-  // the content box.
+  // The used content-box width, matching ResizeObserver's contentRect.
+  const computed = Number.parseFloat(style.width);
+  if (Number.isFinite(computed)) return Math.max(0, computed);
+
+  // clientWidth is the padding box less any scrollbar; drop padding to
+  // approximate the content box.
   return Math.max(
     0,
     node.clientWidth - px(style.paddingLeft) - px(style.paddingRight)
