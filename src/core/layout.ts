@@ -217,6 +217,13 @@ export function correctBounds(
       l.w = bounds.cols;
     }
 
+    // y: Infinity (a common "append to bottom" convention) must not survive
+    // into rendering math, or the item renders at the top-left and overlaps.
+    // Clamp it to the current bottom of the layout (#2161).
+    if (l.y === Infinity) {
+      l.y = bottom(collidesWith);
+    }
+
     if (!l.static) {
       collidesWith.push(l);
     } else {
@@ -370,7 +377,11 @@ export function moveElementAwayFromCollision(
   compactType: CompactType,
   cols: number
 ): LayoutItem[] {
-  const compactH = compactType === "horizontal";
+  // Wrap mode flows left-to-right, top-to-bottom like a paragraph. For
+  // collision resolution it behaves like horizontal compaction (items push
+  // right); the final wrap compactor re-flows to strict reading order (#2252).
+  const compactH =
+    compactType === "horizontal" || compactType === "wrap";
   const compactV = compactType === "vertical";
   const preventCollision = collidesWith.static;
 
@@ -424,9 +435,13 @@ export function moveElementAwayFromCollision(
     }
 
     if (collisionNorth && compactType === null) {
-      // Swap positions in free-form mode
-      (collidesWith as Mutable<LayoutItem>).y = itemToMove.y;
-      (itemToMove as Mutable<LayoutItem>).y = itemToMove.y + itemToMove.h;
+      // Swap positions in free-form mode (#1982). The collider takes the dragged
+      // item's y; the dragged item sits just below the collider's new bottom edge
+      // (which equals the dragged item's y plus its height), so a partial overlap
+      // resolves tight instead of shoving a full item height down and leaving a gap.
+      const newCollidesY = itemToMove.y;
+      (collidesWith as Mutable<LayoutItem>).y = newCollidesY;
+      (itemToMove as Mutable<LayoutItem>).y = newCollidesY + collidesWith.h;
       return [...layout];
     }
 
