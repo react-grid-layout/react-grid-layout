@@ -494,6 +494,15 @@ export interface DragConfig {
    * @default 3
    */
   threshold: number;
+
+  /**
+   * Allow the browser's native scroll on touch devices while dragging.
+   * react-draggable calls preventDefault() on touchstart unless this is set,
+   * which suppresses child onClick and touch scroll. Set true when grid items
+   * contain interactive children or the page must scroll on touch.
+   * @default false
+   */
+  allowMobileScroll?: boolean;
 }
 
 /** Default drag configuration */

@@ -776,4 +776,47 @@ describe("TypeScript Components", () => {
       expect(layout[1]?.static).toBe(true);
     });
   });
+
+  describe("GridItem memoization (#2240)", () => {
+    it("does not re-render items whose props are unchanged", () => {
+      let renderCount = 0;
+      const CountingChild = () => {
+        renderCount++;
+        return React.createElement("div", null, "child");
+      };
+
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2 },
+        { i: "b", x: 2, y: 0, w: 2, h: 2 }
+      ];
+
+      // The documented perf contract: consumers memoize their children so
+      // their identity is stable across GridLayout re-renders.
+      const children = layout.map((item) =>
+        React.createElement(CountingChild, { key: item.i })
+      );
+
+      const { rerender } = render(
+        React.createElement(
+          GridLayout,
+          { width: 600, cols: 12, rowHeight: 30, layout },
+          children
+        )
+      );
+
+      const countAfterFirst = renderCount;
+
+      // Re-render with the SAME layout and STABLE children — items must not
+      // re-render (#2240).
+      rerender(
+        React.createElement(
+          GridLayout,
+          { width: 600, cols: 12, rowHeight: 30, layout },
+          children
+        )
+      );
+
+      expect(renderCount).toBe(countAfterFirst);
+    });
+  });
 });
