@@ -2690,4 +2690,38 @@ describe("Lifecycle tests", function () {
       });
     });
   });
+
+  // Regression: v1's Responsive was a class and accepted a ref; v2's function
+  // component dropped it. ref.current must resolve to the grid container.
+  describe("legacy Responsive ref forwarding (#2244)", function () {
+    it("forwards a ref to the grid container via forwardRef", function () {
+      const ref = React.createRef();
+      const layout = [{ i: "a", x: 0, y: 0, w: 2, h: 2 }];
+      render(
+        <ResponsiveReactGridLayout
+          ref={ref}
+          layout={layout}
+          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+          rowHeight={30}
+          width={1000}
+        />
+      );
+      expect(ref.current).not.toBeNull();
+      expect(ref.current).toBeInstanceOf(HTMLElement);
+      expect(ref.current.className).toContain("react-grid-layout");
+    });
+
+    it("also forwards a ref on the v2 ResponsiveGridLayout", function () {
+      const ref = React.createRef();
+      const { ResponsiveGridLayout } = require("../../src/react/components/ResponsiveGridLayout");
+      render(
+        <ResponsiveGridLayout
+          ref={ref}
+          layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
+          width={1000}
+        />
+      );
+      expect(ref.current).not.toBeNull();
+    });
+  });
 });
