@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>RGL E2E Harness</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      #grid {
+        width: 100%;
+        max-width: 1280px;
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="grid"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "./vendor/react.mjs",
+          "react-dom": "./vendor/react-dom.mjs",
+          "react/jsx-runtime": "./vendor/jsx-runtime.mjs",
+          "react-grid-layout": "./bundle.mjs"
+        }
+      }
+    </script>
+    <script type="module" id="app">
+      // This module is inline so Node can inject imports from dist/
+      // The harness page is served from test/e2e/ with vendor files and
+      // a bundle copied from dist/ during setup.
+    </script>
+  </body>
+</html>

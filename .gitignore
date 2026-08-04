@@ -20,3 +20,8 @@ codemaps/
 
 # Serena MCP server cache
 .serena/
+
+test-results/
+test/e2e/harness-dist/
+
+package-lock.json
