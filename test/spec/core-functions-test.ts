@@ -203,6 +203,21 @@ describe("Core Functions", () => {
       expect(item?.x).toBe(0);
       expect(item?.w).toBe(2);
     });
+
+    it("clamps y: Infinity to a finite value (#2161)", () => {
+      const layout: Layout = [
+        { i: "a", x: 0, y: 0, w: 2, h: 2, static: false, moved: false },
+        { i: "b", x: 2, y: Infinity, w: 2, h: 2, static: false, moved: false }
+      ];
+
+      const corrected = correctBounds(layout, { cols: 12 });
+      const itemB = corrected.find((item) => item.i === "b");
+
+      // y: Infinity must not survive into rendering math (top-left overlap).
+      expect(Number.isFinite(itemB?.y)).toBe(true);
+      // The new item should sit at the bottom of existing items, not top-left.
+      expect(itemB!.y).toBeGreaterThanOrEqual(2);
+    });
   });
 
   describe("validateLayout", () => {
