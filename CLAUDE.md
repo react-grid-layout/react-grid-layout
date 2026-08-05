@@ -76,42 +76,11 @@ make release-major
 
 ## Architecture (v2)
 
-### Package Structure
+The module structure, public API surface, and data models are documented in the generated maps in `codemaps/` (loaded at session start). Key notes not captured there:
 
-```
-src/
-├── core/                    # Pure TypeScript, no React dependencies
-│   ├── types.ts             # All type definitions
-│   ├── layout.ts            # Layout manipulation (move, clone, validate)
-│   ├── collision.ts         # Collision detection
-│   ├── sort.ts              # Sorting algorithms
-│   ├── compactors.ts        # Compaction algorithms (vertical, horizontal)
-│   ├── compact-compat.ts    # Legacy compact() function wrapper
-│   ├── constraints.ts       # Layout constraints (position, size, aspect ratio)
-│   ├── calculate.ts         # Grid calculations (grid units <-> pixels)
-│   ├── position.ts          # CSS positioning helpers
-│   ├── responsive.ts        # Breakpoint utilities
-│   └── index.ts             # Core exports
-│
-├── react/                   # React bindings
-│   ├── hooks/
-│   │   ├── useContainerWidth.ts   # Container width measurement
-│   │   ├── useGridLayout.ts       # Grid state management
-│   │   └── useResponsiveLayout.ts # Responsive breakpoint handling
-│   └── components/
-│       ├── GridItem.tsx           # Individual grid item
-│       ├── GridLayout.tsx         # Main grid component
-│       ├── ResponsiveGridLayout.tsx
-│       └── WidthProvider.tsx      # Width measurement HOC (internal)
-│
-├── legacy/                  # v1 API compatibility
-│   ├── ReactGridLayout.tsx        # Legacy component wrapper
-│   ├── ResponsiveReactGridLayout.tsx
-│   ├── WidthProvider.tsx          # Re-exports for backwards compat
-│   └── index.ts
-│
-└── index.ts                 # Main entry point
-```
+- `src/core/` is pure TypeScript with no React dependencies
+- `src/legacy/` is the v1 API compatibility layer, wrapping the v2 components
+- `src/extras/` holds optional compactors (fast, wrap) and GridBackground
 
 ### Entry Points
 

@@ -32,6 +32,7 @@ RGL is React-only and does not require jQuery.
 - [Extending: Custom Compactors & Position Strategies](#extending-custom-compactors--position-strategies)
 - [Extras](#extras)
 - [Performance](#performance)
+- [Architecture maps](#architecture-maps)
 - [Contribute](#contribute)
 
 ## What's New in v2
@@ -1304,6 +1305,10 @@ const CustomItem = forwardRef<HTMLDivElement, CustomItemProps>(
   }
 );
 ```
+
+## Architecture maps
+
+Token-lean architecture maps live in [`codemaps/`](codemaps/) and are loaded at session start by AI tooling. They cover the module boundaries, public API surface, data models, and recent behavioral changes. Regenerate with `/update-codemaps` after substantial changes.
 
 ## Contribute
 
