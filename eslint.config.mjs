@@ -228,7 +228,7 @@ export default [
   // not part of the bundle, so they need the node globals and are exempt from
   // the naming rules that apply to library source.
   {
-    files: ["scripts/**/*.cjs", "scripts/**/*.js"],
+    files: ["scripts/**/*.cjs", "scripts/**/*.js", "test/util/**/*.cjs"],
     languageOptions: {
       sourceType: "commonjs",
       globals: {

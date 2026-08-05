@@ -8,9 +8,9 @@
  * cannot serve that prefix, so this maps it to the on-disk `examples/`
  * directory and serves everything else from the repo root.
  */
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+const http = require("node:http");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const PORT = Number(process.env.RGL_PORT || 4002);
 const ROOT = process.cwd();
@@ -26,26 +26,28 @@ const MIME = {
   ".map": "application/json"
 };
 
-const server = http.createServer((req, res) => {
-  const url = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
+const server = http.createServer((request, response) => {
+  const url = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
   // Map the CONTENT_BASE prefix to the examples dir.
-  let rel = url.startsWith(PREFIX) ? url.slice(PREFIX.length) : url;
-  if (rel.endsWith("/") || rel === "") rel += "/00-showcase.html";
-  const file = path.normalize(path.join(ROOT, rel));
+  let relative = url.startsWith(PREFIX) ? url.slice(PREFIX.length) : url;
+  if (relative.endsWith("/") || relative === "") relative += "/00-showcase.html";
+  const file = path.normalize(path.join(ROOT, relative));
   if (!file.startsWith(ROOT)) {
-    res.writeHead(403);
-    res.end("forbidden");
+    response.writeHead(403);
+    response.end("forbidden");
     return;
   }
-  fs.readFile(file, (err, data) => {
-    if (err) {
-      res.writeHead(404);
-      res.end("not found: " + url);
+  fs.readFile(file, (error, data) => {
+    if (error) {
+      response.writeHead(404);
+      response.end("not found: " + url);
       return;
     }
-    const ext = path.extname(file).toLowerCase();
-    res.writeHead(200, { "Content-Type": MIME[ext] || "application/octet-stream" });
-    res.end(data);
+    const extension = path.extname(file).toLowerCase();
+    response.writeHead(200, {
+      "Content-Type": MIME[extension] || "application/octet-stream"
+    });
+    response.end(data);
   });
 });
 

@@ -23,7 +23,7 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("renders grid items at expected positions", async ({ page }) => {
-    const items = page.locator(ITEM);
+    const items = page.locator("#grid-container > .react-grid-layout > " + ITEM);
     const count = await items.count();
     expect(count).toBe(4);
 
@@ -39,7 +39,7 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("dragging an item moves it and fires onLayoutChange", async ({ page }) => {
-    const item = page.locator(ITEM).first();
+    const item = page.locator("#grid-container > .react-grid-layout > " + ITEM).first();
     const before = await itemBox(item);
 
     // Grab the center and drag 120px right, 60px down.
@@ -54,7 +54,7 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("resize handle changes item size", async ({ page }) => {
-    const item = page.locator(ITEM).first();
+    const item = page.locator("#grid-container > .react-grid-layout > " + ITEM).first();
     const handle = item.locator(HANDLE).first();
 
     await handle.waitFor({ state: "visible" });
@@ -80,36 +80,13 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("CSS transforms are applied (not static top/left)", async ({ page }) => {
-    const item = page.locator(ITEM).first();
+    const item = page.locator("#grid-container > .react-grid-layout > " + ITEM).first();
     const transform = await item.evaluate((el) => getComputedStyle(el).transform);
     // transformStrategy -> a matrix; absoluteStrategy -> 'none'
     expect(transform).not.toBe("none");
     expect(transform).toMatch(/matrix/);
   });
 
-  test("drag near the scroll container edge auto-scrolls it (#2232)", async ({ page }) => {
-    const container = page.locator("#scroll-container");
-    await container.waitFor({ state: "visible" });
-    await container.scrollIntoViewIfNeeded();
-    const before = await container.evaluate((el) => el.scrollTop);
-
-    // Grab the first VISIBLE item inside the scroll container and drag it to
-    // the container's bottom edge.
-    const items = page.locator("#scroll-container " + ITEM);
-    const item = items.first();
-    await item.waitFor({ state: "visible" });
-    const box = await itemBox(item);
-    const cBox = (await container.boundingBox())!;
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.down();
-    // Move the pointer to the container's bottom edge and hold.
-    await page.mouse.move(cBox.x + cBox.width / 2, cBox.y + cBox.height - 5, {
-      steps: 8
-    });
-    await page.waitForTimeout(500);
-    const after = await container.evaluate((el) => el.scrollTop);
-    await page.mouse.up();
-
-    expect(after).toBeGreaterThan(before);
-  });
+  // The edge-scroll test (#2232) lives with the code fix in its own PR; it
+  // requires the edgeScroll controller wired from the dragged element node.
 });

@@ -10,6 +10,15 @@ const layout = [
   { i: "d", x: 0, y: 3, w: 3, h: 3 }
 ];
 
+// A tall layout that overflows the scroll container.
+const scrollLayout = Array.from({ length: 12 }, (_, i) => ({
+  i: String.fromCodePoint(97 + i),
+  x: (i * 2) % 12,
+  y: i * 2,
+  w: 2,
+  h: 2
+}));
+
 function App() {
   const { width, containerRef } = useContainerWidth();
   return (
@@ -48,14 +57,5 @@ function App() {
     </div>
   );
 }
-
-// A tall layout that overflows the 200px scroll container.
-const scrollLayout = Array.from({ length: 12 }, (_, i) => ({
-  i: String.fromCharCode(97 + i),
-  x: (i * 2) % 12,
-  y: i * 2,
-  w: 2,
-  h: 2
-}));
 
 createRoot(document.getElementById("grid")).render(<App />);
