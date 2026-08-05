@@ -8,7 +8,7 @@
 
 import React from "react";
 import { render, act } from "@testing-library/react";
-import GridLayout from "../../src/react/components/GridLayout";
+import { GridLayout } from "../../src/react/components/GridLayout";
 
 // ---------------------------------------------------------------------------
 // Test helpers

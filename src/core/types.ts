@@ -576,7 +576,7 @@ export interface DropConfig {
    * CSS selector for elements that can be touch-dragged onto the grid.
    * The adapter only listens for touchstart on matching elements, so an
    * explicit marker prevents surprise scroll-hijacking.
-   * Add `data-rgl-draggable` (the default) to your drag source element.
+   * Defaults to `[data-rgl-draggable]` - add that attribute to your source.
    */
   touchDragSource?: string;
 }

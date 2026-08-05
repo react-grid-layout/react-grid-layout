@@ -68,7 +68,11 @@ function App() {
       <hr />
       <h3>Touch external drop (touch-drop #2281)</h3>
       <div id="touch-drop-container">
-        <div id="touch-source" data-rgl-draggable className="touch-source">
+        <div
+          id="touch-source"
+          data-rgl-draggable={true}
+          className="touch-source"
+        >
           Touch-drag me
         </div>
         <GridLayout
@@ -77,7 +81,7 @@ function App() {
           gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
           compactor={verticalCompactor}
           dropConfig={{ enabled: true }}
-          onDrop={(nextLayout, item) => setLatestLayout(nextLayout)}
+          onDrop={nextLayout => setLatestLayout(nextLayout)}
         >
           {layout.map(item => (
             <div key={item.i} className="grid-item">
