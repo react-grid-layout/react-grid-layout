@@ -173,7 +173,7 @@ function synchronizeLayoutWithChildren(
 /**
  * ResponsiveGridLayout - A responsive grid layout that adjusts to container width.
  */
-export function ResponsiveGridLayout<B extends Breakpoint = string>(
+export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   props: ResponsiveGridLayoutProps<B>
 ): ReactElement {
   const {
@@ -469,4 +469,22 @@ export function ResponsiveGridLayout<B extends Breakpoint = string>(
   );
 }
 
-export default ResponsiveGridLayout;
+/**
+ * The forwardRef wrapper so consumers can capture the container div ref (#2244).
+ */
+const ResponsiveGridLayoutWithRef = React.forwardRef<
+  HTMLDivElement,
+  ResponsiveGridLayoutProps
+>(function ResponsiveGridLayoutForwardRef(
+  props: ResponsiveGridLayoutProps,
+  ref: React.Ref<HTMLDivElement>
+) {
+  const { innerRef, ...rest } = props;
+  const effectiveInnerRef = innerRef ?? ref;
+  return <ResponsiveGridLayoutInner {...rest} innerRef={effectiveInnerRef} />;
+});
+
+ResponsiveGridLayoutWithRef.displayName = "ResponsiveGridLayout";
+
+export default ResponsiveGridLayoutWithRef;
+export { ResponsiveGridLayoutWithRef as ResponsiveGridLayout };

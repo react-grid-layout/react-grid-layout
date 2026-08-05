@@ -8,7 +8,7 @@
 
 import React from "react";
 import {
-  ResponsiveGridLayout,
+  ResponsiveGridLayout as ResponsiveGridLayoutInner,
   type ResponsiveGridLayoutProps
 } from "../react/components/ResponsiveGridLayout.js";
 import type {
@@ -132,8 +132,10 @@ export interface LegacyResponsiveReactGridLayoutProps<
  *
  * Converts v1 flat props to v2 composable interfaces for backwards compatibility.
  */
-function ResponsiveReactGridLayout<B extends Breakpoint = string>(
-  props: LegacyResponsiveReactGridLayoutProps<B>
+function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
+  props: LegacyResponsiveReactGridLayoutProps<B> & {
+    innerRef?: React.Ref<HTMLDivElement>;
+  }
 ) {
   const {
     // Required
@@ -245,11 +247,11 @@ function ResponsiveReactGridLayout<B extends Breakpoint = string>(
   const compactor = getCompactor(compactType, allowOverlap, preventCollision);
 
   return (
-    <ResponsiveGridLayout<B>
+    <ResponsiveGridLayoutInner
       width={width}
       breakpoint={breakpoint}
       breakpoints={breakpoints}
-      cols={cols}
+      cols={cols as Record<string, number>}
       layouts={layouts}
       rowHeight={rowHeight}
       maxRows={maxRows}
@@ -265,8 +267,12 @@ function ResponsiveReactGridLayout<B extends Breakpoint = string>(
       className={className}
       style={style}
       innerRef={innerRef}
-      onBreakpointChange={onBreakpointChange}
-      onLayoutChange={onLayoutChange}
+      onBreakpointChange={
+        onBreakpointChange as ResponsiveGridLayoutProps["onBreakpointChange"]
+      }
+      onLayoutChange={
+        onLayoutChange as ResponsiveGridLayoutProps["onLayoutChange"]
+      }
       onWidthChange={onWidthChange}
       onDragStart={onDragStart}
       onDrag={onDrag}
@@ -278,9 +284,30 @@ function ResponsiveReactGridLayout<B extends Breakpoint = string>(
       onDropDragOver={onDropDragOver}
     >
       {children}
-    </ResponsiveGridLayout>
+    </ResponsiveGridLayoutInner>
   );
 }
+
+/**
+ * v1's Responsive was a class component and accepted a React `ref`. v2 is a
+ * function component, so we forward the ref into `innerRef` to preserve that
+ * contract (#2244).
+ */
+const ResponsiveReactGridLayout = React.forwardRef<
+  HTMLDivElement,
+  LegacyResponsiveReactGridLayoutProps
+>(function ResponsiveReactGridLayoutForward(
+  props: LegacyResponsiveReactGridLayoutProps,
+  ref: React.Ref<HTMLDivElement>
+) {
+  // A forwarded ref becomes the container ref. An explicit innerRef prop takes
+  // precedence when both are present.
+  const { innerRef, ...rest } = props;
+  const effectiveInnerRef = innerRef ?? ref;
+  return (
+    <ResponsiveReactGridLayoutInner {...rest} innerRef={effectiveInnerRef} />
+  );
+});
 
 // Static properties for backwards compatibility
 ResponsiveReactGridLayout.displayName = "ResponsiveReactGridLayout";
