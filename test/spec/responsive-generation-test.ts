@@ -12,10 +12,7 @@ import {
   sortBreakpoints,
   getBreakpointFromWidth
 } from "../../src/core/responsive";
-import type {
-  Breakpoints,
-  ResponsiveLayouts
-} from "../../src/core/types";
+import type { Breakpoints, ResponsiveLayouts } from "../../src/core/types";
 
 const BREAKPOINTS: Breakpoints<string> = {
   lg: 1200,
@@ -46,7 +43,7 @@ describe("responsive breakpoint generation", () => {
       );
 
       // C should have been pulled up into the gap at y=1.
-      const itemC = generated.find((item) => item.i === "C");
+      const itemC = generated.find(item => item.i === "C");
       expect(itemC).toBeDefined();
       expect(itemC!.y).toBe(1);
     });
@@ -72,7 +69,7 @@ describe("responsive breakpoint generation", () => {
       );
 
       // The new item must be present.
-      const itemNew = generated.find((item) => item.i === "new");
+      const itemNew = generated.find(item => item.i === "new");
       expect(itemNew).toBeDefined();
     });
   });
