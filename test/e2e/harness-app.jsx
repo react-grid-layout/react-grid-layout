@@ -1,6 +1,9 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import GridLayout, { useContainerWidth, verticalCompactor } from "react-grid-layout";
+import GridLayout, {
+  useContainerWidth,
+  verticalCompactor
+} from "react-grid-layout";
 import "../../css/styles.css";
 
 const layout = [
@@ -29,7 +32,7 @@ function App() {
         gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
         compactor={verticalCompactor}
       >
-        {layout.map((item) => (
+        {layout.map(item => (
           <div key={item.i} className="grid-item">
             {item.i}
           </div>
@@ -39,7 +42,12 @@ function App() {
       <h3>Scroll container (edge-scroll #2232)</h3>
       <div
         id="scroll-container"
-        style={{ width: 600, height: 200, overflow: "auto", border: "1px solid #ccc" }}
+        style={{
+          width: 600,
+          height: 200,
+          overflow: "auto",
+          border: "1px solid #ccc"
+        }}
       >
         <GridLayout
           width={600}
@@ -47,7 +55,7 @@ function App() {
           gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
           compactor={verticalCompactor}
         >
-          {scrollLayout.map((item) => (
+          {scrollLayout.map(item => (
             <div key={item.i} className="grid-item">
               {item.i}
             </div>

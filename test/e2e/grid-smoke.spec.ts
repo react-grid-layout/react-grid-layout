@@ -23,7 +23,9 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("renders grid items at expected positions", async ({ page }) => {
-    const items = page.locator("#grid-container > .react-grid-layout > " + ITEM);
+    const items = page.locator(
+      "#grid-container > .react-grid-layout > " + ITEM
+    );
     const count = await items.count();
     expect(count).toBe(4);
 
@@ -38,14 +40,25 @@ test.describe("grid harness (real browser)", () => {
     expect(positions.size).toBeGreaterThan(2);
   });
 
-  test("dragging an item moves it and fires onLayoutChange", async ({ page }) => {
-    const item = page.locator("#grid-container > .react-grid-layout > " + ITEM).first();
+  test("dragging an item moves it and fires onLayoutChange", async ({
+    page
+  }) => {
+    const item = page
+      .locator("#grid-container > .react-grid-layout > " + ITEM)
+      .first();
     const before = await itemBox(item);
 
     // Grab the center and drag 120px right, 60px down.
-    await page.mouse.move(before.x + before.width / 2, before.y + before.height / 2);
+    await page.mouse.move(
+      before.x + before.width / 2,
+      before.y + before.height / 2
+    );
     await page.mouse.down();
-    await page.mouse.move(before.x + before.width / 2 + 120, before.y + before.height / 2 + 60, { steps: 8 });
+    await page.mouse.move(
+      before.x + before.width / 2 + 120,
+      before.y + before.height / 2 + 60,
+      { steps: 8 }
+    );
     await page.mouse.up();
 
     const after = await itemBox(item);
@@ -54,7 +67,9 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("resize handle changes item size", async ({ page }) => {
-    const item = page.locator("#grid-container > .react-grid-layout > " + ITEM).first();
+    const item = page
+      .locator("#grid-container > .react-grid-layout > " + ITEM)
+      .first();
     const handle = item.locator(HANDLE).first();
 
     await handle.waitFor({ state: "visible" });
@@ -80,8 +95,10 @@ test.describe("grid harness (real browser)", () => {
   });
 
   test("CSS transforms are applied (not static top/left)", async ({ page }) => {
-    const item = page.locator("#grid-container > .react-grid-layout > " + ITEM).first();
-    const transform = await item.evaluate((el) => getComputedStyle(el).transform);
+    const item = page
+      .locator("#grid-container > .react-grid-layout > " + ITEM)
+      .first();
+    const transform = await item.evaluate(el => getComputedStyle(el).transform);
     // transformStrategy -> a matrix; absoluteStrategy -> 'none'
     expect(transform).not.toBe("none");
     expect(transform).toMatch(/matrix/);

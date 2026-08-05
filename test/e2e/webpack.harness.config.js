@@ -1,6 +1,25 @@
 "use strict";
 const path = require("path");
+const fs = require("fs");
 const webpack = require("webpack");
+
+// Emits index.html referencing the built harness.js, so the harness-dist
+// directory is self-contained for the static e2e server (and CI).
+class HtmlPlugin {
+  apply(compiler) {
+    compiler.hooks.afterEmit.tap("HtmlPlugin", () => {
+      const html =
+        '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="utf-8" />\n' +
+        '    <title>RGL E2E Harness</title>\n  </head>\n  <body>\n' +
+        '    <div id="grid"></div>\n    <script src="harness.js"></script>\n' +
+        "  </body>\n</html>\n";
+      fs.writeFileSync(
+        path.join(__dirname, "harness-dist", "index.html"),
+        html
+      );
+    });
+  }
+}
 
 /**
  * Builds the e2e harness into a single self-contained HTML file.
@@ -51,7 +70,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production")
-    })
+    }),
+    new HtmlPlugin()
   ],
   devtool: false
 };

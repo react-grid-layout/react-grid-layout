@@ -27,10 +27,13 @@ const MIME = {
 };
 
 const server = http.createServer((request, response) => {
-  const url = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
+  const url = decodeURIComponent(
+    new URL(request.url, "http://localhost").pathname
+  );
   // Map the CONTENT_BASE prefix to the examples dir.
   let relative = url.startsWith(PREFIX) ? url.slice(PREFIX.length) : url;
-  if (relative.endsWith("/") || relative === "") relative += "/00-showcase.html";
+  if (relative.endsWith("/") || relative === "")
+    relative += "/00-showcase.html";
   const file = path.normalize(path.join(ROOT, relative));
   if (!file.startsWith(ROOT)) {
     response.writeHead(403);
