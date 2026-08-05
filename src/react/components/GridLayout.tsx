@@ -421,6 +421,10 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // placeholder state without re-binding document listeners on every move.
   const droppingDOMNodeRef = useRef<ReactElement | null>(null);
   droppingDOMNodeRef.current = droppingDOMNode;
+  // Mirror of onDropProp so the document touch listeners don't rebind when the
+  // consumer passes an inline onDrop (new identity every parent render).
+  const onDropPropRef = useRef(onDropProp);
+  onDropPropRef.current = onDropProp;
 
   // Ref to current layout - Critical for preventing infinite update loops (#2204).
   // This allows callbacks to access the latest layout without including `layout`
@@ -784,6 +788,54 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   );
 
   // ============================================================================
+  // Shared drop pipeline helpers (used by both the HTML5 drag-over and the
+  // touch adapter so the two event sources stay behaviorally identical)
+  // ============================================================================
+
+  /**
+   * Create or update the dropping placeholder + its layout entry.
+   * Both handleDragOver and the touch adapter call this after computing a
+   * drop position; they differ only in which dropping item they place.
+   */
+  const placeDroppingItem = useCallback(
+    (
+      itemToPlace: { i: string; w: number; h: number },
+      newDroppingPosition: DroppingPosition,
+      calculatedXY: { x: number; y: number },
+      hasPlaceholder: boolean
+    ) => {
+      if (!hasPlaceholder) {
+        setDroppingDOMNode(<div key={itemToPlace.i} />);
+        setDroppingPosition(newDroppingPosition);
+        // Filter out any stale __dropping-elem__ before adding the new one.
+        // This prevents duplicate IDs caused by a race condition where
+        // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
+        // before a batched setLayout from a previous handleDragOver has
+        // rendered, leaving __dropping-elem__ in the layout while
+        // droppingDOMNode is null.
+        const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
+        setLayout([
+          ...baseLayout,
+          {
+            ...itemToPlace,
+            x: calculatedXY.x,
+            y: calculatedXY.y,
+            static: false,
+            isDraggable: true
+          }
+        ]);
+      } else if (droppingPositionRef.current) {
+        const shouldUpdate =
+          droppingPositionRef.current.left !== newDroppingPosition.left ||
+          droppingPositionRef.current.top !== newDroppingPosition.top;
+        if (shouldUpdate) {
+          setDroppingPosition(newDroppingPosition);
+        }
+      }
+    },
+    []
+  );
+
   const applyTouchDropPosition = useCallback(
     (clientX: number, clientY: number, nativeEvent: Event) => {
       const gridEl = gridContainerRef.current;
@@ -804,30 +856,12 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         containerPadding: effectiveContainerPadding as [number, number]
       });
 
-      if (!droppingDOMNodeRef.current) {
-        setDroppingDOMNode(<div key={droppingItem.i} />);
-        setDroppingPosition(newDroppingPosition);
-        const baseLayout = layoutRef.current.filter(
-          l => l.i !== droppingItem.i
-        );
-        setLayout([
-          ...baseLayout,
-          {
-            ...droppingItem,
-            x: calculatedXY.x,
-            y: calculatedXY.y,
-            static: false,
-            isDraggable: true
-          }
-        ]);
-      } else if (droppingPositionRef.current) {
-        const shouldUpdate =
-          droppingPositionRef.current.left !== newDroppingPosition.left ||
-          droppingPositionRef.current.top !== newDroppingPosition.top;
-        if (shouldUpdate) {
-          setDroppingPosition(newDroppingPosition);
-        }
-      }
+      placeDroppingItem(
+        droppingItem,
+        newDroppingPosition,
+        calculatedXY,
+        !!droppingDOMNodeRef.current
+      );
     },
     [
       droppingItem,
@@ -837,7 +871,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       maxRows,
       rowHeight,
       width,
-      effectiveContainerPadding
+      effectiveContainerPadding,
+      placeDroppingItem
     ]
   );
 
@@ -920,44 +955,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         containerPadding: effectiveContainerPadding as [number, number]
       });
 
-      if (!droppingDOMNode) {
-        setDroppingDOMNode(<div key={finalDroppingItem.i} />);
-        setDroppingPosition(newDroppingPosition);
-        // Filter out any stale __dropping-elem__ before adding the new one.
-        // This prevents duplicate IDs caused by a race condition where
-        // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
-        // before a batched setLayout from a previous handleDragOver has
-        // rendered, leaving __dropping-elem__ in the layout while
-        // droppingDOMNode is null.
-        const baseLayout = layoutRef.current.filter(
-          l => l.i !== finalDroppingItem.i
-        );
-        setLayout([
-          ...baseLayout,
-          {
-            ...finalDroppingItem,
-            x: calculatedXY.x,
-            y: calculatedXY.y,
-            static: false,
-            isDraggable: true
-          }
-        ]);
-      } else if (droppingPosition) {
-        const shouldUpdate =
-          droppingPosition.left !== newDroppingPosition.left ||
-          droppingPosition.top !== newDroppingPosition.top;
-        if (shouldUpdate) {
-          setDroppingPosition(newDroppingPosition);
-        }
-      }
+      placeDroppingItem(
+        finalDroppingItem,
+        newDroppingPosition,
+        calculatedXY,
+        !!droppingDOMNode
+      );
     },
     [
       droppingDOMNode,
-      droppingPosition,
       droppingItem,
       dropConfigOnDragOver,
       onDropDragOverProp,
       removeDroppingPlaceholder,
+      placeDroppingItem,
       transformScale,
       cols,
       margin,
@@ -993,18 +1004,28 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     dragEnterCounterRef.current++;
   }, []);
 
+  /**
+   * Commit a drop: find the placed item, clear the placeholder, fire onDrop.
+   * Shared by desktop handleDrop and the touch adapter's touchend.
+   */
+  const commitDrop = useCallback(
+    (nativeEvent: Event) => {
+      const currentLayout = layoutRef.current;
+      const item = currentLayout.find(l => l.i === droppingItem.i);
+      removeDroppingPlaceholder();
+      onDropPropRef.current(currentLayout, item, nativeEvent);
+    },
+    [droppingItem.i, removeDroppingPlaceholder]
+  );
+
   const handleDrop = useCallback(
     (e: ReactDragEvent) => {
       e.preventDefault();
       e.stopPropagation();
-
-      const currentLayout = layoutRef.current;
-      const item = currentLayout.find(l => l.i === droppingItem.i);
       dragEnterCounterRef.current = 0;
-      removeDroppingPlaceholder();
-      onDropProp(currentLayout, item, e.nativeEvent);
+      commitDrop(e.nativeEvent);
     },
-    [droppingItem.i, removeDroppingPlaceholder, onDropProp]
+    [commitDrop]
   );
 
   // ============================================================================
@@ -1037,8 +1058,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       return target.closest(touchDragSource) !== null;
     };
 
-    const getTouch = (e: TouchEvent, list: string): Touch | undefined => {
-      const touches = (e as TouchEvent & Record<string, TouchList>)[list];
+    const getTouch = (e: TouchEvent): Touch | undefined => {
+      const touches = e.changedTouches;
       if (!touches || touches.length === 0) return undefined;
       const id = activeTouchIdRef.current;
       if (id === null) return touches[0];
@@ -1062,7 +1083,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     const handleTouchMove = (e: TouchEvent): void => {
       if (!touchDragActiveRef.current) return;
       e.preventDefault();
-      const touch = getTouch(e, "changedTouches");
+      const touch = getTouch(e);
       if (!touch) return;
       if (!isOverGrid(touch.clientX, touch.clientY)) {
         if (droppingDOMNodeRef.current) removeDroppingPlaceholder();
@@ -1074,7 +1095,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     const handleTouchEnd = (e: TouchEvent): void => {
       if (!touchDragActiveRef.current) return;
       e.preventDefault();
-      const touch = getTouch(e, "changedTouches");
+      const touch = getTouch(e);
       touchDragActiveRef.current = false;
       activeTouchIdRef.current = null;
       if (!touch) return;
@@ -1083,10 +1104,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         return;
       }
       // Commit the drop — same path as handleDrop
-      const currentLayout = layoutRef.current;
-      const item = currentLayout.find(l => l.i === droppingItem.i);
-      removeDroppingPlaceholder();
-      onDropProp(currentLayout, item, e);
+      commitDrop(e);
     };
 
     const handleTouchCancel = (): void => {
@@ -1114,7 +1132,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     touchDragSource,
     applyTouchDropPosition,
     removeDroppingPlaceholder,
-    onDropProp,
+    commitDrop,
     droppingItem.i
   ]);
 
@@ -1258,6 +1276,21 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Render
   // ============================================================================
 
+  // Stable ref callback: an inline arrow would be re-invoked (null -> node) on
+  // every render, which during a touch drag would momentarily null the grid ref
+  // on each move. Keyed on innerRef so it stays stable across the hot path.
+  const setGridRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      gridContainerRef.current = node;
+      if (typeof innerRef === "function") {
+        innerRef(node);
+      } else if (innerRef && "current" in innerRef) {
+        (innerRef as MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    },
+    [innerRef]
+  );
+
   const mergedClassName = clsx(layoutClassName, className);
   const mergedStyle: CSSProperties = {
     height: containerHeight,
@@ -1266,14 +1299,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   return (
     <div
-      ref={node => {
-        gridContainerRef.current = node;
-        if (typeof innerRef === "function") {
-          innerRef(node);
-        } else if (innerRef && "current" in innerRef) {
-          (innerRef as MutableRefObject<HTMLDivElement | null>).current = node;
-        }
-      }}
+      ref={setGridRef}
       className={mergedClassName}
       style={mergedStyle}
       onDrop={isDroppable ? handleDrop : undefined}
