@@ -733,7 +733,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       // Re-apply the anchored y after compaction so the live resize tracks the
       // pointer (#2203).
       if (handle === "n" || handle === "nw" || handle === "ne") {
-        const resized = compactedLayout.find((item) => item.i === i);
+        const resized = compactedLayout.find(item => item.i === i);
         if (resized) {
           (resized as Mutable<LayoutItem>).y = l.y;
         }
@@ -877,7 +877,11 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       const scrollLeft = target.scrollLeft ?? 0;
       const scrollTop = target.scrollTop ?? 0;
       const rawGridX =
-        e.clientX - gridRect.left + scrollLeft + dragOffsetX - itemCenterOffsetX;
+        e.clientX -
+        gridRect.left +
+        scrollLeft +
+        dragOffsetX -
+        itemCenterOffsetX;
       const rawGridY =
         e.clientY - gridRect.top + scrollTop + dragOffsetY - itemCenterOffsetY;
 

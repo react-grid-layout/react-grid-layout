@@ -25,9 +25,7 @@ export interface EdgeScrollController {
 const EDGE_THRESHOLD = 50;
 const SCROLL_STEP = 12;
 
-function getNearestScrollable(
-  node: HTMLElement | null
-): HTMLElement | null {
+function getNearestScrollable(node: HTMLElement | null): HTMLElement | null {
   // Check the node itself first, then ancestors.
   let el: HTMLElement | null = node;
   while (el) {
@@ -45,7 +43,7 @@ function getNearestScrollable(
 export function createEdgeScrollController(
   node: HTMLElement | null
 ): EdgeScrollController {
-  let scrollContainer: HTMLElement | null = getNearestScrollable(node);
+  const scrollContainer: HTMLElement | null = getNearestScrollable(node);
   let rafId: number | null = null;
   let lastX = 0;
   let lastY = 0;
@@ -64,13 +62,19 @@ export function createEdgeScrollController(
 
     if (lastY < rect.top + EDGE_THRESHOLD && scrollTop > 0) {
       dy = -SCROLL_STEP;
-    } else if (lastY > rect.bottom - EDGE_THRESHOLD && scrollTop + clientHeight < scrollHeight) {
+    } else if (
+      lastY > rect.bottom - EDGE_THRESHOLD &&
+      scrollTop + clientHeight < scrollHeight
+    ) {
       dy = SCROLL_STEP;
     }
 
     if (lastX < rect.left + EDGE_THRESHOLD && scrollLeft > 0) {
       dx = -SCROLL_STEP;
-    } else if (lastX > rect.right - EDGE_THRESHOLD && scrollLeft + clientWidth < scrollWidth) {
+    } else if (
+      lastX > rect.right - EDGE_THRESHOLD &&
+      scrollLeft + clientWidth < scrollWidth
+    ) {
       dx = SCROLL_STEP;
     }
 
