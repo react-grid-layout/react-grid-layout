@@ -792,7 +792,7 @@ describe("TypeScript Components", () => {
 
       // The documented perf contract: consumers memoize their children so
       // their identity is stable across GridLayout re-renders.
-      const children = layout.map((item) =>
+      const children = layout.map(item =>
         React.createElement(CountingChild, { key: item.i })
       );
 

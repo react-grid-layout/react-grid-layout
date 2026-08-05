@@ -301,9 +301,11 @@ describe("PR #2167 - Drop item alignment", () => {
       const itemCenterOffsetY = 15; // ~half of 1x1 pixel height
 
       // Without scroll:
-      const rawY_noScroll = e_clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
+      const rawY_noScroll =
+        e_clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
       // With scroll:
-      const rawY_scroll = e_clientY - gridRect.top + scrollTop + dragOffsetY - itemCenterOffsetY;
+      const rawY_scroll =
+        e_clientY - gridRect.top + scrollTop + dragOffsetY - itemCenterOffsetY;
 
       // The scroll-aware calc should report a position that is scrollTop
       // farther down, matching the content coordinate space.

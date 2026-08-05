@@ -33,16 +33,18 @@ function restoreRafMock() {
 }
 
 /** A fake scrollable element with controllable geometry. */
-function makeContainer(overrides: Partial<{
-  scrollTop: number;
-  scrollLeft: number;
-  scrollHeight: number;
-  scrollWidth: number;
-  clientHeight: number;
-  clientWidth: number;
-  rect: { top: number; bottom: number; left: number; right: number };
-  overflowY: string;
-}> = {}) {
+function makeContainer(
+  overrides: Partial<{
+    scrollTop: number;
+    scrollLeft: number;
+    scrollHeight: number;
+    scrollWidth: number;
+    clientHeight: number;
+    clientWidth: number;
+    rect: { top: number; bottom: number; left: number; right: number };
+    overflowY: string;
+  }> = {}
+) {
   const state = {
     scrollTop: 0,
     scrollLeft: 0,
@@ -70,7 +72,7 @@ function makeContainer(overrides: Partial<{
 function mockComputedStyle(overflowY: string) {
   const orig = globalThis.getComputedStyle;
   (globalThis as any).getComputedStyle = () =>
-    ({ overflowY, overflowX: "auto" } as CSSStyleDeclaration);
+    ({ overflowY, overflowX: "auto" }) as CSSStyleDeclaration;
   return () => {
     (globalThis as any).getComputedStyle = orig;
   };
