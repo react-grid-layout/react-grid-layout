@@ -8,6 +8,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useMemo,
   type ReactElement,
@@ -422,9 +423,12 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const droppingDOMNodeRef = useRef<ReactElement | null>(null);
   droppingDOMNodeRef.current = droppingDOMNode;
   // Mirror of onDropProp so the document touch listeners don't rebind when the
-  // consumer passes an inline onDrop (new identity every parent render).
+  // consumer passes an inline onDrop (new identity every parent render). Synced
+  // in a layout effect so a native touchend can't observe an uncommitted prop.
   const onDropPropRef = useRef(onDropProp);
-  onDropPropRef.current = onDropProp;
+  useLayoutEffect(() => {
+    onDropPropRef.current = onDropProp;
+  });
 
   // Ref to current layout - Critical for preventing infinite update loops (#2204).
   // This allows callbacks to access the latest layout without including `layout`
