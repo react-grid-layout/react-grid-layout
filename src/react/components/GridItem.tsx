@@ -412,10 +412,12 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
       dragPositionRef.current = newPosition;
 
-      // Start edge auto-scroll (#2232)
+      // Start edge auto-scroll (#2232). Walk up from the dragged element
+      // (not offsetParent): offsetParent is the nearest positioned ancestor,
+      // which may skip an overflow:auto wrapper that is not positioned.
       if (!edgeScrollRef.current) {
         edgeScrollRef.current = createEdgeScrollController(
-          offsetParent instanceof HTMLElement ? offsetParent : null
+          node instanceof HTMLElement ? node : null
         );
       }
 
