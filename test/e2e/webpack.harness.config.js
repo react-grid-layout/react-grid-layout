@@ -10,7 +10,7 @@ class HtmlPlugin {
     compiler.hooks.afterEmit.tap("HtmlPlugin", () => {
       const html =
         '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="utf-8" />\n' +
-        '    <title>RGL E2E Harness</title>\n  </head>\n  <body>\n' +
+        "    <title>RGL E2E Harness</title>\n  </head>\n  <body>\n" +
         '    <div id="grid"></div>\n    <script src="harness.js"></script>\n' +
         "  </body>\n</html>\n";
       fs.writeFileSync(
@@ -61,7 +61,9 @@ module.exports = {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     // Map the library to the source entry so the harness tests real code,
     // the same alias the examples build uses.
-    alias: { "react-grid-layout": path.resolve(__dirname, "../../index-dev.js") },
+    alias: {
+      "react-grid-layout": path.resolve(__dirname, "../../index-dev.js")
+    },
     extensionAlias: {
       ".js": [".ts", ".tsx", ".js"],
       ".mjs": [".mts", ".mjs"]
