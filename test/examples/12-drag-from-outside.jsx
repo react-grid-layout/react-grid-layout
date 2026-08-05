@@ -91,6 +91,10 @@ export default class DragFromOutsideLayout extends React.Component {
           className="droppable-element"
           draggable={true}
           unselectable="on"
+          // Mark this as a touch-draggable source: on touch devices HTML5
+          // dragover/drop never fire, so the grid's touch adapter listens for
+          // touchstart on elements matching this marker (#2281).
+          data-rgl-draggable
           // this is a hack for firefox
           // Firefox requires some kind of initialization
           // which we can do by adding this attribute
