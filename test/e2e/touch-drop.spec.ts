@@ -57,9 +57,7 @@ test.describe("touch external-drop adapter (real browser)", () => {
     // grid, then release over the grid.
     await cdp.send("Input.dispatchTouchEvent", {
       type: "touchStart",
-      touchPoints: [
-        { x: source.x, y: source.y, id: 1, radiusX: 1, radiusY: 1 }
-      ]
+      touchPoints: [{ x: source.x, y: source.y, id: 1, radiusX: 1, radiusY: 1 }]
     });
     await cdp.send("Input.dispatchTouchEvent", {
       type: "touchMove",
@@ -76,9 +74,7 @@ test.describe("touch external-drop adapter (real browser)", () => {
     await page.waitForTimeout(100);
 
     // The placeholder adds a .react-grid-item to the drop grid (4 originals + 1).
-    const itemCount = await page
-      .locator(DROP_GRID + " > " + ITEM)
-      .count();
+    const itemCount = await page.locator(DROP_GRID + " > " + ITEM).count();
     expect(itemCount).toBe(5);
 
     await cdp.send("Input.dispatchTouchEvent", {
@@ -90,9 +86,9 @@ test.describe("touch external-drop adapter (real browser)", () => {
     // onDrop fired: the drop-layout-state now records the dropped item.
     const dropState = await page.locator("#drop-layout-state").textContent();
     const parsed = JSON.parse(dropState ?? "[]");
-    expect(
-      parsed.some((l: { i: string }) => l.i === "__dropping-elem__")
-    ).toBe(true);
+    expect(parsed.some((l: { i: string }) => l.i === "__dropping-elem__")).toBe(
+      true
+    );
 
     await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
   });
@@ -126,9 +122,9 @@ test.describe("touch external-drop adapter (real browser)", () => {
     // No drop recorded.
     const dropState = await page.locator("#drop-layout-state").textContent();
     const parsed = JSON.parse(dropState ?? "[]");
-    expect(
-      parsed.some((l: { i: string }) => l.i === "__dropping-elem__")
-    ).toBe(false);
+    expect(parsed.some((l: { i: string }) => l.i === "__dropping-elem__")).toBe(
+      false
+    );
 
     await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
   });
