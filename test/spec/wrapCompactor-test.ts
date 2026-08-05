@@ -213,7 +213,7 @@ describe("moveElement in wrap mode (#2252)", () => {
 
     // Drag d (x=1,y=1) to x=0,y=1 — earlier in the row.
     const result = moveElement(layout, layout[3], 0, 1, true, false, "wrap", 2);
-    const itemD = result.find((l) => l.i === "d");
+    const itemD = result.find(l => l.i === "d");
     expect(itemD).toBeDefined();
     // d should be able to sit at (0,1); c moves to make room.
     expect(itemD!.x).toBe(0);
@@ -232,7 +232,7 @@ describe("moveElement in wrap mode (#2252)", () => {
     const result = moveElement(layout, layout[1], 0, 0, true, false, "wrap", 2);
 
     // No two items may share a cell.
-    const occupied = new Set(result.map((l) => `${l.x},${l.y}`));
+    const occupied = new Set(result.map(l => `${l.x},${l.y}`));
     expect(occupied.size).toBe(result.length);
   });
 });
