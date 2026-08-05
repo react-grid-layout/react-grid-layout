@@ -2713,7 +2713,9 @@ describe("Lifecycle tests", function () {
 
     it("also forwards a ref on the v2 ResponsiveGridLayout", function () {
       const ref = React.createRef();
-      const { ResponsiveGridLayout } = require("../../src/react/components/ResponsiveGridLayout");
+      const {
+        ResponsiveGridLayout
+      } = require("../../src/react/components/ResponsiveGridLayout");
       render(
         <ResponsiveGridLayout
           ref={ref}

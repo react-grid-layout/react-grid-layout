@@ -133,7 +133,9 @@ export interface LegacyResponsiveReactGridLayoutProps<
  * Converts v1 flat props to v2 composable interfaces for backwards compatibility.
  */
 function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
-  props: LegacyResponsiveReactGridLayoutProps<B> & { innerRef?: React.Ref<HTMLDivElement> }
+  props: LegacyResponsiveReactGridLayoutProps<B> & {
+    innerRef?: React.Ref<HTMLDivElement>;
+  }
 ) {
   const {
     // Required
@@ -265,8 +267,12 @@ function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
       className={className}
       style={style}
       innerRef={innerRef}
-      onBreakpointChange={onBreakpointChange as ResponsiveGridLayoutProps["onBreakpointChange"]}
-      onLayoutChange={onLayoutChange as ResponsiveGridLayoutProps["onLayoutChange"]}
+      onBreakpointChange={
+        onBreakpointChange as ResponsiveGridLayoutProps["onBreakpointChange"]
+      }
+      onLayoutChange={
+        onLayoutChange as ResponsiveGridLayoutProps["onLayoutChange"]
+      }
       onWidthChange={onWidthChange}
       onDragStart={onDragStart}
       onDrag={onDrag}

@@ -481,9 +481,7 @@ const ResponsiveGridLayoutWithRef = React.forwardRef<
 ) {
   const { innerRef, ...rest } = props;
   const effectiveInnerRef = innerRef ?? ref;
-  return (
-    <ResponsiveGridLayoutInner {...rest} innerRef={effectiveInnerRef} />
-  );
+  return <ResponsiveGridLayoutInner {...rest} innerRef={effectiveInnerRef} />;
 });
 
 ResponsiveGridLayoutWithRef.displayName = "ResponsiveGridLayout";
