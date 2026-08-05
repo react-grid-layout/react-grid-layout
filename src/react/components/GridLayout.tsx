@@ -355,7 +355,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     bounded: isBounded,
     handle: draggableHandle,
     cancel: draggableCancel,
-    threshold: dragThreshold
+    threshold: dragThreshold,
+    allowMobileScroll: dragAllowMobileScroll
   } = dragConfig;
   const {
     enabled: isResizable,
@@ -680,6 +681,12 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
         (item as Mutable<LayoutItem>).w = w;
         (item as Mutable<LayoutItem>).h = h;
+        // North-side resizes anchor the bottom edge: apply the computed y so
+        // the item shrinks from the top instead of staying put and sliding up
+        // (#2203).
+        if (handle === "n" || handle === "nw" || handle === "ne") {
+          (item as Mutable<LayoutItem>).y = newY ?? item.y;
+        }
 
         return item;
       });
@@ -720,7 +727,18 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       );
 
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
-      setLayout(compactor.compact(finalLayout, cols));
+      const compactedLayout = compactor.compact(finalLayout, cols);
+      // A north-handle resize anchors the bottom edge: compaction floats items
+      // up, which would slide the resized item past the minH-locked item above.
+      // Re-apply the anchored y after compaction so the live resize tracks the
+      // pointer (#2203).
+      if (handle === "n" || handle === "nw" || handle === "ne") {
+        const resized = compactedLayout.find(item => item.i === i);
+        if (resized) {
+          (resized as Mutable<LayoutItem>).y = l.y;
+        }
+      }
+      setLayout(compactedLayout);
       setActiveDrag(placeholder);
     },
     [preventCollision, compactType, cols, allowOverlap, compactor, onResizeProp]
@@ -851,11 +869,21 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       const itemCenterOffsetX = itemPixelWidth / 2;
       const itemCenterOffsetY = itemPixelHeight / 2;
 
-      // Calculate mouse position relative to grid, accounting for drag offset and item centering
+      // Calculate mouse position relative to grid, accounting for drag offset
+      // and item centering. Add the grid's own scroll offset: getBoundingClientRect
+      // reports the element's viewport position, which ignores internal scroll,
+      // so a scrolled grid would place the drop above the cursor (#2143).
+      const target = e.currentTarget;
+      const scrollLeft = target.scrollLeft ?? 0;
+      const scrollTop = target.scrollTop ?? 0;
       const rawGridX =
-        e.clientX - gridRect.left + dragOffsetX - itemCenterOffsetX;
+        e.clientX -
+        gridRect.left +
+        scrollLeft +
+        dragOffsetX -
+        itemCenterOffsetX;
       const rawGridY =
-        e.clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
+        e.clientY - gridRect.top + scrollTop + dragOffsetY - itemCenterOffsetY;
 
       // Clamp to prevent negative positions (calcXY handles upper bound clamping)
       const clampedGridX = Math.max(0, rawGridX);
@@ -1010,6 +1038,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           isDraggable={draggable}
           isResizable={resizable}
           isBounded={bounded}
+          allowMobileScroll={dragAllowMobileScroll}
           useCSSTransforms={useCSSTransforms && mounted}
           usePercentages={!mounted}
           transformScale={transformScale}
