@@ -139,6 +139,11 @@ describe("#1744 gap collapse on breakpoint generation (component path)", () => {
     expect(itemC).toBeDefined();
     // The stored gap at y=1 must still collapse via the children re-sync.
     expect(itemC!.y).toBe(1);
+    // The md width clamp proves this is the generated/re-used md layout, not a
+    // stale lg one (lg w=12 → md w=10).
+    const itemA = mdLayout!.find(item => item.i === "A");
+    expect(itemA).toBeDefined();
+    expect(itemA!.w).toBe(10);
   });
 
   it("collapses the gap even when the source layout is re-passed with gaps", () => {
@@ -193,6 +198,10 @@ describe("#1744 gap collapse on breakpoint generation (component path)", () => {
     const itemC = mdLayout!.find(item => item.i === "C");
     expect(itemC).toBeDefined();
     expect(itemC!.y).toBe(1);
+    // Width clamp proves this is the generated md layout, not a stale lg one.
+    const itemA = mdLayout!.find(item => item.i === "A");
+    expect(itemA).toBeDefined();
+    expect(itemA!.w).toBe(10);
   });
 
   it("does not re-introduce the gap when the generated layout is re-seeded from data-grid children", () => {
@@ -256,5 +265,9 @@ describe("#1744 gap collapse on breakpoint generation (component path)", () => {
     const itemC = mdLayout!.find(item => item.i === "C");
     expect(itemC).toBeDefined();
     expect(itemC!.y).toBe(1);
+    // Width clamp proves this is the generated md layout, not a stale lg one.
+    const itemA = mdLayout!.find(item => item.i === "A");
+    expect(itemA).toBeDefined();
+    expect(itemA!.w).toBe(10);
   });
 });
