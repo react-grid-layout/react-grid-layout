@@ -211,7 +211,7 @@ describe("Core Functions", () => {
       ];
 
       const corrected = correctBounds(layout, { cols: 12 });
-      const itemB = corrected.find((item) => item.i === "b");
+      const itemB = corrected.find(item => item.i === "b");
 
       // y: Infinity must not survive into rendering math (top-left overlap).
       expect(Number.isFinite(itemB?.y)).toBe(true);

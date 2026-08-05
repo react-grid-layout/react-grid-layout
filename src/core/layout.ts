@@ -380,8 +380,7 @@ export function moveElementAwayFromCollision(
   // Wrap mode flows left-to-right, top-to-bottom like a paragraph. For
   // collision resolution it behaves like horizontal compaction (items push
   // right); the final wrap compactor re-flows to strict reading order (#2252).
-  const compactH =
-    compactType === "horizontal" || compactType === "wrap";
+  const compactH = compactType === "horizontal" || compactType === "wrap";
   const compactV = compactType === "vertical";
   const preventCollision = collidesWith.static;
 

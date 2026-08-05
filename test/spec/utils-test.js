@@ -496,9 +496,7 @@ describe("moveElement", () => {
   });
 
   it("returns the original layout when the item is static (line 270)", () => {
-    const layout = [
-      { x: 0, y: 0, w: 2, h: 2, i: "S", static: true }
-    ];
+    const layout = [{ x: 0, y: 0, w: 2, h: 2, i: "S", static: true }];
     const result = moveElement(layout, layout[0], 3, 3, true, false, null, 10);
     // Static items can't move.
     expect(result).toEqual(layout);
