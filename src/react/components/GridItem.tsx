@@ -301,12 +301,14 @@ function GridItemInner(props: GridItemProps): ReactElement {
   // Constraint context for applying constraints
   // Note: This does NOT include layout in its dependencies to prevent infinite loops (#2210).
   // The layout is accessed via layoutRef.current inside the callbacks that use this context.
+  // containerHeight is supplied per-interaction (see getConstraintContext) so a resize can
+  // be bounded to the rendered container (#1779); auto-height grids measure 0 here.
   const constraintContext: ConstraintContext = useMemo(
     () => ({
       cols,
       maxRows,
       containerWidth,
-      containerHeight: 0, // Auto-height grids don't have a fixed container height
+      containerHeight: 0, // Overridden per-interaction with the measured container height
       rowHeight,
       margin,
       // Use empty layout here - the actual layout will be accessed via layoutRef when needed
@@ -319,8 +321,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
   // Create a getter for constraint context with current layout
   // This is called inside callbacks to get fresh layout data without causing re-renders
   const getConstraintContext = useCallback(
-    (): ConstraintContext => ({
+    (containerHeight?: number): ConstraintContext => ({
       ...constraintContext,
+      containerHeight: containerHeight ?? constraintContext.containerHeight,
       layout: layoutRef.current
     }),
     [constraintContext]
@@ -671,6 +674,12 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
       resizePositionRef.current = updatedSize;
 
+      // Measure the rendered container height so containerBounds (legacy
+      // isBounded) can clamp a resize to the container edge (#1779). The item's
+      // offsetParent is the grid container; clientHeight reflects the current
+      // rendered height, so the resize cannot push the item past it.
+      const containerHeight = node?.offsetParent?.clientHeight ?? 0;
+
       // Calculate raw grid dimensions and apply constraints
       const rawSize = calcWHRaw(
         positionParams,
@@ -683,7 +692,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
         rawSize.w,
         rawSize.h,
         resizeHandle,
-        getConstraintContext()
+        getConstraintContext(containerHeight)
       );
 
       handler(i, newW, newH, {
