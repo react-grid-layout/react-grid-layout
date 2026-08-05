@@ -23,5 +23,20 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn
 
-      - name: Run tests
+      - name: Run unit tests
         run: yarn test
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Build the library
+        run: yarn build
+
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
+
+      - name: Build the e2e harness
+        run: make e2e-build
+
+      - name: Run Playwright e2e tests
+        run: yarn playwright test --config playwright.config.ts
