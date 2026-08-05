@@ -65,6 +65,32 @@ function App() {
           ))}
         </GridLayout>
       </div>
+      <hr />
+      <h3>Touch external drop (touch-drop #2281)</h3>
+      <div id="touch-drop-container">
+        <div
+          id="touch-source"
+          data-rgl-draggable={true}
+          className="touch-source"
+        >
+          Touch-drag me
+        </div>
+        <GridLayout
+          width={1000}
+          layout={layout}
+          gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
+          compactor={verticalCompactor}
+          dropConfig={{ enabled: true }}
+          onDrop={nextLayout => setLatestLayout(nextLayout)}
+        >
+          {layout.map(item => (
+            <div key={item.i} className="grid-item">
+              {item.i}
+            </div>
+          ))}
+        </GridLayout>
+        <pre id="drop-layout-state">{JSON.stringify(latestLayout)}</pre>
+      </div>
     </div>
   );
 }

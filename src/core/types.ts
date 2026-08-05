@@ -563,12 +563,30 @@ export interface DropConfig {
     | { w?: number; h?: number; dragOffsetX?: number; dragOffsetY?: number }
     | false
     | void;
+
+  /**
+   * Enable touch-to-drop for external drag sources on mobile.
+   * Touch events never fire HTML5 dragover/drop, so the grid translates
+   * touchmove/touchend into the drop pipeline when this is on.
+   * Only elements matching `touchDragSource` are captured (default: true).
+   */
+  touchEnabled?: boolean;
+
+  /**
+   * CSS selector for elements that can be touch-dragged onto the grid.
+   * The adapter only listens for touchstart on matching elements, so an
+   * explicit marker prevents surprise scroll-hijacking.
+   * Defaults to `[data-rgl-draggable]` - add that attribute to your source.
+   */
+  touchDragSource?: string;
 }
 
 /** Default drop configuration */
 export const defaultDropConfig: DropConfig = {
   enabled: false,
-  defaultItem: { w: 1, h: 1 }
+  defaultItem: { w: 1, h: 1 },
+  touchEnabled: true,
+  touchDragSource: "[data-rgl-draggable]"
 };
 
 // ============================================================================
