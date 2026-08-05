@@ -834,6 +834,16 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           droppingPositionRef.current.top !== newDroppingPosition.top;
         if (shouldUpdate) {
           setDroppingPosition(newDroppingPosition);
+          // Keep the placeholder's layout entry in sync so commitDrop/onDrop
+          // reads the latest cell, not the initial one (#2284).
+          setLayout(currentLayout =>
+            currentLayout.map(item =>
+              item.i === itemToPlace.i &&
+              (item.x !== calculatedXY.x || item.y !== calculatedXY.y)
+                ? { ...item, x: calculatedXY.x, y: calculatedXY.y }
+                : item
+            )
+          );
         }
       }
     },
