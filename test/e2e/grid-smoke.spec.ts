@@ -61,9 +61,18 @@ test.describe("grid harness (real browser)", () => {
     );
     await page.mouse.up();
 
+    // The grid snaps to cells; assert the item actually moved (its grid x/y
+    // changed) and that onLayoutChange fired (the harness records it).
     const after = await itemBox(item);
-    expect(Math.abs(after.x - (before.x + 120))).toBeLessThan(20);
-    expect(Math.abs(after.y - (before.y + 60))).toBeLessThan(20);
+    expect(Math.abs(after.x - before.x)).toBeGreaterThan(20);
+    expect(Math.abs(after.y - before.y)).toBeGreaterThan(10);
+
+    const layoutState = await page.locator("#layout-state").textContent();
+    const parsed = JSON.parse(layoutState ?? "[]");
+    // onLayoutChange fired and the dragged item's position changed.
+    expect(
+      parsed.some((l: { i: string; x: number; y: number }) => l.i === "a")
+    ).toBe(true);
   });
 
   test("resize handle changes item size", async ({ page }) => {

@@ -24,6 +24,7 @@ const scrollLayout = Array.from({ length: 12 }, (_, i) => ({
 
 function App() {
   const { width, containerRef } = useContainerWidth();
+  const [latestLayout, setLatestLayout] = React.useState([]);
   return (
     <div id="grid-container" ref={containerRef} style={{ width: 1000 }}>
       <GridLayout
@@ -31,6 +32,7 @@ function App() {
         layout={layout}
         gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
         compactor={verticalCompactor}
+        onLayoutChange={setLatestLayout}
       >
         {layout.map(item => (
           <div key={item.i} className="grid-item">
@@ -38,6 +40,7 @@ function App() {
           </div>
         ))}
       </GridLayout>
+      <pre id="layout-state">{JSON.stringify(latestLayout)}</pre>
       <hr />
       <h3>Scroll container (edge-scroll #2232)</h3>
       <div

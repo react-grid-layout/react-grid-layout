@@ -8,7 +8,7 @@ import { defineConfig } from "@playwright/test";
  * Rebuild after changing src/:
  *   make e2e-build
  * Then run:
- *   npx playwright test
+ *   yarn playwright test
  */
 export default defineConfig({
   testDir: "./test/e2e",
