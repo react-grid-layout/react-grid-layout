@@ -241,8 +241,53 @@ describe("Constraints", () => {
       expect(result.y).toBe(8); // maxRows - h = 10 - 2 = 8
     });
 
-    it("does not have constrainSize", () => {
-      expect(containerBounds.constrainSize).toBeUndefined();
+    it("constrains height to the visible container (#1779)", () => {
+      const item = createItem({ x: 0, y: 8, w: 2, h: 2 });
+      // visibleRows = floor((390 + 10) / (30 + 10)) = 10
+      const context = createContext({
+        cols: 12,
+        containerHeight: 390,
+        rowHeight: 30,
+        margin: [10, 10]
+      });
+
+      // A bottom (s) resize that would overflow the container is clamped.
+      const result = containerBounds.constrainSize!(item, 2, 5, "s", context);
+      expect(result.h).toBe(2); // visibleRows - y = 10 - 8 = 2
+    });
+
+    it("constrains width to the visible columns for e/se handles (#1779)", () => {
+      const item = createItem({ x: 10, y: 0, w: 2, h: 2 });
+      const context = createContext({ cols: 12, containerHeight: 390 });
+
+      const result = containerBounds.constrainSize!(item, 5, 2, "se", context);
+      expect(result.w).toBe(2); // cols - x = 12 - 10 = 2
+    });
+
+    it("falls back to maxRows when containerHeight is 0 (#1779)", () => {
+      const item = createItem({ x: 0, y: 8, w: 2, h: 2 });
+      const context = createContext({
+        cols: 12,
+        maxRows: 10,
+        containerHeight: 0
+      });
+
+      const result = containerBounds.constrainSize!(item, 2, 5, "s", context);
+      expect(result.h).toBe(2); // maxRows - y = 10 - 8 = 2
+    });
+
+    it("does not clamp when the item fits within the container (#1779)", () => {
+      const item = createItem({ x: 0, y: 0, w: 2, h: 2 });
+      const context = createContext({
+        cols: 12,
+        containerHeight: 390,
+        rowHeight: 30,
+        margin: [10, 10]
+      });
+
+      const result = containerBounds.constrainSize!(item, 3, 4, "se", context);
+      expect(result.w).toBe(3);
+      expect(result.h).toBe(4);
     });
   });
 
