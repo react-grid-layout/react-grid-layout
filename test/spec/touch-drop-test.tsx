@@ -246,6 +246,69 @@ describe("Touch external-drop adapter", () => {
     container.remove();
   });
 
+  it("commits the latest placeholder cell on a move-then-drop (not the initial one)", () => {
+    const onDrop = jest.fn();
+    const { container } = render(
+      <GridLayout
+        className="layout"
+        cols={COLS}
+        rowHeight={ROW_H}
+        width={1200}
+        dropConfig={{ enabled: true, touchEnabled: true }}
+        onDrop={onDrop}
+      >
+        <div key="a">a</div>
+      </GridLayout>
+    );
+
+    const gridEl = container.querySelector(".react-grid-layout");
+    if (!gridEl) throw new Error("grid not found");
+
+    document.elementFromPoint = () => gridEl;
+    const source = document.createElement("div");
+    source.dataset.rglDraggable = "";
+    document.body.append(source);
+
+    try {
+      dispatchTouch(
+        "touchstart",
+        [{ identifier: 0, clientX: 0, clientY: 0 }],
+        [{ identifier: 0, clientX: 0, clientY: 0 }],
+        document,
+        { target: source }
+      );
+      // First move — creates the placeholder at (300, 120).
+      dispatchTouch(
+        "touchmove",
+        [{ identifier: 0, clientX: 300, clientY: 120 }],
+        [{ identifier: 0, clientX: 300, clientY: 120 }]
+      );
+      // Second move — updates the placeholder to (600, 300).
+      dispatchTouch(
+        "touchmove",
+        [{ identifier: 0, clientX: 600, clientY: 300 }],
+        [{ identifier: 0, clientX: 600, clientY: 300 }]
+      );
+      // Drop at the latest position.
+      dispatchTouch(
+        "touchend",
+        [{ identifier: 0, clientX: 600, clientY: 300 }],
+        [{ identifier: 0, clientX: 600, clientY: 300 }]
+      );
+
+      expect(onDrop).toHaveBeenCalledTimes(1);
+      const droppedItem = onDrop.mock.calls[0][1];
+      expect(droppedItem.i).toBe("__dropping-elem__");
+      // The committed cell must reflect the FINAL move position (600px), not the
+      // initial one (300px). 600px into a 1200px grid at cols=12 → x≈5; the
+      // initial 300px → x≈2. (y is compactor-dependent, so assert on x only.)
+      expect(droppedItem.x).toBeGreaterThanOrEqual(4);
+    } finally {
+      source.remove();
+      container.remove();
+    }
+  });
+
   it("cleans up on touchcancel", () => {
     const { gridEl } = setupGrid();
 

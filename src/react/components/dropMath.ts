@@ -22,11 +22,9 @@ export interface DropPositionInput {
   clientY: number;
   /** The grid container element (getBoundingClientRect + scroll offset source) */
   gridElement: HTMLElement;
-  /**
-   * The item being dropped (size + any onDragOver overrides). Only the id and
-   * dimensions are read here, so it accepts the minimal dropping-item shape.
-   */
-  droppingItem: { i: string; w: number; h: number };
+  /** The item being dropped (size + any onDragOver overrides). Only the
+   * dimensions are read here, so it accepts the minimal dropping-item shape. */
+  droppingItem: { w: number; h: number };
   /** The native event carried on the DroppingPosition (drag or touch) */
   event: Event;
   /** Optional cursor offset from onDragOver (defaults to centering the item) */
