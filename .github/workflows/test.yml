@@ -33,10 +33,10 @@ jobs:
         run: yarn build
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: yarn playwright install --with-deps chromium
 
       - name: Build the e2e harness
         run: make e2e-build
 
       - name: Run Playwright e2e tests
-        run: npx playwright test --config playwright.config.ts
+        run: yarn playwright test --config playwright.config.ts
