@@ -620,7 +620,7 @@ describe("Lifecycle tests", function () {
         ).toBeInTheDocument();
       });
 
-      it("Updates when an item is dragged over", function () {
+      it("renders the placeholder on drag-over but does not fire onLayoutChange until the drop (#2219)", function () {
         const onLayoutChange = jest.fn();
         const { container } = render(
           <DroppableLayout
@@ -629,12 +629,26 @@ describe("Lifecycle tests", function () {
           />
         );
 
-        // Drag the droppable over the grid layout
+        // Drag the droppable over the grid layout — placeholder appears
+        // (a new .react-grid-item for the dropping element) but the layout
+        // change is transient, so onLayoutChange must not fire yet.
         act(() => {
           dragDroppableTo(container, 200, 140);
         });
 
-        // Layout should be updated to include the dropping placeholder
+        const gridLayout = container.querySelector(".react-grid-layout");
+        const placeholder = gridLayout.querySelector(".react-grid-item");
+        expect(placeholder).not.toBeNull();
+        expect(onLayoutChange).not.toHaveBeenCalled();
+
+        // Drop the item — now the committed layout change fires once.
+        act(() => {
+          TestUtils.Simulate.drop(gridLayout, {
+            clientX: 200,
+            clientY: 140
+          });
+        });
+
         expect(onLayoutChange).toHaveBeenCalled();
       });
 
