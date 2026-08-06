@@ -328,6 +328,7 @@ describe("Touch external-drop adapter", () => {
     const gridEl = container.querySelector(".react-grid-layout");
     if (!gridEl) throw new Error("grid not found");
 
+    const originalElementFromPoint = document.elementFromPoint;
     document.elementFromPoint = () => gridEl;
     const source = document.createElement("div");
     source.dataset.rglDraggable = "";
@@ -363,6 +364,7 @@ describe("Touch external-drop adapter", () => {
       );
       expect(onLayoutChange.mock.calls.length).toBe(mountCalls);
     } finally {
+      document.elementFromPoint = originalElementFromPoint;
       source.remove();
       container.remove();
     }
