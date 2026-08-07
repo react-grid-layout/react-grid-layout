@@ -620,7 +620,7 @@ describe("Lifecycle tests", function () {
         ).toBeInTheDocument();
       });
 
-      it("Updates when an item is dragged over", function () {
+      it("renders the placeholder on drag-over but does not fire onLayoutChange until the drop (#2219)", function () {
         const onLayoutChange = jest.fn();
         const { container } = render(
           <DroppableLayout
@@ -629,13 +629,25 @@ describe("Lifecycle tests", function () {
           />
         );
 
-        // Drag the droppable over the grid layout
+        const gridLayout = container.querySelector(".react-grid-layout");
+        // The Responsive + WidthProvider wrappers fire onLayoutChange during
+        // mount. Capture that baseline — the #2219 fix is about the *gesture*
+        // not adding calls, not about the mount-time ones.
+        const mountCalls = onLayoutChange.mock.calls.length;
+        const itemCountBefore =
+          gridLayout.querySelectorAll(".react-grid-item").length;
+
+        // Drag the droppable over the grid layout — the placeholder appears
+        // (one more .react-grid-item) but the layout change is transient, so
+        // onLayoutChange must not fire again.
         act(() => {
           dragDroppableTo(container, 200, 140);
         });
 
-        // Layout should be updated to include the dropping placeholder
-        expect(onLayoutChange).toHaveBeenCalled();
+        const itemCountAfter =
+          gridLayout.querySelectorAll(".react-grid-item").length;
+        expect(itemCountAfter).toBe(itemCountBefore + 1);
+        expect(onLayoutChange.mock.calls.length).toBe(mountCalls);
       });
 
       it("calls onDropDragOver when dragging over grid", function () {

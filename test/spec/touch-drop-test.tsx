@@ -309,6 +309,67 @@ describe("Touch external-drop adapter", () => {
     }
   });
 
+  it("does not fire onLayoutChange while the placeholder is mid-gesture (#2219)", () => {
+    const onLayoutChange = jest.fn();
+    const { container } = render(
+      <GridLayout
+        className="layout"
+        cols={COLS}
+        rowHeight={ROW_H}
+        width={1200}
+        layout={[]}
+        dropConfig={{ enabled: true, touchEnabled: true }}
+        onLayoutChange={onLayoutChange}
+      >
+        <div key="a">a</div>
+      </GridLayout>
+    );
+
+    const gridEl = container.querySelector(".react-grid-layout");
+    if (!gridEl) throw new Error("grid not found");
+
+    const originalElementFromPoint = document.elementFromPoint;
+    document.elementFromPoint = () => gridEl;
+    const source = document.createElement("div");
+    source.dataset.rglDraggable = "";
+    document.body.append(source);
+
+    try {
+      // The mount effect fires once (initial layout derived from children).
+      const mountCalls = onLayoutChange.mock.calls.length;
+      expect(mountCalls).toBe(1);
+
+      dispatchTouch(
+        "touchstart",
+        [{ identifier: 0, clientX: 0, clientY: 0 }],
+        [{ identifier: 0, clientX: 0, clientY: 0 }],
+        document,
+        { target: source }
+      );
+      // Move over the grid — the placeholder is added to the internal layout,
+      // but that is a transient gesture state: onLayoutChange must not fire.
+      dispatchTouch(
+        "touchmove",
+        [{ identifier: 0, clientX: 300, clientY: 120 }],
+        [{ identifier: 0, clientX: 300, clientY: 120 }]
+      );
+      expect(onLayoutChange.mock.calls.length).toBe(mountCalls);
+
+      // Leave the grid — the placeholder is removed; still no committed change.
+      document.elementFromPoint = () => null;
+      dispatchTouch(
+        "touchend",
+        [],
+        [{ identifier: 0, clientX: 0, clientY: 0 }]
+      );
+      expect(onLayoutChange.mock.calls.length).toBe(mountCalls);
+    } finally {
+      document.elementFromPoint = originalElementFromPoint;
+      source.remove();
+      container.remove();
+    }
+  });
+
   it("cleans up on touchcancel", () => {
     const { gridEl } = setupGrid();
 

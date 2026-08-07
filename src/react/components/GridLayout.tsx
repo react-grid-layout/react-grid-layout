@@ -489,7 +489,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   // Layout change callback
   useEffect(() => {
-    if (!activeDrag && !deepEqual(layout, prevLayoutRef.current)) {
+    // Suppress while a gesture is mid-flight: activeDrag covers internal
+    // drags/resizes, droppingDOMNode covers external drags (the placeholder is
+    // added/removed during hover but no real item moves — placeDroppingItem
+    // appends without compacting). Firing here would report a layout whose only
+    // change is the transient placeholder, which is filtered from the payload
+    // anyway (#2210, #2219). The committed drop removes the placeholder, so the
+    // post-drop layout change fires normally. Skipping the prevLayoutRef sync
+    // here is intentional — the suppressed states must not desync the
+    // comparison, or the real change would be compared against the placeholder.
+    if (
+      !activeDrag &&
+      !droppingDOMNode &&
+      !deepEqual(layout, prevLayoutRef.current)
+    ) {
       prevLayoutRef.current = layout;
       // Filter out dropping placeholder - it's transient internal state only (#2210)
       // The dropping item should not be exposed to users until the actual drop happens.
@@ -498,7 +511,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       const publicLayout = layout.filter(l => l.i !== droppingItem.i);
       onLayoutChange(publicLayout);
     }
-  }, [layout, activeDrag, onLayoutChange, droppingItem.i]);
+  }, [layout, activeDrag, droppingDOMNode, onLayoutChange, droppingItem.i]);
 
   // ============================================================================
   // Container Height
