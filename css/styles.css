@@ -35,6 +35,7 @@
   transition-duration: 100ms;
   z-index: 2;
   user-select: none;
+  pointer-events: none;
 }
 
 .react-grid-item.react-grid-placeholder.placeholder-resizing {
