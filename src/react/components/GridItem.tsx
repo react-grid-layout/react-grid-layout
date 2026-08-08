@@ -400,13 +400,21 @@ function GridItemInner(props: GridItemProps): ReactElement {
       let newPosition: PartialPosition;
       if (positionStrategy?.calcDragPosition) {
         const mouseEvent = e as unknown as MouseEvent;
-        newPosition = positionStrategy.calcDragPosition(
+        const rawPosition = positionStrategy.calcDragPosition(
           mouseEvent.clientX,
           mouseEvent.clientY,
           mouseEvent.clientX - clientRect.left,
           mouseEvent.clientY - clientRect.top
         );
+
+        // calcDragPosition returns scaled absolute position,
+        // adjust to be relative to parent and account for scroll (#2231)
+        newPosition = {
+          left: rawPosition.left - pLeft + offsetParent.scrollLeft,
+          top: rawPosition.top - pTop + offsetParent.scrollTop
+        };
       } else {
+        // calcDragPosition returns position in container's internal coordinate space (screen coords adjusted for scale)
         newPosition = {
           left: cLeft - pLeft + offsetParent.scrollLeft,
           top: cTop - pTop + offsetParent.scrollTop

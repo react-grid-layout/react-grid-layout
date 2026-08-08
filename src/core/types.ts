@@ -339,7 +339,7 @@ export interface PositionStrategy {
    * @param clientY - Mouse client Y position
    * @param offsetX - Offset from element origin X
    * @param offsetY - Offset from element origin Y
-   * @returns Adjusted left/top position
+   * @returns position in container's internal coordinate space (screen coords adjusted for scale)
    */
   calcDragPosition?(
     clientX: number,
