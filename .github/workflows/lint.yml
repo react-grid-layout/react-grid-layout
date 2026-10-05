@@ -24,8 +24,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install Node.js dependencies
-        run: yarn
+        run: yarn install --immutable
 
       - name: Run Prettier
         run: yarn fmt:check
