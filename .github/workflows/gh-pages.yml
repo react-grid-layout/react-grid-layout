@@ -15,7 +15,8 @@ jobs:
 
       - name: Install and Build
         run: |
-          yarn
+          corepack enable
+          yarn install --immutable
           make build-example
 
       - name: Deploy 🚀

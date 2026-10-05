@@ -10,7 +10,7 @@ React-Grid-Layout is a draggable and resizable grid layout system for React with
 
 ## Package Manager
 
-**Always use `yarn`** instead of `npm` for all commands in this project.
+**Always use `yarn`** instead of `npm` for all commands in this project. It is Yarn 4, pinned in `package.json` and run through Corepack: run `corepack enable` once, then `yarn install`.
 
 ## Development Commands
 
