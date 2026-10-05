@@ -339,7 +339,9 @@ export interface PositionStrategy {
    * @param clientY - Mouse client Y position
    * @param offsetX - Offset from element origin X
    * @param offsetY - Offset from element origin Y
-   * @returns Adjusted left/top position
+   * @returns The item's top-left in page coordinates divided by the scale.
+   *   GridItem subtracts the grid's page offset and adds its scroll to get the
+   *   parent-relative position, so do not return a parent-relative value.
    */
   calcDragPosition?(
     clientX: number,

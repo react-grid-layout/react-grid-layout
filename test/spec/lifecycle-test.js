@@ -2477,6 +2477,98 @@ describe("Lifecycle tests", function () {
         document.dispatchEvent(mouseUpEvent);
       });
     });
+
+    // #2231 - createScaledStrategy().calcDragPosition returns the item's
+    // absolute page position divided by the scale. GridItem has to make that
+    // parent-relative, or the item jumps by the grid's page offset on drag start.
+    describe.each([
+      ["unscrolled", { scrollLeft: 0, scrollTop: 0 }],
+      ["scrolled", { scrollLeft: 50, scrollTop: 30 }]
+    ])("with a scaled strategy and an offset, %s grid", (_name, scroll) => {
+      it("starts the drag from the item's own grid position (v2 API)", function () {
+        const { createScaledStrategy } = require("../../src/core/position");
+        const SCALE = 0.5;
+        const GRID_PAGE_OFFSET = { left: 100, top: 50 };
+        // Item a at x=3, y=0 in a 1200px, 12-column grid with the default
+        // 10px margin and padding: colWidth = (1200 - 20 - 110) / 12.
+        const itemLeft = 10 + 3 * ((1200 - 20 - 110) / 12 + 10);
+        const itemTop = 10;
+
+        const onDrag = jest.fn();
+        const { container } = render(
+          <GridLayoutV2
+            className="layout"
+            gridConfig={{ cols: 12, rowHeight: 30 }}
+            width={1200}
+            layout={[{ i: "a", x: 3, y: 0, w: 2, h: 2 }]}
+            positionStrategy={createScaledStrategy(SCALE)}
+            dragConfig={{ enabled: true, threshold: 0 }}
+            onDrag={onDrag}
+          >
+            <div key="a">a</div>
+          </GridLayoutV2>
+        );
+
+        const gridItem = container.querySelector(".react-grid-item");
+        const gridLayout = container.querySelector(".react-grid-layout");
+
+        Object.defineProperty(gridLayout, "scrollLeft", {
+          value: scroll.scrollLeft,
+          writable: true
+        });
+        Object.defineProperty(gridLayout, "scrollTop", {
+          value: scroll.scrollTop,
+          writable: true
+        });
+        gridLayout.getBoundingClientRect = () => ({
+          ...GRID_PAGE_OFFSET,
+          width: 1200 * SCALE,
+          height: 800 * SCALE
+        });
+
+        // Where the browser would paint the item: the grid's page offset plus
+        // the scaled, scrolled position inside the grid.
+        const screenLeft =
+          GRID_PAGE_OFFSET.left + (itemLeft - scroll.scrollLeft) * SCALE;
+        const screenTop =
+          GRID_PAGE_OFFSET.top + (itemTop - scroll.scrollTop) * SCALE;
+        gridItem.getBoundingClientRect = () => ({
+          left: screenLeft,
+          top: screenTop,
+          width: 94,
+          height: 35
+        });
+
+        act(() => {
+          dispatchMouseEvent(gridItem, "mousedown", {
+            clientX: screenLeft + 6,
+            clientY: screenTop + 5
+          });
+        });
+        act(() => {
+          mouseMove(screenLeft + 7, screenTop + 6, gridItem);
+        });
+
+        expect(onDrag).toHaveBeenCalled();
+        const newItem = onDrag.mock.calls[onDrag.mock.calls.length - 1][2];
+        // A 1px mouse move must not move the item to another cell. With the
+        // bug the drag starts at about x=5, y=3.
+        expect({ x: newItem.x, y: newItem.y }).toEqual({ x: 3, y: 0 });
+
+        act(() => {
+          document.dispatchEvent(
+            new MouseEvent("mouseup", {
+              bubbles: true,
+              cancelable: true,
+              view: window,
+              clientX: screenLeft + 7,
+              clientY: screenTop + 6,
+              button: 0
+            })
+          );
+        });
+      });
+    });
   });
 
   // #2217 - DragConfig.threshold should be respected
@@ -2622,43 +2714,56 @@ describe("Lifecycle tests", function () {
       const gridItem = container.querySelector(".react-grid-item");
       const gridLayout = container.querySelector(".react-grid-layout");
 
-      // Mock getBoundingClientRect to simulate the grid being at y=500 on the page
+      // Mock getBoundingClientRect to simulate the grid being offset and scrolled
       // This is crucial - in jsdom, getBoundingClientRect returns zeros, so
       // the bug wouldn't manifest. In real browsers, the grid could be anywhere
-      // on the page, and the bug would cause items to jump to screen position.
+      // on the page and have any scroll position.
       const originalGetBoundingClientRect =
         gridLayout.getBoundingClientRect.bind(gridLayout);
       gridLayout.getBoundingClientRect = () => ({
         ...originalGetBoundingClientRect(),
         top: 500, // Simulate grid is 500px from top of page
-        left: 0,
+        left: 100, // Simulate grid is 100px from left of page
         width: 1200,
         height: 600
       });
 
+      // Mock scroll positions
+      Object.defineProperty(gridLayout, "scrollLeft", {
+        value: 50,
+        writable: true
+      });
+      Object.defineProperty(gridLayout, "scrollTop", {
+        value: 50,
+        writable: true
+      });
+
       // Also mock the grid item's getBoundingClientRect
+      // Item is at (10, 10) relative to parent's content.
+      // With parent at (100, 500) and scroll (50, 50),
+      // item's screen position is (100+10-50, 500+10-50) = (60, 460)
       const originalItemGetBoundingClientRect =
         gridItem.getBoundingClientRect.bind(gridItem);
       gridItem.getBoundingClientRect = () => ({
         ...originalItemGetBoundingClientRect(),
-        top: 510, // Item is at y=10 relative to grid, so 500+10=510 on page
-        left: 10,
+        top: 460,
+        left: 60,
         width: 190,
         height: 60
       });
 
-      // Start drag - click at screen position (20, 520) which is inside the item
-      // The item is at screen position (10, 510) to (200, 570)
+      // Start drag - click at screen position (70, 470) which is inside the item
+      // The item is at screen position (60, 460) to (250, 520)
       act(() => {
         dispatchMouseEvent(gridItem, "mousedown", {
-          clientX: 20,
-          clientY: 520 // Screen Y position (500 grid offset + 20)
+          clientX: 70,
+          clientY: 470
         });
       });
 
       // Move a small amount (just enough to trigger drag start)
       act(() => {
-        mouseMove(25, 525, gridItem);
+        mouseMove(75, 475, gridItem);
       });
 
       // onDragStart should have been called
@@ -2666,27 +2771,29 @@ describe("Lifecycle tests", function () {
 
       // Now move a bit more
       act(() => {
-        mouseMove(30, 530, gridItem);
+        mouseMove(80, 480, gridItem);
       });
 
       // Verify onDrag was called
       expect(onDrag).toHaveBeenCalled();
 
       // Get the last onDrag call arguments
-      // onDrag signature: (layout, oldItem, newItem, placeholder, event, element)
       const dragCall = onDrag.mock.calls[onDrag.mock.calls.length - 1];
       const newItem = dragCall[2]; // The item being dragged
 
-      // The key test: verify the item hasn't jumped to a position way off from
-      // where it started. With the bug, calcDragPosition returns screen coordinates
-      // (clientY - offsetY = 520 - 10 = 510), which would be converted to grid
-      // position around y=12+ (510 / (30+10) = 12.75).
+      // Verify the item hasn't jumped.
+      // With the bug, calcDragPosition would return screen coordinates (clientX - offset_in_item)
+      // clientX = 80, offset_in_item = 70 - 60 = 10.
+      // calcDragPosition.left = 80 - 10 = 70.
+      // Convert 70 to grid: (70 - 10) / (100 + 10) = 0.54 -> x=1?
+      // Actually with top: 480 - 10 = 470.
+      // Convert 470 to grid: (470 - 10) / (30 + 10) = 11.5 -> y=12.
       //
-      // Without the bug, the position is calculated parent-relative:
-      // (520 - 500 - offsetY_within_item) ≈ 10-20 pixels, which is y=0 in grid.
-      //
-      // Allow some tolerance since the mouse moved a bit.
-      expect(newItem.y).toBeLessThan(5); // Should be near top (y=0-1), not jumped to y=12+
+      // Without the bug, the position is calculated correctly:
+      // (80 - 100 - 10 + 50) = 20 pixels relative to parent. (x=0)
+      // (480 - 500 - 10 + 50) = 20 pixels relative to parent. (y=0)
+      expect(newItem.x).toBeLessThan(2);
+      expect(newItem.y).toBeLessThan(2);
 
       // Clean up
       act(() => {
@@ -2694,8 +2801,8 @@ describe("Lifecycle tests", function () {
           bubbles: true,
           cancelable: true,
           view: window,
-          clientX: 30,
-          clientY: 530,
+          clientX: 80,
+          clientY: 480,
           button: 0
         });
         document.dispatchEvent(mouseUpEvent);
