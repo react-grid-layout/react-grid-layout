@@ -2,7 +2,7 @@
 
 ## 2.3.0 (Oct 5, 2026)
 
-### Features
+### New Features
 
 - **useContainerWidth**: New optional `debounceTimeout` (ms). While the container keeps resizing, the reported width holds. Once it has been steady for `debounceTimeout` ms, the latest width commits once per burst. Leave it unset or `0` to keep the immediate behavior. [#2254](https://github.com/react-grid-layout/react-grid-layout/issues/2254), [#2290](https://github.com/react-grid-layout/react-grid-layout/pull/2290)
 - **DropConfig**: Drop-from-outside now works on touch devices (iOS Safari, Android Chrome), where `dragover` and `drop` never fire. Mark a source element with `data-rgl-draggable` and touch events drive the same drop pipeline as the mouse. New options: `dropConfig.touchEnabled` (default `true`) and `dropConfig.touchDragSource` (default `[data-rgl-draggable]`). [#2281](https://github.com/react-grid-layout/react-grid-layout/issues/2281)
