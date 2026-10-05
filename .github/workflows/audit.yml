@@ -26,6 +26,32 @@ jobs:
           node-version: "20"
           cache: "yarn"
 
+      # Writes the sorted advisory IDs that `yarn npm audit` reports. A failed
+      # audit must not read as a clean one, so the helper keeps yarn's exit code:
+      # exit 1 is valid only when advisory lines came back. It lives in
+      # RUNNER_TEMP because the working tree switches between base and head.
+      - name: Create audit helper
+        if: github.event_name == 'pull_request'
+        run: |
+          cat > "$RUNNER_TEMP/audit-ids.sh" <<'EOF'
+          #!/usr/bin/env bash
+          # Usage: audit-ids.sh <output-file>
+          set -euo pipefail
+          out=$1
+          json=$(mktemp)
+          status=0
+          yarn npm audit --all --recursive --json > "$json" || status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ ! -s "$json" ] || ! jq -es 'all(.[]; .children.ID != null)' "$json" > /dev/null; then
+              echo "yarn npm audit failed (exit $status) without advisory output:" >&2
+              cat "$json" >&2
+              exit 1
+            fi
+          fi
+          jq -r '.children.ID // empty' "$json" | sort -u > "$out"
+          EOF
+          chmod +x "$RUNNER_TEMP/audit-ids.sh"
+
       # For PRs: compare base vs head
       - name: Audit base branch
         if: github.event_name == 'pull_request'
@@ -41,8 +67,7 @@ jobs:
             exit 0
           fi
           yarn install --immutable
-          # Capture advisory IDs from base branch (yarn npm audit exits non-zero on vulns)
-          yarn npm audit --all --recursive --json 2>/dev/null | jq -r '.children.ID // empty' | sort -u > /tmp/base_advisories.txt || true
+          "$RUNNER_TEMP/audit-ids.sh" /tmp/base_advisories.txt
           echo "Base branch advisories:"
           cat /tmp/base_advisories.txt || echo "(none)"
 
@@ -53,8 +78,7 @@ jobs:
         run: |
           git checkout "$HEAD_SHA"
           yarn install --immutable
-          # Capture advisory IDs from PR branch
-          yarn npm audit --all --recursive --json 2>/dev/null | jq -r '.children.ID // empty' | sort -u > /tmp/pr_advisories.txt || true
+          "$RUNNER_TEMP/audit-ids.sh" /tmp/pr_advisories.txt
           echo "PR branch advisories:"
           cat /tmp/pr_advisories.txt || echo "(none)"
 
