@@ -414,7 +414,6 @@ function GridItemInner(props: GridItemProps): ReactElement {
           top: rawPosition.top - pTop + offsetParent.scrollTop
         };
       } else {
-        // calcDragPosition returns position in container's internal coordinate space (screen coords adjusted for scale)
         newPosition = {
           left: cLeft - pLeft + offsetParent.scrollLeft,
           top: cTop - pTop + offsetParent.scrollTop

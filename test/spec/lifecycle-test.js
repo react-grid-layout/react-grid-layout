@@ -2478,92 +2478,96 @@ describe("Lifecycle tests", function () {
       });
     });
 
-    // #2231 - Scaled position strategy should account for parent position
-    it("correctly calculates drag position with scaled strategy (v2 API)", function () {
-      // Import createScaledStrategy from core
-      const { createScaledStrategy } = require("../../src/core/position");
-      const scaledStrategy = createScaledStrategy(0.5);
+    // #2231 - createScaledStrategy().calcDragPosition returns the item's
+    // absolute page position divided by the scale. GridItem has to make that
+    // parent-relative, or the item jumps by the grid's page offset on drag start.
+    describe.each([
+      ["unscrolled", { scrollLeft: 0, scrollTop: 0 }],
+      ["scrolled", { scrollLeft: 50, scrollTop: 30 }]
+    ])("with a scaled strategy and an offset, %s grid", (_name, scroll) => {
+      it("starts the drag from the item's own grid position (v2 API)", function () {
+        const { createScaledStrategy } = require("../../src/core/position");
+        const SCALE = 0.5;
+        const GRID_PAGE_OFFSET = { left: 100, top: 50 };
+        // Item a at x=3, y=0 in a 1200px, 12-column grid with the default
+        // 10px margin and padding: colWidth = (1200 - 20 - 110) / 12.
+        const itemLeft = 10 + 3 * ((1200 - 20 - 110) / 12 + 10);
+        const itemTop = 10;
 
-      const onDragStart = jest.fn();
-      const onDrag = jest.fn();
-      const onDragStop = jest.fn();
+        const onDrag = jest.fn();
+        const { container } = render(
+          <GridLayoutV2
+            className="layout"
+            gridConfig={{ cols: 12, rowHeight: 30 }}
+            width={1200}
+            layout={[{ i: "a", x: 3, y: 0, w: 2, h: 2 }]}
+            positionStrategy={createScaledStrategy(SCALE)}
+            dragConfig={{ enabled: true, threshold: 0 }}
+            onDrag={onDrag}
+          >
+            <div key="a">a</div>
+          </GridLayoutV2>
+        );
 
-      const { container } = render(
-        <GridLayoutV2
-          className="layout"
-          gridConfig={{ cols: 12, rowHeight: 30 }}
-          width={1200}
-          layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
-          positionStrategy={scaledStrategy}
-          dragConfig={{ enabled: true, threshold: 0 }}
-          onDragStart={onDragStart}
-          onDrag={onDrag}
-          onDragStop={onDragStop}
-        >
-          <div key="a">a</div>
-        </GridLayoutV2>
-      );
+        const gridItem = container.querySelector(".react-grid-item");
+        const gridLayout = container.querySelector(".react-grid-layout");
 
-      const gridItem = container.querySelector(".react-grid-item");
-      const gridLayout = container.querySelector(".react-grid-layout");
+        Object.defineProperty(gridLayout, "scrollLeft", {
+          value: scroll.scrollLeft,
+          writable: true
+        });
+        Object.defineProperty(gridLayout, "scrollTop", {
+          value: scroll.scrollTop,
+          writable: true
+        });
+        gridLayout.getBoundingClientRect = () => ({
+          ...GRID_PAGE_OFFSET,
+          width: 1200 * SCALE,
+          height: 800 * SCALE
+        });
 
-      // Mock getBoundingClientRect for both element and parent
-      gridItem.getBoundingClientRect = jest.fn(() => ({
-        left: 100,
-        top: 100,
-        width: 200,
-        height: 60,
-        right: 300,
-        bottom: 160
-      }));
+        // Where the browser would paint the item: the grid's page offset plus
+        // the scaled, scrolled position inside the grid.
+        const screenLeft =
+          GRID_PAGE_OFFSET.left + (itemLeft - scroll.scrollLeft) * SCALE;
+        const screenTop =
+          GRID_PAGE_OFFSET.top + (itemTop - scroll.scrollTop) * SCALE;
+        gridItem.getBoundingClientRect = () => ({
+          left: screenLeft,
+          top: screenTop,
+          width: 94,
+          height: 35
+        });
 
-      gridLayout.getBoundingClientRect = jest.fn(() => ({
-        left: 0,
-        top: 0,
-        width: 1200,
-        height: 800,
-        right: 1200,
-        bottom: 800
-      }));
+        act(() => {
+          dispatchMouseEvent(gridItem, "mousedown", {
+            clientX: screenLeft + 6,
+            clientY: screenTop + 5
+          });
+        });
+        act(() => {
+          mouseMove(screenLeft + 7, screenTop + 6, gridItem);
+        });
 
-      // Start drag
-      act(() => {
-        dispatchMouseEvent(gridItem, "mousedown", {
-          clientX: 150,
-          clientY: 150
+        expect(onDrag).toHaveBeenCalled();
+        const newItem = onDrag.mock.calls[onDrag.mock.calls.length - 1][2];
+        // A 1px mouse move must not move the item to another cell. With the
+        // bug the drag starts at about x=5, y=3.
+        expect({ x: newItem.x, y: newItem.y }).toEqual({ x: 3, y: 0 });
+
+        act(() => {
+          document.dispatchEvent(
+            new MouseEvent("mouseup", {
+              bubbles: true,
+              cancelable: true,
+              view: window,
+              clientX: screenLeft + 7,
+              clientY: screenTop + 6,
+              button: 0
+            })
+          );
         });
       });
-
-      // Verify onDragStart was called without errors
-      expect(onDragStart).toHaveBeenCalled();
-
-      // Move the drag
-      act(() => {
-        mouseMove(250, 250, gridItem);
-      });
-
-      // Verify drag happened without errors
-      expect(onDrag).toHaveBeenCalled();
-
-      // End drag
-      act(() => {
-        const mouseUpEvent = new MouseEvent("mouseup", {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-          clientX: 250,
-          clientY: 250,
-          button: 0
-        });
-        document.dispatchEvent(mouseUpEvent);
-      });
-
-      // Verify drag completed
-      expect(onDragStop).toHaveBeenCalled();
-
-      // The test passing without errors verifies that the scaled
-      // position strategy correctly accounts for parent position.
-      // Before the fix, this would fail with incorrect calculations.
     });
   });
 
