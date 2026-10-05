@@ -55,5 +55,6 @@ jobs:
           # optional: NPM will generate provenance statement, or abort release if it can't
           provenance: true
           build-command: |
-            yarn
+            corepack enable
+            yarn install --immutable
             yarn build

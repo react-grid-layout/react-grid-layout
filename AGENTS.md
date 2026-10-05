@@ -24,8 +24,10 @@ structural question: `graphify explain "Symbol"`, `graphify affected "Symbol"`,
 
 ## Key invariants
 
-- **Always use `yarn`** (v1 lockfile) — corepack yarn 4 breaks on it. Use
-  `npx -y yarn@1.22.22` for lock operations.
+- **Always use `yarn`** (Yarn 4 through Corepack). Run `corepack enable` once;
+  the version is pinned in `package.json`. Yarn 4 holds back versions
+  published in the last 7 days, so a fresh bump can fail to resolve until it
+  ages (see `npmPreapprovedPackages` in `.yarnrc.yml`).
 - `src/core/` is pure TypeScript, no React dependencies.
 - `src/legacy/` is the v1 API compatibility layer wrapping v2 components.
 - All grid items need a unique `key` matching `i` in layout.

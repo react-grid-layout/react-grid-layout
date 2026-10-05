@@ -15,43 +15,87 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Corepack goes first so setup-node's yarn cache lookup runs the version
+      # pinned in package.json.
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "yarn"
 
+      # Writes the sorted advisory IDs that `yarn npm audit` reports. A failed
+      # audit must not read as a clean one, so the helper keeps yarn's exit code:
+      # exit 1 is valid only when advisory lines came back. It lives in
+      # RUNNER_TEMP because the working tree switches between base and head.
+      - name: Create audit helper
+        if: github.event_name == 'pull_request'
+        run: |
+          cat > "$RUNNER_TEMP/audit-ids.sh" <<'EOF'
+          #!/usr/bin/env bash
+          # Usage: audit-ids.sh <output-file>
+          set -euo pipefail
+          out=$1
+          json=$(mktemp)
+          status=0
+          yarn npm audit --all --recursive --json > "$json" || status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ ! -s "$json" ] || ! jq -es 'all(.[]; .children.ID != null)' "$json" > /dev/null; then
+              echo "yarn npm audit failed (exit $status) without advisory output:" >&2
+              cat "$json" >&2
+              exit 1
+            fi
+          fi
+          jq -r '.children.ID // empty' "$json" | sort -u > "$out"
+          EOF
+          chmod +x "$RUNNER_TEMP/audit-ids.sh"
+
       # For PRs: compare base vs head
       - name: Audit base branch
         if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          git checkout ${{ github.event.pull_request.base.sha }}
-          yarn install --frozen-lockfile
-          # Capture advisory IDs from base branch (yarn audit exits non-zero on vulns)
-          yarn audit --json 2>/dev/null | grep '"type":"auditAdvisory"' | jq -r '.data.advisory.id' | sort -u > /tmp/base_advisories.txt || true
+          git checkout "$BASE_SHA"
+          # Yarn 4 cannot read a Yarn 1 lockfile. Only the PR that migrates to
+          # Yarn 4 has such a base, and it has no baseline to compare against.
+          if ! grep -q '^__metadata:' yarn.lock; then
+            echo "Base branch has a pre-Yarn-4 lockfile: no baseline."
+            touch /tmp/base_skipped
+            exit 0
+          fi
+          yarn install --immutable
+          "$RUNNER_TEMP/audit-ids.sh" /tmp/base_advisories.txt
           echo "Base branch advisories:"
           cat /tmp/base_advisories.txt || echo "(none)"
 
       - name: Audit PR branch
         if: github.event_name == 'pull_request'
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          git checkout ${{ github.event.pull_request.head.sha }}
-          yarn install --frozen-lockfile
-          # Capture advisory IDs from PR branch
-          yarn audit --json 2>/dev/null | grep '"type":"auditAdvisory"' | jq -r '.data.advisory.id' | sort -u > /tmp/pr_advisories.txt || true
+          git checkout "$HEAD_SHA"
+          yarn install --immutable
+          "$RUNNER_TEMP/audit-ids.sh" /tmp/pr_advisories.txt
           echo "PR branch advisories:"
           cat /tmp/pr_advisories.txt || echo "(none)"
 
       - name: Check for new vulnerabilities
         if: github.event_name == 'pull_request'
         run: |
+          if [ -f /tmp/base_skipped ]; then
+            echo "Skipped: the base branch has no Yarn 4 lockfile to compare against."
+            exit 0
+          fi
           # Find advisories in PR that aren't in base
           new_advisories=$(comm -23 /tmp/pr_advisories.txt /tmp/base_advisories.txt)
           if [ -n "$new_advisories" ]; then
             echo "❌ New vulnerabilities introduced by this PR:"
             echo "$new_advisories"
             echo ""
-            echo "Run 'yarn audit' locally for details."
+            echo "Run 'yarn npm audit --all --recursive' locally for details."
             exit 1
           else
             echo "✅ No new vulnerabilities introduced by this PR."
@@ -61,5 +105,5 @@ jobs:
       - name: Audit (informational)
         if: github.event_name == 'push'
         run: |
-          yarn install --frozen-lockfile
-          yarn audit || echo "⚠️ Vulnerabilities found. Run 'yarn audit' for details."
+          yarn install --immutable
+          yarn npm audit --all --recursive || echo "⚠️ Vulnerabilities found. Run 'yarn npm audit --all --recursive' for details."
