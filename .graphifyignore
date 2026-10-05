@@ -1,0 +1,8 @@
+# generated / build output (also in .gitignore)
+dist/
+# tests + examples — assert/logic noise, not library surface
+test/
+examples/
+# css + markdown — heading/config noise, code graph doesn't need them
+css/
+*.md

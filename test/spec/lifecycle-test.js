@@ -620,7 +620,7 @@ describe("Lifecycle tests", function () {
         ).toBeInTheDocument();
       });
 
-      it("Updates when an item is dragged over", function () {
+      it("renders the placeholder on drag-over but does not fire onLayoutChange until the drop (#2219)", function () {
         const onLayoutChange = jest.fn();
         const { container } = render(
           <DroppableLayout
@@ -629,13 +629,25 @@ describe("Lifecycle tests", function () {
           />
         );
 
-        // Drag the droppable over the grid layout
+        const gridLayout = container.querySelector(".react-grid-layout");
+        // The Responsive + WidthProvider wrappers fire onLayoutChange during
+        // mount. Capture that baseline — the #2219 fix is about the *gesture*
+        // not adding calls, not about the mount-time ones.
+        const mountCalls = onLayoutChange.mock.calls.length;
+        const itemCountBefore =
+          gridLayout.querySelectorAll(".react-grid-item").length;
+
+        // Drag the droppable over the grid layout — the placeholder appears
+        // (one more .react-grid-item) but the layout change is transient, so
+        // onLayoutChange must not fire again.
         act(() => {
           dragDroppableTo(container, 200, 140);
         });
 
-        // Layout should be updated to include the dropping placeholder
-        expect(onLayoutChange).toHaveBeenCalled();
+        const itemCountAfter =
+          gridLayout.querySelectorAll(".react-grid-item").length;
+        expect(itemCountAfter).toBe(itemCountBefore + 1);
+        expect(onLayoutChange.mock.calls.length).toBe(mountCalls);
       });
 
       it("calls onDropDragOver when dragging over grid", function () {
@@ -2791,6 +2803,42 @@ describe("Lifecycle tests", function () {
         });
         document.dispatchEvent(mouseUpEvent);
       });
+    });
+  });
+
+  // Regression: v1's Responsive was a class and accepted a ref; v2's function
+  // component dropped it. ref.current must resolve to the grid container.
+  describe("legacy Responsive ref forwarding (#2244)", function () {
+    it("forwards a ref to the grid container via forwardRef", function () {
+      const ref = React.createRef();
+      const layout = [{ i: "a", x: 0, y: 0, w: 2, h: 2 }];
+      render(
+        <ResponsiveReactGridLayout
+          ref={ref}
+          layout={layout}
+          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+          rowHeight={30}
+          width={1000}
+        />
+      );
+      expect(ref.current).not.toBeNull();
+      expect(ref.current).toBeInstanceOf(HTMLElement);
+      expect(ref.current.className).toContain("react-grid-layout");
+    });
+
+    it("also forwards a ref on the v2 ResponsiveGridLayout", function () {
+      const ref = React.createRef();
+      const {
+        ResponsiveGridLayout
+      } = require("../../src/react/components/ResponsiveGridLayout");
+      render(
+        <ResponsiveGridLayout
+          ref={ref}
+          layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
+          width={1000}
+        />
+      );
+      expect(ref.current).not.toBeNull();
     });
   });
 });

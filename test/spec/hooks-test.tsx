@@ -335,6 +335,147 @@ describe("React Hooks", () => {
       // Restore original requestAnimationFrame
       global.requestAnimationFrame = originalRaf;
     });
+
+    describe("debounceTimeout (#2254)", () => {
+      beforeEach(() => {
+        jest.useFakeTimers({
+          doNotFake: ["requestAnimationFrame", "cancelAnimationFrame"]
+        });
+      });
+
+      afterEach(() => {
+        jest.useRealTimers();
+      });
+
+      it("updates width immediately on every notification when unset", () => {
+        const onWidthChange = jest.fn();
+        render(
+          <TestContainerWidthComponent
+            onWidthChange={onWidthChange}
+            options={{ initialWidth: 0 }}
+          />
+        );
+
+        const observer = resizeObserverInstances[0];
+        expect(observer).toBeDefined();
+
+        // jsdom resolves the wrapper's 100% inline width style to 100 on mount,
+        // so judge updates by calls recorded after mount, not total history.
+        const baseline = onWidthChange.mock.calls.length;
+
+        // No fake timers are advanced: each notification must commit at once.
+        act(() => {
+          observer!.triggerResize(300);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(baseline + 1);
+        expect(onWidthChange.mock.calls[baseline]?.[0]).toBe(300);
+
+        act(() => {
+          observer!.triggerResize(400);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(baseline + 2);
+        expect(onWidthChange.mock.calls[baseline + 1]?.[0]).toBe(400);
+      });
+
+      it("commits the latest width exactly once after a burst settles", () => {
+        const onWidthChange = jest.fn();
+        render(
+          <TestContainerWidthComponent
+            onWidthChange={onWidthChange}
+            options={{ initialWidth: 0, debounceTimeout: 100 }}
+          />
+        );
+
+        const observer = resizeObserverInstances[0];
+        expect(observer).toBeDefined();
+        const baseline = onWidthChange.mock.calls.length;
+
+        // Five notifications over time; each restarts the pending timer
+        act(() => {
+          observer!.triggerResize(100);
+          jest.advanceTimersByTime(30);
+          observer!.triggerResize(101);
+          jest.advanceTimersByTime(30);
+          observer!.triggerResize(102);
+          jest.advanceTimersByTime(30);
+          observer!.triggerResize(103);
+          jest.advanceTimersByTime(30);
+          observer!.triggerResize(104);
+        });
+
+        // 99ms after the last notification nothing has committed
+        act(() => {
+          jest.advanceTimersByTime(99);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(baseline);
+
+        // At the 100ms quiet point exactly one update lands, with the latest width
+        act(() => {
+          jest.advanceTimersByTime(1);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(baseline + 1);
+        expect(onWidthChange.mock.calls[baseline]?.[0]).toBe(104);
+      });
+
+      it("resets the timer on rapid re-fires with no intermediate commit", () => {
+        const onWidthChange = jest.fn();
+        render(
+          <TestContainerWidthComponent
+            onWidthChange={onWidthChange}
+            options={{ initialWidth: 0, debounceTimeout: 100 }}
+          />
+        );
+
+        const observer = resizeObserverInstances[0];
+        expect(observer).toBeDefined();
+        const baseline = onWidthChange.mock.calls.length;
+
+        // No 100ms quiet gap elapses until the end, so no commit may land early
+        act(() => {
+          observer!.triggerResize(200);
+          jest.advanceTimersByTime(60);
+          observer!.triggerResize(201);
+          jest.advanceTimersByTime(60);
+          observer!.triggerResize(202);
+          jest.advanceTimersByTime(99);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(baseline);
+
+        act(() => {
+          jest.advanceTimersByTime(1);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(baseline + 1);
+        expect(onWidthChange.mock.calls[baseline]?.[0]).toBe(202);
+      });
+
+      it("never commits after unmount with a pending debounce timer", () => {
+        const onWidthChange = jest.fn();
+
+        const { unmount } = render(
+          <TestContainerWidthComponent
+            onWidthChange={onWidthChange}
+            options={{ initialWidth: 0, debounceTimeout: 100 }}
+          />
+        );
+
+        const observer = resizeObserverInstances[0];
+        expect(observer).toBeDefined();
+
+        act(() => {
+          observer!.triggerResize(500);
+          jest.advanceTimersByTime(50); // timer still pending
+        });
+
+        const updatesBeforeUnmount = onWidthChange.mock.calls.length;
+        unmount();
+
+        // Advancing past the quiet period must not fire the cleared timer
+        act(() => {
+          jest.advanceTimersByTime(1000);
+        });
+        expect(onWidthChange.mock.calls.length).toBe(updatesBeforeUnmount);
+      });
+    });
   });
 
   describe("useGridLayout", () => {

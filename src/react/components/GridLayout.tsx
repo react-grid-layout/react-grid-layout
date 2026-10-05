@@ -8,11 +8,13 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useMemo,
   type ReactElement,
   type CSSProperties,
-  type DragEvent as ReactDragEvent
+  type DragEvent as ReactDragEvent,
+  type MutableRefObject
 } from "react";
 import { deepEqual } from "fast-equals";
 import clsx from "clsx";
@@ -40,7 +42,6 @@ import {
   defaultResizeConfig,
   defaultDropConfig
 } from "../../core/types.js";
-import type { PositionParams } from "../../core/calculate.js";
 import {
   bottom,
   cloneLayoutItem,
@@ -52,15 +53,11 @@ import {
 import { getAllCollisions } from "../../core/collision.js";
 // Note: compact from compact-compat.js is NOT used - we use compactor.compact() instead (#2213)
 import { getCompactor } from "../../core/compactors.js";
-import {
-  calcXY,
-  calcGridColWidth,
-  calcGridItemWHPx
-} from "../../core/calculate.js";
 import { defaultPositionStrategy } from "../../core/position.js";
 import { defaultConstraints } from "../../core/constraints.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
+import { computeDropPosition } from "./dropMath.js";
 
 // ============================================================================
 // Types
@@ -355,7 +352,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     bounded: isBounded,
     handle: draggableHandle,
     cancel: draggableCancel,
-    threshold: dragThreshold
+    threshold: dragThreshold,
+    allowMobileScroll: dragAllowMobileScroll
   } = dragConfig;
   const {
     enabled: isResizable,
@@ -365,7 +363,9 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const {
     enabled: isDroppable,
     defaultItem: defaultDropItem,
-    onDragOver: dropConfigOnDragOver
+    onDragOver: dropConfigOnDragOver,
+    touchEnabled = true,
+    touchDragSource = "[data-rgl-draggable]"
   } = dropConfig;
 
   // Get compactor (use provided or get from type)
@@ -403,6 +403,8 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const [droppingPosition, setDroppingPosition] = useState<
     DroppingPosition | undefined
   >();
+  const droppingPositionRef = useRef<DroppingPosition | undefined>(undefined);
+  droppingPositionRef.current = droppingPosition;
 
   // Refs for tracking previous state
   const oldDragItemRef = useRef<LayoutItem | null>(null);
@@ -413,6 +415,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
   const prevChildrenRef = useRef<React.ReactNode>(children);
   const prevCompactTypeRef = useRef<CompactType>(compactType);
+  const gridContainerRef = useRef<HTMLDivElement | null>(null);
+  const touchDragActiveRef = useRef(false);
+  const activeTouchIdRef = useRef<number | null>(null);
+  // Mirror of droppingDOMNode for touch handlers — lets them read current
+  // placeholder state without re-binding document listeners on every move.
+  const droppingDOMNodeRef = useRef<ReactElement | null>(null);
+  droppingDOMNodeRef.current = droppingDOMNode;
+  // Mirror of onDropProp so the document touch listeners don't rebind when the
+  // consumer passes an inline onDrop (new identity every parent render). Synced
+  // in a layout effect so a native touchend can't observe an uncommitted prop.
+  const onDropPropRef = useRef(onDropProp);
+  useLayoutEffect(() => {
+    onDropPropRef.current = onDropProp;
+  });
 
   // Ref to current layout - Critical for preventing infinite update loops (#2204).
   // This allows callbacks to access the latest layout without including `layout`
@@ -473,7 +489,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   // Layout change callback
   useEffect(() => {
-    if (!activeDrag && !deepEqual(layout, prevLayoutRef.current)) {
+    // Suppress while a gesture is mid-flight: activeDrag covers internal
+    // drags/resizes, droppingDOMNode covers external drags (the placeholder is
+    // added/removed during hover but no real item moves — placeDroppingItem
+    // appends without compacting). Firing here would report a layout whose only
+    // change is the transient placeholder, which is filtered from the payload
+    // anyway (#2210, #2219). The committed drop removes the placeholder, so the
+    // post-drop layout change fires normally. Skipping the prevLayoutRef sync
+    // here is intentional — the suppressed states must not desync the
+    // comparison, or the real change would be compared against the placeholder.
+    if (
+      !activeDrag &&
+      !droppingDOMNode &&
+      !deepEqual(layout, prevLayoutRef.current)
+    ) {
       prevLayoutRef.current = layout;
       // Filter out dropping placeholder - it's transient internal state only (#2210)
       // The dropping item should not be exposed to users until the actual drop happens.
@@ -482,7 +511,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       const publicLayout = layout.filter(l => l.i !== droppingItem.i);
       onLayoutChange(publicLayout);
     }
-  }, [layout, activeDrag, onLayoutChange, droppingItem.i]);
+  }, [layout, activeDrag, droppingDOMNode, onLayoutChange, droppingItem.i]);
 
   // ============================================================================
   // Container Height
@@ -563,7 +592,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   const onDragStop = useCallback(
     (i: string, x: number, y: number, data: GridDragEvent) => {
-      if (!activeDrag) return;
+      if (!oldDragItemRef.current) return;
 
       const currentLayout = layoutRef.current;
       const oldDragItem = oldDragItemRef.current;
@@ -598,7 +627,6 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       }
     },
     [
-      activeDrag,
       preventCollision,
       compactType,
       cols,
@@ -680,6 +708,12 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
         (item as Mutable<LayoutItem>).w = w;
         (item as Mutable<LayoutItem>).h = h;
+        // North-side resizes anchor the bottom edge: apply the computed y so
+        // the item shrinks from the top instead of staying put and sliding up
+        // (#2203).
+        if (handle === "n" || handle === "nw" || handle === "ne") {
+          (item as Mutable<LayoutItem>).y = newY ?? item.y;
+        }
 
         return item;
       });
@@ -720,7 +754,18 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       );
 
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
-      setLayout(compactor.compact(finalLayout, cols));
+      const compactedLayout = compactor.compact(finalLayout, cols);
+      // A north-handle resize anchors the bottom edge: compaction floats items
+      // up, which would slide the resized item past the minH-locked item above.
+      // Re-apply the anchored y after compaction so the live resize tracks the
+      // pointer (#2203).
+      if (handle === "n" || handle === "nw" || handle === "ne") {
+        const resized = compactedLayout.find(item => item.i === i);
+        if (resized) {
+          (resized as Mutable<LayoutItem>).y = l.y;
+        }
+      }
+      setLayout(compactedLayout);
       setActiveDrag(placeholder);
     },
     [preventCollision, compactType, cols, allowOverlap, compactor, onResizeProp]
@@ -759,6 +804,104 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   );
 
   // ============================================================================
+  // Shared drop pipeline helpers (used by both the HTML5 drag-over and the
+  // touch adapter so the two event sources stay behaviorally identical)
+  // ============================================================================
+
+  /**
+   * Create or update the dropping placeholder + its layout entry.
+   * Both handleDragOver and the touch adapter call this after computing a
+   * drop position; they differ only in which dropping item they place.
+   */
+  const placeDroppingItem = useCallback(
+    (
+      itemToPlace: { i: string; w: number; h: number },
+      newDroppingPosition: DroppingPosition,
+      calculatedXY: { x: number; y: number },
+      hasPlaceholder: boolean
+    ) => {
+      if (!hasPlaceholder) {
+        setDroppingDOMNode(<div key={itemToPlace.i} />);
+        setDroppingPosition(newDroppingPosition);
+        // Filter out any stale __dropping-elem__ before adding the new one.
+        // This prevents duplicate IDs caused by a race condition where
+        // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
+        // before a batched setLayout from a previous handleDragOver has
+        // rendered, leaving __dropping-elem__ in the layout while
+        // droppingDOMNode is null.
+        const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
+        setLayout([
+          ...baseLayout,
+          {
+            ...itemToPlace,
+            x: calculatedXY.x,
+            y: calculatedXY.y,
+            static: false,
+            isDraggable: true
+          }
+        ]);
+      } else if (droppingPositionRef.current) {
+        const shouldUpdate =
+          droppingPositionRef.current.left !== newDroppingPosition.left ||
+          droppingPositionRef.current.top !== newDroppingPosition.top;
+        if (shouldUpdate) {
+          setDroppingPosition(newDroppingPosition);
+          // Keep the placeholder's layout entry in sync so commitDrop/onDrop
+          // reads the latest cell, not the initial one (#2284).
+          setLayout(currentLayout =>
+            currentLayout.map(item =>
+              item.i === itemToPlace.i &&
+              (item.x !== calculatedXY.x || item.y !== calculatedXY.y)
+                ? { ...item, x: calculatedXY.x, y: calculatedXY.y }
+                : item
+            )
+          );
+        }
+      }
+    },
+    []
+  );
+
+  const applyTouchDropPosition = useCallback(
+    (clientX: number, clientY: number, nativeEvent: Event) => {
+      const gridEl = gridContainerRef.current;
+      if (!gridEl) return;
+
+      const { newDroppingPosition, calculatedXY } = computeDropPosition({
+        clientX,
+        clientY,
+        gridElement: gridEl,
+        droppingItem,
+        event: nativeEvent,
+        transformScale,
+        cols,
+        margin: margin as [number, number],
+        maxRows,
+        rowHeight,
+        width,
+        containerPadding: effectiveContainerPadding as [number, number]
+      });
+
+      placeDroppingItem(
+        droppingItem,
+        newDroppingPosition,
+        calculatedXY,
+        !!droppingDOMNodeRef.current
+      );
+    },
+    [
+      droppingItem,
+      transformScale,
+      cols,
+      margin,
+      maxRows,
+      rowHeight,
+      width,
+      effectiveContainerPadding,
+      placeDroppingItem
+    ]
+  );
+
   // Drop Handlers
   // ============================================================================
 
@@ -820,99 +963,38 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       } = rawResult ?? {};
 
       const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
-      const gridRect = e.currentTarget.getBoundingClientRect();
 
-      // Calculate position params for proper column width calculation
-      const positionParams: PositionParams = {
+      const { newDroppingPosition, calculatedXY } = computeDropPosition({
+        clientX: e.clientX,
+        clientY: e.clientY,
+        gridElement: e.currentTarget as HTMLElement,
+        droppingItem: finalDroppingItem,
+        event: e.nativeEvent,
+        dragOffsetX,
+        dragOffsetY,
+        transformScale,
         cols,
         margin: margin as [number, number],
         maxRows,
         rowHeight,
-        containerWidth: width,
+        width,
         containerPadding: effectiveContainerPadding as [number, number]
-      };
+      });
 
-      // Calculate actual column width accounting for margins and padding
-      const actualColWidth = calcGridColWidth(positionParams);
-
-      // Calculate item dimensions in pixels including margins between cells
-      const itemPixelWidth = calcGridItemWHPx(
-        finalDroppingItem.w,
-        actualColWidth,
-        (margin as [number, number])[0]
+      placeDroppingItem(
+        finalDroppingItem,
+        newDroppingPosition,
+        calculatedXY,
+        !!droppingDOMNode
       );
-      const itemPixelHeight = calcGridItemWHPx(
-        finalDroppingItem.h,
-        rowHeight,
-        (margin as [number, number])[1]
-      );
-
-      // Center the dropping item by offsetting by half its size
-      const itemCenterOffsetX = itemPixelWidth / 2;
-      const itemCenterOffsetY = itemPixelHeight / 2;
-
-      // Calculate mouse position relative to grid, accounting for drag offset and item centering
-      const rawGridX =
-        e.clientX - gridRect.left + dragOffsetX - itemCenterOffsetX;
-      const rawGridY =
-        e.clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
-
-      // Clamp to prevent negative positions (calcXY handles upper bound clamping)
-      const clampedGridX = Math.max(0, rawGridX);
-      const clampedGridY = Math.max(0, rawGridY);
-
-      const newDroppingPosition: DroppingPosition = {
-        left: clampedGridX / transformScale,
-        top: clampedGridY / transformScale,
-        e: e.nativeEvent
-      };
-
-      if (!droppingDOMNode) {
-        const calculatedPosition = calcXY(
-          positionParams,
-          clampedGridY,
-          clampedGridX,
-          finalDroppingItem.w,
-          finalDroppingItem.h
-        );
-
-        setDroppingDOMNode(<div key={finalDroppingItem.i} />);
-        setDroppingPosition(newDroppingPosition);
-        // Filter out any stale __dropping-elem__ before adding the new one.
-        // This prevents duplicate IDs caused by a race condition where
-        // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
-        // before a batched setLayout from a previous handleDragOver has
-        // rendered, leaving __dropping-elem__ in the layout while
-        // droppingDOMNode is null.
-        const baseLayout = layoutRef.current.filter(
-          l => l.i !== finalDroppingItem.i
-        );
-        setLayout([
-          ...baseLayout,
-          {
-            ...finalDroppingItem,
-            x: calculatedPosition.x,
-            y: calculatedPosition.y,
-            static: false,
-            isDraggable: true
-          }
-        ]);
-      } else if (droppingPosition) {
-        const shouldUpdate =
-          droppingPosition.left !== newDroppingPosition.left ||
-          droppingPosition.top !== newDroppingPosition.top;
-        if (shouldUpdate) {
-          setDroppingPosition(newDroppingPosition);
-        }
-      }
     },
     [
       droppingDOMNode,
-      droppingPosition,
       droppingItem,
       dropConfigOnDragOver,
       onDropDragOverProp,
       removeDroppingPlaceholder,
+      placeDroppingItem,
       transformScale,
       cols,
       margin,
@@ -948,19 +1030,137 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     dragEnterCounterRef.current++;
   }, []);
 
+  /**
+   * Commit a drop: find the placed item, clear the placeholder, fire onDrop.
+   * Shared by desktop handleDrop and the touch adapter's touchend.
+   */
+  const commitDrop = useCallback(
+    (nativeEvent: Event) => {
+      const currentLayout = layoutRef.current;
+      const item = currentLayout.find(l => l.i === droppingItem.i);
+      removeDroppingPlaceholder();
+      onDropPropRef.current(currentLayout, item, nativeEvent);
+    },
+    [droppingItem.i, removeDroppingPlaceholder]
+  );
+
   const handleDrop = useCallback(
     (e: ReactDragEvent) => {
       e.preventDefault();
       e.stopPropagation();
-
-      const currentLayout = layoutRef.current;
-      const item = currentLayout.find(l => l.i === droppingItem.i);
       dragEnterCounterRef.current = 0;
-      removeDroppingPlaceholder();
-      onDropProp(currentLayout, item, e.nativeEvent);
+      commitDrop(e.nativeEvent);
     },
-    [droppingItem.i, removeDroppingPlaceholder, onDropProp]
+    [commitDrop]
   );
+
+  // ============================================================================
+  // Touch external-drop adapter
+  // ============================================================================
+  //
+  // HTML5 dragover/drop never fires on touch devices, so external drag-and-drop
+  // (drop-from-outside) is dead on mobile. This adapter translates touch events
+  // on a user-marked source element into the same drop pipeline handleDragOver/
+  // handleDrop use: touchmove places the dropping placeholder under the finger,
+  // touchend commits it via onDrop, and any touch leaving the grid removes the
+  // placeholder.
+  //
+  // Listeners are attached to the document because the source element is outside
+  // the grid: a touch that starts on a sibling element retargets touchmove to the
+  // element where touchstart fired, so the grid's own handlers would never see it.
+  useEffect(() => {
+    if (!isDroppable || !touchEnabled) return;
+
+    const gridEl = gridContainerRef.current;
+    if (!gridEl) return;
+
+    const isOverGrid = (clientX: number, clientY: number): boolean => {
+      const el = document.elementFromPoint(clientX, clientY);
+      return el ? gridEl.contains(el as Node) : false;
+    };
+
+    const isSourceElement = (target: EventTarget | null): boolean => {
+      if (!(target instanceof HTMLElement)) return false;
+      return target.closest(touchDragSource) !== null;
+    };
+
+    const getTouch = (e: TouchEvent): Touch | undefined => {
+      const touches = e.changedTouches;
+      if (!touches || touches.length === 0) return undefined;
+      const id = activeTouchIdRef.current;
+      if (id === null) return touches[0];
+      for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        if (touch && touch.identifier === id) return touch;
+      }
+      return undefined;
+    };
+
+    const handleTouchStart = (e: TouchEvent): void => {
+      if (!isSourceElement(e.target)) return;
+      if (activeTouchIdRef.current !== null) return;
+      e.preventDefault();
+      const touch = e.changedTouches?.[0];
+      if (!touch) return;
+      activeTouchIdRef.current = touch.identifier;
+      touchDragActiveRef.current = true;
+    };
+
+    const handleTouchMove = (e: TouchEvent): void => {
+      if (!touchDragActiveRef.current) return;
+      e.preventDefault();
+      const touch = getTouch(e);
+      if (!touch) return;
+      if (!isOverGrid(touch.clientX, touch.clientY)) {
+        if (droppingDOMNodeRef.current) removeDroppingPlaceholder();
+        return;
+      }
+      applyTouchDropPosition(touch.clientX, touch.clientY, e);
+    };
+
+    const handleTouchEnd = (e: TouchEvent): void => {
+      if (!touchDragActiveRef.current) return;
+      e.preventDefault();
+      const touch = getTouch(e);
+      touchDragActiveRef.current = false;
+      activeTouchIdRef.current = null;
+      if (!touch) return;
+      if (!isOverGrid(touch.clientX, touch.clientY)) {
+        removeDroppingPlaceholder();
+        return;
+      }
+      // Commit the drop — same path as handleDrop
+      commitDrop(e);
+    };
+
+    const handleTouchCancel = (): void => {
+      if (!touchDragActiveRef.current) return;
+      touchDragActiveRef.current = false;
+      activeTouchIdRef.current = null;
+      removeDroppingPlaceholder();
+    };
+
+    const opts: AddEventListenerOptions = { passive: false };
+    document.addEventListener("touchstart", handleTouchStart, opts);
+    document.addEventListener("touchmove", handleTouchMove, opts);
+    document.addEventListener("touchend", handleTouchEnd, opts);
+    document.addEventListener("touchcancel", handleTouchCancel, opts);
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart, opts);
+      document.removeEventListener("touchmove", handleTouchMove, opts);
+      document.removeEventListener("touchend", handleTouchEnd, opts);
+      document.removeEventListener("touchcancel", handleTouchCancel, opts);
+    };
+  }, [
+    isDroppable,
+    touchEnabled,
+    touchDragSource,
+    applyTouchDropPosition,
+    removeDroppingPlaceholder,
+    commitDrop,
+    droppingItem.i
+  ]);
 
   // ============================================================================
   // Render Helpers
@@ -1010,6 +1210,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           isDraggable={draggable}
           isResizable={resizable}
           isBounded={bounded}
+          allowMobileScroll={dragAllowMobileScroll}
           useCSSTransforms={useCSSTransforms && mounted}
           usePercentages={!mounted}
           transformScale={transformScale}
@@ -1101,6 +1302,21 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Render
   // ============================================================================
 
+  // Stable ref callback: an inline arrow would be re-invoked (null -> node) on
+  // every render, which during a touch drag would momentarily null the grid ref
+  // on each move. Keyed on innerRef so it stays stable across the hot path.
+  const setGridRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      gridContainerRef.current = node;
+      if (typeof innerRef === "function") {
+        innerRef(node);
+      } else if (innerRef && "current" in innerRef) {
+        (innerRef as MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    },
+    [innerRef]
+  );
+
   const mergedClassName = clsx(layoutClassName, className);
   const mergedStyle: CSSProperties = {
     height: containerHeight,
@@ -1109,7 +1325,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   return (
     <div
-      ref={innerRef}
+      ref={setGridRef}
       className={mergedClassName}
       style={mergedStyle}
       onDrop={isDroppable ? handleDrop : undefined}

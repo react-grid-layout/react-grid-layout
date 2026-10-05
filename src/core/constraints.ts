@@ -128,6 +128,38 @@ export const containerBounds: LayoutConstraint = {
       x: clamp(x, 0, Math.max(0, cols - item.w)),
       y: clamp(y, 0, Math.max(0, visibleRows - item.h))
     };
+  },
+
+  constrainSize(
+    item: LayoutItem,
+    w: number,
+    h: number,
+    handle: ResizeHandleAxis,
+    { cols, maxRows, containerHeight, rowHeight, margin }: ConstraintContext
+  ): { w: number; h: number } {
+    // Same visible-rows calculation as constrainPosition, so a resize cannot
+    // push the item past the visible container even when maxRows is Infinity.
+    const visibleRows =
+      containerHeight > 0
+        ? Math.floor((containerHeight + margin[1]) / (rowHeight + margin[1]))
+        : maxRows;
+
+    // For west-side resizes the item expands leftward; the right edge is fixed.
+    const maxW =
+      handle === "w" || handle === "nw" || handle === "sw"
+        ? item.x + item.w
+        : cols - item.x;
+
+    // For north-side resizes the item expands upward; the bottom edge is fixed.
+    const maxH =
+      handle === "n" || handle === "nw" || handle === "ne"
+        ? item.y + item.h
+        : visibleRows - item.y;
+
+    return {
+      w: clamp(w, 1, Math.max(1, maxW)),
+      h: clamp(h, 1, Math.max(1, maxH))
+    };
   }
 };
 

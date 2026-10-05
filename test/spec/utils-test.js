@@ -481,6 +481,38 @@ describe("moveElement", () => {
     );
     expect(Object.is(layout, modifiedLayout)).toBe(false);
   });
+
+  it("keeps a static item unmoved when another item collides with it", () => {
+    // A static item cannot move; when the dragged item lands on it, the static
+    // item must stay put (and the move is prevented / resolved elsewhere).
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 2, i: "S", static: true },
+      { x: 2, y: 0, w: 2, h: 2, i: "D", static: false }
+    ];
+    // Move D onto S. S must not move.
+    const result = moveElement(layout, layout[1], 0, 0, true, false, null, 10);
+    const itemS = result.find(item => item.i === "S");
+    expect(itemS).toMatchObject({ x: 0, y: 0 });
+  });
+
+  it("returns the original layout when the item is static (line 270)", () => {
+    const layout = [{ x: 0, y: 0, w: 2, h: 2, i: "S", static: true }];
+    const result = moveElement(layout, layout[0], 3, 3, true, false, null, 10);
+    // Static items can't move.
+    expect(result).toEqual(layout);
+  });
+
+  it("reverts position when preventCollision is set and a collision occurs", () => {
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 2, i: "A" },
+      { x: 0, y: 0, w: 2, h: 2, i: "B" }
+    ];
+    // preventCollision=true: the move into an occupied cell is reverted.
+    const result = moveElement(layout, layout[1], 0, 0, true, true, null, 10);
+    const itemB = result.find(item => item.i === "B");
+    // B stays at its original position.
+    expect(itemB.x).toBe(0);
+  });
 });
 
 describe("moveElementAwayFromCollision", () => {
@@ -522,6 +554,81 @@ describe("moveElementAwayFromCollision", () => {
     // C should move down from its own position, not jump to collidesWith.y + 1
     // $FlowFixMe: movedItem is checked above
     expect(movedItem.y).toBe(8);
+  });
+
+  // Regression for #1982: with no compaction, a partial overlap should push the
+  // collider down only until it clears the dragged item's bottom, not a full
+  // item height (which leaves a large gap).
+  it("pushes a collider down only until it clears a partial overlap in free-form mode (#1982)", () => {
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 2, i: "A" },
+      { x: 0, y: 2, w: 2, h: 2, i: "B" } // collider, currently right below A
+    ];
+    const collidesWith = layout[1]; // B
+    const itemToMove = layout[0]; // A, being dragged down into B
+
+    const result = moveElementAwayFromCollision(
+      layout,
+      collidesWith,
+      itemToMove,
+      true,
+      null, // free-form: no compaction
+      10
+    );
+
+    // B should move down only far enough to clear A's bottom (A at y=1 h=2 ->
+    // bottom=3, so B goes to y=3), leaving no gap.
+    const movedB = result.find(item => item.i === "B");
+    // $FlowFixMe: movedB is checked above
+    expect(movedB.y).toBeLessThan(4); // not pushed a full height to y=4
+  });
+
+  it("swaps equal-size items in free-form mode when they collide (#1982)", () => {
+    const layout = [
+      { x: 0, y: 0, w: 1, h: 1, i: "A" },
+      { x: 1, y: 0, w: 1, h: 1, i: "B" }
+    ];
+    const collidesWith = layout[1]; // B
+    const itemToMove = layout[0]; // A, dragged onto B
+
+    const result = moveElementAwayFromCollision(
+      layout,
+      collidesWith,
+      itemToMove,
+      true,
+      null,
+      10
+    );
+
+    // The swap branch should exchange positions cleanly.
+    const movedA = result.find(item => item.i === "A");
+    const movedB = result.find(item => item.i === "B");
+    // $FlowFixMe
+    expect(movedA.y).toBe(1);
+    // $FlowFixMe
+    expect(movedB.y).toBe(0);
+  });
+
+  // Integration test for #1982: dragging an item to partially overlap another
+  // in free-form mode (compactType=null) should push the collider down only until
+  // it clears the dragged item's bottom, not a full item height.
+  // The full pipeline (moveElement → collision loop → moveElementAwayFromCollision)
+  // is what goes wrong; the isolated unit test passes but moveElement produces
+  // A at y=2, B at y=4 — a 2-row gap from a barely-overlapping drag.
+  it("moveElement in free-form mode does not leave large gaps on partial overlap (#1982)", () => {
+    const layout = [
+      { x: 0, y: 0, w: 2, h: 2, i: "A" },
+      { x: 0, y: 2, w: 2, h: 2, i: "B" }
+    ];
+    const result = moveElement(layout, layout[0], 0, 1, true, false, null, 10);
+    const movedA = result.find(item => item.i === "A");
+    const movedB = result.find(item => item.i === "B");
+    // A lands where B was (y=2); B sits exactly at A's bottom (y=4), so there
+    // is no gap between them.
+    // $FlowFixMe
+    expect(movedA.y).toBe(2);
+    // $FlowFixMe
+    expect(movedB.y).toBe(4);
   });
 });
 
@@ -958,6 +1065,46 @@ describe("resizeItemInDirection", () => {
       // Should clamp: left=0, width=250 (original right edge was 250)
       expect(result.left).toBe(0);
       expect(result.left + result.width).toBe(250); // right edge preserved
+    });
+  });
+
+  describe("north resize (#2203)", () => {
+    it("keeps the bottom edge fixed when shrinking north", () => {
+      // Original: top=100, height=100, so bottom edge = 200.
+      const currentSize = { left: 0, top: 100, width: 200, height: 100 };
+      // Shrink height to 60. Bottom-anchored: top should become 140.
+      const newSize = { left: 0, top: 0, width: 200, height: 60 };
+
+      const result = resizeItemInDirection(
+        "n",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      const bottomBefore = currentSize.top + currentSize.height; // 200
+      const bottomAfter = result.top + result.height;
+      // Bottom edge must stay at 200: top=140, height=60.
+      expect(bottomAfter).toBe(bottomBefore);
+      expect(result.height).toBe(60);
+      expect(result.top).toBe(140);
+    });
+
+    it("clamps the top edge at 0 when growing north past the container", () => {
+      // Original: top=10, height=50 (bottom=60).
+      const currentSize = { left: 0, top: 10, width: 200, height: 50 };
+      // Grow height to 200 — would need top = 10 - (200-50) = -140.
+      const newSize = { left: 0, top: 0, width: 200, height: 200 };
+
+      const result = resizeItemInDirection(
+        "n",
+        currentSize,
+        newSize,
+        containerWidth
+      );
+
+      // Top clamps at 0; the growth is limited to what fits.
+      expect(result.top).toBe(0);
     });
   });
 });

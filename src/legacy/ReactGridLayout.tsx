@@ -67,6 +67,8 @@ export interface LegacyReactGridLayoutProps {
   isBounded?: boolean;
   draggableHandle?: string;
   draggableCancel?: string;
+  /** Allow native touch scroll while dragging (#1793) */
+  allowMobileScroll?: boolean;
 
   // Resize behavior (→ resizeConfig)
   isResizable?: boolean;
@@ -142,6 +144,7 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
     isBounded = false,
     draggableHandle,
     draggableCancel,
+    allowMobileScroll,
 
     // Resize behavior
     isResizable = true,
@@ -201,6 +204,7 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
     bounded: isBounded,
     handle: draggableHandle,
     cancel: draggableCancel,
+    allowMobileScroll,
     // Set threshold to 0 for backwards compatibility with v1 API
     // v2 API defaults to 3px threshold (fixes #1341, #1401)
     threshold: 0

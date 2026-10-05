@@ -14,6 +14,16 @@ examples/*.hot-update.json
 .vscode
 *.tgz
 yarn-error.log
-codemaps/
 .reports/
 .ccells-state.json
+
+# Serena MCP server cache
+.serena/
+
+test-results/
+test/e2e/harness-dist/
+
+# graphify knowledge graph (generated)
+graphify-out/
+
+package-lock.json

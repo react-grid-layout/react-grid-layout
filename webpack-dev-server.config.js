@@ -36,9 +36,13 @@ module.exports = {
   devtool: "eval",
   devServer: {
     compress: true,
-    port: 4002,
+    // Allow the port to be overridden for CI / parallel e2e runs
+    // (defaults to the historical 4002).
+    port: process.env.RGL_PORT || 4002,
     host: "localhost",
-    open: "index-dev.html",
+    // Never auto-open a browser; e2e runs headless and manual runs open
+    // the URL themselves.
+    open: false,
     client: {
       overlay: true
     },

@@ -25,6 +25,59 @@ export interface UseContainerWidthOptions {
    * Defaults to 1280.
    */
   initialWidth?: number;
+
+  /**
+   * Trailing debounce in milliseconds for width updates from the
+   * ResizeObserver (#2254). While the container is resizing, the rendered
+   * width freezes; once it holds steady for this long, the latest measured
+   * width commits, exactly once per burst of notifications. Absent or 0
+   * keeps immediate updates on every notification.
+   */
+  debounceTimeout?: number;
+}
+
+/**
+ * Measure a node's content-box width, the same box ResizeObserver reports as
+ * `entry.contentRect.width`.
+ *
+ * `containerRef` is attached to the consumer's own wrapper element and the grid
+ * renders as an ordinary block child of it, so the width available to the grid
+ * is the wrapper's content box. `offsetWidth` is the border box, which adds the
+ * wrapper's padding and border and over-measures by that much.
+ *
+ * Prefers the computed `width`, which is the used content-box width: fractional,
+ * and unaffected by CSS transforms, so a scaled grid (see `transformScale`)
+ * still measures its true layout width. `getBoundingClientRect()` would report
+ * the transformed width instead.
+ *
+ * Falls back to `clientWidth` minus horizontal padding when there is no computed
+ * width to read. That fallback is approximate: `clientWidth` is already rounded
+ * to a whole pixel, so subtracting fractional padding can land up to 1px away
+ * from the true content box. Precision lost upstream cannot be recovered here,
+ * which is why the computed width is tried first.
+ */
+function getContentWidth(node: HTMLElement): number {
+  const style =
+    typeof globalThis.getComputedStyle === "function"
+      ? globalThis.getComputedStyle(node)
+      : null;
+  if (!style) return node.clientWidth;
+
+  const px = (value: string): number => {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  // The used content-box width, matching ResizeObserver's contentRect.
+  const computed = Number.parseFloat(style.width);
+  if (Number.isFinite(computed)) return Math.max(0, computed);
+
+  // clientWidth is the padding box less any scrollbar; drop padding to
+  // approximate the content box.
+  return Math.max(
+    0,
+    node.clientWidth - px(style.paddingLeft) - px(style.paddingRight)
+  );
 }
 
 export interface UseContainerWidthResult {
@@ -71,7 +124,11 @@ export interface UseContainerWidthResult {
 export function useContainerWidth(
   options: UseContainerWidthOptions = {}
 ): UseContainerWidthResult {
-  const { measureBeforeMount = false, initialWidth = 1280 } = options;
+  const {
+    measureBeforeMount = false,
+    initialWidth = 1280,
+    debounceTimeout
+  } = options;
 
   const [width, setWidth] = useState(initialWidth);
   const [mounted, setMounted] = useState(!measureBeforeMount);
@@ -81,8 +138,10 @@ export function useContainerWidth(
   const measureWidth = useCallback(() => {
     const node = containerRef.current;
     if (node) {
-      const newWidth = node.offsetWidth;
-      setWidth(newWidth);
+      // Must measure the same box as the ResizeObserver path below, or mount
+      // and resize disagree by the wrapper's padding and border (#2271).
+      const newWidth = Math.round(getContentWidth(node));
+      setWidth(prev => (prev === newWidth ? prev : newWidth));
       if (!mounted) {
         setMounted(true);
       }
@@ -99,12 +158,32 @@ export function useContainerWidth(
     // Set up ResizeObserver
     if (typeof ResizeObserver !== "undefined") {
       let rafId: number | null = null;
+      let debounceTimer: number | undefined;
 
       observerRef.current = new ResizeObserver(entries => {
         const entry = entries[0];
         if (entry) {
-          // Use contentRect.width for consistent measurements
-          const newWidth = entry.contentRect.width;
+          // Round to whole pixels. At fractional devicePixelRatio (DevTools
+          // device-toolbar zoom at 75%/50%, OS display scaling) contentRect.width
+          // is fractional and drifts by sub-pixel amounts between notifications.
+          // Unrounded, every notification is a new value, so React never bails
+          // out: each one re-renders the grid, which changes the container
+          // height, which produces another notification (#2271).
+          const newWidth = Math.round(entry.contentRect.width);
+
+          if (debounceTimeout && debounceTimeout > 0) {
+            // Trailing debounce (#2254): each notification holds the latest
+            // measured width and restarts the timer, so a burst commits once
+            // after the container has been steady for debounceTimeout ms.
+            // The timer fires outside the ResizeObserver callback, so the
+            // RAF deferral below is not needed on this path.
+            window.clearTimeout(debounceTimer);
+            debounceTimer = window.setTimeout(() => {
+              setWidth(prev => (prev === newWidth ? prev : newWidth));
+              debounceTimer = undefined;
+            }, debounceTimeout);
+            return;
+          }
 
           // Defer state update to next paint cycle to avoid
           // "ResizeObserver loop completed with undelivered notifications" error (#1959)
@@ -112,7 +191,7 @@ export function useContainerWidth(
             cancelAnimationFrame(rafId);
           }
           rafId = requestAnimationFrame(() => {
-            setWidth(newWidth);
+            setWidth(prev => (prev === newWidth ? prev : newWidth));
             rafId = null;
           });
         }
@@ -121,10 +200,13 @@ export function useContainerWidth(
       observerRef.current.observe(node);
 
       return () => {
-        // Cancel any pending RAF to prevent state updates on unmounted component
+        // Cancel any pending RAF or debounce timer to prevent state updates
+        // on unmounted component
         if (rafId !== null) {
           cancelAnimationFrame(rafId);
         }
+        window.clearTimeout(debounceTimer);
+        debounceTimer = undefined;
         if (observerRef.current) {
           observerRef.current.disconnect();
           observerRef.current = null;
@@ -138,7 +220,7 @@ export function useContainerWidth(
         observerRef.current = null;
       }
     };
-  }, [measureWidth]);
+  }, [measureWidth, debounceTimeout]);
 
   return {
     width,

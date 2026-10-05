@@ -15,6 +15,10 @@ import React, {
 } from "react";
 import { DraggableCore, type DraggableEventHandler } from "react-draggable";
 import { Resizable } from "react-resizable";
+import {
+  createEdgeScrollController,
+  type EdgeScrollController
+} from "./edgeScroll.js";
 import clsx from "clsx";
 
 import type {
@@ -108,6 +112,8 @@ export interface GridItemProps {
   isResizable: boolean;
   /** Whether the item is bounded within the container */
   isBounded: boolean;
+  /** Allow native touch scroll while dragging (react-draggable allowMobileScroll) */
+  allowMobileScroll?: boolean;
   /** Whether the item is static (can't be moved/resized) */
   static?: boolean;
   /** Use CSS transforms instead of top/left */
@@ -191,7 +197,7 @@ export interface GridItemProps {
  *
  * Wraps a child element with drag and resize functionality.
  */
-export function GridItem(props: GridItemProps): ReactElement {
+function GridItemInner(props: GridItemProps): ReactElement {
   const {
     children,
     cols,
@@ -203,6 +209,7 @@ export function GridItem(props: GridItemProps): ReactElement {
     isDraggable,
     isResizable,
     isBounded,
+    allowMobileScroll,
     static: isStatic,
     useCSSTransforms = true,
     usePercentages = false,
@@ -275,6 +282,8 @@ export function GridItem(props: GridItemProps): ReactElement {
   const dragPendingRef = useRef(false);
   const initialDragClientRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const thresholdExceededRef = useRef(false);
+  // Auto-scroll controller for edge-scroll during drag (#2232)
+  const edgeScrollRef = useRef<EdgeScrollController | null>(null);
 
   // Position parameters
   const positionParams: PositionParams = useMemo(
@@ -292,12 +301,14 @@ export function GridItem(props: GridItemProps): ReactElement {
   // Constraint context for applying constraints
   // Note: This does NOT include layout in its dependencies to prevent infinite loops (#2210).
   // The layout is accessed via layoutRef.current inside the callbacks that use this context.
+  // containerHeight is supplied per-interaction (see getConstraintContext) so a resize can
+  // be bounded to the rendered container (#1779); auto-height grids measure 0 here.
   const constraintContext: ConstraintContext = useMemo(
     () => ({
       cols,
       maxRows,
       containerWidth,
-      containerHeight: 0, // Auto-height grids don't have a fixed container height
+      containerHeight: 0, // Overridden per-interaction with the measured container height
       rowHeight,
       margin,
       // Use empty layout here - the actual layout will be accessed via layoutRef when needed
@@ -310,8 +321,9 @@ export function GridItem(props: GridItemProps): ReactElement {
   // Create a getter for constraint context with current layout
   // This is called inside callbacks to get fresh layout data without causing re-renders
   const getConstraintContext = useCallback(
-    (): ConstraintContext => ({
+    (containerHeight?: number): ConstraintContext => ({
       ...constraintContext,
+      containerHeight: containerHeight ?? constraintContext.containerHeight,
       layout: layoutRef.current
     }),
     [constraintContext]
@@ -411,6 +423,15 @@ export function GridItem(props: GridItemProps): ReactElement {
 
       dragPositionRef.current = newPosition;
 
+      // Start edge auto-scroll (#2232). Walk up from the dragged element
+      // (not offsetParent): offsetParent is the nearest positioned ancestor,
+      // which may skip an overflow:auto wrapper that is not positioned.
+      if (!edgeScrollRef.current) {
+        edgeScrollRef.current = createEdgeScrollController(
+          node instanceof HTMLElement ? node : null
+        );
+      }
+
       // Threshold support (#2217) - if threshold is set, delay calling onDragStartProp
       // until the mouse has moved at least `dragThreshold` pixels
       if (dragThreshold > 0) {
@@ -503,6 +524,9 @@ export function GridItem(props: GridItemProps): ReactElement {
         }
       }
 
+      // Feed edge auto-scroll with the pointer position (#2232)
+      edgeScrollRef.current?.feed(mouseEvent.clientX, mouseEvent.clientY);
+
       let top = dragPositionRef.current.top + deltaY;
       let left = dragPositionRef.current.left + deltaX;
 
@@ -564,6 +588,10 @@ export function GridItem(props: GridItemProps): ReactElement {
     (e, { node }) => {
       if (!onDragStopProp || !dragging) return;
 
+      // Stop edge auto-scroll (#2232)
+      edgeScrollRef.current?.stop();
+      edgeScrollRef.current = null;
+
       // Reset threshold tracking (#2217)
       const wasPending = dragPendingRef.current;
       dragPendingRef.current = false;
@@ -621,7 +649,7 @@ export function GridItem(props: GridItemProps): ReactElement {
 
   const onResizeHandler = useCallback(
     (
-      e: React.SyntheticEvent,
+      e: React.SyntheticEvent | Event,
       { node, size, handle: resizeHandle }: ResizeCallbackData,
       position: Position,
       handlerName: "onResizeStart" | "onResize" | "onResizeStop"
@@ -654,6 +682,12 @@ export function GridItem(props: GridItemProps): ReactElement {
 
       resizePositionRef.current = updatedSize;
 
+      // Measure the rendered container height so containerBounds (legacy
+      // isBounded) can clamp a resize to the container edge (#1779). The item's
+      // offsetParent is the grid container; clientHeight reflects the current
+      // rendered height, so the resize cannot push the item past it.
+      const containerHeight = node?.offsetParent?.clientHeight ?? 0;
+
       // Calculate raw grid dimensions and apply constraints
       const rawSize = calcWHRaw(
         positionParams,
@@ -666,11 +700,15 @@ export function GridItem(props: GridItemProps): ReactElement {
         rawSize.w,
         rawSize.h,
         resizeHandle,
-        getConstraintContext()
+        getConstraintContext(containerHeight)
       );
 
       handler(i, newW, newH, {
-        e: e.nativeEvent,
+        // react-resizable forwards react-draggable's callback event, which is
+        // already a native MouseEvent/TouchEvent and has no `nativeEvent`.
+        // Reading it unconditionally handed consumers `undefined` (#2264).
+        // The drag handlers above pass the raw event for the same reason.
+        e: (e as React.SyntheticEvent).nativeEvent ?? (e as Event),
         node,
         size: updatedSize,
         handle: resizeHandle
@@ -879,6 +917,7 @@ export function GridItem(props: GridItemProps): ReactElement {
       handle={handle}
       cancel={".react-resizable-handle" + (cancel ? "," + cancel : "")}
       scale={transformScale}
+      allowMobileScroll={allowMobileScroll}
       nodeRef={elementRef}
     >
       {newChild}
@@ -888,4 +927,52 @@ export function GridItem(props: GridItemProps): ReactElement {
   return newChild;
 }
 
+/**
+ * Memoized GridItem (#2240). v1 had shouldComponentUpdate gating on
+ * position/size; v2's function component re-rendered every item on every
+ * drag/resize move. A shallow compare on the geometry and grid-config props
+ * skips unchanged items. Children are memoized by the consumer (the
+ * documented perf contract), so identity-compare them here.
+ */
+const GridItem = React.memo(GridItemInner, (prev, next) => {
+  // Geometry — the hot path during drag/resize.
+  if (prev.x !== next.x || prev.y !== next.y) return false;
+  if (prev.w !== next.w || prev.h !== next.h) return false;
+  if (prev.minW !== next.minW || prev.maxW !== next.maxW) return false;
+  if (prev.minH !== next.minH || prev.maxH !== next.maxH) return false;
+
+  // Grid config that changes item pixel geometry.
+  if (prev.cols !== next.cols) return false;
+  if (prev.containerWidth !== next.containerWidth) return false;
+  if (prev.rowHeight !== next.rowHeight) return false;
+  if (prev.maxRows !== next.maxRows) return false;
+  if (prev.margin !== next.margin) return false;
+  if (prev.containerPadding !== next.containerPadding) return false;
+  if (prev.transformScale !== next.transformScale) return false;
+
+  // Behavior flags.
+  if (prev.isDraggable !== next.isDraggable) return false;
+  if (prev.isResizable !== next.isResizable) return false;
+  if (prev.isBounded !== next.isBounded) return false;
+  if (prev.allowMobileScroll !== next.allowMobileScroll) return false;
+  if (prev.useCSSTransforms !== next.useCSSTransforms) return false;
+  if (prev.usePercentages !== next.usePercentages) return false;
+
+  // Children: memoized by the consumer, so identity is a valid check.
+  if (prev.children !== next.children) return false;
+
+  // The rest (callbacks, handle, constraints, etc.) rarely change; if any
+  // differ, re-render to be safe.
+  if (prev.onDrag !== next.onDrag) return false;
+  if (prev.onDragStop !== next.onDragStop) return false;
+  if (prev.onResize !== next.onResize) return false;
+  if (prev.onResizeStop !== next.onResizeStop) return false;
+  if (prev.droppingPosition !== next.droppingPosition) return false;
+
+  return true;
+});
+
+GridItem.displayName = "GridItem";
+
 export default GridItem;
+export { GridItem };

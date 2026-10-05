@@ -10,6 +10,7 @@ import {
   wrapCompactor,
   wrapOverlapCompactor
 } from "../../src/extras/wrapCompactor";
+import { moveElement } from "../../src/core/layout";
 import type { Layout } from "../../src/core/types";
 
 describe("wrapCompactor", () => {
@@ -194,5 +195,44 @@ describe("Compactor interface compliance", () => {
     expect(item?.maxW).toBe(4);
     expect(item?.minH).toBe(1);
     expect(item?.maxH).toBe(6);
+  });
+});
+
+// #2252: dragging an item left (earlier in wrap order) must reflow LTR like
+// a paragraph. moveElement's collision resolution special-cases vertical and
+// horizontal but not wrap, so a right-to-left drag doesn't reflow.
+describe("moveElement in wrap mode (#2252)", () => {
+  it("reflows items when dragging one left in wrap order", () => {
+    // 2-col wrap grid, 1x1 items in reading order: a,b on row 0; c,d on row 1.
+    const layout: Layout = [
+      { i: "a", x: 0, y: 0, w: 1, h: 1 },
+      { i: "b", x: 1, y: 0, w: 1, h: 1 },
+      { i: "c", x: 0, y: 1, w: 1, h: 1 },
+      { i: "d", x: 1, y: 1, w: 1, h: 1 }
+    ];
+
+    // Drag d (x=1,y=1) to x=0,y=1 — earlier in the row.
+    const result = moveElement(layout, layout[3], 0, 1, true, false, "wrap", 2);
+    const itemD = result.find(l => l.i === "d");
+    expect(itemD).toBeDefined();
+    // d should be able to sit at (0,1); c moves to make room.
+    expect(itemD!.x).toBe(0);
+    expect(itemD!.y).toBe(1);
+  });
+
+  it("does not leave items overlapping when dragging onto an occupied cell (#2252)", () => {
+    // 2-col wrap, 3 items: 1 at (0,0), 2 at (1,0), 3 at (0,1).
+    const layout: Layout = [
+      { i: "1", x: 0, y: 0, w: 1, h: 1 },
+      { i: "2", x: 1, y: 0, w: 1, h: 1 },
+      { i: "3", x: 0, y: 1, w: 1, h: 1 }
+    ];
+
+    // Drag item 2 onto item 1's cell (leftward drag).
+    const result = moveElement(layout, layout[1], 0, 0, true, false, "wrap", 2);
+
+    // No two items may share a cell.
+    const occupied = new Set(result.map(l => `${l.x},${l.y}`));
+    expect(occupied.size).toBe(result.length);
   });
 });

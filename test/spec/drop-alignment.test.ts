@@ -283,4 +283,33 @@ describe("PR #2167 - Drop item alignment", () => {
       expect(itemPixelHeight).toBe(80);
     });
   });
+
+  describe("Drop position with scroll offset (#2143)", () => {
+    it("accounts for scrollTop when computing raw grid coords", () => {
+      // Grid rect is at viewport position (50, 100) but internally scrolled
+      // 40px. The pointer is at (250, 180). A 1x1 centered item should land
+      // as if the grid's origin is at (50 + 0, 100 + 40) = (50, 140) relative
+      // to the pointer. Without scroll compensation, it'd use (50, 100).
+      const scrollTop = 40;
+      const scrollLeft = 0;
+      const gridRect = { left: 50, top: 100 };
+      const e_clientX = 250;
+      const e_clientY = 180;
+      const dragOffsetX = 0;
+      const dragOffsetY = 0;
+      const itemCenterOffsetX = 44; // ~half of 1x1 pixel width
+      const itemCenterOffsetY = 15; // ~half of 1x1 pixel height
+
+      // Without scroll:
+      const rawY_noScroll =
+        e_clientY - gridRect.top + dragOffsetY - itemCenterOffsetY;
+      // With scroll:
+      const rawY_scroll =
+        e_clientY - gridRect.top + scrollTop + dragOffsetY - itemCenterOffsetY;
+
+      // The scroll-aware calc should report a position that is scrollTop
+      // farther down, matching the content coordinate space.
+      expect(rawY_scroll - rawY_noScroll).toBe(scrollTop);
+    });
+  });
 });

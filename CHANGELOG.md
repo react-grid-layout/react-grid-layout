@@ -1,5 +1,69 @@
 # Changelog
 
+## 2.3.0 (Oct 5, 2026)
+
+### New Features
+
+- **useContainerWidth**: New optional `debounceTimeout` (ms). While the container keeps resizing, the reported width holds. Once it has been steady for `debounceTimeout` ms, the latest width commits once per burst. Leave it unset or `0` to keep the immediate behavior. [#2254](https://github.com/react-grid-layout/react-grid-layout/issues/2254), [#2290](https://github.com/react-grid-layout/react-grid-layout/pull/2290)
+- **DropConfig**: Drop-from-outside now works on touch devices (iOS Safari, Android Chrome), where `dragover` and `drop` never fire. Mark a source element with `data-rgl-draggable` and touch events drive the same drop pipeline as the mouse. New options: `dropConfig.touchEnabled` (default `true`) and `dropConfig.touchDragSource` (default `[data-rgl-draggable]`). [#2281](https://github.com/react-grid-layout/react-grid-layout/issues/2281)
+- **DragConfig**: New `dragConfig.allowMobileScroll`. react-draggable calls `preventDefault` on `touchstart` unless this is set, which suppressed child `onClick` on touch devices. The v1 flat `allowMobileScroll` prop works too, and `ResponsiveReactGridLayout` now forwards it. It used to drop the prop silently. [#1793](https://github.com/react-grid-layout/react-grid-layout/issues/1793), [#2289](https://github.com/react-grid-layout/react-grid-layout/pull/2289)
+- **Edge auto-scroll**: Dragging near the edge of a scrollable ancestor, or of the grid itself, now scrolls it from a `requestAnimationFrame` loop. Desktop browsers already scrolled near the edge on their own since 2.1.0. This covers fixed-height grids and touch. The scroll container is found by walking up from the dragged node, so an unpositioned `overflow: auto` wrapper works. [#2232](https://github.com/react-grid-layout/react-grid-layout/issues/2232)
+
+### Performance
+
+- **GridItem**: Now wrapped in `React.memo` with a shallow comparison of geometry and config, so a drag or resize no longer re-renders every item. You need to memoize the `children` you pass to the grid. [#2240](https://github.com/react-grid-layout/react-grid-layout/issues/2240)
+
+### Bug Fixes
+
+- **Drag**: Fix a drag that never ended when you released the mouse before the drag-start render committed. `onDragStop` now fires and the placeholder is removed. It checked the `activeDrag` state, which was still `null` at that point. It now checks the drag item saved at drag start. [#2291](https://github.com/react-grid-layout/react-grid-layout/issues/2291), [#2292](https://github.com/react-grid-layout/react-grid-layout/pull/2292)
+- **onLayoutChange**: No longer fires during external drags (HTML5 or touch). The dropping placeholder entered and left the layout on every drag-enter and drag-leave without setting `activeDrag`, so the layout-change effect fired each time. [#2219](https://github.com/react-grid-layout/react-grid-layout/issues/2219)
+- **isBounded**: Resizing an item in a bounded grid could push its bottom or right edge past the container. `GridItem` passed a container height of 0 to the constraint context, so `containerBounds` never clamped. It now measures the container, and `containerBounds` gains a `constrainSize`. [#1779](https://github.com/react-grid-layout/react-grid-layout/issues/1779)
+- **Responsive**: An item added at a smaller breakpoint through `data-grid` kept its small width when the container grew to a larger breakpoint. The generated layout cloned the smaller one and never re-read the size. The size now re-seeds from `data-grid` for generated layouts. Stored layouts and `x`/`y` positions are untouched. [#2110](https://github.com/react-grid-layout/react-grid-layout/issues/2110)
+- **Legacy API**: `Responsive` and `ResponsiveGridLayout` forward refs again. v1's `Responsive` was a class that accepted a `ref`, and the v2 function component dropped it. The ref goes to `innerRef`. [#2244](https://github.com/react-grid-layout/react-grid-layout/issues/2244)
+- **Collisions**: In free-form (no compaction) grids, a swap on a partial overlap pushed the lower item a full item height. It now sits at the dragged item's bottom. [#1982](https://github.com/react-grid-layout/react-grid-layout/issues/1982). In wrap mode, dragging left onto an occupied cell left items overlapping. Wrap now resolves collisions like horizontal (push right), and the final wrap compactor reflows to reading order. [#2252](https://github.com/react-grid-layout/react-grid-layout/issues/2252)
+- **Drop position**: A scrolled grid placed an external drop above the cursor by `scrollTop`. The drop position now adds the grid's `scrollLeft` and `scrollTop`. [#2143](https://github.com/react-grid-layout/react-grid-layout/issues/2143)
+- **correctBounds**: A new item with `y: Infinity` was only clamped under the vertical compactor. Horizontal and no compaction let it into the render math, and it overlapped the top-left. It now clamps to the layout bottom. [#2161](https://github.com/react-grid-layout/react-grid-layout/issues/2161)
+- **Resize**: Bump `react-resizable` to `^3.2.0`, which fixes resize handle drift under load (stale props between renders). The API is unchanged. [#2233](https://github.com/react-grid-layout/react-grid-layout/issues/2233)
+
+### Internal Changes
+
+- Deterministic Playwright e2e harness, with expanded CI.
+- The mouse and touch drop paths share one position calculation (`dropMath.ts`).
+- Architecture docs moved to `codemaps/`, which Prettier now ignores. [#2293](https://github.com/react-grid-layout/react-grid-layout/pull/2293)
+- Lockfile bumps: `follow-redirects` 1.16.1 ([#2261](https://github.com/react-grid-layout/react-grid-layout/pull/2261)) and `flatted` 3.4.4 ([#2257](https://github.com/react-grid-layout/react-grid-layout/pull/2257)).
+
+## 2.2.4 (Jul 29, 2026)
+
+### Bug Fixes
+
+- **useContainerWidth**: Fix `Maximum update depth exceeded` at fractional zoom (DevTools device toolbar at 75% or 50%, OS display scaling). `ResizeObserver` reports a fractional `contentRect.width` there. Each report was a new width, so React never bailed out: the grid re-rendered, its height changed, and the next report followed. Widths are now rounded to whole pixels in `useContainerWidth` and `WidthProvider`. [#2271](https://github.com/react-grid-layout/react-grid-layout/issues/2271)
+- **useContainerWidth**: `measureWidth` read `offsetWidth`, the border box, while `ResizeObserver` reads the content box. A wrapper with padding or a border measured too wide at mount. It now reads the computed content-box width. That keeps sub-pixel precision and ignores CSS transforms, so `transformScale` still measures the true layout width.
+- **Resize callbacks**: `onResizeStart`, `onResize` and `onResizeStop` received `undefined` in place of the event. react-resizable forwards a native event with no `nativeEvent` property, and `GridItem` read `e.nativeEvent` unconditionally. The callbacks now get the native event. [#2264](https://github.com/react-grid-layout/react-grid-layout/issues/2264)
+
+### Internal Changes
+
+- `make publish` runs `scripts/check-release.cjs` first. It requires a clean tree, a non-detached `master`, a tag at HEAD, an origin that fast-forwards, and a version that is not yet on npm.
+
+## 2.2.3 (Mar 24, 2026)
+
+### Bug Fixes
+
+- **Drag from outside**: Fix an infinite recursion in `resolveCompactionCollision`. When `handleDragOver` and `handleDragLeave` fired in quick succession, a race left duplicate `__dropping-elem__` items in the layout.
+- **Resize preview**: The preview stretched without limit during a resize, even with `minW`, `maxW`, `minH` or `maxH` set, and only snapped to the constraint on release. `GridItem` passed `[Infinity, Infinity]` as the max constraints to react-resizable regardless of those props. It now honors them. [#2235](https://github.com/react-grid-layout/react-grid-layout/issues/2235)
+- **ResizeObserver**: Fix the `ResizeObserver loop` error by deferring state updates. [#1959](https://github.com/react-grid-layout/react-grid-layout/issues/1959), [#2229](https://github.com/react-grid-layout/react-grid-layout/issues/2229)
+- **Types**: Remove a duplicate `EventCallback` definition that caused a type conflict. [#2227](https://github.com/react-grid-layout/react-grid-layout/issues/2227)
+
+### Internal Changes
+
+- Source maps no longer ship in the npm package, which cuts it from 232 kB to 94 kB.
+- Dependency bumps: `qs` 6.14.1 ([#2226](https://github.com/react-grid-layout/react-grid-layout/issues/2226)) and dev `lodash` 4.17.23 ([#2234](https://github.com/react-grid-layout/react-grid-layout/issues/2234)).
+
+## 2.2.2 (Dec 30, 2025)
+
+### Bug Fixes
+
+- **Drag from outside**: Fix an infinite loop when you drag an external item into a grid with controlled state (children derived from the layout) and move it outside without dropping. The dropping placeholder was included in `onLayoutChange`, so your state held the transient item. [#2210](https://github.com/react-grid-layout/react-grid-layout/issues/2210), [#2225](https://github.com/react-grid-layout/react-grid-layout/issues/2225)
+
 ## 2.2.1 (Dec 30, 2025)
 
 ### Bug Fixes
