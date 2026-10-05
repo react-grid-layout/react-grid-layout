@@ -592,7 +592,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
 
   const onDragStop = useCallback(
     (i: string, x: number, y: number, data: GridDragEvent) => {
-      if (!activeDrag) return;
+      if (!oldDragItemRef.current) return;
 
       const currentLayout = layoutRef.current;
       const oldDragItem = oldDragItemRef.current;
@@ -627,7 +627,6 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       }
     },
     [
-      activeDrag,
       preventCollision,
       compactType,
       cols,
