@@ -246,6 +246,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
   // State
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
+  // Refs keep interaction math synchronous, but changing a ref alone does not
+  // render a memoized item when its snapped grid geometry stays unchanged.
+  const [, setInteractionRevision] = useState(0);
 
   // Refs for position tracking (avoid state for React 18 batching)
   const elementRef = useRef<HTMLDivElement>(null);
@@ -547,6 +550,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
       const newPosition: PartialPosition = { top, left };
       dragPositionRef.current = newPosition;
+      setInteractionRevision(revision => revision + 1);
 
       // Calculate raw position and apply constraints
       const rawPos = calcXYRaw(positionParams, top, left);
@@ -680,6 +684,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
       }
 
       resizePositionRef.current = updatedSize;
+      if (handlerName === "onResize" && resizing) {
+        setInteractionRevision(revision => revision + 1);
+      }
 
       // Measure the rendered container height so containerBounds (legacy
       // isBounded) can clamp a resize to the container edge (#1779). The item's
@@ -717,6 +724,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
       onResizeStartProp,
       onResizeProp,
       onResizeStopProp,
+      resizing,
       containerWidth,
       positionParams,
       i,
