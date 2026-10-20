@@ -688,8 +688,15 @@ interface DragConfig {
   handle?: string; // CSS selector for drag handle
   cancel?: string; // CSS selector to cancel dragging
   threshold: number; // Pixels to move before drag starts (default: 3)
+  enableUserSelectHack?: boolean; // Hide text selection while dragging (default: true)
 }
 ```
+
+`enableUserSelectHack` is react-draggable's: it adds a class to `<body>` whose
+`::selection` rule applies to every element, so the whole page is restyled
+when a drag starts and again when it ends. On a large page that stalls the
+pick-up and the drop. Set it to `false` and prevent selection yourself, for
+example with `user-select: none` on the grid while its items can be dragged.
 
 ### ResizeConfig
 
@@ -700,6 +707,7 @@ interface ResizeConfig {
   enabled: boolean; // Enable resizing (default: true)
   handles: ResizeHandleAxis[]; // Handle positions (default: ['se'])
   handleComponent?: React.ReactNode | ((axis, ref) => React.ReactNode);
+  enableUserSelectHack?: boolean; // Hide text selection while resizing (default: true)
 }
 ```
 
