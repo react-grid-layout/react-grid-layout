@@ -284,6 +284,15 @@ function GridItemInner(props: GridItemProps): ReactElement {
   const thresholdExceededRef = useRef(false);
   // Auto-scroll controller for edge-scroll during drag (#2232)
   const edgeScrollRef = useRef<EdgeScrollController | null>(null);
+  // Also stop it on unmount: the dropping placeholder is unmounted on drop
+  // without going through onDragStop, which left the loop running (#2312).
+  useEffect(
+    () => () => {
+      edgeScrollRef.current?.stop();
+      edgeScrollRef.current = null;
+    },
+    []
+  );
 
   // Position parameters
   const positionParams: PositionParams = useMemo(
@@ -585,11 +594,11 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
   const onDragStop: DraggableEventHandler = useCallback(
     (e, { node }) => {
-      if (!onDragStopProp || !dragging) return;
-
-      // Stop edge auto-scroll (#2232)
+      // Stop edge auto-scroll (#2232), even if this drag stop is ignored below
       edgeScrollRef.current?.stop();
       edgeScrollRef.current = null;
+
+      if (!onDragStopProp || !dragging) return;
 
       // Reset threshold tracking (#2217)
       const wasPending = dragPendingRef.current;
