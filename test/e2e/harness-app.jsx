@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import GridLayout, {
+import {
+  GridLayout,
   useContainerWidth,
   verticalCompactor
 } from "react-grid-layout";
@@ -25,6 +26,7 @@ const scrollLayout = Array.from({ length: 12 }, (_, i) => ({
 function App() {
   const { width, containerRef } = useContainerWidth();
   const [latestLayout, setLatestLayout] = React.useState([]);
+  const [latestDrop, setLatestDrop] = React.useState([]);
   return (
     <div id="grid-container" ref={containerRef} style={{ width: 1000 }}>
       <GridLayout
@@ -69,6 +71,15 @@ function App() {
       <h3>Touch external drop (touch-drop #2281)</h3>
       <div id="touch-drop-container">
         <div
+          id="external-source"
+          draggable={true}
+          onDragStart={event =>
+            event.dataTransfer.setData("text/plain", "external")
+          }
+        >
+          Drag me with the mouse
+        </div>
+        <div
           id="touch-source"
           data-rgl-draggable={true}
           className="touch-source"
@@ -81,7 +92,7 @@ function App() {
           gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
           compactor={verticalCompactor}
           dropConfig={{ enabled: true }}
-          onDrop={nextLayout => setLatestLayout(nextLayout)}
+          onDrop={nextLayout => setLatestDrop(nextLayout)}
         >
           {layout.map(item => (
             <div key={item.i} className="grid-item">
@@ -89,7 +100,7 @@ function App() {
             </div>
           ))}
         </GridLayout>
-        <pre id="drop-layout-state">{JSON.stringify(latestLayout)}</pre>
+        <pre id="drop-layout-state">{JSON.stringify(latestDrop)}</pre>
       </div>
     </div>
   );
