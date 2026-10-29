@@ -2,6 +2,7 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import {
   GridLayout,
+  noCompactor,
   useContainerWidth,
   verticalCompactor
 } from "react-grid-layout";
@@ -27,6 +28,10 @@ function App() {
   const { width, containerRef } = useContainerWidth();
   const [latestLayout, setLatestLayout] = React.useState([]);
   const [latestDrop, setLatestDrop] = React.useState([]);
+  const dropCompactor =
+    new URLSearchParams(window.location.search).get("compact") === "none"
+      ? noCompactor
+      : verticalCompactor;
   return (
     <div id="grid-container" ref={containerRef} style={{ width: 1000 }}>
       <GridLayout
@@ -90,8 +95,8 @@ function App() {
           width={1000}
           layout={layout}
           gridConfig={{ cols: 12, rowHeight: 30, margin: [10, 10] }}
-          compactor={verticalCompactor}
           dropConfig={{ enabled: true }}
+          compactor={dropCompactor}
           onDrop={nextLayout => setLatestDrop(nextLayout)}
         >
           {layout.map(item => (

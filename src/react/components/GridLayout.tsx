@@ -411,6 +411,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const oldDragItemRef = useRef<LayoutItem | null>(null);
   const oldResizeItemRef = useRef<LayoutItem | null>(null);
   const oldLayoutRef = useRef<Layout | null>(null);
+  const droppingLayoutRef = useRef<Layout | null>(null);
   const dragEnterCounterRef = useRef(0);
   const prevLayoutRef = useRef<Layout>(layout);
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
@@ -837,8 +838,6 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         );
 
       if (!hasPlaceholder) {
-        setDroppingDOMNode(<div key={itemToPlace.i} />);
-        setDroppingPosition(newDroppingPosition);
         // Filter out any stale __dropping-elem__ before adding the new one.
         // This prevents duplicate IDs caused by a race condition where
         // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
@@ -857,7 +856,25 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
           static: false,
           isDraggable: true
         };
-        setLayout(moveToDropPosition([...baseLayout, item], item));
+        // Movement can mutate item positions. Keep the rollback snapshot
+        // independent from the working layout used for collision resolution.
+        const nextLayout = moveToDropPosition(
+          [...cloneLayout(baseLayout), item],
+          item
+        );
+        const placedItem = getLayoutItem(nextLayout, itemToPlace.i);
+        if (!placedItem || placedItem.y + placedItem.h > maxRows) {
+          droppingLayoutRef.current = null;
+          setLayout(baseLayout);
+          setDroppingDOMNode(null);
+          setDroppingPosition(undefined);
+          setActiveDrag(null);
+          return;
+        }
+        droppingLayoutRef.current = baseLayout;
+        setDroppingDOMNode(<div key={itemToPlace.i} />);
+        setDroppingPosition(newDroppingPosition);
+        setLayout(nextLayout);
       } else if (droppingPositionRef.current) {
         const shouldUpdate =
           droppingPositionRef.current.left !== newDroppingPosition.left ||
@@ -874,7 +891,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         }
       }
     },
-    [compactor, preventCollision, compactType, cols, allowOverlap]
+    [compactor, preventCollision, compactType, cols, allowOverlap, maxRows]
   );
 
   const applyTouchDropPosition = useCallback(
@@ -920,30 +937,32 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Drop Handlers
   // ============================================================================
 
-  const removeDroppingPlaceholder = useCallback(() => {
-    // Guard against being called when there's no dropping item (#2210)
-    // This makes the function idempotent and safe to call multiple times
-    const currentLayout = layoutRef.current;
-    const hasDroppingItem = currentLayout.some(l => l.i === droppingItem.i);
-    if (!hasDroppingItem) {
-      // Nothing to remove, just ensure state is clean
+  const removeDroppingPlaceholder = useCallback(
+    (restoreLayout = true) => {
+      // Guard against being called when there's no dropping item (#2210)
+      // This makes the function idempotent and safe to call multiple times
+      const currentLayout = layoutRef.current;
+      const hasDroppingItem = currentLayout.some(l => l.i === droppingItem.i);
+      const beforeDrop = droppingLayoutRef.current;
+      droppingLayoutRef.current = null;
+      if (restoreLayout && beforeDrop) {
+        setLayout(beforeDrop);
+      } else if (hasDroppingItem) {
+        // Committed drops keep any displacement caused by the placeholder.
+        // The compactor also handles allowOverlap internally (#2213).
+        setLayout(
+          compactor.compact(
+            currentLayout.filter(l => l.i !== droppingItem.i),
+            cols
+          )
+        );
+      }
       setDroppingDOMNode(null);
       setActiveDrag(null);
       setDroppingPosition(undefined);
-      return;
-    }
-
-    // Use compactor.compact() - it handles allowOverlap internally (#2213)
-    const newLayout = compactor.compact(
-      currentLayout.filter(l => l.i !== droppingItem.i),
-      cols
-    );
-
-    setLayout(newLayout);
-    setDroppingDOMNode(null);
-    setActiveDrag(null);
-    setDroppingPosition(undefined);
-  }, [droppingItem.i, cols, compactor]);
+    },
+    [droppingItem.i, cols, compactor]
+  );
 
   const handleDragOver = useCallback(
     (e: ReactDragEvent): void | false => {
@@ -1053,7 +1072,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     (nativeEvent: Event) => {
       const currentLayout = layoutRef.current;
       const item = currentLayout.find(l => l.i === droppingItem.i);
-      removeDroppingPlaceholder();
+      removeDroppingPlaceholder(false);
       onDropPropRef.current(currentLayout, item, nativeEvent);
     },
     [droppingItem.i, removeDroppingPlaceholder]

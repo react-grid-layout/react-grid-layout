@@ -1,7 +1,7 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
 import { GridLayout } from "../../src/react/components/GridLayout";
-import { verticalCompactor } from "../../src/core/compactors";
+import { noCompactor, verticalCompactor } from "../../src/core/compactors";
 import type { Compactor } from "../../src/core/types";
 
 describe.each(["mouse", "touch"] as const)(
@@ -13,10 +13,14 @@ describe.each(["mouse", "touch"] as const)(
       document.elementFromPoint = originalElementFromPoint;
     });
 
-    function setup(compactor: Compactor = verticalCompactor) {
+    function setup(
+      compactor: Compactor = verticalCompactor,
+      maxRows = Infinity
+    ) {
       const onDrop = jest.fn();
       const onLayoutChange = jest.fn();
       const initialLayout = [{ i: "a", x: 0, y: 0, w: 1, h: 1 }];
+      let rejectDrop = false;
       const { container } = render(
         <>
           <div data-rgl-draggable="" data-testid="source">
@@ -28,10 +32,14 @@ describe.each(["mouse", "touch"] as const)(
             gridConfig={{
               cols: 2,
               rowHeight: 100,
+              maxRows,
               margin: [0, 0],
               containerPadding: [0, 0]
             }}
-            dropConfig={{ enabled: true }}
+            dropConfig={{
+              enabled: true,
+              onDragOver: () => (rejectDrop ? false : undefined)
+            }}
             compactor={compactor}
             onDrop={onDrop}
             onLayoutChange={onLayoutChange}
@@ -62,12 +70,28 @@ describe.each(["mouse", "touch"] as const)(
       if (input === "touch") touch("touchstart", -50, -50);
 
       return {
+        grid,
         onDrop,
         onLayoutChange,
         initialLayout,
         existing: container.querySelector<HTMLElement>(
           '[data-testid="existing"]'
         )!,
+        cancel(kind: string) {
+          if (kind === "reject") {
+            rejectDrop = true;
+            act(() =>
+              grid.dispatchEvent(new MouseEvent("dragover", { bubbles: true }))
+            );
+          } else if (input === "touch") {
+            if (kind === "leave") document.elementFromPoint = () => source;
+            touch(kind === "leave" ? "touchmove" : "touchcancel", -50, -50);
+          } else {
+            act(() =>
+              grid.dispatchEvent(new MouseEvent("dragleave", { bubbles: true }))
+            );
+          }
+        },
         move(x: number, y: number) {
           if (input === "touch") touch("touchmove", x, y);
           else
@@ -129,6 +153,51 @@ describe.each(["mouse", "touch"] as const)(
       expect(existing.style.transform).toBe("translate(0px,0px)");
       drop(50, 50);
       expect(onDrop.mock.calls[0][1]).toMatchObject({ x: 1, y: 0 });
+    });
+
+    it.each(input === "touch" ? ["leave", "cancel"] : ["leave", "reject"])(
+      "restores displaced items after %s without compaction",
+      kind => {
+        const {
+          move,
+          cancel,
+          existing,
+          onDrop,
+          onLayoutChange,
+          initialLayout
+        } = setup(noCompactor);
+        move(50, 50);
+        expect(existing.style.transform).toBe("translate(0px,100px)");
+        cancel(kind);
+        expect(existing.style.transform).toBe("translate(0px,0px)");
+        expect(onDrop).not.toHaveBeenCalled();
+        expect(onLayoutChange).not.toHaveBeenCalled();
+        expect(initialLayout).toEqual([{ i: "a", x: 0, y: 0, w: 1, h: 1 }]);
+      }
+    );
+
+    it("keeps committed displacements without compaction", () => {
+      const { move, drop, existing, onDrop } = setup(noCompactor);
+      move(50, 50);
+      drop(50, 50);
+      expect(existing.style.transform).toBe("translate(0px,100px)");
+      expect(onDrop.mock.calls[0][1]).toMatchObject({ x: 0, y: 0 });
+    });
+
+    it("does not commit an initial placeholder outside maxRows", () => {
+      const { move, drop, existing, grid, onDrop, onLayoutChange } = setup(
+        {
+          ...noCompactor,
+          preventCollision: true
+        },
+        1
+      );
+      move(50, 50);
+      expect(grid.querySelector(".react-grid-placeholder")).toBeNull();
+      expect(existing.style.transform).toBe("translate(0px,0px)");
+      drop(50, 50);
+      expect(onDrop.mock.calls[0][1]).toBeUndefined();
+      expect(onLayoutChange).not.toHaveBeenCalled();
     });
 
     it("does not push existing items when overlap is allowed", () => {
