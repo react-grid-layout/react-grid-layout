@@ -204,6 +204,67 @@ export function advanceRows(y: number, steps: number): number {
   return y;
 }
 
+type StaticBlocker = { item: LayoutItem; order: number };
+
+function pushBlocker(heap: StaticBlocker[], blocker: StaticBlocker): void {
+  let index = heap.length;
+  heap.push(blocker);
+  while (index > 0) {
+    const parent = Math.floor((index - 1) / 2);
+    if (heap[parent]!.order <= blocker.order) break;
+    heap[index] = heap[parent]!;
+    index = parent;
+  }
+  heap[index] = blocker;
+}
+
+function popBlocker(heap: StaticBlocker[]): void {
+  const last = heap.pop()!;
+  if (heap.length === 0) return;
+  let index = 0;
+  while (index * 2 + 1 < heap.length) {
+    let child = index * 2 + 1;
+    if (child + 1 < heap.length && heap[child + 1]!.order < heap[child]!.order)
+      child++;
+    if (last.order <= heap[child]!.order) break;
+    heap[index] = heap[child]!;
+    index = child;
+  }
+  heap[index] = last;
+}
+
+/** One row-ordered sweep; the heap retains original first-collision priority. */
+function correctStatic(item: Mutable<LayoutItem>, colliders: Layout): void {
+  const blockers: StaticBlocker[] = [];
+  for (let order = 0; order < colliders.length; order++) {
+    const other = colliders[order]!;
+    if (other.i === item.i) continue;
+    if (other.x + other.w <= item.x || other.x >= item.x + item.w) continue;
+    blockers.push({ item: other, order });
+  }
+  blockers.sort((a, b) => a.item.y - b.item.y);
+  const active: StaticBlocker[] = [];
+  let next = 0;
+  for (;;) {
+    while (
+      next < blockers.length &&
+      !(item.y + item.h <= blockers[next]!.item.y)
+    ) {
+      pushBlocker(active, blockers[next++]!);
+    }
+    while (active.length > 0 && item.y >= active[0]!.item.y + active[0]!.item.h)
+      popBlocker(active);
+    if (active.length === 0) return;
+    const collision = active[0]!.item;
+    // Keep the original collider priority and subtraction order: decimal
+    // rounding can change ceil(end - y), even when interval unions agree.
+    item.y = advanceRows(
+      item.y,
+      Math.max(1, Math.ceil(collision.y + collision.h - item.y))
+    );
+  }
+}
+
 /**
  * Ensure all layout items fit within the grid bounds.
  *
@@ -251,11 +312,7 @@ export function correctBounds(
       collidesWith.push(l);
     } else {
       // Static items that collide with other statics must be moved down
-      let collision: LayoutItem | undefined;
-      while ((collision = getFirstCollision(collidesWith, l))) {
-        const end = collision.y + collision.h;
-        l.y = advanceRows(l.y, Math.max(1, Math.ceil(end - l.y)));
-      }
+      correctStatic(l, collidesWith);
     }
   }
 

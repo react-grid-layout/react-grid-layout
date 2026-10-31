@@ -11,6 +11,7 @@ export const securityVectors = [
   "large-y",
   "minH-resize",
   "overlapping-statics",
+  "overlapping-statics-1000",
   "wrap-static",
   "wrap-fractional",
   "wrap-mixed-10000",
@@ -74,19 +75,24 @@ export function securityScenario(vector: SecurityVector): Counts {
 
       break;
     }
-    case "overlapping-statics": {
-      const input = Array.from({ length: 80 }, (_, i) => ({
+    case "overlapping-statics":
+    case "overlapping-statics-1000": {
+      const n = vector === "overlapping-statics-1000" ? 1000 : 80;
+      const input = Array.from({ length: n }, (_, i) => ({
         ...item,
         i: String(i),
         h: 10_000,
         static: true
       }));
-      counts = measure(() => {
-        correctBounds(input, { cols: 1 });
-      }, 200_000);
+      counts = measure(
+        () => {
+          correctBounds(input, { cols: 1 });
+        },
+        n === 1000 ? 20_000_000 : 200_000
+      );
       expect(input[0]!.y).toBe(10_000);
-      expect(input[78]!.y).toBe(790_000);
-      expect(input[79]!.y).toBe(0);
+      expect(input[n - 2]!.y).toBe((n - 1) * 10_000);
+      expect(input[n - 1]!.y).toBe(0);
 
       break;
     }
@@ -166,7 +172,13 @@ export function securityScenario(vector: SecurityVector): Counts {
     }
   }
   expect(counts.collides).toBeLessThan(
-    50 * (vector === "overlapping-statics" ? 80 : 2) ** 2
+    50 *
+      (vector === "overlapping-statics-1000"
+        ? 1000
+        : vector === "overlapping-statics"
+          ? 80
+          : 2) **
+        2
   );
   return counts;
 }
