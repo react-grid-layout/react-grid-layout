@@ -3,3 +3,6 @@ examples/
 __mocks__/
 flow-typed/
 codemaps/
+
+# Golden files use one item per line for reviewable diffs.
+test/golden/__golden__/

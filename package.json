@@ -82,7 +82,8 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "golden:update": "GOLDEN_UPDATE=1 NODE_ENV=test jest --runInBand --testPathPatterns /test/golden/"
   },
   "repository": {
     "type": "git",
@@ -182,7 +183,8 @@
     "testMatch": [
       "<rootDir>/test/spec/*.js",
       "<rootDir>/test/spec/*.ts",
-      "<rootDir>/test/spec/*.tsx"
+      "<rootDir>/test/spec/*.tsx",
+      "<rootDir>/test/golden/cases/*.golden-test.ts"
     ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
