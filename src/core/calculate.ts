@@ -386,15 +386,10 @@ export function calcGridCellDimensions(
   // Calculate cell width: total width minus padding and gaps, divided by columns
   // Formula: width = 2*padding + cols*cellWidth + (cols-1)*gap
   // Solving for cellWidth: cellWidth = (width - 2*padding - (cols-1)*gap) / cols
-  // Subtract padding first to preserve the original floating-point order.
-  const cellWidth = calcGridColWidth({
-    containerWidth: width - padding[0] * 2,
-    cols,
-    rowHeight,
-    margin,
-    containerPadding: [0, 0],
-    maxRows: Infinity
-  });
+  // Not routed through calcGridColWidth: that subtracts margins before padding,
+  // and floating-point subtraction is not associative. Unifying the two is a
+  // golden diff for the GridBackground rewrite (RFC 0003 RGL-34).
+  const cellWidth = (width - padding[0] * 2 - margin[0] * (cols - 1)) / cols;
   const cellHeight = rowHeight;
 
   return {
