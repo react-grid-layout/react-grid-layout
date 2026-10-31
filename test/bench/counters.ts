@@ -20,17 +20,23 @@ const arrayMethods = [
   "includes"
 ] as const;
 
+// Compatibility aggregates for stacked performance branches. Generic probes
+// derive all other function/loop keys directly from the source AST.
+const legacyCounters = {
+  collides: "core/collision.ts:collides",
+  getFirstCollision: "core/collision.ts:getFirstCollision",
+  cloneLayoutItem: "core/layout.ts:cloneLayoutItem",
+  getStatics: "core/layout.ts:getStatics"
+};
+
 export const counterNames = [
   ...arrayMethods,
+  ...Object.keys(legacyCounters),
   "arrayIterator",
   "clientHeight",
-  "cloneLayoutItem",
-  "collides",
   "compact",
   "getBoundingClientRect",
   "getComputedStyle",
-  "getFirstCollision",
-  "getStatics",
   "gridItemCommits",
   "gridItemMaxCommits",
   "gridItemRenders",
@@ -75,12 +81,7 @@ export function measure(operation: () => void): Counts {
     counterNames.map(key => [key, 0])
   ) as Counts;
   // Preserve the original aggregate names without extra work on every entry.
-  for (const [legacy, key] of Object.entries({
-    collides: "core/collision.ts:collides",
-    getFirstCollision: "core/collision.ts:getFirstCollision",
-    cloneLayoutItem: "core/layout.ts:cloneLayoutItem",
-    getStatics: "core/layout.ts:getStatics"
-  })) {
+  for (const [legacy, key] of Object.entries(legacyCounters)) {
     Object.defineProperty(counts, legacy, {
       enumerable: true,
       get: () => counts[key] ?? 0
@@ -127,7 +128,7 @@ export function measure(operation: () => void): Counts {
       Object.defineProperty(owner, key, {
         ...descriptor,
         get(this: HTMLElement) {
-          counts[typeof key === "symbol" ? "arrayIterator" : key]++;
+          counts[key]++;
           return descriptor.get!.call(this);
         }
       });
@@ -142,7 +143,7 @@ export function measure(operation: () => void): Counts {
       Object.defineProperty(owner, key, {
         ...descriptor,
         value(this: unknown, ...args: unknown[]) {
-          counts[typeof key === "symbol" ? "arrayIterator" : key]++;
+          counts[key]++;
           return original.apply(this, args);
         }
       });

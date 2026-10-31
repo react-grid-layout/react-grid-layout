@@ -36,7 +36,6 @@ jest.mock("../../src/react/components/GridItem", () => {
 });
 
 type Baseline = {
-  audit: Record<string, unknown>;
   scenarios: Record<string, Counts>;
 };
 const baselinePath = path.join(__dirname, "baseline.json");
@@ -63,6 +62,8 @@ beforeAll(() => {
         const arrow = () => [1, 2].map(value => value);
         named(); arrow();
         let i = 0; while (i++ < 2) {} do { i--; } while (i > 0);
+        for (const value of [1, 2]) { if (value === 2) continue; }
+        for (const key in { a: 1, b: 2 }) {}
       } }; strategy.run();`,
       expected: [
         "extras/probe.ts:strategy.run",
@@ -71,24 +72,42 @@ beforeAll(() => {
         "extras/probe.ts:strategy.run.arrow",
         ...Array(2).fill("extras/probe.ts:strategy.run.arrow.callback1"),
         ...Array(2).fill("extras/probe.ts:strategy.run:loop1"),
-        ...Array(3).fill("extras/probe.ts:strategy.run:loop2")
+        ...Array(3).fill("extras/probe.ts:strategy.run:loop2"),
+        ...Array(2).fill("extras/probe.ts:strategy.run:loop3"),
+        ...Array(2).fill("extras/probe.ts:strategy.run:loop4")
       ]
+    },
+    {
+      file: "../react/components/GridItem.tsx",
+      code: "function GridItemInner(renamed) { return renamed.i; } GridItemInner({ i: '0' });",
+      expected: ["GridItemInner"]
     }
   ];
   for (const fixture of fixtures) {
-    const entries: string[] = [];
-    const transformed = transformSync(fixture.code, {
-      babelrc: false,
-      configFile: false,
-      filename: path.resolve(__dirname, "../../src/core", fixture.file),
-      plugins: [require.resolve("./instrument.cjs")]
-    })!.code!;
-    runInNewContext(transformed, {
-      __RGL_BENCH__: {
-        __RGL_BENCH_COUNT__: (name: string) => entries.push(name)
-      }
-    });
-    expect(entries).toEqual(fixture.expected);
+    for (const lowered of [false, true]) {
+      const entries: string[] = [];
+      const transformed = transformSync(
+        `// unrelated comment\n\n${fixture.code}`,
+        {
+          babelrc: false,
+          configFile: false,
+          filename: path.resolve(__dirname, "../../src/core", fixture.file),
+          plugins: [require.resolve("./instrument.cjs")],
+          presets: lowered
+            ? [["@babel/preset-env", { targets: { ie: "11" } }]]
+            : []
+        }
+      )!.code!;
+      runInNewContext(transformed, {
+        __RGL_BENCH__: {
+          __RGL_BENCH_COUNT__: (name: string, props?: { i: string }) => {
+            entries.push(name);
+            if (name === "GridItemInner") expect(props).toEqual({ i: "0" });
+          }
+        }
+      });
+      expect(entries).toEqual(fixture.expected);
+    }
   }
 });
 
@@ -101,6 +120,12 @@ function regressions(
     ...new Set([...Object.keys(actual), ...Object.keys(expected)])
   ].sort();
   for (const scenario of scenarios) {
+    if (!Object.hasOwn(actual, scenario)) {
+      diff.push(`${scenario}: missing scenario in measurement`);
+    }
+    if (!Object.hasOwn(expected, scenario)) {
+      diff.push(`${scenario}: missing scenario in baseline`);
+    }
     for (const counter of new Set([
       ...Object.keys(actual[scenario] ?? {}),
       ...Object.keys(expected[scenario] ?? {})
@@ -141,7 +166,7 @@ function serialize(baseline: Baseline): string {
         return `    ${JSON.stringify(key)}: ${JSON.stringify(sorted)}`;
       })
       .join(",\n");
-  return `{\n  "audit": {\n${lines(baseline.audit)}\n  },\n  "scenarios": {\n${lines(baseline.scenarios)}\n  }\n}\n`;
+  return `{\n  "scenarios": {\n${lines(baseline.scenarios)}\n  }\n}\n`;
 }
 
 beforeAll(() => {
@@ -152,7 +177,12 @@ beforeAll(() => {
   );
   const rect = Element.prototype.getBoundingClientRect;
   const style = window.getComputedStyle;
-  const sort = Array.prototype.sort;
+  const arrayDescriptors = () =>
+    Reflect.ownKeys(Array.prototype).map(key => [
+      key,
+      Object.getOwnPropertyDescriptor(Array.prototype, key)
+    ]);
+  const arrays = arrayDescriptors();
   const counts = measure(() => {
     collides(item, item);
     getFirstCollision([], item);
@@ -203,7 +233,7 @@ beforeAll(() => {
       throw new Error("probe failure");
     })
   ).toThrow("probe failure");
-  expect(Array.prototype.sort).toBe(sort);
+  expect(arrayDescriptors()).toEqual(arrays);
   expect(Element.prototype.getBoundingClientRect).toBe(rect);
   expect(window.getComputedStyle).toBe(style);
   expect(
@@ -271,6 +301,18 @@ test("baseline gate requires exact counts and reports missing counters", () => {
   expect(regressions({}, { frame: budget })).toContain(
     "frame sort: missing/invalid budget or measurement (2 -> undefined)"
   );
+  expect(regressions({ frame: {} }, { frame: { retired: 0 } })).toEqual([
+    "frame retired: missing/invalid budget or measurement (0 -> undefined)"
+  ]);
+  expect(regressions({ frame: { added: 0 } }, { frame: {} })).toEqual([
+    "frame added: missing/invalid budget or measurement (undefined -> 0)"
+  ]);
+  expect(regressions({}, { empty: {} })).toEqual([
+    "empty: missing scenario in measurement"
+  ]);
+  expect(regressions({ empty: {} }, {})).toEqual([
+    "empty: missing scenario in baseline"
+  ]);
 });
 
 test("operation counts must equal the committed baseline", () => {
@@ -282,7 +324,7 @@ test("operation counts must equal the committed baseline", () => {
   if (process.env.BENCH_UPDATE === "1") {
     // Write only after every scenario and its interaction assertions succeed.
     const temporary = `${baselinePath}.tmp`;
-    writeFileSync(temporary, serialize({ audit: baseline.audit, scenarios }));
+    writeFileSync(temporary, serialize({ scenarios }));
     renameSync(temporary, baselinePath);
   } else {
     const diff = regressions(scenarios, baseline.scenarios);
