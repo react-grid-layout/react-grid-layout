@@ -1,5 +1,6 @@
 import type { CompactType, Layout, LayoutItem } from "../types.js";
 import { collides } from "../collision.js";
+import { sortLayoutItems } from "../sort.js";
 
 type Entry = {
   item: LayoutItem;
@@ -10,7 +11,8 @@ type Entry = {
 
 /** A stable sorted view and interval bounds, repaired after each position write. */
 export class DragCollisionIndex {
-  private readonly entries: Entry[] = [];
+  private entries: Entry[] = [];
+  private readonly inputOrder: Entry[] = [];
   private readonly byItem = new Map<LayoutItem, Entry[]>();
   private readonly axis: "x" | "y";
   private readonly cross: "x" | "y";
@@ -29,15 +31,36 @@ export class DragCollisionIndex {
       const item = layout[order];
       if (item === undefined) continue;
       const entry = { item, order, index: order, maxEnd: 0 };
-      this.entries.push(entry);
+      this.inputOrder.push(entry);
       const occurrences = this.byItem.get(item);
       if (occurrences === undefined) this.byItem.set(item, [entry]);
       else occurrences.push(entry);
       this.checkCoordinates(item);
     }
-    if (compactType !== null) {
-      this.entries.sort((a, b) => this.compare(a, b));
-    }
+    this.sortFromInput();
+  }
+
+  /**
+   * Order entries exactly as moveElement always has: sortLayoutItems over the
+   * layout in input order. Used at construction and whenever a non-finite
+   * coordinate makes the comparator inconsistent, because binary insertion
+   * needs a total order and NaN does not provide one.
+   */
+  private sortFromInput(): void {
+    const items = this.inputOrder.map(entry => entry.item);
+    const sorted = sortLayoutItems(items, this.compactType);
+    // Stable sort keeps repeated references in input order, so each item's
+    // occurrences map back to its entries in sequence.
+    const next = new Map<LayoutItem, number>();
+    this.entries = sorted.map(item => {
+      const occurrences = this.byItem.get(item) ?? [];
+      const k = next.get(item) ?? 0;
+      next.set(item, k + 1);
+      const entry = occurrences[k];
+      if (entry === undefined)
+        throw new Error("DragCollisionIndex: item has no entry");
+      return entry;
+    });
     this.refresh(0);
   }
 
@@ -71,6 +94,10 @@ export class DragCollisionIndex {
     this.checkCoordinates(item);
     const occurrences = this.byItem.get(item);
     if (this.compactType === null || occurrences === undefined) return;
+    if (!this.searchable) {
+      this.sortFromInput();
+      return;
+    }
 
     let start = this.entries.length;
     // Remove all occurrences before reinserting: a repeated reference changes
