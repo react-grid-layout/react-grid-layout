@@ -68,6 +68,14 @@ describe("golden harness preserves observable differences", () => {
     expect(unshared.identity.aliases).toEqual([]);
   });
 
+  it("copies an own __proto__ key as a key, not as the prototype", () => {
+    const input = JSON.parse('{"__proto__": {"x": 1}, "i": "a"}');
+    const cloned = copy(input);
+    expect(Object.getPrototypeOf(cloned)).toBe(Object.prototype);
+    expect(Object.keys(cloned)).toEqual(["__proto__", "i"]);
+    expect(serialize(cloned)).toBe(serialize(input));
+  });
+
   it("copies custom fields and aliases without filling array holes", () => {
     const item = { i: "a", data: { label: "custom" } };
     const layout = new Array(3);
