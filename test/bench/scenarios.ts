@@ -29,7 +29,7 @@ export const sizes = [50, 500, 2000] as const;
 const cols = 12;
 const seed = 42;
 
-/** count.cjs's mixed-size corpus, using the golden corpus PRNG and IDs. */
+/** Mixed sizes and row jitter, using the golden corpus PRNG and IDs. */
 function mixed(size: number): Layout {
   const random = mulberry32(seed);
   let x = 0;
@@ -74,9 +74,12 @@ type Interaction =
   | "breakpoint"
   | "drop";
 
-function reactScenario(size: number, interaction: Interaction): Counts {
+function reactScenario(
+  size: number,
+  interaction: Interaction,
+  family: "packed" | "sparse"
+): Counts {
   const isResize = interaction.startsWith("resize");
-  const family = isResize ? "sparse" : "packed";
   const layout = verticalCompactor.compact(
     generate(family, seed, size, cols),
     cols
@@ -203,9 +206,10 @@ function reactScenario(size: number, interaction: Interaction): Counts {
     }
     const item = view.container.querySelector<HTMLElement>(
       '[data-bench-id="0"]'
-    )!;
+    );
+    if (!item) throw new Error(`Missing ${interaction} item`);
     const target = isResize
-      ? item.querySelector<HTMLElement>(".react-resizable-handle-se")!
+      ? item.querySelector<HTMLElement>(".react-resizable-handle-se")
       : item;
     if (!target) throw new Error(`Missing ${interaction} target`);
 
@@ -267,6 +271,15 @@ function reactScenario(size: number, interaction: Interaction): Counts {
 
 export function runScenarios(): Record<string, Counts> {
   const results: Record<string, Counts> = {};
+  const recordReact = (size: number, interaction: Interaction) => {
+    const family = interaction.startsWith("resize") ? "sparse" : "packed";
+    const id = String(size).padStart(4, "0");
+    results[`${interaction}/${family}/${id}`] = reactScenario(
+      size,
+      interaction,
+      family
+    );
+  };
   for (const size of sizes) {
     const base = mixed(size);
     const mid = Math.floor(bottom(base) / 2);
@@ -299,18 +312,13 @@ export function runScenarios(): Record<string, Counts> {
       "resize",
       "parent-rerender"
     ] as const) {
-      const family = interaction === "resize" ? "sparse" : "packed";
-      results[`${interaction}/${family}/${id}`] = reactScenario(
-        size,
-        interaction
-      );
+      recordReact(size, interaction);
     }
   }
-  results["mount/packed/2000"] = reactScenario(2000, "mount");
+  recordReact(2000, "mount");
   for (const size of [50, 500]) {
-    const id = String(size).padStart(4, "0");
-    results[`drag-stop/packed/${id}`] = reactScenario(size, "drag-stop");
-    results[`resize-stop/sparse/${id}`] = reactScenario(size, "resize-stop");
+    recordReact(size, "drag-stop");
+    recordReact(size, "resize-stop");
   }
   for (const [name, compactor] of Object.entries({
     horizontal: horizontalCompactor,
@@ -335,9 +343,11 @@ export function runScenarios(): Record<string, Counts> {
       ).toBeGreaterThan(0);
     results[`compact-${name}/statics-scattered/0500`] = counts;
   }
-  results["breakpoint/packed/0500"] = reactScenario(500, "breakpoint");
-  results["drop/packed/0500"] = reactScenario(500, "drop");
+  recordReact(500, "breakpoint");
+  recordReact(500, "drop");
   return Object.fromEntries(
-    Object.entries(results).sort(([a], [b]) => a.localeCompare(b))
+    Object.keys(results)
+      .sort()
+      .map(key => [key, results[key]])
   );
 }

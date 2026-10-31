@@ -30,7 +30,7 @@ jobs:
         run: yarn test
 
       # Deterministic operation counts (sorts, collides calls, clones, renders).
-      # Fails when any count rises above test/bench/baseline.json.
+      # Requires exact equality with test/bench/baseline.json.
       - name: Check operation-count budgets
         run: yarn bench:ops
 
