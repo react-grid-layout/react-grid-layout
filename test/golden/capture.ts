@@ -10,10 +10,14 @@ export function copy<T>(value: T, seen = new Map<object, unknown>()): T {
     : {};
   seen.set(value, result);
   for (const key of Object.keys(value)) {
-    (result as Record<string, unknown>)[key] = copy(
-      (value as Record<string, unknown>)[key],
-      seen
-    );
+    // defineProperty, not assignment: an own "__proto__" key must stay a key
+    // instead of replacing the clone's prototype.
+    Object.defineProperty(result, key, {
+      value: copy((value as Record<string, unknown>)[key], seen),
+      enumerable: true,
+      writable: true,
+      configurable: true
+    });
   }
   return result as T;
 }
