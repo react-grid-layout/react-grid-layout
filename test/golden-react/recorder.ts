@@ -1,6 +1,6 @@
 import React from "react";
 import { act } from "@testing-library/react";
-import { serialize } from "./serialize";
+import { normalize } from "../golden/serialize";
 
 // Pass-through instrumentation: retain the real GridItem and its memo comparator.
 // No drag/resize dependency is mocked. Profiler timings are deliberately omitted.
@@ -138,10 +138,10 @@ export function withRecorder(
         } else {
           payload = { args };
         }
-        const entry: any = serialize({ name, ...payload });
+        const entry: any = normalize({ name, ...payload });
         callbacks.push(entry);
         const result = handlers[name]?.(...args);
-        if (name === "onDropDragOver") entry.result = serialize(result);
+        if (name === "onDropDragOver") entry.result = normalize(result);
         return result;
       }
     ])
@@ -154,20 +154,20 @@ export function withRecorder(
       container = element;
     },
     note(value: unknown) {
-      notes.push(serialize(value));
+      notes.push(normalize(value));
     },
     step(input: object, action: () => void) {
       activeRenders = renders;
       act(action);
-      trace.push(
-        serialize({
-          input,
-          callbacks,
-          dom: domFrame(container),
-          renders: { ...renders },
-          ...(notes.length > 0 ? { notes } : {})
-        })
-      );
+      // Callbacks and notes were normalized at their capture boundary. Encoding
+      // them again would escape generated sentinels as ordinary "$" objects.
+      trace.push({
+        input: normalize(input),
+        callbacks,
+        dom: normalize(domFrame(container)),
+        renders: normalize({ ...renders }),
+        ...(notes.length > 0 ? { notes } : {})
+      });
       callbacks = [];
       notes = [];
     },

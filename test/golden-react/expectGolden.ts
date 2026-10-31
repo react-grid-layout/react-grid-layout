@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import { traceJSON } from "./serialize";
+import { formatTrace } from "./formatTrace";
 
 export function expectGolden(
   scenario: string,
   variant: string,
-  steps: unknown[],
+  steps: object[],
   metadata: object = {}
 ) {
   if (!/^[\w-]+$/.test(scenario) || !/^[\w-]+$/.test(variant)) {
@@ -16,7 +16,7 @@ export function expectGolden(
     "__golden__",
     `${scenario}.${variant}.trace.json`
   );
-  const actual = traceJSON(steps, { scenario, variant, ...metadata });
+  const actual = formatTrace(steps, { scenario, variant, ...metadata });
   if (process.env.GOLDEN_UPDATE === "1") {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, actual);

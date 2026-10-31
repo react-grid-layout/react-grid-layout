@@ -29,7 +29,7 @@ corepack yarn golden:update
 
 The normal `corepack yarn test` command includes these tests. Only
 `GOLDEN_UPDATE=1` writes goldens; missing files fail an ordinary run. The update
-command also covers the sibling core corpus when that branch lands.
+command regenerates both this corpus and the sibling core corpus.
 
 Every golden diff must be explained in its PR. Identify the input event and the
 changed callback, geometry, or render behavior. Explain whether the change is an
@@ -44,7 +44,7 @@ golden-react/
 ├── pointer.ts         one act() per native mouse/touch event
 ├── drop.ts            HTML5 fireEvent and document touch-drop adapters
 ├── recorder.ts        ordered callbacks, DOM frames, Profiler instrumentation
-├── serialize.ts       canonical keys; explicit undefined, NaN and ±Infinity
+├── formatTrace.ts     one normalized step per line; shared core value encoding
 ├── expectGolden.ts    explicit update; nested Jest diffs on ordinary runs
 ├── fixture.tsx        stable v2/legacy and Responsive fixtures
 ├── hookHarness.tsx    public useGridLayout + real GridItem consumer assembly
@@ -56,7 +56,7 @@ Each file contains `metadata` and `steps`. A step records its input, every
 callback in order, item styles and classes, handle identities, the placeholder,
 dropping state, container height, and cumulative Profiler counts. Callback
 arguments retain complete layout items, including absent optional values as
-`{"$undefined":true}`. Non-finite numbers use `{"$number":"NaN"}` or the
+`{"$u":1}`. Non-finite numbers use `{"$number":"NaN"}` or the
 corresponding Infinity string. Events retain only their type; nodes use stable
 item/handle IDs. Copying arguments at callback time preserves their values even
 when later movement mutates the original objects.
@@ -129,5 +129,7 @@ throws a sentinel after a finite render cap and catches it in an ErrorBoundary;
 the audit's unbounded `U` probe is never executed.
 
 See [verification.md](verification.md) for coverage, repeatability, and mutation
-evidence. The serializer and writer intentionally live here, apart from
-`test/golden/`, until the two branches can share their tooling.
+evidence. Value encoding uses `normalize` from `test/golden/serialize.ts`.
+The recorder normalizes each value at capture time. `formatTrace` lays out those
+normalized steps without encoding them again, which would escape sentinels as
+ordinary objects. The core harness owns the serializer guards.
