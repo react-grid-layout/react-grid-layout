@@ -12,7 +12,10 @@ export const securityVectors = [
   "minH-resize",
   "overlapping-statics",
   "wrap-static",
-  "wrap-fractional"
+  "wrap-fractional",
+  "wrap-mixed-10000",
+  "wrap-mixed-billion",
+  "wrap-mixed-decimal"
 ] as const;
 export type SecurityVector = (typeof securityVectors)[number];
 
@@ -23,6 +26,39 @@ export function securityScenario(vector: SecurityVector): Counts {
   let counts: Counts;
   const item: LayoutItem = { i: "a", x: 0, y: 0, w: 1, h: 1 };
   switch (vector) {
+    case "wrap-mixed-10000":
+    case "wrap-mixed-billion":
+    case "wrap-mixed-decimal": {
+      const height = vector === "wrap-mixed-10000" ? 10_000 : 1e9;
+      let output: Layout = [];
+      counts = measure(
+        () => {
+          output = wrapCompactor.compact(
+            [
+              { ...item, i: "integer", w: 2, h: height, static: true },
+              {
+                ...item,
+                i: "fraction",
+                x: vector === "wrap-mixed-decimal" ? 2.4 : 2.5,
+                y: vector === "wrap-mixed-decimal" ? 0.9 : 0.875,
+                w: 1.5,
+                h: height,
+                static: true
+              },
+              { ...item, i: "first", y: 1, w: 2 },
+              { ...item, i: "second", y: 1 }
+            ],
+            4
+          );
+        },
+        vector === "wrap-mixed-decimal" ? 200_000 : 20_000
+      );
+      expect(output[2]).toMatchObject({ x: 2, y: 0 });
+      if (vector === "wrap-mixed-decimal")
+        expect(output[3]!.y).toBeLessThanOrEqual(height);
+      else expect(output[3]).toMatchObject({ x: 0, y: height });
+      break;
+    }
     case "large-y": {
       let output: Layout = [];
       counts = measure(() => {

@@ -182,7 +182,7 @@ export function withLayoutItem(
 // ============================================================================
 
 /** Preserve the rounding of repeated y++ while skipping whole unit ranges. */
-function advanceRows(y: number, steps: number): number {
+export function advanceRows(y: number, steps: number): number {
   if (Number.isInteger(y)) return y + steps;
   if (y < 0) {
     const advance = Math.min(steps, Math.ceil(-y));

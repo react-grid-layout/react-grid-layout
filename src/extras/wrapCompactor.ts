@@ -27,7 +27,7 @@
  */
 
 import type { Compactor, Layout, LayoutItem, Mutable } from "../core/types.js";
-import { cloneLayout, cloneLayoutItem } from "../core/layout.js";
+import { advanceRows, cloneLayout, cloneLayoutItem } from "../core/layout.js";
 
 /**
  * Sort items in wrap order: left-to-right, top-to-bottom.
@@ -55,14 +55,6 @@ function fromWrapPosition(pos: number, cols: number): { x: number; y: number } {
 type Interval = { start: number; end: number };
 type OccupiedRectangle = Interval & { left: number; right: number };
 type OccupiedBand = Interval & { columns: Interval[] };
-type SampledStatic = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  exactLattice: boolean;
-};
-
 function hasExactSampleLattice(item: LayoutItem, cols: number): boolean {
   const magnitude =
     (Math.abs(item.y) + Math.ceil(item.h)) * cols +
@@ -74,12 +66,6 @@ function hasExactSampleLattice(item: LayoutItem, cols: number): boolean {
   return (
     Number.isSafeInteger(item.x / unit) && Number.isSafeInteger(item.y / unit)
   );
-}
-
-function insertBoundary(boundaries: number[], value: number): void {
-  let index = 0;
-  while (index < boundaries.length && boundaries[index]! < value) index++;
-  if (boundaries[index] !== value) boundaries.splice(index, 0, value);
 }
 
 function insertInterval(
@@ -98,29 +84,20 @@ function insertInterval(
   intervals.splice(index, 0, { start, end });
 }
 
-function addStatic(
-  rectangles: OccupiedRectangle[],
-  sampledStatics: SampledStatic[],
-  item: LayoutItem,
+/** Add an affine rectangle of sampled cells to its fractional lattice. */
+function addRectangle(
+  lattices: Map<number, OccupiedRectangle[]>,
+  start: number,
+  width: number,
+  height: number,
   cols: number
 ): void {
-  const width = Math.ceil(item.w);
-  const height = Math.ceil(item.h);
-  if (!(width > 0 && height > 0)) return;
-  if (!Number.isInteger(item.x) || !Number.isInteger(item.y)) {
-    sampledStatics.push({
-      x: item.x,
-      y: item.y,
-      width,
-      height,
-      exactLattice: hasExactSampleLattice(item, cols)
-    });
-    return;
-  }
-
-  const start = item.y * cols + item.x;
-  const row = Math.floor(start / cols);
-  const left = start - row * cols;
+  const fraction = start - Math.floor(start);
+  let rectangles = lattices.get(fraction);
+  if (!rectangles) lattices.set(fraction, (rectangles = []));
+  const integerStart = start - fraction;
+  const row = Math.floor(integerStart / cols);
+  const left = integerStart - row * cols;
   if (width < cols) {
     rectangles.push({
       start: row,
@@ -128,40 +105,118 @@ function addStatic(
       left,
       right: Math.min(cols, left + width)
     });
-    if (left + width > cols) {
+    if (left + width > cols)
       rectangles.push({
         start: row + 1,
         end: row + height + 1,
         left: 0,
         right: left + width - cols
       });
-    }
     return;
   }
-
-  // Adjacent sampled rows overlap when the width reaches cols. Represent
-  // their union with two edge rows and one band, even for enormous heights.
-  const end = start + (height - 1) * cols + width;
+  const end = integerStart + (height - 1) * cols + width;
   const lastRow = Math.floor(end / cols);
   rectangles.push({ start: row, end: row + 1, left, right: cols });
   if (lastRow > row + 1)
     rectangles.push({ start: row + 1, end: lastRow, left: 0, right: cols });
-  if (end > lastRow * cols) {
+  if (end > lastRow * cols)
     rectangles.push({
       start: lastRow,
       end: lastRow + 1,
       left: 0,
       right: end - lastRow * cols
     });
+}
+
+function exponent(value: number): number {
+  return value === 0 ? -Infinity : Math.floor(Math.log2(Math.abs(value)));
+}
+
+/**
+ * Within fixed IEEE-754 binades, adding integer row/cell offsets translates
+ * the same fractional sample. Split only where intermediate precision changes,
+ * preserving (y + dy) * cols + (x + dx), including decimal rounding.
+ */
+function addSampleRectangle(
+  lattices: Map<number, OccupiedRectangle[]>,
+  item: LayoutItem,
+  cols: number,
+  dx: number,
+  dy: number,
+  width: number,
+  height: number
+): void {
+  const left = item.x + dx;
+  const right = item.x + (dx + width - 1);
+  const top = item.y + dy;
+  const bottom = item.y + (dy + height - 1);
+  const base = top * cols;
+  const lastBase = bottom * cols;
+  const start = base + left;
+  const end = lastBase + right;
+  const uniform =
+    hasExactSampleLattice(item, cols) ||
+    (exponent(left) === exponent(right) &&
+      exponent(top) === exponent(bottom) &&
+      exponent(base) === exponent(lastBase) &&
+      exponent(start) === exponent(end) &&
+      exponent(end) < 52 &&
+      end === start + (height - 1) * cols + (width - 1));
+  if (uniform || (width === 1 && height === 1)) {
+    addRectangle(lattices, start, width, height, cols);
+    return;
+  }
+  if (height > 1 && (height * cols >= width || width === 1)) {
+    const first = Math.floor(height / 2);
+    addSampleRectangle(lattices, item, cols, dx, dy, width, first);
+    addSampleRectangle(
+      lattices,
+      item,
+      cols,
+      dx,
+      dy + first,
+      width,
+      height - first
+    );
+  } else {
+    const first = Math.floor(width / 2);
+    addSampleRectangle(lattices, item, cols, dx, dy, first, height);
+    addSampleRectangle(
+      lattices,
+      item,
+      cols,
+      dx + first,
+      dy,
+      width - first,
+      height
+    );
   }
 }
 
 function occupiedBands(rectangles: OccupiedRectangle[]): OccupiedBand[] {
-  const boundaries: number[] = [];
-  for (let i = 0; i < rectangles.length; i++) {
-    insertBoundary(boundaries, rectangles[i]!.start);
-    insertBoundary(boundaries, rectangles[i]!.end);
+  // Precision splits can create neighboring rectangles with identical columns.
+  // Coalesce them before crossing row boundaries, including across statics.
+  rectangles.sort(
+    (a, b) => a.left - b.left || a.right - b.right || a.start - b.start
+  );
+  const merged: OccupiedRectangle[] = [];
+  for (const rectangle of rectangles) {
+    const previous = merged[merged.length - 1];
+    if (
+      previous &&
+      previous.left === rectangle.left &&
+      previous.right === rectangle.right &&
+      previous.end >= rectangle.start
+    ) {
+      previous.end = Math.max(previous.end, rectangle.end);
+    } else merged.push({ ...rectangle });
   }
+  rectangles = merged;
+  const boundaries = [
+    ...new Set(
+      rectangles.flatMap(rectangle => [rectangle.start, rectangle.end])
+    )
+  ].sort((a, b) => a - b);
   const bands: OccupiedBand[] = [];
   for (let i = 1; i < boundaries.length; i++) {
     const start = boundaries[i - 1]!;
@@ -181,67 +236,33 @@ function occupiedBands(rectangles: OccupiedRectangle[]): OccupiedBand[] {
 function skipStatics(
   position: number,
   cols: number,
-  bands: OccupiedBand[],
-  sampledStatics: SampledStatic[]
+  lattices: Map<number, OccupiedBand[]>
 ): number {
-  if (bands.length === 0 && sampledStatics.length === 0) return position;
   let previous: number;
   do {
     previous = position;
-    if (Number.isInteger(position)) {
-      const row = Math.floor(position / cols);
-      const column = position - row * cols;
-      for (let i = 0; i < bands.length; i++) {
-        const band = bands[i]!;
-        if (row < band.start || row >= band.end) continue;
-        for (let j = 0; j < band.columns.length; j++) {
-          const interval = band.columns[j]!;
-          if (column < interval.start || column >= interval.end) continue;
-          position =
-            interval.start === 0 && interval.end === cols
-              ? band.end * cols
-              : row * cols + interval.end;
-          break;
-        }
+    const fraction = position - Math.floor(position);
+    const bands = lattices.get(fraction);
+    if (!bands) return position;
+    const row = Math.floor((position - fraction) / cols);
+    const column = position - fraction - row * cols;
+    for (let i = 0; i < bands.length; i++) {
+      const band = bands[i]!;
+      if (row < band.start) break;
+      if (row >= band.end) continue;
+      for (let j = 0; j < band.columns.length; j++) {
+        const interval = band.columns[j]!;
+        if (column < interval.start || column >= interval.end) continue;
+        const steps =
+          interval.start === 0 && interval.end === cols
+            ? (band.end - row) * cols - column
+            : interval.end - column;
+        position = advanceRows(position, steps);
         break;
       }
-    }
-    for (let i = 0; i < sampledStatics.length; i++) {
-      position = skipSampledStatic(position, sampledStatics[i]!, cols);
+      break;
     }
   } while (position !== previous);
-  return position;
-}
-
-function skipSampledStatic(
-  position: number,
-  sample: SampledStatic,
-  cols: number
-): number {
-  const row = Math.floor((position - sample.x) / cols - sample.y);
-  // Rounding and a row's last cell can put the estimate on a neighboring row.
-  for (
-    let dy = Math.max(0, row - 1);
-    dy <= row + 1 && dy < sample.height;
-    dy++
-  ) {
-    const base = (sample.y + dy) * cols;
-    let dx = Math.round(position - base - sample.x);
-    if (dx < 0 || dx >= sample.width || base + (sample.x + dx) !== position)
-      continue;
-    if (sample.exactLattice) {
-      if (sample.width >= cols) {
-        return (
-          (sample.y + sample.height - 1) * cols + (sample.x + sample.width)
-        );
-      }
-      return base + (sample.x + sample.width);
-    }
-    while (dx < sample.width && base + (sample.x + dx) === position) {
-      position++;
-      dx++;
-    }
-  }
   return position;
 }
 
@@ -255,21 +276,24 @@ function compactWrap(layout: Layout, cols: number): LayoutItem[] {
   const sorted = sortByWrapOrder(layout);
   const statics = sorted.filter(item => item.static);
 
-  const rectangles: OccupiedRectangle[] = [];
-  const sampledStatics: SampledStatic[] = [];
-  for (const s of statics) {
-    addStatic(rectangles, sampledStatics, s, cols);
+  const rectangles = new Map<number, OccupiedRectangle[]>();
+  for (const item of statics) {
+    const width = Math.ceil(item.w);
+    const height = Math.ceil(item.h);
+    if (width > 0 && height > 0)
+      addSampleRectangle(rectangles, item, cols, 0, 0, width, height);
   }
-  const bands = occupiedBands(rectangles);
-  return placeWrapItems(layout, sorted, cols, bands, sampledStatics);
+  const lattices = new Map<number, OccupiedBand[]>();
+  for (const [fraction, cells] of rectangles)
+    lattices.set(fraction, occupiedBands(cells));
+  return placeWrapItems(layout, sorted, cols, lattices);
 }
 
 function placeWrapItems(
   layout: Layout,
   sorted: LayoutItem[],
   cols: number,
-  bands: OccupiedBand[],
-  sampledStatics: SampledStatic[]
+  lattices: Map<number, OccupiedBand[]>
 ): LayoutItem[] {
   const out: LayoutItem[] = new Array(layout.length);
   let nextPos = 0;
@@ -289,7 +313,7 @@ function placeWrapItems(
     }
 
     // Find next available position that doesn't conflict with statics
-    nextPos = skipStatics(nextPos, cols, bands, sampledStatics);
+    nextPos = skipStatics(nextPos, cols, lattices);
 
     // For items larger than 1x1, we need to check if the full item fits
     const { x, y } = fromWrapPosition(nextPos, cols);
@@ -299,7 +323,7 @@ function placeWrapItems(
       // Move to start of next row
       nextPos = (y + 1) * cols;
       // Skip any static positions on the new row
-      nextPos = skipStatics(nextPos, cols, bands, sampledStatics);
+      nextPos = skipStatics(nextPos, cols, lattices);
     }
 
     const newCoords = fromWrapPosition(nextPos, cols);
