@@ -258,7 +258,7 @@ export function correctBounds(
  * @param isUserAction - True if this is a direct user action (affects collision resolution)
  * @param preventCollision - True to block movement into occupied space (item snaps back). No effect if allowOverlap is true.
  * @param compactType - Compaction type for collision resolution
- * @param cols - Number of columns in the grid
+ * @param _cols - Unused; kept so existing callers compile
  * @param allowOverlap - True to allow items to stack on top of each other
  * @returns The updated layout
  */
@@ -270,10 +270,10 @@ export function moveElement(
   isUserAction: boolean | undefined,
   preventCollision: boolean | undefined,
   compactType: CompactType,
-  cols: number,
+  _cols: number,
   allowOverlap?: boolean
 ): LayoutItem[] {
-  const result = new DragResolver(compactType, cols).move(
+  const result = new DragResolver(compactType).move(
     layout,
     l,
     x,
@@ -296,7 +296,7 @@ export function moveElement(
  * @param itemToMove - The item to move away
  * @param isUserAction - True if this is a direct user action
  * @param compactType - Compaction type
- * @param cols - Number of columns
+ * @param _cols - Unused; kept so existing callers compile
  * @returns Updated layout
  */
 export function moveElementAwayFromCollision(
@@ -305,9 +305,9 @@ export function moveElementAwayFromCollision(
   itemToMove: LayoutItem,
   isUserAction: boolean | undefined,
   compactType: CompactType,
-  cols: number
+  _cols: number
 ): LayoutItem[] {
-  const result = new DragResolver(compactType, cols).moveAway(
+  const result = new DragResolver(compactType).moveAway(
     layout,
     collidesWith,
     itemToMove,

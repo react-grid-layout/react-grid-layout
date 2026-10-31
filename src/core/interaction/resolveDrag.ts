@@ -7,10 +7,7 @@ import { DragCollisionIndex } from "./dragCollisionIndex.js";
 export class DragResolver {
   private collisions: DragCollisionIndex | undefined;
 
-  constructor(
-    private readonly compactType: CompactType,
-    _cols: number
-  ) {}
+  constructor(private readonly compactType: CompactType) {}
 
   move(
     layout: Layout,
