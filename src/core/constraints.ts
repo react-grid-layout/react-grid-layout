@@ -12,6 +12,7 @@ import type {
   ResizeHandleAxis
 } from "./types.js";
 import { clamp } from "./geometry/rect.js";
+import { calcGridColWidth } from "./calculate.js";
 
 // ============================================================================
 // Built-in Constraints
@@ -236,7 +237,14 @@ export function aspectRatio(ratio: number): LayoutConstraint {
       // Calculate column width in pixels
       // colWidth = (containerWidth - margin[0] * (cols - 1)) / cols
       // Note: simplified formula assumes no container padding
-      const colWidth = (containerWidth - margin[0] * (cols - 1)) / cols;
+      const colWidth = calcGridColWidth({
+        cols,
+        containerWidth,
+        rowHeight,
+        margin,
+        containerPadding: [0, 0],
+        maxRows: context.maxRows
+      });
 
       // Calculate pixel width of the item
       // pixelWidth = colWidth * w + margin[0] * (w - 1)
