@@ -463,6 +463,8 @@ interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
+  /** Maximum input rows (also capped at MAX_GRID_ROWS). Default: Infinity */
+  maxRows?: number;
   /** Block movement into occupied space instead of pushing items */
   preventCollision?: boolean;
   /** Called when layout changes */
@@ -579,6 +581,8 @@ function CustomResponsiveGrid() {
 interface UseResponsiveLayoutOptions<B extends string = DefaultBreakpoints> {
   /** Current container width */
   width: number;
+  /** Maximum input rows (also capped at MAX_GRID_ROWS). Default: Infinity */
+  maxRows?: number;
   /** Breakpoint definitions (name → min-width). Default: {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0} */
   breakpoints?: Record<B, number>;
   /** Column counts per breakpoint. Default: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2} */
@@ -619,6 +623,30 @@ interface UseResponsiveLayoutResult<B extends string = DefaultBreakpoints> {
 
 type DefaultBreakpoints = "lg" | "md" | "sm" | "xs" | "xxs";
 ```
+
+## Bounds for saved layouts
+
+Layouts may contain data saved by other users. Grid components and layout hooks
+normalize every incoming layout with `validateLayoutInput(layout, { cols,
+maxRows })`, also exported from `react-grid-layout/core` for standalone use.
+The function preserves its input and returns normalized geometry:
+
+- `MAX_GRID_ROWS` is **10,000**. A smaller finite `maxRows` lowers this input
+  limit, with a minimum of 1. Finite `y` is clamped to `[0, rowLimit]`.
+- `w`, `minW`, and `maxW` are clamped to `[1, cols]`; `x` to `[0, cols - w]`.
+  `h`, `minH`, and `maxH` are clamped to `[1, rowLimit]`.
+- Fractions are preserved. Missing optional min/max fields stay absent. Present
+  maxima are raised to their corresponding minima when needed. NaN and negative
+  infinity use the lower bound; positive infinity uses the upper bound.
+- **`y: Infinity` still means “place at bottom”** and is resolved by the existing
+  bounds correction and compaction. Collision resolution can stack items beyond
+  the input row limit; the limit does not truncate a populated grid.
+
+Clamping emits one `console.warn` per validation call in development, and none
+in production. This covers layout props and updates, responsive layouts,
+`data-grid` children, hook setters, and external drop items. Legacy components
+use the same validation through their v2 wrappers. Custom constraints and
+compactors remain responsible for the work and geometry they produce.
 
 ## API Reference
 

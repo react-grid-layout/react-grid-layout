@@ -50,6 +50,7 @@ import {
   withLayoutItem,
   correctBounds
 } from "../../core/layout.js";
+import { validateLayoutInput } from "../../core/validation.js";
 import { getAllCollisions } from "../../core/collision.js";
 import { getCompactor } from "../../core/compactors.js";
 import { defaultPositionStrategy } from "../../core/position.js";
@@ -227,7 +228,8 @@ function synchronizeLayoutWithChildren(
   initialLayout: Layout,
   children: React.ReactNode,
   cols: number,
-  compactor: Compactor
+  compactor: Compactor,
+  maxRows: number
 ): Layout {
   const layout: LayoutItem[] = [];
   const childKeys = new Set<string>();
@@ -278,7 +280,10 @@ function synchronizeLayoutWithChildren(
   });
 
   // Correct bounds and compact using the compactor's compact method (#2213)
-  const corrected = correctBounds(layout, { cols });
+  const corrected = correctBounds(
+    validateLayoutInput(layout, { cols, maxRows }) as LayoutItem[],
+    { cols }
+  );
   return compactor.compact(corrected, cols);
 }
 
@@ -376,11 +381,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Resolve dropping item - memoized to avoid unstable reference in useCallback dependencies
   const droppingItem = useMemo(
     () =>
-      droppingItemProp ?? {
-        i: "__dropping-elem__",
-        ...defaultDropItem
-      },
-    [droppingItemProp, defaultDropItem]
+      validateLayoutInput(
+        [
+          {
+            x: 0,
+            y: 0,
+            ...(droppingItemProp ?? {
+              i: "__dropping-elem__",
+              ...defaultDropItem
+            })
+          }
+        ],
+        { cols, maxRows }
+      )[0]!,
+    [droppingItemProp, defaultDropItem, cols, maxRows]
   );
 
   // Position strategy values
@@ -392,7 +406,13 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // State
   const [mounted, setMounted] = useState(false);
   const [layout, setLayout] = useState<Layout>(() =>
-    synchronizeLayoutWithChildren(propsLayout, children, cols, compactor)
+    synchronizeLayoutWithChildren(
+      propsLayout,
+      children,
+      cols,
+      compactor,
+      maxRows
+    )
   );
   const [activeDrag, setActiveDrag] = useState<LayoutItem | null>(null);
   const [resizing, setResizing] = useState(false);
@@ -413,6 +433,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const prevLayoutRef = useRef<Layout>(layout);
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
   const prevChildrenRef = useRef<React.ReactNode>(children);
+  const prevBoundsRef = useRef({ cols, maxRows });
   const prevCompactTypeRef = useRef<CompactType>(compactType);
   const gridContainerRef = useRef<HTMLDivElement | null>(null);
   const touchDragActiveRef = useRef(false);
@@ -456,13 +477,25 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
     const compactTypeChanged = compactType !== prevCompactTypeRef.current;
 
-    if (layoutChanged || childrenChanged || compactTypeChanged) {
-      const baseLayout = layoutChanged ? propsLayout : layout;
+    const boundsChanged =
+      cols !== prevBoundsRef.current.cols ||
+      maxRows !== prevBoundsRef.current.maxRows;
+    const boundedLayout = boundsChanged
+      ? validateLayoutInput(layout, { cols, maxRows })
+      : layout;
+    if (
+      layoutChanged ||
+      childrenChanged ||
+      compactTypeChanged ||
+      boundedLayout !== layout
+    ) {
+      const baseLayout = layoutChanged ? propsLayout : boundedLayout;
       const newLayout = synchronizeLayoutWithChildren(
         baseLayout,
         children,
         cols,
-        compactor
+        compactor,
+        maxRows
       );
       // Only update if the layout actually changed (#2210)
       // This prevents infinite loops when controlled state updates trigger
@@ -472,6 +505,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       }
     }
 
+    prevBoundsRef.current = { cols, maxRows };
     prevPropsLayoutRef.current = propsLayout;
     prevChildrenRef.current = children;
     prevCompactTypeRef.current = compactType;
@@ -479,6 +513,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     propsLayout,
     children,
     cols,
+    maxRows,
     compactType,
     compactor,
     activeDrag,
@@ -831,13 +866,18 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
         setLayout([
           ...baseLayout,
-          {
-            ...itemToPlace,
-            x: calculatedXY.x,
-            y: calculatedXY.y,
-            static: false,
-            isDraggable: true
-          }
+          validateLayoutInput(
+            [
+              {
+                ...itemToPlace,
+                x: calculatedXY.x,
+                y: calculatedXY.y,
+                static: false,
+                isDraggable: true
+              }
+            ],
+            { cols, maxRows }
+          )[0]!
         ]);
       } else if (droppingPositionRef.current) {
         const shouldUpdate =
@@ -851,14 +891,17 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
             currentLayout.map(item =>
               item.i === itemToPlace.i &&
               (item.x !== calculatedXY.x || item.y !== calculatedXY.y)
-                ? { ...item, x: calculatedXY.x, y: calculatedXY.y }
+                ? validateLayoutInput(
+                    [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
+                    { cols, maxRows }
+                  )[0]!
                 : item
             )
           );
         }
       }
     },
-    []
+    [cols, maxRows]
   );
 
   const applyTouchDropPosition = useCallback(
@@ -961,7 +1004,10 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         ...onDragOverResult
       } = rawResult ?? {};
 
-      const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
+      const finalDroppingItem = validateLayoutInput(
+        [{ ...droppingItem, ...onDragOverResult }],
+        { cols, maxRows }
+      )[0]!;
 
       const { newDroppingPosition, calculatedXY } = computeDropPosition({
         clientX: e.clientX,

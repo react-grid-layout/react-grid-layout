@@ -14,6 +14,10 @@ import type {
   ResponsiveLayouts,
   Compactor
 } from "../../core/types.js";
+import {
+  validateLayoutInput,
+  validateResponsiveLayoutsInput
+} from "../../core/validation.js";
 import { cloneLayout } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
@@ -53,6 +57,8 @@ export interface UseResponsiveLayoutOptions<
 > {
   /** Current container width */
   width: number;
+  /** Maximum input rows (also capped at MAX_GRID_ROWS). */
+  maxRows?: number;
   /** Breakpoint definitions (name → min-width) */
   breakpoints?: Breakpoints<B>;
   /** Column counts per breakpoint */
@@ -133,14 +139,21 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
 ): UseResponsiveLayoutResult<B> {
   const {
     width,
+    maxRows = Infinity,
     breakpoints = DEFAULT_BREAKPOINTS as unknown as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as unknown as Breakpoints<B>,
-    layouts: propsLayouts = {} as ResponsiveLayouts<B>,
+    layouts: unvalidatedLayouts = {} as ResponsiveLayouts<B>,
     compactor = verticalCompactor,
     onBreakpointChange,
     onLayoutChange,
     onWidthChange
   } = options;
+
+  const propsLayouts = useMemo(
+    () =>
+      validateResponsiveLayoutsInput(unvalidatedLayouts, colsConfig, maxRows),
+    [unvalidatedLayouts, colsConfig, maxRows]
+  );
 
   // Sorted breakpoints for consistent ordering
   const sortedBreakpoints = useMemo(
@@ -193,29 +206,46 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       breakpoint,
       prevBreakpointRef.current,
       cols,
-      compactor
+      compactor,
+      maxRows
     );
-  }, [layouts, breakpoints, breakpoint, cols, compactor]);
+  }, [layouts, breakpoints, breakpoint, cols, compactor, maxRows]);
 
   // Set layout for a specific breakpoint
-  const setLayoutForBreakpoint = useCallback((bp: B, newLayout: Layout) => {
-    setLayoutsState((prev: ResponsiveLayouts<B>) => ({
-      ...prev,
-      [bp]: cloneLayout(newLayout)
-    }));
-  }, []);
+  const setLayoutForBreakpoint = useCallback(
+    (bp: B, newLayout: Layout) => {
+      setLayoutsState((prev: ResponsiveLayouts<B>) => ({
+        ...prev,
+        [bp]: cloneLayout(
+          validateLayoutInput(newLayout, {
+            cols: getColsFromBreakpoint(bp, colsConfig),
+            maxRows
+          })
+        )
+      }));
+    },
+    [colsConfig, maxRows]
+  );
 
   // Set all layouts
-  const setLayouts = useCallback((newLayouts: ResponsiveLayouts<B>) => {
-    const cloned = {} as ResponsiveLayouts<B>;
-    for (const bp of Object.keys(newLayouts) as B[]) {
-      const layoutForBp = newLayouts[bp];
-      if (layoutForBp) {
-        (cloned as Record<B, Layout>)[bp] = cloneLayout(layoutForBp);
+  const setLayouts = useCallback(
+    (newLayouts: ResponsiveLayouts<B>) => {
+      const cloned = {} as ResponsiveLayouts<B>;
+      for (const bp of Object.keys(newLayouts) as B[]) {
+        const layoutForBp = newLayouts[bp];
+        if (layoutForBp) {
+          (cloned as Record<B, Layout>)[bp] = cloneLayout(
+            validateLayoutInput(layoutForBp, {
+              cols: getColsFromBreakpoint(bp, colsConfig),
+              maxRows
+            })
+          );
+        }
       }
-    }
-    setLayoutsState(cloned);
-  }, []);
+      setLayoutsState(cloned);
+    },
+    [colsConfig, maxRows]
+  );
 
   // Handle width changes
   useEffect(() => {
@@ -239,7 +269,8 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         newBreakpoint,
         breakpoint,
         newCols,
-        compactor
+        compactor,
+        maxRows
       );
 
       // Update layouts with the new breakpoint layout
@@ -261,6 +292,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     width,
     breakpoints,
     colsConfig,
+    maxRows,
     breakpoint,
     layouts,
     compactor,

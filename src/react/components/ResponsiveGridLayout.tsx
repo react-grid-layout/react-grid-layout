@@ -22,6 +22,10 @@ import type {
   ResponsiveLayouts,
   Compactor
 } from "../../core/types.js";
+import {
+  validateLayoutInput,
+  validateResponsiveLayoutsInput
+} from "../../core/validation.js";
 import { cloneLayout, correctBounds } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
@@ -117,7 +121,8 @@ function synchronizeLayoutWithChildren(
   children: React.ReactNode,
   cols: number,
   compactor: Compactor,
-  reSeedFromDataGrid = false
+  reSeedFromDataGrid = false,
+  maxRows = Infinity
 ): Layout {
   const layout: LayoutItem[] = [];
 
@@ -186,7 +191,10 @@ function synchronizeLayoutWithChildren(
   });
 
   // Correct bounds and compact - use compactor.compact() (#2213)
-  const corrected = correctBounds(layout, { cols });
+  const corrected = correctBounds(
+    validateLayoutInput(layout, { cols, maxRows }) as LayoutItem[],
+    { cols }
+  );
   return compactor.compact(corrected, cols);
 }
 
@@ -206,7 +214,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     breakpoint: propBreakpoint,
     breakpoints = DEFAULT_BREAKPOINTS as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as Breakpoints<B>,
-    layouts: propsLayouts = {} as ResponsiveLayouts<B>,
+    layouts: unvalidatedLayouts = {} as ResponsiveLayouts<B>,
     rowHeight = 150,
     maxRows = Infinity,
     margin: propMargin = [10, 10] as readonly [number, number],
@@ -217,6 +225,12 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     onWidthChange = noop,
     ...restProps
   } = props;
+
+  const propsLayouts = useMemo(
+    () =>
+      validateResponsiveLayoutsInput(unvalidatedLayouts, colsConfig, maxRows),
+    [unvalidatedLayouts, colsConfig, maxRows]
+  );
 
   // Get compactor (use provided or default to vertical)
   const compactor = compactorProp ?? getCompactor("vertical");
@@ -241,7 +255,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       initialBreakpoint,
       initialBreakpoint,
       initialCols,
-      compactType
+      compactType,
+      maxRows
     );
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -279,11 +294,12 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
         breakpoint,
         breakpoint,
         cols,
-        compactor
+        compactor,
+        maxRows
       );
     }
     return null; // No change needed
-  }, [propsLayouts, breakpoints, breakpoint, cols, compactor]);
+  }, [propsLayouts, breakpoints, breakpoint, cols, compactor, maxRows]);
 
   // The effective layout to pass to GridLayout - use derived if available, else state
   const effectiveLayout = derivedLayout ?? layout;
@@ -367,7 +383,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
           newBreakpoint,
           lastBreakpoint,
           newCols,
-          compactor
+          compactor,
+          maxRows
         );
 
         // Re-seed from children's data-grid only when the target breakpoint
@@ -382,7 +399,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
           children,
           newCols,
           compactor,
-          layoutWasGenerated
+          layoutWasGenerated,
+          maxRows
         );
 
         // Store new layout
@@ -426,6 +444,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     propBreakpoint,
     breakpoints,
     colsConfig,
+    maxRows,
     breakpoint,
     cols,
     layout,

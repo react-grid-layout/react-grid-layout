@@ -56,7 +56,7 @@ describe("validateLayoutInput", () => {
             ? 20
             : 4;
       const lower = field === "x" || field === "y" ? 0 : 1;
-      for (const value of [-1e9, 1e9, NaN, -Infinity, Infinity]) {
+      for (const value of [-1e9, 1e9, Number.NaN, -Infinity, Infinity]) {
         const input = Object.freeze([{ ...item, [field]: value }]);
         const output = validateLayoutInput(input, { cols: 4, maxRows: 20 });
         expect(output[0]![field]).toBe(
@@ -71,10 +71,10 @@ describe("validateLayoutInput", () => {
     }
   );
   test("caps rows, preserves fractions and optional fields, and warns once per call", () => {
-    expect(MAX_GRID_ROWS).toBe(10000);
+    expect(MAX_GRID_ROWS).toBe(10_000);
     expect(
       validateLayoutInput([hostile, hostile], { cols: 4 })[0]
-    ).toMatchObject({ y: 10000, h: 10000, minH: 10000, maxH: 10000 });
+    ).toMatchObject({ y: 10_000, h: 10_000, minH: 10_000, maxH: 10_000 });
     expect(warning).toHaveBeenCalledTimes(1);
     warning.mockClear();
     const valid = [{ ...item, x: 0.5, y: 1.5, w: 1.5, h: 1.5 }];
@@ -90,7 +90,7 @@ describe("validateLayoutInput", () => {
     ).toMatchObject({ minW: 3, maxW: 3, minH: 4, maxH: 4 });
     expect(
       validateLayoutInput([hostile], { cols: 4, maxRows: 1e9 })[0]!.h
-    ).toBe(10000);
+    ).toBe(10_000);
     expect(validateLayoutInput([hostile], { cols: 4, maxRows: 0 })[0]!.h).toBe(
       1
     );
@@ -113,7 +113,11 @@ test.each(["props", "data-grid", "legacy", "responsive", "legacy-responsive"])(
     const changed = jest.fn();
     const element = (input: Layout) => {
       const children = (
-        <div key="a" data-grid={route === "data-grid" ? input[0] : undefined} />
+        <div
+          key="a"
+          data-testid="bounded-cell"
+          data-grid={route === "data-grid" ? input[0] : undefined}
+        />
       );
       if (route === "responsive")
         return (
@@ -169,11 +173,20 @@ test.each(["props", "data-grid", "legacy", "responsive", "legacy-responsive"])(
       );
     };
     const view = render(element([hostile]));
-    expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject(bounded);
+    const expectBounded = () => {
+      const cell = view.getByTestId("bounded-cell");
+      expect(cell.style.width).toBe("780px");
+      expect(cell.style.height).toBe("3190px");
+      expect(cell.style.transform).toBe("translate(10px,3210px)");
+      if (route !== "responsive" && route !== "legacy-responsive") {
+        expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject(bounded);
+      }
+    };
+    expectBounded();
     if (route !== "data-grid") {
       view.rerender(element([item]));
       view.rerender(element([hostile]));
-      expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject(bounded);
+      expectBounded();
     }
   }
 );
