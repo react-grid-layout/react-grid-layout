@@ -1,5 +1,12 @@
 import type { ProfilerOnRenderCallback } from "react";
-import { verticalCompactor } from "../../src/core/compactors";
+import * as coreCompactors from "../../src/core/compactors";
+import * as extras from "../../src/extras";
+import type { Compactor } from "../../src/core/types";
+
+const compactors = Object.values({ ...coreCompactors, ...extras }).filter(
+  (value): value is Compactor =>
+    typeof value === "object" && value !== null && "compact" in value
+);
 
 const arrayMethods = [
   "sort",
@@ -106,13 +113,11 @@ export function measure(operation: () => void): Counts {
       else delete host.__RGL_BENCH_COUNT__;
     });
 
-    const compact = jest.spyOn(verticalCompactor, "compact");
-    const originalCompact = compact.getMockImplementation()!;
-    compact.mockImplementation((...args) => {
-      counts.compact++;
-      return originalCompact(...args);
+    const compactSpies = compactors.map(compactor => {
+      const spy = jest.spyOn(compactor, "compact");
+      restores.push(() => spy.mockRestore());
+      return spy;
     });
-    restores.push(() => compact.mockRestore());
 
     for (const [owner, key] of [
       [HTMLElement.prototype, "offsetParent"],
@@ -160,6 +165,9 @@ export function measure(operation: () => void): Counts {
     }
 
     operation();
+    for (let i = 0; i < compactSpies.length; i++) {
+      counts.compact += compactSpies[i]!.mock.calls.length;
+    }
     return counts;
   } finally {
     for (let i = restores.length - 1; i >= 0; i--) restores[i]!();
