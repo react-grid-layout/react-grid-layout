@@ -11,17 +11,8 @@ import type {
   ConstraintContext,
   ResizeHandleAxis
 } from "./types.js";
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
-
-/**
- * Clamp a value between min and max bounds.
- */
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
+import { clamp } from "./geometry/rect.js";
+import { calcGridColWidth } from "./calculate.js";
 
 // ============================================================================
 // Built-in Constraints
@@ -243,10 +234,16 @@ export function aspectRatio(ratio: number): LayoutConstraint {
       context: ConstraintContext
     ): { w: number; h: number } {
       const { cols, containerWidth, rowHeight, margin } = context;
-      // Calculate column width in pixels
-      // colWidth = (containerWidth - margin[0] * (cols - 1)) / cols
-      // Note: simplified formula assumes no container padding
-      const colWidth = (containerWidth - margin[0] * (cols - 1)) / cols;
+      // Preserve the existing omission of container padding (C-B12).
+      // RGL-20 will make aspect-ratio sizing account for padding.
+      const colWidth = calcGridColWidth({
+        cols,
+        containerWidth,
+        rowHeight,
+        margin,
+        containerPadding: [0, 0],
+        maxRows: context.maxRows
+      });
 
       // Calculate pixel width of the item
       // pixelWidth = colWidth * w + margin[0] * (w - 1)

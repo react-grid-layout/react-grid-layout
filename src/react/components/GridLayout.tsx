@@ -51,7 +51,6 @@ import {
   correctBounds
 } from "../../core/layout.js";
 import { getAllCollisions } from "../../core/collision.js";
-// Note: compact from compact-compat.js is NOT used - we use compactor.compact() instead (#2213)
 import { getCompactor } from "../../core/compactors.js";
 import { defaultPositionStrategy } from "../../core/position.js";
 import { defaultConstraints } from "../../core/constraints.js";

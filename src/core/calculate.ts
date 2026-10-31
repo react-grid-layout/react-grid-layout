@@ -5,6 +5,9 @@
  */
 
 import type { Position, ResizeHandleAxis } from "./types.js";
+import { clamp } from "./geometry/rect.js";
+
+export { clamp } from "./geometry/rect.js";
 
 // ============================================================================
 // Types
@@ -250,7 +253,7 @@ export function calcWH(
   let _w = clamp(w, 0, cols - x);
   let _h = clamp(h, 0, maxRows - y);
 
-  // West handles can resize to full width
+  // West handles cap width at cols without accounting for x.
   if (handle === "sw" || handle === "w" || handle === "nw") {
     _w = clamp(w, 0, cols);
   }
@@ -293,26 +296,6 @@ export function calcWHRaw(
   );
 
   return { w, h };
-}
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
-
-/**
- * Clamp a number between bounds.
- *
- * @param num - Number to clamp
- * @param lowerBound - Minimum value
- * @param upperBound - Maximum value
- * @returns Clamped value
- */
-export function clamp(
-  num: number,
-  lowerBound: number,
-  upperBound: number
-): number {
-  return Math.max(Math.min(num, upperBound), lowerBound);
 }
 
 // ============================================================================
@@ -403,6 +386,9 @@ export function calcGridCellDimensions(
   // Calculate cell width: total width minus padding and gaps, divided by columns
   // Formula: width = 2*padding + cols*cellWidth + (cols-1)*gap
   // Solving for cellWidth: cellWidth = (width - 2*padding - (cols-1)*gap) / cols
+  // Not routed through calcGridColWidth: that subtracts margins before padding,
+  // and floating-point subtraction is not associative. Unifying the two is a
+  // golden diff for the GridBackground rewrite (RFC 0003 RGL-34).
   const cellWidth = (width - padding[0] * 2 - margin[0] * (cols - 1)) / cols;
   const cellHeight = rowHeight;
 
