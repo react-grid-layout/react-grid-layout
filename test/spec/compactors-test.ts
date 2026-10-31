@@ -440,13 +440,10 @@ describe("Compactors", () => {
         });
       }
 
-      const start = performance.now();
+      // Timing lives in `yarn bench`; this case checks the result only.
       const compacted = verticalCompactor.compact(layout, 12);
-      const duration = performance.now() - start;
 
       expect(compacted).toHaveLength(100);
-      // Should complete in reasonable time (< 100ms)
-      expect(duration).toBeLessThan(100);
     });
   });
 });

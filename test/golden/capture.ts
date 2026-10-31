@@ -17,7 +17,6 @@ export function copy<T>(value: T, seen = new Map<object, unknown>()): T {
   }
   return result as T;
 }
-export const snapshot = copy;
 
 function references(
   value: unknown,

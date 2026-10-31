@@ -78,6 +78,10 @@ function hasOverlaps(layout) {
   return false;
 }
 
+// Wall-clock comparisons flake on loaded machines, so they run only under
+// `yarn bench` (RGL_BENCH=1), never in the default suite.
+const describeBench = process.env.RGL_BENCH === "1" ? describe : describe.skip;
+
 // Measure execution time
 function measureTime(fn, iterations = 100) {
   const start = performance.now();
@@ -160,7 +164,7 @@ describe("Fast Vertical Compactor", () => {
     });
   });
 
-  describe("Performance Comparison", () => {
+  describeBench("Performance Comparison", () => {
     const testSizes = [50, 100, 200, 500];
     const benchmarkResults = {};
 
