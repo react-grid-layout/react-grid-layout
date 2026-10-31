@@ -1,13 +1,25 @@
 import type { ProfilerOnRenderCallback } from "react";
 import { verticalCompactor } from "../../src/core/compactors";
 
+const arrayMethods = [
+  "sort",
+  "filter",
+  "indexOf",
+  "findIndex",
+  "map",
+  "some",
+  "find",
+  "slice",
+  "includes"
+] as const;
+
 export const counterNames = [
+  ...arrayMethods,
+  "arrayIterator",
   "clientHeight",
   "cloneLayoutItem",
   "collides",
   "compact",
-  "filter",
-  "findIndex",
   "getBoundingClientRect",
   "getComputedStyle",
   "getFirstCollision",
@@ -18,28 +30,21 @@ export const counterNames = [
   "gridLayoutRenders",
   "idleItemCommits",
   "idleItemRenders",
-  "indexOf",
   "offsetParent",
   "placeholderCommits",
-  "placeholderRenders",
-  "sort"
+  "placeholderRenders"
 ] as const;
 export type Counter = (typeof counterNames)[number];
-export type Counts = Record<Counter, number>;
+export type Counts = Record<string, number>;
 
-type Probe =
-  | "collides"
-  | "getFirstCollision"
-  | "cloneLayoutItem"
-  | "getStatics"
-  | "GridLayout"
-  | "GridItemInner";
-const host = globalThis as typeof globalThis & {
+type ProbeHost = {
   __RGL_BENCH_COUNT__?: (
-    name: Probe,
+    name: string,
     props?: { i: string; className?: string }
   ) => void;
 };
+const realm = globalThis as typeof globalThis & { __RGL_BENCH__?: ProbeHost };
+const host = (realm.__RGL_BENCH__ ??= {});
 let active: Counts | undefined;
 let commits = new Map<string, number>();
 
@@ -56,25 +61,24 @@ export const onItemRender: ProfilerOnRenderCallback = id => {
   active.gridItemMaxCommits = Math.max(active.gridItemMaxCommits, count);
 };
 
-function isLayoutArray(array: unknown[]): boolean {
-  const item = array[0];
-  return (
-    item !== null &&
-    typeof item === "object" &&
-    "i" in item &&
-    "x" in item &&
-    "y" in item &&
-    "w" in item &&
-    "h" in item
-  );
-}
-
 /** Install only around a synchronous operation, preserving descriptors exactly. */
 export function measure(operation: () => void): Counts {
   if (active) throw new Error("Nested benchmark measurements are unsupported");
   const counts = Object.fromEntries(
     counterNames.map(key => [key, 0])
   ) as Counts;
+  // Preserve the original aggregate names without extra work on every entry.
+  for (const [legacy, key] of Object.entries({
+    collides: "core/collision.ts:collides",
+    getFirstCollision: "core/collision.ts:getFirstCollision",
+    cloneLayoutItem: "core/layout.ts:cloneLayoutItem",
+    getStatics: "core/layout.ts:getStatics"
+  })) {
+    Object.defineProperty(counts, legacy, {
+      enumerable: true,
+      get: () => counts[key] ?? 0
+    });
+  }
   const restores: (() => void)[] = [];
   const previousProbe = Object.getOwnPropertyDescriptor(
     host,
@@ -93,29 +97,14 @@ export function measure(operation: () => void): Counts {
         }
         return;
       }
-      counts[name === "GridLayout" ? "gridLayoutRenders" : name]++;
+      const key = name === "GridLayout" ? "gridLayoutRenders" : name;
+      counts[key] = (counts[key] ?? 0) + 1;
     };
     restores.push(() => {
       if (previousProbe)
         Object.defineProperty(host, "__RGL_BENCH_COUNT__", previousProbe);
       else delete host.__RGL_BENCH_COUNT__;
     });
-
-    // Preserve setupTests.js's timsort implementation, including its tie order.
-    for (const key of ["sort", "filter", "indexOf", "findIndex"] as const) {
-      const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, key)!;
-      const original = descriptor.value;
-      Object.defineProperty(Array.prototype, key, {
-        ...descriptor,
-        value(this: unknown[], ...args: unknown[]) {
-          if (isLayoutArray(this)) counts[key]++;
-          return original.apply(this, args);
-        }
-      });
-      restores.push(() =>
-        Object.defineProperty(Array.prototype, key, descriptor)
-      );
-    }
 
     const compact = jest.spyOn(verticalCompactor, "compact");
     const originalCompact = compact.getMockImplementation()!;
@@ -133,7 +122,7 @@ export function measure(operation: () => void): Counts {
       Object.defineProperty(owner, key, {
         ...descriptor,
         get(this: HTMLElement) {
-          counts[key]++;
+          counts[typeof key === "symbol" ? "arrayIterator" : key]++;
           return descriptor.get!.call(this);
         }
       });
@@ -148,12 +137,28 @@ export function measure(operation: () => void): Counts {
       Object.defineProperty(owner, key, {
         ...descriptor,
         value(this: unknown, ...args: unknown[]) {
-          counts[key]++;
+          counts[typeof key === "symbol" ? "arrayIterator" : key]++;
           return original.apply(this, args);
         }
       });
       restores.push(() => Object.defineProperty(owner, key, descriptor));
     }
+    // Preserve setupTests.js's timsort implementation, including its tie order.
+    for (const key of [...arrayMethods, Symbol.iterator] as const) {
+      const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, key)!;
+      const original = descriptor.value;
+      Object.defineProperty(Array.prototype, key, {
+        ...descriptor,
+        value(this: unknown[], ...args: unknown[]) {
+          counts[typeof key === "symbol" ? "arrayIterator" : key]++;
+          return original.apply(this, args);
+        }
+      });
+      restores.push(() =>
+        Object.defineProperty(Array.prototype, key, descriptor)
+      );
+    }
+
     operation();
     return counts;
   } finally {
