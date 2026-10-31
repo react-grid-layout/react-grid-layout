@@ -1,6 +1,8 @@
 // Applied only by jest.ops.cjs. Probe lexical calls and loop work without
 // rewriting source files. Function-scoped ordinals survive comment/line edits.
 module.exports = function instrument({ types: t, template }) {
+  const bodyNames = new WeakMap();
+  const loops = new WeakSet();
   const probe = (host, key, props = t.nullLiteral()) => template.statement.ast`
     ${host}.__RGL_BENCH_COUNT__?.(${t.stringLiteral(key)}, ${props});
   `;
@@ -61,6 +63,15 @@ module.exports = function instrument({ types: t, template }) {
         );
       },
       Function(path, state) {
+        // Other Babel plugins create helpers before module initialization.
+        // Only source functions belong to this operation budget.
+        if (!path.node.loc) return;
+        // Object methods/arrows can be revisited as function expressions after
+        // another plugin lowers them. Keep one entry probe per source body.
+        if (bodyNames.has(path.node.body)) {
+          path.setData("probeName", bodyNames.get(path.node.body));
+          return;
+        }
         const file = state.filename.replaceAll("\\", "/").split("/src/")[1];
         if (!file) return;
         if (/^(core|extras)\//.test(file)) {
@@ -72,6 +83,7 @@ module.exports = function instrument({ types: t, template }) {
               t.returnStatement(path.node.body)
             ]);
           }
+          bodyNames.set(path.node.body, name);
           path.node.body.body.unshift(probe(state.rglHost, `${file}:${name}`));
           return;
         }
@@ -100,6 +112,9 @@ module.exports = function instrument({ types: t, template }) {
         }
       },
       Loop(path, state) {
+        if (!path.node.loc) return;
+        if (loops.has(path.node)) return;
+        loops.add(path.node);
         const file = state.filename.replaceAll("\\", "/").split("/src/")[1];
         if (!file || !/^(core|extras)\//.test(file)) return;
         const owner = scope(path);

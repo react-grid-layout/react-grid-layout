@@ -1,7 +1,16 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import type { Layout, LayoutItem } from "../../src/core/types";
-import { verticalCompactor } from "../../src/core/compactors";
+import {
+  verticalCompactor,
+  horizontalCompactor,
+  noCompactor
+} from "../../src/core/compactors";
+import {
+  fastVerticalCompactor,
+  fastHorizontalCompactor,
+  wrapCompactor
+} from "../../src/extras";
 import {
   bottom,
   cloneLayout,
@@ -9,9 +18,11 @@ import {
   moveElement
 } from "../../src/core/layout";
 import { GridLayout } from "../../src/react/components/GridLayout";
+import { ResponsiveGridLayout } from "../../src/react/components/ResponsiveGridLayout";
 import LegacyGridLayout from "../../src/legacy/ReactGridLayout";
 import { generate } from "../golden/generators";
 import { mulberry32 } from "../golden/rng";
+import { dropExternal } from "../golden-react/drop";
 import { measure, type Counts } from "./counters";
 
 export const sizes = [50, 500, 2000] as const;
@@ -52,10 +63,20 @@ function dragFrame(layout: LayoutItem[], mid: number): Layout {
   return verticalCompactor.compact(moved, cols);
 }
 
-type Interaction = "drag-10" | "drag-subcell-10" | "resize" | "parent-rerender";
+type Interaction =
+  | "drag-10"
+  | "drag-subcell-10"
+  | "resize"
+  | "parent-rerender"
+  | "mount"
+  | "drag-stop"
+  | "resize-stop"
+  | "breakpoint"
+  | "drop";
 
 function reactScenario(size: number, interaction: Interaction): Counts {
-  const family = interaction === "resize" ? "sparse" : "packed";
+  const isResize = interaction.startsWith("resize");
+  const family = isResize ? "sparse" : "packed";
   const layout = verticalCompactor.compact(
     generate(family, seed, size, cols),
     cols
@@ -65,8 +86,17 @@ function reactScenario(size: number, interaction: Interaction): Counts {
   );
   const onDrag = jest.fn();
   const onResize = jest.fn();
+  const onDragStop = jest.fn();
+  const onResizeStop = jest.fn();
+  const onDrop = jest.fn();
+  const onBreakpointChange = jest.fn();
+  const onLayoutChange = jest.fn();
   const Component =
-    interaction === "parent-rerender" ? LegacyGridLayout : GridLayout;
+    interaction === "parent-rerender"
+      ? LegacyGridLayout
+      : interaction === "breakpoint"
+        ? ResponsiveGridLayout
+        : GridLayout;
   const element = React.createElement(
     Component,
     {
@@ -81,7 +111,25 @@ function reactScenario(size: number, interaction: Interaction): Counts {
       dragConfig: { threshold: 0, bounded: true },
       compactor: verticalCompactor,
       onDrag,
-      onResize
+      onResize,
+      onDragStop,
+      onResizeStop,
+      onDrop,
+      onBreakpointChange,
+      onLayoutChange,
+      ...(interaction === "drop"
+        ? {
+            dropConfig: { enabled: true },
+            droppingItem: { i: "external", w: 1, h: 1 }
+          }
+        : {}),
+      ...(interaction === "breakpoint"
+        ? {
+            layouts: { lg: layout },
+            breakpoints: { lg: 1000, sm: 0 },
+            cols: { lg: 12, sm: 6 }
+          }
+        : {})
     },
     children
   );
@@ -105,14 +153,60 @@ function reactScenario(size: number, interaction: Interaction): Counts {
     .mockReturnValue(100_000);
   let view: ReturnType<typeof render> | undefined;
   try {
+    if (interaction === "mount") {
+      const counts = measure(() => {
+        view = render(element);
+      });
+      expect(view!.container.querySelectorAll("[data-bench-id]")).toHaveLength(
+        size
+      );
+      expect(counts.compact).toBeGreaterThan(0);
+      expect(counts.gridItemRenders).toBe(size * counts.gridLayoutRenders);
+      return counts;
+    }
     view = render(element);
+    if (interaction === "breakpoint") {
+      onBreakpointChange.mockClear();
+      onLayoutChange.mockClear();
+      const counts = measure(() =>
+        view!.rerender(React.cloneElement(element, { width: 600 }))
+      );
+      expect(onBreakpointChange).toHaveBeenCalledWith("sm", 6);
+      const final = onLayoutChange.mock.calls.at(-1)?.[0] as Layout;
+      expect(final).toHaveLength(size);
+      expect(final.every(item => item.x + item.w <= 6)).toBe(true);
+      expect(counts.compact).toBeGreaterThan(0);
+      return counts;
+    }
+    if (interaction === "drop") {
+      const drop = dropExternal(view.container);
+      try {
+        const counts = measure(() => {
+          drop.enter({ x: 250, y: 150 });
+          drop.over({ x: 250, y: 150 });
+          drop.drop();
+        });
+        expect(onDrop).toHaveBeenCalledTimes(1);
+        expect(onDrop.mock.calls[0]![1]).toMatchObject({
+          i: "external",
+          w: 1,
+          h: 1
+        });
+        expect(
+          view.container.querySelector(".react-grid-placeholder")
+        ).toBeNull();
+        expect(counts.compact).toBeGreaterThan(0);
+        return counts;
+      } finally {
+        drop.uninstall();
+      }
+    }
     const item = view.container.querySelector<HTMLElement>(
       '[data-bench-id="0"]'
     )!;
-    const target =
-      interaction === "resize"
-        ? item.querySelector<HTMLElement>(".react-resizable-handle-se")!
-        : item;
+    const target = isResize
+      ? item.querySelector<HTMLElement>(".react-resizable-handle-se")!
+      : item;
     if (!target) throw new Error(`Missing ${interaction} target`);
 
     if (interaction === "parent-rerender") {
@@ -124,30 +218,45 @@ function reactScenario(size: number, interaction: Interaction): Counts {
     fireEvent.mouseDown(target, { clientX: 10, clientY: 10, button: 0 });
     onDrag.mockClear();
     onResize.mockClear();
-    const moves = interaction === "resize" ? 1 : 10;
+    const isStop = interaction.endsWith("-stop");
+    const moves = isResize || isStop ? 1 : 10;
     const step = interaction === "drag-subcell-10" ? 1 : 100;
-    const counts = measure(() => {
+    const move = () => {
       for (let move = 1; move <= moves; move++) {
         fireEvent.mouseMove(document, {
           clientX: 10 + step * move,
-          clientY: interaction === "resize" ? 40 : 10,
+          clientY: isResize ? 40 : 10,
           buttons: 1
         });
       }
-    });
-    const calls =
-      interaction === "resize" ? onResize.mock.calls : onDrag.mock.calls;
+    };
+    const stop = () =>
+      fireEvent.mouseUp(document, {
+        clientX: 10 + step * moves,
+        clientY: isResize ? 40 : 10,
+        button: 0
+      });
+    let counts: Counts;
+    if (isStop) {
+      move();
+      counts = measure(stop);
+      const callback = isResize ? onResizeStop : onDragStop;
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(callback.mock.calls[0]![2]).toMatchObject({ i: "0" });
+      expect(
+        view.container.querySelector(".react-grid-placeholder")
+      ).toBeNull();
+      expect(counts.compact).toBeGreaterThan(0);
+    } else counts = measure(move);
+    const calls = isResize ? onResize.mock.calls : onDrag.mock.calls;
     expect(calls).toHaveLength(moves);
     // Prove real GridLayout handlers ran, rather than budgeting an inert DOM.
     const finalItem = calls.at(-1)![2] as LayoutItem;
     if (interaction === "drag-10") expect(finalItem.x).toBe(10);
     if (interaction === "drag-subcell-10") expect(finalItem.x).toBe(0);
-    if (interaction === "resize") expect(finalItem.w).toBe(layout[0]!.w + 1);
-    fireEvent.mouseUp(document, {
-      clientX: 10 + step * moves,
-      clientY: 10,
-      button: 0
-    });
+    if (isResize) expect(finalItem.w).toBe(layout[0]!.w + 1);
+    if (interaction === "drag-stop") expect(finalItem.x).toBe(1);
+    if (!isStop) stop();
     return counts;
   } finally {
     view?.unmount();
@@ -197,6 +306,37 @@ export function runScenarios(): Record<string, Counts> {
       );
     }
   }
+  results["mount/packed/2000"] = reactScenario(2000, "mount");
+  for (const size of [50, 500]) {
+    const id = String(size).padStart(4, "0");
+    results[`drag-stop/packed/${id}`] = reactScenario(size, "drag-stop");
+    results[`resize-stop/sparse/${id}`] = reactScenario(size, "resize-stop");
+  }
+  for (const [name, compactor] of Object.entries({
+    horizontal: horizontalCompactor,
+    none: noCompactor,
+    wrap: wrapCompactor,
+    fastVertical: fastVerticalCompactor,
+    fastHorizontal: fastHorizontalCompactor
+  })) {
+    const input = generate("statics-scattered", seed, 500, cols).map(item => ({
+      ...item,
+      h: 3
+    }));
+    let output: Layout = [];
+    const counts = measure(() => {
+      output = compactor.compact(input, cols);
+    });
+    expect(output).toHaveLength(input.length);
+    expect(counts.compact).toBe(1);
+    if (name === "fastVertical")
+      expect(
+        counts["extras/fastVerticalCompactor.ts:collides"]
+      ).toBeGreaterThan(0);
+    results[`compact-${name}/statics-scattered/0500`] = counts;
+  }
+  results["breakpoint/packed/0500"] = reactScenario(500, "breakpoint");
+  results["drop/packed/0500"] = reactScenario(500, "drop");
   return Object.fromEntries(
     Object.entries(results).sort(([a], [b]) => a.localeCompare(b))
   );
