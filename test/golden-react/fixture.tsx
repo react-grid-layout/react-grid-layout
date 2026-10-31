@@ -127,11 +127,25 @@ export function mountGrid(
           positionStrategy: strategy,
           dragConfig: { bounded: !!variant.bounded },
           ...(options.responsive
-            ? { margin: [0, 0], containerPadding: [0, 0] }
+            ? // Responsive reads a flat rowHeight and ignores gridConfig's, so
+              // pass it here to match the legacy fixture's geometry.
+              { margin: [0, 0], containerPadding: [0, 0], rowHeight: 100 }
             : {})
         }),
     ...options.props
   };
+  if (props.dropConfig?.onDragOver) {
+    props = {
+      ...props,
+      dropConfig: {
+        ...props.dropConfig,
+        onDragOver: recorder.traced(
+          "dropConfig.onDragOver",
+          props.dropConfig.onDragOver
+        )
+      }
+    };
+  }
   const Component: any = options.responsive
     ? variant.api === "legacy"
       ? LegacyResponsive

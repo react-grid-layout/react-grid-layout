@@ -8,7 +8,7 @@ jest.mock("../../src/react/components/GridItem", () => {
   const React = jest.requireActual("react");
   const actual = jest.requireActual("../../src/react/components/GridItem");
   const Original = actual.default;
-  const Profiled = React.memo((props: any) => {
+  const Inner = (props: any) => {
     const id = props.className?.includes("react-grid-placeholder")
       ? `placeholder:${props.i}`
       : props.i;
@@ -20,7 +20,11 @@ jest.mock("../../src/react/components/GridItem", () => {
       },
       React.createElement(Original, props)
     );
-  }, Original.compare);
+  };
+  // Mirror the real component's memoization exactly. If GridItem stops being a
+  // memo, the wrapper must not add one, or render-count regressions would hide.
+  const isMemo = Original.$$typeof === Symbol.for("react.memo");
+  const Profiled = isMemo ? React.memo(Inner, Original.compare) : Inner;
   Profiled.displayName = "ProfiledGridItem";
   return { ...actual, default: Profiled, GridItem: Profiled };
 });
@@ -152,6 +156,16 @@ export function withRecorder(
     renders,
     attach(element: HTMLElement) {
       container = element;
+    },
+    /** Wrap a callback the scenario configures itself, so it enters the trace too. */
+    traced<T extends (...args: any[]) => any>(name: string, fn: T): T {
+      return ((...args: any[]) => {
+        const entry: any = normalize({ name, eventType: args[0]?.type });
+        callbacks.push(entry);
+        const result = fn(...args);
+        entry.result = normalize(result);
+        return result;
+      }) as T;
     },
     note(value: unknown) {
       notes.push(normalize(value));
