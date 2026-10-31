@@ -505,6 +505,18 @@ export interface DragConfig {
    * @default false
    */
   allowMobileScroll?: boolean;
+
+  /**
+   * Hide text selection while dragging (react-draggable's
+   * enableUserSelectHack). It adds a class to `<body>` whose `::selection`
+   * rule applies to every element, so the browser recalculates the style of
+   * the whole page when a drag starts and again when it ends, which stalls a
+   * large page at pick-up and drop. Set false to skip it, and prevent
+   * selection another way, e.g. `user-select: none` on the grid while its
+   * items can be dragged.
+   * @default true
+   */
+  enableUserSelectHack?: boolean;
 }
 
 /** Default drag configuration */
@@ -535,6 +547,13 @@ export interface ResizeConfig {
         axis: ResizeHandleAxis,
         ref: React.Ref<HTMLElement>
       ) => React.ReactNode);
+
+  /**
+   * Hide text selection while resizing, as `DragConfig.enableUserSelectHack`
+   * does while dragging, and at the same cost.
+   * @default true
+   */
+  enableUserSelectHack?: boolean;
 }
 
 /** Default resize configuration */

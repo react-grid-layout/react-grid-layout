@@ -114,6 +114,10 @@ export interface GridItemProps {
   isBounded: boolean;
   /** Allow native touch scroll while dragging (react-draggable allowMobileScroll) */
   allowMobileScroll?: boolean;
+  /** Hide text selection while dragging (react-draggable enableUserSelectHack, default true) */
+  dragEnableUserSelectHack?: boolean;
+  /** Hide text selection while resizing (react-draggable enableUserSelectHack, default true) */
+  resizeEnableUserSelectHack?: boolean;
   /** Whether the item is static (can't be moved/resized) */
   static?: boolean;
   /** Use CSS transforms instead of top/left */
@@ -210,6 +214,8 @@ function GridItemInner(props: GridItemProps): ReactElement {
     isResizable,
     isBounded,
     allowMobileScroll,
+    dragEnableUserSelectHack,
+    resizeEnableUserSelectHack,
     static: isStatic,
     useCSSTransforms = true,
     usePercentages = false,
@@ -897,7 +903,10 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
   newChild = (
     <Resizable
-      draggableOpts={{ disabled: !isResizable }}
+      draggableOpts={{
+        disabled: !isResizable,
+        enableUserSelectHack: resizeEnableUserSelectHack
+      }}
       className={isResizable ? undefined : "react-resizable-hide"}
       width={pos.width}
       height={pos.height}
@@ -925,6 +934,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
       cancel={".react-resizable-handle" + (cancel ? "," + cancel : "")}
       scale={transformScale}
       allowMobileScroll={allowMobileScroll}
+      enableUserSelectHack={dragEnableUserSelectHack}
       nodeRef={elementRef}
     >
       {newChild}
@@ -962,6 +972,10 @@ const GridItem = React.memo(GridItemInner, (prev, next) => {
   if (prev.isResizable !== next.isResizable) return false;
   if (prev.isBounded !== next.isBounded) return false;
   if (prev.allowMobileScroll !== next.allowMobileScroll) return false;
+  if (prev.dragEnableUserSelectHack !== next.dragEnableUserSelectHack)
+    return false;
+  if (prev.resizeEnableUserSelectHack !== next.resizeEnableUserSelectHack)
+    return false;
   if (prev.useCSSTransforms !== next.useCSSTransforms) return false;
   if (prev.usePercentages !== next.usePercentages) return false;
 
