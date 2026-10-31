@@ -46,12 +46,33 @@ beforeAll(() => {
     {
       file: "collision.ts",
       code: "function collides() {} function getFirstCollision() { collides(); } getFirstCollision();",
-      expected: ["getFirstCollision", "collides"]
+      expected: [
+        "core/collision.ts:getFirstCollision",
+        "core/collision.ts:collides"
+      ]
     },
     {
       file: "layout.ts",
       code: "function cloneLayoutItem() {} function cloneLayout() { cloneLayoutItem(); } cloneLayout();",
-      expected: ["cloneLayoutItem"]
+      expected: ["core/layout.ts:cloneLayout", "core/layout.ts:cloneLayoutItem"]
+    },
+    {
+      file: "../extras/probe.ts",
+      code: `const strategy = { run() {
+        const named = function () { for (let i = 0; i < 2; i++) {} };
+        const arrow = () => [1, 2].map(value => value);
+        named(); arrow();
+        let i = 0; while (i++ < 2) {} do { i--; } while (i > 0);
+      } }; strategy.run();`,
+      expected: [
+        "extras/probe.ts:strategy.run",
+        "extras/probe.ts:strategy.run.named",
+        ...Array(2).fill("extras/probe.ts:strategy.run.named:loop1"),
+        "extras/probe.ts:strategy.run.arrow",
+        ...Array(2).fill("extras/probe.ts:strategy.run.arrow.callback1"),
+        ...Array(2).fill("extras/probe.ts:strategy.run:loop1"),
+        ...Array(3).fill("extras/probe.ts:strategy.run:loop2")
+      ]
     }
   ];
   for (const fixture of fixtures) {
@@ -63,7 +84,9 @@ beforeAll(() => {
       plugins: [require.resolve("./instrument.cjs")]
     })!.code!;
     runInNewContext(transformed, {
-      __RGL_BENCH_COUNT__: (name: string) => entries.push(name)
+      __RGL_BENCH__: {
+        __RGL_BENCH_COUNT__: (name: string) => entries.push(name)
+      }
     });
     expect(entries).toEqual(fixture.expected);
   }
@@ -78,7 +101,10 @@ function regressions(
     ...new Set([...Object.keys(actual), ...Object.keys(expected)])
   ].sort();
   for (const scenario of scenarios) {
-    for (const counter of counterNames) {
+    for (const counter of new Set([
+      ...Object.keys(actual[scenario] ?? {}),
+      ...Object.keys(expected[scenario] ?? {})
+    ])) {
       const before = expected[scenario]?.[counter];
       const after = actual[scenario]?.[counter];
       if (
@@ -133,6 +159,17 @@ beforeAll(() => {
     cloneLayoutItem(item);
     getStatics([item]);
     [item].sort(() => 0);
+    // Empty, primitive, and sparse arrays are work too.
+    [].sort();
+    [3, 2].sort();
+    new Array(2).sort();
+    const values = [1, 2];
+    values.map(value => value);
+    values.some(value => value === 1);
+    values.find(value => value === 2);
+    values.slice();
+    values.includes(1);
+    void [...values];
     [item].indexOf(item);
     [item].findIndex(value => value.i === "0");
     const element = document.createElement("div");
@@ -147,7 +184,13 @@ beforeAll(() => {
     cloneLayoutItem: 1,
     getStatics: 1,
     filter: 1,
-    sort: 1,
+    sort: 4,
+    map: 1,
+    some: 1,
+    find: 1,
+    slice: 1,
+    includes: 1,
+    arrayIterator: 1,
     indexOf: 1,
     findIndex: 1,
     getBoundingClientRect: 1,
