@@ -116,9 +116,9 @@ function regressions(
         diff.push(
           `${scenario} ${counter}: missing/invalid budget or measurement (${before} -> ${after})`
         );
-      } else if (after > before) {
+      } else if (after !== before) {
         diff.push(
-          `${scenario} ${counter}: ${before} -> ${after} (+${after - before})`
+          `${scenario} ${counter}: ${before} -> ${after} (${after > before ? "+" : ""}${after - before})`
         );
       }
     }
@@ -258,12 +258,13 @@ beforeAll(() => {
   }
 });
 
-test("baseline gate accepts decreases and reports increases or missing counters", () => {
+test("baseline gate requires exact counts and reports missing counters", () => {
   const zero = Object.fromEntries(counterNames.map(key => [key, 0])) as Counts;
   const budget = { ...zero, sort: 2 };
   expect(
     regressions({ frame: { ...zero, sort: 1 } }, { frame: budget })
-  ).toEqual([]);
+  ).toEqual(["frame sort: 2 -> 1 (-1)"]);
+  expect(regressions({ frame: budget }, { frame: budget })).toEqual([]);
   expect(
     regressions({ frame: { ...zero, sort: 3 } }, { frame: budget })
   ).toEqual(["frame sort: 2 -> 3 (+1)"]);
@@ -272,7 +273,10 @@ test("baseline gate accepts decreases and reports increases or missing counters"
   );
 });
 
-test("operation counts must not increase against the committed baseline", () => {
+test("operation counts must equal the committed baseline", () => {
+  if (process.env.BENCH_UPDATE === "1" && process.env.CI) {
+    throw new Error("BENCH_UPDATE cannot rewrite operation budgets in CI.");
+  }
   const baseline = JSON.parse(readFileSync(baselinePath, "utf8")) as Baseline;
   const scenarios = runScenarios();
   if (process.env.BENCH_UPDATE === "1") {
@@ -284,7 +288,7 @@ test("operation counts must not increase against the committed baseline", () => 
     const diff = regressions(scenarios, baseline.scenarios);
     if (diff.length > 0)
       throw new Error(
-        `Operation counts increased:\n${diff.join("\n")}\nJustify increases in the PR, then run yarn bench:ops:update.`
+        `Operation counts changed:\n${diff.join("\n")}\nFor decreases, run yarn bench:ops:update and commit the baseline to record the savings. Justify increases in the PR before updating the baseline.`
       );
   }
   // Stable JSON is useful for comparing consecutive fresh Jest processes.
