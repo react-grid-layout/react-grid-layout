@@ -2,7 +2,12 @@
 // before RGL-11a (sort-once). It is the oracle for the differential test in
 // test/spec/drag-resolution-test.ts and must not be edited. Delete it when
 // moveElement intentionally changes behavior (the purity PR).
-import type { CompactType, Layout, LayoutItem } from "../../../src/core/types";
+import type {
+  CompactType,
+  Layout,
+  LayoutItem,
+  Mutable
+} from "../../../src/core/types";
 import {
   getAllCollisions,
   getFirstCollision
