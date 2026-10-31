@@ -1,0 +1,210 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    },
+    "output": {"h":2,"i":"b","w":2,"x":1,"y":0},
+    "postInput": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
+    "input": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"b","w":2,"x":1,"y":0},
+      {"h":2,"i":"c","w":2,"x":0,"y":1}
+    ],
+    "postInput": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+    "input": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    },
+    "output": [],
+    "postInput": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"d","w":2,"x":8,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    },
+    "output": {"h":2,"i":"c","w":2,"x":0,"y":1},
+    "postInput": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
+    "input": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"c","w":2,"x":0,"y":1},
+      {"h":2,"i":"b","w":2,"x":1,"y":0}
+    ],
+    "postInput": {
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+    "input": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [],
+    "postInput": {
+      "item": {"h":2,"i":"missing","w":2,"x":20,"y":0},
+      "layout": [
+        {"h":2,"i":"d","w":2,"x":8,"y":0},
+        {"h":2,"i":"c","w":2,"x":0,"y":1},
+        {"h":2,"i":"b","w":2,"x":1,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    }
+  }
+]

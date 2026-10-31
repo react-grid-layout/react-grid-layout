@@ -1,0 +1,1274 @@
+[
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1],"factory":"aspectRatio"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(1)"},"position":{"$u":1},"size":{"h":1,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1],"factory":"aspectRatio"},
+        "w": -2.5
+      }
+    },
+    "id": "aspectRatio/1/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1],"factory":"aspectRatio"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(1)"},"position":{"$u":1},"size":{"h":12,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1],"factory":"aspectRatio"},
+        "w": 4
+      }
+    },
+    "id": "aspectRatio/1/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1.7777777777777777],"factory":"aspectRatio"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(1.7777777777777777)"},"position":{"$u":1},"size":{"h":1,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1.7777777777777777],"factory":"aspectRatio"},
+        "w": -2.5
+      }
+    },
+    "id": "aspectRatio/1.7777777777777777/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1.7777777777777777],"factory":"aspectRatio"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(1.7777777777777777)"},"position":{"$u":1},"size":{"h":7,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[1.7777777777777777],"factory":"aspectRatio"},
+        "w": 4
+      }
+    },
+    "id": "aspectRatio/1.7777777777777777/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0],"factory":"aspectRatio"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(0)"},"position":{"$u":1},"size":{"h":1,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0],"factory":"aspectRatio"},
+        "w": -2.5
+      }
+    },
+    "id": "aspectRatio/0/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0],"factory":"aspectRatio"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(0)"},"position":{"$u":1},"size":{"h":{"$number":"Infinity"},"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0],"factory":"aspectRatio"},
+        "w": 4
+      }
+    },
+    "id": "aspectRatio/0/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1],"factory":"aspectRatio"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(-1)"},"position":{"$u":1},"size":{"h":7,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1],"factory":"aspectRatio"},
+        "w": -2.5
+      }
+    },
+    "id": "aspectRatio/-1/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1],"factory":"aspectRatio"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(-1)"},"position":{"$u":1},"size":{"h":1,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1],"factory":"aspectRatio"},
+        "w": 4
+      }
+    },
+    "id": "aspectRatio/-1/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"}
+          ],
+          "factory": "aspectRatio"
+        },
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(Infinity)"},"position":{"$u":1},"size":{"h":1,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"}
+          ],
+          "factory": "aspectRatio"
+        },
+        "w": -2.5
+      }
+    },
+    "id": "aspectRatio/Infinity/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"}
+          ],
+          "factory": "aspectRatio"
+        },
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(Infinity)"},"position":{"$u":1},"size":{"h":1,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"}
+          ],
+          "factory": "aspectRatio"
+        },
+        "w": 4
+      }
+    },
+    "id": "aspectRatio/Infinity/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2],"factory":"snapToGrid"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(2, 2)"},"position":{"x":-2,"y":0},"size":{"$u":1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2],"factory":"snapToGrid"},
+        "w": -2.5
+      }
+    },
+    "id": "snapToGrid/2/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2],"factory":"snapToGrid"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(2, 2)"},"position":{"x":4,"y":6},"size":{"$u":1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2],"factory":"snapToGrid"},
+        "w": 4
+      }
+    },
+    "id": "snapToGrid/2/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"snapToGrid"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(2, 3)"},"position":{"x":-2,"y":0},"size":{"$u":1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"snapToGrid"},
+        "w": -2.5
+      }
+    },
+    "id": "snapToGrid/2,3/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"snapToGrid"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(2, 3)"},"position":{"x":4,"y":6},"size":{"$u":1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"snapToGrid"},
+        "w": 4
+      }
+    },
+    "id": "snapToGrid/2,3/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0.5,1.5],"factory":"snapToGrid"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(0.5, 1.5)"},"position":{"x":-2.5,"y":0},"size":{"$u":1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0.5,1.5],"factory":"snapToGrid"},
+        "w": -2.5
+      }
+    },
+    "id": "snapToGrid/0.5,1.5/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0.5,1.5],"factory":"snapToGrid"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(0.5, 1.5)"},"position":{"x":4,"y":6},"size":{"$u":1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[0.5,1.5],"factory":"snapToGrid"},
+        "w": 4
+      }
+    },
+    "id": "snapToGrid/0.5,1.5/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"minSize"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(2, 3)"},"position":{"$u":1},"size":{"h":3,"w":2}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"minSize"},
+        "w": -2.5
+      }
+    },
+    "id": "minSize/2,3/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"minSize"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(2, 3)"},"position":{"$u":1},"size":{"h":6,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[2,3],"factory":"minSize"},
+        "w": 4
+      }
+    },
+    "id": "minSize/2,3/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"minSize"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(-1, 0)"},"position":{"$u":1},"size":{"h":0,"w":-1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"minSize"},
+        "w": -2.5
+      }
+    },
+    "id": "minSize/-1,0/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"minSize"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(-1, 0)"},"position":{"$u":1},"size":{"h":6,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"minSize"},
+        "w": 4
+      }
+    },
+    "id": "minSize/-1,0/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "minSize"
+        },
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(Infinity, 0.5)"},"position":{"$u":1},"size":{"h":0.5,"w":{"$number":"Infinity"}}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "minSize"
+        },
+        "w": -2.5
+      }
+    },
+    "id": "minSize/Infinity,0.5/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "minSize"
+        },
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(Infinity, 0.5)"},"position":{"$u":1},"size":{"h":6,"w":{"$number":"Infinity"}}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "minSize"
+        },
+        "w": 4
+      }
+    },
+    "id": "minSize/Infinity,0.5/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[5,6],"factory":"maxSize"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(5, 6)"},"position":{"$u":1},"size":{"h":0,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[5,6],"factory":"maxSize"},
+        "w": -2.5
+      }
+    },
+    "id": "maxSize/5,6/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[5,6],"factory":"maxSize"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(5, 6)"},"position":{"$u":1},"size":{"h":6,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[5,6],"factory":"maxSize"},
+        "w": 4
+      }
+    },
+    "id": "maxSize/5,6/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"maxSize"},
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(-1, 0)"},"position":{"$u":1},"size":{"h":0,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"maxSize"},
+        "w": -2.5
+      }
+    },
+    "id": "maxSize/-1,0/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"maxSize"},
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(-1, 0)"},"position":{"$u":1},"size":{"h":0,"w":-1}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {"args":[-1,0],"factory":"maxSize"},
+        "w": 4
+      }
+    },
+    "id": "maxSize/-1,0/proposal-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "maxSize"
+        },
+        "w": -2.5
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(Infinity, 0.5)"},"position":{"$u":1},"size":{"h":0,"w":-2.5}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 0,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "maxSize"
+        },
+        "w": -2.5
+      }
+    },
+    "id": "maxSize/Infinity,0.5/proposal-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "maxSize"
+        },
+        "w": 4
+      },
+      "output": {"constraint":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(Infinity, 0.5)"},"position":{"$u":1},"size":{"h":0.5,"w":4}},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerWidth": 1200,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,3],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "spec": {
+          "args": [
+            {"$number":"Infinity"},
+            0.5
+          ],
+          "factory": "maxSize"
+        },
+        "w": 4
+      }
+    },
+    "id": "maxSize/Infinity,0.5/proposal-1"
+  }
+]

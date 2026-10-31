@@ -1,0 +1,5382 @@
+[
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","w":1,"x":6,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        {"h":1,"i":"b","w":1,"x":6,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":6},
+        {"h":1,"i":"b","w":1,"x":6,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":6},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":6},
+          {"h":1,"i":"b","w":1,"x":6,"y":7}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+          {"h":1,"i":"b","w":1,"x":6,"y":6}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":6},
+        {"h":1,"i":"b","w":1,"x":6,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":6},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":6},
+          {"h":1,"i":"b","w":1,"x":6,"y":7}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": "q-move-static: free-form swaps bypass the static movement guard",
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":7},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":6,"y":3},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":7,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":1,"x":3,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":1,"x":6,"y":6},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":1,"x":6,"y":6},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":1,"x":6,"y":7},
+        {"h":1,"i":"a","static":false,"w":1,"x":4,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":1,"x":4,"y":6},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":7},
+          {"h":1,"i":"a","static":false,"w":1,"x":4,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":6},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":6},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":4}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":1,"x":6,"y":7},
+        {"h":1,"i":"a","static":true,"w":1,"x":4,"y":6}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":1,"x":4,"y":6},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":1,"x":6,"y":7},
+        "layout": [
+          {"h":1,"i":"b","w":1,"x":6,"y":7},
+          {"h":1,"i":"a","static":true,"w":1,"x":4,"y":6}
+        ]
+      }
+    },
+    "fixture": "free-probe",
+    "knownBug": "q-move-static: free-form swaps bypass the static movement guard",
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0},
+        {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","w":1,"x":0,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0},
+          {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","w":1,"x":0,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0},
+        {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","w":1,"x":0,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0},
+          {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","w":1,"x":0,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","w":1,"x":0,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":2,"i":"b","w":1,"x":0,"y":7}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":7},
+        {"h":2,"i":"b","w":1,"x":0,"y":9}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":7},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":9},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":7},
+          {"h":2,"i":"b","w":1,"x":0,"y":9}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2","$.itemToMove"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":2,"i":"b","w":1,"x":0,"y":7}
+        ]
+      },
+      "output": [
+        {"h":6,"i":"block","w":1,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":7},
+        {"h":2,"i":"b","w":1,"x":0,"y":9}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":7},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":9},
+        "layout": [
+          {"h":6,"i":"block","w":1,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":7},
+          {"h":2,"i":"b","w":1,"x":0,"y":9}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": "q-move-static: free-form swaps bypass the static movement guard",
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":0,"y":8},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":7},
+        {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":7},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":1,"x":1,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":7},
+        {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","moved":true,"static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","moved":true,"w":1,"x":1,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":7},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":7},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":7},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":9},
+        {"h":2,"i":"a","static":false,"w":1,"x":0,"y":7},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":1,"x":0,"y":7},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":9},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":9},
+          {"h":2,"i":"a","static":false,"w":1,"x":0,"y":7},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]},
+          {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":7},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":7},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":5},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":1,"x":0,"y":9},
+        {"h":2,"i":"a","static":true,"w":1,"x":0,"y":7},
+        {"h":6,"i":"block","w":1,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":1,"x":0,"y":7},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":1,"x":0,"y":9},
+        "layout": [
+          {"h":2,"i":"b","w":1,"x":0,"y":9},
+          {"h":2,"i":"a","static":true,"w":1,"x":0,"y":7},
+          {"h":6,"i":"block","w":1,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "north-offset-issue-2173",
+    "knownBug": "q-move-static: free-form swaps bypass the static movement guard",
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+        {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+        "layout": [
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+          {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+        {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+        "layout": [
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+          {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+          {"h":2,"i":"b","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":2,"x":0,"y":1},
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":3}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","moved":false,"w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+        "layout": [
+          {"h":2,"i":"b","moved":true,"w":2,"x":1,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","moved":true,"static":false,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":false,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"b","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "collidesWith": {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":2,"i":"b","w":2,"x":0,"y":0},
+        "layout": [
+          {"h":2,"i":"b","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    "fixture": "partial-overlap-issue-1982",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","w":2,"x":3,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","w":2,"x":3,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","w":2,"x":3,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":1}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.collidesWith"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.itemToMove"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        {"h":1,"i":"b","w":2,"x":3,"y":1}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+          {"h":1,"i":"b","w":2,"x":3,"y":1}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": false
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "vertical",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":3,"y":1},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "horizontal",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":4,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": "wrap",
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+        "layout": [
+          {"h":1,"i":"b","moved":true,"w":2,"x":0,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":2,"x":3,"y":0},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":2,"x":3,"y":0},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": false,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":2,"x":3,"y":1},
+        {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":1},
+          {"h":1,"i":"a","static":false,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout.0","$.itemToMove"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1","$.collidesWith"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":0},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":0},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      },
+      "output": [
+        {"h":1,"i":"b","w":2,"x":3,"y":1},
+        {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+      ],
+      "postInput": {
+        "collidesWith": {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0},
+        "cols": 12,
+        "compactType": null,
+        "isUserAction": true,
+        "itemToMove": {"h":1,"i":"b","w":2,"x":3,"y":1},
+        "layout": [
+          {"h":1,"i":"b","w":2,"x":3,"y":1},
+          {"h":1,"i":"a","static":true,"w":2,"x":2,"y":0}
+        ]
+      }
+    },
+    "fixture": "west-probe",
+    "knownBug": {"$u":1},
+    "reverse": true
+  }
+]

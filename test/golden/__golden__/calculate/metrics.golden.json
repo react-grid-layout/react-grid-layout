@@ -1,0 +1,321 @@
+[
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[13,5],"containerWidth":1001,"margin":[7,3],"maxRows":10,"rowHeight":30}
+      ],
+      "output": 74.83333333333333,
+      "postInput": [
+        {"cols":12,"containerPadding":[13,5],"containerWidth":1001,"margin":[7,3],"maxRows":10,"rowHeight":30}
+      ]
+    },
+    "id": "odd-width"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[13,5],"containerWidth":1,"margin":[7,3],"maxRows":10,"rowHeight":30}
+      ],
+      "output": -8.5,
+      "postInput": [
+        {"cols":12,"containerPadding":[13,5],"containerWidth":1,"margin":[7,3],"maxRows":10,"rowHeight":30}
+      ]
+    },
+    "id": "tiny-width"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[0,0],"containerWidth":1001,"margin":[0,0],"maxRows":10,"rowHeight":30}
+      ],
+      "output": 83.41666666666667,
+      "postInput": [
+        {"cols":12,"containerPadding":[0,0],"containerWidth":1001,"margin":[0,0],"maxRows":10,"rowHeight":30}
+      ]
+    },
+    "id": "zero-gaps"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[0.25,4.75],"containerWidth":333.5,"margin":[1.5,2.5],"maxRows":10,"rowHeight":11.5}
+      ],
+      "output": 26.375,
+      "postInput": [
+        {"cols":12,"containerPadding":[0.25,4.75],"containerWidth":333.5,"margin":[1.5,2.5],"maxRows":10,"rowHeight":11.5}
+      ]
+    },
+    "id": "fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[13,5],"containerWidth":1001,"margin":[7,3],"maxRows":{"$number":"Infinity"},"rowHeight":30}
+      ],
+      "output": 74.83333333333333,
+      "postInput": [
+        {"cols":12,"containerPadding":[13,5],"containerWidth":1001,"margin":[7,3],"maxRows":{"$number":"Infinity"},"rowHeight":30}
+      ]
+    },
+    "id": "unbounded-rows"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":1,"containerPadding":[13,5],"containerWidth":31,"margin":[7,3],"maxRows":1,"rowHeight":30}
+      ],
+      "output": 5,
+      "postInput": [
+        {"cols":1,"containerPadding":[13,5],"containerWidth":31,"margin":[7,3],"maxRows":1,"rowHeight":30}
+      ]
+    },
+    "id": "one-column"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":72.58333333333333,"cols":12,"containerWidth":1001,"gapX":10,"gapY":10,"offsetX":10,"offsetY":10},
+      "postInput": [
+        {"cols":12,"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"margin":[7,3],"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":75.83333333333333,"cols":12,"containerWidth":1001,"gapX":7,"gapY":3,"offsetX":7,"offsetY":3},
+      "postInput": [
+        {"cols":12,"margin":[7,3],"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":null,"margin":[7,3],"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":75.83333333333333,"cols":12,"containerWidth":1001,"gapX":7,"gapY":3,"offsetX":7,"offsetY":3},
+      "postInput": [
+        {"cols":12,"containerPadding":null,"margin":[7,3],"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-2"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":{"$u":1},"margin":[7,3],"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":75.83333333333333,"cols":12,"containerWidth":1001,"gapX":7,"gapY":3,"offsetX":7,"offsetY":3},
+      "postInput": [
+        {"cols":12,"containerPadding":{"$u":1},"margin":[7,3],"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-3"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":74.83333333333333,"cols":12,"containerWidth":1001,"gapX":7,"gapY":3,"offsetX":13,"offsetY":5},
+      "postInput": [
+        {"cols":12,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-4"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":1}
+      ],
+      "output": {"cellHeight":30,"cellWidth":-8.5,"cols":12,"containerWidth":1,"gapX":7,"gapY":3,"offsetX":13,"offsetY":5},
+      "postInput": [
+        {"cols":12,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":1}
+      ]
+    },
+    "id": "cell-5"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[0,0],"margin":[0,0],"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":83.41666666666667,"cols":12,"containerWidth":1001,"gapX":0,"gapY":0,"offsetX":0,"offsetY":0},
+      "postInput": [
+        {"cols":12,"containerPadding":[0,0],"margin":[0,0],"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-6"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[0.25,4.75],"margin":[1.5,2.5],"rowHeight":11.5,"width":333.5}
+      ],
+      "output": {"cellHeight":11.5,"cellWidth":26.375,"cols":12,"containerWidth":333.5,"gapX":1.5,"gapY":2.5,"offsetX":0.25,"offsetY":4.75},
+      "postInput": [
+        {"cols":12,"containerPadding":[0.25,4.75],"margin":[1.5,2.5],"rowHeight":11.5,"width":333.5}
+      ]
+    },
+    "id": "cell-7"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":12,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":1001}
+      ],
+      "output": {"cellHeight":30,"cellWidth":74.83333333333333,"cols":12,"containerWidth":1001,"gapX":7,"gapY":3,"offsetX":13,"offsetY":5},
+      "postInput": [
+        {"cols":12,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":1001}
+      ]
+    },
+    "id": "cell-8"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":1,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":31}
+      ],
+      "output": {"cellHeight":30,"cellWidth":5,"cols":1,"containerWidth":31,"gapX":7,"gapY":3,"offsetX":13,"offsetY":5},
+      "postInput": [
+        {"cols":1,"containerPadding":[13,5],"margin":[7,3],"rowHeight":30,"width":31}
+      ]
+    },
+    "id": "cell-9"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"cols":0,"containerPadding":[0,0],"margin":[10,10],"rowHeight":0,"width":100}
+      ],
+      "output": {"cellHeight":0,"cellWidth":{"$number":"Infinity"},"cols":0,"containerWidth":100,"gapX":10,"gapY":10,"offsetX":0,"offsetY":0},
+      "postInput": [
+        {"cols":0,"containerPadding":[0,0],"margin":[10,10],"rowHeight":0,"width":100}
+      ]
+    },
+    "id": "cell-10"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[0,10,3],"output":0,"postInput":[0,10,3]},"id":"units-0"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[0.5,11.5,3],"output":6,"postInput":[0.5,11.5,3]},"id":"units-1"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[1,11.5,3],"output":12,"postInput":[1,11.5,3]},"id":"units-2"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[1.5,11.5,3],"output":19,"postInput":[1.5,11.5,3]},"id":"units-3"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[2,11.5,3],"output":26,"postInput":[2,11.5,3]},"id":"units-4"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[-1,11.5,3],"output":-11,"postInput":[-1,11.5,3]},"id":"units-5"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[3,-10.25,7],"output":-17,"postInput":[3,-10.25,7]},"id":"units-6"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"$number":"Infinity"},
+        0,
+        10
+      ],
+      "output": {"$number":"Infinity"},
+      "postInput": [
+        {"$number":"Infinity"},
+        0,
+        10
+      ]
+    },
+    "id": "units-7"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"$number":"-Infinity"},
+        0,
+        10
+      ],
+      "output": {"$number":"-Infinity"},
+      "postInput": [
+        {"$number":"-Infinity"},
+        0,
+        10
+      ]
+    },
+    "id": "units-8"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[-1,0,10],"output":0,"postInput":[-1,0,10]},"id":"clamp-0"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[0,0,10],"output":0,"postInput":[0,0,10]},"id":"clamp-1"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[3.5,0,10],"output":3.5,"postInput":[3.5,0,10]},"id":"clamp-2"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[10,0,10],"output":10,"postInput":[10,0,10]},"id":"clamp-3"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[11,0,10],"output":10,"postInput":[11,0,10]},"id":"clamp-4"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[3,5,1],"output":5,"postInput":[3,5,1]},"id":"clamp-5"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"$number":"Infinity"},
+        0,
+        10
+      ],
+      "output": 10,
+      "postInput": [
+        {"$number":"Infinity"},
+        0,
+        10
+      ]
+    },
+    "id": "clamp-6"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"$number":"-Infinity"},
+        0,
+        10
+      ],
+      "output": 0,
+      "postInput": [
+        {"$number":"-Infinity"},
+        0,
+        10
+      ]
+    },
+    "id": "clamp-7"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        7,
+        {"$number":"-Infinity"},
+        {"$number":"Infinity"}
+      ],
+      "output": 7,
+      "postInput": [
+        7,
+        {"$number":"-Infinity"},
+        {"$number":"Infinity"}
+      ]
+    },
+    "id": "clamp-8"
+  }
+]

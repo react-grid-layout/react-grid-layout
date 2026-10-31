@@ -1,0 +1,45 @@
+{
+  "call": {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true,true]
+    },
+    "input": {
+      "allowOverlap": false,
+      "cols": 12,
+      "compactType": null,
+      "isUserAction": true,
+      "l": {"h":2,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":2}
+      ],
+      "preventCollision": false,
+      "x": 0,
+      "y": 1
+    },
+    "output": [
+      {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3},
+      {"h":2,"i":"s","static":true,"w":2,"x":0,"y":1}
+    ],
+    "postInput": {
+      "allowOverlap": false,
+      "cols": 12,
+      "compactType": null,
+      "isUserAction": true,
+      "l": {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3},
+      "layout": [
+        {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":1}
+      ],
+      "preventCollision": false,
+      "x": 0,
+      "y": 1
+    }
+  },
+  "knownBug": "q-move-static: The null-mode swap writes the static obstacle's y directly, bypassing the static movement guard."
+}

@@ -1,0 +1,1435 @@
+[
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "n/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":30,"top":35,"width":20},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "n/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":30,"top":5,"width":60},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "n/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":0,"width":50},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "n/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":110},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "n/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":250},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "n/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":-9,"top":5,"width":60},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "n/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":8.75,"top":5.75,"width":55.5},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "n/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":30,"top":60,"width":0},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "n/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "ne/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":30,"top":35,"width":20},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "ne/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":30,"top":5,"width":60},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "ne/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":0,"width":50},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "ne/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":110},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "ne/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "ne/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":0,"top":5,"width":60},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "ne/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":8.75,"top":5.75,"width":55.5},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "ne/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":30,"top":60,"width":50},
+      "postInput": [
+        "ne",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "ne/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "e/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":30,"top":10,"width":20},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "e/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":30,"top":10,"width":60},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "e/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":100,"left":30,"top":10,"width":50},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "e/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":110},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "e/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "e/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":0,"top":-7,"width":60},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "e/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "e/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":30,"top":10,"width":50},
+      "postInput": [
+        "e",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "e/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "se/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":30,"top":10,"width":20},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "se/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":30,"top":10,"width":60},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "se/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":100,"left":30,"top":10,"width":50},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "se/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":110},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "se/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "se/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":0,"width":60},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "se/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "se/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":30,"top":10,"width":50},
+      "postInput": [
+        "se",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "se/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "s/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":30,"top":10,"width":20},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "s/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":30,"top":10,"width":60},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "s/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":100,"left":30,"top":10,"width":50},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "s/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":110},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "s/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":250},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "s/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":50,"left":-9,"top":0,"width":60},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "s/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "s/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":30,"top":10,"width":0},
+      "postInput": [
+        "s",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "s/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "sw/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":60,"top":10,"width":20},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "sw/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":20,"top":10,"width":60},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "sw/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":100,"left":30,"top":10,"width":50},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "sw/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":10,"width":80},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "sw/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":10,"width":80},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "sw/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":20,"top":0,"width":60},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "sw/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":24.5,"top":3.25,"width":55.5},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "sw/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":80,"top":10,"width":0},
+      "postInput": [
+        "sw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "sw/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "w/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":60,"top":10,"width":20},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "w/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":20,"top":10,"width":60},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "w/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":100,"left":30,"top":10,"width":50},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "w/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":10,"width":80},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "w/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":10,"width":80},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "w/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":20,"top":0,"width":60},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "w/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":24.5,"top":3.25,"width":55.5},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "w/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":80,"top":10,"width":0},
+      "postInput": [
+        "w",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "w/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":10,"width":50},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {},
+        200
+      ]
+    },
+    "id": "nw/unchanged"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ],
+      "output": {"height":25,"left":60,"top":35,"width":20},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":25,"width":20},
+        200
+      ]
+    },
+    "id": "nw/shrink"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":20,"top":5,"width":60},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"width":60},
+        200
+      ]
+    },
+    "id": "nw/grow"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":0,"width":50},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "nw/past-top"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":10,"width":80},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":110},
+        200
+      ]
+    },
+    "id": "nw/past-left"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ],
+      "output": {"height":50,"left":0,"top":10,"width":80},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":250},
+        200
+      ]
+    },
+    "id": "nw/past-right"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ],
+      "output": {"height":55,"left":20,"top":5,"width":60},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":55,"left":-9,"top":-7,"width":60},
+        200
+      ]
+    },
+    "id": "nw/proposed-negative-origin"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ],
+      "output": {"height":54.25,"left":24.5,"top":5.75,"width":55.5},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":54.25,"left":8.75,"top":3.25,"width":55.5},
+        85.5
+      ]
+    },
+    "id": "nw/fractional"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ],
+      "output": {"height":0,"left":80,"top":60,"width":0},
+      "postInput": [
+        "nw",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":0,"width":0},
+        0
+      ]
+    },
+    "id": "nw/zero-size"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ],
+      "output": {"height":50,"left":30,"top":0,"width":50},
+      "postInput": [
+        "n",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"height":100},
+        200
+      ]
+    },
+    "id": "north-crosses-top",
+    "knownBug": "g: north resize past top retains old height and moves bottom edge (B7a)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        "e",
+        {"height":50,"left":900,"top":10,"width":50},
+        {"width":200},
+        1000
+      ],
+      "output": {"height":50,"left":900,"top":10,"width":50},
+      "postInput": [
+        "e",
+        {"height":50,"left":900,"top":10,"width":50},
+        {"width":200},
+        1000
+      ]
+    },
+    "id": "east-crosses-right",
+    "knownBug": "g: east resize past right snaps to old width instead of available width (B7b)"
+  },
+  {
+    "call": {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.2"],"outputPaths":["$"]}
+        ],
+        "returnedSameArray": false,
+        "sameObject": false
+      },
+      "input": [
+        "invalid",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":20},
+        200
+      ],
+      "output": {"width":20},
+      "postInput": [
+        "invalid",
+        {"height":50,"left":30,"top":10,"width":50},
+        {"width":20},
+        200
+      ]
+    },
+    "id": "unknown-handle-returns-unmerged-proposal"
+  }
+]

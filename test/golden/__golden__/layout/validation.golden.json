@@ -1,0 +1,322 @@
+[
+  {"call":{"error":{"message":"Fixture must be an array!","name":"Error"},"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"context":"Fixture","layout":{}},"output":{"$u":1},"postInput":{"context":"Fixture","layout":{}}},"name":"not-array"},
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].x must be a number! Received: undefined (undefined)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":{"$u":1},"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":{"$u":1},"y":0}
+        ]
+      }
+    },
+    "name": "x-undefined"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].x must be a number! Received: 1 (string)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":"1","y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":"1","y":0}
+        ]
+      }
+    },
+    "name": "x-1"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].x must be a number! Received: NaN (number)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":{"$number":"NaN"},"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":{"$number":"NaN"},"y":0}
+        ]
+      }
+    },
+    "name": "x-NaN"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].y must be a number! Received: undefined (undefined)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":{"$u":1}}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":{"$u":1}}
+        ]
+      }
+    },
+    "name": "y-undefined"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].y must be a number! Received: 1 (string)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":"1"}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":"1"}
+        ]
+      }
+    },
+    "name": "y-1"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].y must be a number! Received: NaN (number)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+        ]
+      }
+    },
+    "name": "y-NaN"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].w must be a number! Received: undefined (undefined)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":{"$u":1},"x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":{"$u":1},"x":0,"y":0}
+        ]
+      }
+    },
+    "name": "w-undefined"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].w must be a number! Received: 1 (string)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":"1","x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":"1","x":0,"y":0}
+        ]
+      }
+    },
+    "name": "w-1"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].w must be a number! Received: NaN (number)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":{"$number":"NaN"},"x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":"a","w":{"$number":"NaN"},"x":0,"y":0}
+        ]
+      }
+    },
+    "name": "w-NaN"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].h must be a number! Received: undefined (undefined)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":{"$u":1},"i":"a","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":{"$u":1},"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "name": "h-undefined"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].h must be a number! Received: 1 (string)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":"1","i":"a","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":"1","i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "name": "h-1"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].h must be a number! Received: NaN (number)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":{"$number":"NaN"},"i":"a","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":{"$number":"NaN"},"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "name": "h-NaN"
+  },
+  {
+    "call": {
+      "error": {"message":"ReactGridLayout: Fixture[0].i must be a string! Received: 7 (number)","name":"Error"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":7,"w":2,"x":0,"y":0}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "context": "Fixture",
+        "layout": [
+          {"h":2,"i":7,"w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "name": "nonstring-id"
+  },
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"layout":[]},"output":{"$u":1},"postInput":{"layout":[]}},
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"h":-2,"i":"a","w":0,"x":-1,"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "layout": [
+        {"h":-2,"i":"a","w":0,"x":-1,"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","maxW":{"$number":"Infinity"},"w":2,"x":0.5,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","maxW":{"$number":"Infinity"},"w":2,"x":0.5,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"h":1,"w":1,"x":0,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "layout": [
+        {"h":1,"w":1,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"$hole":true},
+        {"$hole":true}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "layout": [
+        {"$hole":true},
+        {"$hole":true}
+      ]
+    }
+  }
+]

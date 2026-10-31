@@ -1,0 +1,48 @@
+[
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":{"$number":"Infinity"},"i":"s","moved":true,"static":true,"w":1,"x":1,"y":0},
+        {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3}
+      ],
+      2
+    ],
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":{"$number":"Infinity"},"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":3}
+    ],
+    "postInput": [
+      [
+        {"h":{"$number":"Infinity"},"i":"s","moved":true,"static":true,"w":1,"x":1,"y":0},
+        {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3}
+      ],
+      2
+    ],
+    "warnings": []
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3},
+        {"h":{"$number":"Infinity"},"i":"s","moved":true,"static":true,"w":1,"x":1,"y":0}
+      ],
+      2
+    ],
+    "order": "reversed",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":3},
+      {"constraints":{"$u":1},"h":{"$number":"Infinity"},"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"a","moved":true,"w":2,"x":0,"y":3},
+        {"h":{"$number":"Infinity"},"i":"s","moved":true,"static":true,"w":1,"x":1,"y":0}
+      ],
+      2
+    ],
+    "warnings": []
+  }
+]

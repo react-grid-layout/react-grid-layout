@@ -1,0 +1,105 @@
+[
+  {
+    "error": {"message":"Cannot read properties of undefined (reading 'y')","name":"TypeError"},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "compactType": "vertical",
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "compactType": "vertical",
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "error": {"message":"Cannot read properties of undefined (reading 'x')","name":"TypeError"},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "compactType": "horizontal",
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "compactType": "horizontal",
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "error": {"message":"Cannot read properties of undefined (reading 'y')","name":"TypeError"},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "compactType": "wrap",
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "compactType": "wrap",
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true,true,true,true]
+    },
+    "input": {
+      "compactType": null,
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"$u":1},
+      {"h":1,"i":"a","w":1,"x":1,"y":1},
+      {"$u":1},
+      {"h":1,"i":"b","w":1,"x":0,"y":0}
+    ],
+    "postInput": {
+      "compactType": null,
+      "layout": [
+        {"$hole":true},
+        {"h":1,"i":"a","w":1,"x":1,"y":1},
+        {"$hole":true},
+        {"h":1,"i":"b","w":1,"x":0,"y":0}
+      ]
+    }
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "auditId": "B9",
+  "calls": [
+    {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":2}
+      ],
+      "postInput": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"s","static":true,"w":2,"x":0,"y":2}
+        ]
+      }
+    },
+    {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    }
+  ],
+  "knownBug": "i: correctBounds pushes statics below earlier nonstatic items despite its static-only documentation."
+}
