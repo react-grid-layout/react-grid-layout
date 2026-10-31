@@ -250,21 +250,25 @@ function synchronizeLayoutWithChildren(
       const dataGrid = childProps["data-grid"];
 
       if (dataGrid) {
+        const authored = validateLayoutInput(
+          [{ x: 0, y: 0, w: 1, h: 1, ...dataGrid, i: key }],
+          { cols, maxRows }
+        )[0]!;
         layout.push({
           i: key,
-          x: dataGrid.x ?? 0,
-          y: dataGrid.y ?? 0,
-          w: dataGrid.w ?? 1,
-          h: dataGrid.h ?? 1,
-          minW: dataGrid.minW,
-          maxW: dataGrid.maxW,
-          minH: dataGrid.minH,
-          maxH: dataGrid.maxH,
-          static: dataGrid.static,
-          isDraggable: dataGrid.isDraggable,
-          isResizable: dataGrid.isResizable,
-          resizeHandles: dataGrid.resizeHandles,
-          isBounded: dataGrid.isBounded
+          x: authored.x ?? 0,
+          y: authored.y ?? 0,
+          w: authored.w ?? 1,
+          h: authored.h ?? 1,
+          minW: authored.minW,
+          maxW: authored.maxW,
+          minH: authored.minH,
+          maxH: authored.maxH,
+          static: authored.static,
+          isDraggable: authored.isDraggable,
+          isResizable: authored.isResizable,
+          resizeHandles: authored.resizeHandles,
+          isBounded: authored.isBounded
         });
       } else {
         // Create default layout item
@@ -280,10 +284,7 @@ function synchronizeLayoutWithChildren(
   });
 
   // Correct bounds and compact using the compactor's compact method (#2213)
-  const corrected = correctBounds(
-    validateLayoutInput(layout, { cols, maxRows }) as LayoutItem[],
-    { cols }
-  );
+  const corrected = correctBounds(layout, { cols });
   return compactor.compact(corrected, cols);
 }
 
@@ -294,7 +295,7 @@ function synchronizeLayoutWithChildren(
 /**
  * GridLayout - A reactive, fluid grid layout with draggable, resizable components.
  */
-export function GridLayout(props: GridLayoutProps): ReactElement {
+function GridLayout(props: GridLayoutProps): ReactElement {
   const {
     // Required
     children,
@@ -480,16 +481,13 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     const boundsChanged =
       cols !== prevBoundsRef.current.cols ||
       maxRows !== prevBoundsRef.current.maxRows;
-    const boundedLayout = boundsChanged
-      ? validateLayoutInput(layout, { cols, maxRows })
-      : layout;
     if (
       layoutChanged ||
       childrenChanged ||
       compactTypeChanged ||
-      boundedLayout !== layout
+      boundsChanged
     ) {
-      const baseLayout = layoutChanged ? propsLayout : boundedLayout;
+      const baseLayout = layoutChanged ? propsLayout : layout;
       const newLayout = synchronizeLayoutWithChildren(
         baseLayout,
         children,
@@ -1388,4 +1386,16 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   );
 }
 
-export default GridLayout;
+/** Public intake. Responsive rendering uses the resolved entry below. */
+function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
+  const cols = props.gridConfig?.cols ?? defaultGridConfig.cols;
+  const maxRows = props.gridConfig?.maxRows ?? defaultGridConfig.maxRows;
+  const layout = useMemo(
+    () => validateLayoutInput(props.layout ?? [], { cols, maxRows }),
+    [props.layout, cols, maxRows]
+  );
+  return <GridLayout {...props} layout={layout} />;
+}
+
+export { UntrustedGridLayout as GridLayout, GridLayout as ResolvedGridLayout };
+export default UntrustedGridLayout;

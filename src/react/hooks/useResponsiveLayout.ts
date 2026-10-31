@@ -206,10 +206,9 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       breakpoint,
       prevBreakpointRef.current,
       cols,
-      compactor,
-      maxRows
+      compactor
     );
-  }, [layouts, breakpoints, breakpoint, cols, compactor, maxRows]);
+  }, [layouts, breakpoints, breakpoint, cols, compactor]);
 
   // Set layout for a specific breakpoint
   const setLayoutForBreakpoint = useCallback(
@@ -269,8 +268,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         newBreakpoint,
         breakpoint,
         newCols,
-        compactor,
-        maxRows
+        compactor
       );
 
       // Update layouts with the new breakpoint layout

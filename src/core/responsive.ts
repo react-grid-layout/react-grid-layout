@@ -13,7 +13,6 @@ import type {
   ResponsiveLayouts
 } from "./types.js";
 import { cloneLayout, correctBounds } from "./layout.js";
-import { validateLayoutInput } from "./validation.js";
 import { getCompactor } from "./compactors.js";
 
 // ============================================================================
@@ -114,13 +113,14 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
   breakpoint: B,
   lastBreakpoint: B,
   cols: number,
-  compactTypeOrCompactor: CompactType | Compactor,
-  maxRows = Infinity
+  compactTypeOrCompactor: CompactType | Compactor
 ): Layout {
+  // Layouts have already crossed the caller's intake boundary. Cached and
+  // generated rows can exceed input limits after collision resolution.
   // If it already exists, just return it
   const existingLayout = layouts[breakpoint];
   if (existingLayout) {
-    return cloneLayout(validateLayoutInput(existingLayout, { cols, maxRows }));
+    return cloneLayout(existingLayout);
   }
 
   // Find or generate the next layout
@@ -144,9 +144,7 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
   }
 
   // Clone layout so we don't modify existing items
-  const clonedLayout = cloneLayout(
-    validateLayoutInput(layout || [], { cols, maxRows })
-  );
+  const clonedLayout = cloneLayout(layout || []);
 
   // Correct bounds and compact - use compactor.compact() (#2213)
   // Handle both legacy compactType string and new Compactor object

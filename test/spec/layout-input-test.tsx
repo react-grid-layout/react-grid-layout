@@ -4,7 +4,8 @@ import {
   validateLayoutInput,
   MAX_GRID_ROWS,
   noCompactor,
-  verticalCompactor
+  verticalCompactor,
+  findOrGenerateResponsiveLayout
 } from "../../src/core";
 import type { Layout, LayoutItem } from "../../src/core/types";
 import { GridLayout } from "../../src/react/components/GridLayout";
@@ -16,6 +17,88 @@ import LegacyResponsive from "../../src/legacy/ResponsiveReactGridLayout";
 import { dropExternal } from "../golden-react/drop";
 
 const item: LayoutItem = { i: "a", x: 0, y: 0, w: 1, h: 1 };
+
+test("child changes preserve static rows resolved beyond maxRows", () => {
+  const input = Array.from({ length: 3 }, (_, i) => ({
+    ...item,
+    i: String(i),
+    h: 2,
+    static: true
+  }));
+  const changed = jest.fn();
+  const element = (extra: boolean) => (
+    <GridLayout
+      width={800}
+      gridConfig={{ cols: 1, maxRows: 2 }}
+      layout={input}
+      onLayoutChange={changed}
+    >
+      {input.map(l => (
+        <div key={l.i} data-testid={l.i} />
+      ))}
+      {extra && <div key="new" />}
+    </GridLayout>
+  );
+  const view = render(element(false));
+  expect(changed.mock.calls[0][0].map((l: LayoutItem) => l.y)).toEqual([
+    2, 4, 0
+  ]);
+  const positions = input.map(l => view.getByTestId(l.i).style.transform);
+  view.rerender(element(true));
+  expect(input.map(l => view.getByTestId(l.i).style.transform)).toEqual(
+    positions
+  );
+});
+
+test("responsive breakpoint generation keeps resolved static rows", () => {
+  const input = Array.from({ length: 3 }, (_, i) => ({
+    ...item,
+    i: String(i),
+    h: 2,
+    static: true
+  }));
+  const element = (width: number) => (
+    <ResponsiveGridLayout
+      width={width}
+      breakpoints={{ lg: 600, sm: 0 }}
+      cols={{ lg: 1, sm: 1 }}
+      maxRows={2}
+      layouts={{ lg: input }}
+    >
+      {input.map(l => (
+        <div key={l.i} data-testid={l.i} />
+      ))}
+    </ResponsiveGridLayout>
+  );
+  const view = render(element(800));
+  const positions = input.map(l => view.getByTestId(l.i).style.transform);
+  view.rerender(element(400));
+  expect(input.map(l => view.getByTestId(l.i).style.transform)).toEqual(
+    positions
+  );
+});
+
+test("responsive lookups and generated layouts preserve resolved static rows", () => {
+  const resolved = Array.from({ length: 3 }, (_, i) => ({
+    ...item,
+    i: String(i),
+    y: [2, 4, 0][i]!,
+    h: 2,
+    static: true
+  }));
+  for (const bp of ["lg", "sm"]) {
+    expect(
+      findOrGenerateResponsiveLayout(
+        { lg: resolved },
+        { lg: 600, sm: 0 },
+        bp,
+        "lg",
+        1,
+        verticalCompactor
+      ).map(l => l.y)
+    ).toEqual([2, 4, 0]);
+  }
+});
 const hostile: LayoutItem = {
   ...item,
   x: 1e9,
@@ -252,7 +335,7 @@ test("useResponsiveLayout bounds initial layouts, setters, prop sync and generat
   expect(hook.result.current.layout[0]).toMatchObject({
     ...bounded,
     w: 2,
-    minW: 2
+    minW: 4
   });
 });
 
