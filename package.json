@@ -84,7 +84,9 @@
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "golden:update": "GOLDEN_UPDATE=1 NODE_ENV=test jest --runInBand --testPathPatterns=test/golden",
-    "bench": "NODE_ENV=test RGL_BENCH=1 jest --config test/jest.bench.cjs --runInBand"
+    "bench": "NODE_ENV=test RGL_BENCH=1 jest --config test/jest.bench.cjs --runInBand",
+    "bench:ops": "NODE_ENV=test jest --config test/jest.ops.cjs --runInBand",
+    "bench:ops:update": "BENCH_UPDATE=1 yarn bench:ops"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,249 @@
+import React from "react";
+import { render } from "@testing-library/react";
+import { readFileSync, writeFileSync, renameSync } from "node:fs";
+import { runInNewContext } from "node:vm";
+import path from "node:path";
+import { transformSync } from "@babel/core";
+import { collides, getFirstCollision } from "../../src/core/collision";
+import { cloneLayoutItem, getStatics } from "../../src/core/layout";
+import { verticalCompactor } from "../../src/core/compactors";
+import { GridLayout } from "../../src/react/components/GridLayout";
+import { counterNames, measure, onItemRender, type Counts } from "./counters";
+import { runScenarios } from "./scenarios";
+
+// Put the Profiler inside the original memo boundary. Wrapping the exported
+// memo from outside would count parent commits even when the item bails out.
+jest.mock("../../src/react/components/GridItem", () => {
+  const React = jest.requireActual("react") as typeof import("react");
+  const actual = jest.requireActual("../../src/react/components/GridItem");
+  const { onItemRender } = jest.requireActual("./counters");
+  const GridItem = React.memo(
+    (props: any) =>
+      React.createElement(
+        React.Profiler,
+        {
+          id: props.className?.includes("react-grid-placeholder")
+            ? "placeholder"
+            : props.i,
+          onRender: onItemRender
+        },
+        React.createElement(actual.GridItem.type, props)
+      ),
+    actual.GridItem.compare
+  );
+  GridItem.displayName = "BenchGridItem";
+  return { ...actual, GridItem, default: GridItem };
+});
+
+type Baseline = {
+  audit: Record<string, unknown>;
+  scenarios: Record<string, Counts>;
+};
+const baselinePath = path.join(__dirname, "baseline.json");
+
+beforeAll(() => {
+  const fixtures = [
+    {
+      file: "collision.ts",
+      code: "function collides() {} function getFirstCollision() { collides(); } getFirstCollision();",
+      expected: ["getFirstCollision", "collides"]
+    },
+    {
+      file: "layout.ts",
+      code: "function cloneLayoutItem() {} function cloneLayout() { cloneLayoutItem(); } cloneLayout();",
+      expected: ["cloneLayoutItem"]
+    }
+  ];
+  for (const fixture of fixtures) {
+    const entries: string[] = [];
+    const transformed = transformSync(fixture.code, {
+      babelrc: false,
+      configFile: false,
+      filename: path.resolve(__dirname, "../../src/core", fixture.file),
+      plugins: [require.resolve("./instrument.cjs")]
+    })!.code!;
+    runInNewContext(transformed, {
+      __RGL_BENCH_COUNT__: (name: string) => entries.push(name)
+    });
+    expect(entries).toEqual(fixture.expected);
+  }
+});
+
+function regressions(
+  actual: Record<string, Counts>,
+  expected: Record<string, Counts>
+): string[] {
+  const diff: string[] = [];
+  const scenarios = [
+    ...new Set([...Object.keys(actual), ...Object.keys(expected)])
+  ].sort();
+  for (const scenario of scenarios) {
+    for (const counter of counterNames) {
+      const before = expected[scenario]?.[counter];
+      const after = actual[scenario]?.[counter];
+      if (
+        !Number.isSafeInteger(before) ||
+        before < 0 ||
+        !Number.isSafeInteger(after) ||
+        after < 0
+      ) {
+        diff.push(
+          `${scenario} ${counter}: missing/invalid budget or measurement (${before} -> ${after})`
+        );
+      } else if (after > before) {
+        diff.push(
+          `${scenario} ${counter}: ${before} -> ${after} (+${after - before})`
+        );
+      }
+    }
+  }
+  return diff;
+}
+
+// One scenario per line, sorted keys. No clocks, platform names, or Jest timings.
+function serialize(baseline: Baseline): string {
+  const lines = (value: Record<string, unknown>) =>
+    Object.keys(value)
+      .sort()
+      .map(key => {
+        const row = value[key] as Record<string, unknown>;
+        const sorted = Object.fromEntries(
+          Object.keys(row)
+            .sort()
+            .map(name => [name, row[name]])
+        );
+        return `    ${JSON.stringify(key)}: ${JSON.stringify(sorted)}`;
+      })
+      .join(",\n");
+  return `{\n  "audit": {\n${lines(baseline.audit)}\n  },\n  "scenarios": {\n${lines(baseline.scenarios)}\n  }\n}\n`;
+}
+
+beforeAll(() => {
+  const item = { i: "0", x: 0, y: 0, w: 1, h: 1 };
+  const descriptor = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    "offsetParent"
+  );
+  const rect = Element.prototype.getBoundingClientRect;
+  const style = window.getComputedStyle;
+  const sort = Array.prototype.sort;
+  const counts = measure(() => {
+    collides(item, item);
+    getFirstCollision([], item);
+    cloneLayoutItem(item);
+    getStatics([item]);
+    [item].sort(() => 0);
+    [item].indexOf(item);
+    [item].findIndex(value => value.i === "0");
+    const element = document.createElement("div");
+    element.getBoundingClientRect();
+    void element.offsetParent;
+    void element.clientHeight;
+    window.getComputedStyle(element);
+  });
+  expect(counts).toMatchObject({
+    collides: 1,
+    getFirstCollision: 1,
+    cloneLayoutItem: 1,
+    getStatics: 1,
+    filter: 1,
+    sort: 1,
+    indexOf: 1,
+    findIndex: 1,
+    getBoundingClientRect: 1,
+    offsetParent: 1,
+    clientHeight: 1,
+    getComputedStyle: 1
+  });
+  expect(() =>
+    measure(() => {
+      throw new Error("probe failure");
+    })
+  ).toThrow("probe failure");
+  expect(Array.prototype.sort).toBe(sort);
+  expect(Element.prototype.getBoundingClientRect).toBe(rect);
+  expect(window.getComputedStyle).toBe(style);
+  expect(
+    Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetParent")
+  ).toEqual(descriptor);
+  expect(measure(() => {})).toEqual(
+    Object.fromEntries(counterNames.map(key => [key, 0]))
+  );
+  expect(
+    measure(() => {
+      verticalCompactor.compact([], 12);
+    }).compact
+  ).toBe(1);
+});
+
+beforeAll(() => {
+  const element = (text: string) =>
+    React.createElement(
+      React.Profiler,
+      { id: "0", onRender: onItemRender },
+      React.createElement("div", null, text)
+    );
+  const view = render(element("before"));
+  try {
+    const counts = measure(() => view.rerender(element("after")));
+    expect(counts).toMatchObject({
+      gridItemCommits: 1,
+      gridItemMaxCommits: 1,
+      idleItemCommits: 0,
+      placeholderCommits: 0
+    });
+  } finally {
+    view.unmount();
+  }
+});
+
+beforeAll(() => {
+  const layout = [{ i: "0", x: 0, y: 0, w: 1, h: 1 }];
+  const child = React.createElement("div", { key: "0" });
+  const element = (width: number) =>
+    React.createElement(GridLayout, { width, layout }, child);
+  const view = render(element(1200));
+  try {
+    const counts = measure(() => view.rerender(element(600)));
+    expect(counts).toMatchObject({
+      gridLayoutRenders: 1,
+      gridItemRenders: 1,
+      idleItemRenders: 0
+    });
+  } finally {
+    view.unmount();
+  }
+});
+
+test("baseline gate accepts decreases and reports increases or missing counters", () => {
+  const zero = Object.fromEntries(counterNames.map(key => [key, 0])) as Counts;
+  const budget = { ...zero, sort: 2 };
+  expect(
+    regressions({ frame: { ...zero, sort: 1 } }, { frame: budget })
+  ).toEqual([]);
+  expect(
+    regressions({ frame: { ...zero, sort: 3 } }, { frame: budget })
+  ).toEqual(["frame sort: 2 -> 3 (+1)"]);
+  expect(regressions({}, { frame: budget })).toContain(
+    "frame sort: missing/invalid budget or measurement (2 -> undefined)"
+  );
+});
+
+test("operation counts must not increase against the committed baseline", () => {
+  const baseline = JSON.parse(readFileSync(baselinePath, "utf8")) as Baseline;
+  const scenarios = runScenarios();
+  if (process.env.BENCH_UPDATE === "1") {
+    // Write only after every scenario and its interaction assertions succeed.
+    const temporary = `${baselinePath}.tmp`;
+    writeFileSync(temporary, serialize({ audit: baseline.audit, scenarios }));
+    renameSync(temporary, baselinePath);
+  } else {
+    const diff = regressions(scenarios, baseline.scenarios);
+    if (diff.length > 0)
+      throw new Error(
+        `Operation counts increased:\n${diff.join("\n")}\nJustify increases in the PR, then run yarn bench:ops:update.`
+      );
+  }
+  // Stable JSON is useful for comparing consecutive fresh Jest processes.
+  console.log(JSON.stringify(scenarios));
+}, 120_000);

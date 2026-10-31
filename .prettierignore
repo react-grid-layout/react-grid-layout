@@ -7,3 +7,6 @@ codemaps/
 # Golden files keep one item or interaction step per line for reviewable diffs.
 test/golden/__golden__/
 test/golden-react/__golden__/
+
+# Operation-count baselines use one scenario per line.
+test/bench/baseline.json
