@@ -1,0 +1,158 @@
+[
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "axis": "x",
+      "hasStatics": {"$u":1},
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":1,"i":"c","w":1,"x":2,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "axis": "x",
+      "hasStatics": {"$u":1},
+      "item": {"h":1,"i":"a","w":1,"x":1,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":1,"y":0},
+        {"h":1,"i":"b","w":1,"x":2,"y":0},
+        {"h":1,"i":"c","w":1,"x":3,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "axis": "x",
+      "hasStatics": false,
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":1,"i":"c","w":1,"x":2,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "axis": "x",
+      "hasStatics": false,
+      "item": {"h":1,"i":"a","w":1,"x":1,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":1,"y":0},
+        {"h":1,"i":"b","w":1,"x":2,"y":0},
+        {"h":1,"i":"c","w":1,"x":3,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "axis": "x",
+      "hasStatics": true,
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":1,"i":"c","w":1,"x":2,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "axis": "x",
+      "hasStatics": true,
+      "item": {"h":1,"i":"a","w":1,"x":1,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":1,"y":0},
+        {"h":1,"i":"b","w":1,"x":2,"y":0},
+        {"h":1,"i":"c","w":1,"x":3,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "axis": "y",
+      "hasStatics": {"$u":1},
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":0,"y":1},
+        {"h":1,"i":"c","w":1,"x":0,"y":2},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "axis": "y",
+      "hasStatics": {"$u":1},
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":1},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":1},
+        {"h":1,"i":"b","w":1,"x":0,"y":2},
+        {"h":1,"i":"c","w":1,"x":0,"y":3},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "axis": "y",
+      "hasStatics": false,
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":0,"y":1},
+        {"h":1,"i":"c","w":1,"x":0,"y":2},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "axis": "y",
+      "hasStatics": false,
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":1},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":1},
+        {"h":1,"i":"b","w":1,"x":0,"y":2},
+        {"h":1,"i":"c","w":1,"x":0,"y":3},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "axis": "y",
+      "hasStatics": true,
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":0,"y":1},
+        {"h":1,"i":"c","w":1,"x":0,"y":2},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "axis": "y",
+      "hasStatics": true,
+      "item": {"h":1,"i":"a","w":1,"x":0,"y":1},
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":0,"y":1},
+        {"h":1,"i":"b","w":1,"x":0,"y":2},
+        {"h":1,"i":"c","w":1,"x":0,"y":3},
+        {"h":1,"i":"s","static":true,"w":1,"x":5,"y":5}
+      ]
+    }
+  }
+]

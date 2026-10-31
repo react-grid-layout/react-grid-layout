@@ -1,0 +1,29 @@
+{
+  "auditId": "B10",
+  "call": {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":-1,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":12,"x":0,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":12,"x":0,"y":0}
+      ]
+    }
+  },
+  "knownBug": "j: Clamping a negative x expands the item to the full grid width."
+}

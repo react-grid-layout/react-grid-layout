@@ -1,0 +1,177 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.replacement"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,true]
+    },
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "replacement": {"h":2,"i":"a","w":2,"x":5,"y":0}
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":5,"y":0},
+      {"h":2,"i":"b","w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "replacement": {"h":2,"i":"a","w":2,"x":5,"y":0}
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.0.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
+    "input": {
+      "key": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "x": 7
+    },
+    "output": [
+      [
+        {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0}
+    ],
+    "postInput": {
+      "key": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      "x": 7
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.0.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
+    "input": {
+      "key": "missing",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ],
+      null
+    ],
+    "postInput": {
+      "key": "missing",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.replacement"],"outputPaths":["$.0","$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ],
+      "replacement": {"h":2,"i":"a","w":2,"x":5,"y":0}
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":5,"y":0},
+      {"h":2,"i":"a","w":2,"x":5,"y":0}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ],
+      "replacement": {"h":2,"i":"a","w":2,"x":5,"y":0}
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": {
+      "key": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ],
+      "x": 7
+    },
+    "output": [
+      [
+        {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0},
+        {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0}
+      ],
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0}
+    ],
+    "postInput": {
+      "key": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ],
+      "x": 7
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.0.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
+    "input": {
+      "key": "missing",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ]
+    },
+    "output": [
+      [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ],
+      null
+    ],
+    "postInput": {
+      "key": "missing",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":3}
+      ]
+    }
+  }
+]

@@ -1,0 +1,536 @@
+[
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":{"$number":"Infinity"}}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "fast": {
+      "error": {"message":"Invalid array length","name":"RangeError"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "output": {"$u":1},
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "forward",
+    "subcase": "a-infinity-y"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":{"$number":"Infinity"}}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "fast": {
+      "error": {"message":"Invalid array length","name":"RangeError"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "output": {"$u":1},
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "reversed",
+    "subcase": "a-infinity-y"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0.5}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "fast": {
+      "error": {"message":"Invalid array length","name":"RangeError"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "output": {"$u":1},
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "forward",
+    "subcase": "a-fractional-y"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0.5}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "fast": {
+      "error": {"message":"Invalid array length","name":"RangeError"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "output": {"$u":1},
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":0,"y":0.5}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "reversed",
+    "subcase": "a-fractional-y"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1.5,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "fast": {
+      "error": {"message":"Invalid array length","name":"RangeError"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": {"$u":1},
+      "postInput": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "forward",
+    "subcase": "a-fractional-h"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1.5,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "fast": {
+      "error": {"message":"Invalid array length","name":"RangeError"},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": {"$u":1},
+      "postInput": [
+        [
+          {"h":1.5,"i":"a","w":1,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "reversed",
+    "subcase": "a-fractional-h"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":13,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a"]},
+    "fast": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":13,"x":0,"y":10001}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": [["Fast horizontal compactor: Item \"a\" exceeded max row limit (10001). This may indicate a layout that cannot be compacted within grid bounds."]]
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "forward",
+    "subcase": "b-too-wide"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":13,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a"]},
+    "fast": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":13,"x":0,"y":10001}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":13,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": [["Fast horizontal compactor: Item \"a\" exceeded max row limit (10001). This may indicate a layout that cannot be compacted within grid bounds."]]
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "reversed",
+    "subcase": "b-too-wide"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a"]},
+    "fast": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":-2}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "forward",
+    "subcase": "c-negative-y"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a"]},
+    "fast": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":-2}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":1,"x":3,"y":-2}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "reversed",
+    "subcase": "c-negative-y"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":4,"x":0,"y":0},
+          {"h":1,"i":"b","w":1,"x":1,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":4,"x":0,"y":0},
+        {"constraints":{"$u":1},"h":1,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":4,"x":0,"y":0},
+          {"h":1,"i":"b","w":1,"x":1,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["a","b"],"equalOutput":false,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a","b"]},
+    "fast": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+      "input": [
+        [
+          {"h":1,"i":"a","w":4,"x":0,"y":0},
+          {"h":1,"i":"b","w":1,"x":1,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":4,"x":0,"y":0},
+        {"constraints":{"$u":1},"h":1,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":4,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"a","w":4,"x":0,"y":0},
+          {"h":1,"i":"b","w":1,"x":1,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "forward",
+    "subcase": "d-overlap-pushes-right"
+  },
+  {
+    "classic": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+      "input": [
+        [
+          {"h":1,"i":"b","w":1,"x":1,"y":0},
+          {"h":1,"i":"a","w":4,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":4,"x":0,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"b","w":1,"x":1,"y":0},
+          {"h":1,"i":"a","w":4,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "diff": {"classicError":{"$u":1},"classicOrder":["b","a"],"equalOutput":false,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a","b"]},
+    "fast": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+      "input": [
+        [
+          {"h":1,"i":"b","w":1,"x":1,"y":0},
+          {"h":1,"i":"a","w":4,"x":0,"y":0}
+        ],
+        12
+      ],
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":4,"x":0,"y":0},
+        {"constraints":{"$u":1},"h":1,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":4,"y":0}
+      ],
+      "postInput": [
+        [
+          {"h":1,"i":"b","w":1,"x":1,"y":0},
+          {"h":1,"i":"a","w":4,"x":0,"y":0}
+        ],
+        12
+      ],
+      "warnings": []
+    },
+    "knownBug": "d: fast horizontal throws on fractional or infinite extents and can displace items",
+    "order": "reversed",
+    "subcase": "d-overlap-pushes-right"
+  }
+]

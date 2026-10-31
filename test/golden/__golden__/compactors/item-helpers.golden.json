@@ -1,0 +1,154 @@
+[
+  {
+    "axis": "vertical",
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.item","$.fullLayout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":-1,"y":5},
+        {"h":2,"i":"b","w":2,"x":0,"y":2}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":-1,"y":5},
+      "maxY": 6
+    },
+    "output": {"h":2,"i":"a","w":2,"x":0,"y":2},
+    "postInput": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":4}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":2},
+      "maxY": 6
+    },
+    "staticBlocker": false
+  },
+  {
+    "axis": "vertical",
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.item","$.fullLayout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":-1,"y":5},
+        {"h":2,"i":"b","w":2,"x":0,"y":2}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":-1,"y":5},
+      "maxY": 6
+    },
+    "output": {"h":2,"i":"a","w":2,"x":0,"y":2},
+    "postInput": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":2},
+        {"h":2,"i":"b","w":2,"x":0,"y":4}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":0,"y":2},
+      "maxY": 6
+    },
+    "staticBlocker": true
+  },
+  {
+    "axis": "horizontal",
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.item","$.fullLayout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":5,"y":-1},
+        {"h":2,"i":"b","w":2,"x":2,"y":0}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":5,"y":-1},
+      "maxY": 6
+    },
+    "output": {"h":2,"i":"a","w":2,"x":2,"y":0},
+    "postInput": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":false,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":2,"y":0},
+        {"h":2,"i":"b","w":2,"x":4,"y":0}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":2,"y":0},
+      "maxY": 6
+    },
+    "staticBlocker": false
+  },
+  {
+    "axis": "horizontal",
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.item","$.fullLayout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":5,"y":-1},
+        {"h":2,"i":"b","w":2,"x":2,"y":0}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":5,"y":-1},
+      "maxY": 6
+    },
+    "output": {"h":2,"i":"a","w":2,"x":2,"y":0},
+    "postInput": {
+      "cols": 4,
+      "compareWith": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+      ],
+      "fullLayout": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":2,"y":0},
+        {"h":2,"i":"b","w":2,"x":4,"y":0}
+      ],
+      "item": {"h":2,"i":"a","w":2,"x":2,"y":0},
+      "maxY": 6
+    },
+    "staticBlocker": true
+  }
+]
