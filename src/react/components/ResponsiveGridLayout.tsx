@@ -250,7 +250,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
 
   const initialCols = useMemo(() => {
     return getColsFromBreakpoint(initialBreakpoint, colsConfig);
-  }, [initialBreakpoint, colsConfig]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Use compactType for initial layout as compactor reference isn't stable here
   // findOrGenerateResponsiveLayout accepts both CompactType and Compactor (#2213)
@@ -261,7 +261,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       initialBreakpoint,
       initialBreakpoint,
       initialCols,
-      compactType
+      compactType,
+      colsConfig
     );
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -299,11 +300,12 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
         breakpoint,
         breakpoint,
         cols,
-        compactor
+        compactor,
+        colsConfig
       );
     }
     return null; // No change needed
-  }, [propsLayouts, breakpoints, breakpoint, cols, compactor]);
+  }, [propsLayouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
 
   // The effective layout to pass to GridLayout - use derived if available, else state
   const effectiveLayout = derivedLayout ?? layout;
@@ -387,7 +389,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
           newBreakpoint,
           lastBreakpoint,
           newCols,
-          compactor
+          compactor,
+          colsConfig
         );
 
         // Re-seed from children's data-grid only when the target breakpoint

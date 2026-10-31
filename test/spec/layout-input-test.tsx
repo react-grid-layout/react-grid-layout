@@ -122,6 +122,93 @@ const bounded = {
   minH: 20,
   maxH: Infinity
 };
+
+test("responsive props preserve stale layouts through updates and callbacks", () => {
+  const changed = jest.fn();
+  const stale = [{ ...hostile, x: 7, w: 3 }];
+  const element = (width: number, saved: Layout) => (
+    <ResponsiveGridLayout
+      width={width}
+      breakpoints={{ lg: 600, sm: 0 }}
+      cols={{ lg: 4, sm: 2 }}
+      maxRows={20}
+      layouts={{ lg: [hostile], sm: [hostile], stale: saved }}
+      compactor={noCompactor}
+      onLayoutChange={changed}
+    >
+      <div key="a" />
+    </ResponsiveGridLayout>
+  );
+  const view = render(element(800, stale));
+  view.rerender(element(400, stale));
+  expect(changed.mock.calls.at(-1)?.[1].stale).toEqual(stale);
+  expect(changed.mock.calls.at(-1)?.[1].lg[0]).toMatchObject(bounded);
+  expect(changed.mock.calls.at(-1)?.[1].sm[0]).toMatchObject({
+    ...bounded,
+    w: 2,
+    minW: 2
+  });
+  const updated = [{ ...stale[0]!, x: 9 }];
+  view.rerender(element(400, updated));
+  view.rerender(element(800, updated));
+  expect(changed.mock.calls.at(-1)?.[1].stale).toEqual(updated);
+});
+
+test.each(["initial", "prop-sync", "set-breakpoint", "set-all"])(
+  "responsive hook preserves stale keys through %s while validating configured layouts",
+  route => {
+    const stale = [{ ...hostile, x: 7, w: 3 }];
+    const saved = { lg: [hostile], sm: [hostile], stale };
+    const initial = { ...saved, stale: route === "initial" ? stale : [] };
+    const hook = renderHook(
+      ({ input }) =>
+        useResponsiveLayout({
+          width: 800,
+          breakpoints: { lg: 600, sm: 0 },
+          cols: { lg: 4, sm: 2 },
+          maxRows: 20,
+          layouts: input,
+          compactor: noCompactor
+        }),
+      { initialProps: { input: initial } }
+    );
+    if (route === "prop-sync") hook.rerender({ input: saved });
+    if (route === "set-breakpoint")
+      act(() => {
+        hook.result.current.setLayoutForBreakpoint("stale", stale);
+        hook.result.current.setLayoutForBreakpoint("lg", [hostile]);
+        hook.result.current.setLayoutForBreakpoint("sm", [hostile]);
+      });
+    if (route === "set-all") act(() => hook.result.current.setLayouts(saved));
+    expect(hook.result.current.layouts.stale).toEqual(stale);
+    expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+    expect(hook.result.current.layouts.sm![0]).toMatchObject({
+      ...bounded,
+      w: 2,
+      minW: 2
+    });
+  }
+);
+
+test("responsive generation ignores a previous breakpoint after its columns are removed", () => {
+  const changed = jest.fn();
+  const element = (width: number, cols: Record<string, number>) => (
+    <ResponsiveGridLayout
+      width={width}
+      breakpoints={{ lg: 600, sm: 0 }}
+      cols={cols}
+      layouts={{ lg: [{ ...item, x: 3, w: 2 }] }}
+      compactor={noCompactor}
+      onLayoutChange={changed}
+    >
+      <div key="a" />
+    </ResponsiveGridLayout>
+  );
+  const view = render(element(800, { lg: 6, sm: 4 }));
+  view.rerender(element(400, { sm: 4 }));
+  expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject(item);
+  expect(changed.mock.calls.at(-1)?.[1].lg).toEqual([{ ...item, x: 3, w: 2 }]);
+});
 let warning: jest.SpyInstance;
 beforeEach(() => {
   warning = jest.spyOn(console, "warn").mockImplementation(() => {});

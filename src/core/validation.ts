@@ -110,7 +110,9 @@ export function validateResponsiveLayoutsInput<B extends Breakpoint>(
   let output: ResponsiveLayouts<B> | undefined;
   for (const bp in layouts) {
     const layout = layouts[bp];
-    if (!layout) continue;
+    // Saved keys can outlive their column configuration. Preserve them until
+    // that breakpoint is configured again; they are not generation sources.
+    if (!layout || cols[bp] === undefined) continue;
     const validated = validateLayoutInput(layout, { cols: cols[bp], maxRows });
     if (validated !== layout) {
       output ??= { ...layouts };

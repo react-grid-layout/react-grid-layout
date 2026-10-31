@@ -171,7 +171,9 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
 
   const initialCols = useMemo(
     () => getColsFromBreakpoint(initialBreakpoint, colsConfig),
-    [initialBreakpoint, colsConfig]
+    // The original breakpoint may become stale after configuration changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   // State
@@ -180,10 +182,11 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   const [layouts, setLayoutsState] = useState<ResponsiveLayouts<B>>(() => {
     // Clone initial layouts
     const cloned = {} as ResponsiveLayouts<B>;
-    for (const bp of sortedBreakpoints) {
+    for (const bp of Object.keys(propsLayouts) as B[]) {
       const layout = propsLayouts[bp];
       if (layout) {
-        (cloned as Record<B, Layout>)[bp] = cloneLayout(layout);
+        (cloned as Record<B, Layout>)[bp] =
+          colsConfig[bp] === undefined ? layout : cloneLayout(layout);
       }
     }
     return cloned;
@@ -206,21 +209,25 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       breakpoint,
       prevBreakpointRef.current,
       cols,
-      compactor
+      compactor,
+      colsConfig
     );
-  }, [layouts, breakpoints, breakpoint, cols, compactor]);
+  }, [layouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
 
   // Set layout for a specific breakpoint
   const setLayoutForBreakpoint = useCallback(
     (bp: B, newLayout: Layout) => {
       setLayoutsState((prev: ResponsiveLayouts<B>) => ({
         ...prev,
-        [bp]: cloneLayout(
-          validateLayoutInput(newLayout, {
-            cols: getColsFromBreakpoint(bp, colsConfig),
-            maxRows
-          })
-        )
+        [bp]:
+          colsConfig[bp] === undefined
+            ? newLayout
+            : cloneLayout(
+                validateLayoutInput(newLayout, {
+                  cols: colsConfig[bp],
+                  maxRows
+                })
+              )
       }));
     },
     [colsConfig, maxRows]
@@ -229,16 +236,19 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // Set all layouts
   const setLayouts = useCallback(
     (newLayouts: ResponsiveLayouts<B>) => {
+      const validated = validateResponsiveLayoutsInput(
+        newLayouts,
+        colsConfig,
+        maxRows
+      );
       const cloned = {} as ResponsiveLayouts<B>;
-      for (const bp of Object.keys(newLayouts) as B[]) {
-        const layoutForBp = newLayouts[bp];
+      for (const bp of Object.keys(validated) as B[]) {
+        const layoutForBp = validated[bp];
         if (layoutForBp) {
-          (cloned as Record<B, Layout>)[bp] = cloneLayout(
-            validateLayoutInput(layoutForBp, {
-              cols: getColsFromBreakpoint(bp, colsConfig),
-              maxRows
-            })
-          );
+          (cloned as Record<B, Layout>)[bp] =
+            colsConfig[bp] === undefined
+              ? layoutForBp
+              : cloneLayout(layoutForBp);
         }
       }
       setLayoutsState(cloned);
@@ -268,7 +278,8 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         newBreakpoint,
         breakpoint,
         newCols,
-        compactor
+        compactor,
+        colsConfig
       );
 
       // Update layouts with the new breakpoint layout
