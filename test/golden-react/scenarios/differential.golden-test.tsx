@@ -18,7 +18,7 @@ import { HookGrid, hookGridConfig, hookState } from "../hookHarness";
 import { installGridGeometry } from "../geometry";
 import { createPointer, resizeHandle } from "../pointer";
 import { expectGolden } from "../expectGolden";
-import { serialize } from "../serialize";
+import { normalize } from "../../golden/serialize";
 
 type Implementation = "component" | "hook";
 type GridProps = {
@@ -84,7 +84,7 @@ function mount(
     recorder.step(input, action);
     geometry?.refresh();
     if (api)
-      recorder.trace[recorder.trace.length - 1].hookState = serialize(
+      recorder.trace[recorder.trace.length - 1].hookState = normalize(
         hookState(api)
       );
   }
