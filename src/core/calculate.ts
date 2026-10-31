@@ -5,6 +5,9 @@
  */
 
 import type { Position, ResizeHandleAxis } from "./types.js";
+import { clamp } from "./geometry/rect.js";
+
+export { clamp } from "./geometry/rect.js";
 
 // ============================================================================
 // Types
@@ -293,26 +296,6 @@ export function calcWHRaw(
   );
 
   return { w, h };
-}
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
-
-/**
- * Clamp a number between bounds.
- *
- * @param num - Number to clamp
- * @param lowerBound - Minimum value
- * @param upperBound - Maximum value
- * @returns Clamped value
- */
-export function clamp(
-  num: number,
-  lowerBound: number,
-  upperBound: number
-): number {
-  return Math.max(Math.min(num, upperBound), lowerBound);
 }
 
 // ============================================================================

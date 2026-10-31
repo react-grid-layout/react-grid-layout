@@ -11,17 +11,7 @@ import type {
   ConstraintContext,
   ResizeHandleAxis
 } from "./types.js";
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
-
-/**
- * Clamp a value between min and max bounds.
- */
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
+import { clamp } from "./geometry/rect.js";
 
 // ============================================================================
 // Built-in Constraints
