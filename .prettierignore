@@ -4,5 +4,6 @@ __mocks__/
 flow-typed/
 codemaps/
 
-# Golden files use one item per line for reviewable diffs.
+# Golden files keep one item or interaction step per line for reviewable diffs.
 test/golden/__golden__/
+test/golden-react/__golden__/

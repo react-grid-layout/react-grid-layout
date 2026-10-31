@@ -83,7 +83,7 @@
     "validate": "npm ls",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
-    "golden:update": "GOLDEN_UPDATE=1 NODE_ENV=test jest --runInBand --testPathPatterns /test/golden/",
+    "golden:update": "GOLDEN_UPDATE=1 NODE_ENV=test jest --runInBand --testPathPatterns=test/golden",
     "bench": "NODE_ENV=test RGL_BENCH=1 jest --config test/jest.bench.cjs --runInBand"
   },
   "repository": {
@@ -185,7 +185,8 @@
       "<rootDir>/test/spec/*.js",
       "<rootDir>/test/spec/*.ts",
       "<rootDir>/test/spec/*.tsx",
-      "<rootDir>/test/golden/cases/*.golden-test.ts"
+      "<rootDir>/test/golden/cases/*.golden-test.ts",
+      "<rootDir>/test/golden-react/scenarios/*.golden-test.tsx"
     ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
