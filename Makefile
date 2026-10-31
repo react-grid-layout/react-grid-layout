@@ -57,6 +57,7 @@ lint:
 
 test:
 	env NODE_ENV=test $(EXEC) jest --coverage
+	@BENCH_UPDATE=0 corepack yarn bench:ops
 
 golden-update:
 	@corepack yarn golden:update
