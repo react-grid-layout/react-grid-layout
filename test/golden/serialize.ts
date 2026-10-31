@@ -1,4 +1,8 @@
-/** JSON with explicit sentinels, sorted keys and one object/item per line. */
+/**
+ * JSON with explicit sentinels ($u, $number, $function, $hole), sorted keys and
+ * one object/item per line. Ordinary objects with a "$" key are wrapped in
+ * { $escaped }, so no input serializes the same as a sentinel.
+ */
 export function normalize(value: unknown): unknown {
   if (value === undefined) return { $u: 1 };
   if (typeof value === "number") {
@@ -13,11 +17,15 @@ export function normalize(value: unknown): unknown {
     );
   }
   if (value !== null && typeof value === "object") {
-    return Object.fromEntries(
-      Object.keys(value)
-        .sort()
-        .map(key => [key, normalize((value as Record<string, unknown>)[key])])
+    const keys = Object.keys(value).sort();
+    const normalized = Object.fromEntries(
+      keys.map(key => [key, normalize((value as Record<string, unknown>)[key])])
     );
+    // Sentinels are objects with a "$" key, so an ordinary object that has one
+    // is wrapped. That keeps undefined and { $u: 1 } distinct.
+    return keys.some(key => key.startsWith("$"))
+      ? { $escaped: normalized }
+      : normalized;
   }
   return value;
 }

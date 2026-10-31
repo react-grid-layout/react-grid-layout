@@ -30,6 +30,7 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":[],"outputPaths":["$.0.0","$.1"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.0.1"]}
       ],
       "returnedSameArray": false,
@@ -118,7 +119,13 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":[],"outputPaths":["$.0.0","$.0.1","$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false]
+    },
     "input": {
       "key": "a",
       "layout": [
