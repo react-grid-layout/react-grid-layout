@@ -51,13 +51,12 @@ describe("golden core compactors", () => {
     it(`${name}: preserves positions, item shape, input mutation and identities`, () => {
       const records = compactionSamples
         // The differential corpus owns the full matrix for these four modes.
-        // Keep focused cascade controls here instead of duplicating every call.
-        .filter(sample => name === "none" || sample.family === "cascade")
-        .filter(
-          sample =>
-            sample.family !== "large" ||
-            (sample.order === "forward" &&
-              (name === "vertical" || name === "horizontal"))
+        // Keep cascade controls and the large shuffled order here. The differential
+        // captures the large forward order, so both permutations are pinned.
+        .filter(sample =>
+          sample.family === "large"
+            ? name === "vertical" && sample.order === "shuffled"
+            : name === "none" || sample.family === "cascade"
         )
         .map(sample => {
           const result = compact(compactor, sample.layout, sample.cols);
