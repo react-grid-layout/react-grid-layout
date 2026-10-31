@@ -156,6 +156,17 @@ describe("validateLayoutInput", () => {
       }
     }
   );
+  test.each(["x", "y", "w", "h", "minW", "maxW", "minH", "maxH"] as const)(
+    "%s uses its lower bound for nonnumeric runtime values",
+    field => {
+      for (const value of ["bad", null, true, {}]) {
+        const input = [{ ...item, [field]: value }] as unknown as Layout;
+        const output = validateLayoutInput(input, { cols: 4, maxRows: 20 });
+        expect(output[0]![field]).toBe(field === "x" || field === "y" ? 0 : 1);
+        expect(input[0]![field]).toBe(value);
+      }
+    }
+  );
   test("caps rows, preserves fractions and optional fields, and warns once per call", () => {
     expect(MAX_GRID_ROWS).toBe(10_000);
     expect(
@@ -433,5 +444,40 @@ test.each(["resize", "drop"])(
         );
     });
     expect(hook.result.current.layout.filter(l => l.static)).toEqual(before);
+  }
+);
+
+test.each(["maxW", "maxH"] as const)(
+  "nonnumeric %s stays finite through a real resize",
+  field => {
+    for (const value of ["bad", null, true, {}]) {
+      const resized = jest.fn();
+      const view = render(
+        <GridLayout
+          width={800}
+          gridConfig={{
+            cols: 4,
+            rowHeight: 10,
+            margin: [0, 0],
+            containerPadding: [0, 0]
+          }}
+          layout={[{ ...item, [field]: value }] as unknown as Layout}
+          onResize={resized}
+        >
+          <div key="a" />
+        </GridLayout>
+      );
+      const handle = view.container.querySelector(
+        ".react-resizable-handle-se"
+      )!;
+      fireEvent.mouseDown(handle, { clientX: 10, clientY: 10, button: 0 });
+      fireEvent.mouseMove(document, { clientX: 220, clientY: 40, buttons: 1 });
+      fireEvent.mouseUp(document, { clientX: 220, clientY: 40, button: 0 });
+      expect(resized).toHaveBeenCalled();
+      expect(resized.mock.calls.at(-1)?.[2]).toMatchObject(
+        field === "maxW" ? { w: 1, h: 4 } : { w: 2, h: 1 }
+      );
+      view.unmount();
+    }
   }
 );

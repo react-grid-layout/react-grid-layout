@@ -11,7 +11,7 @@ export const MAX_GRID_ROWS = 10_000;
 
 function bounded(value: number, lower: number, upper: number): number {
   if (value === Infinity) return upper;
-  if (!Number.isFinite(value)) return lower;
+  if (typeof value !== "number" || !Number.isFinite(value)) return lower;
   return Math.max(lower, Math.min(value, upper));
 }
 
@@ -21,7 +21,8 @@ function bounded(value: number, lower: number, upper: number): number {
  * and a later, larger `cols` is not capped by the one in effect at intake.
  */
 function atLeast(value: number, lower: number): number {
-  if (Number.isNaN(value) || value < lower) return lower;
+  if (typeof value !== "number" || Number.isNaN(value) || value < lower)
+    return lower;
   return value;
 }
 
