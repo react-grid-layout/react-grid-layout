@@ -234,9 +234,8 @@ export function aspectRatio(ratio: number): LayoutConstraint {
       context: ConstraintContext
     ): { w: number; h: number } {
       const { cols, containerWidth, rowHeight, margin } = context;
-      // Calculate column width in pixels
-      // colWidth = (containerWidth - margin[0] * (cols - 1)) / cols
-      // Note: simplified formula assumes no container padding
+      // Preserve the existing omission of container padding (C-B12).
+      // RGL-20 will make aspect-ratio sizing account for padding.
       const colWidth = calcGridColWidth({
         cols,
         containerWidth,

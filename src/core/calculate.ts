@@ -253,7 +253,7 @@ export function calcWH(
   let _w = clamp(w, 0, cols - x);
   let _h = clamp(h, 0, maxRows - y);
 
-  // West handles can resize to full width
+  // West handles cap width at cols without accounting for x.
   if (handle === "sw" || handle === "w" || handle === "nw") {
     _w = clamp(w, 0, cols);
   }
