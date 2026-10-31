@@ -171,6 +171,14 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.3"
   },
+  "resolutions": {
+    "esbuild": "^0.28.1",
+    "uuid": "^11.1.1"
+  },
+  "_resolutionNotes": {
+    "esbuild": "Dependabot advisory fixed in 0.28.1; tsup@8 pins ^0.27 and tsup@9 needs Node >=22.18 (CI uses 20). Dev-only.",
+    "uuid": "Dependabot advisory fixed in 11.1.1; sockjs (via webpack-dev-server) pins ^8.3.2 and is unmaintained. Dev-only."
+  },
   "packageManager": "yarn@4.18.0",
   "peerDependencies": {
     "react": ">= 16.3.0",
