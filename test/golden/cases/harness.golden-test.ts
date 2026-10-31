@@ -39,6 +39,35 @@ describe("golden harness preserves observable differences", () => {
     ).toHaveLength(4);
   });
 
+  it("never serializes an ordinary object the same as a sentinel", () => {
+    const pairs: Array<[unknown, unknown]> = [
+      [undefined, { $u: 1 }],
+      [new Array(1), [{ $hole: true }]],
+      [Infinity, { $number: "Infinity" }],
+      [-0, { $number: "-0" }],
+      [function f() {}, { $function: "f" }],
+      [{ $u: 1 }, { $escaped: { $u: 1 } }]
+    ];
+    for (const [sentinel, lookalike] of pairs) {
+      expect(serialize(sentinel)).not.toBe(serialize(lookalike));
+    }
+  });
+
+  it("records objects shared inside the output, not only with the input", () => {
+    const call = capture({}, () => {
+      const item = { i: "a" };
+      return { layout: [item], item };
+    });
+    expect(call.identity.aliases).toEqual([
+      { inputPaths: [], outputPaths: ["$.layout.0", "$.item"] }
+    ]);
+    const unshared = capture({}, () => ({
+      layout: [{ i: "a" }],
+      item: { i: "a" }
+    }));
+    expect(unshared.identity.aliases).toEqual([]);
+  });
+
   it("copies custom fields and aliases without filling array holes", () => {
     const item = { i: "a", data: { label: "custom" } };
     const layout = new Array(3);

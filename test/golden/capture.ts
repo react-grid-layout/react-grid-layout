@@ -43,9 +43,14 @@ function references(
 export function identity(args: unknown, output: unknown) {
   const inputs = references(args);
   const outputs = references(output);
+  // An object is an alias when it is shared with the input or reachable by more
+  // than one path inside the output (e.g. withLayoutItem's returned item is the
+  // same object as its entry in the returned layout).
   const aliases = [...outputs].flatMap(([object, outputPaths]) => {
-    const inputPaths = inputs.get(object);
-    return inputPaths ? [{ inputPaths, outputPaths }] : [];
+    const inputPaths = inputs.get(object) ?? [];
+    return inputPaths.length > 0 || outputPaths.length > 1
+      ? [{ inputPaths, outputPaths }]
+      : [];
   });
   const layout =
     args !== null && typeof args === "object" && "layout" in args

@@ -1,6 +1,23 @@
 [
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "identity": {
+      "aliases": [
+        {"inputPaths":[],"outputPaths":["$.events.0.callback.layout.0","$.events.0.callback.oldItem","$.events.0.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.input.layout.0","$.events.1.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.postInput.layout.0","$.events.1.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.callback.layout.0","$.events.1.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.input.layout.0","$.events.2.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.postInput.layout.0","$.events.2.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.callback.layout.0","$.events.2.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.input.layout.0","$.events.3.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.postInput.layout.0","$.events.3.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.callback.layout.0","$.events.3.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.input.layout.0","$.events.4.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.postInput.layout.0","$.events.4.move.postInput.l"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
     "input": {
       "compactType": "vertical",
       "gestures": [
@@ -504,7 +521,24 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "identity": {
+      "aliases": [
+        {"inputPaths":[],"outputPaths":["$.events.0.callback.layout.0","$.events.0.callback.oldItem","$.events.0.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.input.layout.0","$.events.1.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.postInput.layout.0","$.events.1.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.callback.layout.0","$.events.1.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.input.layout.0","$.events.2.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.postInput.layout.0","$.events.2.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.callback.layout.0","$.events.2.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.input.layout.0","$.events.3.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.postInput.layout.0","$.events.3.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.callback.layout.0","$.events.3.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.input.layout.0","$.events.4.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.postInput.layout.0","$.events.4.move.postInput.l"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
     "input": {
       "compactType": "horizontal",
       "gestures": [
@@ -1008,7 +1042,24 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "identity": {
+      "aliases": [
+        {"inputPaths":[],"outputPaths":["$.events.0.callback.layout.0","$.events.0.callback.oldItem","$.events.0.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.input.layout.0","$.events.1.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.postInput.layout.0","$.events.1.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.callback.layout.0","$.events.1.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.input.layout.0","$.events.2.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.postInput.layout.0","$.events.2.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.callback.layout.0","$.events.2.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.input.layout.0","$.events.3.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.postInput.layout.0","$.events.3.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.callback.layout.0","$.events.3.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.input.layout.0","$.events.4.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.postInput.layout.0","$.events.4.move.postInput.l"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
     "input": {
       "compactType": "wrap",
       "gestures": [
@@ -1512,7 +1563,24 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "identity": {
+      "aliases": [
+        {"inputPaths":[],"outputPaths":["$.events.0.callback.layout.0","$.events.0.callback.oldItem","$.events.0.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.input.layout.0","$.events.1.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.move.postInput.layout.0","$.events.1.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.1.callback.layout.0","$.events.1.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.input.layout.0","$.events.2.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.move.postInput.layout.0","$.events.2.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.2.callback.layout.0","$.events.2.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.input.layout.0","$.events.3.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.move.postInput.layout.0","$.events.3.move.postInput.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.3.callback.layout.0","$.events.3.callback.newItem"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.input.layout.0","$.events.4.move.input.l"]},
+        {"inputPaths":[],"outputPaths":["$.events.4.move.postInput.layout.0","$.events.4.move.postInput.l"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
     "input": {
       "compactType": null,
       "gestures": [
