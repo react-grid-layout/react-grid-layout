@@ -1,8 +1,8 @@
 # Deterministic operation budgets
 
 Run `corepack yarn bench:ops` to compare operation counts with the committed
-[baseline.json](baseline.json). `corepack yarn test` runs this gate after the
-regular coverage suite. A decrease passes; any increase, missing scenario, or
+[baseline.json](baseline.json). CI runs it as its own step after the unit tests
+(about 50 s, so it stays out of `yarn test` and the pre-commit hook). A decrease passes; any increase, missing scenario, or
 missing counter fails with the scenario, counter, old/new values, and delta.
 Wall-clock measurements stay in the opt-in `corepack yarn bench` suite.
 

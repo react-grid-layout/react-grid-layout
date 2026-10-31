@@ -29,6 +29,11 @@ jobs:
       - name: Run unit tests
         run: yarn test
 
+      # Deterministic operation counts (sorts, collides calls, clones, renders).
+      # Fails when any count rises above test/bench/baseline.json.
+      - name: Check operation-count budgets
+        run: yarn bench:ops
+
       - name: Run lint
         run: yarn lint
 
