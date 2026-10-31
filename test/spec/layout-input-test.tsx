@@ -316,3 +316,32 @@ test("a saved minH cannot restore a billion-row size during resize", () => {
   fireEvent.mouseUp(document, { clientX: 20, clientY: 20, button: 0 });
   expect(resized.mock.calls.at(-1)?.[2].h).toBe(20);
 });
+
+test.each(["resize", "drop"])(
+  "%s preserves resolved rows beyond the input limit",
+  operation => {
+    const input = [
+      ...Array.from({ length: 3 }, (_, index) => ({
+        ...item,
+        i: `static-${index}`,
+        h: 10_000,
+        static: true
+      })),
+      { ...item, i: "dynamic", x: 1 }
+    ];
+    const hook = renderHook(() =>
+      useGridLayout({ layout: input, cols: 2, compactor: noCompactor })
+    );
+    const before = hook.result.current.layout.filter(l => l.static);
+    expect(before.map(l => l.y)).toEqual([10_000, 20_000, 0]);
+    act(() => {
+      if (operation === "resize") hook.result.current.onResize("dynamic", 1, 2);
+      else
+        hook.result.current.onDropDragOver(
+          { ...item, i: "drop", x: 1, y: 3 },
+          { left: 0, top: 0, e: new Event("dragover") }
+        );
+    });
+    expect(hook.result.current.layout.filter(l => l.static)).toEqual(before);
+  }
+);

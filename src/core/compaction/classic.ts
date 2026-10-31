@@ -86,9 +86,37 @@ function moveTowardOrigin(
   item: LayoutItem,
   axis: Axis
 ): void {
-  while (item[axis.pos] > 0 && !getFirstCollision(compareWith, item)) {
-    item[axis.pos]--;
+  const start = item[axis.pos];
+  if (!(start > 0) || getFirstCollision(compareWith, item)) return;
+  item[axis.pos] = firstReachableCollision(compareWith, item, axis, start);
+}
+
+function firstReachableCollision(
+  compareWith: Layout,
+  item: LayoutItem,
+  axis: Axis,
+  start: number
+): number {
+  let steps = Math.ceil(start);
+  for (let i = 0; i < compareWith.length; i++) {
+    const other = compareWith[i];
+    if (other === undefined || other.i === item.i) continue;
+    if (item[axis.cross] + item[axis.crossSize] <= other[axis.cross]) continue;
+    if (item[axis.cross] >= other[axis.cross] + other[axis.crossSize]) continue;
+
+    // The old loop samples start, start - 1, ... . A fractional blocker
+    // between samples must not stop an item that would step over it.
+    const distance = Math.max(
+      1,
+      Math.floor(start - (other[axis.pos] + other[axis.size])) + 1
+    );
+    if (distance >= steps) continue;
+    const position = start - distance;
+    if (position + item[axis.size] <= other[axis.pos]) continue;
+    if (position >= other[axis.pos] + other[axis.size]) continue;
+    steps = distance;
   }
+  return start - steps;
 }
 
 function wrapOverflow(

@@ -363,15 +363,12 @@ export function useGridLayout(
       });
 
       // Correct bounds and compact - use compactor.compact() (#2213)
-      const corrected = correctBounds(
-        validateLayoutInput(newLayout, { cols, maxRows }) as LayoutItem[],
-        { cols }
-      );
+      const corrected = correctBounds(newLayout, { cols });
       const compacted = compactor.compact(corrected, cols);
 
       setLayoutState(compacted);
     },
-    [layout, cols, maxRows, compactor]
+    [layout, cols, compactor]
   );
 
   const onResizeStop = useCallback(
@@ -399,11 +396,12 @@ export function useGridLayout(
 
       if (!existingItem) {
         // Add dropping item to layout - use compactor.compact() (#2213)
-        const newLayout = [...layout, droppingItem];
-        const corrected = correctBounds(
-          validateLayoutInput(newLayout, { cols, maxRows }) as LayoutItem[],
-          { cols }
-        );
+        // Resolved rows may exceed intake bounds. Validate only the new item.
+        const newLayout = [
+          ...layout,
+          validateLayoutInput([droppingItem], { cols, maxRows })[0]!
+        ];
+        const corrected = correctBounds(newLayout, { cols });
         const compacted = compactor.compact(corrected, cols);
         setLayoutState(compacted);
       }
@@ -442,10 +440,7 @@ export function useGridLayout(
       });
 
       // Use compactor.compact() (#2213)
-      const corrected = correctBounds(
-        validateLayoutInput(newLayout, { cols, maxRows }) as LayoutItem[],
-        { cols }
-      );
+      const corrected = correctBounds(newLayout, { cols });
       const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
 
@@ -454,7 +449,7 @@ export function useGridLayout(
         droppingPosition: null
       });
     },
-    [layout, cols, maxRows, compactor]
+    [layout, cols, compactor]
   );
 
   // ============================================================================

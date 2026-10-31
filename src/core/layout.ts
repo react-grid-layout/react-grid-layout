@@ -181,6 +181,29 @@ export function withLayoutItem(
 // Bounds Correction
 // ============================================================================
 
+/** Preserve the rounding of repeated y++ while skipping whole unit ranges. */
+function advanceRows(y: number, steps: number): number {
+  if (Number.isInteger(y)) return y + steps;
+  if (y < 0) {
+    const advance = Math.min(steps, Math.ceil(-y));
+    y += advance;
+    steps -= advance;
+  }
+  while (steps > 0) {
+    const boundary = y < 1 ? 1 : 2 ** (Math.floor(Math.log2(y)) + 1);
+    const withinRange = Math.min(steps, Math.ceil(boundary - y) - 1);
+    if (withinRange > 0) {
+      y += withinRange;
+      steps -= withinRange;
+    }
+    if (steps > 0) {
+      y++;
+      steps--;
+    }
+  }
+  return y;
+}
+
 /**
  * Ensure all layout items fit within the grid bounds.
  *
@@ -228,8 +251,10 @@ export function correctBounds(
       collidesWith.push(l);
     } else {
       // Static items that collide with other statics must be moved down
-      while (getFirstCollision(collidesWith, l)) {
-        l.y++;
+      let collision: LayoutItem | undefined;
+      while ((collision = getFirstCollision(collidesWith, l))) {
+        const end = collision.y + collision.h;
+        l.y = advanceRows(l.y, Math.max(1, Math.ceil(end - l.y)));
       }
     }
   }

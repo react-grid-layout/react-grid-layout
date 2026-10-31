@@ -11,7 +11,8 @@ export const securityVectors = [
   "large-y",
   "minH-resize",
   "overlapping-statics",
-  "wrap-static"
+  "wrap-static",
+  "wrap-fractional"
 ] as const;
 export type SecurityVector = (typeof securityVectors)[number];
 
@@ -21,73 +22,111 @@ export type SecurityVector = (typeof securityVectors)[number];
 export function securityScenario(vector: SecurityVector): Counts {
   let counts: Counts;
   const item: LayoutItem = { i: "a", x: 0, y: 0, w: 1, h: 1 };
-  if (vector === "large-y") {
-    let output: Layout = [];
-    counts = measure(() => {
-      output = verticalCompactor.compact(
-        [
-          { ...item, i: "static", x: 1, h: 1e9, static: true },
-          { ...item, y: 1e9 }
-        ],
-        2
-      );
-    }, 200000);
-    expect(output[1]).toMatchObject({ y: 0 });
-  } else if (vector === "overlapping-statics") {
-    const input = Array.from({ length: 80 }, (_, i) => ({
-      ...item,
-      i: String(i),
-      h: 10000,
-      static: true
-    }));
-    counts = measure(() => {
-      correctBounds(input, { cols: 1 });
-    }, 200000);
-    expect(input[0]!.y).toBe(10000);
-    expect(input[78]!.y).toBe(790000);
-    expect(input[79]!.y).toBe(0);
-  } else if (vector === "wrap-static") {
-    let output: Layout = [];
-    counts = measure(() => {
-      output = wrapCompactor.compact(
-        [{ ...item, i: "static", h: 1e9, static: true }, item],
-        1
-      );
-    }, 200000);
-    expect(output[1]).toMatchObject({ x: 0, y: 1e9 });
-  } else {
-    const resized = jest.fn();
-    const warning = jest.spyOn(console, "warn").mockImplementation(() => {});
-    const view = render(
-      React.createElement(
-        GridLayout,
-        {
-          width: 800,
-          layout: [{ ...item, minH: 1e9 }],
-          gridConfig: {
-            cols: 4,
-            rowHeight: 10,
-            margin: [0, 0],
-            containerPadding: [0, 0]
-          },
-          onResize: resized
-        },
-        React.createElement("div", { key: "a" })
-      )
-    );
-    try {
-      const handle = view.container.querySelector(
-        ".react-resizable-handle-se"
-      )!;
+  switch (vector) {
+    case "large-y": {
+      let output: Layout = [];
       counts = measure(() => {
-        fireEvent.mouseDown(handle, { clientX: 10, clientY: 10, button: 0 });
-        fireEvent.mouseMove(document, { clientX: 20, clientY: 20, buttons: 1 });
-        fireEvent.mouseUp(document, { clientX: 20, clientY: 20, button: 0 });
-      }, 200000);
-      expect(resized.mock.calls.at(-1)?.[2].h).toBe(10000);
-    } finally {
-      view.unmount();
-      warning.mockRestore();
+        output = verticalCompactor.compact(
+          [
+            { ...item, i: "static", x: 1, h: 1e9, static: true },
+            { ...item, y: 1e9 }
+          ],
+          2
+        );
+      }, 200_000);
+      expect(output[1]).toMatchObject({ y: 0 });
+
+      break;
+    }
+    case "overlapping-statics": {
+      const input = Array.from({ length: 80 }, (_, i) => ({
+        ...item,
+        i: String(i),
+        h: 10_000,
+        static: true
+      }));
+      counts = measure(() => {
+        correctBounds(input, { cols: 1 });
+      }, 200_000);
+      expect(input[0]!.y).toBe(10_000);
+      expect(input[78]!.y).toBe(790_000);
+      expect(input[79]!.y).toBe(0);
+
+      break;
+    }
+    case "wrap-static": {
+      let output: Layout = [];
+      counts = measure(() => {
+        output = wrapCompactor.compact(
+          [{ ...item, i: "static", h: 1e9, static: true }, item],
+          1
+        );
+      }, 200_000);
+      expect(output[1]).toMatchObject({ x: 0, y: 1e9 });
+
+      break;
+    }
+    case "wrap-fractional": {
+      const statics = Array.from({ length: 80 }, (_, i) => ({
+        ...item,
+        i: `s${i}`,
+        x: 0.5,
+        w: 1.5,
+        h: 10_000,
+        static: true
+      }));
+      let output: Layout = [];
+      counts = measure(() => {
+        output = wrapCompactor.compact(
+          [
+            ...statics,
+            { ...item, i: "first", w: 1.5 },
+            { ...item, i: "second", w: 1.5 }
+          ],
+          2
+        );
+      }, 200_000);
+      expect(output[81]).toMatchObject({ x: 0.5, y: 10_000 });
+      break;
+    }
+    default: {
+      const resized = jest.fn();
+      const warning = jest.spyOn(console, "warn").mockImplementation(() => {});
+      const view = render(
+        React.createElement(
+          GridLayout,
+          {
+            width: 800,
+            layout: [{ ...item, minH: 1e9 }],
+            gridConfig: {
+              cols: 4,
+              rowHeight: 10,
+              margin: [0, 0],
+              containerPadding: [0, 0]
+            },
+            onResize: resized
+          },
+          React.createElement("div", { key: "a" })
+        )
+      );
+      try {
+        const handle = view.container.querySelector(
+          ".react-resizable-handle-se"
+        )!;
+        counts = measure(() => {
+          fireEvent.mouseDown(handle, { clientX: 10, clientY: 10, button: 0 });
+          fireEvent.mouseMove(document, {
+            clientX: 20,
+            clientY: 20,
+            buttons: 1
+          });
+          fireEvent.mouseUp(document, { clientX: 20, clientY: 20, button: 0 });
+        }, 200_000);
+        expect(resized.mock.calls.at(-1)?.[2].h).toBe(10_000);
+      } finally {
+        view.unmount();
+        warning.mockRestore();
+      }
     }
   }
   expect(counts.collides).toBeLessThan(
