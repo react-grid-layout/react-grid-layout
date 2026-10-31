@@ -1,7 +1,15 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import type { Layout, LayoutItem } from "../../src/core/types";
-import { verticalCompactor } from "../../src/core/compactors";
+import {
+  verticalCompactor,
+  compactItemVertical,
+  compactItemHorizontal
+} from "../../src/core";
+import {
+  fastHorizontalCompactor,
+  fastHorizontalOverlapCompactor
+} from "../../src/extras";
 import { correctBounds } from "../../src/core/layout";
 import { wrapCompactor } from "../../src/extras/wrapCompactor";
 import { GridLayout } from "../../src/react/components/GridLayout";
@@ -16,17 +24,80 @@ export const securityVectors = [
   "wrap-fractional",
   "wrap-mixed-10000",
   "wrap-mixed-billion",
-  "wrap-mixed-decimal"
+  "wrap-mixed-decimal",
+  "helper-large-y",
+  "helper-large-x",
+  "fast-horizontal-tall",
+  "fast-horizontal-blocked"
 ] as const;
 export type SecurityVector = (typeof securityVectors)[number];
 
 /** Absolute caps abort a broken algorithm inside its probe, before a tab-sized hang.
- * The collision budget is 50*n*n; all source entries/loops also stay below 200000.
+ * The collision budget is 50*n*n. Source probes are capped per scenario:
+ * 1000 for direct helpers, 20000 for mixed wrap/fast horizontal, 200000 for
+ * the original vectors, and 20*n*n for the 1000-static sorted sweep.
  */
 export function securityScenario(vector: SecurityVector): Counts {
   let counts: Counts;
   const item: LayoutItem = { i: "a", x: 0, y: 0, w: 1, h: 1 };
   switch (vector) {
+    case "helper-large-y":
+    case "helper-large-x": {
+      const vertical = vector === "helper-large-y";
+      const blocker = {
+        ...item,
+        i: "blocker",
+        static: true,
+        x: vertical ? 1 : 0,
+        y: vertical ? 0 : 1,
+        w: vertical ? 1 : 1e9,
+        h: vertical ? 1e9 : 1
+      };
+      const moving = { ...item, x: vertical ? 0 : 1e9, y: vertical ? 1e9 : 0 };
+      counts = measure(() => {
+        if (vertical)
+          compactItemVertical([blocker], moving, [blocker, moving], 1e9);
+        else compactItemHorizontal([blocker], moving, 2, [blocker, moving]);
+      }, 1000);
+      expect(moving).toMatchObject({ x: 0, y: 0 });
+      break;
+    }
+    case "fast-horizontal-tall":
+    case "fast-horizontal-blocked": {
+      const blocked = vector === "fast-horizontal-blocked";
+      const input = [
+        { ...item, i: "static", w: blocked ? 2 : 1, h: 1e9, static: true },
+        { ...item, x: 1 }
+      ];
+      // Catch a restored per-row allocation before fill can consume gigabytes.
+      const fill = Array.prototype.fill;
+      const allocation = jest
+        .spyOn(Array.prototype, "fill")
+        .mockImplementation(function (...args) {
+          if (this.length > 1_000_000)
+            throw new Error("Per-row tide allocation");
+          return fill.apply(this, args);
+        });
+      const warning = jest.spyOn(console, "warn").mockImplementation(() => {});
+      let output: Layout = [];
+      try {
+        counts = measure(() => {
+          for (const compactor of [
+            fastHorizontalCompactor,
+            fastHorizontalOverlapCompactor
+          ]) {
+            output = compactor.compact(input, 2);
+            expect(output.find(l => l.i === "a")).toMatchObject(
+              blocked ? { x: 0, y: 10_001 } : { x: 1, y: 0 }
+            );
+          }
+        }, 20_000);
+      } finally {
+        allocation.mockRestore();
+        warning.mockRestore();
+      }
+      break;
+    }
     case "wrap-mixed-10000":
     case "wrap-mixed-billion":
     case "wrap-mixed-decimal": {
