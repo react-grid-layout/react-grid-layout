@@ -16,10 +16,21 @@ function bounded(value: number, lower: number, upper: number): number {
 }
 
 /**
+ * Raise a maximum to its minimum. A maximum above the grid is harmless (the
+ * item size is bounded separately) and is kept, so `maxW: Infinity` survives
+ * and a later, larger `cols` is not capped by the one in effect at intake.
+ */
+function atLeast(value: number, lower: number): number {
+  if (Number.isNaN(value) || value < lower) return lower;
+  return value;
+}
+
+/**
  * Normalize untrusted layout geometry without mutating the input.
  *
- * With a positive finite column count, w/minW/maxW are in [1, cols],
- * x is in [0, cols-w], and h/minH/maxH are in [1, rowLimit]. rowLimit is
+ * With a positive finite column count, w/minW are in [1, cols], x is in
+ * [0, cols-w], and h/minH are in [1, rowLimit]. maxW/maxH are only raised to
+ * their minimum (or 1); larger values, including Infinity, pass unchanged. rowLimit is
  * MAX_GRID_ROWS (10,000), reduced by a smaller finite maxRows, with a floor
  * of 1. Finite y is in [0, rowLimit]. y: Infinity retains the supported
  * "place at bottom" sentinel for correctBounds/compaction to resolve.
@@ -51,15 +62,11 @@ export function validateLayoutInput(
     const minW =
       item.minW === undefined ? undefined : bounded(item.minW, 1, widthLimit);
     const maxW =
-      item.maxW === undefined
-        ? undefined
-        : bounded(item.maxW, minW ?? 1, widthLimit);
+      item.maxW === undefined ? undefined : atLeast(item.maxW, minW ?? 1);
     const minH =
       item.minH === undefined ? undefined : bounded(item.minH, 1, rowLimit);
     const maxH =
-      item.maxH === undefined
-        ? undefined
-        : bounded(item.maxH, minH ?? 1, rowLimit);
+      item.maxH === undefined ? undefined : atLeast(item.maxH, minH ?? 1);
     if (
       x === item.x &&
       y === item.y &&
@@ -83,7 +90,11 @@ export function validateLayoutInput(
     if (maxH !== undefined) normalized.maxH = maxH;
     output[index] = normalized;
   }
-  if (output && process.env["NODE_ENV"] !== "production") {
+  if (
+    output &&
+    typeof process !== "undefined" &&
+    process.env["NODE_ENV"] !== "production"
+  ) {
     console.warn("ReactGridLayout: layout input was clamped to grid bounds.");
   }
   return output ?? layout;

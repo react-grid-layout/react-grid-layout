@@ -33,9 +33,9 @@ const bounded = {
   w: 4,
   h: 20,
   minW: 4,
-  maxW: 4,
+  maxW: Infinity,
   minH: 20,
-  maxH: 20
+  maxH: Infinity
 };
 let warning: jest.SpyInstance;
 beforeEach(() => {
@@ -59,12 +59,15 @@ describe("validateLayoutInput", () => {
       for (const value of [-1e9, 1e9, Number.NaN, -Infinity, Infinity]) {
         const input = Object.freeze([{ ...item, [field]: value }]);
         const output = validateLayoutInput(input, { cols: 4, maxRows: 20 });
+        const unbounded = field === "maxW" || field === "maxH";
         expect(output[0]![field]).toBe(
-          field === "y" && value === Infinity
+          (field === "y" || unbounded) && value === Infinity
             ? Infinity
-            : value === Infinity || value === 1e9
-              ? upper
-              : lower
+            : unbounded && value === 1e9
+              ? 1e9
+              : value === Infinity || value === 1e9
+                ? upper
+                : lower
         );
         expect(input[0]![field]).toBe(value);
       }
@@ -74,7 +77,7 @@ describe("validateLayoutInput", () => {
     expect(MAX_GRID_ROWS).toBe(10_000);
     expect(
       validateLayoutInput([hostile, hostile], { cols: 4 })[0]
-    ).toMatchObject({ y: 10_000, h: 10_000, minH: 10_000, maxH: 10_000 });
+    ).toMatchObject({ y: 10_000, h: 10_000, minH: 10_000, maxH: Infinity });
     expect(warning).toHaveBeenCalledTimes(1);
     warning.mockClear();
     const valid = [{ ...item, x: 0.5, y: 1.5, w: 1.5, h: 1.5 }];
@@ -94,6 +97,11 @@ describe("validateLayoutInput", () => {
     expect(validateLayoutInput([hostile], { cols: 4, maxRows: 0 })[0]!.h).toBe(
       1
     );
+  });
+  test("keeps maxima above the grid so a later, wider grid is not capped", () => {
+    const wide = [{ ...item, maxW: Infinity, maxH: 50 }];
+    expect(validateLayoutInput(wide, { cols: 4, maxRows: 20 })).toBe(wide);
+    expect(warning).not.toHaveBeenCalled();
   });
   test("suppresses warnings in production", () => {
     const previous = process.env.NODE_ENV;
@@ -244,8 +252,7 @@ test("useResponsiveLayout bounds initial layouts, setters, prop sync and generat
   expect(hook.result.current.layout[0]).toMatchObject({
     ...bounded,
     w: 2,
-    minW: 2,
-    maxW: 2
+    minW: 2
   });
 });
 

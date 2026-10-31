@@ -633,8 +633,9 @@ The function preserves its input and returns normalized geometry:
 
 - `MAX_GRID_ROWS` is **10,000**. A smaller finite `maxRows` lowers this input
   limit, with a minimum of 1. Finite `y` is clamped to `[0, rowLimit]`.
-- `w`, `minW`, and `maxW` are clamped to `[1, cols]`; `x` to `[0, cols - w]`.
-  `h`, `minH`, and `maxH` are clamped to `[1, rowLimit]`.
+- `w` and `minW` are clamped to `[1, cols]`; `x` to `[0, cols - w]`. `h` and
+  `minH` are clamped to `[1, rowLimit]`. `maxW` and `maxH` are only raised to
+  their minimum; larger values, including `Infinity`, pass unchanged.
 - Fractions are preserved. Missing optional min/max fields stay absent. Present
   maxima are raised to their corresponding minima when needed. NaN and negative
   infinity use the lower bound; positive infinity uses the upper bound.
