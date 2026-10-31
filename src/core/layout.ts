@@ -244,7 +244,7 @@ export function correctBounds(
     // into rendering math, or the item renders at the top-left and overlaps.
     // Clamp it to the current bottom of the layout (#2161).
     if (l.y === Infinity) {
-      l.y = bottom(collidesWith);
+      l.y = bottom(collidesWith.filter(item => Number.isFinite(item.y)));
     }
 
     if (!l.static) {

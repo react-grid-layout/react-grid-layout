@@ -5,6 +5,8 @@ import {
   MAX_GRID_ROWS,
   noCompactor,
   verticalCompactor,
+  horizontalCompactor,
+  correctBounds,
   findOrGenerateResponsiveLayout
 } from "../../src/core";
 import type { Layout, LayoutItem } from "../../src/core/types";
@@ -391,6 +393,46 @@ test("Infinity y still appends at the same bottom", () => {
     useGridLayout({ layout: input, cols: 4, compactor: verticalCompactor })
   );
   expect(hook.result.current.layout[1]).toMatchObject({ y: 3 });
+});
+
+test.each([verticalCompactor, horizontalCompactor])(
+  "$type compaction resolves static and movable append sentinels",
+  compactor => {
+    const input = [
+      { ...item, i: "normal", h: 2 },
+      { ...item, i: "static", y: Infinity, static: true },
+      { ...item, i: "movable", y: Infinity }
+    ];
+    const corrected = correctBounds(input, { cols: 1 });
+    expect(corrected.map(l => l.y)).toEqual([0, 2, 3]);
+    const output = compactor.compact(corrected, 1);
+    expect(output.every(l => Number.isFinite(l.y))).toBe(true);
+  }
+);
+
+test("GridLayout renders finite static and movable append sentinels", () => {
+  const changed = jest.fn();
+  const input = [
+    { ...item, i: "normal", h: 2 },
+    { ...item, i: "static", y: Infinity, static: true },
+    { ...item, i: "movable", y: Infinity }
+  ];
+  render(
+    <GridLayout
+      width={800}
+      layout={input}
+      gridConfig={{ cols: 1 }}
+      compactor={noCompactor}
+      onLayoutChange={changed}
+    >
+      {input.map(l => (
+        <div key={l.i} />
+      ))}
+    </GridLayout>
+  );
+  expect(changed.mock.calls[0][0].map((l: LayoutItem) => l.y)).toEqual([
+    0, 2, 3
+  ]);
 });
 
 test("a saved minH cannot restore a billion-row size during resize", () => {
