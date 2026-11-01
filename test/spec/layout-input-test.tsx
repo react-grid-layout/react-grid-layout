@@ -410,6 +410,43 @@ test("useGridLayout validates initial, setter, prop sync, and external drop layo
   );
 });
 
+test.each([
+  [
+    "setLayoutForBreakpoint",
+    (api: { setLayoutForBreakpoint: (bp: string, l: Layout) => void }) =>
+      api.setLayoutForBreakpoint("lg", [hostile])
+  ],
+  [
+    "setLayouts",
+    (api: { setLayouts: (l: Record<string, Layout>) => void }) =>
+      api.setLayouts({ lg: [hostile] })
+  ]
+] as const)(
+  "useResponsiveLayout bounds a layout stored by %s once its breakpoint gains cols",
+  (_name, store) => {
+    const hook = renderHook(
+      ({ breakpoints, cols }) =>
+        useResponsiveLayout<string>({
+          width: 800,
+          breakpoints,
+          cols,
+          maxRows: 20,
+          compactor: noCompactor
+        }),
+      {
+        initialProps: {
+          breakpoints: { sm: 0 } as Record<string, number>,
+          cols: { sm: 2 } as Record<string, number>
+        }
+      }
+    );
+    act(() => store(hook.result.current as never));
+    hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
+    hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
+    expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+  }
+);
+
 test("useResponsiveLayout bounds initial layouts, setters, prop sync and generated breakpoints", () => {
   const hook = renderHook(
     ({ input, width }) =>

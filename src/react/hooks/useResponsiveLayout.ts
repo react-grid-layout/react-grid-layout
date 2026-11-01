@@ -134,6 +134,46 @@ export interface UseResponsiveLayoutResult<
  * }
  * ```
  */
+/**
+ * Arrays stored before their breakpoint had configured cols. They skipped
+ * validation, so they are validated when read once the cols exist.
+ */
+const rawLayouts = new WeakSet<Layout>();
+
+/** Validate and clone a layout for a breakpoint, or keep it raw and mark it. */
+function intakeLayout(
+  layout: Layout,
+  cols: number | undefined,
+  maxRows: number | undefined
+): Layout {
+  if (cols === undefined) {
+    rawLayouts.add(layout);
+    return layout;
+  }
+  return cloneLayout(validateLayoutInput(layout, { cols, maxRows }));
+}
+
+/** Validate the raw layouts whose breakpoint now has cols. */
+function validateRawLayouts<B extends Breakpoint>(
+  layouts: ResponsiveLayouts<B>,
+  colsConfig: Breakpoints<B>,
+  maxRows: number | undefined
+): ResponsiveLayouts<B> {
+  let output: ResponsiveLayouts<B> | undefined;
+  for (const bp of Object.keys(layouts) as B[]) {
+    const layout = layouts[bp];
+    if (!layout || colsConfig[bp] === undefined || !rawLayouts.has(layout))
+      continue;
+    output ??= { ...layouts };
+    (output as Record<B, Layout>)[bp] = intakeLayout(
+      layout,
+      colsConfig[bp],
+      maxRows
+    );
+  }
+  return output ?? layouts;
+}
+
 export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   options: UseResponsiveLayoutOptions<B>
 ): UseResponsiveLayoutResult<B> {
@@ -179,18 +219,31 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // State
   const [breakpoint, setBreakpoint] = useState<B>(initialBreakpoint);
   const [cols, setCols] = useState<number>(initialCols);
-  const [layouts, setLayoutsState] = useState<ResponsiveLayouts<B>>(() => {
-    // Clone initial layouts
-    const cloned = {} as ResponsiveLayouts<B>;
-    for (const bp of Object.keys(propsLayouts) as B[]) {
-      const layout = propsLayouts[bp];
-      if (layout) {
-        (cloned as Record<B, Layout>)[bp] =
-          colsConfig[bp] === undefined ? layout : cloneLayout(layout);
+  const [storedLayouts, setLayoutsState] = useState<ResponsiveLayouts<B>>(
+    () => {
+      // Clone initial layouts
+      const cloned = {} as ResponsiveLayouts<B>;
+      for (const bp of Object.keys(propsLayouts) as B[]) {
+        const layout = propsLayouts[bp];
+        if (layout) {
+          (cloned as Record<B, Layout>)[bp] = intakeLayout(
+            layout,
+            colsConfig[bp],
+            maxRows
+          );
+        }
       }
+      return cloned;
     }
-    return cloned;
-  });
+  );
+
+  // A layout stored for a breakpoint without configured cols passes through
+  // raw. It is untrusted input, so validate it once that breakpoint gains
+  // cols. Only raw arrays are revalidated; generated layouts are not intake.
+  const layouts = useMemo(
+    () => validateRawLayouts(storedLayouts, colsConfig, maxRows),
+    [storedLayouts, colsConfig, maxRows]
+  );
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
@@ -219,15 +272,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     (bp: B, newLayout: Layout) => {
       setLayoutsState((prev: ResponsiveLayouts<B>) => ({
         ...prev,
-        [bp]:
-          colsConfig[bp] === undefined
-            ? newLayout
-            : cloneLayout(
-                validateLayoutInput(newLayout, {
-                  cols: colsConfig[bp],
-                  maxRows
-                })
-              )
+        [bp]: intakeLayout(newLayout, colsConfig[bp], maxRows)
       }));
     },
     [colsConfig, maxRows]
@@ -236,19 +281,15 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // Set all layouts
   const setLayouts = useCallback(
     (newLayouts: ResponsiveLayouts<B>) => {
-      const validated = validateResponsiveLayoutsInput(
-        newLayouts,
-        colsConfig,
-        maxRows
-      );
       const cloned = {} as ResponsiveLayouts<B>;
-      for (const bp of Object.keys(validated) as B[]) {
-        const layoutForBp = validated[bp];
+      for (const bp of Object.keys(newLayouts) as B[]) {
+        const layoutForBp = newLayouts[bp];
         if (layoutForBp) {
-          (cloned as Record<B, Layout>)[bp] =
-            colsConfig[bp] === undefined
-              ? layoutForBp
-              : cloneLayout(layoutForBp);
+          (cloned as Record<B, Layout>)[bp] = intakeLayout(
+            layoutForBp,
+            colsConfig[bp],
+            maxRows
+          );
         }
       }
       setLayoutsState(cloned);
