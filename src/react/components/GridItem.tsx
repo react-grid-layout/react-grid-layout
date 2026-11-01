@@ -773,6 +773,15 @@ function GridItemInner(props: GridItemProps): ReactElement {
     [onResizeHandler, positionParams, x, y, w, h]
   );
 
+  // Stop edge auto-scroll on unmount (#2318). A dropping item's fake drag never
+  // gets an onDragStop; removing the placeholder just unmounts the item.
+  useEffect(() => {
+    return () => {
+      edgeScrollRef.current?.stop();
+      edgeScrollRef.current = null;
+    };
+  }, []);
+
   // ============================================================================
   // Dropping Item Support
   // ============================================================================
