@@ -147,8 +147,7 @@ describe("golden wrap compactors", () => {
     expectGolden("extras-wrap/static-cells-and-ties", records);
   });
 
-  it("overlap mode clones without repositioning even tall items and Infinity statics", () => {
-    // The clone-only overlap path never enters the unbounded static-cell fill.
+  it("overlap mode preserves finite geometry and normalizes Infinity static sizes", () => {
     const layout: LayoutItem[] = [
       { i: "s", x: 1, y: 0, w: 1, h: Infinity, static: true, moved: true },
       { i: "a", x: 0, y: 3, w: 2, h: 2, moved: true }
@@ -171,7 +170,7 @@ describe("golden wrap compactors", () => {
           x,
           y,
           w,
-          h,
+          h: Number.isFinite(h) ? h : 1,
           moved
         }))
       );

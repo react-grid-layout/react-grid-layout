@@ -26,6 +26,7 @@
  * ```
  */
 
+import { normalizeLayoutGeometry } from "../core/geometry/normalize.js";
 import type { Compactor, Layout, LayoutItem, Mutable } from "../core/types.js";
 import { advanceRows, cloneLayout, cloneLayoutItem } from "../core/layout.js";
 
@@ -356,7 +357,7 @@ export const wrapCompactor: Compactor = {
   allowOverlap: false,
 
   compact(layout: Layout, cols: number): Layout {
-    return compactWrap(layout, cols);
+    return compactWrap(normalizeLayoutGeometry(layout), cols);
   }
 };
 
@@ -369,6 +370,6 @@ export const wrapOverlapCompactor: Compactor = {
 
   compact(layout: Layout, _cols: number): Layout {
     // With overlap allowed, just clone without compacting
-    return cloneLayout(layout);
+    return cloneLayout(normalizeLayoutGeometry(layout));
   }
 };

@@ -23,6 +23,7 @@
  * ```
  */
 
+import { normalizeLayoutGeometry } from "../core/geometry/normalize.js";
 import type { Compactor, Layout, LayoutItem, Mutable } from "../core/types.js";
 import { advanceRows, cloneLayout } from "../core/layout.js";
 
@@ -171,8 +172,7 @@ function compactHorizontalFast(
   }
 
   // Preserve the existing invalid-extent contract without allocating by height.
-  if (!Number.isInteger(maxRow) || maxRow >= 2 ** 32)
-    throw new RangeError("Invalid array length");
+  if (!Number.isInteger(maxRow)) throw new RangeError("Invalid array length");
   const tide: RowSpan[] = [];
 
   // Collect static items for collision checking
@@ -302,7 +302,7 @@ export const fastHorizontalCompactor: Compactor = {
 
   compact(layout: Layout, cols: number): Layout {
     // Clone the layout since we modify in place
-    const out = cloneLayout(layout) as LayoutItem[];
+    const out = cloneLayout(normalizeLayoutGeometry(layout)) as LayoutItem[];
     compactHorizontalFast(out, cols, false);
     return out;
   }
@@ -318,7 +318,7 @@ export const fastHorizontalOverlapCompactor: Compactor = {
   allowOverlap: true,
 
   compact(layout: Layout, cols: number): Layout {
-    const out = cloneLayout(layout) as LayoutItem[];
+    const out = cloneLayout(normalizeLayoutGeometry(layout)) as LayoutItem[];
     compactHorizontalFast(out, cols, true);
     return out;
   }

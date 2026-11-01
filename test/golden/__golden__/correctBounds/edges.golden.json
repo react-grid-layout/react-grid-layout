@@ -165,12 +165,12 @@
       ]
     },
     "output": [
-      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+      {"h":2,"i":"a","w":2,"x":0,"y":0}
     ],
     "postInput": {
       "bounds": {"cols":12},
       "layout": [
-        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
       ]
     }
   },
@@ -190,12 +190,12 @@
       ]
     },
     "output": [
-      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+      {"h":2,"i":"a","w":2,"x":0,"y":0}
     ],
     "postInput": {
       "bounds": {"cols":12},
       "layout": [
-        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
       ]
     }
   },
@@ -215,12 +215,12 @@
       ]
     },
     "output": [
-      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+      {"h":2,"i":"a","w":2,"x":0,"y":0}
     ],
     "postInput": {
       "bounds": {"cols":12},
       "layout": [
-        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
       ]
     }
   },
@@ -240,12 +240,12 @@
       ]
     },
     "output": [
-      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+      {"h":2,"i":"a","w":2,"x":0,"y":0}
     ],
     "postInput": {
       "bounds": {"cols":12},
       "layout": [
-        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
       ]
     }
   },

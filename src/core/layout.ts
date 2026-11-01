@@ -6,6 +6,7 @@
  */
 
 import type { CompactType, Layout, LayoutItem, Mutable } from "./types.js";
+import { normalizeLayoutGeometryInPlace } from "./geometry/normalize.js";
 import { DragResolver } from "./interaction/resolveDrag.js";
 
 // ============================================================================
@@ -283,6 +284,8 @@ export function correctBounds(
   layout: Mutable<LayoutItem>[],
   bounds: { cols: number }
 ): LayoutItem[] {
+  // Bounds correction resolves append sentinels in its existing traversal order.
+  normalizeLayoutGeometryInPlace(layout, false);
   const collidesWith = getStatics(layout);
 
   for (let i = 0; i < layout.length; i++) {

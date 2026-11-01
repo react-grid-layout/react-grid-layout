@@ -23,6 +23,7 @@
  * ```
  */
 
+import { normalizeLayoutGeometry } from "../core/geometry/normalize.js";
 import type { Compactor, Layout, LayoutItem, Mutable } from "../core/types.js";
 import { cloneLayout } from "../core/layout.js";
 
@@ -108,7 +109,7 @@ function compactVerticalFast(
 
       // Close the gap (move item up to meet the tide)
       if (!allowOverlap || minGap > 0) {
-        item.y -= minGap;
+        item.y = minGap === Infinity ? 0 : item.y - minGap;
       }
 
       // Handle collisions with static items
@@ -165,7 +166,7 @@ export const fastVerticalCompactor: Compactor = {
 
   compact(layout: Layout, cols: number): Layout {
     // Clone the layout since we modify in place
-    const out = cloneLayout(layout) as LayoutItem[];
+    const out = cloneLayout(normalizeLayoutGeometry(layout)) as LayoutItem[];
     compactVerticalFast(out, cols, false);
     return out;
   }
@@ -181,7 +182,7 @@ export const fastVerticalOverlapCompactor: Compactor = {
   allowOverlap: true,
 
   compact(layout: Layout, cols: number): Layout {
-    const out = cloneLayout(layout) as LayoutItem[];
+    const out = cloneLayout(normalizeLayoutGeometry(layout)) as LayoutItem[];
     compactVerticalFast(out, cols, true);
     return out;
   }
