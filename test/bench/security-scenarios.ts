@@ -79,22 +79,23 @@ export function securityScenario(vector: SecurityVector): Counts {
           return fill.apply(this, args);
         });
       const warning = jest.spyOn(console, "warn").mockImplementation(() => {});
-      let output: Layout = [];
+      const outputs: Layout[] = [];
       try {
         counts = measure(() => {
-          for (const compactor of [
-            fastHorizontalCompactor,
-            fastHorizontalOverlapCompactor
-          ]) {
-            output = compactor.compact(input, 2);
-            expect(output.find(l => l.i === "a")).toMatchObject(
-              blocked ? { x: 0, y: 10_001 } : { x: 1, y: 0 }
-            );
-          }
+          outputs.push(
+            fastHorizontalCompactor.compact(input, 2),
+            fastHorizontalOverlapCompactor.compact(input, 2)
+          );
         }, 20_000);
       } finally {
         allocation.mockRestore();
         warning.mockRestore();
+      }
+      // Assert outside measure(): expect's own iteration differs by Node version.
+      for (const output of outputs) {
+        expect(output.find(l => l.i === "a")).toMatchObject(
+          blocked ? { x: 0, y: 10_001 } : { x: 1, y: 0 }
+        );
       }
       break;
     }

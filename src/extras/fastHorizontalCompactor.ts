@@ -69,7 +69,10 @@ function getMaxTideForItem(tide: RowSpan[], y: number, h: number): number {
 
 function addTide(tide: RowSpan[], y: number, h: number, right: number): void {
   if (!(right > 0)) return;
-  tide.push(...rowSpans(y, h, right));
+  // Indexed copy, not a spread: Node 20 and 24 invoke the array iterator
+  // differently for spread arguments, which made op counts engine-dependent.
+  const spans = rowSpans(y, h, right);
+  for (let i = 0; i < spans.length; i++) tide.push(spans[i]!);
 }
 
 /** Skip rows with unchanged tide and static intersections, retaining the limit. */
