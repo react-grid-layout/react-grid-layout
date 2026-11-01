@@ -135,35 +135,38 @@ export interface UseResponsiveLayoutResult<
  * ```
  */
 /**
- * Arrays stored before their breakpoint had configured cols. They skipped
- * validation, so they are validated when read once the cols exist.
+ * Validate and clone a layout for a breakpoint. Without configured cols the
+ * layout cannot be bounded yet, so it is kept raw and the caller records the
+ * breakpoint as pending validation.
  */
-const rawLayouts = new WeakSet<Layout>();
-
-/** Validate and clone a layout for a breakpoint, or keep it raw and mark it. */
 function intakeLayout(
   layout: Layout,
   cols: number | undefined,
   maxRows: number | undefined
 ): Layout {
-  if (cols === undefined) {
-    rawLayouts.add(layout);
-    return layout;
-  }
+  if (cols === undefined) return layout;
   return cloneLayout(validateLayoutInput(layout, { cols, maxRows }));
 }
 
-/** Validate the raw layouts whose breakpoint now has cols. */
-function validateRawLayouts<B extends Breakpoint>(
+/** Breakpoints among `bps` whose layout was stored raw (no configured cols). */
+function rawBreakpoints<B extends Breakpoint>(
+  bps: readonly B[],
+  colsConfig: Breakpoints<B>
+): ReadonlySet<B> {
+  return new Set(bps.filter(bp => colsConfig[bp] === undefined));
+}
+
+/** Validate the pending raw layouts whose breakpoint now has cols. */
+function validatePending<B extends Breakpoint>(
   layouts: ResponsiveLayouts<B>,
+  pending: ReadonlySet<B>,
   colsConfig: Breakpoints<B>,
   maxRows: number | undefined
 ): ResponsiveLayouts<B> {
   let output: ResponsiveLayouts<B> | undefined;
-  for (const bp of Object.keys(layouts) as B[]) {
+  for (const bp of pending) {
     const layout = layouts[bp];
-    if (!layout || colsConfig[bp] === undefined || !rawLayouts.has(layout))
-      continue;
+    if (!layout || colsConfig[bp] === undefined) continue;
     output ??= { ...layouts };
     (output as Record<B, Layout>)[bp] = intakeLayout(
       layout,
@@ -236,14 +239,28 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       return cloned;
     }
   );
-
-  // A layout stored for a breakpoint without configured cols passes through
-  // raw. It is untrusted input, so validate it once that breakpoint gains
-  // cols. Only raw arrays are revalidated; generated layouts are not intake.
-  const layouts = useMemo(
-    () => validateRawLayouts(storedLayouts, colsConfig, maxRows),
-    [storedLayouts, colsConfig, maxRows]
+  // Breakpoints whose stored layout skipped validation because they had no
+  // configured cols. Tracked per hook by key: generated layouts never enter.
+  const [pending, setPending] = useState<ReadonlySet<B>>(() =>
+    rawBreakpoints(Object.keys(propsLayouts) as B[], colsConfig)
   );
+
+  // Validate pending layouts as soon as their breakpoint gains cols. The
+  // effect below commits the result, so removing the cols again cannot
+  // bring the raw layout back.
+  const layouts = useMemo(
+    () => validatePending(storedLayouts, pending, colsConfig, maxRows),
+    [storedLayouts, pending, colsConfig, maxRows]
+  );
+  useEffect(() => {
+    if (layouts === storedLayouts) return;
+    setLayoutsState(layouts);
+    setPending(prev => {
+      const next = new Set(prev);
+      for (const bp of prev) if (colsConfig[bp] !== undefined) next.delete(bp);
+      return next;
+    });
+  }, [layouts, storedLayouts, colsConfig]);
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
@@ -274,6 +291,12 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         ...prev,
         [bp]: intakeLayout(newLayout, colsConfig[bp], maxRows)
       }));
+      setPending(prev => {
+        const next = new Set(prev);
+        if (colsConfig[bp] === undefined) next.add(bp);
+        else next.delete(bp);
+        return next;
+      });
     },
     [colsConfig, maxRows]
   );
@@ -293,6 +316,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         }
       }
       setLayoutsState(cloned);
+      setPending(rawBreakpoints(Object.keys(cloned) as B[], colsConfig));
     },
     [colsConfig, maxRows]
   );

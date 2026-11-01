@@ -447,6 +447,69 @@ test.each([
   }
 );
 
+test("useResponsiveLayout keeps a bounded layout bounded after its cols are removed", () => {
+  const hook = renderHook(
+    ({ breakpoints, cols }) =>
+      useResponsiveLayout<string>({
+        width: 800,
+        breakpoints,
+        cols,
+        maxRows: 20,
+        compactor: noCompactor
+      }),
+    {
+      initialProps: {
+        breakpoints: { sm: 0 } as Record<string, number>,
+        cols: { sm: 2 } as Record<string, number>
+      }
+    }
+  );
+  act(() => hook.result.current.setLayoutForBreakpoint("lg", [hostile]));
+  hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
+  expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+  hook.rerender({ breakpoints: { sm: 0 }, cols: { sm: 2 } });
+  expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+});
+
+test("useResponsiveLayout does not revalidate a generated layout another hook stored raw", () => {
+  // Compaction places "c" below the static at y=20000; validation would clamp
+  // it to the 10,000-row limit, on top of the static.
+  const lg: Layout = [
+    { i: "a", x: 0, y: 0, w: 4, h: 10_000 },
+    { i: "b", x: 0, y: 10_000, w: 4, h: 10_000, static: true },
+    { i: "c", x: 2, y: 0, w: 2, h: 10_000 }
+  ];
+  const first = renderHook(
+    ({ cols, width }) =>
+      useResponsiveLayout<string>({
+        width,
+        layouts: { lg },
+        breakpoints: { lg: 600, sm: 0 },
+        cols
+      }),
+    {
+      initialProps: {
+        cols: { lg: 4, sm: 2 } as Record<string, number>,
+        width: 800
+      }
+    }
+  );
+  // A breakpoint change stores the generated sm layout in state.
+  first.rerender({ cols: { lg: 4, sm: 2 }, width: 400 });
+  const generated = first.result.current.layouts.sm!;
+  expect(generated.find(l => l.i === "c")!.y).toBe(20_000);
+  const second = renderHook(() =>
+    useResponsiveLayout<string>({
+      width: 400,
+      breakpoints: { sm: 0 },
+      cols: { sm: 2 }
+    })
+  );
+  act(() => second.result.current.setLayoutForBreakpoint("xl", generated));
+  first.rerender({ cols: { lg: 4, sm: 2 }, width: 400 });
+  expect(first.result.current.layout.find(l => l.i === "c")!.y).toBe(20_000);
+});
+
 test("useResponsiveLayout bounds initial layouts, setters, prop sync and generated breakpoints", () => {
   const hook = renderHook(
     ({ input, width }) =>
