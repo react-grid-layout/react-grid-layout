@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Keep this image in sync with @playwright/test in yarn.lock and frames.yml.
+    container: mcr.microsoft.com/playwright:v1.62.1-noble
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
@@ -46,5 +48,17 @@ jobs:
       - name: Build the e2e harness
         run: make e2e-build
 
+      - name: Check image matches installed Playwright
+        run: node -e "require('node:assert/strict').equal(require('@playwright/test/package.json').version, '1.62.1')"
+
       - name: Run Playwright e2e tests
         run: yarn playwright test --config playwright.config.ts
+
+      - name: Upload browser artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/

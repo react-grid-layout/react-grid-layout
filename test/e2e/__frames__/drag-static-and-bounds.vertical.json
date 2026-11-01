@@ -1,0 +1,98 @@
+{
+  "platform": "linux",
+  "playwright": "1.62.1",
+  "frames": [
+    [
+      {
+        "i": "a",
+        "x": 7,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      {
+        "i": "b",
+        "x": 100,
+        "y": 0,
+        "width": 100,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      }
+    ],
+    [
+      {
+        "i": "a",
+        "x": 110,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      {
+        "i": "b",
+        "x": 100,
+        "y": 0,
+        "width": 100,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      }
+    ],
+    [
+      {
+        "i": "a",
+        "x": 900,
+        "y": 900,
+        "width": 100,
+        "height": 100
+      },
+      {
+        "i": "b",
+        "x": 100,
+        "y": 0,
+        "width": 100,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 100,
+        "y": 200,
+        "width": 100,
+        "height": 100
+      }
+    ],
+    [
+      {
+        "i": "a",
+        "x": -300,
+        "y": -300,
+        "width": 100,
+        "height": 100
+      },
+      {
+        "i": "b",
+        "x": 100,
+        "y": 0,
+        "width": 100,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 500,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      }
+    ]
+  ]
+}

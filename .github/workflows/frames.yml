@@ -1,0 +1,42 @@
+name: Record Playwright frames
+on:
+  workflow_dispatch:
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    # The same Linux image used by the browser assertions in test.yml.
+    container: mcr.microsoft.com/playwright:v1.62.1-noble
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+      - run: corepack enable
+      - run: yarn install --immutable
+      - name: Check image matches installed Playwright
+        run: node -e "require('node:assert/strict').equal(require('@playwright/test/package.json').version, '1.62.1')"
+      - run: make e2e-build
+      - name: Record settled pointer samples
+        run: node scripts/record-playwright-frames.cjs
+      - name: Open baseline update PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: test/record-playwright-frames
+          commit-message: "test: refresh Linux Chromium frame baselines"
+          title: "test: refresh Linux Chromium frame baselines"
+          body: "Record settled pointer samples on the pinned Linux Playwright image. Review changes to the per-frame boxes before merging."
+          add-paths: test/e2e/__frames__/*.json
+      - name: Upload browser artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recorded-playwright-results
+          path: |
+            playwright-report/
+            test-results/

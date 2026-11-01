@@ -1,0 +1,75 @@
+{
+  "platform": "linux",
+  "playwright": "1.62.1",
+  "frames": [
+    [
+      {
+        "i": "b",
+        "x": 200,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "i": "a",
+        "x": 193,
+        "y": 200,
+        "width": 207,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 200,
+        "y": 200,
+        "width": 200,
+        "height": 200
+      }
+    ],
+    [
+      {
+        "i": "b",
+        "x": 200,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "i": "a",
+        "x": 90,
+        "y": 200,
+        "width": 310,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 100,
+        "y": 200,
+        "width": 300,
+        "height": 200
+      }
+    ],
+    [
+      {
+        "i": "b",
+        "x": 200,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "i": "a",
+        "x": 0,
+        "y": 200,
+        "width": 400,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 0,
+        "y": 200,
+        "width": 400,
+        "height": 200
+      }
+    ]
+  ]
+}
