@@ -154,6 +154,29 @@ test("responsive props preserve stale layouts through updates and callbacks", ()
   expect(changed.mock.calls.at(-1)?.[1].stale).toEqual(updated);
 });
 
+test("responsive component keeps a bounded layout bounded when its cols are removed", () => {
+  const changed = jest.fn();
+  const layouts = { lg: [hostile], sm: [item] };
+  const element = (cols: Record<string, number>) => (
+    <ResponsiveGridLayout
+      width={400}
+      breakpoints={{ lg: 600, sm: 0 }}
+      cols={cols}
+      maxRows={20}
+      layouts={layouts}
+      compactor={noCompactor}
+      onLayoutChange={changed}
+    >
+      <div key="a" />
+    </ResponsiveGridLayout>
+  );
+  const view = render(element({ lg: 4, sm: 2 }));
+  view.rerender(element({ sm: 2 }));
+  view.rerender(element({ sm: 3 }));
+  for (const call of changed.mock.calls)
+    expect(call[1].lg[0]).toMatchObject(bounded);
+});
+
 test.each(["initial", "prop-sync", "set-breakpoint", "set-all"])(
   "responsive hook preserves stale keys through %s while validating configured layouts",
   route => {
@@ -466,6 +489,66 @@ test("useResponsiveLayout keeps a bounded layout bounded after its cols are remo
   );
   act(() => hook.result.current.setLayoutForBreakpoint("lg", [hostile]));
   hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
+  expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+  hook.rerender({ breakpoints: { sm: 0 }, cols: { sm: 2 } });
+  expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+});
+
+test.each(["setLayoutForBreakpoint", "setLayouts"] as const)(
+  "useResponsiveLayout keeps a layout set by %s in a layout effect of the commit that adds cols",
+  setter => {
+    const fresh: LayoutItem = { ...item, i: "fresh", x: 1, y: 2 };
+    const hook = renderHook(
+      ({ breakpoints, cols }) => {
+        const api = useResponsiveLayout<string>({
+          width: 800,
+          breakpoints,
+          cols,
+          maxRows: 20,
+          compactor: noCompactor
+        });
+        const { setLayoutForBreakpoint, setLayouts } = api;
+        React.useLayoutEffect(() => {
+          if (cols["lg"] === undefined) return;
+          if (setter === "setLayouts") setLayouts({ lg: [fresh] });
+          else setLayoutForBreakpoint("lg", [fresh]);
+        }, [cols, setLayoutForBreakpoint, setLayouts]);
+        return api;
+      },
+      {
+        initialProps: {
+          breakpoints: { sm: 0 } as Record<string, number>,
+          cols: { sm: 2 } as Record<string, number>
+        }
+      }
+    );
+    act(() => hook.result.current.setLayoutForBreakpoint("lg", [hostile]));
+    hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
+    expect(hook.result.current.layouts.lg).toEqual([
+      expect.objectContaining({ i: "fresh", x: 1, y: 2 })
+    ]);
+  }
+);
+
+test("useResponsiveLayout keeps a bounded prop layout bounded when cols are removed", () => {
+  const input = { lg: [hostile] };
+  const hook = renderHook(
+    ({ breakpoints, cols }) =>
+      useResponsiveLayout<string>({
+        width: 800,
+        layouts: input,
+        breakpoints,
+        cols,
+        maxRows: 20,
+        compactor: noCompactor
+      }),
+    {
+      initialProps: {
+        breakpoints: { lg: 600, sm: 0 } as Record<string, number>,
+        cols: { lg: 4, sm: 2 } as Record<string, number>
+      }
+    }
+  );
   expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
   hook.rerender({ breakpoints: { sm: 0 }, cols: { sm: 2 } });
   expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);

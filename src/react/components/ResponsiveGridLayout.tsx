@@ -277,7 +277,9 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   const prevBreakpointRef = useRef(propBreakpoint);
   const prevBreakpointsRef = useRef(breakpoints);
   const prevColsRef = useRef(colsConfig);
-  const prevLayoutsRef = useRef(propsLayouts);
+  // Compare the raw prop: its validated form also changes with cols, which
+  // is not a prop change and must not reset the stored layouts.
+  const prevLayoutsPropRef = useRef(unvalidatedLayouts);
   const prevCompactTypeRef = useRef(compactType);
 
   // Ref to always have current layouts value (avoids stale closure in callbacks)
@@ -292,7 +294,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   // This prevents the timing issue where GridLayout sees children before the layout is updated
   // Use compactor directly (#2213)
   const derivedLayout: Layout | null = useMemo(() => {
-    if (!deepEqual(propsLayouts, prevLayoutsRef.current)) {
+    if (!deepEqual(unvalidatedLayouts, prevLayoutsPropRef.current)) {
       // Props changed, derive new layout synchronously
       return findOrGenerateResponsiveLayout(
         propsLayouts,
@@ -305,7 +307,15 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       );
     }
     return null; // No change needed
-  }, [propsLayouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
+  }, [
+    unvalidatedLayouts,
+    propsLayouts,
+    breakpoints,
+    breakpoint,
+    cols,
+    compactor,
+    colsConfig
+  ]);
 
   // The effective layout to pass to GridLayout - use derived if available, else state
   const effectiveLayout = derivedLayout ?? layout;
@@ -316,9 +326,9 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       setLayout(derivedLayout);
       setLayouts(propsLayouts);
       layoutsRef.current = propsLayouts;
-      prevLayoutsRef.current = propsLayouts;
+      prevLayoutsPropRef.current = unvalidatedLayouts;
     }
-  }, [derivedLayout, propsLayouts]);
+  }, [derivedLayout, propsLayouts, unvalidatedLayouts]);
 
   // Handle compactType changes - use compactor.compact() (#2213)
   useEffect(() => {
