@@ -86,7 +86,10 @@ function compactVerticalFast(
   for (let i = 0; i < numItems; i++) {
     const item = layout[i] as Mutable<LayoutItem>;
 
-    // Clamp x2 to grid bounds
+    // Every column below 0 shares one tide slot at -1, so items that overlap
+    // off-grid still stack, and a large negative x costs one iteration
+    // instead of |x|. Sharing the slot can only add stacking, never overlap.
+    const x1 = item.x < -1 ? -1 : item.x;
     let x2 = item.x + item.w;
     if (x2 > cols) {
       x2 = cols;
@@ -99,7 +102,7 @@ function compactVerticalFast(
     } else {
       // Find the minimum gap between the item and the tide
       let minGap = Infinity;
-      for (let x = item.x; x < x2; ++x) {
+      for (let x = x1; x < x2; ++x) {
         const tideValue = tide[x] ?? 0;
         const gap = item.y - tideValue;
         if (gap < minGap) {
@@ -141,7 +144,7 @@ function compactVerticalFast(
 
     // Update tide: mark columns as blocked up to item's bottom
     const t = item.y + item.h;
-    for (let x = item.x; x < x2; ++x) {
+    for (let x = x1; x < x2; ++x) {
       const currentTide = tide[x] ?? 0;
       if (currentTide < t) {
         tide[x] = t;

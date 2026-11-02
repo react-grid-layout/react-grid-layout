@@ -259,6 +259,34 @@ describe("Fast Vertical Compactor", () => {
   });
 
   describe("Edge Cases", () => {
+    it.each([
+      ["fastVerticalCompactor", fastVerticalCompactor],
+      ["fastVerticalOverlapCompactor", fastVerticalOverlapCompactor]
+    ])("%s work does not scale with a large negative x", (_, compactor) => {
+      // Direct compact() calls skip the React intake clamp. The tide loops
+      // used to walk every column from x up to x + w, so x = -1e7 took ~4.6s.
+      const n = 1e9;
+      const start = Date.now();
+      const [item] = compactor.compact(
+        [{ i: "a", x: -n, y: 3, w: n + 4, h: 1 }],
+        4
+      );
+      expect(Date.now() - start).toBeLessThan(1000);
+      expect(item).toMatchObject({ x: -n, y: 0 });
+    });
+
+    it("still stacks items that overlap only off-grid", () => {
+      const compacted = fastVerticalCompactor.compact(
+        [
+          { i: "a", x: -1, y: 0, w: 1, h: 1 },
+          { i: "b", x: -1, y: 5, w: 1, h: 1 }
+        ],
+        1
+      );
+      expect(hasOverlaps(compacted)).toBe(false);
+      expect(compacted.map(l => l.y)).toEqual([0, 1]);
+    });
+
     it("handles empty layout", () => {
       const compacted = fastVerticalCompactor.compact([], 12);
       expect(compacted).toEqual([]);
