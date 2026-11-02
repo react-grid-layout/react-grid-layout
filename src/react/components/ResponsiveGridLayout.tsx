@@ -341,21 +341,14 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
         [breakpoint]: newLayout
       } as ResponsiveLayouts<B>;
 
+      // No onLayoutChange here: GridLayout re-syncs on the new compactType and
+      // reports the recompacted layout through handleLayoutChange, once (RX-5).
       setLayout(newLayout);
       setLayouts(newLayouts);
       layoutsRef.current = newLayouts;
-      onLayoutChange(newLayout, newLayouts);
       prevCompactTypeRef.current = compactType;
     }
-  }, [
-    compactType,
-    compactor,
-    effectiveLayout,
-    cols,
-    allowOverlap,
-    breakpoint,
-    onLayoutChange
-  ]);
+  }, [compactType, compactor, effectiveLayout, cols, allowOverlap, breakpoint]);
 
   // Handle width changes
   useEffect(() => {

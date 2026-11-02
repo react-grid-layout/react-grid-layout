@@ -83,14 +83,18 @@ describe("native drag lifecycle", () => {
   )("pins net-zero notifications: $name", variant => {
     const f = mountGrid({ variant });
     drag(f, "a", logicalPixels(netZeroMoves));
-    finish(
-      "net-zero-drag",
-      f,
-      "net-zero-layout-change: out-and-back drag still emits onLayoutChange twice"
-    );
+    // The mount notification is the only one: the drag itself reports nothing.
+    expect(
+      f.recorder.trace
+        .filter(step => step.input.kind !== "mount")
+        .flatMap(step =>
+          step.callbacks.filter((cb: any) => cb.name === "onLayoutChange")
+        )
+    ).toHaveLength(0);
+    finish("net-zero-drag", f);
   });
 
-  it("pins duplicate onLayoutChange on a changed drag and resize stop", () => {
+  it("pins one onLayoutChange per changed drag and resize stop", () => {
     const f = mountGrid({ variant: { name: "none", compact: null } });
     drag(f, "a", [
       [7, 0],
@@ -106,13 +110,9 @@ describe("native drag lifecycle", () => {
     )) {
       expect(
         step.callbacks.filter((cb: any) => cb.name === "onLayoutChange")
-      ).toHaveLength(2);
+      ).toHaveLength(1);
     }
-    finish(
-      "duplicate-stop-notifications",
-      f,
-      "double-layout-change: each changed drag/resize stop notifies directly and again from its effect"
-    );
+    finish("duplicate-stop-notifications", f);
   });
 
   it.each([false, true])(

@@ -108,11 +108,8 @@ Changing a known-bug golden requires the same explanation as any other diff.
 | ID                             | Pinned behavior                                               |
 | ------------------------------ | ------------------------------------------------------------- |
 | `memo-ignored-props`           | handles, static class, and drag-start closure stay stale      |
-| `double-layout-change`         | changed stops and Responsive compactor swaps notify twice     |
-| `net-zero-layout-change`       | returning to the start cell still notifies twice              |
 | `north-overlap-snap`           | north growth overlaps above, then snaps on stop               |
 | `touch-mouse-coordinates`      | touch skips threshold; scaled touch produces NaN              |
-| `cols-no-resync`               | shrinking nonresponsive cols leaves an item beyond the edge   |
 | `hook-inline-layout-loop`      | inline layout never converges; a finite render cap catches it |
 | `dropping-no-stop`             | dropping item emits drag start/move without stop              |
 | `legacy-responsive-threshold`  | legacy Responsive retains the v2 threshold                    |

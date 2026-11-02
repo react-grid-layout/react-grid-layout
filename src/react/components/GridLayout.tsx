@@ -219,6 +219,19 @@ function movedItem(
   return after[before.indexOf(item)] ?? item;
 }
 
+/**
+ * Layout equality for change notifications. `moved` is interaction bookkeeping
+ * that no compactor resets in free-form mode, so a drag that ends where it
+ * started would otherwise count as a change.
+ */
+function sameLayout(a: Layout, b: Layout): boolean {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  return a.every((item, n) =>
+    deepEqual({ ...item, moved: false }, { ...b[n], moved: false })
+  );
+}
+
 const layoutClassName = "react-grid-layout";
 
 // Check for Firefox
@@ -463,7 +476,6 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   // Refs for tracking previous state
   const oldDragItemRef = useRef<LayoutItem | null>(null);
   const oldResizeItemRef = useRef<LayoutItem | null>(null);
-  const oldLayoutRef = useRef<Layout | null>(null);
   const dragEnterCounterRef = useRef(0);
   const prevLayoutRef = useRef<Layout>(layout);
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
@@ -560,6 +572,22 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     layout
   ]);
 
+  // The one path to onLayoutChange after mount. prevLayoutRef holds the last
+  // layout reported, so a gesture stop that reports synchronously and the
+  // effect below that sees the same layout a render later notify once (RX-5,
+  // #1984), and a drag that ends where it started notifies zero times (C-B2).
+  // `hideDropping` drops the transient dropping placeholder from the report.
+  const notifyLayoutChange = useCallback(
+    (next: Layout, hideDropping = false) => {
+      if (sameLayout(next, prevLayoutRef.current)) return;
+      prevLayoutRef.current = next;
+      onLayoutChange(
+        hideDropping ? next.filter(l => l.i !== droppingItem.i) : next
+      );
+    },
+    [onLayoutChange, droppingItem.i]
+  );
+
   // Layout change callback
   useEffect(() => {
     // Suppress while a gesture is mid-flight: activeDrag covers internal
@@ -571,20 +599,15 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     // post-drop layout change fires normally. Skipping the prevLayoutRef sync
     // here is intentional — the suppressed states must not desync the
     // comparison, or the real change would be compared against the placeholder.
-    if (
-      !activeDrag &&
-      !droppingDOMNode &&
-      !deepEqual(layout, prevLayoutRef.current)
-    ) {
-      prevLayoutRef.current = layout;
-      // Filter out dropping placeholder - it's transient internal state only (#2210)
-      // The dropping item should not be exposed to users until the actual drop happens.
-      // This prevents infinite loops in controlled state patterns where children derive
-      // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
-      const publicLayout = layout.filter(l => l.i !== droppingItem.i);
-      onLayoutChange(publicLayout);
-    }
-  }, [layout, activeDrag, droppingDOMNode, onLayoutChange, droppingItem.i]);
+    if (activeDrag || droppingDOMNode) return;
+    // Filter out dropping placeholder - it's transient internal state only (#2210)
+    // The dropping item should not be exposed to users until the actual drop happens.
+    // This prevents infinite loops in controlled state patterns where children derive
+    // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
+    // The stop handlers report their layout unfiltered, as before, so a real item
+    // that happens to use the dropping id is never dropped from their report.
+    notifyLayoutChange(layout, true);
+  }, [layout, activeDrag, droppingDOMNode, notifyLayoutChange]);
 
   // ============================================================================
   // Container Height
@@ -618,7 +641,6 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       };
 
       oldDragItemRef.current = cloneLayoutItem(l);
-      oldLayoutRef.current = currentLayout;
       setActiveDrag(placeholder);
 
       onDragStartProp(currentLayout, l, l, null, data.e, data.node);
@@ -633,14 +655,6 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
-      const placeholder: LayoutItem = {
-        w: l.w,
-        h: l.h,
-        x: l.x,
-        y: l.y,
-        i
-      };
-
       // Move the element
       const newLayout = moveElement(
         currentLayout,
@@ -653,6 +667,18 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         cols,
         allowOverlap
       );
+      // Use compactor.compact() - it handles allowOverlap internally (#2213)
+      const compacted = compactor.compact(newLayout, cols);
+      // The placeholder shows where this event puts the item. Built from the
+      // layout before the move, it lagged one event behind (C-B2).
+      const landed = getLayoutItem(compacted, i) ?? l;
+      const placeholder: LayoutItem = {
+        w: landed.w,
+        h: landed.h,
+        x: landed.x,
+        y: landed.y,
+        i
+      };
 
       onDragProp(
         newLayout,
@@ -663,8 +689,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         data.node
       );
 
-      // Use compactor.compact() - it handles allowOverlap internally (#2213)
-      setLayout(compactor.compact(newLayout, cols));
+      setLayout(compacted);
       setActiveDrag(placeholder);
     },
     [preventCollision, compactType, cols, allowOverlap, compactor, onDragProp]
@@ -697,15 +722,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
 
       onDragStopProp(finalLayout, oldDragItem, moved, null, data.e, data.node);
 
-      const oldLayout = oldLayoutRef.current;
       oldDragItemRef.current = null;
-      oldLayoutRef.current = null;
       setActiveDrag(null);
       setLayout(finalLayout);
-
-      if (oldLayout && !deepEqual(oldLayout, finalLayout)) {
-        onLayoutChange(finalLayout);
-      }
+      notifyLayoutChange(finalLayout);
     },
     [
       preventCollision,
@@ -714,7 +734,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       allowOverlap,
       compactor,
       onDragStopProp,
-      onLayoutChange
+      notifyLayoutChange
     ]
   );
 
@@ -729,7 +749,6 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       if (!l) return;
 
       oldResizeItemRef.current = cloneLayoutItem(l);
-      oldLayoutRef.current = currentLayout;
       setResizing(true);
 
       onResizeStartProp(currentLayout, l, l, null, data.e, data.node);
@@ -871,18 +890,13 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         data.node
       );
 
-      const oldLayout = oldLayoutRef.current;
       oldResizeItemRef.current = null;
-      oldLayoutRef.current = null;
       setActiveDrag(null);
       setResizing(false);
       setLayout(finalLayout);
-
-      if (oldLayout && !deepEqual(oldLayout, finalLayout)) {
-        onLayoutChange(finalLayout);
-      }
+      notifyLayoutChange(finalLayout);
     },
-    [cols, compactor, onResizeStopProp, onLayoutChange]
+    [cols, compactor, onResizeStopProp, notifyLayoutChange]
   );
 
   // ============================================================================

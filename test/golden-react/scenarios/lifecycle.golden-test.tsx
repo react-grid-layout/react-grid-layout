@@ -305,7 +305,7 @@ describe("React lifecycle golden traces", () => {
     );
   });
 
-  it("fires duplicate layout changes when Responsive changes compactor type", () => {
+  it("fires one layout change when Responsive changes compactor type", () => {
     const fixture = mountGrid({
       variant: { name: "v2", api: "v2", compact: "vertical" },
       responsive: true,
@@ -318,11 +318,7 @@ describe("React lifecycle golden traces", () => {
     const last = fixture.recorder.trace[fixture.recorder.trace.length - 1];
     expect(
       last.callbacks.filter((cb: any) => cb.name === "onLayoutChange")
-    ).toHaveLength(2);
-    finish(
-      fixture,
-      "responsive-compactor-double-layout-change",
-      "double-layout-change: Responsive compactor swaps notify directly and again through GridLayout synchronization"
-    );
+    ).toHaveLength(1);
+    finish(fixture, "responsive-compactor-double-layout-change");
   });
 });
