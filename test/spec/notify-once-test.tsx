@@ -33,11 +33,25 @@ describe.each(["vertical", "none", "legacy", "strict"])("%s", name => {
 
   test("a drag that ends where it started calls onLayoutChange zero times", () => {
     const { fixture, onLayoutChange } = mount(name);
-    drag(fixture, "a", [
-      [0, 7],
-      [0, 210],
-      [0, 2]
-    ]);
+    // Free-form is the case this fixes (moved: true survives the drag). The
+    // compacting variants were fixed by RGL-11 and stay here as guards: out
+    // over b and back, so b is pushed and restored. Free-form would leave b
+    // pushed, so it goes out into empty space instead.
+    drag(
+      fixture,
+      "a",
+      name === "none"
+        ? [
+            [0, 7],
+            [0, 210],
+            [0, 2]
+          ]
+        : [
+            [7, 0],
+            [110, 0],
+            [2, 0]
+          ]
+    );
     expect(onLayoutChange).toHaveBeenCalledTimes(0);
   });
 
@@ -95,4 +109,35 @@ describe.each(["vertical", "legacy"])("Responsive %s", name => {
     );
     expect(onLayoutChange).toHaveBeenCalledTimes(1);
   });
+});
+
+test("the onDrag placeholder is the compacted position on that event", () => {
+  const { fixture, onDrag } = mount("vertical");
+  drag(fixture, "a", [
+    [7, 0],
+    [310, 210]
+  ]);
+  const last = onDrag.mock.calls[onDrag.mock.calls.length - 1];
+  // The item argument is where the pointer put it; the placeholder is where
+  // vertical compaction lands it on this same event.
+  expect({ x: last[2].x, y: last[2].y }).toEqual({ x: 3, y: 2 });
+  expect({ x: last[3].x, y: last[3].y }).toEqual({ x: 3, y: 0 });
+});
+
+test("a controlled parent that echoes the layout sees one onLayoutChange per drag (#1984)", () => {
+  const onLayoutChange = jest.fn();
+  const fixture = mountGrid({ variant: variant("vertical") });
+  const echo = jest.fn((layout: any[]) => {
+    onLayoutChange(layout);
+    fixture.rerenderProps({
+      layout: layout.map(({ i, x, y, w, h }) => ({ i, x, y, w, h }))
+    });
+  });
+  fixture.rerenderProps({ onLayoutChange: echo });
+  onLayoutChange.mockClear();
+  drag(fixture, "a", [
+    [7, 0],
+    [310, 0]
+  ]);
+  expect(onLayoutChange).toHaveBeenCalledTimes(1);
 });
