@@ -193,6 +193,19 @@ export interface GridLayoutProps {
 
 const noop = () => {};
 
+/**
+ * moveElement leaves its input alone and keeps item order, so the moved item
+ * sits at the index `item` had in `before`. Matching by position, not id,
+ * keeps duplicate ids from selecting another item.
+ */
+function movedItem(
+  before: Layout,
+  after: Layout,
+  item: LayoutItem
+): LayoutItem {
+  return after[before.indexOf(item)] ?? item;
+}
+
 const layoutClassName = "react-grid-layout";
 
 // Check for Firefox
@@ -622,7 +635,14 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         allowOverlap
       );
 
-      onDragProp(newLayout, oldDragItem, l, placeholder, data.e, data.node);
+      onDragProp(
+        newLayout,
+        oldDragItem,
+        movedItem(currentLayout, newLayout, l),
+        placeholder,
+        data.e,
+        data.node
+      );
 
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
       setLayout(compactor.compact(newLayout, cols));
@@ -652,10 +672,11 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         allowOverlap
       );
 
+      const moved = movedItem(currentLayout, newLayout, l);
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
       const finalLayout = compactor.compact(newLayout, cols);
 
-      onDragStopProp(finalLayout, oldDragItem, l, null, data.e, data.node);
+      onDragStopProp(finalLayout, oldDragItem, moved, null, data.e, data.node);
 
       const oldLayout = oldLayoutRef.current;
       oldDragItemRef.current = null;
@@ -775,12 +796,13 @@ function GridLayout(props: GridLayoutProps): ReactElement {
           allowOverlap
         );
       }
+      const moved = movedItem(newLayout, finalLayout, l);
 
       const placeholder: LayoutItem = {
-        w: l.w,
-        h: l.h,
-        x: l.x,
-        y: l.y,
+        w: moved.w,
+        h: moved.h,
+        x: moved.x,
+        y: moved.y,
         i,
         static: true
       };
@@ -788,7 +810,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       onResizeProp(
         finalLayout,
         oldResizeItem,
-        l,
+        moved,
         placeholder,
         data.e,
         data.node
@@ -803,7 +825,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       if (handle === "n" || handle === "nw" || handle === "ne") {
         const resized = compactedLayout.find(item => item.i === i);
         if (resized) {
-          (resized as Mutable<LayoutItem>).y = l.y;
+          (resized as Mutable<LayoutItem>).y = moved.y;
         }
       }
       setLayout(compactedLayout);
@@ -863,9 +885,9 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     ) => {
       // Move the dropping item to the hovered cell the way a drag does, so it
       // pushes the items it lands on (#2313), and keep its layout entry on the
-      // latest cell so commitDrop/onDrop reads it (#2284). moveElement mutates
-      // what it moves and pushes, so it works on copies: the layout already
-      // sent to onLayoutChange stays untouched.
+      // latest cell so commitDrop/onDrop reads it (#2284). The compactor still
+      // writes into the items it is given, so this works on copies: the layout
+      // already sent to onLayoutChange stays untouched.
       const moveToHoveredCell = (current: Layout): Layout => {
         const item = getLayoutItem(current, itemToPlace.i);
         if (!item) return current;
