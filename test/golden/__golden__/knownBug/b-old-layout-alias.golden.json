@@ -70,7 +70,13 @@
             }
           },
           "move": {
-            "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+            "identity": {
+              "aliases": [
+                {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]}
+              ],
+              "returnedSameArray": false,
+              "sameObject": [true]
+            },
             "input": {
               "allowOverlap": false,
               "cols": 12,
@@ -92,9 +98,9 @@
               "cols": 12,
               "compactType": "vertical",
               "isUserAction": true,
-              "l": {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+              "l": {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2},
               "layout": [
-                {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+                {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2}
               ],
               "preventCollision": false,
               "x": 0,
@@ -102,7 +108,7 @@
             }
           },
           "oldLayout": [
-            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2}
           ],
           "phase": "drag"
         },
@@ -172,7 +178,7 @@
             }
           },
           "oldLayout": [
-            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2}
           ],
           "phase": "drag"
         },
@@ -204,8 +210,10 @@
             }
           },
           "equalsTrueStart": true,
-          "layoutChange": false,
-          "layoutChangeCallback": {"$u":1},
+          "layoutChange": true,
+          "layoutChangeCallback": [
+            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+          ],
           "move": {
             "identity": {
               "aliases": [
@@ -245,7 +253,7 @@
             }
           },
           "oldLayout": [
-            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+            {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2}
           ],
           "phase": "stop",
           "trueOldLayout": [
@@ -270,5 +278,5 @@
       ]
     }
   },
-  "fixed": "b: moveElement no longer mutates the oldLayout alias, so final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11)."
+  "knownBug": "b: The oldLayout alias is mutated although final geometry equals the true drag-start snapshot, causing a spurious handler onLayoutChange."
 }

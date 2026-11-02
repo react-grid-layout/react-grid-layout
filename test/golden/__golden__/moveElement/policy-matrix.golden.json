@@ -3,10 +3,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -33,10 +35,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -49,10 +51,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -79,11 +83,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 2,
@@ -95,10 +99,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -125,10 +131,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":2,"y":4},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -141,10 +147,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -171,11 +179,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","moved":true,"w":1,"x":2,"y":4}
       ],
       "preventCollision": false,
       "x": 2,
@@ -187,10 +195,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -217,10 +227,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","moved":true,"w":1,"x":1,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -233,10 +243,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -263,11 +275,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","moved":true,"w":1,"x":1,"y":3}
       ],
       "preventCollision": false,
       "x": 1,
@@ -279,10 +291,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -309,10 +323,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","moved":true,"w":1,"x":3,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -325,10 +339,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -355,11 +371,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":3,"y":3}
       ],
       "preventCollision": false,
       "x": 3,
@@ -371,10 +387,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -401,10 +419,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","moved":true,"w":1,"x":2,"y":0},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -417,10 +435,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -447,11 +467,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","moved":true,"w":1,"x":2,"y":0}
       ],
       "preventCollision": false,
       "x": 2,
@@ -463,10 +483,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -493,10 +515,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -509,10 +531,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -539,11 +563,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 2,
@@ -555,10 +579,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -585,10 +611,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","moved":true,"w":1,"x":1,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -601,10 +627,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -631,11 +659,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","moved":true,"w":1,"x":1,"y":1}
       ],
       "preventCollision": false,
       "x": 1,
@@ -647,10 +675,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -677,10 +707,10 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","moved":true,"w":1,"x":3,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -693,10 +723,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -723,11 +755,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":3,"y":1}
       ],
       "preventCollision": false,
       "x": 3,
@@ -763,9 +795,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -803,9 +835,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -843,9 +875,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -883,9 +915,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -923,9 +955,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -963,9 +995,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -1003,9 +1035,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1043,9 +1075,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -1083,9 +1115,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -1123,9 +1155,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1163,9 +1195,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1203,9 +1235,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -1243,9 +1275,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1283,9 +1315,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -1323,9 +1355,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1363,9 +1395,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -1379,11 +1411,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1410,9 +1444,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -1426,11 +1460,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1457,9 +1493,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1473,11 +1509,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1504,9 +1542,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1520,11 +1558,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1551,9 +1591,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -1567,11 +1607,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1598,9 +1640,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1614,11 +1656,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1645,9 +1689,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -1661,11 +1705,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1692,9 +1738,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1708,11 +1754,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1739,9 +1787,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -1755,11 +1803,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1786,9 +1836,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -1802,11 +1852,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1833,9 +1885,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1849,11 +1901,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1880,9 +1934,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1896,11 +1950,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1927,9 +1983,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -1943,11 +1999,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -1974,9 +2032,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -1990,11 +2048,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2021,9 +2081,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -2037,11 +2097,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2068,9 +2130,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2084,11 +2146,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2115,9 +2179,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -2155,9 +2219,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -2195,9 +2259,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2235,9 +2299,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2275,9 +2339,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -2315,9 +2379,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2355,9 +2419,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -2395,9 +2459,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2435,9 +2499,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -2475,9 +2539,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -2515,9 +2579,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2555,9 +2619,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2595,9 +2659,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -2635,9 +2699,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2675,9 +2739,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -2715,9 +2779,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -2755,9 +2819,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -2771,10 +2835,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2801,10 +2867,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","moved":true,"w":1,"x":3,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -2817,10 +2883,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2847,11 +2915,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","moved":true,"w":1,"x":3,"y":1}
       ],
       "preventCollision": false,
       "x": 2,
@@ -2863,10 +2931,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2893,10 +2963,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":3,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -2909,10 +2979,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2939,11 +3011,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","moved":true,"w":1,"x":3,"y":3}
       ],
       "preventCollision": false,
       "x": 2,
@@ -2955,10 +3027,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -2985,10 +3059,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -3001,10 +3075,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3031,11 +3107,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 1,
@@ -3047,10 +3123,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3077,10 +3155,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","moved":true,"w":1,"x":4,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -3093,10 +3171,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3123,11 +3203,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":4,"y":2}
       ],
       "preventCollision": false,
       "x": 3,
@@ -3139,10 +3219,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3169,10 +3251,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","moved":true,"w":1,"x":1,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -3185,10 +3267,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3215,11 +3299,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","moved":true,"w":1,"x":1,"y":1}
       ],
       "preventCollision": false,
       "x": 2,
@@ -3231,10 +3315,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3261,10 +3347,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":1,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -3277,10 +3363,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3307,11 +3395,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","moved":true,"w":1,"x":1,"y":3}
       ],
       "preventCollision": false,
       "x": 2,
@@ -3323,10 +3411,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3353,10 +3443,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","moved":true,"w":1,"x":0,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -3369,10 +3459,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3399,11 +3491,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","moved":true,"w":1,"x":0,"y":2}
       ],
       "preventCollision": false,
       "x": 1,
@@ -3415,10 +3507,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3445,10 +3539,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -3461,10 +3555,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -3491,11 +3587,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 3,
@@ -3531,9 +3627,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -3571,9 +3667,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -3611,9 +3707,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -3651,9 +3747,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -3691,9 +3787,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -3731,9 +3827,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -3771,9 +3867,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -3811,9 +3907,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -3851,9 +3947,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -3891,9 +3987,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -3931,9 +4027,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -3971,9 +4067,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -4011,9 +4107,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4051,9 +4147,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -4091,9 +4187,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4131,9 +4227,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -4147,11 +4243,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4178,9 +4276,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -4194,11 +4292,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4225,9 +4325,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4241,11 +4341,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4272,9 +4374,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4288,11 +4390,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4319,9 +4423,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -4335,11 +4439,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4366,9 +4472,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4382,11 +4488,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4413,9 +4521,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -4429,11 +4537,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4460,9 +4570,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4476,11 +4586,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4507,9 +4619,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -4523,11 +4635,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4554,9 +4668,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -4570,11 +4684,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4601,9 +4717,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4617,11 +4733,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4648,9 +4766,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4664,11 +4782,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4695,9 +4815,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -4711,11 +4831,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4742,9 +4864,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4758,11 +4880,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4789,9 +4913,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -4805,11 +4929,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4836,9 +4962,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -4852,11 +4978,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -4883,9 +5011,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -4923,9 +5051,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -4963,9 +5091,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5003,9 +5131,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5043,9 +5171,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -5083,9 +5211,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5123,9 +5251,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -5163,9 +5291,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5203,9 +5331,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -5243,9 +5371,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -5283,9 +5411,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5323,9 +5451,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5363,9 +5491,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -5403,9 +5531,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5443,9 +5571,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -5483,9 +5611,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -5523,9 +5651,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -5539,10 +5667,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5569,10 +5699,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","moved":true,"w":1,"x":3,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -5585,10 +5715,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5615,11 +5747,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","moved":true,"w":1,"x":3,"y":1}
       ],
       "preventCollision": false,
       "x": 2,
@@ -5631,10 +5763,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5661,10 +5795,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":3,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -5677,10 +5811,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5707,11 +5843,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","moved":true,"w":1,"x":3,"y":3}
       ],
       "preventCollision": false,
       "x": 2,
@@ -5723,10 +5859,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5753,10 +5891,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -5769,10 +5907,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5799,11 +5939,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 1,
@@ -5815,10 +5955,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5845,10 +5987,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","moved":true,"w":1,"x":4,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -5861,10 +6003,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5891,11 +6035,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":4,"y":2}
       ],
       "preventCollision": false,
       "x": 3,
@@ -5907,10 +6051,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5937,10 +6083,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","moved":true,"w":1,"x":1,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -5953,10 +6099,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -5983,11 +6131,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","moved":true,"w":1,"x":1,"y":1}
       ],
       "preventCollision": false,
       "x": 2,
@@ -5999,10 +6147,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6029,10 +6179,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":1,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -6045,10 +6195,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6075,11 +6227,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","moved":true,"w":1,"x":1,"y":3}
       ],
       "preventCollision": false,
       "x": 2,
@@ -6091,10 +6243,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6121,10 +6275,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","moved":true,"w":1,"x":0,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -6137,10 +6291,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6167,11 +6323,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","moved":true,"w":1,"x":0,"y":2}
       ],
       "preventCollision": false,
       "x": 1,
@@ -6183,10 +6339,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6213,10 +6371,10 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -6229,10 +6387,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6259,11 +6419,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 3,
@@ -6299,9 +6459,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -6339,9 +6499,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6379,9 +6539,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6419,9 +6579,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -6459,9 +6619,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6499,9 +6659,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -6539,9 +6699,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6579,9 +6739,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -6619,9 +6779,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -6659,9 +6819,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6699,9 +6859,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6739,9 +6899,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -6779,9 +6939,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6819,9 +6979,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -6859,9 +7019,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -6899,9 +7059,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -6915,11 +7075,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6946,9 +7108,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -6962,11 +7124,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -6993,9 +7157,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7009,11 +7173,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7040,9 +7206,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7056,11 +7222,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7087,9 +7255,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -7103,11 +7271,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7134,9 +7304,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7150,11 +7320,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7181,9 +7353,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -7197,11 +7369,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7228,9 +7402,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7244,11 +7418,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7275,9 +7451,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -7291,11 +7467,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7322,9 +7500,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -7338,11 +7516,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7369,9 +7549,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7385,11 +7565,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7416,9 +7598,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7432,11 +7614,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7463,9 +7647,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -7479,11 +7663,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7510,9 +7696,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7526,11 +7712,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7557,9 +7745,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -7573,11 +7761,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7604,9 +7794,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7620,11 +7810,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -7651,9 +7843,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -7691,9 +7883,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -7731,9 +7923,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7771,9 +7963,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7811,9 +8003,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -7851,9 +8043,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7891,9 +8083,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -7931,9 +8123,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -7971,9 +8163,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -8011,9 +8203,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -8051,9 +8243,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8091,9 +8283,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8131,9 +8323,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -8171,9 +8363,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8211,9 +8403,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -8251,9 +8443,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8291,9 +8483,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -8307,11 +8499,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8338,9 +8531,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -8354,11 +8547,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8385,9 +8579,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8401,11 +8595,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8432,9 +8627,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8448,11 +8643,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8479,9 +8675,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -8495,11 +8691,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8526,9 +8723,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8542,11 +8739,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8573,9 +8771,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -8589,11 +8787,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8620,9 +8819,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -8636,11 +8835,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8667,9 +8867,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -8683,10 +8883,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8713,10 +8915,10 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"north","w":1,"x":2,"y":1},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
+        {"h":1,"i":"north","w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
       "preventCollision": false,
@@ -8729,10 +8931,12 @@
     "direction": "up",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8759,11 +8963,11 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
-        {"h":1,"i":"north","w":1,"x":2,"y":1}
+        {"h":1,"i":"north","w":1,"x":2,"y":2}
       ],
       "preventCollision": false,
       "x": 2,
@@ -8775,10 +8979,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8805,10 +9011,10 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
+        {"h":1,"i":"south","w":1,"x":2,"y":4},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -8821,10 +9027,12 @@
     "direction": "down",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8851,11 +9059,11 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3}
+        {"h":1,"i":"south","w":1,"x":2,"y":4}
       ],
       "preventCollision": false,
       "x": 2,
@@ -8867,10 +9075,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8897,10 +9107,10 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"west","w":1,"x":1,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"west","w":1,"x":1,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -8913,10 +9123,12 @@
     "direction": "left",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8943,11 +9155,11 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"west","w":1,"x":1,"y":2}
+        {"h":1,"i":"west","w":1,"x":1,"y":3}
       ],
       "preventCollision": false,
       "x": 1,
@@ -8959,10 +9171,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,false,true]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -8989,10 +9203,10 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
+        {"h":1,"i":"east","w":1,"x":3,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
       "preventCollision": false,
@@ -9005,10 +9219,12 @@
     "direction": "right",
     "identity": {
       "aliases": [
-        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false]
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9035,11 +9251,11 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","w":1,"x":3,"y":3}
       ],
       "preventCollision": false,
       "x": 3,
@@ -9075,9 +9291,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -9115,9 +9331,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9155,9 +9371,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9195,9 +9411,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -9235,9 +9451,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9275,9 +9491,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -9315,9 +9531,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9355,9 +9571,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -9395,9 +9611,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -9435,9 +9651,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9475,9 +9691,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9515,9 +9731,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -9555,9 +9771,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9595,9 +9811,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -9635,9 +9851,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9675,9 +9891,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -9691,11 +9907,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9722,9 +9940,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -9738,11 +9956,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9769,9 +9989,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9785,11 +10005,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9816,9 +10038,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9832,11 +10054,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9863,9 +10087,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -9879,11 +10103,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9910,9 +10136,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -9926,11 +10152,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -9957,9 +10185,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -9973,11 +10201,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10004,9 +10234,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10020,11 +10250,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10051,9 +10283,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -10067,11 +10299,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10098,9 +10332,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -10114,11 +10348,13 @@
     "direction": "up",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10145,9 +10381,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10161,11 +10397,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10192,9 +10430,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10208,11 +10446,13 @@
     "direction": "down",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10239,9 +10479,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -10255,11 +10495,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10286,9 +10528,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10302,11 +10544,13 @@
     "direction": "left",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10333,9 +10577,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -10349,11 +10593,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10380,9 +10626,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10396,11 +10642,13 @@
     "direction": "right",
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true,true]
     },
     "input": {
       "allowOverlap": false,
@@ -10427,9 +10675,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -10467,9 +10715,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -10507,9 +10755,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10547,9 +10795,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10587,9 +10835,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -10627,9 +10875,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10667,9 +10915,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -10707,9 +10955,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10747,9 +10995,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -10787,9 +11035,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -10827,9 +11075,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10867,9 +11115,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10907,9 +11155,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3}
       ],
@@ -10947,9 +11195,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -10987,9 +11235,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":1,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"west","w":1,"x":1,"y":2}
       ],
@@ -11027,9 +11275,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1}
       ],
@@ -11067,9 +11315,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],

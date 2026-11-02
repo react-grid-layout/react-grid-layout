@@ -1,5 +1,32 @@
 import { cloneLayoutItem, moveElement } from "../../src/core/layout";
+import { moveWithoutMutation } from "../../src/core/interaction/resolveDrag";
 import type { CompactType, LayoutItem } from "../../src/core/types";
+
+// The grid and hooks move copies through moveWithoutMutation, so the layout
+// they hand to callbacks is never written. The public moveElement keeps its
+// 2.x contract and mutates (test/spec/utils-test.js, the moveElement goldens).
+function movePure(
+  layout: LayoutItem[],
+  l: LayoutItem,
+  x: number | undefined,
+  y: number | undefined,
+  isUserAction: boolean | undefined,
+  preventCollision: boolean | undefined,
+  compactType: CompactType,
+  _cols: number,
+  allowOverlap?: boolean
+): LayoutItem[] {
+  return moveWithoutMutation(
+    compactType,
+    layout,
+    l,
+    x,
+    y,
+    isUserAction,
+    preventCollision,
+    allowOverlap
+  );
+}
 import { copy } from "../golden/capture";
 import { mulberry32 } from "../golden/rng";
 
@@ -119,7 +146,7 @@ const cases: Case[] = [
 ];
 
 function run(c: Case, layout: LayoutItem[], l = layout[c.target ?? 0]!) {
-  return moveElement(
+  return movePure(
     layout,
     l,
     c.x,
@@ -132,7 +159,7 @@ function run(c: Case, layout: LayoutItem[], l = layout[c.target ?? 0]!) {
   );
 }
 
-describe("moveElement does not mutate its input", () => {
+describe("the grid's move path does not mutate its input", () => {
   it.each(cases)("$name", c => {
     const before = copy(c.layout);
     const layout = freeze(copy(c.layout));
@@ -149,7 +176,7 @@ describe("moveElement does not mutate its input", () => {
       { i: "b", x: 0, y: 1, w: 1, h: 1 },
       { i: "c", x: 5, y: 0, w: 1, h: 1 }
     ]);
-    const pushed = moveElement(
+    const pushed = movePure(
       layout,
       layout[0]!,
       0,
@@ -162,7 +189,7 @@ describe("moveElement does not mutate its input", () => {
     expect(pushed[2]).toBe(layout[2]);
     expect(pushed[0]).not.toBe(layout[0]);
 
-    const blocked = moveElement(
+    const blocked = movePure(
       layout,
       layout[0]!,
       0,
@@ -181,7 +208,7 @@ describe("moveElement does not mutate its input", () => {
       { i: "b", x: 0, y: 1, w: 1, h: 1 }
     ]);
     const detached = freeze(cloneLayoutItem(layout[0]!));
-    const result = moveElement(
+    const result = movePure(
       layout,
       detached,
       0,
@@ -191,7 +218,7 @@ describe("moveElement does not mutate its input", () => {
       "vertical",
       12
     );
-    const byReference = moveElement(
+    const byReference = movePure(
       layout,
       layout[0]!,
       0,
@@ -211,7 +238,7 @@ describe("moveElement does not mutate its input", () => {
       { i: "b", x: 5, y: 5, w: 1, h: 1, static: true }
     ]);
     // The copy already reads (3, 0); the entry at (0, 0) must still move.
-    const moved = moveElement(
+    const moved = movePure(
       layout,
       freeze({ ...layout[0]!, x: 3 }),
       3,
@@ -223,7 +250,7 @@ describe("moveElement does not mutate its input", () => {
     );
     expect(moved[0]).toMatchObject({ x: 3, y: 0, moved: true });
     // A copy that drops the static flag does not unpin a static entry.
-    const pinned = moveElement(
+    const pinned = movePure(
       layout,
       freeze({ ...layout[1]!, static: false }),
       0,
@@ -269,5 +296,37 @@ describe("moveElement does not mutate its input", () => {
       expect(() => run(c, layout)).not.toThrow();
       expect(layout).toEqual(before);
     }
+  });
+});
+
+describe("public moveElement keeps the 2.x contract", () => {
+  it("moves the items in place, so a caller can ignore the return", () => {
+    const layout: LayoutItem[] = [
+      { i: "a", x: 0, y: 0, w: 1, h: 1 },
+      { i: "b", x: 0, y: 1, w: 1, h: 1 }
+    ];
+    // 2.3.0 gives a at y 1 and b pushed to y 2.
+    moveElement(layout, layout[0]!, 0, 1, false, false, "vertical", 12);
+    expect(layout[0]).toMatchObject({ i: "a", y: 1, moved: true });
+    expect(layout[1]).toMatchObject({ i: "b", y: 2 });
+  });
+
+  it("returns the input itself when preventCollision blocks the move", () => {
+    const layout: LayoutItem[] = [
+      { i: "a", x: 0, y: 0, w: 1, h: 1 },
+      { i: "b", x: 0, y: 1, w: 1, h: 1 }
+    ];
+    const result = moveElement(
+      layout,
+      layout[0]!,
+      0,
+      1,
+      true,
+      true,
+      "vertical",
+      12
+    );
+    expect(result).toBe(layout);
+    expect(layout[0]).toMatchObject({ y: 0, moved: false });
   });
 });

@@ -1,6 +1,13 @@
 {
   "call": {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true,true]
+    },
     "input": {
       "allowOverlap": {"$u":1},
       "cols": 12,
@@ -24,10 +31,10 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": false,
-      "l": {"h":1,"i":"a","w":6,"x":0,"y":0},
+      "l": {"h":1,"i":"a","moved":true,"w":6,"x":1,"y":0},
       "layout": [
-        {"h":1,"i":"a","w":6,"x":0,"y":0},
-        {"h":1,"i":"b","w":6,"x":6,"y":0}
+        {"h":1,"i":"a","moved":true,"w":6,"x":1,"y":0},
+        {"h":1,"i":"b","moved":true,"w":6,"x":7,"y":0}
       ],
       "preventCollision": {"$u":1},
       "x": 1,

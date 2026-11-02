@@ -9,10 +9,7 @@
 
 import type { CompactType, Layout, LayoutItem, Mutable } from "./types.js";
 import { normalizeLayoutGeometryInPlace } from "./geometry/normalize.js";
-import {
-  DragResolver,
-  moveWithoutMutation
-} from "./interaction/resolveDrag.js";
+import { DragResolver } from "./interaction/resolveDrag.js";
 
 // ============================================================================
 // Layout Queries
@@ -336,13 +333,14 @@ export function correctBounds(
  * Handles collision detection and cascading movements.
  * Does not compact the layout - call `compact()` separately.
  *
- * Neither `layout` nor `l` is modified. Read the moved item, and every item
- * it pushed, from the returned layout. Items the move left alone keep their
- * identity. `l` is matched by reference, then by `i`, so a copy of a layout
- * item moves that item.
+ * **Note**: This function mutates the `l` parameter directly for performance.
+ * The item's x, y, and moved properties will be modified, as are the items it
+ * pushes. Callers should ideally pass a cloned item if they need to preserve
+ * the original. The grid itself moves copies, so its callbacks never see a
+ * mutated layout.
  *
  * @param layout - Full layout
- * @param l - Item to move
+ * @param l - Item to move (will be mutated)
  * @param x - New X position (or undefined to keep current)
  * @param y - New Y position (or undefined to keep current)
  * @param isUserAction - True if this is a direct user action (affects collision resolution)
@@ -365,8 +363,7 @@ export function moveElement(
   _cols: number,
   allowOverlap?: boolean
 ): LayoutItem[] {
-  return moveWithoutMutation(
-    compactType,
+  return new DragResolver(compactType).move(
     layout,
     l,
     x,
@@ -374,7 +371,7 @@ export function moveElement(
     isUserAction,
     preventCollision,
     allowOverlap
-  );
+  ) as LayoutItem[];
 }
 
 /**

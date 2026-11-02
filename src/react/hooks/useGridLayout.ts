@@ -17,11 +17,11 @@ import type {
 import {
   cloneLayout,
   cloneLayoutItem,
-  moveElement,
   correctBounds,
   bottom,
   getLayoutItem
 } from "../../core/layout.js";
+import { moveWithoutMutation } from "../../core/interaction/resolveDrag.js";
 import { validateLayoutInput } from "../../core/validation.js";
 import { verticalCompactor } from "../../core/compactors.js";
 
@@ -272,15 +272,14 @@ export function useGridLayout(
       }));
 
       // Move element and update layout
-      const newLayout = moveElement(
+      const newLayout = moveWithoutMutation(
+        compactor.type,
         layout,
         item,
         x,
         y,
         true, // isUserAction
         preventCollision,
-        compactor.type,
-        cols,
         compactor.allowOverlap
       );
 
@@ -298,15 +297,14 @@ export function useGridLayout(
       if (!item) return;
 
       // Final move
-      const newLayout = moveElement(
+      const newLayout = moveWithoutMutation(
+        compactor.type,
         layout,
         item,
         x,
         y,
         true,
         preventCollision,
-        compactor.type,
-        cols,
         compactor.allowOverlap
       );
 

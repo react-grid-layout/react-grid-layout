@@ -424,23 +424,13 @@ describe("moveElement", () => {
       null, // compactType
       10 // cols
     );
-    // The rollback leaves A where it was. A gains moved: false, as it always
-    // has, so the result is a new array; B and C keep their identity.
-    expect(modifiedLayout).toEqual([
+    expect(Object.is(layout, modifiedLayout)).toBe(true);
+
+    expect(layout).toEqual([
       expect.objectContaining({ x: 0, y: 0, w: 1, h: 10, i: "A" }),
       expect.objectContaining({ x: 0, y: 10, w: 1, h: 1, i: "B" }),
       expect.objectContaining({ x: 0, y: 11, w: 1, h: 1, i: "C" })
     ]);
-    expect(modifiedLayout[1]).toBe(layout[1]);
-    expect(modifiedLayout[2]).toBe(layout[2]);
-    expect(layout[0]).toEqual({ x: 0, y: 0, w: 1, h: 10, i: "A" });
-
-    // When the moved item already reads moved: false, nothing changes and the
-    // input itself comes back.
-    const settled = [{ ...layout[0], moved: false }, layout[1], layout[2]];
-    expect(moveElement(settled, settled[0], 0, 2, true, true, null, 10)).toBe(
-      settled
-    );
   });
 
   it("Allow overlapping the grid items", () => {
