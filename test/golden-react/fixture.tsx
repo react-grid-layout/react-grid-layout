@@ -16,43 +16,10 @@ import type { Layout, Compactor } from "../../src/core/types";
 import { installGridGeometry, type GeometryOptions } from "./geometry";
 import { createPointer } from "./pointer";
 
-export type Variant = {
-  name: string;
-  strict?: boolean;
-  api?: "v2" | "legacy";
-  strategy?: "transform" | "absolute" | "scaled";
-  compact?: "vertical" | "horizontal" | "wrap" | null;
-  preventCollision?: boolean;
-  allowOverlap?: boolean;
-  bounded?: boolean;
-};
-
-export const variants: Variant[] = [
-  { name: "vertical", compact: "vertical" },
-  { name: "horizontal", compact: "horizontal" },
-  { name: "none", compact: null },
-  { name: "wrap", compact: "wrap" },
-  { name: "prevent", compact: "vertical", preventCollision: true },
-  { name: "overlap", compact: "vertical", allowOverlap: true },
-  { name: "absolute", compact: null, strategy: "absolute" },
-  { name: "scaled", compact: null, strategy: "scaled" },
-  { name: "bounded", compact: null, bounded: true },
-  { name: "strict", compact: "vertical", strict: true },
-  { name: "legacy", compact: "vertical", api: "legacy" },
-  { name: "legacy-scaled", compact: null, api: "legacy", strategy: "scaled" }
-];
-
-export const gridConfig = {
-  cols: 6,
-  rowHeight: 100,
-  margin: [0, 0] as const,
-  containerPadding: [0, 0] as const
-};
-export const initialLayout: Layout = [
-  { i: "a", x: 0, y: 0, w: 1, h: 1 },
-  { i: "b", x: 1, y: 0, w: 1, h: 1 },
-  { i: "c", x: 2, y: 0, w: 1, h: 1 }
-];
+import { variants, gridConfig, initialLayout } from "./scenarioDefinitions";
+import type { Variant } from "./scenarioDefinitions";
+export { variants, gridConfig, initialLayout } from "./scenarioDefinitions";
+export type { Variant } from "./scenarioDefinitions";
 
 export function childrenFor(layout: Layout) {
   return layout.map(item => (

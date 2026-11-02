@@ -14,7 +14,7 @@ class HtmlPlugin {
         '    <div id="grid"></div>\n    <script src="harness.js"></script>\n' +
         "  </body>\n</html>\n";
       fs.writeFileSync(
-        path.join(__dirname, "harness-dist", "index.html"),
+        path.join(compiler.options.output.path, "index.html"),
         html
       );
     });
@@ -29,8 +29,9 @@ class HtmlPlugin {
  * test/e2e/harness-dist/ that a plain static server can serve. Rebuild
  * after changing src/ with: make e2e-build
  */
-module.exports = {
-  mode: "production",
+const sourceConfig = {
+  name: "source",
+  mode: "development",
   context: __dirname,
   entry: "./harness-app.jsx",
   output: {
@@ -62,7 +63,19 @@ module.exports = {
     // Map the library to the source entry so the harness tests real code,
     // the same alias the examples build uses.
     alias: {
-      "react-grid-layout": path.resolve(__dirname, "../../index-dev.js")
+      "react-grid-layout$": path.resolve(__dirname, "../../src/index.ts"),
+      "react-grid-layout/core$": path.resolve(
+        __dirname,
+        "../../src/core/index.ts"
+      ),
+      "react-grid-layout/legacy$": path.resolve(
+        __dirname,
+        "../../src/legacy/index.ts"
+      ),
+      "react-grid-layout/extras$": path.resolve(
+        __dirname,
+        "../../src/extras/index.ts"
+      )
     },
     extensionAlias: {
       ".js": [".ts", ".tsx", ".js"],
@@ -71,9 +84,26 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("production")
+      "process.env.NODE_ENV": JSON.stringify("development")
     }),
     new HtmlPlugin()
   ],
   devtool: false
 };
+
+module.exports = [
+  sourceConfig,
+  ...["import", "require"].map(condition => ({
+    ...sourceConfig,
+    name: condition,
+    output: {
+      ...sourceConfig.output,
+      path: path.join(__dirname, "harness-dist", condition)
+    },
+    resolve: {
+      ...sourceConfig.resolve,
+      alias: {},
+      conditionNames: [condition, "default"]
+    }
+  }))
+];

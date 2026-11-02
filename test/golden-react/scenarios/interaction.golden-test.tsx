@@ -1,3 +1,20 @@
+import {
+  desktopDropCells,
+  desktopDropOverride,
+  touchDropCells,
+  directionMoves,
+  pushLayout,
+  pushMoves,
+  staticLayout,
+  boundsMoves,
+  netZeroMoves,
+  resizeAxes,
+  resizeLayout,
+  resizeDeltas,
+  liveLayout,
+  liveDeltas,
+  logicalPixels
+} from "../scenarioDefinitions";
 import { mountGrid, drag, variants } from "../fixture";
 import { resizeHandle, createPointer } from "../pointer";
 import { dropExternal } from "../drop";
@@ -21,25 +38,7 @@ describe("native drag lifecycle", () => {
     )
   )("pins all four directions: $name", variant => {
     const f = mountGrid({ variant });
-    for (const moves of [
-      [
-        [7, 0],
-        [110, 0]
-      ],
-      [
-        [0, 7],
-        [0, 110]
-      ],
-      [
-        [-7, 0],
-        [-110, 0]
-      ],
-      [
-        [0, -7],
-        [0, -110]
-      ]
-    ])
-      drag(f, "a", moves);
+    for (const moves of directionMoves) drag(f, "a", logicalPixels(moves));
     finish("drag-directions", f);
   });
 
@@ -58,18 +57,9 @@ describe("native drag lifecycle", () => {
   )("pins a pushed chain: $name", variant => {
     const f = mountGrid({
       variant,
-      layout: [
-        { i: "a", x: 0, y: 0, w: 1, h: 1 },
-        { i: "b", x: 0, y: 1, w: 1, h: 1 },
-        { i: "c", x: 0, y: 2, w: 1, h: 1 },
-        { i: "d", x: 0, y: 3, w: 1, h: 1 }
-      ]
+      layout: pushLayout
     });
-    drag(f, "a", [
-      [7, 0],
-      [0, 110],
-      [0, 210]
-    ]);
+    drag(f, "a", logicalPixels(pushMoves));
     finish("drag-push-chain", f);
   });
 
@@ -80,17 +70,9 @@ describe("native drag lifecycle", () => {
   )("pins static collision and outer bounds: $name", variant => {
     const f = mountGrid({
       variant,
-      layout: [
-        { i: "a", x: 0, y: 0, w: 1, h: 1 },
-        { i: "b", x: 1, y: 0, w: 1, h: 2, static: true }
-      ]
+      layout: staticLayout
     });
-    drag(f, "a", [
-      [7, 0],
-      [110, 0],
-      [900, 900],
-      [-300, -300]
-    ]);
+    drag(f, "a", logicalPixels(boundsMoves));
     finish("drag-static-and-bounds", f);
   });
 
@@ -100,11 +82,7 @@ describe("native drag lifecycle", () => {
     )
   )("pins net-zero notifications: $name", variant => {
     const f = mountGrid({ variant });
-    drag(f, "a", [
-      [7, 0],
-      [310, 0],
-      [0, 0]
-    ]);
+    drag(f, "a", logicalPixels(netZeroMoves));
     finish(
       "net-zero-drag",
       f,
@@ -182,10 +160,10 @@ describe("fixed live pixel preview (#2304)", () => {
     const f = mountGrid({
       variant,
       props: variant.api === "legacy" ? {} : { dragConfig: { threshold: 0 } },
-      layout: [{ i: "a", x: 0, y: 0, w: 2, h: 2 }]
+      layout: liveLayout
     });
     f.pointer.down(f.item("a"), { x: 0, y: 0 });
-    for (const delta of [7, 13, 21]) {
+    for (const delta of liveDeltas.map(d => Math.round(d * 100))) {
       f.pointer.move({ x: delta * f.scale, y: delta * f.scale });
       const r = f.item("a").getBoundingClientRect();
       expect([r.left, r.top]).toEqual([delta * f.scale, delta * f.scale]);
@@ -193,7 +171,7 @@ describe("fixed live pixel preview (#2304)", () => {
     f.pointer.up();
     const handle = resizeHandle(f.container, "a", "se");
     f.pointer.down(handle, { x: 200 * f.scale, y: 200 * f.scale });
-    for (const delta of [7, 13, 21]) {
+    for (const delta of liveDeltas.map(d => Math.round(d * 100))) {
       f.pointer.move({
         x: (200 + delta) * f.scale,
         y: (200 + delta) * f.scale
@@ -209,7 +187,7 @@ describe("fixed live pixel preview (#2304)", () => {
 });
 
 describe("real resize handles", () => {
-  for (const axis of ["n", "s", "e", "w", "ne", "nw", "se", "sw"]) {
+  for (const axis of resizeAxes) {
     it.each(
       variants.filter(v =>
         ["vertical", "absolute", "scaled", "prevent"].includes(v.name)
@@ -218,16 +196,13 @@ describe("real resize handles", () => {
       const f = mountGrid({
         variant,
         props: { resizeConfig: { handles: [axis] } },
-        layout: [
-          { i: "b", x: 2, y: 0, w: 2, h: 2, static: true },
-          { i: "a", x: 2, y: 2, w: 2, h: 2 }
-        ]
+        layout: resizeLayout
       });
       const handle = resizeHandle(f.container, "a", axis);
       const r = handle.getBoundingClientRect();
       const start = { x: r.left + 5 * f.scale, y: r.top + 5 * f.scale };
       f.pointer.down(handle, start);
-      for (const delta of [7, 110, 700])
+      for (const delta of resizeDeltas.map(d => Math.round(d * 100)))
         f.pointer.move({
           x:
             start.x +
@@ -340,18 +315,16 @@ describe("external drop pipeline", () => {
             ? { isDroppable: true }
             : { dropConfig: { enabled: true } },
         handlers: {
-          onDropDragOver: () => ({
-            w: 2,
-            h: 1,
-            dragOffsetX: 10,
-            dragOffsetY: 5
-          })
+          onDropDragOver: () => desktopDropOverride
         }
       });
       const drop = dropExternal(f.container, { step: f.step });
-      drop.enter({ x: 150 * f.scale, y: 50 * f.scale });
-      drop.over({ x: 150 * f.scale, y: 50 * f.scale });
-      drop.over({ x: 260 * f.scale, y: 70 * f.scale });
+      const points = logicalPixels(desktopDropCells).map(([x, y]) => ({
+        x: x * f.scale,
+        y: y * f.scale
+      }));
+      drop.enter(points[0]);
+      for (const point of points) drop.over(point);
       drop.drop();
       drop.uninstall();
       finish(
@@ -402,8 +375,8 @@ describe("external drop pipeline", () => {
     const drop = dropExternal(f.container, { step: f.step });
     try {
       drop.touchStart(source, { x: 650, y: 50 });
-      drop.touchMove({ x: 50, y: 50 });
-      drop.touchMove({ x: 250, y: 50 });
+      for (const [x, y] of logicalPixels(touchDropCells))
+        drop.touchMove({ x, y });
       if (action === "leave") {
         drop.touchMove({ x: 650, y: 50 }, null);
         drop.touchEnd();
