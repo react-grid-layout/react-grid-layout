@@ -241,6 +241,45 @@ test("useResponsiveLayout setters use committed cols, not a suspended render's",
   expect(committed.layouts!.lg![0]!.w).toBe(4);
 });
 
+test.each(["setLayoutForBreakpoint", "setLayouts"] as const)(
+  "useResponsiveLayout %s in a child layout effect uses the new commit's bounds",
+  setter => {
+    const committed: { layouts?: Record<string, Layout | undefined> } = {};
+    const big: LayoutItem = { ...item, w: 4, h: 4 };
+    function Child({
+      api,
+      bounds
+    }: {
+      api: ReturnType<typeof useResponsiveLayout<string>>;
+      bounds: number;
+    }) {
+      const { setLayouts, setLayoutForBreakpoint } = api;
+      React.useLayoutEffect(() => {
+        if (bounds !== 2) return;
+        if (setter === "setLayouts") setLayouts({ lg: [big] });
+        else setLayoutForBreakpoint("lg", [big]);
+      }, [setLayouts, setLayoutForBreakpoint, bounds]);
+      return null;
+    }
+    function Parent({ bounds }: { bounds: number }) {
+      const api = useResponsiveLayout<string>({
+        width: 800,
+        breakpoints: { lg: 0 },
+        cols: { lg: bounds },
+        maxRows: bounds,
+        compactor: noCompactor
+      });
+      React.useLayoutEffect(() => {
+        committed.layouts = api.layouts;
+      });
+      return <Child api={api} bounds={bounds} />;
+    }
+    const view = render(<Parent bounds={4} />);
+    view.rerender(<Parent bounds={2} />);
+    expect(committed.layouts!.lg![0]).toMatchObject({ w: 2, h: 2 });
+  }
+);
+
 test("useResponsiveLayout setters stay stable across inline cols objects", () => {
   const hook = renderHook(() =>
     useResponsiveLayout<string>({

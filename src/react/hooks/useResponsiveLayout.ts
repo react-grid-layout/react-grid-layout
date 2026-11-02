@@ -5,14 +5,7 @@
  * Extracts state management from ResponsiveReactGridLayout into a reusable hook.
  */
 
-import {
-  useState,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef
-} from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { deepEqual } from "fast-equals";
 import type {
   Layout,
@@ -217,15 +210,12 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     intakeLayouts(unvalidatedLayouts, colsConfig, maxRows)
   );
 
-  // Setters read config through refs so they stay stable when cols is an
-  // inline object. The refs update in a layout effect, so they only ever hold
-  // committed config, never that of a render React discarded or suspended.
-  const colsConfigRef = useRef(colsConfig);
-  const maxRowsRef = useRef(maxRows);
-  useLayoutEffect(() => {
-    colsConfigRef.current = colsConfig;
-    maxRowsRef.current = maxRows;
-  }, [colsConfig, maxRows]);
+  // Setters close over this render's config, so no effect, ours or a
+  // child's, can see config from another commit. Keying cols on its content
+  // keeps the setters stable when cols is an inline object with equal values.
+  const colsKey = JSON.stringify(colsConfig);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stableCols = useMemo(() => colsConfig, [colsKey]);
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
@@ -250,22 +240,22 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   }, [layouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
 
   // Set layout for a specific breakpoint
-  const setLayoutForBreakpoint = useCallback((bp: B, newLayout: Layout) => {
-    // Intake now, so later mutation of the caller's array is not stored.
-    const stored = intakeLayout(
-      newLayout,
-      colsConfigRef.current[bp],
-      maxRowsRef.current
-    );
-    setLayoutsState(prev => ({ ...prev, [bp]: stored }));
-  }, []);
+  const setLayoutForBreakpoint = useCallback(
+    (bp: B, newLayout: Layout) => {
+      // Intake now, so later mutation of the caller's array is not stored.
+      const stored = intakeLayout(newLayout, stableCols[bp], maxRows);
+      setLayoutsState(prev => ({ ...prev, [bp]: stored }));
+    },
+    [stableCols, maxRows]
+  );
 
   // Set all layouts
-  const setLayouts = useCallback((newLayouts: ResponsiveLayouts<B>) => {
-    setLayoutsState(
-      intakeLayouts(newLayouts, colsConfigRef.current, maxRowsRef.current)
-    );
-  }, []);
+  const setLayouts = useCallback(
+    (newLayouts: ResponsiveLayouts<B>) => {
+      setLayoutsState(intakeLayouts(newLayouts, stableCols, maxRows));
+    },
+    [stableCols, maxRows]
+  );
 
   // Handle width changes
   useEffect(() => {
