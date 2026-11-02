@@ -989,6 +989,11 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       cols
     );
 
+    // Sync the ref now, not on the next render: an onDrag from the dropping
+    // item that runs before that render must find no dropping item and bail,
+    // or it re-sets activeDrag after we clear it and a placeholder is left
+    // behind (#2248, the same race as #2239).
+    layoutRef.current = newLayout;
     setLayout(newLayout);
     setDroppingDOMNode(null);
     setActiveDrag(null);
