@@ -289,6 +289,17 @@ describe("Fast Vertical Compactor", () => {
       }
     );
 
+    it("stacks a fractional item straddling the left edge with an off-grid one", () => {
+      const compacted = fastVerticalCompactor.compact(
+        [
+          { i: "a", x: -1, y: 0, w: 1, h: 1 },
+          { i: "b", x: -0.5, y: 5, w: 1, h: 1 }
+        ],
+        1
+      );
+      expect(hasOverlaps(compacted)).toBe(false);
+    });
+
     it("handles empty layout", () => {
       const compacted = fastVerticalCompactor.compact([], 12);
       expect(compacted).toEqual([]);

@@ -90,7 +90,7 @@ function compactVerticalFast(
     // off-grid still stack, and a large negative x costs one iteration
     // instead of |x|. An item wholly left of the grid still covers that slot.
     // Sharing the slot can only add stacking, never overlap.
-    const offGrid = item.x < -1;
+    const offGrid = item.x < 0;
     const x1 = offGrid ? -1 : item.x;
     let x2 = item.x + item.w;
     if (offGrid && x2 < 0) {
