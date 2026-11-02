@@ -380,7 +380,7 @@ test.each(["initial", "prop-sync", "set-breakpoint", "set-all"])(
   }
 );
 
-test("responsive generation ignores a previous breakpoint after its columns are removed", () => {
+test("responsive generation copies a previous breakpoint, bounded, after its columns are removed", () => {
   const changed = jest.fn();
   const element = (width: number, cols: Record<string, number>) => (
     <ResponsiveGridLayout
@@ -396,8 +396,25 @@ test("responsive generation ignores a previous breakpoint after its columns are 
   );
   const view = render(element(800, { lg: 6, sm: 4 }));
   view.rerender(element(400, { sm: 4 }));
-  expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject(item);
+  // As in 2.x before intake bounds: sm is generated from lg, bounded to sm's
+  // 4 cols (x 3 -> 2). The saved lg layout itself is kept as authored.
+  expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject({ x: 2, w: 2 });
   expect(changed.mock.calls.at(-1)?.[1].lg).toEqual([{ ...item, x: 3, w: 2 }]);
+});
+
+test("a breakpoint with a layout but no cols entry still seeds the others", () => {
+  // layouts only for lg, cols only for md and below: md is generated from lg,
+  // bounded to md's cols.
+  const generated = findOrGenerateResponsiveLayout(
+    { lg: [{ ...item, x: 3, y: 2, w: 2, h: 3 }] },
+    { lg: 1000, md: 600, sm: 0 },
+    "md",
+    "md",
+    4,
+    noCompactor,
+    { md: 4, sm: 2 }
+  );
+  expect(generated[0]).toMatchObject({ x: 2, y: 2, w: 2, h: 3 });
 });
 let warning: jest.SpyInstance;
 beforeEach(() => {

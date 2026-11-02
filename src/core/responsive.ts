@@ -13,6 +13,7 @@ import type {
   ResponsiveLayouts
 } from "./types.js";
 import { cloneLayout, correctBounds } from "./layout.js";
+import { validateLayoutInput } from "./validation.js";
 import { getCompactor } from "./compactors.js";
 
 // ============================================================================
@@ -124,11 +125,10 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
     return cloneLayout(existingLayout);
   }
 
-  // Find or generate the next layout
-  let layout =
-    colsConfig && colsConfig[lastBreakpoint] === undefined
-      ? undefined
-      : layouts[lastBreakpoint];
+  // Find or generate the next layout: the previous breakpoint's, or the
+  // nearest larger breakpoint's if it has one.
+  let source: B | undefined =
+    layouts[lastBreakpoint] === undefined ? undefined : lastBreakpoint;
 
   // Look for layouts at larger breakpoints
   const breakpointsSorted = sortBreakpoints(breakpoints);
@@ -138,15 +138,19 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
 
   for (let i = 0; i < breakpointsAbove.length; i++) {
     const b = breakpointsAbove[i];
-    if (b === undefined || (colsConfig && colsConfig[b] === undefined))
-      continue;
-
-    const layoutForBreakpoint = layouts[b];
-    if (layoutForBreakpoint) {
-      layout = layoutForBreakpoint;
+    if (b === undefined) continue;
+    if (layouts[b]) {
+      source = b;
       break;
     }
   }
+
+  // A saved layout for a breakpoint with no configured cols skipped intake
+  // validation (it is kept as authored). Bound it to the target cols before
+  // generating from it, as 2.x generated from it before intake bounds.
+  let layout = source === undefined ? undefined : layouts[source];
+  if (layout && colsConfig && source !== undefined && !(source in colsConfig))
+    layout = validateLayoutInput(layout, { cols });
 
   // Clone layout so we don't modify existing items
   const clonedLayout = cloneLayout(layout || []);
