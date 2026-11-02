@@ -3,7 +3,6 @@
 
 import React, { StrictMode } from "react";
 import _ from "lodash";
-import TestUtils from "react-dom/test-utils";
 import { render, screen, act } from "@testing-library/react";
 import ReactGridLayout from "../../src/legacy/ReactGridLayout";
 import { GridLayout as GridLayoutV2 } from "../../src/react/components/GridLayout";
@@ -14,6 +13,7 @@ import ShowcaseLayout from "../examples/00-showcase";
 import DroppableLayout from "../examples/12-drag-from-outside";
 import ResizableLayout from "../examples/17-resizable-handles";
 import deepFreeze from "../util/deepFreeze";
+import { dropExternal } from "../golden-react/drop";
 
 // Helper to dispatch native mouse events (needed for react-draggable/react-resizable)
 function dispatchMouseEvent(node, type, coords = {}) {
@@ -571,19 +571,7 @@ describe("Lifecycle tests", function () {
     describe("Droppability", function () {
       // Helper to simulate dragging over the grid
       function dragDroppableTo(container, x, y) {
-        const gridLayout = container.querySelector(".react-grid-layout");
-        const droppable = container.querySelector(".droppable-element");
-
-        TestUtils.Simulate.dragOver(gridLayout, {
-          currentTarget: {
-            getBoundingClientRect: () => ({ left: 0, top: 0 })
-          },
-          clientX: x,
-          clientY: y,
-          nativeEvent: {
-            target: droppable
-          }
-        });
+        dropExternal(container).over({ x, y });
       }
 
       it("Renders droppable layout", function () {
@@ -668,17 +656,9 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 100,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 100 });
         });
 
         expect(onDropDragOver).toHaveBeenCalled();
@@ -703,23 +683,12 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
         act(() => {
           // First dragOver to set up the dropping state
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 100,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 100 });
           // Then drop
-          TestUtils.Simulate.drop(grid, {
-            clientX: 200,
-            clientY: 100
-          });
+          drop.drop({ x: 200, y: 100 });
         });
 
         expect(onDrop).toHaveBeenCalled();
@@ -745,21 +714,10 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 150,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
-          TestUtils.Simulate.drop(grid, {
-            clientX: 200,
-            clientY: 150
-          });
+          drop.over({ x: 200, y: 150 });
+          drop.drop({ x: 200, y: 150 });
         });
 
         // onDrop should be called with the custom w/h
@@ -794,17 +752,9 @@ describe("Lifecycle tests", function () {
         onLayoutChange.mockClear();
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 150,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 150 });
         });
 
         // onDropDragOver was called
@@ -838,17 +788,9 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 150,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 150 });
         });
 
         // dropConfig.onDragOver should be called
@@ -893,20 +835,12 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
 
         // Simulate a single dragOver event - if the bug exists, this would cause
         // an infinite loop and the test would timeout
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 100,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 100 });
         });
 
         // If we get here without timing out, the fix is working
@@ -962,26 +896,15 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
 
         // Step 1: Drag into the grid (creates dropping placeholder)
         act(() => {
-          TestUtils.Simulate.dragEnter(grid, {
-            clientX: 200,
-            clientY: 100
-          });
+          drop.enter({ x: 200, y: 100 });
         });
 
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 100,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 100 });
         });
 
         // Verify the dropping placeholder is rendered in the DOM (internal state)
@@ -1004,26 +927,14 @@ describe("Lifecycle tests", function () {
         // Step 2: Move the item around inside the grid (multiple moves)
         for (let i = 0; i < 5; i++) {
           act(() => {
-            TestUtils.Simulate.dragOver(grid, {
-              currentTarget: {
-                getBoundingClientRect: () => ({ left: 0, top: 0 })
-              },
-              clientX: 200 + i * 20,
-              clientY: 100 + i * 20,
-              nativeEvent: {
-                target: document.createElement("div")
-              }
-            });
+            drop.over({ x: 200 + i * 20, y: 100 + i * 20 });
           });
         }
 
         // Step 3: Drag leave (move outside the grid without releasing)
         // This is where the infinite loop would occur in #2210
         act(() => {
-          TestUtils.Simulate.dragLeave(grid, {
-            clientX: -100,
-            clientY: -100
-          });
+          drop.leave({ x: -100, y: -100 });
         });
 
         // If we get here without timing out, the fix is working
@@ -1078,50 +989,27 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
 
         // Step 1: Drag into the grid (creates dropping placeholder)
         act(() => {
-          TestUtils.Simulate.dragEnter(grid, {
-            clientX: 200,
-            clientY: 100
-          });
+          drop.enter({ x: 200, y: 100 });
         });
 
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 100,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 100 });
         });
 
         // Step 2: Move around inside multiple times
         for (let i = 0; i < 5; i++) {
           act(() => {
-            TestUtils.Simulate.dragOver(grid, {
-              currentTarget: {
-                getBoundingClientRect: () => ({ left: 0, top: 0 })
-              },
-              clientX: 200 + i * 30,
-              clientY: 100 + i * 30,
-              nativeEvent: {
-                target: document.createElement("div")
-              }
-            });
+            drop.over({ x: 200 + i * 30, y: 100 + i * 30 });
           });
         }
 
         // Step 3: Drag out
         act(() => {
-          TestUtils.Simulate.dragLeave(grid, {
-            clientX: -100,
-            clientY: -100
-          });
+          drop.leave({ x: -100, y: -100 });
         });
 
         // Verify no "Maximum update depth exceeded" errors
@@ -1160,50 +1048,27 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
 
         // Step 1: Drag into the grid (creates dropping placeholder)
         act(() => {
-          TestUtils.Simulate.dragEnter(grid, {
-            clientX: 200,
-            clientY: 100
-          });
+          drop.enter({ x: 200, y: 100 });
         });
 
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 200,
-            clientY: 100,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 200, y: 100 });
         });
 
         // Step 2: Move around inside
         for (let i = 0; i < 3; i++) {
           act(() => {
-            TestUtils.Simulate.dragOver(grid, {
-              currentTarget: {
-                getBoundingClientRect: () => ({ left: 0, top: 0 })
-              },
-              clientX: 200 + i * 20,
-              clientY: 100 + i * 20,
-              nativeEvent: {
-                target: document.createElement("div")
-              }
-            });
+            drop.over({ x: 200 + i * 20, y: 100 + i * 20 });
           });
         }
 
         // Step 3: Drag out
         act(() => {
-          TestUtils.Simulate.dragLeave(grid, {
-            clientX: -100,
-            clientY: -100
-          });
+          drop.leave({ x: -100, y: -100 });
         });
 
         // Verify no "Maximum update depth exceeded" errors
@@ -1267,50 +1132,27 @@ describe("Lifecycle tests", function () {
 
         const { container } = render(<ControlledDroppableGrid />);
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
 
         // Step 1: Drag into the grid
         act(() => {
-          TestUtils.Simulate.dragEnter(grid, {
-            clientX: 100,
-            clientY: 50
-          });
+          drop.enter({ x: 100, y: 50 });
         });
 
         act(() => {
-          TestUtils.Simulate.dragOver(grid, {
-            currentTarget: {
-              getBoundingClientRect: () => ({ left: 0, top: 0 })
-            },
-            clientX: 100,
-            clientY: 50,
-            nativeEvent: {
-              target: document.createElement("div")
-            }
-          });
+          drop.over({ x: 100, y: 50 });
         });
 
         // Step 2: Move around inside the grid
         for (let i = 0; i < 5; i++) {
           act(() => {
-            TestUtils.Simulate.dragOver(grid, {
-              currentTarget: {
-                getBoundingClientRect: () => ({ left: 0, top: 0 })
-              },
-              clientX: 100 + i * 20,
-              clientY: 50 + i * 20,
-              nativeEvent: {
-                target: document.createElement("div")
-              }
-            });
+            drop.over({ x: 100 + i * 20, y: 50 + i * 20 });
           });
         }
 
         // Step 3: Drag out without releasing (this is where the infinite loop occurred)
         act(() => {
-          TestUtils.Simulate.dragLeave(grid, {
-            clientX: -100,
-            clientY: -100
-          });
+          drop.leave({ x: -100, y: -100 });
         });
 
         // If we get here without timing out, the fix is working
@@ -1350,37 +1192,23 @@ describe("Lifecycle tests", function () {
         );
 
         const grid = container.querySelector(".react-grid-layout");
+        const drop = dropExternal(grid);
 
         // Perform multiple drag in/out cycles
         for (let cycle = 0; cycle < 5; cycle++) {
           // Drag in
           act(() => {
-            TestUtils.Simulate.dragEnter(grid, {
-              clientX: 200,
-              clientY: 100
-            });
+            drop.enter({ x: 200, y: 100 });
           });
 
           // Move around inside
           act(() => {
-            TestUtils.Simulate.dragOver(grid, {
-              currentTarget: {
-                getBoundingClientRect: () => ({ left: 0, top: 0 })
-              },
-              clientX: 200 + cycle * 10,
-              clientY: 100 + cycle * 10,
-              nativeEvent: {
-                target: document.createElement("div")
-              }
-            });
+            drop.over({ x: 200 + cycle * 10, y: 100 + cycle * 10 });
           });
 
           // Drag out (without releasing)
           act(() => {
-            TestUtils.Simulate.dragLeave(grid, {
-              clientX: -100,
-              clientY: -100
-            });
+            drop.leave({ x: -100, y: -100 });
           });
         }
 
