@@ -4,7 +4,7 @@
 {"differences":["onLayoutChange"],"input":{"type":"mount"},"onLayoutChange":{"component":2,"hook":0}},
 {"differences":[],"input":{"kind":"mouse","target":"a","type":"mousedown","x":20,"y":20},"onLayoutChange":{"component":0,"hook":0}},
 {"differences":[],"input":{"kind":"mouse","target":"a","type":"mousemove","x":24,"y":22},"onLayoutChange":{"component":0,"hook":0}},
-{"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":125,"y":20},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":["onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":125,"y":20},"onLayoutChange":{"component":0,"hook":1}},
 {"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":225,"y":60},"onLayoutChange":{"component":0,"hook":1}},
 {"differences":["onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mouseup","x":225,"y":60},"onLayoutChange":{"component":2,"hook":0}},
 {"differences":[],"input":{"kind":"mouse","target":"b:handle:se","type":"mousedown","x":380,"y":65},"onLayoutChange":{"component":0,"hook":0}},

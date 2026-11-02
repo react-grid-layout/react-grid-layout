@@ -219,6 +219,19 @@ function movedItem(
   return after[before.indexOf(item)] ?? item;
 }
 
+/**
+ * Layout equality for change notifications. `moved` is interaction bookkeeping
+ * that no compactor resets in free-form mode, so a drag that ends where it
+ * started would otherwise count as a change.
+ */
+function sameLayout(a: Layout, b: Layout): boolean {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  return a.every((item, n) =>
+    deepEqual({ ...item, moved: false }, { ...b[n], moved: false })
+  );
+}
+
 const layoutClassName = "react-grid-layout";
 
 // Check for Firefox
@@ -574,7 +587,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     if (
       !activeDrag &&
       !droppingDOMNode &&
-      !deepEqual(layout, prevLayoutRef.current)
+      !sameLayout(layout, prevLayoutRef.current)
     ) {
       prevLayoutRef.current = layout;
       // Filter out dropping placeholder - it's transient internal state only (#2210)
@@ -633,14 +646,6 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
-      const placeholder: LayoutItem = {
-        w: l.w,
-        h: l.h,
-        x: l.x,
-        y: l.y,
-        i
-      };
-
       // Move the element
       const newLayout = moveElement(
         currentLayout,
@@ -653,6 +658,18 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         cols,
         allowOverlap
       );
+      // Use compactor.compact() - it handles allowOverlap internally (#2213)
+      const compacted = compactor.compact(newLayout, cols);
+      // The placeholder shows where this event puts the item. Built from the
+      // layout before the move, it lagged one event behind (C-B2).
+      const landed = getLayoutItem(compacted, i) ?? l;
+      const placeholder: LayoutItem = {
+        w: landed.w,
+        h: landed.h,
+        x: landed.x,
+        y: landed.y,
+        i
+      };
 
       onDragProp(
         newLayout,
@@ -663,8 +680,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         data.node
       );
 
-      // Use compactor.compact() - it handles allowOverlap internally (#2213)
-      setLayout(compactor.compact(newLayout, cols));
+      setLayout(compacted);
       setActiveDrag(placeholder);
     },
     [preventCollision, compactType, cols, allowOverlap, compactor, onDragProp]
@@ -703,7 +719,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       setActiveDrag(null);
       setLayout(finalLayout);
 
-      if (oldLayout && !deepEqual(oldLayout, finalLayout)) {
+      if (oldLayout && !sameLayout(oldLayout, finalLayout)) {
         onLayoutChange(finalLayout);
       }
     },
@@ -878,7 +894,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       setResizing(false);
       setLayout(finalLayout);
 
-      if (oldLayout && !deepEqual(oldLayout, finalLayout)) {
+      if (oldLayout && !sameLayout(oldLayout, finalLayout)) {
         onLayoutChange(finalLayout);
       }
     },
