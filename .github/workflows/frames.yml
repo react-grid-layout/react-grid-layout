@@ -21,7 +21,8 @@ jobs:
       - run: yarn install --immutable
       - name: Check image matches installed Playwright
         run: node -e "require('node:assert/strict').equal(require('@playwright/test/package.json').version, '1.62.1')"
-      - run: make e2e-build
+      - run: corepack yarn build:ts
+      - run: corepack yarn webpack --config test/e2e/webpack.harness.config.js
       - name: Record settled pointer samples
         run: node scripts/record-playwright-frames.cjs
       - name: Open baseline update PR
