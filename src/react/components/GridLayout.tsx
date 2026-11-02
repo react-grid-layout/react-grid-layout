@@ -44,6 +44,7 @@ import {
 } from "../../core/types.js";
 import {
   bottom,
+  cloneLayout,
   cloneLayoutItem,
   getLayoutItem,
   moveElement,
@@ -409,6 +410,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const oldDragItemRef = useRef<LayoutItem | null>(null);
   const oldResizeItemRef = useRef<LayoutItem | null>(null);
   const oldLayoutRef = useRef<Layout | null>(null);
+  const droppingLayoutRef = useRef<Layout | null>(null);
   const dragEnterCounterRef = useRef(0);
   const prevLayoutRef = useRef<Layout>(layout);
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
@@ -490,10 +492,9 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   useEffect(() => {
     // Suppress while a gesture is mid-flight: activeDrag covers internal
     // drags/resizes, droppingDOMNode covers external drags (the placeholder is
-    // added/removed during hover but no real item moves — placeDroppingItem
-    // appends without compacting). Firing here would report a layout whose only
-    // change is the transient placeholder, which is filtered from the payload
-    // anyway (#2210, #2219). The committed drop removes the placeholder, so the
+    // added/removed and may displace other items during hover). Firing here
+    // would report a transient layout before the drop is committed (#2210,
+    // #2219). The committed drop removes the placeholder, so the
     // post-drop layout change fires normally. Skipping the prevLayoutRef sync
     // here is intentional — the suppressed states must not desync the
     // comparison, or the real change would be compared against the placeholder.
@@ -819,46 +820,77 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       calculatedXY: { x: number; y: number },
       hasPlaceholder: boolean
     ) => {
+      const moveToDropPosition = (nextLayout: Layout, item: LayoutItem) =>
+        compactor.compact(
+          moveElement(
+            nextLayout,
+            item,
+            calculatedXY.x,
+            calculatedXY.y,
+            true,
+            preventCollision,
+            compactType,
+            cols,
+            allowOverlap
+          ),
+          cols
+        );
+
       if (!hasPlaceholder) {
-        setDroppingDOMNode(<div key={itemToPlace.i} />);
-        setDroppingPosition(newDroppingPosition);
         // Filter out any stale __dropping-elem__ before adding the new one.
         // This prevents duplicate IDs caused by a race condition where
         // handleDragLeave's removeDroppingPlaceholder() checks layoutRef
         // before a batched setLayout from a previous handleDragOver has
         // rendered, leaving __dropping-elem__ in the layout while
         // droppingDOMNode is null.
-        const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
-        setLayout([
-          ...baseLayout,
-          {
-            ...itemToPlace,
-            x: calculatedXY.x,
-            y: calculatedXY.y,
-            static: false,
-            isDraggable: true
-          }
-        ]);
+        const baseLayout = cloneLayout(
+          layoutRef.current.filter(l => l.i !== itemToPlace.i)
+        );
+        const item: LayoutItem = {
+          ...itemToPlace,
+          x: calculatedXY.x,
+          // Start outside existing items so even a first dragover at y: 0
+          // moves through collision handling instead of its unchanged-position shortcut.
+          y: bottom(baseLayout),
+          static: false,
+          isDraggable: true
+        };
+        // Movement can mutate item positions. Keep the rollback snapshot
+        // independent from the working layout used for collision resolution.
+        const nextLayout = moveToDropPosition(
+          [...cloneLayout(baseLayout), item],
+          item
+        );
+        const placedItem = getLayoutItem(nextLayout, itemToPlace.i);
+        if (!placedItem || placedItem.y + placedItem.h > maxRows) {
+          droppingLayoutRef.current = null;
+          setLayout(baseLayout);
+          setDroppingDOMNode(null);
+          setDroppingPosition(undefined);
+          setActiveDrag(null);
+          return;
+        }
+        droppingLayoutRef.current = baseLayout;
+        setDroppingDOMNode(<div key={itemToPlace.i} />);
+        setDroppingPosition(newDroppingPosition);
+        setLayout(nextLayout);
       } else if (droppingPositionRef.current) {
         const shouldUpdate =
           droppingPositionRef.current.left !== newDroppingPosition.left ||
           droppingPositionRef.current.top !== newDroppingPosition.top;
         if (shouldUpdate) {
           setDroppingPosition(newDroppingPosition);
-          // Keep the placeholder's layout entry in sync so commitDrop/onDrop
-          // reads the latest cell, not the initial one (#2284).
-          setLayout(currentLayout =>
-            currentLayout.map(item =>
-              item.i === itemToPlace.i &&
-              (item.x !== calculatedXY.x || item.y !== calculatedXY.y)
-                ? { ...item, x: calculatedXY.x, y: calculatedXY.y }
-                : item
-            )
-          );
+          // Keep the final cell current for touch drops (#2284), while using
+          // the same collision handling as an internal drag (#2313).
+          setLayout(currentLayout => {
+            const nextLayout = cloneLayout(currentLayout);
+            const item = getLayoutItem(nextLayout, itemToPlace.i);
+            return item ? moveToDropPosition(nextLayout, item) : currentLayout;
+          });
         }
       }
     },
-    []
+    [compactor, preventCollision, compactType, cols, allowOverlap, maxRows]
   );
 
   const applyTouchDropPosition = useCallback(
@@ -904,30 +936,32 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Drop Handlers
   // ============================================================================
 
-  const removeDroppingPlaceholder = useCallback(() => {
-    // Guard against being called when there's no dropping item (#2210)
-    // This makes the function idempotent and safe to call multiple times
-    const currentLayout = layoutRef.current;
-    const hasDroppingItem = currentLayout.some(l => l.i === droppingItem.i);
-    if (!hasDroppingItem) {
-      // Nothing to remove, just ensure state is clean
+  const removeDroppingPlaceholder = useCallback(
+    (restoreLayout = true) => {
+      // Guard against being called when there's no dropping item (#2210)
+      // This makes the function idempotent and safe to call multiple times
+      const currentLayout = layoutRef.current;
+      const hasDroppingItem = currentLayout.some(l => l.i === droppingItem.i);
+      const beforeDrop = droppingLayoutRef.current;
+      droppingLayoutRef.current = null;
+      if (restoreLayout && beforeDrop) {
+        setLayout(beforeDrop);
+      } else if (hasDroppingItem) {
+        // Committed drops keep any displacement caused by the placeholder.
+        // The compactor also handles allowOverlap internally (#2213).
+        setLayout(
+          compactor.compact(
+            currentLayout.filter(l => l.i !== droppingItem.i),
+            cols
+          )
+        );
+      }
       setDroppingDOMNode(null);
       setActiveDrag(null);
       setDroppingPosition(undefined);
-      return;
-    }
-
-    // Use compactor.compact() - it handles allowOverlap internally (#2213)
-    const newLayout = compactor.compact(
-      currentLayout.filter(l => l.i !== droppingItem.i),
-      cols
-    );
-
-    setLayout(newLayout);
-    setDroppingDOMNode(null);
-    setActiveDrag(null);
-    setDroppingPosition(undefined);
-  }, [droppingItem.i, cols, compactor]);
+    },
+    [droppingItem.i, cols, compactor]
+  );
 
   const handleDragOver = useCallback(
     (e: ReactDragEvent): void | false => {
@@ -1037,7 +1071,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     (nativeEvent: Event) => {
       const currentLayout = layoutRef.current;
       const item = currentLayout.find(l => l.i === droppingItem.i);
-      removeDroppingPlaceholder();
+      removeDroppingPlaceholder(false);
       onDropPropRef.current(currentLayout, item, nativeEvent);
     },
     [droppingItem.i, removeDroppingPlaceholder]
