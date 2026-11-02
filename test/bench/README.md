@@ -115,3 +115,15 @@ cached `maxY` update with `bottom(compareWith)`, or add a `.map().sort()` inside
 its per-item loop. The first adds helper entries and loop iterations; the second
 adds callback entries and array calls. Each must fail the committed gate. Restore
 the scratch source after each run.
+
+## Untrusted layout regressions
+
+`security/*` scenarios exercise a billion-row classic input, saved `minH` followed
+by a real resize, 80 overlapping statics of height 10,000, wrap around a
+billion-row static, and 80 fractional statics of height 10,000. Each measurement
+aborts at 200,000 source function/loop/render probes and asserts fewer than
+`50 * n * n` collision calls. The probe cap is deterministic, restores all
+instrumentation on failure, and protects the test runner from an unbounded loop.
+These scenarios also assert final geometry, including non-overlap with the tall
+wrap static and bounded resize height. They run in the exact baseline gate as
+well as independently in `security.bench-test.ts`.

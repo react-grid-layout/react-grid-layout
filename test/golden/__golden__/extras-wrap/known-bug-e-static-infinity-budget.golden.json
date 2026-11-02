@@ -1,8 +1,6 @@
 [
   {
-    "boundedProbe": {"attempts":65,"budget":64,"kind":"Set.add step budget","limitation":"observes 65 attempted cells; does not claim to execute an infinite loop to completion","visited":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,200,204,208,212,216,220,224,228,232,236,240,244,248,252]},
-    "error": {"message":"static cell budget exceeded","name":"Error"},
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
     "input": [
       [
         {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0},
@@ -10,9 +8,11 @@
       ],
       4
     ],
-    "knownBug": "e: wrap static h Infinity exhausts a deterministic cell budget",
     "order": "forward",
-    "output": {"$u":1},
+    "output": [
+      {"constraints":{"$u":1},"h":10000,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+    ],
     "postInput": [
       [
         {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0},
@@ -20,12 +20,11 @@
       ],
       4
     ],
+    "securityFix": "Out-of-bounds static h Infinity is normalized before compaction",
     "subcase": "c-infinity-static"
   },
   {
-    "boundedProbe": {"attempts":65,"budget":64,"kind":"Set.add step budget","limitation":"observes 65 attempted cells; does not claim to execute an infinite loop to completion","visited":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,200,204,208,212,216,220,224,228,232,236,240,244,248,252]},
-    "error": {"message":"static cell budget exceeded","name":"Error"},
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
     "input": [
       [
         {"h":1,"i":"a","w":1,"x":1,"y":3},
@@ -33,9 +32,11 @@
       ],
       4
     ],
-    "knownBug": "e: wrap static h Infinity exhausts a deterministic cell budget",
     "order": "reversed",
-    "output": {"$u":1},
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":10000,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":1,"x":0,"y":0}
+    ],
     "postInput": [
       [
         {"h":1,"i":"a","w":1,"x":1,"y":3},
@@ -43,6 +44,7 @@
       ],
       4
     ],
+    "securityFix": "Out-of-bounds static h Infinity is normalized before compaction",
     "subcase": "c-infinity-static"
   }
 ]

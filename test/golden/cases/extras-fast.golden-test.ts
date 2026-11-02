@@ -281,10 +281,8 @@ describe("golden fast compactors", () => {
         const classic = compact(verticalCompactor, sample.layout, 12);
         const fast = compact(fastVerticalCompactor, sample.layout, 12);
         assertCompacted(fast, { statics: true });
-        if (subcase === "a-infinity-y")
-          expect(Number.isNaN(fast.output![0]!.y)).toBe(true);
-        if (subcase.startsWith("b-"))
-          expect(fast.output![0]!.y).toBe(-Infinity);
+        if (subcase === "a-infinity-y" || subcase.startsWith("b-"))
+          expect(fast.output![0]!.y).toBe(0);
         return {
           knownBug:
             "c: fast vertical exceptional geometry, ordering and static moved flags differ from classic",
@@ -345,7 +343,10 @@ describe("golden fast compactors", () => {
           sample.layout,
           12
         );
-        if (testCase.subcase.startsWith("a-")) {
+        if (testCase.subcase === "a-infinity-y") {
+          assertCompacted(fast);
+          expect(fast.output![0]!.y).toBe(0);
+        } else if (testCase.subcase.startsWith("a-")) {
           expect(fast.error).toEqual({
             name: "RangeError",
             message: "Invalid array length"

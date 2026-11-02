@@ -127,7 +127,7 @@ describe("React lifecycle golden traces", () => {
   });
 
   for (const variant of [free, legacy]) {
-    it(`does not correct an item when nonresponsive cols shrink (${variant.name})`, () => {
+    it(`bounds an item when nonresponsive cols shrink (${variant.name})`, () => {
       const fixture = mountGrid({
         variant,
         layout: [{ i: "a", x: 5, y: 0, w: 1, h: 1 }]
@@ -137,12 +137,9 @@ describe("React lifecycle golden traces", () => {
           ? { cols: 3 }
           : { gridConfig: { ...gridConfig, cols: 3 } }
       );
-      expect(fixture.item("a").style.transform).toBe("translate(1000px,0px)");
-      finish(
-        fixture,
-        "cols-no-resync",
-        "cols-no-resync: shrinking nonresponsive cols leaves the item beyond the new right edge"
-      );
+      expect(fixture.item("a").style.transform).toBe("translate(400px,0px)");
+      // x=5 is outside the new three-column input bounds.
+      finish(fixture, "cols-no-resync");
     });
   }
 

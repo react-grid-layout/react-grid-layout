@@ -2,7 +2,7 @@
 "metadata":{"callbackComparison":"Only onLayoutChange is shared by both public APIs. Hook GridItem callbacks are native-event notes.","resizeAdapter":"Dimensions are forwarded. The public hook supplies no resize handle geometry or resize placeholder.","scenario":"hook-cols-and-compactor-sync","strict":true,"variant":"strict-disagreements"},
 "steps":[
 {"differences":["onLayoutChange"],"input":{"type":"mount"},"onLayoutChange":{"component":2,"hook":0}},
-{"differences":["items","onLayoutChange"],"input":{"change":"cols-12-to-6","type":"setProps"},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":[],"input":{"change":"cols-12-to-6","type":"setProps"},"onLayoutChange":{"component":1,"hook":1}},
 {"differences":[],"input":{"change":"none-to-vertical","type":"setProps"},"onLayoutChange":{"component":1,"hook":1}},
 {"differences":["items","containerHeight","onLayoutChange"],"input":{"change":"vertical-to-overlap-same-type","type":"setProps"},"onLayoutChange":{"component":0,"hook":1}},
 {"differences":[],"input":{"change":"controlled-layout","type":"setProps"},"onLayoutChange":{"component":1,"hook":1}},

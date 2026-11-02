@@ -14,6 +14,7 @@ import type {
   ResponsiveLayouts,
   Compactor
 } from "../../core/types.js";
+import { validateLayoutInput } from "../../core/validation.js";
 import { cloneLayout } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
@@ -53,6 +54,8 @@ export interface UseResponsiveLayoutOptions<
 > {
   /** Current container width */
   width: number;
+  /** Maximum input rows (also capped at MAX_GRID_ROWS). */
+  maxRows?: number;
   /** Breakpoint definitions (name → min-width) */
   breakpoints?: Breakpoints<B>;
   /** Column counts per breakpoint */
@@ -128,14 +131,62 @@ export interface UseResponsiveLayoutResult<
  * }
  * ```
  */
+/**
+ * Stored layouts, split by trust. `inputs` are the consumer's layouts as
+ * written (copied at the call); `generated` are this hook's compaction output.
+ * A breakpoint is in at most one of the two.
+ */
+interface StoredLayouts<B extends Breakpoint> {
+  inputs: ResponsiveLayouts<B>;
+  generated: ResponsiveLayouts<B>;
+}
+
+/** Copy the consumer's layouts so a later mutation of theirs is not stored. */
+function copyInputs<B extends Breakpoint>(
+  input: ResponsiveLayouts<B>
+): ResponsiveLayouts<B> {
+  const inputs = {} as ResponsiveLayouts<B>;
+  for (const bp of Object.keys(input) as B[]) {
+    const layout = input[bp];
+    if (layout)
+      (inputs as Record<B, Layout>)[bp] = layout.map(item => ({ ...item }));
+  }
+  return inputs;
+}
+
+/**
+ * The layouts a render exposes. Inputs are validated with this render's
+ * config, every render, so no setter, effect or retained callback can store
+ * bounds from another commit. Rows are always bounded; columns only where the
+ * breakpoint has cols (see validateLayoutInput). Generated layouts are trusted.
+ */
+function resolveLayouts<B extends Breakpoint>(
+  stored: StoredLayouts<B>,
+  colsConfig: Breakpoints<B>,
+  maxRows: number | undefined
+): ResponsiveLayouts<B> {
+  const layouts = { ...stored.generated };
+  for (const bp of Object.keys(stored.inputs) as B[]) {
+    const layout = stored.inputs[bp];
+    if (!layout) continue;
+    const cols = colsConfig[bp];
+    const validated = validateLayoutInput(layout, { cols, maxRows });
+    // A saved key without cols keeps the consumer's item shape.
+    (layouts as Record<B, Layout>)[bp] =
+      cols === undefined ? validated : cloneLayout(validated);
+  }
+  return layouts;
+}
+
 export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   options: UseResponsiveLayoutOptions<B>
 ): UseResponsiveLayoutResult<B> {
   const {
     width,
+    maxRows = Infinity,
     breakpoints = DEFAULT_BREAKPOINTS as unknown as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as unknown as Breakpoints<B>,
-    layouts: propsLayouts = {} as ResponsiveLayouts<B>,
+    layouts: unvalidatedLayouts = {} as ResponsiveLayouts<B>,
     compactor = verticalCompactor,
     onBreakpointChange,
     onLayoutChange,
@@ -158,23 +209,28 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
 
   const initialCols = useMemo(
     () => getColsFromBreakpoint(initialBreakpoint, colsConfig),
-    [initialBreakpoint, colsConfig]
+    // The original breakpoint may become stale after configuration changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   // State
   const [breakpoint, setBreakpoint] = useState<B>(initialBreakpoint);
   const [cols, setCols] = useState<number>(initialCols);
-  const [layouts, setLayoutsState] = useState<ResponsiveLayouts<B>>(() => {
-    // Clone initial layouts
-    const cloned = {} as ResponsiveLayouts<B>;
-    for (const bp of sortedBreakpoints) {
-      const layout = propsLayouts[bp];
-      if (layout) {
-        (cloned as Record<B, Layout>)[bp] = cloneLayout(layout);
-      }
-    }
-    return cloned;
-  });
+  const [stored, setStored] = useState<StoredLayouts<B>>(() => ({
+    inputs: copyInputs(unvalidatedLayouts),
+    generated: {} as ResponsiveLayouts<B>
+  }));
+
+  // Keying cols on its content keeps `layouts` stable when cols is an inline
+  // object with equal values.
+  const colsKey = JSON.stringify(colsConfig);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stableCols = useMemo(() => colsConfig, [colsKey]);
+  const layouts = useMemo(
+    () => resolveLayouts(stored, stableCols, maxRows),
+    [stored, stableCols, maxRows]
+  );
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
@@ -182,7 +238,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // Separate refs for props vs state to prevent infinite loops (#2202)
   // When using inline objects for layouts prop, we need to compare props to props
   // and state to state, not mix them up.
-  const prevPropsLayoutsRef = useRef(propsLayouts);
+  const prevPropsLayoutsRef = useRef(unvalidatedLayouts);
   const prevLayoutsRef = useRef(layouts);
 
   // Current layout for the active breakpoint - use compactor (#2213)
@@ -193,28 +249,27 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       breakpoint,
       prevBreakpointRef.current,
       cols,
-      compactor
+      compactor,
+      colsConfig
     );
-  }, [layouts, breakpoints, breakpoint, cols, compactor]);
+  }, [layouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
 
   // Set layout for a specific breakpoint
+  // Setters store input only; validation happens when a render reads it, so
+  // they need no config and stay stable.
   const setLayoutForBreakpoint = useCallback((bp: B, newLayout: Layout) => {
-    setLayoutsState((prev: ResponsiveLayouts<B>) => ({
-      ...prev,
-      [bp]: cloneLayout(newLayout)
-    }));
+    const input = newLayout.map(item => ({ ...item }));
+    setStored(prev => {
+      const generated = { ...prev.generated };
+      delete generated[bp];
+      return { inputs: { ...prev.inputs, [bp]: input }, generated };
+    });
   }, []);
 
   // Set all layouts
   const setLayouts = useCallback((newLayouts: ResponsiveLayouts<B>) => {
-    const cloned = {} as ResponsiveLayouts<B>;
-    for (const bp of Object.keys(newLayouts) as B[]) {
-      const layoutForBp = newLayouts[bp];
-      if (layoutForBp) {
-        (cloned as Record<B, Layout>)[bp] = cloneLayout(layoutForBp);
-      }
-    }
-    setLayoutsState(cloned);
+    const inputs = copyInputs(newLayouts);
+    setStored({ inputs, generated: {} as ResponsiveLayouts<B> });
   }, []);
 
   // Handle width changes
@@ -239,16 +294,16 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         newBreakpoint,
         breakpoint,
         newCols,
-        compactor
+        compactor,
+        colsConfig
       );
 
-      // Update layouts with the new breakpoint layout
-      const updatedLayouts: ResponsiveLayouts<B> = {
-        ...layouts,
-        [newBreakpoint]: newLayout
-      };
-
-      setLayoutsState(updatedLayouts);
+      // Store only a layout that was generated; an existing one is unchanged.
+      if (!layouts[newBreakpoint])
+        setStored(prev => ({
+          inputs: prev.inputs,
+          generated: { ...prev.generated, [newBreakpoint]: newLayout }
+        }));
       setBreakpoint(newBreakpoint);
       setCols(newCols);
 
@@ -261,6 +316,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     width,
     breakpoints,
     colsConfig,
+    maxRows,
     breakpoint,
     layouts,
     compactor,
@@ -268,13 +324,14 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     onWidthChange
   ]);
 
-  // Sync with prop layouts when they change
+  // Sync with prop layouts when they change. Compare the raw prop: its
+  // validated form also changes with cols, which is not a prop change.
   useEffect(() => {
-    if (!deepEqual(propsLayouts, prevPropsLayoutsRef.current)) {
-      setLayouts(propsLayouts);
-      prevPropsLayoutsRef.current = propsLayouts;
+    if (!deepEqual(unvalidatedLayouts, prevPropsLayoutsRef.current)) {
+      setLayouts(unvalidatedLayouts);
+      prevPropsLayoutsRef.current = unvalidatedLayouts;
     }
-  }, [propsLayouts, setLayouts]);
+  }, [unvalidatedLayouts, setLayouts]);
 
   // Notify layout changes
   useEffect(() => {
