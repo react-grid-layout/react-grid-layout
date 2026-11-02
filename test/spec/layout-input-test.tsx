@@ -436,6 +436,21 @@ describe("validateLayoutInput", () => {
     expect(fixed).toMatchObject({ w: 1, h: 1 });
   });
 
+  test("keeps maximums positive when minimums are 0 or less", () => {
+    // A resize clamps to maxW/maxH, so those must stay positive.
+    const [zero, negative, fraction] = validateLayoutInput(
+      [
+        { ...item, minW: 0, maxW: 0, minH: 0, maxH: 0 },
+        { ...item, i: "b", minW: -2, maxW: -2, minH: -2, maxH: -1 },
+        { ...item, i: "c", w: 0.5, maxW: 0.5 }
+      ],
+      { cols: 4, maxRows: 20 }
+    );
+    expect(zero).toMatchObject({ minW: 0, maxW: 1, minH: 0, maxH: 1 });
+    expect(negative).toMatchObject({ minW: -2, maxW: 1, minH: -2, maxH: 1 });
+    expect(fraction).toMatchObject({ w: 0.5, maxW: 0.5 });
+  });
+
   test.each(["x", "y", "w", "h", "minW", "maxW", "minH", "maxH"] as const)(
     "bounds %s and coerces non-finite input without mutation",
     field => {

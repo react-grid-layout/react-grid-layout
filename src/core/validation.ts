@@ -38,6 +38,16 @@ function minimum(value: number, upper: number): number {
 }
 
 /**
+ * A maximum size: raised to its minimum (or kept as is with no minimum), and
+ * always positive, so a resize clamped to it never reaches a zero or negative
+ * size even when the minimum is 0 or less. A positive fraction is kept.
+ */
+function maximum(value: number, min: number | undefined): number {
+  const raised = atLeast(value, min ?? 0);
+  return raised > 0 ? raised : Math.max(1, min ?? 1);
+}
+
+/**
  * Raise a maximum to its minimum. A maximum above the grid is harmless (the
  * item size is bounded separately) and is kept, so `maxW: Infinity` survives
  * and a later, larger `cols` is not capped by the one in effect at intake.
@@ -99,11 +109,10 @@ export function validateLayoutInput(
     const maxW =
       item.maxW === undefined || !hasCols
         ? item.maxW
-        : atLeast(item.maxW, minW ?? 1);
+        : maximum(item.maxW, minW);
     const minH =
       item.minH === undefined ? undefined : minimum(item.minH, rowLimit);
-    const maxH =
-      item.maxH === undefined ? undefined : atLeast(item.maxH, minH ?? 1);
+    const maxH = item.maxH === undefined ? undefined : maximum(item.maxH, minH);
     if (
       x === item.x &&
       y === item.y &&
