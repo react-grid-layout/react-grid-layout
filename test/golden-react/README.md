@@ -114,7 +114,6 @@ Changing a known-bug golden requires the same explanation as any other diff.
 | `touch-mouse-coordinates`      | touch skips threshold; scaled touch produces NaN              |
 | `cols-no-resync`               | shrinking nonresponsive cols leaves an item beyond the edge   |
 | `hook-inline-layout-loop`      | inline layout never converges; a finite render cap catches it |
-| `edge-scroll-unmount-leak`     | the active edge-scroll frame survives unmount                 |
 | `dropping-no-stop`             | dropping item emits drag start/move without stop              |
 | `legacy-responsive-threshold`  | legacy Responsive retains the v2 threshold                    |
 | `legacy-responsive-bounds`     | legacy Responsive omits container resize constraints          |
