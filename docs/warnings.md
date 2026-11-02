@@ -58,9 +58,10 @@ as is. Give each item a unique `i` that matches its child's `key`.
 
 `findOrGenerateResponsiveLayout` accepts a compaction type string such as
 `"vertical"` as its compactor argument. That form is deprecated: pass a
-compactor object such as `verticalCompactor`. The public `getCompactor` factory
-belongs to the same group. The `/legacy` entry's own use of these is private
-and never warns. Both are removed in 3.0.
+compactor object such as `verticalCompactor`. The notice is on that parameter's
+JSDoc; the function itself is not deprecated, because object calls stay. The
+public `getCompactor` factory belongs to the same group. The `/legacy` entry's
+own use of these is private and never warns. Both are removed in 3.0.
 
 ### RGL_W009: GridItem position flags
 
@@ -108,9 +109,10 @@ the input must be an array, each item needs numeric non-NaN `x`, `y`, `w` and
 `h`, and a present `i` must be a string. It throws, returns nothing and never
 changes the input. `validateLayout` stays as an alias through 2.4.x.
 
-Do not swap it for `validateLayoutInput`. That function repairs bad values and
-never throws, so code that relied on the rejection would silently accept bad
-data.
+Do not swap it for `validateLayoutInput`. That function repairs out-of-bounds
+geometry instead of rejecting it, so code that relied on the rejection would
+silently accept bad data. It also expects every item to be an object; it is
+not a structural check.
 
 ### RGL_W014: onDropDragOver
 
