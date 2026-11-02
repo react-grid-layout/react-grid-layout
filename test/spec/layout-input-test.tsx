@@ -380,7 +380,7 @@ test.each(["initial", "prop-sync", "set-breakpoint", "set-all"])(
   }
 );
 
-test("responsive generation ignores a previous breakpoint after its columns are removed", () => {
+test("responsive generation copies a previous breakpoint, bounded, after its columns are removed", () => {
   const changed = jest.fn();
   const element = (width: number, cols: Record<string, number>) => (
     <ResponsiveGridLayout
@@ -396,8 +396,25 @@ test("responsive generation ignores a previous breakpoint after its columns are 
   );
   const view = render(element(800, { lg: 6, sm: 4 }));
   view.rerender(element(400, { sm: 4 }));
-  expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject(item);
+  // As in 2.x before intake bounds: sm is generated from lg, bounded to sm's
+  // 4 cols (x 3 -> 2). The saved lg layout itself is kept as authored.
+  expect(changed.mock.calls.at(-1)?.[0][0]).toMatchObject({ x: 2, w: 2 });
   expect(changed.mock.calls.at(-1)?.[1].lg).toEqual([{ ...item, x: 3, w: 2 }]);
+});
+
+test("a breakpoint with a layout but no cols entry still seeds the others", () => {
+  // layouts only for lg, cols only for md and below: md is generated from lg,
+  // bounded to md's cols.
+  const generated = findOrGenerateResponsiveLayout(
+    { lg: [{ ...item, x: 3, y: 2, w: 2, h: 3 }] },
+    { lg: 1000, md: 600, sm: 0 },
+    "md",
+    "md",
+    4,
+    noCompactor,
+    { md: 4, sm: 2 }
+  );
+  expect(generated[0]).toMatchObject({ x: 2, y: 2, w: 2, h: 3 });
 });
 let warning: jest.SpyInstance;
 beforeEach(() => {
@@ -408,6 +425,32 @@ afterEach(() => {
 });
 
 describe("validateLayoutInput", () => {
+  test("keeps 2.x sizes below 1: positive fractions and minimums of 0", () => {
+    // A floor of 1 is a 3.0 change. Zero and negative sizes still use 1.
+    const input = [
+      { ...item, w: 0.5, h: 0.25, minW: 0, minH: 0 },
+      { ...item, i: "b", w: 0, h: -2 }
+    ];
+    const [kept, fixed] = validateLayoutInput(input, { cols: 4, maxRows: 20 });
+    expect(kept).toMatchObject({ w: 0.5, h: 0.25, minW: 0, minH: 0 });
+    expect(fixed).toMatchObject({ w: 1, h: 1 });
+  });
+
+  test("keeps maximums positive when minimums are 0 or less", () => {
+    // A resize clamps to maxW/maxH, so those must stay positive.
+    const [zero, negative, fraction] = validateLayoutInput(
+      [
+        { ...item, minW: 0, maxW: 0, minH: 0, maxH: 0 },
+        { ...item, i: "b", minW: -2, maxW: -2, minH: -2, maxH: -1 },
+        { ...item, i: "c", w: 0.5, maxW: 0.5 }
+      ],
+      { cols: 4, maxRows: 20 }
+    );
+    expect(zero).toMatchObject({ minW: 0, maxW: 1, minH: 0, maxH: 1 });
+    expect(negative).toMatchObject({ minW: -2, maxW: 1, minH: -2, maxH: 1 });
+    expect(fraction).toMatchObject({ w: 0.5, maxW: 0.5 });
+  });
+
   test.each(["x", "y", "w", "h", "minW", "maxW", "minH", "maxH"] as const)(
     "bounds %s and coerces non-finite input without mutation",
     field => {
@@ -422,14 +465,18 @@ describe("validateLayoutInput", () => {
         const input = Object.freeze([{ ...item, [field]: value }]);
         const output = validateLayoutInput(input, { cols: 4, maxRows: 20 });
         const unbounded = field === "maxW" || field === "maxH";
+        // A finite minimum below 1 is kept (2.x); see the size floor test.
+        const minimum = field === "minW" || field === "minH";
         expect(output[0]![field]).toBe(
-          (field === "y" || unbounded) && value === Infinity
-            ? Infinity
-            : unbounded && value === 1e9
-              ? 1e9
-              : value === Infinity || value === 1e9
-                ? upper
-                : lower
+          minimum && value === -1e9
+            ? -1e9
+            : (field === "y" || unbounded) && value === Infinity
+              ? Infinity
+              : unbounded && value === 1e9
+                ? 1e9
+                : value === Infinity || value === 1e9
+                  ? upper
+                  : lower
         );
         expect(input[0]![field]).toBe(value);
       }
