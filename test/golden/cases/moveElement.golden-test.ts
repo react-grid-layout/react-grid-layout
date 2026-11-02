@@ -310,10 +310,10 @@ describe("golden movement", () => {
     });
   });
 
-  it("knownBug p: detached item moves colliders while its layout entry stays put (B16)", () => {
+  it("fixed p: a detached copy of the dragged item moves its layout entry (B16)", () => {
     expectGolden("knownBug/p-detached-item", {
-      knownBug:
-        "p: Passing a detached clone mutates that clone and pushes colliders, leaving the stored dragged item in place.",
+      fixed:
+        "p: moveElement finds a detached clone's layout entry by id and moves it; the clone is not written (RGL-11).",
       auditId: "B16",
       call: movement(
         [
@@ -450,12 +450,12 @@ function dragTrace(
         },
         { clone: false }
       );
-      // onDrag receives the moved layout before compaction; its item is the
-      // live object looked up before moveElement and its placeholder is stale.
+      // onDrag receives the moved layout before compaction; its item is read
+      // from that layout (moveElement keeps order) and its placeholder is stale.
       const callback = copy({
         layout: moved,
         oldItem: oldDragItem,
-        newItem: item,
+        newItem: moved[currentLayout.indexOf(item)],
         placeholder
       });
       const compact = capture(
@@ -507,6 +507,7 @@ function dragTrace(
       },
       { clone: false }
     );
+    const newItem = moved[layout.indexOf(item)];
     const compact = capture(
       { layout: moved, cols: 12 },
       a => {
@@ -524,7 +525,7 @@ function dragTrace(
       callback: copy({
         layout,
         oldItem: oldDragItem,
-        newItem: item,
+        newItem,
         placeholder: null
       }),
       oldLayout: copy(oldLayout),
@@ -584,7 +585,7 @@ describe("golden drag handler traces", () => {
     });
   });
 
-  it("knownBug b: mutating oldLayout produces a spurious layoutChange (B2)", () => {
+  it("fixed b: the oldLayout alias stays intact, so a net-zero drag reports no layoutChange (B2)", () => {
     // Normalize once exactly as a mounted GridLayout does, so missing optional
     // keys do not masquerade as the bug when deepEqual compares the true start.
     const layout = getCompactor("vertical").compact(
@@ -602,8 +603,8 @@ describe("golden drag handler traces", () => {
       }
     ];
     expectGolden("knownBug/b-old-layout-alias", {
-      knownBug:
-        "b: The oldLayout alias is mutated although final geometry equals the true drag-start snapshot, causing a spurious handler onLayoutChange.",
+      fixed:
+        "b: moveElement no longer mutates the oldLayout alias, so final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11).",
       auditId: "B2",
       call: capture({ layout, gestures }, a =>
         dragTrace(a.layout, "vertical", a.gestures)

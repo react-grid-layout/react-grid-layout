@@ -3,7 +3,98 @@ import { getFirstCollision } from "../collision.js";
 import { cloneLayout } from "../layout.js";
 import { DragCollisionIndex } from "./dragCollisionIndex.js";
 
-/** Shared only by the recursive steps of one public movement call. */
+function shallowEqual(a: LayoutItem, b: LayoutItem): boolean {
+  const keys = Object.keys(a);
+  if (keys.length !== Object.keys(b).length) return false;
+  for (const key of keys) {
+    if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
+    if (!Object.is(a[key as keyof LayoutItem], b[key as keyof LayoutItem]))
+      return false;
+  }
+  return true;
+}
+
+/**
+ * Run a drag move on copies so neither `layout` nor `l` is written.
+ *
+ * The resolver below works by writing positions into the items it is given.
+ * Here it gets a shallow copy of every item (one copy per distinct reference,
+ * so a repeated reference stays repeated). `l` is found by reference, then by
+ * id, so a detached copy of a layout item moves that item (C-B16). The early
+ * returns read `l` itself, as they always have. Copies the
+ * move left equal to their original are swapped back, so untouched items keep
+ * their identity, and a move that changed nothing returns `layout` itself.
+ */
+export function moveWithoutMutation(
+  compactType: CompactType,
+  layout: Layout,
+  l: LayoutItem,
+  x: number | undefined,
+  y: number | undefined,
+  isUserAction: boolean | undefined,
+  preventCollision: boolean | undefined,
+  allowOverlap?: boolean
+): LayoutItem[] {
+  // Early returns write nothing, so they need no copies.
+  if (l.static && l.isDraggable !== true) return [...layout];
+  if (l.y === y && l.x === x) return [...layout];
+
+  const working: LayoutItem[] = new Array(layout.length);
+  const copies = new Map<LayoutItem, LayoutItem>();
+  const originals = new Map<LayoutItem, LayoutItem>();
+  let target: LayoutItem | undefined;
+  let sameId: LayoutItem | undefined;
+  for (let i = 0; i < layout.length; i++) {
+    if (!(i in layout)) continue;
+    const item = layout[i];
+    if (item === undefined) {
+      working[i] = item as unknown as LayoutItem;
+      continue;
+    }
+    let copy = copies.get(item);
+    if (copy === undefined) {
+      copy = { ...item };
+      copies.set(item, copy);
+      originals.set(copy, item);
+    }
+    working[i] = copy;
+    if (item === l) target = copy;
+    else if (sameId === undefined && item.i === l.i) sameId = copy;
+  }
+  // A detached copy of a layout item moves that item; the layout entry, not
+  // the copy, supplies its fields. An item with no entry moves on its own.
+  target ??= sameId ?? { ...l };
+
+  const result = new DragResolver(compactType).move(
+    working,
+    target,
+    x,
+    y,
+    isUserAction,
+    preventCollision,
+    allowOverlap
+  ) as LayoutItem[];
+
+  // Every path of move() returns an array this call owns, so swap in place.
+  let unchanged = result === working;
+  for (let i = 0; i < result.length; i++) {
+    const item = result[i];
+    if (item === undefined) continue;
+    const original = originals.get(item);
+    if (original !== undefined && shallowEqual(item, original)) {
+      result[i] = original;
+    } else {
+      unchanged = false;
+    }
+  }
+  return unchanged ? (layout as LayoutItem[]) : result;
+}
+
+/**
+ * Shared only by the recursive steps of one public movement call. It writes
+ * positions into the items it is given; public callers hand it copies
+ * (moveWithoutMutation).
+ */
 export class DragResolver {
   private collisions: DragCollisionIndex | undefined;
 
@@ -31,7 +122,7 @@ export class DragResolver {
     const oldX = l.x;
     const oldY = l.y;
 
-    // Update position (mutates l directly - see JSDoc note)
+    // Update position (writes the working copy; see moveWithoutMutation)
     if (typeof x === "number") l.x = x;
     if (typeof y === "number") l.y = y;
     l.moved = true;

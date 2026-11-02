@@ -1,13 +1,18 @@
 /**
  * Core layout manipulation utilities.
  *
- * These functions create, modify, and query grid layouts.
- * All functions treat layouts as immutable - they return new arrays/objects.
+ * These functions create, modify, and query grid layouts. Functions that
+ * return a layout leave their input untouched, with two exceptions that keep
+ * their 2.x contract: `correctBounds` and
+ * `moveElementAwayFromCollision`, which write into the items they are given.
  */
 
 import type { CompactType, Layout, LayoutItem, Mutable } from "./types.js";
 import { normalizeLayoutGeometryInPlace } from "./geometry/normalize.js";
-import { DragResolver } from "./interaction/resolveDrag.js";
+import {
+  DragResolver,
+  moveWithoutMutation
+} from "./interaction/resolveDrag.js";
 
 // ============================================================================
 // Layout Queries
@@ -331,12 +336,13 @@ export function correctBounds(
  * Handles collision detection and cascading movements.
  * Does not compact the layout - call `compact()` separately.
  *
- * **Note**: This function mutates the `l` parameter directly for performance.
- * The item's x, y, and moved properties will be modified. Callers should
- * ideally pass a cloned item if they need to preserve the original.
+ * Neither `layout` nor `l` is modified. Read the moved item, and every item
+ * it pushed, from the returned layout. Items the move left alone keep their
+ * identity. `l` is matched by reference, then by `i`, so a copy of a layout
+ * item moves that item.
  *
  * @param layout - Full layout
- * @param l - Item to move (will be mutated)
+ * @param l - Item to move
  * @param x - New X position (or undefined to keep current)
  * @param y - New Y position (or undefined to keep current)
  * @param isUserAction - True if this is a direct user action (affects collision resolution)
@@ -357,7 +363,8 @@ export function moveElement(
   _cols: number,
   allowOverlap?: boolean
 ): LayoutItem[] {
-  const result = new DragResolver(compactType).move(
+  return moveWithoutMutation(
+    compactType,
     layout,
     l,
     x,
@@ -366,7 +373,6 @@ export function moveElement(
     preventCollision,
     allowOverlap
   );
-  return Array.isArray(result) ? result : [...result];
 }
 
 /**
@@ -374,6 +380,9 @@ export function moveElement(
  *
  * Attempts to move the item up/left first if there's room,
  * otherwise moves it down/right.
+ *
+ * Unlike `moveElement`, this writes the new positions into `itemToMove` and
+ * any items it pushes.
  *
  * @param layout - Full layout
  * @param collidesWith - The item being collided with

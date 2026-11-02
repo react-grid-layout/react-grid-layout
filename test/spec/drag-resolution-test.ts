@@ -39,10 +39,12 @@ describe("drag collision candidates", () => {
       );
 
       // Legacy collides treats a NaN interval end as overlapping infinity.
-      // preventCollision must roll back the detached target and return the input.
-      expect(result).toBe(layout);
-      expect(detached).toEqual({ ...stored, moved: false });
-      expect(layout[0]).toBe(stored);
+      // preventCollision must roll back the target, which the detached copy
+      // names by id. Nothing passed in is written.
+      expect(result).toEqual([{ ...stored, moved: false }, obstacle]);
+      expect(result[1]).toBe(obstacle);
+      expect(detached).toEqual({ ...stored, moved: true });
+      expect(layout[0]).toEqual({ i: "a", x: 0, y: 0, w: 1, h: 1 });
       expect(layout[1]).toBe(obstacle);
     }
   );
@@ -58,8 +60,17 @@ describe("drag collision order with non-finite coordinates", () => {
       { i: "2", x: 3, y: 1, w: 2, h: 1 },
       { i: "3", x: Number.NaN, y: 3, w: 2, h: 2 }
     ];
-    moveElement(layout, layout[0]!, 2, 3, false, false, "horizontal", 12);
-    expect(layout[0]).toMatchObject({ x: 5, moved: true });
+    const result = moveElement(
+      layout,
+      layout[0]!,
+      2,
+      3,
+      false,
+      false,
+      "horizontal",
+      12
+    );
+    expect(result[0]).toMatchObject({ x: 5, moved: true });
   });
 });
 
@@ -117,7 +128,10 @@ describe("moveElement matches the pre-index implementation", () => {
             12,
             allowOverlap
           );
-          return serialize({ layout, result, same: result === layout });
+          // The old code returned its mutated input; the new code must
+          // return the same values and leave its input alone.
+          if (move === moveElement) expect(layout).toEqual(base);
+          return serialize({ result });
         } catch (error) {
           return serialize({ threw: (error as Error).name });
         }
