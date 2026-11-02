@@ -960,3 +960,9 @@ test.each(["maxW", "maxH"] as const)(
     }
   }
 );
+
+test("the public GridLayout keeps its 2.x display name", () => {
+  // DevTools labels, WidthProvider's wrapper name and display-name selectors
+  // all read this; the intake wrapper must not rename the component.
+  expect(GridLayout.displayName ?? GridLayout.name).toBe("GridLayout");
+});

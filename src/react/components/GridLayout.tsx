@@ -1396,6 +1396,8 @@ function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
   );
   return <GridLayout {...props} layout={layout} />;
 }
+// Keep the 2.x name for DevTools, WidthProvider labels and name selectors.
+UntrustedGridLayout.displayName = "GridLayout";
 
 export { UntrustedGridLayout as GridLayout, GridLayout as ResolvedGridLayout };
 export default UntrustedGridLayout;
