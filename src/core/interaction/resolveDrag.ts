@@ -6,10 +6,10 @@ import { DragCollisionIndex } from "./dragCollisionIndex.js";
 function shallowEqual(a: LayoutItem, b: LayoutItem): boolean {
   const keys = Object.keys(a);
   if (keys.length !== Object.keys(b).length) return false;
-  for (const key of keys) {
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i] as keyof LayoutItem;
     if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
-    if (!Object.is(a[key as keyof LayoutItem], b[key as keyof LayoutItem]))
-      return false;
+    if (!Object.is(a[key], b[key])) return false;
   }
   return true;
 }
