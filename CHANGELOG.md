@@ -1,5 +1,60 @@
 # Changelog
 
+## 2.4.0 (unreleased)
+
+No breaking changes. The one behavior change you might notice is the first item under Bug Fixes: an item saved outside the current `cols` now moves inside the grid when it loads, and `onLayoutChange` reports it.
+
+### New Features
+
+- **DragConfig / ResizeConfig**: New `enableUserSelectHack` option on both configs. react-draggable adds a class to `<body>` during a drag or resize, and its `::selection` rule makes the browser restyle the whole page at pick-up and again at drop. On a production dashboard (about 3,400 elements, CPU throttled 4x), pick-up cost a 59ms style recalculation. Set it to `false` and both frames stayed under 17.6ms. Unset, react-draggable's default (`true`) applies. A grid that opts out should prevent selection itself, for example with `user-select: none`. [#1630](https://github.com/react-grid-layout/react-grid-layout/issues/1630), [#2311](https://github.com/react-grid-layout/react-grid-layout/pull/2311)
+- **Core**: `validateLayoutInput` and `MAX_GRID_ROWS` are exported from `react-grid-layout/core`. If you call the core compactors directly on a saved layout, run `validateLayoutInput` first; the components already do. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328)
+
+### Security
+
+- **Layout input bounds**: A crafted saved layout could freeze the tab. Apps that render layouts other users saved (Grafana-style sharing) passed them straight to compaction, and three loops scaled with the numbers in the layout, not with the item count. `y: 1e9` ran past 200,000 ops before the probe aborted it. It now takes 32. Every layout entry point bounds its input first: the `layout` prop, responsive `layouts`, `data-grid`, the hooks and their setters, the dropping item, and the legacy wrappers. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328), [#2337](https://github.com/react-grid-layout/react-grid-layout/pull/2337)
+
+  | Field                   | Bound                                                                                          |
+  | ----------------------- | ---------------------------------------------------------------------------------------------- |
+  | `w`, `h`                | zero, negative and non-finite become `1`; a positive fraction such as `0.5` is kept, as before |
+  | `w`, `minW`             | at most `cols`                                                                                 |
+  | `x`                     | `[0, cols - w]`                                                                                |
+  | `h`, `minH`, finite `y` | at most 10,000 rows (`MAX_GRID_ROWS`), or a smaller finite `maxRows`                           |
+  | `minW`, `minH`          | `0` is kept (no minimum)                                                                       |
+  | `maxW`, `maxH`          | raised to the minimum and kept positive; `Infinity` and values above the grid are kept         |
+  | `y: Infinity`           | unchanged, so "place at the bottom" still works                                                |
+
+  A layout that needs no change comes back as the same array, so there is no extra render. A clamp logs one warning in development.
+
+- Compaction work no longer scales with the coordinates it is given: classic compaction jumps to the next gap instead of stepping one row at a time, `correctBounds` sweeps overlapping statics once, `fastHorizontalCompactor` stores its tide as row ranges (a static `h: 1e9` allocated a billion-entry array), and every exported compactor normalizes non-finite geometry before arithmetic (`wrapCompactor.compact` with `w: NaN` looped forever). `fastVerticalCompactor` called directly with `x: -1e9` hung; it now returns in under 1s. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328), [#2335](https://github.com/react-grid-layout/react-grid-layout/pull/2335)
+
+### Bug Fixes
+
+- **cols**: Shrinking `cols` used to leave an item past the right edge until you dragged it. Shrink from 12 to 3 with an item at `x: 5`, and it now moves to `x: 2` and `onLayoutChange` reports the new position. `useGridLayout` and `GridLayout` now agree on this. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328)
+- **Responsive**: A breakpoint with `cols` but no saved layout is still generated from the nearest saved one (`md` from `lg`), and the copy is now bounded to the target breakpoint's `cols`. [#2337](https://github.com/react-grid-layout/react-grid-layout/pull/2337)
+- **Drag and resize rendering**: The active item only moved on screen when it crossed a grid cell, so it jumped from step to step instead of tracking the pointer. It now renders between steps. Idle items stay memoized. [#2303](https://github.com/react-grid-layout/react-grid-layout/issues/2303), [#2304](https://github.com/react-grid-layout/react-grid-layout/pull/2304)
+- **Scaled containers**: Dragging inside a container with `transform: scale()` and `createScaledStrategy` placed the item away from the cursor. The scaled drag position ignored the parent's offset; it is now relative to the parent, matching the unscaled path. [#2231](https://github.com/react-grid-layout/react-grid-layout/issues/2231), [#2253](https://github.com/react-grid-layout/react-grid-layout/pull/2253)
+- **Drop from outside**: An item dragged in from outside landed below the item it was dropped on instead of pushing it down, so you couldn't drop a new item above the topmost one. Since 2.3.0 every `dragover` wrote the dropping item's position straight into the layout, so the collision step found it already in place and pushed nothing. `dragover` now goes through `moveElement` and the compactor, the same path as an internal drag. [#2313](https://github.com/react-grid-layout/react-grid-layout/issues/2313), [#2334](https://github.com/react-grid-layout/react-grid-layout/pull/2334)
+- **Drop from outside**: Edge auto-scroll kept scrolling the container after an external drop. The dropping placeholder unmounts without an `onDragStop`, so the `requestAnimationFrame` loop was never stopped. It now stops when the item unmounts. [#2312](https://github.com/react-grid-layout/react-grid-layout/issues/2312), [#2314](https://github.com/react-grid-layout/react-grid-layout/pull/2314)
+- **Drop from outside**: Leaving the grid and re-entering before a render could bring back a stale dropping placeholder. `removeDroppingPlaceholder` now updates the internal layout right away instead of on the next render. Ported from [#2248](https://github.com/react-grid-layout/react-grid-layout/pull/2248) by @WhiteMinds, with a regression test from [#2265](https://github.com/react-grid-layout/react-grid-layout/pull/2265) by @Unn4m3DD. [#2339](https://github.com/react-grid-layout/react-grid-layout/pull/2339)
+
+### Performance
+
+- **Drag**: `moveElement` sorts once per call instead of once per collision step. In a 2,000-item grid one `moveElement` call went from 958 sorts to 1, and from 1,916,977 `collides` calls to 9,967. [#2327](https://github.com/react-grid-layout/react-grid-layout/pull/2327)
+- **Compaction**: `verticalCompactor` and `horizontalCompactor` share one implementation and drop three O(n²) bookkeeping scans (`indexOf`, `findIndex`, `getStatics`). Output is byte-identical. [#2326](https://github.com/react-grid-layout/react-grid-layout/pull/2326)
+
+### Dependencies
+
+- `prop-types` and `resize-observer-polyfill` are no longer dependencies. Nothing imported either one. Ported from [#2251](https://github.com/react-grid-layout/react-grid-layout/pull/2251) by @henryqdineen. [#2338](https://github.com/react-grid-layout/react-grid-layout/pull/2338)
+
+### Internal Changes
+
+- Golden-master fixtures for every core algorithm and React interaction trace, plus a deterministic op-count gate in CI. Refactors must keep them byte-identical or list each diff. [#2320](https://github.com/react-grid-layout/react-grid-layout/pull/2320), [#2321](https://github.com/react-grid-layout/react-grid-layout/pull/2321), [#2323](https://github.com/react-grid-layout/react-grid-layout/pull/2323)
+- A scenario-driven Playwright suite records each item's box on every frame of a drag or resize, in a real browser. [#2332](https://github.com/react-grid-layout/react-grid-layout/pull/2332)
+- `src/core/compact-compat.ts` is deleted; nothing imported it. [#2322](https://github.com/react-grid-layout/react-grid-layout/pull/2322)
+- Yarn 4 through Corepack. Run `corepack enable` once. [#2299](https://github.com/react-grid-layout/react-grid-layout/pull/2299)
+- Dev-toolchain security advisories fixed with lockfile upgrades; nothing under `dependencies` changed. [#2325](https://github.com/react-grid-layout/react-grid-layout/pull/2325), [#2307](https://github.com/react-grid-layout/react-grid-layout/pull/2307)
+- RFC 0003 plans the 3.0 engine and extension points. [`rfcs/0003-v2.1-engine-and-extension-points.md`](rfcs/0003-v2.1-engine-and-extension-points.md)
+
 ## 2.3.0 (Oct 5, 2026)
 
 ### New Features
