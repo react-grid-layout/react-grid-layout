@@ -576,14 +576,16 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   // layout reported, so a gesture stop that reports synchronously and the
   // effect below that sees the same layout a render later notify once (RX-5,
   // #1984), and a drag that ends where it started notifies zero times (C-B2).
-  // `report` is what the consumer sees; it defaults to `next`.
+  // `hideDropping` drops the transient dropping placeholder from the report.
   const notifyLayoutChange = useCallback(
-    (next: Layout, report: Layout = next) => {
+    (next: Layout, hideDropping = false) => {
       if (sameLayout(next, prevLayoutRef.current)) return;
       prevLayoutRef.current = next;
-      onLayoutChange(report);
+      onLayoutChange(
+        hideDropping ? next.filter(l => l.i !== droppingItem.i) : next
+      );
     },
-    [onLayoutChange]
+    [onLayoutChange, droppingItem.i]
   );
 
   // Layout change callback
@@ -604,11 +606,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
     // The stop handlers report their layout unfiltered, as before, so a real item
     // that happens to use the dropping id is never dropped from their report.
-    notifyLayoutChange(
-      layout,
-      layout.filter(l => l.i !== droppingItem.i)
-    );
-  }, [layout, activeDrag, droppingDOMNode, notifyLayoutChange, droppingItem.i]);
+    notifyLayoutChange(layout, true);
+  }, [layout, activeDrag, droppingDOMNode, notifyLayoutChange]);
 
   // ============================================================================
   // Container Height
