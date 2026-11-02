@@ -485,6 +485,44 @@ describe("dropConfig.defaultItem.i (RGL_W017 replacement)", () => {
     expect(item).toMatchObject({ i: "new", w: 2, minW: 2 });
   });
 
+  test("RGL_W018: an item that uses the dropping id warns once per grid", () => {
+    const grid = (width: number) => (
+      <GridLayout
+        width={width}
+        layout={[{ i: "new", x: 0, y: 0, w: 1, h: 1 }]}
+        dropConfig={{ enabled: true, defaultItem: { i: "new", w: 1, h: 1 } }}
+      >
+        <div key="new" />
+      </GridLayout>
+    );
+    const view = render(grid(1200));
+    view.rerender(grid(1100));
+    expect(warnedCodes()).toEqual(["RGL_W018"]);
+    expect(String(warn.mock.calls[0]![0])).toContain('"new"');
+  });
+
+  test("RGL_W018 is silent when dropping is off or the ids differ", () => {
+    render(
+      <GridLayout
+        width={1200}
+        layout={[{ i: "new", x: 0, y: 0, w: 1, h: 1 }]}
+        dropConfig={{ enabled: false, defaultItem: { i: "new", w: 1, h: 1 } }}
+      >
+        <div key="new" />
+      </GridLayout>
+    );
+    render(
+      <GridLayout
+        width={1200}
+        layout={[{ i: "a", x: 0, y: 0, w: 1, h: 1 }]}
+        dropConfig={{ enabled: true, defaultItem: { i: "new", w: 1, h: 1 } }}
+      >
+        <div key="a" />
+      </GridLayout>
+    );
+    expect(warn).not.toHaveBeenCalled();
+  });
+
   test("an explicit i: undefined keeps the default id", () => {
     const [, item] = dropWith({ i: undefined, w: 1, h: 1 });
     expect(item.i).toBe("__dropping-elem__");

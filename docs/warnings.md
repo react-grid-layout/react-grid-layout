@@ -34,6 +34,7 @@ removed in 3.0.
 | `RGL_W015` | Runtime, once per grid | A `data-grid` child prop on the modern entry; pass `layout` or `layouts`.                  |
 | `RGL_W016` | JSDoc                  | The five named overlap compactor variants are deprecated.                                  |
 | `RGL_W017` | Runtime, once per grid | `droppingItem` on the modern entry; use `dropConfig.defaultItem`.                          |
+| `RGL_W018` | Runtime, once per grid | A droppable grid has an item whose id equals the dropping item's id.                       |
 
 ### RGL_W002: layout input clamped
 
@@ -157,7 +158,17 @@ entry keeps `droppingItem` and never warns.
 The id works as `droppingItem.i` always has: it names the placeholder while a
 drag is over the grid, and the grid removes any layout item with that id when
 a drag enters or leaves. In `onDrop`, give the new item its own id rather than
-keeping `i`, or the next drop replaces it.
+keeping `i`, or the next drop replaces it. `RGL_W018` warns when that happens.
+
+### RGL_W018: an item uses the dropping id
+
+A droppable grid has a child whose key equals the dropping item's id
+(`dropConfig.defaultItem.i`, `droppingItem.i`, or the default
+`"__dropping-elem__"`). The grid removes every layout item with that id when an
+external drag enters or leaves it, so this item would disappear on the next
+drag. This usually means `onDrop` kept the dropped item's id. Give the new item
+its own id there, or set `dropConfig.defaultItem.i` to an id no item uses.
+Legacy grids warn too, because the removal happens there as well.
 
 ## Announced for 3.0, no code
 

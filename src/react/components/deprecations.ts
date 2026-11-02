@@ -40,6 +40,35 @@ function hasDataGrid(children: React.ReactNode): boolean {
   return found;
 }
 
+/**
+ * RGL_W018: a grid child uses the dropping item's id. The drop pipeline
+ * removes every layout item with that id when an external drag enters or
+ * leaves, so the child would vanish on the next drag. Development only.
+ */
+export function useDropIdCheck(
+  enabled: boolean,
+  id: string,
+  children: React.ReactNode
+): void {
+  const scope = useWarningScope();
+  useEffect(() => {
+    if (!enabled || !isDevelopment()) return;
+    let clash = false;
+    React.Children.forEach(children, child => {
+      if (React.isValidElement(child) && String(child.key) === id) clash = true;
+    });
+    if (!clash) return;
+    devWarn(
+      scope,
+      "RGL_W018",
+      `ReactGridLayout: a grid item uses the dropping item's id ${JSON.stringify(id)}. ` +
+        "The grid removes the item with this id whenever an external drag enters " +
+        "or leaves. Give a dropped item its own id in onDrop, or set " +
+        "dropConfig.defaultItem.i to an id no item uses."
+    );
+  }, [enabled, id, children, scope]);
+}
+
 const W014 =
   "ReactGridLayout: `onDropDragOver` is deprecated and is removed in 3.0. " +
   "Use `dropConfig.onDragOver`, which receives the native DragEvent " +

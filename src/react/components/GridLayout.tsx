@@ -60,6 +60,7 @@ import { GridItem, type ResizeHandle } from "./GridItem.js";
 import { computeDropPosition } from "./dropMath.js";
 import {
   LegacyEntryContext,
+  useDropIdCheck,
   useModernEntryDeprecations
 } from "./deprecations.js";
 
@@ -428,6 +429,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       )[0]!,
     [droppingItemProp, defaultDropItem, cols, maxRows]
   );
+
+  useDropIdCheck(isDroppable, droppingItem.i, children);
 
   // Position strategy values
   const useCSSTransforms = positionStrategy.type === "transform";
