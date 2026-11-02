@@ -219,11 +219,6 @@ function movedItem(
 }
 
 /**
- * Layout equality for change notifications. `moved` is interaction bookkeeping
- * that no compactor resets in free-form mode, so a drag that ends where it
- * started would otherwise count as a change.
- */
-/**
  * Whether two compactors behave the same, so swapping one for the other needs
  * no re-sync (RX-8b). A new object with the same four fields, such as an inline
  * `{ ...verticalCompactor, preventCollision: true }` or the legacy wrapper's
@@ -239,6 +234,11 @@ function sameCompactor(a: Compactor, b: Compactor): boolean {
   );
 }
 
+/**
+ * Layout equality for change notifications. `moved` is interaction bookkeeping
+ * that no compactor resets in free-form mode, so a drag that ends where it
+ * started would otherwise count as a change.
+ */
 function sameLayout(a: Layout, b: Layout): boolean {
   if (a === b) return true;
   if (a.length !== b.length) return false;
