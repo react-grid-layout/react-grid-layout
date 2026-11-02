@@ -126,6 +126,13 @@ interface WrapState {
   coordinates: number[];
 }
 
+/** How a sample row relates vertically to another item, as collides() sees it. */
+function verticalRelation(y: number, h: number, other: LayoutItem): number {
+  const end = y + h;
+  const top = end < other.y ? 0 : end === other.y ? 1 : 2;
+  return top * 2 + (y >= other.y + other.h ? 1 : 0);
+}
+
 /** First y++ sample where the set of vertically intersecting items changes. */
 function nextCollisionRow(
   compareWith: Layout,
@@ -139,9 +146,22 @@ function nextCollisionRow(
     const enter = Math.floor(other.y - item.h - y) + 1;
     const touch = Math.ceil(other.y - item.h - y);
     const leave = Math.ceil(other.y + other.h - y);
-    if (enter > 0) steps = Math.min(steps, enter);
-    if (touch > 0) steps = Math.min(steps, touch);
-    if (leave > 0) steps = Math.min(steps, leave);
+    let candidate = Infinity;
+    if (enter > 0) candidate = Math.min(candidate, enter);
+    if (touch > 0) candidate = Math.min(candidate, touch);
+    if (leave > 0) candidate = Math.min(candidate, leave);
+    if (!Number.isFinite(candidate)) continue;
+    // The closed forms subtract in floating point, so with fractional rows
+    // they can land one sample late (2.7 - 1.7 > 1). Overshooting skips a
+    // change, so step back while the previous sample already differs.
+    const base = verticalRelation(y, item.h, other);
+    while (
+      candidate > 1 &&
+      verticalRelation(advanceRows(y, candidate - 1), item.h, other) !== base
+    ) {
+      candidate--;
+    }
+    steps = Math.min(steps, candidate);
   }
   return Number.isFinite(steps) ? advanceRows(y, steps) : Infinity;
 }

@@ -45,3 +45,15 @@ describe("classic compaction retains the pre-jump finite-input contract", () => 
     }
   );
 });
+
+it("horizontal wrap on decimal geometry matches the pre-jump result", () => {
+  // Found by the review gate after #2328: the wrap jump left a one-row gap.
+  const layout = () => [
+    { i: "0", x: 0, y: 1, w: 1.7, h: 1.7 },
+    { i: "1", x: 12, y: 1.1, w: 1.1, h: 3 },
+    { i: "2", x: 3, y: 0.7, w: 2, h: 3 }
+  ];
+  const actual = classicCompactor(HORIZONTAL).compact(layout(), 2);
+  const expected = legacyClassicCompactor(HORIZONTAL).compact(layout(), 2);
+  expect(actual.map(l => [l.x, l.y])).toEqual(expected.map(l => [l.x, l.y]));
+});
