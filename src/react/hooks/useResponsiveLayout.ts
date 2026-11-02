@@ -5,7 +5,14 @@
  * Extracts state management from ResponsiveReactGridLayout into a reusable hook.
  */
 
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef
+} from "react";
 import { deepEqual } from "fast-equals";
 import type {
   Layout,
@@ -210,12 +217,15 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     intakeLayouts(unvalidatedLayouts, colsConfig, maxRows)
   );
 
-  // Setters read the latest config through refs so they stay stable when
-  // cols is an inline object.
+  // Setters read config through refs so they stay stable when cols is an
+  // inline object. The refs update in a layout effect, so they only ever hold
+  // committed config, never that of a render React discarded or suspended.
   const colsConfigRef = useRef(colsConfig);
-  colsConfigRef.current = colsConfig;
   const maxRowsRef = useRef(maxRows);
-  maxRowsRef.current = maxRows;
+  useLayoutEffect(() => {
+    colsConfigRef.current = colsConfig;
+    maxRowsRef.current = maxRows;
+  }, [colsConfig, maxRows]);
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);

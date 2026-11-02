@@ -203,6 +203,44 @@ test("useResponsiveLayout setLayouts stores the input as it was at the call", ()
   expect(hook.result.current.layouts.lg![0]!.x).toBe(0);
 });
 
+test("useResponsiveLayout setters use committed cols, not a suspended render's", async () => {
+  const never = new Promise<void>(() => {});
+  const committed: {
+    api?: ReturnType<typeof useResponsiveLayout<string>>;
+    layouts?: Record<string, Layout | undefined>;
+  } = {};
+  function Harness({ cols, suspend }: { cols: number; suspend: boolean }) {
+    const result = useResponsiveLayout<string>({
+      width: 800,
+      breakpoints: { lg: 0 },
+      cols: { lg: cols },
+      compactor: noCompactor
+    });
+    React.useLayoutEffect(() => {
+      committed.api = result;
+      committed.layouts = result.layouts;
+    });
+    if (suspend) throw never;
+    return null;
+  }
+  const view = render(
+    <React.Suspense fallback={null}>
+      <Harness cols={4} suspend={false} />
+    </React.Suspense>
+  );
+  await act(async () => {
+    React.startTransition(() => {
+      view.rerender(
+        <React.Suspense fallback={null}>
+          <Harness cols={2} suspend={true} />
+        </React.Suspense>
+      );
+    });
+  });
+  act(() => committed.api!.setLayoutForBreakpoint("lg", [{ ...item, w: 4 }]));
+  expect(committed.layouts!.lg![0]!.w).toBe(4);
+});
+
 test("useResponsiveLayout setters stay stable across inline cols objects", () => {
   const hook = renderHook(() =>
     useResponsiveLayout<string>({
