@@ -205,6 +205,37 @@ describe("moveElement does not mutate its input", () => {
     expect(result.find(item => item.i === "a")).toMatchObject({ x: 0, y: 1 });
   });
 
+  it("decides the early returns from the layout entry, not the detached copy", () => {
+    const layout = freeze([
+      { i: "a", x: 0, y: 0, w: 1, h: 1 },
+      { i: "b", x: 5, y: 5, w: 1, h: 1, static: true }
+    ]);
+    // The copy already reads (3, 0); the entry at (0, 0) must still move.
+    const moved = moveElement(
+      layout,
+      freeze({ ...layout[0]!, x: 3 }),
+      3,
+      0,
+      true,
+      false,
+      "vertical",
+      12
+    );
+    expect(moved[0]).toMatchObject({ x: 3, y: 0, moved: true });
+    // A copy that drops the static flag does not unpin a static entry.
+    const pinned = moveElement(
+      layout,
+      freeze({ ...layout[1]!, static: false }),
+      0,
+      5,
+      true,
+      false,
+      "vertical",
+      12
+    );
+    expect(pinned[1]).toBe(layout[1]);
+  });
+
   it("never writes to a frozen input across 2,000 seeded cases", () => {
     const next = mulberry32(20_261_102);
     const pick = <T>(xs: readonly T[]): T =>

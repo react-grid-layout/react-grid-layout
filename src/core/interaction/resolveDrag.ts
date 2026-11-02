@@ -20,8 +20,7 @@ function shallowEqual(a: LayoutItem, b: LayoutItem): boolean {
  * The resolver below works by writing positions into the items it is given.
  * Here it gets a shallow copy of every item (one copy per distinct reference,
  * so a repeated reference stays repeated). `l` is found by reference, then by
- * id, so a detached copy of a layout item moves that item (C-B16). The early
- * returns read `l` itself, as they always have. Copies the
+ * id, so a detached copy of a layout item moves that item (C-B16). Copies the
  * move left equal to their original are swapped back, so untouched items keep
  * their identity, and a move that changed nothing returns `layout` itself.
  */
@@ -35,15 +34,20 @@ export function moveWithoutMutation(
   preventCollision: boolean | undefined,
   allowOverlap?: boolean
 ): LayoutItem[] {
+  // A detached copy of a layout item stands for that item, and the layout
+  // entry, not the copy, supplies its fields, early returns included. An item
+  // with no entry moves on its own.
+  const entry = layout.includes(l)
+    ? l
+    : (layout.find(item => item !== undefined && item.i === l.i) ?? l);
+
   // Early returns write nothing, so they need no copies.
-  if (l.static && l.isDraggable !== true) return [...layout];
-  if (l.y === y && l.x === x) return [...layout];
+  if (entry.static && entry.isDraggable !== true) return [...layout];
+  if (entry.y === y && entry.x === x) return [...layout];
 
   const working: LayoutItem[] = new Array(layout.length);
   const copies = new Map<LayoutItem, LayoutItem>();
   const originals = new Map<LayoutItem, LayoutItem>();
-  let target: LayoutItem | undefined;
-  let sameId: LayoutItem | undefined;
   for (let i = 0; i < layout.length; i++) {
     if (!(i in layout)) continue;
     const item = layout[i];
@@ -58,12 +62,8 @@ export function moveWithoutMutation(
       originals.set(copy, item);
     }
     working[i] = copy;
-    if (item === l) target = copy;
-    else if (sameId === undefined && item.i === l.i) sameId = copy;
   }
-  // A detached copy of a layout item moves that item; the layout entry, not
-  // the copy, supplies its fields. An item with no entry moves on its own.
-  target ??= sameId ?? { ...l };
+  const target = copies.get(entry) ?? { ...l };
 
   const result = new DragResolver(compactType).move(
     working,
