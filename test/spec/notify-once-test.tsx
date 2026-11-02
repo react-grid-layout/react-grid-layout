@@ -141,3 +141,25 @@ test("a controlled parent that echoes the layout sees one onLayoutChange per dra
   ]);
   expect(onLayoutChange).toHaveBeenCalledTimes(1);
 });
+
+test("a real item that uses the default dropping id stays in the stop report", () => {
+  const onLayoutChange = jest.fn();
+  const layout = [
+    { i: "a", x: 0, y: 0, w: 1, h: 1 },
+    { i: "__dropping-elem__", x: 1, y: 0, w: 1, h: 1 }
+  ];
+  const fixture = mountGrid({
+    variant: variant("none"),
+    layout,
+    props: { onLayoutChange }
+  });
+  onLayoutChange.mockClear();
+  drag(fixture, "a", [
+    [0, 7],
+    [0, 210]
+  ]);
+  expect(onLayoutChange).toHaveBeenCalledTimes(1);
+  expect(onLayoutChange.mock.calls[0][0].map((l: any) => l.i)).toContain(
+    "__dropping-elem__"
+  );
+});

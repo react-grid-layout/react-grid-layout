@@ -576,17 +576,14 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   // layout reported, so a gesture stop that reports synchronously and the
   // effect below that sees the same layout a render later notify once (RX-5,
   // #1984), and a drag that ends where it started notifies zero times (C-B2).
+  // `report` is what the consumer sees; it defaults to `next`.
   const notifyLayoutChange = useCallback(
-    (next: Layout) => {
+    (next: Layout, report: Layout = next) => {
       if (sameLayout(next, prevLayoutRef.current)) return;
       prevLayoutRef.current = next;
-      // Filter out dropping placeholder - it's transient internal state only (#2210)
-      // The dropping item should not be exposed to users until the actual drop happens.
-      // This prevents infinite loops in controlled state patterns where children derive
-      // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
-      onLayoutChange(next.filter(l => l.i !== droppingItem.i));
+      onLayoutChange(report);
     },
-    [onLayoutChange, droppingItem.i]
+    [onLayoutChange]
   );
 
   // Layout change callback
@@ -600,8 +597,18 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     // post-drop layout change fires normally. Skipping the prevLayoutRef sync
     // here is intentional — the suppressed states must not desync the
     // comparison, or the real change would be compared against the placeholder.
-    if (!activeDrag && !droppingDOMNode) notifyLayoutChange(layout);
-  }, [layout, activeDrag, droppingDOMNode, notifyLayoutChange]);
+    if (activeDrag || droppingDOMNode) return;
+    // Filter out dropping placeholder - it's transient internal state only (#2210)
+    // The dropping item should not be exposed to users until the actual drop happens.
+    // This prevents infinite loops in controlled state patterns where children derive
+    // from layout (e.g., children = layouts.map(...) with onLayoutChange={setLayouts}).
+    // The stop handlers report their layout unfiltered, as before, so a real item
+    // that happens to use the dropping id is never dropped from their report.
+    notifyLayoutChange(
+      layout,
+      layout.filter(l => l.i !== droppingItem.i)
+    );
+  }, [layout, activeDrag, droppingDOMNode, notifyLayoutChange, droppingItem.i]);
 
   // ============================================================================
   // Container Height
