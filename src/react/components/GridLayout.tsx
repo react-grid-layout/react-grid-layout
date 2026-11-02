@@ -58,6 +58,11 @@ import { defaultConstraints } from "../../core/constraints.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
 import { computeDropPosition } from "./dropMath.js";
+import {
+  LegacyEntryContext,
+  useDropIdCheck,
+  useModernEntryDeprecations
+} from "./deprecations.js";
 
 // ============================================================================
 // Types
@@ -131,7 +136,11 @@ export interface GridLayoutProps {
   /** Layout definition */
   layout?: Layout;
 
-  /** Item to use when dropping from outside */
+  /**
+   * Item to use when dropping from outside.
+   * @deprecated Use `dropConfig.defaultItem`, which accepts `i` (RGL_W017).
+   * Removed in 3.0, where `dropConfig.defaultItem` is renamed `dropConfig.item`.
+   */
   droppingItem?: LayoutItem;
 
   // ===========================================================================
@@ -178,7 +187,11 @@ export interface GridLayoutProps {
   /** Called when an item is dropped from outside */
   onDrop?: (layout: Layout, item: LayoutItem | undefined, e: Event) => void;
 
-  /** Called when dragging over the grid */
+  /**
+   * Called when dragging over the grid.
+   * @deprecated Use `dropConfig.onDragOver`, which receives the native
+   * DragEvent (RGL_W014). Removed in 3.0.
+   */
   onDropDragOver?: (
     e: ReactDragEvent
   ) =>
@@ -345,6 +358,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     onDropDragOver: onDropDragOverProp = noop
   } = props;
 
+  const legacyEntry = useModernEntryDeprecations(props);
+
   // Resolve config interfaces with defaults
   const gridConfig: GridConfig = useMemo(
     () => ({ ...defaultGridConfig, ...gridConfigProp }),
@@ -403,8 +418,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
             x: 0,
             y: 0,
             ...(droppingItemProp ?? {
-              i: "__dropping-elem__",
-              ...defaultDropItem
+              // `dropConfig={{ defaultItem: undefined }}` is a valid Partial.
+              ...(defaultDropItem ?? defaultDropConfig.defaultItem),
+              // An own `i: undefined` must not replace the default id.
+              i: defaultDropItem?.i ?? "__dropping-elem__"
             })
           }
         ],
@@ -412,6 +429,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       )[0]!,
     [droppingItemProp, defaultDropItem, cols, maxRows]
   );
+
+  useDropIdCheck(isDroppable, droppingItem.i, children);
 
   // Position strategy values
   const useCSSTransforms = positionStrategy.type === "transform";
@@ -1422,7 +1441,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     ...style
   };
 
-  return (
+  const grid = (
     <div
       ref={setGridRef}
       className={mergedClassName}
@@ -1439,6 +1458,14 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       {isDroppable && droppingDOMNode && processGridItem(droppingDOMNode, true)}
       {renderPlaceholder()}
     </div>
+  );
+  // A modern grid nested in a legacy grid's item is not legacy.
+  return legacyEntry ? (
+    <LegacyEntryContext.Provider value={false}>
+      {grid}
+    </LegacyEntryContext.Provider>
+  ) : (
+    grid
   );
 }
 

@@ -496,7 +496,7 @@ describe("validateLayoutInput", () => {
   test("caps rows, preserves fractions and optional fields, and warns once per call", () => {
     expect(MAX_GRID_ROWS).toBe(10_000);
     expect(
-      validateLayoutInput([hostile, hostile], { cols: 4 })[0]
+      validateLayoutInput([hostile, { ...hostile, i: "other" }], { cols: 4 })[0]
     ).toMatchObject({ y: 10_000, h: 10_000, minH: 10_000, maxH: Infinity });
     expect(warning).toHaveBeenCalledTimes(1);
     warning.mockClear();

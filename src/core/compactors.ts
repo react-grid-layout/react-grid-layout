@@ -54,6 +54,8 @@ function normalizeCompactionInputs(
  * @param moveToCoord - Target coordinate
  * @param axis - Which axis to move on ('x' or 'y')
  * @param hasStatics - Whether layout contains static items (disables early break optimization)
+ * @deprecated Announced for 3.0, which removes it. There is no replacement in
+ * 2.4; the 3.0 migration guide names it. It keeps working through 2.4.x.
  */
 export function resolveCompactionCollision(
   layout: Layout,
@@ -85,6 +87,8 @@ export function resolveCompactionCollision(
  * @param fullLayout - Full layout for collision resolution
  * @param maxY - Maximum Y to start from
  * @returns The compacted item
+ * @deprecated Announced for 3.0, which removes it. There is no replacement in
+ * 2.4; the 3.0 migration guide names it. It keeps working through 2.4.x.
  */
 export function compactItemVertical(
   compareWith: Layout,
@@ -109,6 +113,8 @@ export function compactItemVertical(
  * @param cols - Number of columns in the grid
  * @param fullLayout - Full layout for collision resolution
  * @returns The compacted item
+ * @deprecated Announced for 3.0, which removes it. There is no replacement in
+ * 2.4; the 3.0 migration guide names it. It keeps working through 2.4.x.
  */
 export function compactItemHorizontal(
   compareWith: Layout,
@@ -175,6 +181,11 @@ export const noCompactor: Compactor = {
  *
  * Items compact upward but are allowed to overlap each other.
  * Useful for layered layouts or when collision detection is handled externally.
+ * @deprecated Removed in 3.0 (RGL_W016). Use `noOverlapCompactor`, which keeps
+ * positions as this variant does. One difference: ResponsiveGridLayout
+ * generates a missing breakpoint at mount by compaction type, so this variant
+ * compacts that generated layout and `noOverlapCompactor` (type null) does
+ * not. Behavior is unchanged through 2.4.x.
  */
 export const verticalOverlapCompactor: Compactor = {
   ...verticalCompactor,
@@ -188,6 +199,11 @@ export const verticalOverlapCompactor: Compactor = {
 
 /**
  * Horizontal compactor that allows overlapping items.
+ * @deprecated Removed in 3.0 (RGL_W016). Use `noOverlapCompactor`, which keeps
+ * positions as this variant does. One difference: ResponsiveGridLayout
+ * generates a missing breakpoint at mount by compaction type, so this variant
+ * compacts that generated layout and `noOverlapCompactor` (type null) does
+ * not. Behavior is unchanged through 2.4.x.
  */
 export const horizontalOverlapCompactor: Compactor = {
   ...horizontalCompactor,

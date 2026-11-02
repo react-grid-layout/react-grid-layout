@@ -18,6 +18,13 @@ Individual grid item. Integrates react-draggable + react-resizable.
   - Walks up from the dragged DOM node (not offsetParent) to find the nearest scrollable container
 - `getConstraintContext(containerHeight?)` — resize handler measures the grid container (`node.offsetParent.clientHeight`) and feeds it into `containerBounds.constrainSize` so isBounded grids clamp resize to the visible container (#1779)
 
+### deprecations.ts (private)
+
+- `LegacyEntryContext` — true below `/legacy` wrappers; GridLayout resets it for its children
+- `useModernEntryDeprecations` — RGL_W014/W015/W017 once per modern grid (effect, per-instance scope)
+- `useDevWarning(condition, code, message)` — once-per-instance effect warning (RGL_W009 in the public `GridItem`, RGL_W010 in legacy)
+- Public `GridItem` export is `PublicGridItem` (warns on live position flags); GridLayout renders the internal `GridItem`
+
 ### edgeScroll.ts (NEW — 2026-08)
 
 Auto-scroll rAF loop for drag near edge.

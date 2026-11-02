@@ -31,7 +31,7 @@ All type definitions.
 - `moveElement(layout, item, x, y, ...)` — core movement with collision resolution
 - `moveElementAwayFromCollision(...)` — wrap treated as horizontal push; free-form swap tight (no gap)
 - `correctBounds(layout, {cols})` — clamps x; clamps y:Infinity to layout bottom
-- `validateLayout` — required properties check
+- `assertLayoutStructure` — required properties check (throws); `validateLayout` is its deprecated alias (RGL_W013)
 
 ### collision.ts
 - `collides(l1, l2)`, `getFirstCollision`, `getAllCollisions`
@@ -55,6 +55,15 @@ Six built-in implementations of `Compactor`:
 - `getCompactor(compactType)` — lookup by type string
 - `compactItemVertical`, `compactItemHorizontal` — per-item compact
 - `resolveCompactionCollision` — recursive collision resolution
+
+### dev.ts (internal, not exported)
+Coded warnings; codes documented in `docs/warnings.md`.
+- `devWarn(scope, code, message)` — once per scope+code, development only; `null` scope warns every call
+- `reportOnce(scope, code, message)` — console.error once per scope+code, production too (3.0 strategy errors)
+- `isDevelopment()` — reads the literal `process.env.NODE_ENV` in try/catch
+
+### validation.ts
+- `validateLayoutInput` — intake bounds; RGL_W002 on clamp, RGL_W007 on duplicate ids (per call, dev)
 
 ### calculate.ts
 Grid unit <-> pixel conversions.

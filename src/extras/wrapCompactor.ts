@@ -363,6 +363,8 @@ export const wrapCompactor: Compactor = {
 
 /**
  * Wrap compactor that allows overlapping items.
+ * @deprecated Removed in 3.0 (RGL_W016). Use `noOverlapCompactor` from `react-grid-layout/core`, which keeps
+ * positions as this variant does. Behavior is unchanged through 2.4.x.
  */
 export const wrapOverlapCompactor: Compactor = {
   ...wrapCompactor,

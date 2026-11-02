@@ -105,7 +105,9 @@ export function getColsFromBreakpoint<B extends Breakpoint>(
  * @param breakpoint - Target breakpoint
  * @param lastBreakpoint - Previous breakpoint (for fallback)
  * @param cols - Column count for the target breakpoint
- * @param compactTypeOrCompactor - Compaction type string (legacy) or Compactor object
+ * @param compactTypeOrCompactor - Compactor object, or a compaction type string.
+ *   The string form is deprecated (RGL_W008) and removed in 3.0; pass a
+ *   compactor object such as `verticalCompactor`.
  * @returns Layout for the breakpoint
  */
 export function findOrGenerateResponsiveLayout<B extends Breakpoint>(

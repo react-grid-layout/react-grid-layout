@@ -643,8 +643,10 @@ The function preserves its input and returns normalized geometry:
   bounds correction and compaction. Collision resolution can stack items beyond
   the input row limit; the limit does not truncate a populated grid.
 
-Clamping emits one `console.warn` per validation call in development, and none
-in production. This covers layout props and updates, responsive layouts,
+Clamping emits one `console.warn` (`RGL_W002`) per validation call in
+development, and none in production. A layout with two items that share an `i`
+emits `RGL_W007` the same way; the items are kept. See
+[docs/warnings.md](./docs/warnings.md) for every warning code. This covers layout props and updates, responsive layouts,
 `data-grid` children, hook setters, and external drop items. Legacy components
 use the same validation through their v2 wrappers. Custom constraints and
 compactors remain responsible for the work and geometry they produce.
@@ -847,7 +849,7 @@ import {
   moveElement,
   collides,
   getFirstCollision,
-  validateLayout
+  assertLayoutStructure
   // ... and more
 } from "react-grid-layout/core";
 ```

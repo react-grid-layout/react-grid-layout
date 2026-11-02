@@ -351,6 +351,8 @@ export function correctBounds(
  * @param _cols - Unused; kept so existing callers compile
  * @param allowOverlap - True to allow items to stack on top of each other
  * @returns The updated layout
+ * @deprecated Announced for 3.0, which removes it. There is no replacement in
+ * 2.4; the 3.0 migration guide names it. It keeps working through 2.4.x.
  */
 export function moveElement(
   layout: Layout,
@@ -391,6 +393,8 @@ export function moveElement(
  * @param compactType - Compaction type
  * @param _cols - Unused; kept so existing callers compile
  * @returns Updated layout
+ * @deprecated Announced for 3.0, which removes it. There is no replacement in
+ * 2.4; the 3.0 migration guide names it. It keeps working through 2.4.x.
  */
 export function moveElementAwayFromCollision(
   layout: Layout,
@@ -414,13 +418,19 @@ export function moveElementAwayFromCollision(
 // ============================================================================
 
 /**
- * Validate that a layout has the required properties.
+ * Assert that a layout has the required structure, and throw if it does not.
  *
- * @param layout - Layout to validate
+ * The input must be an array. Every defined item needs numeric, non-NaN `x`,
+ * `y`, `w` and `h`, and a present `i` must be a string. Infinity and
+ * out-of-bounds numbers are accepted. The input is never changed. To repair
+ * out-of-bounds values instead of rejecting, use `validateLayoutInput`, which
+ * does not throw.
+ *
+ * @param layout - Layout to check
  * @param contextName - Name for error messages
  * @throws Error if layout is invalid
  */
-export function validateLayout(
+export function assertLayoutStructure(
   layout: Layout,
   contextName: string = "Layout"
 ): void {
@@ -451,4 +461,22 @@ export function validateLayout(
       );
     }
   }
+}
+
+/**
+ * Validate that a layout has the required properties.
+ *
+ * @deprecated Use `assertLayoutStructure`, which has the same checks and
+ * messages (RGL_W013). `validateLayout` is removed in 3.0. Do not replace it
+ * with `validateLayoutInput`: that repairs input instead of throwing.
+ *
+ * @param layout - Layout to validate
+ * @param contextName - Name for error messages
+ * @throws Error if layout is invalid
+ */
+export function validateLayout(
+  layout: Layout,
+  contextName: string = "Layout"
+): void {
+  assertLayoutStructure(layout, contextName);
 }

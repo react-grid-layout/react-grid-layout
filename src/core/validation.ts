@@ -5,6 +5,7 @@ import type {
   LayoutItem,
   ResponsiveLayouts
 } from "./types.js";
+import { devWarn, isDevelopment } from "./dev.js";
 
 /** Absolute bound for rows and vertical dimensions supplied by a layout. */
 export const MAX_GRID_ROWS = 10_000;
@@ -79,7 +80,8 @@ function atLeast(value: number, lower: number): number {
  * present minimum if necessary, so constraints cannot restore oversized items.
  *
  * Unchanged layouts are returned as-is. Changed layouts contain new items and
- * emit one console.warn per call in development. These are intake bounds, not
+ * emit one RGL_W002 console.warn per call in development. Duplicate ids are
+ * kept as they are and emit one RGL_W007 warning per call in development. These are intake bounds, not
  * a cap on the final bottom: collision resolution can stack items below them.
  */
 export function validateLayoutInput(
@@ -95,9 +97,16 @@ export function validateLayoutInput(
     ? Math.max(1, Math.min(MAX_GRID_ROWS, maxRows))
     : MAX_GRID_ROWS;
   let output: LayoutItem[] | undefined;
+  // Duplicate ids collide as one item (C-B14). Checked in development only.
+  const seen = isDevelopment() ? new Set<string>() : undefined;
+  let duplicate: string | undefined;
   for (let index = 0; index < layout.length; index++) {
     const item = layout[index];
     if (item === undefined) continue;
+    if (seen) {
+      if (duplicate === undefined && seen.has(item.i)) duplicate = item.i;
+      seen.add(item.i);
+    }
     const w = hasCols ? size(item.w, widthLimit) : item.w;
     const h = size(item.h, rowLimit);
     const x = hasCols ? bounded(item.x, 0, widthLimit - w) : item.x;
@@ -136,12 +145,20 @@ export function validateLayoutInput(
     if (maxH !== undefined) normalized.maxH = maxH;
     output[index] = normalized;
   }
-  if (
-    output &&
-    typeof process !== "undefined" &&
-    process.env["NODE_ENV"] !== "production"
-  ) {
-    console.warn("ReactGridLayout: layout input was clamped to grid bounds.");
+  if (output) {
+    devWarn(
+      null,
+      "RGL_W002",
+      "ReactGridLayout: layout input was clamped to grid bounds."
+    );
+  }
+  if (duplicate !== undefined) {
+    devWarn(
+      null,
+      "RGL_W007",
+      `ReactGridLayout: layout contains more than one item with i ${JSON.stringify(duplicate)}. ` +
+        "Items that share an id collide as one item; give each a unique i."
+    );
   }
   return output ?? layout;
 }

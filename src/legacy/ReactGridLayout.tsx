@@ -8,6 +8,10 @@
 
 import React from "react";
 import {
+  LegacyEntryContext,
+  useDevWarning
+} from "../react/components/deprecations.js";
+import {
   GridLayout,
   type GridLayoutProps
 } from "../react/components/GridLayout.js";
@@ -179,13 +183,13 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
   // Handle deprecated verticalCompact prop
   let compactType: CompactType =
     compactTypeProp === undefined ? "vertical" : compactTypeProp;
+  useDevWarning(
+    verticalCompact === false,
+    "RGL_W010",
+    "`verticalCompact` on <ReactGridLayout> is deprecated and will be removed soon. " +
+      'Use `compactType`: "horizontal" | "vertical" | null.'
+  );
   if (verticalCompact === false) {
-    if (process.env["NODE_ENV"] !== "production") {
-      console.warn(
-        "`verticalCompact` on <ReactGridLayout> is deprecated and will be removed soon. " +
-          'Use `compactType`: "horizontal" | "vertical" | null.'
-      );
-    }
     compactType = null;
   }
 
@@ -239,7 +243,7 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
     ? [...defaultConstraints, containerBounds]
     : defaultConstraints;
 
-  return (
+  const grid = (
     <GridLayout
       width={width}
       gridConfig={gridConfig}
@@ -267,6 +271,11 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
     >
       {children}
     </GridLayout>
+  );
+  return (
+    <LegacyEntryContext.Provider value={true}>
+      {grid}
+    </LegacyEntryContext.Provider>
   );
 }
 

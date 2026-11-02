@@ -111,6 +111,7 @@ export {
   moveElementAwayFromCollision,
 
   // Validation
+  assertLayoutStructure,
   validateLayout
 } from "./layout.js";
 

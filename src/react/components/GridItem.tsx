@@ -20,6 +20,7 @@ import {
   type EdgeScrollController
 } from "./edgeScroll.js";
 import clsx from "clsx";
+import { useDevWarning } from "./deprecations.js";
 
 import type {
   Position,
@@ -960,7 +961,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
  * skips unchanged items. Children are memoized by the consumer (the
  * documented perf contract), so identity-compare them here.
  */
-const GridItem = React.memo(GridItemInner, (prev, next) => {
+function sameGridItemProps(prev: GridItemProps, next: GridItemProps): boolean {
   // Geometry — the hot path during drag/resize.
   if (prev.x !== next.x || prev.y !== next.y) return false;
   if (prev.w !== next.w || prev.h !== next.h) return false;
@@ -1000,9 +1001,49 @@ const GridItem = React.memo(GridItemInner, (prev, next) => {
   if (prev.droppingPosition !== next.droppingPosition) return false;
 
   return true;
-});
+}
+
+/** The item GridLayout renders. Its flags are internal, so it never warns. */
+const GridItem = React.memo(GridItemInner, sameGridItemProps);
 
 GridItem.displayName = "GridItem";
 
+const W009 =
+  "ReactGridLayout: GridItem received `useCSSTransforms` or `usePercentages` " +
+  "without a `positionStrategy`. These flags are deprecated and are removed " +
+  "with the GridItem export in 3.0. A `positionStrategy` with `calcStyle` " +
+  "takes precedence over both. Pass `transformStrategy` for transforms or " +
+  "`absoluteStrategy` for pixel top/left. To keep `useCSSTransforms={false}` " +
+  "with `usePercentages`, pass a strategy built from `absoluteStrategy` whose " +
+  "`calcStyle(pos)` returns its pixel style with `left` and `width` as " +
+  "percentages of `containerWidth`.";
+
+/** Direct use of GridItem: RGL_W009 for live position flags. */
+function DirectGridItem(props: GridItemProps): ReactElement {
+  useDevWarning(
+    (props.useCSSTransforms !== undefined ||
+      props.usePercentages !== undefined) &&
+      !props.positionStrategy?.calcStyle,
+    "RGL_W009",
+    W009
+  );
+  return GridItemInner(props);
+}
+
+/**
+ * The public GridItem export: the same component, plus a development warning
+ * (RGL_W009) when a direct caller passes the live position flags.
+ *
+ * @deprecated Announced for 3.0, which removes the GridItem export. There is
+ * no replacement in 2.4; the 3.0 migration guide covers it. It keeps working
+ * through 2.4.x.
+ */
+const PublicGridItem: typeof GridItem = React.memo(
+  DirectGridItem,
+  sameGridItemProps
+);
+
+PublicGridItem.displayName = "GridItem";
+
 export default GridItem;
-export { GridItem };
+export { GridItem, PublicGridItem };
