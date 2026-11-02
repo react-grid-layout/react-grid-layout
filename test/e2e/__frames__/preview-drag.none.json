@@ -1,0 +1,54 @@
+{
+  "platform": "linux",
+  "playwright": "1.62.1",
+  "frames": [
+    [
+      {
+        "i": "a",
+        "x": 207,
+        "y": 207,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 200,
+        "y": 200,
+        "width": 200,
+        "height": 200
+      }
+    ],
+    [
+      {
+        "i": "a",
+        "x": 213,
+        "y": 213,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 200,
+        "y": 200,
+        "width": 200,
+        "height": 200
+      }
+    ],
+    [
+      {
+        "i": "a",
+        "x": 221,
+        "y": 221,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "i": "placeholder",
+        "x": 200,
+        "y": 200,
+        "width": 200,
+        "height": 200
+      }
+    ]
+  ]
+}

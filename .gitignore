@@ -22,9 +22,13 @@ yarn-error.log
 .serena/
 
 test-results/
+playwright-report/
 test/e2e/harness-dist/
 
 # graphify knowledge graph (generated)
 graphify-out/
 
 package-lock.json
+
+# record-playwright-frames.cjs keeps the previous baselines here during a run
+test/e2e/.__frames__.backup/

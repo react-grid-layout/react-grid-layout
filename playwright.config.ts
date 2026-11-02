@@ -18,20 +18,29 @@ export default defineConfig({
   workers: 1, // Single grid state; keep tests isolated but serial
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: `http://localhost:${process.env.RGL_PORT || 4002}`,
-    trace: "retain-on-failure",
+    baseURL: `http://localhost:${process.env.RGL_PORT || 4106}`,
+    trace: "on",
     screenshot: "only-on-failure",
     headless: true
   },
   webServer: {
     // Serve the pre-built static harness. Build it first with `make e2e-build`.
-    command: `python3 -m http.server ${process.env.RGL_PORT || 4002} --directory test/e2e/harness-dist`,
-    url: `http://localhost:${process.env.RGL_PORT || 4002}/index.html`,
-    reuseExistingServer: true,
+    command: `python3 -m http.server ${process.env.RGL_PORT || 4106} --directory test/e2e/harness-dist`,
+    url: `http://localhost:${process.env.RGL_PORT || 4106}/index.html`,
+    reuseExistingServer: !process.env.CI,
     timeout: 15_000
   },
   projects: [
-    { name: "chromium", use: { browserName: "chromium" } }
+    {
+      name: "chromium",
+      testIgnore: "dist.spec.ts",
+      use: { browserName: "chromium" }
+    },
+    {
+      name: "dist",
+      testMatch: "dist.spec.ts",
+      use: { browserName: "chromium" }
+    }
     // Firefox + webkit require the browsers installed; add once the
     // cross-browser matrix is valuable. The Firefox drop-path differs.
   ]
