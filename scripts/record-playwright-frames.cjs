@@ -13,11 +13,24 @@ assert.equal(
 );
 const directory = path.join(__dirname, "../test/e2e/__frames__");
 const isBaseline = name => name !== "manifest.json" && name.endsWith(".json");
+const listBaselines = dir =>
+  fs.readdirSync(dir).filter(name => isBaseline(name));
 // Start from an empty baseline set, so the manifest lists exactly the files
 // this run wrote and a renamed or deleted scenario leaves no orphan behind.
+// The old set moves to a sibling backup and comes back if recording fails,
+// so a failed run never leaves the manifest naming files that are gone.
 fs.mkdirSync(directory, { recursive: true });
-for (const name of fs.readdirSync(directory).filter(name => isBaseline(name)))
-  fs.rmSync(path.join(directory, name));
+const backup = path.join(directory, "../.__frames__.backup");
+fs.rmSync(backup, { recursive: true, force: true });
+fs.mkdirSync(backup);
+for (const name of listBaselines(directory))
+  fs.renameSync(path.join(directory, name), path.join(backup, name));
+const restoreBackup = () => {
+  for (const name of listBaselines(directory))
+    fs.rmSync(path.join(directory, name));
+  for (const name of listBaselines(backup))
+    fs.renameSync(path.join(backup, name), path.join(directory, name));
+};
 const result = spawnSync(
   process.execPath,
   [
@@ -28,16 +41,15 @@ const result = spawnSync(
   ],
   { stdio: "inherit", env: { ...process.env, RGL_RECORD_FRAMES: "1" } }
 );
+if (result.error || result.status !== 0) restoreBackup();
+fs.rmSync(backup, { recursive: true, force: true });
 if (result.error) throw result.error;
 assert.equal(
   result.status,
   0,
   "Recorder assertions must pass before publishing baselines"
 );
-const files = fs
-  .readdirSync(directory)
-  .filter(name => isBaseline(name))
-  .toSorted();
+const files = listBaselines(directory).toSorted();
 fs.writeFileSync(
   path.join(directory, "manifest.json"),
   JSON.stringify(
