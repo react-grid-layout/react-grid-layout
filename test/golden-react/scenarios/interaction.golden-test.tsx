@@ -439,7 +439,7 @@ describe("bounded probes of known bugs", () => {
     }
   );
 
-  it("pins edge-scroll rAF left queued by unmount during drag", () => {
+  it("stops the edge-scroll rAF loop when an item unmounts during drag", () => {
     const pending = new Map<number, FrameRequestCallback>();
     let nextId = 0;
     const raf = jest
@@ -483,11 +483,9 @@ describe("bounded probes of known bugs", () => {
           pendingFrames: pending.size
         })
       );
-      expect(pending.has(edgeLoopId)).toBe(true);
-      expectGolden("edge-scroll-unmount-leak", "queued-raf", f.recorder.trace, {
-        knownBug:
-          "edge-scroll-unmount-leak: GridItem unmount does not stop the active edge-scroll rAF loop"
-      });
+      // Fixed by #2314: GridItem's unmount cleanup stops the controller.
+      expect(pending.has(edgeLoopId)).toBe(false);
+      expectGolden("edge-scroll-unmount-stop", "queued-raf", f.recorder.trace);
     } finally {
       pending.clear();
       raf.mockRestore();
