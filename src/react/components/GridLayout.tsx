@@ -1390,9 +1390,14 @@ function GridLayout(props: GridLayoutProps): ReactElement {
 function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
   const cols = props.gridConfig?.cols ?? defaultGridConfig.cols;
   const maxRows = props.gridConfig?.maxRows ?? defaultGridConfig.maxRows;
+  // Validate when the caller passes a new layout, not when cols or maxRows
+  // change. A new validated array would read as a new layout prop and reset
+  // the grid's own edits; the grid already re-bounds its state on a bounds
+  // change.
   const layout = useMemo(
     () => validateLayoutInput(props.layout ?? [], { cols, maxRows }),
-    [props.layout, cols, maxRows]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.layout]
   );
   return <GridLayout {...props} layout={layout} />;
 }
