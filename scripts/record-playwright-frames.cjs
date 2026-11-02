@@ -11,6 +11,13 @@ assert.equal(
   "1.62.1",
   "Update both workflow image tags with Playwright"
 );
+const directory = path.join(__dirname, "../test/e2e/__frames__");
+const isBaseline = name => name !== "manifest.json" && name.endsWith(".json");
+// Start from an empty baseline set, so the manifest lists exactly the files
+// this run wrote and a renamed or deleted scenario leaves no orphan behind.
+fs.mkdirSync(directory, { recursive: true });
+for (const name of fs.readdirSync(directory).filter(name => isBaseline(name)))
+  fs.rmSync(path.join(directory, name));
 const result = spawnSync(
   process.execPath,
   [
@@ -27,10 +34,9 @@ assert.equal(
   0,
   "Recorder assertions must pass before publishing baselines"
 );
-const directory = path.join(__dirname, "../test/e2e/__frames__");
 const files = fs
   .readdirSync(directory)
-  .filter(name => name !== "manifest.json" && name.endsWith(".json"))
+  .filter(name => isBaseline(name))
   .toSorted();
 fs.writeFileSync(
   path.join(directory, "manifest.json"),
