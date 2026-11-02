@@ -417,8 +417,9 @@ function GridLayout(props: GridLayoutProps): ReactElement {
             x: 0,
             y: 0,
             ...(droppingItemProp ?? {
-              i: "__dropping-elem__",
-              ...defaultDropItem
+              ...defaultDropItem,
+              // An own `i: undefined` must not replace the default id.
+              i: defaultDropItem.i ?? "__dropping-elem__"
             })
           }
         ],

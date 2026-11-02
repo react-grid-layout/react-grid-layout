@@ -126,6 +126,11 @@ variant's behavior.
 | `fastVerticalOverlapCompactor`   | `extras` | By hand. It closes gaps upward; `noOverlapCompactor` does not.    |
 | `fastHorizontalOverlapCompactor` | `extras` | By hand. It packs and wraps items; `noOverlapCompactor` does not. |
 
+In a `ResponsiveGridLayout`, a breakpoint generated at mount is compacted by
+the compactor's `type`. The core vertical and horizontal variants have type
+`"vertical"` and `"horizontal"`, so that generated layout is compacted;
+`noOverlapCompactor` has type `null` and leaves it as is.
+
 For the two fast variants, keep the arrangement in your own code before passing
 the layout to `noOverlapCompactor`, or accept the new positions.
 `{ ...compactor, allowOverlap: true }` does not keep either algorithm.

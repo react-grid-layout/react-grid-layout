@@ -429,8 +429,7 @@ describe("assertLayoutStructure (RGL_W013 replacement)", () => {
 });
 
 describe("dropConfig.defaultItem.i (RGL_W017 replacement)", () => {
-  test("names the dropped item", () => {
-    const defaultItem: DropConfig["defaultItem"] = { i: "new", w: 2, h: 1 };
+  function dropWith(defaultItem: DropConfig["defaultItem"]) {
     const onDrop = jest.fn();
     const view = render(
       <GridLayout
@@ -452,9 +451,18 @@ describe("dropConfig.defaultItem.i (RGL_W017 replacement)", () => {
     } finally {
       drop.uninstall();
     }
-    const [final, item] = onDrop.mock.calls[0] as [Layout, LayoutItem];
+    return onDrop.mock.calls[0] as [Layout, LayoutItem];
+  }
+
+  test("names the dropped item", () => {
+    const [final, item] = dropWith({ i: "new", w: 2, h: 1 });
     expect(item).toMatchObject({ i: "new", w: 2, h: 1 });
     expect(final.map(l => l.i).sort()).toEqual(["a", "new"]);
     expect(warn).not.toHaveBeenCalled();
+  });
+
+  test("an explicit i: undefined keeps the default id", () => {
+    const [, item] = dropWith({ i: undefined, w: 1, h: 1 });
+    expect(item.i).toBe("__dropping-elem__");
   });
 });
