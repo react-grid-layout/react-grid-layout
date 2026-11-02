@@ -19,18 +19,21 @@ const listBaselines = dir =>
 // this run wrote and a renamed or deleted scenario leaves no orphan behind.
 // The old set moves to a sibling backup and comes back if recording fails,
 // so a failed run never leaves the manifest naming files that are gone.
+// A backup left by a killed run holds the last good set, so it is restored
+// before this run starts rather than overwritten.
 fs.mkdirSync(directory, { recursive: true });
 const backup = path.join(directory, "../.__frames__.backup");
-fs.rmSync(backup, { recursive: true, force: true });
-fs.mkdirSync(backup);
-for (const name of listBaselines(directory))
-  fs.renameSync(path.join(directory, name), path.join(backup, name));
 const restoreBackup = () => {
   for (const name of listBaselines(directory))
     fs.rmSync(path.join(directory, name));
   for (const name of listBaselines(backup))
     fs.renameSync(path.join(backup, name), path.join(directory, name));
+  fs.rmSync(backup, { recursive: true, force: true });
 };
+if (fs.existsSync(backup)) restoreBackup();
+fs.mkdirSync(backup);
+for (const name of listBaselines(directory))
+  fs.renameSync(path.join(directory, name), path.join(backup, name));
 const result = spawnSync(
   process.execPath,
   [
@@ -42,7 +45,7 @@ const result = spawnSync(
   { stdio: "inherit", env: { ...process.env, RGL_RECORD_FRAMES: "1" } }
 );
 if (result.error || result.status !== 0) restoreBackup();
-fs.rmSync(backup, { recursive: true, force: true });
+else fs.rmSync(backup, { recursive: true, force: true });
 if (result.error) throw result.error;
 assert.equal(
   result.status,
