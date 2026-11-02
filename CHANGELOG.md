@@ -2,7 +2,7 @@
 
 ## 2.4.0 (unreleased)
 
-No breaking changes. The one behavior change you might notice is the first item under Bug Fixes: an item saved outside the current `cols` now moves inside the grid when it loads, and `onLayoutChange` reports it.
+No breaking changes. If you save layouts, read the first item under Bug Fixes: an item saved outside the current `cols` now moves inside the grid when it loads, and `onLayoutChange` reports it.
 
 ### New Features
 
@@ -13,15 +13,15 @@ No breaking changes. The one behavior change you might notice is the first item 
 
 - **Layout input bounds**: A crafted saved layout could freeze the tab. Apps that render layouts other users saved (Grafana-style sharing) passed them straight to compaction, and three loops scaled with the numbers in the layout, not with the item count. `y: 1e9` ran past 200,000 ops before the probe aborted it. It now takes 32. Every layout entry point bounds its input first: the `layout` prop, responsive `layouts`, `data-grid`, the hooks and their setters, the dropping item, and the legacy wrappers. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328), [#2337](https://github.com/react-grid-layout/react-grid-layout/pull/2337)
 
-  | Field                   | Bound                                                                                          |
-  | ----------------------- | ---------------------------------------------------------------------------------------------- |
-  | `w`, `h`                | zero, negative and non-finite become `1`; a positive fraction such as `0.5` is kept, as before |
-  | `w`, `minW`             | at most `cols`                                                                                 |
-  | `x`                     | `[0, cols - w]`                                                                                |
-  | `h`, `minH`, finite `y` | at most 10,000 rows (`MAX_GRID_ROWS`), or a smaller finite `maxRows`                           |
-  | `minW`, `minH`          | `0` is kept (no minimum)                                                                       |
-  | `maxW`, `maxH`          | raised to the minimum and kept positive; `Infinity` and values above the grid are kept         |
-  | `y: Infinity`           | unchanged, so "place at the bottom" still works                                                |
+  | Field                   | Bound                                                                                                                                            |
+  | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | `w`, `h`                | zero, negative, `NaN` and `-Infinity` become `1`; `Infinity` becomes the upper bound below; a positive fraction such as `0.5` is kept, as before |
+  | `w`, `minW`             | at most `cols`                                                                                                                                   |
+  | `x`                     | `[0, cols - w]`                                                                                                                                  |
+  | `h`, `minH`, finite `y` | at most 10,000 rows (`MAX_GRID_ROWS`), or a smaller finite `maxRows`                                                                             |
+  | `minW`, `minH`          | `0` is kept (no minimum)                                                                                                                         |
+  | `maxW`, `maxH`          | raised to the minimum and kept positive; `Infinity` and values above the grid are kept                                                           |
+  | `y: Infinity`           | unchanged, so "place at the bottom" still works                                                                                                  |
 
   A layout that needs no change comes back as the same array, so there is no extra render. A clamp logs one warning in development.
 
