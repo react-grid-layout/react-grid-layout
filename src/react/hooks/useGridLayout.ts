@@ -22,6 +22,7 @@ import {
   bottom,
   getLayoutItem
 } from "../../core/layout.js";
+import { validateLayoutInput } from "../../core/validation.js";
 import { verticalCompactor } from "../../core/compactors.js";
 
 // ============================================================================
@@ -58,6 +59,8 @@ export interface UseGridLayoutOptions {
   layout: Layout;
   /** Number of columns */
   cols: number;
+  /** Maximum input rows (also capped at MAX_GRID_ROWS). */
+  maxRows?: number;
   /** Prevent collisions when moving items */
   preventCollision?: boolean;
   /** Called when layout changes */
@@ -156,6 +159,7 @@ export function useGridLayout(
   const {
     layout: propsLayout,
     cols,
+    maxRows = Infinity,
     preventCollision = false,
     onLayoutChange,
     compactor = verticalCompactor
@@ -166,7 +170,10 @@ export function useGridLayout(
 
   // Initialize layout with compaction using the compactor
   const [layout, setLayoutState] = useState<Layout>(() => {
-    const corrected = correctBounds(cloneLayout(propsLayout), { cols });
+    const corrected = correctBounds(
+      cloneLayout(validateLayoutInput(propsLayout, { cols, maxRows })),
+      { cols }
+    );
     return compactor.compact(corrected, cols);
   });
 
@@ -196,11 +203,14 @@ export function useGridLayout(
   // Set layout with optional compaction - use compactor.compact() (#2213)
   const setLayout = useCallback(
     (newLayout: Layout) => {
-      const corrected = correctBounds(cloneLayout(newLayout), { cols });
+      const corrected = correctBounds(
+        cloneLayout(validateLayoutInput(newLayout, { cols, maxRows })),
+        { cols }
+      );
       const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
     },
-    [cols, compactor]
+    [cols, maxRows, compactor]
   );
 
   // Sync layout from props when not dragging
@@ -386,7 +396,11 @@ export function useGridLayout(
 
       if (!existingItem) {
         // Add dropping item to layout - use compactor.compact() (#2213)
-        const newLayout = [...layout, droppingItem];
+        // Resolved rows may exceed intake bounds. Validate only the new item.
+        const newLayout = [
+          ...layout,
+          validateLayoutInput([droppingItem], { cols, maxRows })[0]!
+        ];
         const corrected = correctBounds(newLayout, { cols });
         const compacted = compactor.compact(corrected, cols);
         setLayoutState(compacted);
@@ -397,7 +411,7 @@ export function useGridLayout(
         droppingPosition: position
       });
     },
-    [layout, cols, compactor]
+    [layout, cols, maxRows, compactor]
   );
 
   const onDropDragLeave = useCallback(() => {

@@ -6,13 +6,36 @@
  */
 
 import type { Compactor, CompactType, Layout, LayoutItem } from "./types.js";
-import { cloneLayout } from "./layout.js";
+import {
+  normalizeLayoutGeometry,
+  normalizeLayoutGeometryInPlace
+} from "./geometry/normalize.js";
+import { bottom, cloneLayout } from "./layout.js";
 import { HORIZONTAL, VERTICAL } from "./geometry/axis.js";
 import {
   classicCompactor,
   compactItem,
   resolveClassicCollision
 } from "./compaction/classic.js";
+
+function normalizeCompactionInputs(
+  compareWith: Layout,
+  item: LayoutItem,
+  fullLayout: Layout
+): void {
+  // Shared references must stay shared for recursive collision resolution.
+  const items = new Set<LayoutItem>();
+  for (let index = 0; index < compareWith.length; index++) {
+    const other = compareWith[index];
+    if (other !== undefined) items.add(other);
+  }
+  for (let index = 0; index < fullLayout.length; index++) {
+    const other = fullLayout[index];
+    if (other !== undefined) items.add(other);
+  }
+  items.add(item);
+  normalizeLayoutGeometryInPlace(Array.from(items));
+}
 
 // ============================================================================
 // Helpers for Custom Compactors
@@ -39,6 +62,9 @@ export function resolveCompactionCollision(
   axis: "x" | "y",
   hasStatics?: boolean
 ): void {
+  normalizeCompactionInputs(layout, item, layout);
+  if (!Number.isFinite(moveToCoord))
+    moveToCoord = axis === "y" && moveToCoord === Infinity ? bottom(layout) : 0;
   resolveClassicCollision(
     layout,
     item,
@@ -66,6 +92,8 @@ export function compactItemVertical(
   fullLayout: Layout,
   maxY: number
 ): LayoutItem {
+  normalizeCompactionInputs(compareWith, l, fullLayout);
+  if (!Number.isFinite(maxY) && maxY !== Infinity) maxY = 0;
   return compactItem(compareWith, l, fullLayout, VERTICAL, Infinity, maxY);
 }
 
@@ -88,6 +116,7 @@ export function compactItemHorizontal(
   cols: number,
   fullLayout: Layout
 ): LayoutItem {
+  normalizeCompactionInputs(compareWith, l, fullLayout);
   return compactItem(compareWith, l, fullLayout, HORIZONTAL, cols, Infinity);
 }
 
@@ -133,7 +162,7 @@ export const noCompactor: Compactor = {
 
   compact(layout: Layout, _cols: number): Layout {
     // No compaction - just clone to maintain immutability
-    return cloneLayout(layout);
+    return cloneLayout(normalizeLayoutGeometry(layout));
   }
 };
 
@@ -153,7 +182,7 @@ export const verticalOverlapCompactor: Compactor = {
 
   compact(layout: Layout, _cols: number): Layout {
     // With overlap allowed, just clone without moving
-    return cloneLayout(layout);
+    return cloneLayout(normalizeLayoutGeometry(layout));
   }
 };
 
@@ -165,7 +194,7 @@ export const horizontalOverlapCompactor: Compactor = {
   allowOverlap: true,
 
   compact(layout: Layout, _cols: number): Layout {
-    return cloneLayout(layout);
+    return cloneLayout(normalizeLayoutGeometry(layout));
   }
 };
 

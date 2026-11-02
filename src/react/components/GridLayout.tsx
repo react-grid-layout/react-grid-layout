@@ -50,6 +50,7 @@ import {
   withLayoutItem,
   correctBounds
 } from "../../core/layout.js";
+import { validateLayoutInput } from "../../core/validation.js";
 import { getAllCollisions } from "../../core/collision.js";
 import { getCompactor } from "../../core/compactors.js";
 import { defaultPositionStrategy } from "../../core/position.js";
@@ -227,7 +228,8 @@ function synchronizeLayoutWithChildren(
   initialLayout: Layout,
   children: React.ReactNode,
   cols: number,
-  compactor: Compactor
+  compactor: Compactor,
+  maxRows: number
 ): Layout {
   const layout: LayoutItem[] = [];
   const childKeys = new Set<string>();
@@ -248,21 +250,25 @@ function synchronizeLayoutWithChildren(
       const dataGrid = childProps["data-grid"];
 
       if (dataGrid) {
+        const authored = validateLayoutInput(
+          [{ x: 0, y: 0, w: 1, h: 1, ...dataGrid, i: key }],
+          { cols, maxRows }
+        )[0]!;
         layout.push({
           i: key,
-          x: dataGrid.x ?? 0,
-          y: dataGrid.y ?? 0,
-          w: dataGrid.w ?? 1,
-          h: dataGrid.h ?? 1,
-          minW: dataGrid.minW,
-          maxW: dataGrid.maxW,
-          minH: dataGrid.minH,
-          maxH: dataGrid.maxH,
-          static: dataGrid.static,
-          isDraggable: dataGrid.isDraggable,
-          isResizable: dataGrid.isResizable,
-          resizeHandles: dataGrid.resizeHandles,
-          isBounded: dataGrid.isBounded
+          x: authored.x ?? 0,
+          y: authored.y ?? 0,
+          w: authored.w ?? 1,
+          h: authored.h ?? 1,
+          minW: authored.minW,
+          maxW: authored.maxW,
+          minH: authored.minH,
+          maxH: authored.maxH,
+          static: authored.static,
+          isDraggable: authored.isDraggable,
+          isResizable: authored.isResizable,
+          resizeHandles: authored.resizeHandles,
+          isBounded: authored.isBounded
         });
       } else {
         // Create default layout item
@@ -289,7 +295,7 @@ function synchronizeLayoutWithChildren(
 /**
  * GridLayout - A reactive, fluid grid layout with draggable, resizable components.
  */
-export function GridLayout(props: GridLayoutProps): ReactElement {
+function GridLayout(props: GridLayoutProps): ReactElement {
   const {
     // Required
     children,
@@ -376,11 +382,20 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // Resolve dropping item - memoized to avoid unstable reference in useCallback dependencies
   const droppingItem = useMemo(
     () =>
-      droppingItemProp ?? {
-        i: "__dropping-elem__",
-        ...defaultDropItem
-      },
-    [droppingItemProp, defaultDropItem]
+      validateLayoutInput(
+        [
+          {
+            x: 0,
+            y: 0,
+            ...(droppingItemProp ?? {
+              i: "__dropping-elem__",
+              ...defaultDropItem
+            })
+          }
+        ],
+        { cols, maxRows }
+      )[0]!,
+    [droppingItemProp, defaultDropItem, cols, maxRows]
   );
 
   // Position strategy values
@@ -392,7 +407,13 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   // State
   const [mounted, setMounted] = useState(false);
   const [layout, setLayout] = useState<Layout>(() =>
-    synchronizeLayoutWithChildren(propsLayout, children, cols, compactor)
+    synchronizeLayoutWithChildren(
+      propsLayout,
+      children,
+      cols,
+      compactor,
+      maxRows
+    )
   );
   const [activeDrag, setActiveDrag] = useState<LayoutItem | null>(null);
   const [resizing, setResizing] = useState(false);
@@ -413,6 +434,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   const prevLayoutRef = useRef<Layout>(layout);
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
   const prevChildrenRef = useRef<React.ReactNode>(children);
+  const prevBoundsRef = useRef({ cols, maxRows });
   const prevCompactTypeRef = useRef<CompactType>(compactType);
   const gridContainerRef = useRef<HTMLDivElement | null>(null);
   const touchDragActiveRef = useRef(false);
@@ -456,13 +478,22 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
     const compactTypeChanged = compactType !== prevCompactTypeRef.current;
 
-    if (layoutChanged || childrenChanged || compactTypeChanged) {
+    const boundsChanged =
+      cols !== prevBoundsRef.current.cols ||
+      maxRows !== prevBoundsRef.current.maxRows;
+    if (
+      layoutChanged ||
+      childrenChanged ||
+      compactTypeChanged ||
+      boundsChanged
+    ) {
       const baseLayout = layoutChanged ? propsLayout : layout;
       const newLayout = synchronizeLayoutWithChildren(
         baseLayout,
         children,
         cols,
-        compactor
+        compactor,
+        maxRows
       );
       // Only update if the layout actually changed (#2210)
       // This prevents infinite loops when controlled state updates trigger
@@ -472,6 +503,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
       }
     }
 
+    prevBoundsRef.current = { cols, maxRows };
     prevPropsLayoutRef.current = propsLayout;
     prevChildrenRef.current = children;
     prevCompactTypeRef.current = compactType;
@@ -479,6 +511,7 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
     propsLayout,
     children,
     cols,
+    maxRows,
     compactType,
     compactor,
     activeDrag,
@@ -831,13 +864,18 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
         setLayout([
           ...baseLayout,
-          {
-            ...itemToPlace,
-            x: calculatedXY.x,
-            y: calculatedXY.y,
-            static: false,
-            isDraggable: true
-          }
+          validateLayoutInput(
+            [
+              {
+                ...itemToPlace,
+                x: calculatedXY.x,
+                y: calculatedXY.y,
+                static: false,
+                isDraggable: true
+              }
+            ],
+            { cols, maxRows }
+          )[0]!
         ]);
       } else if (droppingPositionRef.current) {
         const shouldUpdate =
@@ -851,14 +889,17 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
             currentLayout.map(item =>
               item.i === itemToPlace.i &&
               (item.x !== calculatedXY.x || item.y !== calculatedXY.y)
-                ? { ...item, x: calculatedXY.x, y: calculatedXY.y }
+                ? validateLayoutInput(
+                    [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
+                    { cols, maxRows }
+                  )[0]!
                 : item
             )
           );
         }
       }
     },
-    []
+    [cols, maxRows]
   );
 
   const applyTouchDropPosition = useCallback(
@@ -961,7 +1002,10 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
         ...onDragOverResult
       } = rawResult ?? {};
 
-      const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
+      const finalDroppingItem = validateLayoutInput(
+        [{ ...droppingItem, ...onDragOverResult }],
+        { cols, maxRows }
+      )[0]!;
 
       const { newDroppingPosition, calculatedXY } = computeDropPosition({
         clientX: e.clientX,
@@ -1342,4 +1386,16 @@ export function GridLayout(props: GridLayoutProps): ReactElement {
   );
 }
 
-export default GridLayout;
+/** Public intake. Responsive rendering uses the resolved entry below. */
+function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
+  const cols = props.gridConfig?.cols ?? defaultGridConfig.cols;
+  const maxRows = props.gridConfig?.maxRows ?? defaultGridConfig.maxRows;
+  const layout = useMemo(
+    () => validateLayoutInput(props.layout ?? [], { cols, maxRows }),
+    [props.layout, cols, maxRows]
+  );
+  return <GridLayout {...props} layout={layout} />;
+}
+
+export { UntrustedGridLayout as GridLayout, GridLayout as ResolvedGridLayout };
+export default UntrustedGridLayout;

@@ -10,7 +10,7 @@
     ],
     "order": "forward",
     "output": [
-      {"constraints":{"$u":1},"h":{"$number":"Infinity"},"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0},
       {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":3}
     ],
     "postInput": [
@@ -34,7 +34,7 @@
     "order": "reversed",
     "output": [
       {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":3},
-      {"constraints":{"$u":1},"h":{"$number":"Infinity"},"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0}
+      {"constraints":{"$u":1},"h":1,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0}
     ],
     "postInput": [
       [

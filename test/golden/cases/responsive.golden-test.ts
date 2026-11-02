@@ -167,7 +167,7 @@ describe("golden responsive breakpoint helpers", () => {
 });
 
 describe("golden responsive layout generation", () => {
-  it("pins existing layout bypass of bounds/compaction and fresh item identities", () => {
+  it("preserves resolved existing layouts when bypassing compaction and preserves fresh item identities", () => {
     expectGolden(
       "responsive/existing",
       modes.flatMap(mode => [

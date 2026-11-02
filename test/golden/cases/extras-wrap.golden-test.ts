@@ -1,3 +1,4 @@
+import { validateLayoutInput } from "../../../src/core/validation";
 /** Pin paragraph flow, clone-only overlap mode, and variable-size defects. */
 import {
   wrapCompactor,
@@ -99,48 +100,28 @@ describe("golden wrap compactors", () => {
     expectGolden("extras-wrap/known-bug-e-geometry", records);
   });
 
-  it("B5c bounds the static Infinity fill with an explicit cell budget", () => {
+  it("B5c normalizes static Infinity height before interval compaction", () => {
     const layout: LayoutItem[] = [
       { i: "s", x: 0, y: 0, w: 1, h: Infinity, static: true },
       { i: "a", x: 1, y: 3, w: 1, h: 1 }
     ];
     const records = orders(layout).map(sample => {
-      const budget = 64;
-      const visited: number[] = [];
-      let attempts = 0;
-      const result = capture([sample.layout, 4] as const, ([working, cols]) => {
-        const originalAdd = Set.prototype.add;
-        Set.prototype.add = function <T>(this: Set<T>, value: T): Set<T> {
-          attempts++;
-          if (attempts > budget) throw new Error("static cell budget exceeded");
-          visited.push(value as number);
-          return originalAdd.call(this, value) as Set<T>;
-        };
-        try {
-          return wrapCompactor.compact(working, cols);
-        } finally {
-          Set.prototype.add = originalAdd;
-        }
+      const result = capture([sample.layout, 4] as const, ([working, cols]) =>
+        wrapCompactor.compact(validateLayoutInput(working, { cols }), cols)
+      );
+      expect(result.error).toBeUndefined();
+      expect(result.output!.find(item => item.i === "s")).toMatchObject({
+        h: 10_000
       });
-      expect(result.error).toEqual({
-        name: "Error",
-        message: "static cell budget exceeded"
+      expect(result.output!.find(item => item.i === "a")).toMatchObject({
+        x: 1,
+        y: 0
       });
-      expect(attempts).toBe(65);
-      expect(visited).toHaveLength(64);
       return {
-        knownBug:
-          "e: wrap static h Infinity exhausts a deterministic cell budget",
+        securityFix:
+          "Out-of-bounds static h Infinity is normalized before compaction",
         subcase: "c-infinity-static",
         order: sample.order,
-        boundedProbe: {
-          kind: "Set.add step budget",
-          budget,
-          attempts,
-          visited,
-          limitation:
-            "observes 65 attempted cells; does not claim to execute an infinite loop to completion"
-        },
         ...result
       };
     });
@@ -166,8 +147,7 @@ describe("golden wrap compactors", () => {
     expectGolden("extras-wrap/static-cells-and-ties", records);
   });
 
-  it("overlap mode clones without repositioning even tall items and Infinity statics", () => {
-    // The clone-only overlap path never enters the unbounded static-cell fill.
+  it("overlap mode preserves finite geometry and normalizes Infinity static sizes", () => {
     const layout: LayoutItem[] = [
       { i: "s", x: 1, y: 0, w: 1, h: Infinity, static: true, moved: true },
       { i: "a", x: 0, y: 3, w: 2, h: 2, moved: true }
@@ -190,7 +170,7 @@ describe("golden wrap compactors", () => {
           x,
           y,
           w,
-          h,
+          h: Number.isFinite(h) ? h : 1,
           moved
         }))
       );

@@ -113,8 +113,11 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
   breakpoint: B,
   lastBreakpoint: B,
   cols: number,
-  compactTypeOrCompactor: CompactType | Compactor
+  compactTypeOrCompactor: CompactType | Compactor,
+  colsConfig?: Breakpoints<B>
 ): Layout {
+  // Layouts have already crossed the caller's intake boundary. Cached and
+  // generated rows can exceed input limits after collision resolution.
   // If it already exists, just return it
   const existingLayout = layouts[breakpoint];
   if (existingLayout) {
@@ -122,7 +125,10 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
   }
 
   // Find or generate the next layout
-  let layout = layouts[lastBreakpoint];
+  let layout =
+    colsConfig && colsConfig[lastBreakpoint] === undefined
+      ? undefined
+      : layouts[lastBreakpoint];
 
   // Look for layouts at larger breakpoints
   const breakpointsSorted = sortBreakpoints(breakpoints);
@@ -132,7 +138,8 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
 
   for (let i = 0; i < breakpointsAbove.length; i++) {
     const b = breakpointsAbove[i];
-    if (b === undefined) continue;
+    if (b === undefined || (colsConfig && colsConfig[b] === undefined))
+      continue;
 
     const layoutForBreakpoint = layouts[b];
     if (layoutForBreakpoint) {
