@@ -82,7 +82,11 @@
     "prepublishOnly": "make build",
     "validate": "npm ls",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "golden:update": "GOLDEN_UPDATE=1 NODE_ENV=test jest --runInBand --testPathPatterns=test/golden",
+    "bench": "NODE_ENV=test RGL_BENCH=1 jest --config test/jest.bench.cjs --runInBand",
+    "bench:ops": "NODE_ENV=test jest --config test/jest.ops.cjs --runInBand",
+    "bench:ops:update": "BENCH_UPDATE=1 yarn bench:ops"
   },
   "repository": {
     "type": "git",
@@ -167,6 +171,14 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.3"
   },
+  "resolutions": {
+    "esbuild": "^0.28.1",
+    "uuid": "^11.1.1"
+  },
+  "_resolutionNotes": {
+    "esbuild": "Dependabot advisory fixed in 0.28.1; tsup@8 pins ^0.27 and tsup@9 needs Node >=22.18 (CI uses 20). Dev-only.",
+    "uuid": "Dependabot advisory fixed in 11.1.1; sockjs (via webpack-dev-server) pins ^8.3.2 and is unmaintained. Dev-only."
+  },
   "packageManager": "yarn@4.18.0",
   "peerDependencies": {
     "react": ">= 16.3.0",
@@ -182,7 +194,9 @@
     "testMatch": [
       "<rootDir>/test/spec/*.js",
       "<rootDir>/test/spec/*.ts",
-      "<rootDir>/test/spec/*.tsx"
+      "<rootDir>/test/spec/*.tsx",
+      "<rootDir>/test/golden/cases/*.golden-test.ts",
+      "<rootDir>/test/golden-react/scenarios/*.golden-test.tsx"
     ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
@@ -216,7 +230,13 @@
     ],
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
-    }
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/test/spec/benchmark-test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ]
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

@@ -1,0 +1,38 @@
+{
+  "auditId": "B14",
+  "calls": [
+    {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+      "input": {
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","w":2,"x":0,"y":1}
+        ]
+      },
+      "output": [],
+      "postInput": {
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","w":2,"x":0,"y":1}
+        ]
+      }
+    },
+    {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","w":2,"x":0,"y":1}
+        ]
+      },
+      "output": {"$u":1},
+      "postInput": {
+        "layout": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"a","w":2,"x":0,"y":1}
+        ]
+      }
+    }
+  ],
+  "knownBug": "n: Duplicate IDs are accepted and treated as self-collisions, hiding their overlap."
+}

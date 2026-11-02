@@ -1,0 +1,74 @@
+[
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "hasStatics": {"$u":1},
+      "item": {"h":1,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":2,"x":0,"y":0},
+        {"h":1,"i":"gap","w":1,"x":0,"y":10},
+        {"h":1,"i":"later","w":1,"x":1,"y":0}
+      ]
+    },
+    "knownBug": "o: suspected x-axis resolver early break uses row order in a column-sorted layout",
+    "output": {"$u":1},
+    "postInput": {
+      "hasStatics": {"$u":1},
+      "item": {"h":1,"i":"a","w":2,"x":2,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":2,"x":2,"y":0},
+        {"h":1,"i":"gap","w":1,"x":0,"y":10},
+        {"h":1,"i":"later","w":1,"x":1,"y":0}
+      ]
+    },
+    "status": "suspected-axis-optimization; direct-helper-control"
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "hasStatics": false,
+      "item": {"h":1,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":2,"x":0,"y":0},
+        {"h":1,"i":"gap","w":1,"x":0,"y":10},
+        {"h":1,"i":"later","w":1,"x":1,"y":0}
+      ]
+    },
+    "knownBug": "o: suspected x-axis resolver early break uses row order in a column-sorted layout",
+    "output": {"$u":1},
+    "postInput": {
+      "hasStatics": false,
+      "item": {"h":1,"i":"a","w":2,"x":2,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":2,"x":2,"y":0},
+        {"h":1,"i":"gap","w":1,"x":0,"y":10},
+        {"h":1,"i":"later","w":1,"x":1,"y":0}
+      ]
+    },
+    "status": "suspected-axis-optimization; direct-helper-control"
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "hasStatics": true,
+      "item": {"h":1,"i":"a","w":2,"x":0,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":2,"x":0,"y":0},
+        {"h":1,"i":"gap","w":1,"x":0,"y":10},
+        {"h":1,"i":"later","w":1,"x":1,"y":0}
+      ]
+    },
+    "knownBug": "o: suspected x-axis resolver early break uses row order in a column-sorted layout",
+    "output": {"$u":1},
+    "postInput": {
+      "hasStatics": true,
+      "item": {"h":1,"i":"a","w":2,"x":2,"y":0},
+      "layout": [
+        {"h":1,"i":"a","w":2,"x":2,"y":0},
+        {"h":1,"i":"gap","w":1,"x":0,"y":10},
+        {"h":1,"i":"later","w":1,"x":4,"y":0}
+      ]
+    },
+    "status": "suspected-axis-optimization; direct-helper-control"
+  }
+]

@@ -1,0 +1,958 @@
+[
+  {
+    "family": "empty",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+    "input": [[],12],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [],
+    "postInput": [[],12],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "empty",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+    "input": [[],12],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [],
+    "postInput": [[],12],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "single",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "single",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "packed",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":0},
+        {"h":1,"i":"2","w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":0},
+        {"h":1,"i":"2","w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "packed",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"2","w":1,"x":2,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"2","w":1,"x":2,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "sparse",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":2,"x":6,"y":0},
+        {"h":1,"i":"1","w":1,"x":10,"y":5},
+        {"h":1,"i":"2","w":1,"x":6,"y":8}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":6,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":10,"y":5},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":6,"y":8}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":2,"x":6,"y":0},
+        {"h":1,"i":"1","w":1,"x":10,"y":5},
+        {"h":1,"i":"2","w":1,"x":6,"y":8}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "sparse",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":2,"x":6,"y":0},
+        {"h":1,"i":"2","w":1,"x":6,"y":8},
+        {"h":1,"i":"1","w":1,"x":10,"y":5}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":6,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":6,"y":8},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":10,"y":5}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":2,"x":6,"y":0},
+        {"h":1,"i":"2","w":1,"x":6,"y":8},
+        {"h":1,"i":"1","w":1,"x":10,"y":5}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "sparse",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":2,"x":7,"y":0},
+        {"h":1,"i":"1","w":2,"x":1,"y":3},
+        {"h":1,"i":"2","w":1,"x":3,"y":7}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":1,"y":3},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":3,"y":7}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":2,"x":7,"y":0},
+        {"h":1,"i":"1","w":2,"x":1,"y":3},
+        {"h":1,"i":"2","w":1,"x":3,"y":7}
+      ],
+      12
+    ],
+    "seed": 17,
+    "warnings": []
+  },
+  {
+    "family": "sparse",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"2","w":1,"x":3,"y":7},
+        {"h":1,"i":"0","w":2,"x":7,"y":0},
+        {"h":1,"i":"1","w":2,"x":1,"y":3}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":3,"y":7},
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":7,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":1,"y":3}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"2","w":1,"x":3,"y":7},
+        {"h":1,"i":"0","w":2,"x":7,"y":0},
+        {"h":1,"i":"1","w":2,"x":1,"y":3}
+      ],
+      12
+    ],
+    "seed": 17,
+    "warnings": []
+  },
+  {
+    "family": "tall",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0},
+        {"h":4,"i":"2","w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":4,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":4,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0},
+        {"h":4,"i":"2","w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "tall",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":4,"i":"2","w":1,"x":2,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":4,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":4,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":4,"i":"2","w":1,"x":2,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "tall",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0},
+        {"h":4,"i":"2","w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":4,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":4,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0},
+        {"h":4,"i":"2","w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "seed": 17,
+    "warnings": []
+  },
+  {
+    "family": "tall",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":4,"i":"2","w":1,"x":2,"y":0},
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":4,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":4,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":4,"i":"2","w":1,"x":2,"y":0},
+        {"h":4,"i":"0","w":1,"x":0,"y":0},
+        {"h":2,"i":"1","w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "seed": 17,
+    "warnings": []
+  },
+  {
+    "family": "cascade",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false,false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":0,"y":1},
+        {"h":2,"i":"2","w":2,"x":0,"y":2},
+        {"h":2,"i":"3","w":2,"x":0,"y":3},
+        {"h":2,"i":"4","w":2,"x":0,"y":4},
+        {"h":2,"i":"5","w":2,"x":0,"y":5}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":1},
+      {"constraints":{"$u":1},"h":2,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2},
+      {"constraints":{"$u":1},"h":2,"i":"3","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":3},
+      {"constraints":{"$u":1},"h":2,"i":"4","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":4},
+      {"constraints":{"$u":1},"h":2,"i":"5","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":0,"y":1},
+        {"h":2,"i":"2","w":2,"x":0,"y":2},
+        {"h":2,"i":"3","w":2,"x":0,"y":3},
+        {"h":2,"i":"4","w":2,"x":0,"y":4},
+        {"h":2,"i":"5","w":2,"x":0,"y":5}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "cascade",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false,false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"4","w":2,"x":0,"y":4},
+        {"h":2,"i":"5","w":2,"x":0,"y":5},
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":0,"y":1},
+        {"h":2,"i":"3","w":2,"x":0,"y":3},
+        {"h":2,"i":"2","w":2,"x":0,"y":2}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"4","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":4},
+      {"constraints":{"$u":1},"h":2,"i":"5","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":5},
+      {"constraints":{"$u":1},"h":2,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":1},
+      {"constraints":{"$u":1},"h":2,"i":"3","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":3},
+      {"constraints":{"$u":1},"h":2,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"4","w":2,"x":0,"y":4},
+        {"h":2,"i":"5","w":2,"x":0,"y":5},
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":0,"y":1},
+        {"h":2,"i":"3","w":2,"x":0,"y":3},
+        {"h":2,"i":"2","w":2,"x":0,"y":2}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "statics-scattered",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","moved":true,"static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"1","moved":false,"static":false,"w":1,"x":1,"y":0},
+        {"h":1,"i":"2","moved":false,"static":false,"w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","moved":true,"static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"1","moved":false,"static":false,"w":1,"x":1,"y":0},
+        {"h":1,"i":"2","moved":false,"static":false,"w":1,"x":2,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "statics-scattered",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","moved":true,"static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"2","moved":false,"static":false,"w":1,"x":2,"y":0},
+        {"h":1,"i":"1","moved":false,"static":false,"w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","moved":true,"static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"2","moved":false,"static":false,"w":1,"x":2,"y":0},
+        {"h":1,"i":"1","moved":false,"static":false,"w":1,"x":1,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "statics-blocking",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","static":true,"w":12,"x":0,"y":0},
+        {"h":1,"i":"1","static":false,"w":12,"x":0,"y":2},
+        {"h":1,"i":"2","static":false,"w":12,"x":0,"y":4}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":12,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":12,"x":0,"y":2},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":12,"x":0,"y":4}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","static":true,"w":12,"x":0,"y":0},
+        {"h":1,"i":"1","static":false,"w":12,"x":0,"y":2},
+        {"h":1,"i":"2","static":false,"w":12,"x":0,"y":4}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "statics-blocking",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","static":true,"w":12,"x":0,"y":0},
+        {"h":1,"i":"2","static":false,"w":12,"x":0,"y":4},
+        {"h":1,"i":"1","static":false,"w":12,"x":0,"y":2}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":12,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":12,"x":0,"y":4},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":12,"x":0,"y":2}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","static":true,"w":12,"x":0,"y":0},
+        {"h":1,"i":"2","static":false,"w":12,"x":0,"y":4},
+        {"h":1,"i":"1","static":false,"w":12,"x":0,"y":2}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "overlapping",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":1,"y":1},
+        {"h":2,"i":"2","w":2,"x":0,"y":0}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":1,"y":1},
+      {"constraints":{"$u":1},"h":2,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":1,"y":1},
+        {"h":2,"i":"2","w":2,"x":0,"y":0}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "overlapping",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"2","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":1,"y":1}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":1,"y":1}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"0","w":2,"x":0,"y":0},
+        {"h":2,"i":"2","w":2,"x":0,"y":0},
+        {"h":2,"i":"1","w":2,"x":1,"y":1}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "out-of-bounds",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":2,"x":-1,"y":-1},
+        {"h":1,"i":"1","w":2,"x":12,"y":1},
+        {"h":1,"i":"2","w":13,"x":11,"y":3}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":-1,"y":-1},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":12,"y":1},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":13,"x":11,"y":3}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":2,"x":-1,"y":-1},
+        {"h":1,"i":"1","w":2,"x":12,"y":1},
+        {"h":1,"i":"2","w":13,"x":11,"y":3}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "out-of-bounds",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":2,"x":-1,"y":-1},
+        {"h":1,"i":"2","w":13,"x":11,"y":3},
+        {"h":1,"i":"1","w":2,"x":12,"y":1}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":-1,"y":-1},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":13,"x":11,"y":3},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":12,"y":1}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":2,"x":-1,"y":-1},
+        {"h":1,"i":"2","w":13,"x":11,"y":3},
+        {"h":1,"i":"1","w":2,"x":12,"y":1}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "fractional",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1.5,"i":"0","w":1.5,"x":0.5,"y":0.5},
+        {"h":1.5,"i":"1","w":1.5,"x":1.5,"y":2.5},
+        {"h":1.5,"i":"2","w":1.5,"x":0.5,"y":4.5}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1.5,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1.5,"x":0.5,"y":0.5},
+      {"constraints":{"$u":1},"h":1.5,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1.5,"x":1.5,"y":2.5},
+      {"constraints":{"$u":1},"h":1.5,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1.5,"x":0.5,"y":4.5}
+    ],
+    "postInput": [
+      [
+        {"h":1.5,"i":"0","w":1.5,"x":0.5,"y":0.5},
+        {"h":1.5,"i":"1","w":1.5,"x":1.5,"y":2.5},
+        {"h":1.5,"i":"2","w":1.5,"x":0.5,"y":4.5}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "fractional",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1.5,"i":"0","w":1.5,"x":0.5,"y":0.5},
+        {"h":1.5,"i":"2","w":1.5,"x":0.5,"y":4.5},
+        {"h":1.5,"i":"1","w":1.5,"x":1.5,"y":2.5}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1.5,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1.5,"x":0.5,"y":0.5},
+      {"constraints":{"$u":1},"h":1.5,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1.5,"x":0.5,"y":4.5},
+      {"constraints":{"$u":1},"h":1.5,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1.5,"x":1.5,"y":2.5}
+    ],
+    "postInput": [
+      [
+        {"h":1.5,"i":"0","w":1.5,"x":0.5,"y":0.5},
+        {"h":1.5,"i":"2","w":1.5,"x":0.5,"y":4.5},
+        {"h":1.5,"i":"1","w":1.5,"x":1.5,"y":2.5}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "infinity",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":2},
+        {"h":1,"i":"2","w":1,"x":2,"y":{"$number":"Infinity"}}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":2},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":{"$number":"Infinity"}}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":2},
+        {"h":1,"i":"2","w":1,"x":2,"y":{"$number":"Infinity"}}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "infinity",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"2","w":1,"x":2,"y":{"$number":"Infinity"}},
+        {"h":1,"i":"1","w":1,"x":1,"y":2}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":{"$number":"Infinity"}},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":2}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"2","w":1,"x":2,"y":{"$number":"Infinity"}},
+        {"h":1,"i":"1","w":1,"x":1,"y":2}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "duplicate-ids",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":2},
+        {"h":1,"i":"0","w":1,"x":2,"y":4}
+      ],
+      12
+    ],
+    "invariantException": "duplicate IDs suppress collision checks",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":2},
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":4}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"1","w":1,"x":1,"y":2},
+        {"h":1,"i":"0","w":1,"x":2,"y":4}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "duplicate-ids",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"0","w":1,"x":2,"y":4},
+        {"h":1,"i":"1","w":1,"x":1,"y":2}
+      ],
+      12
+    ],
+    "invariantException": "duplicate IDs suppress collision checks",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":2,"y":4},
+      {"constraints":{"$u":1},"h":1,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":2}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":1,"x":0,"y":0},
+        {"h":1,"i":"0","w":1,"x":2,"y":4},
+        {"h":1,"i":"1","w":1,"x":1,"y":2}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "minmax",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"0","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":0,"y":0},
+        {"h":2,"i":"1","maxH":3,"maxW":{"$number":"Infinity"},"minH":1,"minW":2,"w":2,"x":1,"y":2},
+        {"h":2,"i":"2","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":2,"y":4}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":3,"maxW":4,"minH":1,"minW":2,"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":3,"maxW":{"$number":"Infinity"},"minH":1,"minW":2,"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":1,"y":2},
+      {"constraints":{"$u":1},"h":2,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":3,"maxW":4,"minH":1,"minW":2,"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":4}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"0","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":0,"y":0},
+        {"h":2,"i":"1","maxH":3,"maxW":{"$number":"Infinity"},"minH":1,"minW":2,"w":2,"x":1,"y":2},
+        {"h":2,"i":"2","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":2,"y":4}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "minmax",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"0","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":0,"y":0},
+        {"h":2,"i":"2","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":2,"y":4},
+        {"h":2,"i":"1","maxH":3,"maxW":{"$number":"Infinity"},"minH":1,"minW":2,"w":2,"x":1,"y":2}
+      ],
+      12
+    ],
+    "invariantException": "clone-only compactor preserves existing overlaps",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":3,"maxW":4,"minH":1,"minW":2,"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":3,"maxW":4,"minH":1,"minW":2,"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":4},
+      {"constraints":{"$u":1},"h":2,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":3,"maxW":{"$number":"Infinity"},"minH":1,"minW":2,"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":1,"y":2}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"0","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":0,"y":0},
+        {"h":2,"i":"2","maxH":3,"maxW":4,"minH":1,"minW":2,"w":2,"x":2,"y":4},
+        {"h":2,"i":"1","maxH":3,"maxW":{"$number":"Infinity"},"minH":1,"minW":2,"w":2,"x":1,"y":2}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "zero",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":0,"x":0,"y":0},
+        {"h":0,"i":"1","w":1,"x":1,"y":2},
+        {"h":1,"i":"2","w":0,"x":2,"y":4}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":0,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":0,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":2},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":0,"x":2,"y":4}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":0,"x":0,"y":0},
+        {"h":0,"i":"1","w":1,"x":1,"y":2},
+        {"h":1,"i":"2","w":0,"x":2,"y":4}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  },
+  {
+    "family": "zero",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"0","w":0,"x":0,"y":0},
+        {"h":1,"i":"2","w":0,"x":2,"y":4},
+        {"h":0,"i":"1","w":1,"x":1,"y":2}
+      ],
+      12
+    ],
+    "invariantException": "nonstandard geometry is pinned without overlap/bounds guarantees",
+    "order": "shuffled",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"0","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":0,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"2","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":0,"x":2,"y":4},
+      {"constraints":{"$u":1},"h":0,"i":"1","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":2}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"0","w":0,"x":0,"y":0},
+        {"h":1,"i":"2","w":0,"x":2,"y":4},
+        {"h":0,"i":"1","w":1,"x":1,"y":2}
+      ],
+      12
+    ],
+    "seed": 1,
+    "warnings": []
+  }
+]

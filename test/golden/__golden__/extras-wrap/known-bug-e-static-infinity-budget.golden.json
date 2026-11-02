@@ -1,0 +1,48 @@
+[
+  {
+    "boundedProbe": {"attempts":65,"budget":64,"kind":"Set.add step budget","limitation":"observes 65 attempted cells; does not claim to execute an infinite loop to completion","visited":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,200,204,208,212,216,220,224,228,232,236,240,244,248,252]},
+    "error": {"message":"static cell budget exceeded","name":"Error"},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": [
+      [
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"a","w":1,"x":1,"y":3}
+      ],
+      4
+    ],
+    "knownBug": "e: wrap static h Infinity exhausts a deterministic cell budget",
+    "order": "forward",
+    "output": {"$u":1},
+    "postInput": [
+      [
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"a","w":1,"x":1,"y":3}
+      ],
+      4
+    ],
+    "subcase": "c-infinity-static"
+  },
+  {
+    "boundedProbe": {"attempts":65,"budget":64,"kind":"Set.add step budget","limitation":"observes 65 attempted cells; does not claim to execute an infinite loop to completion","visited":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,200,204,208,212,216,220,224,228,232,236,240,244,248,252]},
+    "error": {"message":"static cell budget exceeded","name":"Error"},
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": [
+      [
+        {"h":1,"i":"a","w":1,"x":1,"y":3},
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0}
+      ],
+      4
+    ],
+    "knownBug": "e: wrap static h Infinity exhausts a deterministic cell budget",
+    "order": "reversed",
+    "output": {"$u":1},
+    "postInput": [
+      [
+        {"h":1,"i":"a","w":1,"x":1,"y":3},
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0}
+      ],
+      4
+    ],
+    "subcase": "c-infinity-static"
+  }
+]

@@ -1,0 +1,418 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":11,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":10,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":10,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":11,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":10,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":10,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","maxW":1,"minW":20,"w":14,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","maxW":1,"minW":20,"w":12,"x":0,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","maxW":1,"minW":20,"w":12,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","maxW":1,"minW":20,"w":14,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","maxW":1,"minW":20,"w":12,"x":0,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","maxW":1,"minW":20,"w":12,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-3}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":-3}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-3}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-3}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":-3}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-3}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"-Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":1.5,"x":0.5,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":1.5,"x":0.5,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":1.5,"x":0.5,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":1.5,"x":0.5,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":1.5,"x":0.5,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":1.5,"x":0.5,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true,true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+      {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true,true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"s","static":true,"w":2,"x":0,"y":2},
+      {"h":2,"i":"a","static":true,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":2},
+        {"h":2,"i":"a","static":true,"w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true,true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"a","w":2,"x":0,"y":0},
+      {"h":2,"i":"append","w":2,"x":2,"y":2}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"append","w":2,"x":2,"y":2}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": true,
+      "sameObject": [true,true]
+    },
+    "input": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"append","w":2,"x":2,"y":0},
+      {"h":2,"i":"a","w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "bounds": {"cols":12},
+      "layout": [
+        {"h":2,"i":"append","w":2,"x":2,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":0}
+      ]
+    }
+  }
+]

@@ -1,0 +1,13 @@
+{
+"metadata":{"callbackComparison":"Only onLayoutChange is shared by both public APIs. Hook GridItem callbacks are native-event notes.","resizeAdapter":"Dimensions are forwarded. The public hook supplies no resize handle geometry or resize placeholder.","scenario":"hook-controlled-during-drag","strict":true,"variant":"strict-disagreements"},
+"steps":[
+{"differences":["onLayoutChange"],"input":{"type":"mount"},"onLayoutChange":{"component":2,"hook":0}},
+{"differences":[],"input":{"kind":"mouse","target":"a","type":"mousedown","x":20,"y":20},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":225,"y":20},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":["placeholder"],"input":{"change":"layout-during-drag","type":"setProps"},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":325,"y":60},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":["items","containerHeight","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mouseup","x":325,"y":60},"onLayoutChange":{"component":3,"hook":1}},
+{"differences":["items","containerHeight"],"input":{"change":"parent-rerender-same-layout","type":"setProps"},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":[],"input":{"type":"unmount"},"onLayoutChange":{"component":0,"hook":0}}
+]
+}

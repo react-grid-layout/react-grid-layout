@@ -1,0 +1,80 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.item.resizeHandles"],"outputPaths":["$.output.resizeHandles"]},
+        {"inputPaths":["$.item.constraints"],"outputPaths":["$.output.constraints"]},
+        {"inputPaths":["$.item.constraints.0"],"outputPaths":["$.output.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "item": {"constraints":[{"name":"fixture-constraint"}],"extra":{"custom":["metadata"]},"h":2,"i":"a","moved":{"$u":1},"resizeHandles":["se","nw"],"static":{"$u":1},"w":2,"x":0,"y":0}
+    },
+    "output": {
+      "aliases": {"constraintObject":true,"constraints":true,"customKeyRetained":false,"resizeHandles":true,"sameItem":false},
+      "output": {"constraints":[{"name":"fixture-constraint"}],"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se","nw"],"static":false,"w":2,"x":0,"y":0}
+    },
+    "postInput": {
+      "item": {"constraints":[{"name":"fixture-constraint"}],"extra":{"custom":["metadata"]},"h":2,"i":"a","moved":{"$u":1},"resizeHandles":["se","nw"],"static":{"$u":1},"w":2,"x":0,"y":0}
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0.resizeHandles"],"outputPaths":["$.output.0.resizeHandles","$.output.2.resizeHandles"]},
+        {"inputPaths":["$.layout.0.constraints"],"outputPaths":["$.output.0.constraints","$.output.2.constraints"]},
+        {"inputPaths":["$.layout.0.constraints.0"],"outputPaths":["$.output.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "layout": [
+        {"constraints":[{"name":"fixture-constraint"}],"extra":{"custom":["metadata"]},"h":2,"i":"a","moved":{"$u":1},"resizeHandles":["se","nw"],"static":{"$u":1},"w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"constraints":[{"name":"fixture-constraint"}],"extra":{"custom":["metadata"]},"h":2,"i":"a","moved":{"$u":1},"resizeHandles":["se","nw"],"static":{"$u":1},"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": {
+      "aliases": [
+        {"constraints":true,"resizeHandles":true,"sameItem":false},
+        {"$hole":true},
+        {"constraints":true,"resizeHandles":true,"sameItem":false}
+      ],
+      "output": [
+        {"constraints":[{"name":"fixture-constraint"}],"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se","nw"],"static":false,"w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"constraints":[{"name":"fixture-constraint"}],"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se","nw"],"static":false,"w":2,"x":0,"y":0}
+      ],
+      "repeatedOutputItem": false
+    },
+    "postInput": {
+      "layout": [
+        {"constraints":[{"name":"fixture-constraint"}],"extra":{"custom":["metadata"]},"h":2,"i":"a","moved":{"$u":1},"resizeHandles":["se","nw"],"static":{"$u":1},"w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"constraints":[{"name":"fixture-constraint"}],"extra":{"custom":["metadata"]},"h":2,"i":"a","moved":{"$u":1},"resizeHandles":["se","nw"],"static":{"$u":1},"w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","moved":true,"static":true,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":true,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"b","moved":true,"static":true,"w":2,"x":0,"y":0}
+      ]
+    }
+  }
+]

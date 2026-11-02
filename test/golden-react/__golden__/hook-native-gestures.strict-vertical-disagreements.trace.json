@@ -1,0 +1,19 @@
+{
+"metadata":{"callbackComparison":"Only onLayoutChange is shared by both public APIs. Hook GridItem callbacks are native-event notes.","resizeAdapter":"Dimensions are forwarded. The public hook supplies no resize handle geometry or resize placeholder.","scenario":"hook-native-gestures","strict":true,"variant":"strict-vertical-disagreements"},
+"steps":[
+{"differences":["onLayoutChange"],"input":{"type":"mount"},"onLayoutChange":{"component":2,"hook":0}},
+{"differences":[],"input":{"kind":"mouse","target":"a","type":"mousedown","x":20,"y":20},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":[],"input":{"kind":"mouse","target":"a","type":"mousemove","x":24,"y":22},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":125,"y":20},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mousemove","x":225,"y":60},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":["onLayoutChange"],"input":{"kind":"mouse","target":"a","type":"mouseup","x":225,"y":60},"onLayoutChange":{"component":2,"hook":1}},
+{"differences":[],"input":{"kind":"mouse","target":"b:handle:se","type":"mousedown","x":380,"y":65},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":["placeholder"],"input":{"kind":"mouse","target":"b:handle:se","type":"mousemove","x":384,"y":68},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":["placeholder","onLayoutChange"],"input":{"kind":"mouse","target":"b:handle:se","type":"mousemove","x":480,"y":105},"onLayoutChange":{"component":0,"hook":1}},
+{"differences":["onLayoutChange"],"input":{"kind":"mouse","target":"b:handle:se","type":"mouseup","x":480,"y":105},"onLayoutChange":{"component":2,"hook":0}},
+{"differences":[],"input":{"kind":"mouse","target":"c:handle:n","type":"mousedown","x":90,"y":85},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":["placeholder"],"input":{"kind":"mouse","target":"c:handle:n","type":"mousemove","x":90,"y":45},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":[],"input":{"kind":"mouse","target":"c:handle:n","type":"mouseup","x":90,"y":45},"onLayoutChange":{"component":0,"hook":0}},
+{"differences":[],"input":{"type":"unmount"},"onLayoutChange":{"component":0,"hook":0}}
+]
+}

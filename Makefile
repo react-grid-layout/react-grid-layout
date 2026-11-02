@@ -7,7 +7,7 @@ TEST = ./test
 EXAMPLES = ./examples/*.{js,html,json}
 
 .PHONY: test dev lint build clean install link publish check-release \
-        release-patch release-minor release-major
+        release-patch release-minor release-major golden-update
 
 build: clean build-ts
 
@@ -57,6 +57,9 @@ lint:
 
 test:
 	env NODE_ENV=test $(EXEC) jest --coverage
+
+golden-update:
+	@corepack yarn golden:update
 
 test-watch:
 	env NODE_ENV=test $(EXEC) jest --watch

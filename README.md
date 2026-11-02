@@ -1312,6 +1312,8 @@ Token-lean architecture maps live in [`codemaps/`](codemaps/) and are loaded at 
 
 ## Contribute
 
+Deterministic performance budgets: [operation-count benchmark guide](test/bench/README.md).
+
 If you have a feature request, please add it as an issue or make a pull request.
 
 If you have a bug to report, please reproduce the bug in [CodeSandbox](https://codesandbox.io/p/sandbox/5ywf7c) to help

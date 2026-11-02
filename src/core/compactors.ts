@@ -5,17 +5,14 @@
  * Use the Compactor interface to create custom compaction algorithms.
  */
 
-import type {
-  Compactor,
-  CompactType,
-  Layout,
-  LayoutItem,
-  Mutable
-} from "./types.js";
-import { getFirstCollision } from "./collision.js";
-import { sortLayoutItemsByRowCol, sortLayoutItemsByColRow } from "./sort.js";
-import { bottom, cloneLayoutItem, getStatics, cloneLayout } from "./layout.js";
-import { collides } from "./collision.js";
+import type { Compactor, CompactType, Layout, LayoutItem } from "./types.js";
+import { cloneLayout } from "./layout.js";
+import { HORIZONTAL, VERTICAL } from "./geometry/axis.js";
+import {
+  classicCompactor,
+  compactItem,
+  resolveClassicCollision
+} from "./compaction/classic.js";
 
 // ============================================================================
 // Helpers for Custom Compactors
@@ -42,37 +39,13 @@ export function resolveCompactionCollision(
   axis: "x" | "y",
   hasStatics?: boolean
 ): void {
-  const sizeProp = axis === "x" ? "w" : "h";
-
-  // Temporarily increment position to check for collisions
-  (item as Mutable<LayoutItem>)[axis] += 1;
-
-  const itemIndex = layout.findIndex(l => l.i === item.i);
-
-  // Calculate hasStatics once if not provided (for backwards compat)
-  const layoutHasStatics = hasStatics ?? getStatics(layout).length > 0;
-
-  for (let i = itemIndex + 1; i < layout.length; i++) {
-    const otherItem = layout[i];
-    if (otherItem === undefined) continue;
-    if (otherItem.static) continue;
-    // Optimization: break early if past this element, but only if no statics
-    // are present. Static items can be scattered throughout the layout,
-    // so we can't assume sort order guarantees no more collisions.
-    if (!layoutHasStatics && otherItem.y > item.y + item.h) break;
-
-    if (collides(item, otherItem)) {
-      resolveCompactionCollision(
-        layout,
-        otherItem,
-        moveToCoord + item[sizeProp],
-        axis,
-        layoutHasStatics
-      );
-    }
-  }
-
-  (item as Mutable<LayoutItem>)[axis] = moveToCoord;
+  resolveClassicCollision(
+    layout,
+    item,
+    moveToCoord,
+    axis === "x" ? HORIZONTAL : VERTICAL,
+    hasStatics
+  );
 }
 
 /**
@@ -93,26 +66,7 @@ export function compactItemVertical(
   fullLayout: Layout,
   maxY: number
 ): LayoutItem {
-  // Correct negative positions first
-  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
-  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
-
-  // Limit Y to the current bottom
-  (l as Mutable<LayoutItem>).y = Math.min(maxY, l.y);
-
-  // Move up as far as possible
-  while (l.y > 0 && !getFirstCollision(compareWith, l)) {
-    (l as Mutable<LayoutItem>).y--;
-  }
-
-  // Resolve collisions by moving down
-  let collision: LayoutItem | undefined;
-  while ((collision = getFirstCollision(compareWith, l)) !== undefined) {
-    resolveCompactionCollision(fullLayout, l, collision.y + collision.h, "y");
-  }
-
-  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
-  return l;
+  return compactItem(compareWith, l, fullLayout, VERTICAL, Infinity, maxY);
 }
 
 /**
@@ -134,33 +88,7 @@ export function compactItemHorizontal(
   cols: number,
   fullLayout: Layout
 ): LayoutItem {
-  // Correct negative positions first
-  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
-  (l as Mutable<LayoutItem>).y = Math.max(l.y, 0);
-
-  // Move left as far as possible
-  while (l.x > 0 && !getFirstCollision(compareWith, l)) {
-    (l as Mutable<LayoutItem>).x--;
-  }
-
-  // Resolve collisions
-  let collision: LayoutItem | undefined;
-  while ((collision = getFirstCollision(compareWith, l)) !== undefined) {
-    resolveCompactionCollision(fullLayout, l, collision.x + collision.w, "x");
-
-    // Horizontal overflow: wrap to next row
-    if (l.x + l.w > cols) {
-      (l as Mutable<LayoutItem>).x = cols - l.w;
-      (l as Mutable<LayoutItem>).y++;
-
-      while (l.x > 0 && !getFirstCollision(compareWith, l)) {
-        (l as Mutable<LayoutItem>).x--;
-      }
-    }
-  }
-
-  (l as Mutable<LayoutItem>).x = Math.max(l.x, 0);
-  return l;
+  return compactItem(compareWith, l, fullLayout, HORIZONTAL, cols, Infinity);
 }
 
 // ============================================================================
@@ -175,36 +103,7 @@ export function compactItemHorizontal(
  *
  * This is the default compaction mode for react-grid-layout.
  */
-export const verticalCompactor: Compactor = {
-  type: "vertical",
-  allowOverlap: false,
-
-  compact(layout: Layout, _cols: number): Layout {
-    const compareWith = getStatics(layout);
-    let maxY = bottom(compareWith);
-    const sorted = sortLayoutItemsByRowCol(layout);
-    const out: LayoutItem[] = new Array(layout.length);
-
-    for (let i = 0; i < sorted.length; i++) {
-      const sortedItem = sorted[i];
-      if (sortedItem === undefined) continue;
-
-      let l = cloneLayoutItem(sortedItem);
-
-      if (!l.static) {
-        l = compactItemVertical(compareWith, l, sorted, maxY);
-        maxY = Math.max(maxY, l.y + l.h);
-        compareWith.push(l);
-      }
-
-      const originalIndex = layout.indexOf(sortedItem);
-      out[originalIndex] = l;
-      l.moved = false;
-    }
-
-    return out;
-  }
-};
+export const verticalCompactor: Compactor = classicCompactor(VERTICAL);
 
 // ============================================================================
 // Horizontal Compactor
@@ -216,34 +115,7 @@ export const verticalCompactor: Compactor = {
  * Items are sorted by column then row, and each item is moved
  * as far left as possible without overlapping other items.
  */
-export const horizontalCompactor: Compactor = {
-  type: "horizontal",
-  allowOverlap: false,
-
-  compact(layout: Layout, cols: number): Layout {
-    const compareWith = getStatics(layout);
-    const sorted = sortLayoutItemsByColRow(layout);
-    const out: LayoutItem[] = new Array(layout.length);
-
-    for (let i = 0; i < sorted.length; i++) {
-      const sortedItem = sorted[i];
-      if (sortedItem === undefined) continue;
-
-      let l = cloneLayoutItem(sortedItem);
-
-      if (!l.static) {
-        l = compactItemHorizontal(compareWith, l, cols, sorted);
-        compareWith.push(l);
-      }
-
-      const originalIndex = layout.indexOf(sortedItem);
-      out[originalIndex] = l;
-      l.moved = false;
-    }
-
-    return out;
-  }
-};
+export const horizontalCompactor: Compactor = classicCompactor(HORIZONTAL);
 
 // ============================================================================
 // No Compaction

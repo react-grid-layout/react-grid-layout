@@ -1,0 +1,64 @@
+{
+  "auditId": "B8",
+  "calls": [
+    {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":2,"i":"append","w":2,"x":0,"y":{"$number":"Infinity"}},
+          {"h":5,"i":"a","w":2,"x":0,"y":0}
+        ]
+      },
+      "output": [
+        {"h":2,"i":"append","w":2,"x":0,"y":0},
+        {"h":5,"i":"a","w":2,"x":0,"y":0}
+      ],
+      "postInput": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":2,"i":"append","w":2,"x":0,"y":0},
+          {"h":5,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    {
+      "identity": {
+        "aliases": [
+          {"inputPaths":["$.layout"],"outputPaths":["$"]},
+          {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+          {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+        ],
+        "returnedSameArray": true,
+        "sameObject": [true,true]
+      },
+      "input": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":5,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":0,"y":{"$number":"Infinity"}}
+        ]
+      },
+      "output": [
+        {"h":5,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"append","w":2,"x":0,"y":5}
+      ],
+      "postInput": {
+        "bounds": {"cols":12},
+        "layout": [
+          {"h":5,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":0,"y":5}
+        ]
+      }
+    }
+  ],
+  "knownBug": "h: Infinity append sees statics and preceding nonstatics, so input order can leave it overlapping later geometry."
+}

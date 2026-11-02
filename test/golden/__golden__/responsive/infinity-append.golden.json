@@ -1,0 +1,266 @@
+[
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "vertical",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "vertical",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "horizontal",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":2}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "horizontal",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "wrap",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":2}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "wrap",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": null,
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":2}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": null,
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"a","w":2,"x":0,"y":0},
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "vertical",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "vertical",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "horizontal",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "horizontal",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "wrap",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": "wrap",
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": null,
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"append","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":2,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactTypeOrCompactor": null,
+      "lastBreakpoint": "lg",
+      "layouts": {
+        "lg": [
+          {"h":2,"i":"append","w":2,"x":2,"y":{"$number":"Infinity"}},
+          {"h":2,"i":"a","w":2,"x":0,"y":0}
+        ]
+      }
+    }
+  }
+]

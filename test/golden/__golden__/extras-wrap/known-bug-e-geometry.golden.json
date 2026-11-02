@@ -1,0 +1,112 @@
+[
+  {
+    "cols": 2,
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":2,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":1,"i":"c","w":1,"x":0,"y":1}
+      ],
+      2
+    ],
+    "knownBug": "e: wrap tests only the first cell and advances by width, ignoring height",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"c","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":1}
+    ],
+    "postInput": [
+      [
+        {"h":2,"i":"a","w":1,"x":0,"y":0},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":1,"i":"c","w":1,"x":0,"y":1}
+      ],
+      2
+    ],
+    "subcase": "a-tall-overlap",
+    "warnings": []
+  },
+  {
+    "cols": 2,
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false,false]},
+    "input": [
+      [
+        {"h":1,"i":"c","w":1,"x":0,"y":1},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":2,"i":"a","w":1,"x":0,"y":0}
+      ],
+      2
+    ],
+    "knownBug": "e: wrap tests only the first cell and advances by width, ignoring height",
+    "order": "reversed",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"c","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":1},
+      {"constraints":{"$u":1},"h":1,"i":"b","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":2,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"c","w":1,"x":0,"y":1},
+        {"h":1,"i":"b","w":1,"x":1,"y":0},
+        {"h":2,"i":"a","w":1,"x":0,"y":0}
+      ],
+      2
+    ],
+    "subcase": "a-tall-overlap",
+    "warnings": []
+  },
+  {
+    "cols": 4,
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":1,"i":"s","static":true,"w":1,"x":1,"y":0},
+        {"h":1,"i":"a","w":2,"x":0,"y":0}
+      ],
+      4
+    ],
+    "knownBug": "e: wrap tests only the first cell and advances by width, ignoring height",
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"s","static":true,"w":1,"x":1,"y":0},
+        {"h":1,"i":"a","w":2,"x":0,"y":0}
+      ],
+      4
+    ],
+    "subcase": "b-wide-over-static",
+    "warnings": []
+  },
+  {
+    "cols": 4,
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":1,"i":"a","w":2,"x":0,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":1,"y":0}
+      ],
+      4
+    ],
+    "knownBug": "e: wrap tests only the first cell and advances by width, ignoring height",
+    "order": "reversed",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":2,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"a","w":2,"x":0,"y":0},
+        {"h":1,"i":"s","static":true,"w":1,"x":1,"y":0}
+      ],
+      4
+    ],
+    "subcase": "b-wide-over-static",
+    "warnings": []
+  }
+]
