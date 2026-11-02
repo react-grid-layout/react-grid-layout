@@ -229,6 +229,9 @@
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.claude/"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/test/spec/benchmark-test.js"
     ],
