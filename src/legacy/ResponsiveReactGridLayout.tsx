@@ -8,6 +8,10 @@
 
 import React from "react";
 import {
+  LegacyEntryContext,
+  useDevWarning
+} from "../react/components/deprecations.js";
+import {
   ResponsiveGridLayout as ResponsiveGridLayoutInner,
   type ResponsiveGridLayoutProps
 } from "../react/components/ResponsiveGridLayout.js";
@@ -207,13 +211,13 @@ function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
   // Handle deprecated verticalCompact prop
   let compactType: CompactType =
     compactTypeProp === undefined ? "vertical" : compactTypeProp;
+  useDevWarning(
+    verticalCompact === false,
+    "RGL_W010",
+    "`verticalCompact` on <ResponsiveReactGridLayout> is deprecated and will be removed soon. " +
+      'Use `compactType`: "horizontal" | "vertical" | null.'
+  );
   if (verticalCompact === false) {
-    if (process.env["NODE_ENV"] !== "production") {
-      console.warn(
-        "`verticalCompact` on <ResponsiveReactGridLayout> is deprecated and will be removed soon. " +
-          'Use `compactType`: "horizontal" | "vertical" | null.'
-      );
-    }
     compactType = null;
   }
 
@@ -250,7 +254,7 @@ function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
   // Get compactor from type and options
   const compactor = getCompactor(compactType, allowOverlap, preventCollision);
 
-  return (
+  const grid = (
     <ResponsiveGridLayoutInner
       width={width}
       breakpoint={breakpoint}
@@ -289,6 +293,11 @@ function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
     >
       {children}
     </ResponsiveGridLayoutInner>
+  );
+  return (
+    <LegacyEntryContext.Provider value={true}>
+      {grid}
+    </LegacyEntryContext.Provider>
   );
 }
 

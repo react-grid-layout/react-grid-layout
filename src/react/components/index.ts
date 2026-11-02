@@ -4,7 +4,7 @@
 
 // GridItem
 export {
-  GridItem,
+  PublicGridItem as GridItem,
   type GridItemProps,
   type GridItemCallback,
   type ResizeHandle

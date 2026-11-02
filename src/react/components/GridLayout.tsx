@@ -58,6 +58,10 @@ import { defaultConstraints } from "../../core/constraints.js";
 
 import { GridItem, type ResizeHandle } from "./GridItem.js";
 import { computeDropPosition } from "./dropMath.js";
+import {
+  LegacyEntryContext,
+  useModernEntryDeprecations
+} from "./deprecations.js";
 
 // ============================================================================
 // Types
@@ -131,7 +135,11 @@ export interface GridLayoutProps {
   /** Layout definition */
   layout?: Layout;
 
-  /** Item to use when dropping from outside */
+  /**
+   * Item to use when dropping from outside.
+   * @deprecated Use `dropConfig.defaultItem`, which accepts `i` (RGL_W017).
+   * Removed in 3.0, where `dropConfig.defaultItem` is renamed `dropConfig.item`.
+   */
   droppingItem?: LayoutItem;
 
   // ===========================================================================
@@ -178,7 +186,11 @@ export interface GridLayoutProps {
   /** Called when an item is dropped from outside */
   onDrop?: (layout: Layout, item: LayoutItem | undefined, e: Event) => void;
 
-  /** Called when dragging over the grid */
+  /**
+   * Called when dragging over the grid.
+   * @deprecated Use `dropConfig.onDragOver`, which receives the native
+   * DragEvent (RGL_W014). Removed in 3.0.
+   */
   onDropDragOver?: (
     e: ReactDragEvent
   ) =>
@@ -344,6 +356,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     onDrop: onDropProp = noop,
     onDropDragOver: onDropDragOverProp = noop
   } = props;
+
+  const legacyEntry = useModernEntryDeprecations(props);
 
   // Resolve config interfaces with defaults
   const gridConfig: GridConfig = useMemo(
@@ -1422,7 +1436,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     ...style
   };
 
-  return (
+  const grid = (
     <div
       ref={setGridRef}
       className={mergedClassName}
@@ -1439,6 +1453,14 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       {isDroppable && droppingDOMNode && processGridItem(droppingDOMNode, true)}
       {renderPlaceholder()}
     </div>
+  );
+  // A modern grid nested in a legacy grid's item is not legacy.
+  return legacyEntry ? (
+    <LegacyEntryContext.Provider value={false}>
+      {grid}
+    </LegacyEntryContext.Provider>
+  ) : (
+    grid
   );
 }
 

@@ -570,8 +570,12 @@ export interface DropConfig {
   /** Whether external elements can be dropped on the grid (default: false) */
   enabled: boolean;
 
-  /** Default size for dropped items (default: { w: 1, h: 1 }) */
-  defaultItem: { w: number; h: number };
+  /**
+   * Default size for dropped items (default: { w: 1, h: 1 }), and optionally
+   * the dropped item's id (default: "__dropping-elem__"). Replaces the
+   * deprecated `droppingItem` prop; 3.0 renames it `dropConfig.item`.
+   */
+  defaultItem: { w: number; h: number; i?: string };
 
   /**
    * Called when dragging over the grid.

@@ -315,6 +315,11 @@ export const fastHorizontalCompactor: Compactor = {
  * Fast horizontal compactor that allows overlapping items.
  *
  * Compacts items leftward but allows them to overlap each other.
+ * @deprecated Removed in 3.0 (RGL_W016). No replacement keeps this compaction:
+ * `noOverlapCompactor` and `{...c, allowOverlap: true}` skip compaction, so
+ * migrate by hand (keep the arrangement in your own code before passing the
+ * layout to `noOverlapCompactor`, or accept the new positions). Behavior is
+ * unchanged through 2.4.x.
  */
 export const fastHorizontalOverlapCompactor: Compactor = {
   ...fastHorizontalCompactor,

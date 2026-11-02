@@ -87,6 +87,7 @@ export {
   cloneLayoutItem,
   getLayoutItem,
   bottom,
+  assertLayoutStructure,
   validateLayout,
   moveElement,
 
