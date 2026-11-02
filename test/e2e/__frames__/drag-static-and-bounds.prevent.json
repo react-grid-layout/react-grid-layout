@@ -65,7 +65,7 @@
       },
       {
         "i": "placeholder",
-        "x": 0,
+        "x": 500,
         "y": 0,
         "width": 100,
         "height": 100
@@ -88,7 +88,7 @@
       },
       {
         "i": "placeholder",
-        "x": 500,
+        "x": 0,
         "y": 0,
         "width": 100,
         "height": 100
