@@ -5,14 +5,7 @@
  * Extracts state management from ResponsiveReactGridLayout into a reusable hook.
  */
 
-import {
-  useState,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef
-} from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { deepEqual } from "fast-equals";
 import type {
   Layout,
@@ -139,139 +132,39 @@ export interface UseResponsiveLayoutResult<
  * ```
  */
 /**
- * Validate and clone a layout for a breakpoint. Without configured cols the
- * layout cannot be bounded yet, so it is kept raw and the caller records the
- * breakpoint as pending validation.
+ * Validate and clone a layout for one breakpoint. Rows are always bounded;
+ * columns only where the breakpoint has configured cols (see
+ * validateLayoutInput). Stateless: nothing waits for cols to appear later.
  */
 function intakeLayout(
   layout: Layout,
   cols: number | undefined,
   maxRows: number | undefined
 ): Layout {
-  if (cols === undefined) return layout;
-  return cloneLayout(validateLayoutInput(layout, { cols, maxRows }));
+  const validated = validateLayoutInput(layout, { cols, maxRows });
+  // A saved key without cols keeps the consumer's item shape; copy it so a
+  // later mutation of the caller's array is not stored.
+  if (cols === undefined) return validated.map(item => ({ ...item }));
+  return cloneLayout(validated);
 }
 
-/** Validate the pending raw layouts whose breakpoint now has cols. */
-function validatePending<B extends Breakpoint>(
-  layouts: ResponsiveLayouts<B>,
-  pending: ReadonlySet<B>,
-  colsConfig: Breakpoints<B>,
-  maxRows: number | undefined
-): ResponsiveLayouts<B> {
-  let output: ResponsiveLayouts<B> | undefined;
-  for (const bp of pending) {
-    const layout = layouts[bp];
-    if (!layout || colsConfig[bp] === undefined) continue;
-    output ??= { ...layouts };
-    (output as Record<B, Layout>)[bp] = intakeLayout(
-      layout,
-      colsConfig[bp],
-      maxRows
-    );
-  }
-  return output ?? layouts;
-}
-
-/** Stored layouts plus the breakpoints whose layout skipped validation. */
-interface StoredLayouts<B extends Breakpoint> {
-  layouts: ResponsiveLayouts<B>;
-  pending: ReadonlySet<B>;
-}
-
-type StoredLayoutsAction<B extends Breakpoint> =
-  | { type: "set"; bp: B; layout: Layout; cols: number | undefined }
-  | {
-      type: "replace";
-      layouts: ResponsiveLayouts<B>;
-      colsConfig: Breakpoints<B>;
-    }
-  | { type: "generated"; bp: B; layout: Layout }
-  | { type: "resolve"; colsConfig: Breakpoints<B> };
-
-/** Intake every layout; the ones without configured cols become pending. */
-function intakeAll<B extends Breakpoint>(
+/** intakeLayout for every breakpoint in `input`. */
+function intakeLayouts<B extends Breakpoint>(
   input: ResponsiveLayouts<B>,
   colsConfig: Breakpoints<B>,
   maxRows: number | undefined
-): StoredLayouts<B> {
+): ResponsiveLayouts<B> {
   const layouts = {} as ResponsiveLayouts<B>;
-  const pending = new Set<B>();
   for (const bp of Object.keys(input) as B[]) {
     const layout = input[bp];
-    if (!layout) continue;
-    (layouts as Record<B, Layout>)[bp] = intakeLayout(
-      layout,
-      colsConfig[bp],
-      maxRows
-    );
-    if (colsConfig[bp] === undefined) pending.add(bp);
+    if (layout)
+      (layouts as Record<B, Layout>)[bp] = intakeLayout(
+        layout,
+        colsConfig[bp],
+        maxRows
+      );
   }
-  return { layouts, pending };
-}
-
-function withPending<B extends Breakpoint>(
-  pending: ReadonlySet<B>,
-  bp: B,
-  isPending: boolean
-): ReadonlySet<B> {
-  if (pending.has(bp) === isPending) return pending;
-  const next = new Set(pending);
-  if (isPending) next.add(bp);
-  else next.delete(bp);
-  return next;
-}
-
-/**
- * Every write goes through this reducer, so each one applies to the latest
- * state. Effects never commit a snapshot over an update made in the same
- * commit.
- */
-function storedLayoutsReducer<B extends Breakpoint>(
-  maxRows: number | undefined
-) {
-  return (
-    state: StoredLayouts<B>,
-    action: StoredLayoutsAction<B>
-  ): StoredLayouts<B> => {
-    switch (action.type) {
-      case "set": {
-        return {
-          layouts: {
-            ...state.layouts,
-            [action.bp]: intakeLayout(action.layout, action.cols, maxRows)
-          },
-          pending: withPending(
-            state.pending,
-            action.bp,
-            action.cols === undefined
-          )
-        };
-      }
-      case "replace": {
-        return intakeAll(action.layouts, action.colsConfig, maxRows);
-      }
-      case "generated": {
-        return {
-          layouts: { ...state.layouts, [action.bp]: action.layout },
-          pending: withPending(state.pending, action.bp, false)
-        };
-      }
-      case "resolve": {
-        const layouts = validatePending(
-          state.layouts,
-          state.pending,
-          action.colsConfig,
-          maxRows
-        );
-        if (layouts === state.layouts) return state;
-        const pending = new Set(state.pending);
-        for (const bp of state.pending)
-          if (action.colsConfig[bp] !== undefined) pending.delete(bp);
-        return { layouts, pending };
-      }
-    }
-  };
+  return layouts;
 }
 
 export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
@@ -313,21 +206,16 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // State
   const [breakpoint, setBreakpoint] = useState<B>(initialBreakpoint);
   const [cols, setCols] = useState<number>(initialCols);
-  const reducer = useMemo(() => storedLayoutsReducer<B>(maxRows), [maxRows]);
-  const [stored, dispatch] = useReducer(reducer, undefined, () =>
-    intakeAll(unvalidatedLayouts, colsConfig, maxRows)
+  const [layouts, setLayoutsState] = useState<ResponsiveLayouts<B>>(() =>
+    intakeLayouts(unvalidatedLayouts, colsConfig, maxRows)
   );
 
-  // Validate pending layouts as soon as their breakpoint gains cols, in this
-  // render. The effect commits that through the reducer, so removing the
-  // cols again cannot bring the raw layout back.
-  const layouts = useMemo(
-    () => validatePending(stored.layouts, stored.pending, colsConfig, maxRows),
-    [stored, colsConfig, maxRows]
-  );
-  useEffect(() => {
-    if (layouts !== stored.layouts) dispatch({ type: "resolve", colsConfig });
-  }, [layouts, stored.layouts, colsConfig]);
+  // Setters read the latest config through refs so they stay stable when
+  // cols is an inline object.
+  const colsConfigRef = useRef(colsConfig);
+  colsConfigRef.current = colsConfig;
+  const maxRowsRef = useRef(maxRows);
+  maxRowsRef.current = maxRows;
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
@@ -352,20 +240,22 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   }, [layouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
 
   // Set layout for a specific breakpoint
-  const setLayoutForBreakpoint = useCallback(
-    (bp: B, newLayout: Layout) => {
-      dispatch({ type: "set", bp, layout: newLayout, cols: colsConfig[bp] });
-    },
-    [colsConfig]
-  );
+  const setLayoutForBreakpoint = useCallback((bp: B, newLayout: Layout) => {
+    // Intake now, so later mutation of the caller's array is not stored.
+    const stored = intakeLayout(
+      newLayout,
+      colsConfigRef.current[bp],
+      maxRowsRef.current
+    );
+    setLayoutsState(prev => ({ ...prev, [bp]: stored }));
+  }, []);
 
   // Set all layouts
-  const setLayouts = useCallback(
-    (newLayouts: ResponsiveLayouts<B>) => {
-      dispatch({ type: "replace", layouts: newLayouts, colsConfig });
-    },
-    [colsConfig]
-  );
+  const setLayouts = useCallback((newLayouts: ResponsiveLayouts<B>) => {
+    setLayoutsState(
+      intakeLayouts(newLayouts, colsConfigRef.current, maxRowsRef.current)
+    );
+  }, []);
 
   // Handle width changes
   useEffect(() => {
@@ -393,7 +283,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         colsConfig
       );
 
-      dispatch({ type: "generated", bp: newBreakpoint, layout: newLayout });
+      setLayoutsState(prev => ({ ...prev, [newBreakpoint]: newLayout }));
       setBreakpoint(newBreakpoint);
       setCols(newCols);
 

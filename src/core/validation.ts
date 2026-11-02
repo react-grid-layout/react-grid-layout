@@ -29,6 +29,9 @@ function atLeast(value: number, lower: number): number {
 /**
  * Normalize untrusted layout geometry without mutating the input.
  *
+ * Without cols (a breakpoint with no configured columns) only y, h, minH and
+ * maxH are bounded; x, w, minW and maxW pass unchanged.
+ *
  * With a positive finite column count, w/minW are in [1, cols], x is in
  * [0, cols-w], and h/minH are in [1, rowLimit]. maxW/maxH are only raised to
  * their minimum (or 1); larger values, including Infinity, pass unchanged. rowLimit is
@@ -46,9 +49,13 @@ function atLeast(value: number, lower: number): number {
  */
 export function validateLayoutInput(
   layout: Layout,
-  { cols, maxRows = Infinity }: { cols: number; maxRows?: number }
+  { cols, maxRows = Infinity }: { cols: number | undefined; maxRows?: number }
 ): Layout {
-  const widthLimit = Number.isFinite(cols) ? Math.max(1, cols) : 1;
+  // Without configured cols (a saved breakpoint key), only the row fields can
+  // be bounded; x, w, minW and maxW pass unchanged until GridLayout renders
+  // them with real cols.
+  const hasCols = cols !== undefined;
+  const widthLimit = hasCols && Number.isFinite(cols) ? Math.max(1, cols) : 1;
   const rowLimit = Number.isFinite(maxRows)
     ? Math.max(1, Math.min(MAX_GRID_ROWS, maxRows))
     : MAX_GRID_ROWS;
@@ -56,14 +63,18 @@ export function validateLayoutInput(
   for (let index = 0; index < layout.length; index++) {
     const item = layout[index];
     if (item === undefined) continue;
-    const w = bounded(item.w, 1, widthLimit);
+    const w = hasCols ? bounded(item.w, 1, widthLimit) : item.w;
     const h = bounded(item.h, 1, rowLimit);
-    const x = bounded(item.x, 0, widthLimit - w);
+    const x = hasCols ? bounded(item.x, 0, widthLimit - w) : item.x;
     const y = item.y === Infinity ? Infinity : bounded(item.y, 0, rowLimit);
     const minW =
-      item.minW === undefined ? undefined : bounded(item.minW, 1, widthLimit);
+      item.minW === undefined || !hasCols
+        ? item.minW
+        : bounded(item.minW, 1, widthLimit);
     const maxW =
-      item.maxW === undefined ? undefined : atLeast(item.maxW, minW ?? 1);
+      item.maxW === undefined || !hasCols
+        ? item.maxW
+        : atLeast(item.maxW, minW ?? 1);
     const minH =
       item.minH === undefined ? undefined : bounded(item.minH, 1, rowLimit);
     const maxH =
@@ -110,9 +121,9 @@ export function validateResponsiveLayoutsInput<B extends Breakpoint>(
   let output: ResponsiveLayouts<B> | undefined;
   for (const bp in layouts) {
     const layout = layouts[bp];
-    // Saved keys can outlive their column configuration. Preserve them until
-    // that breakpoint is configured again; they are not generation sources.
-    if (!layout || cols[bp] === undefined) continue;
+    // Saved keys can outlive their column configuration. Their rows are
+    // bounded now; their columns are bounded when the breakpoint renders.
+    if (!layout) continue;
     const validated = validateLayoutInput(layout, { cols: cols[bp], maxRows });
     if (validated !== layout) {
       output ??= { ...layouts };
