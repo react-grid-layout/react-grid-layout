@@ -474,7 +474,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     if (activeDrag) return; // Don't update during drag
     if (droppingDOMNode) return; // Don't update during drop from outside
 
-    const layoutChanged = !deepEqual(propsLayout, prevPropsLayoutRef.current);
+    const layoutChanged = !deepEqual(
+      authoredLayout(propsLayout),
+      authoredLayout(prevPropsLayoutRef.current)
+    );
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
     const compactTypeChanged = compactType !== prevCompactTypeRef.current;
 
@@ -487,7 +490,11 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       compactTypeChanged ||
       boundsChanged
     ) {
-      const baseLayout = layoutChanged ? propsLayout : layout;
+      const baseLayout = layoutChanged
+        ? propsLayout
+        : boundsChanged
+          ? reboundLayout(layout, propsLayout, children, cols, maxRows)
+          : layout;
       const newLayout = synchronizeLayoutWithChildren(
         baseLayout,
         children,
@@ -1402,14 +1409,61 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   );
 }
 
+/**
+ * The caller's layout behind each validated copy. Revalidating for new bounds
+ * makes a new array; prop sync compares the authored layout, so a bounds change
+ * alone does not read as a new layout prop and reset the grid's edits.
+ */
+const authoredLayouts = new WeakMap<Layout, Layout>();
+const authoredLayout = (layout: Layout): Layout =>
+  authoredLayouts.get(layout) ?? layout;
+
+/**
+ * Re-bound the grid's own layout for new bounds. Positions and sizes come from
+ * state (the user's edits); min/max constraints come from where the item was
+ * authored, the props layout just validated for these bounds or else the
+ * child's data-grid, so a larger grid restores constraints a smaller one
+ * clamped.
+ */
+function reboundLayout(
+  state: Layout,
+  props: Layout,
+  children: React.ReactNode,
+  cols: number,
+  maxRows: number
+): Layout {
+  const dataGrid = new Map<string, Partial<LayoutItem>>();
+  React.Children.forEach(children, child => {
+    if (!React.isValidElement(child) || child.key === null) return;
+    const authored = (child.props as { "data-grid"?: Partial<LayoutItem> })[
+      "data-grid"
+    ];
+    if (authored) dataGrid.set(String(child.key), authored);
+  });
+  const merged = state.map(item => {
+    const authored = getLayoutItem(props, item.i) ?? dataGrid.get(item.i);
+    if (!authored) return item;
+    return {
+      ...item,
+      minW: authored.minW,
+      maxW: authored.maxW,
+      minH: authored.minH,
+      maxH: authored.maxH
+    };
+  });
+  return validateLayoutInput(merged, { cols, maxRows });
+}
+
 /** Public intake. Responsive rendering uses the resolved entry below. */
 function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
   const cols = props.gridConfig?.cols ?? defaultGridConfig.cols;
   const maxRows = props.gridConfig?.maxRows ?? defaultGridConfig.maxRows;
-  const layout = useMemo(
-    () => validateLayoutInput(props.layout ?? [], { cols, maxRows }),
-    [props.layout, cols, maxRows]
-  );
+  const layout = useMemo(() => {
+    const authored = props.layout ?? [];
+    const validated = validateLayoutInput(authored, { cols, maxRows });
+    if (validated !== authored) authoredLayouts.set(validated, authored);
+    return validated;
+  }, [props.layout, cols, maxRows]);
   return <GridLayout {...props} layout={layout} />;
 }
 // Keep the 2.x name for DevTools, WidthProvider labels and name selectors.
