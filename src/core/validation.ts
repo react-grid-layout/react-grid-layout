@@ -16,6 +16,28 @@ function bounded(value: number, lower: number, upper: number): number {
 }
 
 /**
+ * A size: positive and finite. Zero, negative and non-finite sizes use 1 (they
+ * break layout math); a positive fraction such as 0.5 is kept, as in 2.x
+ * before intake bounds. +Infinity uses the upper bound.
+ */
+function size(value: number, upper: number): number {
+  if (value === Infinity) return upper;
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0)
+    return 1;
+  return Math.min(value, upper);
+}
+
+/**
+ * A minimum size: any finite value up to the upper bound, so `minW: 0` (no
+ * minimum) is kept. Non-finite values use 1; +Infinity uses the upper bound.
+ */
+function minimum(value: number, upper: number): number {
+  if (value === Infinity) return upper;
+  if (typeof value !== "number" || !Number.isFinite(value)) return 1;
+  return Math.min(value, upper);
+}
+
+/**
  * Raise a maximum to its minimum. A maximum above the grid is harmless (the
  * item size is bounded separately) and is kept, so `maxW: Infinity` survives
  * and a later, larger `cols` is not capped by the one in effect at intake.
@@ -32,8 +54,11 @@ function atLeast(value: number, lower: number): number {
  * Without cols (a breakpoint with no configured columns) only y, h, minH and
  * maxH are bounded; x, w, minW and maxW pass unchanged.
  *
- * With a positive finite column count, w/minW are in [1, cols], x is in
- * [0, cols-w], and h/minH are in [1, rowLimit]. maxW/maxH are only raised to
+ * With a positive finite column count, w is positive and at most cols, minW is
+ * at most cols, x is in [0, cols-w], h is positive and at most rowLimit, and
+ * minH is at most rowLimit. Zero or negative w/h use 1; positive fractions
+ * below 1 and minimums of 0 or less are kept (a floor of 1 is a 3.0 change).
+ * maxW/maxH are only raised to
  * their minimum (or 1); larger values, including Infinity, pass unchanged. rowLimit is
  * MAX_GRID_ROWS (10,000), reduced by a smaller finite maxRows, with a floor
  * of 1. Finite y is in [0, rowLimit]. y: Infinity retains the supported
@@ -63,20 +88,20 @@ export function validateLayoutInput(
   for (let index = 0; index < layout.length; index++) {
     const item = layout[index];
     if (item === undefined) continue;
-    const w = hasCols ? bounded(item.w, 1, widthLimit) : item.w;
-    const h = bounded(item.h, 1, rowLimit);
+    const w = hasCols ? size(item.w, widthLimit) : item.w;
+    const h = size(item.h, rowLimit);
     const x = hasCols ? bounded(item.x, 0, widthLimit - w) : item.x;
     const y = item.y === Infinity ? Infinity : bounded(item.y, 0, rowLimit);
     const minW =
       item.minW === undefined || !hasCols
         ? item.minW
-        : bounded(item.minW, 1, widthLimit);
+        : minimum(item.minW, widthLimit);
     const maxW =
       item.maxW === undefined || !hasCols
         ? item.maxW
         : atLeast(item.maxW, minW ?? 1);
     const minH =
-      item.minH === undefined ? undefined : bounded(item.minH, 1, rowLimit);
+      item.minH === undefined ? undefined : minimum(item.minH, rowLimit);
     const maxH =
       item.maxH === undefined ? undefined : atLeast(item.maxH, minH ?? 1);
     if (

@@ -408,6 +408,17 @@ afterEach(() => {
 });
 
 describe("validateLayoutInput", () => {
+  test("keeps 2.x sizes below 1: positive fractions and minimums of 0", () => {
+    // A floor of 1 is a 3.0 change. Zero and negative sizes still use 1.
+    const input = [
+      { ...item, w: 0.5, h: 0.25, minW: 0, minH: 0 },
+      { ...item, i: "b", w: 0, h: -2 }
+    ];
+    const [kept, fixed] = validateLayoutInput(input, { cols: 4, maxRows: 20 });
+    expect(kept).toMatchObject({ w: 0.5, h: 0.25, minW: 0, minH: 0 });
+    expect(fixed).toMatchObject({ w: 1, h: 1 });
+  });
+
   test.each(["x", "y", "w", "h", "minW", "maxW", "minH", "maxH"] as const)(
     "bounds %s and coerces non-finite input without mutation",
     field => {
@@ -422,14 +433,18 @@ describe("validateLayoutInput", () => {
         const input = Object.freeze([{ ...item, [field]: value }]);
         const output = validateLayoutInput(input, { cols: 4, maxRows: 20 });
         const unbounded = field === "maxW" || field === "maxH";
+        // A finite minimum below 1 is kept (2.x); see the size floor test.
+        const minimum = field === "minW" || field === "minH";
         expect(output[0]![field]).toBe(
-          (field === "y" || unbounded) && value === Infinity
-            ? Infinity
-            : unbounded && value === 1e9
-              ? 1e9
-              : value === Infinity || value === 1e9
-                ? upper
-                : lower
+          minimum && value === -1e9
+            ? -1e9
+            : (field === "y" || unbounded) && value === Infinity
+              ? Infinity
+              : unbounded && value === 1e9
+                ? 1e9
+                : value === Infinity || value === 1e9
+                  ? upper
+                  : lower
         );
         expect(input[0]![field]).toBe(value);
       }
