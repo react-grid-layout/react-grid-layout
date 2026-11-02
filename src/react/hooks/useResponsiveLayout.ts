@@ -132,37 +132,48 @@ export interface UseResponsiveLayoutResult<
  * ```
  */
 /**
- * Validate and clone a layout for one breakpoint. Rows are always bounded;
- * columns only where the breakpoint has configured cols (see
- * validateLayoutInput). Stateless: nothing waits for cols to appear later.
+ * Stored layouts, split by trust. `inputs` are the consumer's layouts as
+ * written (copied at the call); `generated` are this hook's compaction output.
+ * A breakpoint is in at most one of the two.
  */
-function intakeLayout(
-  layout: Layout,
-  cols: number | undefined,
-  maxRows: number | undefined
-): Layout {
-  const validated = validateLayoutInput(layout, { cols, maxRows });
-  // A saved key without cols keeps the consumer's item shape; copy it so a
-  // later mutation of the caller's array is not stored.
-  if (cols === undefined) return validated.map(item => ({ ...item }));
-  return cloneLayout(validated);
+interface StoredLayouts<B extends Breakpoint> {
+  inputs: ResponsiveLayouts<B>;
+  generated: ResponsiveLayouts<B>;
 }
 
-/** intakeLayout for every breakpoint in `input`. */
-function intakeLayouts<B extends Breakpoint>(
-  input: ResponsiveLayouts<B>,
-  colsConfig: Breakpoints<B>,
-  maxRows: number | undefined
+/** Copy the consumer's layouts so a later mutation of theirs is not stored. */
+function copyInputs<B extends Breakpoint>(
+  input: ResponsiveLayouts<B>
 ): ResponsiveLayouts<B> {
-  const layouts = {} as ResponsiveLayouts<B>;
+  const inputs = {} as ResponsiveLayouts<B>;
   for (const bp of Object.keys(input) as B[]) {
     const layout = input[bp];
     if (layout)
-      (layouts as Record<B, Layout>)[bp] = intakeLayout(
-        layout,
-        colsConfig[bp],
-        maxRows
-      );
+      (inputs as Record<B, Layout>)[bp] = layout.map(item => ({ ...item }));
+  }
+  return inputs;
+}
+
+/**
+ * The layouts a render exposes. Inputs are validated with this render's
+ * config, every render, so no setter, effect or retained callback can store
+ * bounds from another commit. Rows are always bounded; columns only where the
+ * breakpoint has cols (see validateLayoutInput). Generated layouts are trusted.
+ */
+function resolveLayouts<B extends Breakpoint>(
+  stored: StoredLayouts<B>,
+  colsConfig: Breakpoints<B>,
+  maxRows: number | undefined
+): ResponsiveLayouts<B> {
+  const layouts = { ...stored.generated };
+  for (const bp of Object.keys(stored.inputs) as B[]) {
+    const layout = stored.inputs[bp];
+    if (!layout) continue;
+    const cols = colsConfig[bp];
+    const validated = validateLayoutInput(layout, { cols, maxRows });
+    // A saved key without cols keeps the consumer's item shape.
+    (layouts as Record<B, Layout>)[bp] =
+      cols === undefined ? validated : cloneLayout(validated);
   }
   return layouts;
 }
@@ -206,16 +217,20 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // State
   const [breakpoint, setBreakpoint] = useState<B>(initialBreakpoint);
   const [cols, setCols] = useState<number>(initialCols);
-  const [layouts, setLayoutsState] = useState<ResponsiveLayouts<B>>(() =>
-    intakeLayouts(unvalidatedLayouts, colsConfig, maxRows)
-  );
+  const [stored, setStored] = useState<StoredLayouts<B>>(() => ({
+    inputs: copyInputs(unvalidatedLayouts),
+    generated: {} as ResponsiveLayouts<B>
+  }));
 
-  // Setters close over this render's config, so no effect, ours or a
-  // child's, can see config from another commit. Keying cols on its content
-  // keeps the setters stable when cols is an inline object with equal values.
+  // Keying cols on its content keeps `layouts` stable when cols is an inline
+  // object with equal values.
   const colsKey = JSON.stringify(colsConfig);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const stableCols = useMemo(() => colsConfig, [colsKey]);
+  const layouts = useMemo(
+    () => resolveLayouts(stored, stableCols, maxRows),
+    [stored, stableCols, maxRows]
+  );
 
   // Track previous values for change detection
   const prevWidthRef = useRef(width);
@@ -240,22 +255,22 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   }, [layouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
 
   // Set layout for a specific breakpoint
-  const setLayoutForBreakpoint = useCallback(
-    (bp: B, newLayout: Layout) => {
-      // Intake now, so later mutation of the caller's array is not stored.
-      const stored = intakeLayout(newLayout, stableCols[bp], maxRows);
-      setLayoutsState(prev => ({ ...prev, [bp]: stored }));
-    },
-    [stableCols, maxRows]
-  );
+  // Setters store input only; validation happens when a render reads it, so
+  // they need no config and stay stable.
+  const setLayoutForBreakpoint = useCallback((bp: B, newLayout: Layout) => {
+    const input = newLayout.map(item => ({ ...item }));
+    setStored(prev => {
+      const generated = { ...prev.generated };
+      delete generated[bp];
+      return { inputs: { ...prev.inputs, [bp]: input }, generated };
+    });
+  }, []);
 
   // Set all layouts
-  const setLayouts = useCallback(
-    (newLayouts: ResponsiveLayouts<B>) => {
-      setLayoutsState(intakeLayouts(newLayouts, stableCols, maxRows));
-    },
-    [stableCols, maxRows]
-  );
+  const setLayouts = useCallback((newLayouts: ResponsiveLayouts<B>) => {
+    const inputs = copyInputs(newLayouts);
+    setStored({ inputs, generated: {} as ResponsiveLayouts<B> });
+  }, []);
 
   // Handle width changes
   useEffect(() => {
@@ -283,7 +298,12 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
         colsConfig
       );
 
-      setLayoutsState(prev => ({ ...prev, [newBreakpoint]: newLayout }));
+      // Store only a layout that was generated; an existing one is unchanged.
+      if (!layouts[newBreakpoint])
+        setStored(prev => ({
+          inputs: prev.inputs,
+          generated: { ...prev.generated, [newBreakpoint]: newLayout }
+        }));
       setBreakpoint(newBreakpoint);
       setCols(newCols);
 

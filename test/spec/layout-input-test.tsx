@@ -280,6 +280,31 @@ test.each(["setLayoutForBreakpoint", "setLayouts"] as const)(
   }
 );
 
+test.each(["setLayoutForBreakpoint", "setLayouts"] as const)(
+  "useResponsiveLayout %s saved before a config change applies the current bounds",
+  setter => {
+    const hook = renderHook(
+      ({ bounds }) =>
+        useResponsiveLayout<string>({
+          width: 800,
+          breakpoints: { lg: 0 },
+          cols: { lg: bounds },
+          maxRows: bounds,
+          compactor: noCompactor
+        }),
+      { initialProps: { bounds: 4 } }
+    );
+    const saved = hook.result.current;
+    hook.rerender({ bounds: 2 });
+    const big: LayoutItem = { ...item, w: 4, h: 4 };
+    act(() => {
+      if (setter === "setLayouts") saved.setLayouts({ lg: [big] });
+      else saved.setLayoutForBreakpoint("lg", [big]);
+    });
+    expect(hook.result.current.layouts.lg![0]).toMatchObject({ w: 2, h: 2 });
+  }
+);
+
 test("useResponsiveLayout setters stay stable across inline cols objects", () => {
   const hook = renderHook(() =>
     useResponsiveLayout<string>({
@@ -587,7 +612,7 @@ test.each([
       api.setLayouts({ lg: [hostile] })
   ]
 ] as const)(
-  "useResponsiveLayout bounds the rows of a layout stored by %s before its breakpoint had cols",
+  "useResponsiveLayout bounds a layout stored by %s before its breakpoint had cols, once the cols arrive",
   (_name, store) => {
     const hook = renderHook(
       ({ breakpoints, cols }) =>
@@ -608,11 +633,11 @@ test.each([
     act(() => store(hook.result.current as never));
     hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
     hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
-    expect(hook.result.current.layouts.lg![0]).toMatchObject(rowsOnly);
+    expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
   }
 );
 
-test("useResponsiveLayout keeps rows bounded for a layout stored before cols, after cols come and go", () => {
+test("useResponsiveLayout bounds a stored layout by the cols of each render as cols come and go", () => {
   const hook = renderHook(
     ({ breakpoints, cols }) =>
       useResponsiveLayout<string>({
@@ -631,7 +656,7 @@ test("useResponsiveLayout keeps rows bounded for a layout stored before cols, af
   );
   act(() => hook.result.current.setLayoutForBreakpoint("lg", [hostile]));
   hook.rerender({ breakpoints: { lg: 600, sm: 0 }, cols: { lg: 4, sm: 2 } });
-  expect(hook.result.current.layouts.lg![0]).toMatchObject(rowsOnly);
+  expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
   hook.rerender({ breakpoints: { sm: 0 }, cols: { sm: 2 } });
   expect(hook.result.current.layouts.lg![0]).toMatchObject(rowsOnly);
 });
@@ -672,7 +697,7 @@ test.each(["setLayoutForBreakpoint", "setLayouts"] as const)(
   }
 );
 
-test("useResponsiveLayout keeps a bounded prop layout bounded when cols are removed", () => {
+test("useResponsiveLayout keeps rows bounded for a prop layout when its cols are removed", () => {
   const input = { lg: [hostile] };
   const hook = renderHook(
     ({ breakpoints, cols }) =>
@@ -693,7 +718,7 @@ test("useResponsiveLayout keeps a bounded prop layout bounded when cols are remo
   );
   expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
   hook.rerender({ breakpoints: { sm: 0 }, cols: { sm: 2 } });
-  expect(hook.result.current.layouts.lg![0]).toMatchObject(bounded);
+  expect(hook.result.current.layouts.lg![0]).toMatchObject(rowsOnly);
 });
 
 test("useResponsiveLayout does not revalidate a generated layout another hook stored raw", () => {
