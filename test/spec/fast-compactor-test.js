@@ -275,17 +275,20 @@ describe("Fast Vertical Compactor", () => {
       expect(item).toMatchObject({ x: -n, y: 0 });
     });
 
-    it("still stacks items that overlap only off-grid", () => {
-      const compacted = fastVerticalCompactor.compact(
-        [
-          { i: "a", x: -1, y: 0, w: 1, h: 1 },
-          { i: "b", x: -1, y: 5, w: 1, h: 1 }
-        ],
-        1
-      );
-      expect(hasOverlaps(compacted)).toBe(false);
-      expect(compacted.map(l => l.y)).toEqual([0, 1]);
-    });
+    it.each([-1, -3, -1.5, -1e9])(
+      "still stacks items that overlap only off-grid at x=%d",
+      x => {
+        const compacted = fastVerticalCompactor.compact(
+          [
+            { i: "a", x, y: 0, w: 1, h: 1 },
+            { i: "b", x, y: 5, w: 1, h: 1 }
+          ],
+          1
+        );
+        expect(hasOverlaps(compacted)).toBe(false);
+        expect(compacted.map(l => l.y)).toEqual([0, 1]);
+      }
+    );
 
     it("handles empty layout", () => {
       const compacted = fastVerticalCompactor.compact([], 12);

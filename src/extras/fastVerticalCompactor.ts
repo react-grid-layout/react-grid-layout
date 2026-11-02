@@ -88,9 +88,14 @@ function compactVerticalFast(
 
     // Every column below 0 shares one tide slot at -1, so items that overlap
     // off-grid still stack, and a large negative x costs one iteration
-    // instead of |x|. Sharing the slot can only add stacking, never overlap.
-    const x1 = item.x < -1 ? -1 : item.x;
+    // instead of |x|. An item wholly left of the grid still covers that slot.
+    // Sharing the slot can only add stacking, never overlap.
+    const offGrid = item.x < -1;
+    const x1 = offGrid ? -1 : item.x;
     let x2 = item.x + item.w;
+    if (offGrid && x2 < 0) {
+      x2 = 0;
+    }
     if (x2 > cols) {
       x2 = cols;
     }
