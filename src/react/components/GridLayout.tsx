@@ -852,6 +852,34 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       calculatedXY: { x: number; y: number },
       hasPlaceholder: boolean
     ) => {
+      // Move the dropping item to the hovered cell the way a drag does, so it
+      // pushes the items it lands on (#2313), and keep its layout entry on the
+      // latest cell so commitDrop/onDrop reads it (#2284). moveElement mutates
+      // what it moves and pushes, so it works on copies: the layout already
+      // sent to onLayoutChange stays untouched.
+      const moveToHoveredCell = (current: Layout): Layout => {
+        const item = getLayoutItem(current, itemToPlace.i);
+        if (!item) return current;
+        const target = validateLayoutInput(
+          [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
+          { cols, maxRows }
+        )[0]!;
+        if (item.x === target.x && item.y === target.y) return current;
+        const working = current.map(cloneLayoutItem);
+        const moved = moveElement(
+          working,
+          getLayoutItem(working, itemToPlace.i)!,
+          target.x,
+          target.y,
+          true,
+          preventCollision,
+          compactType,
+          cols,
+          allowOverlap
+        );
+        return compactor.compact(moved, cols);
+      };
+
       if (!hasPlaceholder) {
         setDroppingDOMNode(<div key={itemToPlace.i} />);
         setDroppingPosition(newDroppingPosition);
@@ -862,55 +890,28 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         // rendered, leaving __dropping-elem__ in the layout while
         // droppingDOMNode is null.
         const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
-        setLayout([
-          ...baseLayout,
-          validateLayoutInput(
-            [
-              {
-                ...itemToPlace,
-                x: calculatedXY.x,
-                y: calculatedXY.y,
-                static: false,
-                isDraggable: true
-              }
-            ],
-            { cols, maxRows }
-          )[0]!
-        ]);
+        // Enter below every item, then move in, so a first hover on an
+        // occupied cell pushes like any later one.
+        const entry = validateLayoutInput(
+          [
+            {
+              ...itemToPlace,
+              x: calculatedXY.x,
+              y: bottom(baseLayout),
+              static: false,
+              isDraggable: true
+            }
+          ],
+          { cols, maxRows }
+        )[0]!;
+        setLayout(moveToHoveredCell([...baseLayout, entry]));
       } else if (droppingPositionRef.current) {
         const shouldUpdate =
           droppingPositionRef.current.left !== newDroppingPosition.left ||
           droppingPositionRef.current.top !== newDroppingPosition.top;
         if (shouldUpdate) {
           setDroppingPosition(newDroppingPosition);
-          // Keep the placeholder's layout entry in sync so commitDrop/onDrop
-          // reads the latest cell, not the initial one (#2284). Move it the
-          // way a drag does, so it pushes the items it lands on (#2313).
-          setLayout(currentLayout => {
-            const item = getLayoutItem(currentLayout, itemToPlace.i);
-            if (!item) return currentLayout;
-            const target = validateLayoutInput(
-              [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
-              { cols, maxRows }
-            )[0]!;
-            if (item.x === target.x && item.y === target.y)
-              return currentLayout;
-            // moveElement mutates the items it moves and pushes. Work on
-            // copies so the layout already sent to onLayoutChange is untouched.
-            const working = currentLayout.map(cloneLayoutItem);
-            const moved = moveElement(
-              working,
-              getLayoutItem(working, itemToPlace.i)!,
-              target.x,
-              target.y,
-              true,
-              preventCollision,
-              compactType,
-              cols,
-              allowOverlap
-            );
-            return compactor.compact(moved, cols);
-          });
+          setLayout(moveToHoveredCell);
         }
       }
     },

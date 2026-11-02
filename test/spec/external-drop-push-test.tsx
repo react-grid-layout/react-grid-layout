@@ -29,26 +29,37 @@ const dropped = (onDrop: jest.Mock) => ({
   item: onDrop.mock.calls[0]?.[1] as LayoutItem
 });
 
-test.each(["mouse", "touch"] as const)(
-  "%s drop moved onto the top item pushes it down",
-  kind => {
+// "below" hovers under the item first; "direct" lands on it with the first
+// event, which goes through the initial placement path.
+test.each([
+  ["mouse", "below"],
+  ["mouse", "direct"],
+  ["touch", "below"],
+  ["touch", "direct"]
+] as const)(
+  "%s drop entering %s the top item pushes it down",
+  (kind, entry) => {
     const onDrop = jest.fn();
     const view = renderGrid(onDrop);
     const drop = dropExternal(view.container);
+    const path =
+      entry === "below"
+        ? [
+            { x: 20, y: 200 },
+            { x: 20, y: 15 }
+          ]
+        : [{ x: 20, y: 15 }];
     try {
-      // Enter below the item, then move onto its top-left cell.
       if (kind === "mouse") {
-        drop.enter({ x: 20, y: 200 });
-        drop.over({ x: 20, y: 200 });
-        drop.over({ x: 20, y: 15 });
+        drop.enter(path[0]!);
+        for (const at of path) drop.over(at);
         drop.drop();
       } else {
         const source = document.createElement("div");
         source.dataset.rglDraggable = "";
         document.body.append(source);
-        drop.touchStart(source, { x: 20, y: 200 });
-        drop.touchMove({ x: 20, y: 200 });
-        drop.touchMove({ x: 20, y: 15 });
+        drop.touchStart(source, path[0]!);
+        for (const at of path) drop.touchMove(at);
         drop.touchEnd();
         source.remove();
       }
