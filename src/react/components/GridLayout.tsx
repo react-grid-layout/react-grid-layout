@@ -358,12 +358,14 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     handle: draggableHandle,
     cancel: draggableCancel,
     threshold: dragThreshold,
-    allowMobileScroll: dragAllowMobileScroll
+    allowMobileScroll: dragAllowMobileScroll,
+    enableUserSelectHack: dragEnableUserSelectHack
   } = dragConfig;
   const {
     enabled: isResizable,
     handles: resizeHandles,
-    handleComponent: resizeHandle
+    handleComponent: resizeHandle,
+    enableUserSelectHack: resizeEnableUserSelectHack
   } = resizeConfig;
   const {
     enabled: isDroppable,
@@ -1282,6 +1284,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
           isResizable={resizable}
           isBounded={bounded}
           allowMobileScroll={dragAllowMobileScroll}
+          dragEnableUserSelectHack={dragEnableUserSelectHack}
+          resizeEnableUserSelectHack={resizeEnableUserSelectHack}
           useCSSTransforms={useCSSTransforms && mounted}
           usePercentages={!mounted}
           transformScale={transformScale}
@@ -1327,6 +1331,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       isDraggable,
       isResizable,
       isBounded,
+      dragEnableUserSelectHack,
+      resizeEnableUserSelectHack,
       useCSSTransforms,
       mounted,
       transformScale,
