@@ -14,6 +14,9 @@ export default [
       "build/**/*",
       "dist/**/*",
       "coverage/**/*",
+      "test/e2e/harness-dist/**/*",
+      "test-results/**/*",
+      "playwright-report/**/*",
       "examples/*.js" // built files
     ]
   },
