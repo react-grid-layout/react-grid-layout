@@ -14,7 +14,7 @@ import type {
 } from "./types.js";
 import { cloneLayout, correctBounds } from "./layout.js";
 import { validateLayoutInput } from "./validation.js";
-import { getCompactor } from "./compactors.js";
+import { compactorFor } from "./compactors.js";
 
 // ============================================================================
 // Breakpoint Utilities
@@ -164,7 +164,7 @@ export function findOrGenerateResponsiveLayout<B extends Breakpoint>(
     typeof compactTypeOrCompactor === "object" &&
     compactTypeOrCompactor !== null
       ? compactTypeOrCompactor
-      : getCompactor(compactTypeOrCompactor);
+      : compactorFor(compactTypeOrCompactor);
   return compactor.compact(corrected, cols);
 }
 

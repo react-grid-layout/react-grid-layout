@@ -28,7 +28,7 @@ import type {
   DropConfig,
   PositionStrategy
 } from "../core/types.js";
-import { getCompactor } from "../core/compactors.js";
+import { compactorFor } from "../core/compactors.js";
 import {
   transformStrategy,
   absoluteStrategy,
@@ -252,7 +252,7 @@ function ResponsiveReactGridLayoutInner<B extends Breakpoint = string>(
   }
 
   // Get compactor from type and options
-  const compactor = getCompactor(compactType, allowOverlap, preventCollision);
+  const compactor = compactorFor(compactType, allowOverlap, preventCollision);
 
   const grid = (
     <ResponsiveGridLayoutInner

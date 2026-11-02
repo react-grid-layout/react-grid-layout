@@ -33,7 +33,7 @@ import {
   findOrGenerateResponsiveLayout,
   getIndentationValue
 } from "../../core/responsive.js";
-import { getCompactor } from "../../core/compactors.js";
+import { compactorFor } from "../../core/compactors.js";
 import { bottom } from "../../core/layout.js";
 
 import {
@@ -239,7 +239,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   );
 
   // Get compactor (use provided or default to vertical)
-  const compactor = compactorProp ?? getCompactor("vertical");
+  const compactor = compactorProp ?? compactorFor("vertical");
   const compactType = compactor.type;
   const allowOverlap = compactor.allowOverlap;
 

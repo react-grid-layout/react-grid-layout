@@ -17,16 +17,17 @@ No breaking changes. If you save layouts, read the first item under Bug Fixes: a
 
 Nothing is removed in 2.4; each of these keeps working through 2.4.x and is removed in 3.0. [`docs/warnings.md`](docs/warnings.md) has the migration for each code. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
 
-| Deprecated                                                                       | Use instead                                                  | Code       | How you see it         |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------- | ---------------------- |
-| `droppingItem` on `GridLayout` / `ResponsiveGridLayout`                          | `dropConfig.defaultItem` (with `i`)                          | `RGL_W017` | dev warning, once/grid |
-| `onDropDragOver` on `GridLayout` / `ResponsiveGridLayout`                        | `dropConfig.onDragOver` (native `DragEvent`)                 | `RGL_W014` | dev warning, once/grid |
-| `data-grid` children on `GridLayout` / `ResponsiveGridLayout`                    | an explicit `layout` / `layouts`                             | `RGL_W015` | dev warning, once/grid |
-| `useCSSTransforms` / `usePercentages` on a `GridItem` you render yourself        | `positionStrategy` (`transformStrategy`, `absoluteStrategy`) | `RGL_W009` | dev warning, once/item |
-| `validateLayout`                                                                 | `assertLayoutStructure`                                      | `RGL_W013` | JSDoc                  |
-| `verticalOverlapCompactor`, `horizontalOverlapCompactor`, `wrapOverlapCompactor` | `noOverlapCompactor`                                         | `RGL_W016` | JSDoc                  |
-| `fastVerticalOverlapCompactor`, `fastHorizontalOverlapCompactor`                 | migrate by hand; no export keeps their compaction            | `RGL_W016` | JSDoc                  |
-| A compaction type string passed to `findOrGenerateResponsiveLayout`              | a compactor object                                           | `RGL_W008` | JSDoc                  |
+| Deprecated                                                                       | Use instead                                                         | Code       | How you see it              |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------- | --------------------------- |
+| `droppingItem` on `GridLayout` / `ResponsiveGridLayout`                          | `dropConfig.defaultItem` (with `i`)                                 | `RGL_W017` | dev warning, once/grid      |
+| `onDropDragOver` on `GridLayout` / `ResponsiveGridLayout`                        | `dropConfig.onDragOver` (native `DragEvent`)                        | `RGL_W014` | dev warning, once/grid      |
+| `data-grid` children on `GridLayout` / `ResponsiveGridLayout`                    | an explicit `layout` / `layouts`                                    | `RGL_W015` | dev warning, once/grid      |
+| `useCSSTransforms` / `usePercentages` on a `GridItem` you render yourself        | `positionStrategy` (`transformStrategy`, `absoluteStrategy`)        | `RGL_W009` | dev warning, once/item      |
+| `validateLayout`                                                                 | `assertLayoutStructure`                                             | `RGL_W013` | JSDoc                       |
+| `verticalOverlapCompactor`, `horizontalOverlapCompactor`, `wrapOverlapCompactor` | `noOverlapCompactor`                                                | `RGL_W016` | JSDoc                       |
+| `fastVerticalOverlapCompactor`, `fastHorizontalOverlapCompactor`                 | migrate by hand; no export keeps their compaction                   | `RGL_W016` | JSDoc                       |
+| A compaction type string passed to `findOrGenerateResponsiveLayout`              | a compactor object                                                  | `RGL_W008` | JSDoc                       |
+| `getCompactor` (warns at runtime for `"wrap"`, which returns `noCompactor`)      | a compactor object; `wrapCompactor` from `react-grid-layout/extras` | `RGL_W008` | JSDoc; runtime for `"wrap"` |
 
 The `/legacy` entry keeps `droppingItem`, `onDropDragOver` and `data-grid` and does not warn. Its `verticalCompact={false}` warning now carries `RGL_W010` and prints once per grid. `moveElement`, `moveElementAwayFromCollision`, `compactItemVertical`, `compactItemHorizontal`, `resolveCompactionCollision` and the `GridItem` export get a JSDoc notice that 3.0 removes them; they have no 2.4 replacement.
 
@@ -51,6 +52,7 @@ The `/legacy` entry keeps `droppingItem`, `onDropDragOver` and `data-grid` and d
 ### Bug Fixes
 
 - **cols**: Shrinking `cols` used to leave an item past the right edge until you dragged it. Shrink from 12 to 3 with an item at `x: 5`, and it now moves to `x: 2` and `onLayoutChange` reports the new position. `useGridLayout` and `GridLayout` now agree on this. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328)
+- **compactor**: Swapping to a compactor of the same `type` (for example `verticalOverlapCompactor` to `verticalCompactor`) now re-compacts the grid. GridLayout compared only `type`; it now compares `type`, `allowOverlap`, `preventCollision` and the `compact` function. A new object with the same four, such as an inline `{ ...verticalCompactor, preventCollision: true }`, still causes no re-sync.
 - **onLayoutChange**: Fires once per drag, resize or Responsive compactor swap. Every changed drag or resize stop called it twice with the same layout: once from the stop handler and again a render later. A drag that ends where it started now reports nothing, in free-form grids too, and a compactor swap that leaves every item in place reports nothing. [#1984](https://github.com/react-grid-layout/react-grid-layout/issues/1984)
 - **onDrag**: The `placeholder` argument and the rendered placeholder now show where this event lands the item. They lagged one event behind.
 - **Responsive**: A breakpoint with `cols` but no saved layout is still generated from the nearest saved one (`md` from `lg`), and the copy is now bounded to the target breakpoint's `cols`. [#2337](https://github.com/react-grid-layout/react-grid-layout/pull/2337)

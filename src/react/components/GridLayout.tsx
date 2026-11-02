@@ -22,7 +22,6 @@ import clsx from "clsx";
 import type {
   Layout,
   LayoutItem,
-  CompactType,
   DroppingPosition,
   GridDragEvent,
   GridResizeEvent,
@@ -52,7 +51,7 @@ import {
 } from "../../core/layout.js";
 import { validateLayoutInput } from "../../core/validation.js";
 import { getAllCollisions } from "../../core/collision.js";
-import { getCompactor } from "../../core/compactors.js";
+import { compactorFor } from "../../core/compactors.js";
 import { defaultPositionStrategy } from "../../core/position.js";
 import { defaultConstraints } from "../../core/constraints.js";
 
@@ -217,6 +216,26 @@ function movedItem(
   item: LayoutItem
 ): LayoutItem {
   return after[before.indexOf(item)] ?? item;
+}
+
+/**
+ * Whether two compactors behave the same, so swapping one for the other needs
+ * no re-sync (RX-8b). A new object with the same four fields, such as an inline
+ * `{ ...verticalCompactor, preventCollision: true }` or the legacy wrapper's
+ * per-render compactor, is the same compactor. That only holds when `compact`
+ * is an own property: a class compactor's `compact` lives on the prototype and
+ * may read instance state, so two instances are compared by identity.
+ */
+function sameCompactor(a: Compactor, b: Compactor): boolean {
+  if (a === b) return true;
+  return (
+    a.type === b.type &&
+    a.allowOverlap === b.allowOverlap &&
+    a.preventCollision === b.preventCollision &&
+    a.compact === b.compact &&
+    Object.prototype.hasOwnProperty.call(a, "compact") &&
+    Object.prototype.hasOwnProperty.call(b, "compact")
+  );
 }
 
 /**
@@ -417,7 +436,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   } = dropConfig;
 
   // Get compactor (use provided or get from type)
-  const compactor = compactorProp ?? getCompactor("vertical");
+  const compactor = compactorProp ?? compactorFor("vertical");
   const compactType = compactor.type;
   const allowOverlap = compactor.allowOverlap;
   const preventCollision = compactor.preventCollision ?? false;
@@ -481,7 +500,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   const prevPropsLayoutRef = useRef<Layout>(propsLayout);
   const prevChildrenRef = useRef<React.ReactNode>(children);
   const prevBoundsRef = useRef({ cols, maxRows });
-  const prevCompactTypeRef = useRef<CompactType>(compactType);
+  const prevCompactorRef = useRef<Compactor>(compactor);
   const gridContainerRef = useRef<HTMLDivElement | null>(null);
   const touchDragActiveRef = useRef(false);
   const activeTouchIdRef = useRef<number | null>(null);
@@ -525,17 +544,15 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       authoredLayout(prevPropsLayoutRef.current)
     );
     const childrenChanged = !childrenEqual(children, prevChildrenRef.current);
-    const compactTypeChanged = compactType !== prevCompactTypeRef.current;
+    const compactorChanged = !sameCompactor(
+      compactor,
+      prevCompactorRef.current
+    );
 
     const boundsChanged =
       cols !== prevBoundsRef.current.cols ||
       maxRows !== prevBoundsRef.current.maxRows;
-    if (
-      layoutChanged ||
-      childrenChanged ||
-      compactTypeChanged ||
-      boundsChanged
-    ) {
+    if (layoutChanged || childrenChanged || compactorChanged || boundsChanged) {
       const baseLayout = layoutChanged
         ? propsLayout
         : boundsChanged
@@ -559,7 +576,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     prevBoundsRef.current = { cols, maxRows };
     prevPropsLayoutRef.current = propsLayout;
     prevChildrenRef.current = children;
-    prevCompactTypeRef.current = compactType;
+    prevCompactorRef.current = compactor;
   }, [
     propsLayout,
     children,

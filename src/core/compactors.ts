@@ -6,6 +6,7 @@
  */
 
 import type { Compactor, CompactType, Layout, LayoutItem } from "./types.js";
+import { devWarn } from "./dev.js";
 import {
   normalizeLayoutGeometry,
   normalizeLayoutGeometryInPlace
@@ -229,20 +230,10 @@ export const noOverlapCompactor: Compactor = {
 // ============================================================================
 
 /**
- * Get a compactor by type.
- *
- * This is a convenience function for backwards compatibility with the
- * string-based compactType API.
- *
- * Note: For 'wrap' mode, import `wrapCompactor` from 'react-grid-layout/extras'
- * and pass it directly to the `compactor` prop. This function returns
- * `noCompactor` for 'wrap' type since the wrap compactor is tree-shakeable.
- *
- * @param compactType - 'vertical', 'horizontal', 'wrap', or null
- * @param allowOverlap - Whether to allow overlapping items
- * @returns The appropriate Compactor
+ * The compactor for a v1 compaction type and flags. Internal: the legacy
+ * wrappers and the default compactor use it, so they never warn.
  */
-export function getCompactor(
+export function compactorFor(
   compactType: CompactType,
   allowOverlap: boolean = false,
   preventCollision: boolean = false
@@ -262,9 +253,43 @@ export function getCompactor(
     else baseCompactor = noCompactor;
   }
 
-  // Return with preventCollision if specified
+  // Return with preventCollision if specified. The spread keeps `compact`,
+  // so GridLayout's compactor change check sees no change on re-render.
   if (preventCollision) {
     return { ...baseCompactor, preventCollision };
   }
   return baseCompactor;
+}
+
+/** Dedupe scope for the getCompactor("wrap") warning. */
+const getCompactorScope = {};
+
+/**
+ * Get a compactor by type.
+ *
+ * @deprecated RGL_W008. Pass a compactor object (`verticalCompactor`,
+ * `horizontalCompactor`, `noCompactor`, or `wrapCompactor` from
+ * `react-grid-layout/extras`) instead. Removed in 3.0.
+ *
+ * `getCompactor("wrap")` returns `noCompactor`, not wrap compaction, and warns
+ * once in development.
+ *
+ * @param compactType - 'vertical', 'horizontal', 'wrap', or null
+ * @param allowOverlap - Whether to allow overlapping items
+ * @param preventCollision - Whether to block moves into occupied cells
+ * @returns The appropriate Compactor
+ */
+export function getCompactor(
+  compactType: CompactType,
+  allowOverlap: boolean = false,
+  preventCollision: boolean = false
+): Compactor {
+  if (compactType === "wrap") {
+    devWarn(
+      getCompactorScope,
+      "RGL_W008",
+      'getCompactor("wrap") returns noCompactor, not wrap compaction. Import wrapCompactor from react-grid-layout/extras and pass it as the compactor.'
+    );
+  }
+  return compactorFor(compactType, allowOverlap, preventCollision);
 }

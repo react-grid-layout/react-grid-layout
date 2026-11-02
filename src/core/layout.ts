@@ -422,9 +422,9 @@ export function moveElementAwayFromCollision(
  *
  * The input must be an array. Every defined item needs numeric, non-NaN `x`,
  * `y`, `w` and `h`, and a present `i` must be a string. Infinity and
- * out-of-bounds numbers are accepted. The input is never changed. To repair
- * out-of-bounds values instead of rejecting, use `validateLayoutInput`, which
- * does not throw.
+ * out-of-bounds numbers are accepted. The input is never changed.
+ * `validateLayoutInput` is different: it repairs out-of-bounds geometry
+ * instead of rejecting it, and expects items that are already objects.
  *
  * @param layout - Layout to check
  * @param contextName - Name for error messages

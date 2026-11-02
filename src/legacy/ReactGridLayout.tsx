@@ -27,7 +27,7 @@ import type {
   PositionStrategy,
   LayoutConstraint
 } from "../core/types.js";
-import { getCompactor } from "../core/compactors.js";
+import { compactorFor } from "../core/compactors.js";
 import {
   transformStrategy,
   absoluteStrategy,
@@ -235,7 +235,7 @@ function ReactGridLayout(props: LegacyReactGridLayoutProps) {
   }
 
   // Get compactor from type and options
-  const compactor = getCompactor(compactType, allowOverlap, preventCollision);
+  const compactor = compactorFor(compactType, allowOverlap, preventCollision);
 
   // Build constraints array based on legacy props
   // When isBounded is true, add containerBounds constraint
