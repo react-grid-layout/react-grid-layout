@@ -25,6 +25,8 @@ import { mulberry32 } from "../golden/rng";
 import { dropExternal } from "../golden-react/drop";
 import { measure, type Counts } from "./counters";
 
+import { securityScenario, securityVectors } from "./security-scenarios";
+
 export const sizes = [50, 500, 2000] as const;
 const cols = 12;
 const seed = 42;
@@ -345,6 +347,8 @@ export function runScenarios(): Record<string, Counts> {
   }
   recordReact(500, "breakpoint");
   recordReact(500, "drop");
+  for (const vector of securityVectors)
+    results[`security/${vector}`] = securityScenario(vector);
   return Object.fromEntries(
     Object.keys(results)
       .sort()

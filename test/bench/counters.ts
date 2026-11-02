@@ -75,7 +75,10 @@ export const onItemRender: ProfilerOnRenderCallback = id => {
 };
 
 /** Install only around a synchronous operation, preserving descriptors exactly. */
-export function measure(operation: () => void): Counts {
+export function measure(
+  operation: () => void,
+  maxProbeCalls = Infinity
+): Counts {
   if (active) throw new Error("Nested benchmark measurements are unsupported");
   const counts = Object.fromEntries(
     counterNames.map(key => [key, 0])
@@ -94,8 +97,14 @@ export function measure(operation: () => void): Counts {
   );
   active = counts;
   commits = new Map();
+  let probeCalls = 0;
   try {
     host.__RGL_BENCH_COUNT__ = (name, props) => {
+      if (++probeCalls > maxProbeCalls) {
+        throw new Error(
+          `Operation cap ${maxProbeCalls} exceeded at ${name}: ${JSON.stringify(counts)}`
+        );
+      }
       if (name === "GridItemInner") {
         if (props?.className?.includes("react-grid-placeholder"))
           counts.placeholderRenders++;

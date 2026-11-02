@@ -6,7 +6,7 @@
  */
 
 import type { CompactType, Layout, LayoutItem, Mutable } from "./types.js";
-import { getFirstCollision } from "./collision.js";
+import { normalizeLayoutGeometryInPlace } from "./geometry/normalize.js";
 import { DragResolver } from "./interaction/resolveDrag.js";
 
 // ============================================================================
@@ -181,6 +181,90 @@ export function withLayoutItem(
 // Bounds Correction
 // ============================================================================
 
+/** Preserve the rounding of repeated y++ while skipping whole unit ranges. */
+export function advanceRows(y: number, steps: number): number {
+  if (Number.isInteger(y)) return y + steps;
+  if (y < 0) {
+    const advance = Math.min(steps, Math.ceil(-y));
+    y += advance;
+    steps -= advance;
+  }
+  while (steps > 0) {
+    const boundary = y < 1 ? 1 : 2 ** (Math.floor(Math.log2(y)) + 1);
+    const withinRange = Math.min(steps, Math.ceil(boundary - y) - 1);
+    if (withinRange > 0) {
+      y += withinRange;
+      steps -= withinRange;
+    }
+    if (steps > 0) {
+      y++;
+      steps--;
+    }
+  }
+  return y;
+}
+
+type StaticBlocker = { item: LayoutItem; order: number };
+
+function pushBlocker(heap: StaticBlocker[], blocker: StaticBlocker): void {
+  let index = heap.length;
+  heap.push(blocker);
+  while (index > 0) {
+    const parent = Math.floor((index - 1) / 2);
+    if (heap[parent]!.order <= blocker.order) break;
+    heap[index] = heap[parent]!;
+    index = parent;
+  }
+  heap[index] = blocker;
+}
+
+function popBlocker(heap: StaticBlocker[]): void {
+  const last = heap.pop()!;
+  if (heap.length === 0) return;
+  let index = 0;
+  while (index * 2 + 1 < heap.length) {
+    let child = index * 2 + 1;
+    if (child + 1 < heap.length && heap[child + 1]!.order < heap[child]!.order)
+      child++;
+    if (last.order <= heap[child]!.order) break;
+    heap[index] = heap[child]!;
+    index = child;
+  }
+  heap[index] = last;
+}
+
+/** One row-ordered sweep; the heap retains original first-collision priority. */
+function correctStatic(item: Mutable<LayoutItem>, colliders: Layout): void {
+  const blockers: StaticBlocker[] = [];
+  for (let order = 0; order < colliders.length; order++) {
+    const other = colliders[order]!;
+    if (other.i === item.i) continue;
+    if (other.x + other.w <= item.x || other.x >= item.x + item.w) continue;
+    blockers.push({ item: other, order });
+  }
+  blockers.sort((a, b) => a.item.y - b.item.y);
+  const active: StaticBlocker[] = [];
+  let next = 0;
+  for (;;) {
+    while (
+      next < blockers.length &&
+      !(item.y + item.h <= blockers[next]!.item.y)
+    ) {
+      pushBlocker(active, blockers[next++]!);
+    }
+    while (active.length > 0 && item.y >= active[0]!.item.y + active[0]!.item.h)
+      popBlocker(active);
+    if (active.length === 0) return;
+    const collision = active[0]!.item;
+    // Keep the original collider priority and subtraction order: decimal
+    // rounding can change ceil(end - y), even when interval unions agree.
+    item.y = advanceRows(
+      item.y,
+      Math.max(1, Math.ceil(collision.y + collision.h - item.y))
+    );
+  }
+}
+
 /**
  * Ensure all layout items fit within the grid bounds.
  *
@@ -200,6 +284,8 @@ export function correctBounds(
   layout: Mutable<LayoutItem>[],
   bounds: { cols: number }
 ): LayoutItem[] {
+  // Bounds correction resolves append sentinels in its existing traversal order.
+  normalizeLayoutGeometryInPlace(layout, false);
   const collidesWith = getStatics(layout);
 
   for (let i = 0; i < layout.length; i++) {
@@ -221,16 +307,14 @@ export function correctBounds(
     // into rendering math, or the item renders at the top-left and overlaps.
     // Clamp it to the current bottom of the layout (#2161).
     if (l.y === Infinity) {
-      l.y = bottom(collidesWith);
+      l.y = bottom(collidesWith.filter(item => Number.isFinite(item.y)));
     }
 
     if (!l.static) {
       collidesWith.push(l);
     } else {
       // Static items that collide with other statics must be moved down
-      while (getFirstCollision(collidesWith, l)) {
-        l.y++;
-      }
+      correctStatic(l, collidesWith);
     }
   }
 

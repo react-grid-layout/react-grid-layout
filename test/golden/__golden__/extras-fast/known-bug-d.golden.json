@@ -9,7 +9,7 @@
         12
       ],
       "output": [
-        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":{"$number":"Infinity"}}
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
       ],
       "postInput": [
         [
@@ -19,17 +19,18 @@
       ],
       "warnings": []
     },
-    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":true,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a"]},
     "fast": {
-      "error": {"message":"Invalid array length","name":"RangeError"},
-      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
       "input": [
         [
           {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
         ],
         12
       ],
-      "output": {"$u":1},
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+      ],
       "postInput": [
         [
           {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
@@ -52,7 +53,7 @@
         12
       ],
       "output": [
-        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":{"$number":"Infinity"}}
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
       ],
       "postInput": [
         [
@@ -62,17 +63,18 @@
       ],
       "warnings": []
     },
-    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":false,"equalPostInput":true,"fastError":{"message":"Invalid array length","name":"RangeError"},"fastOrder":{"$u":1}},
+    "diff": {"classicError":{"$u":1},"classicOrder":["a"],"equalOutput":true,"equalPostInput":true,"fastError":{"$u":1},"fastOrder":["a"]},
     "fast": {
-      "error": {"message":"Invalid array length","name":"RangeError"},
-      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
       "input": [
         [
           {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
         ],
         12
       ],
-      "output": {"$u":1},
+      "output": [
+        {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0}
+      ],
       "postInput": [
         [
           {"h":1,"i":"a","w":1,"x":0,"y":{"$number":"Infinity"}}
