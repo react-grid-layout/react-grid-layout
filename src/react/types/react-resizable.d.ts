@@ -21,7 +21,7 @@ declare module "react-resizable" {
     width: number;
     height: number;
     className?: string;
-    draggableOpts?: { disabled?: boolean };
+    draggableOpts?: { disabled?: boolean; enableUserSelectHack?: boolean };
     minConstraints?: [number, number];
     maxConstraints?: [number, number];
     onResizeStart?: ResizeCallback;
