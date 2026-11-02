@@ -252,6 +252,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
   // State
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
+  // Refs keep interaction math synchronous, but changing a ref alone does not
+  // render a memoized item when its snapped grid geometry stays unchanged.
+  const [, setInteractionRevision] = useState(0);
 
   // Refs for position tracking (avoid state for React 18 batching)
   const elementRef = useRef<HTMLDivElement>(null);
@@ -290,6 +293,15 @@ function GridItemInner(props: GridItemProps): ReactElement {
   const thresholdExceededRef = useRef(false);
   // Auto-scroll controller for edge-scroll during drag (#2232)
   const edgeScrollRef = useRef<EdgeScrollController | null>(null);
+  // Also stop it on unmount: the dropping placeholder is unmounted on drop
+  // without going through onDragStop, which left the loop running (#2312).
+  useEffect(
+    () => () => {
+      edgeScrollRef.current?.stop();
+      edgeScrollRef.current = null;
+    },
+    []
+  );
 
   // Position parameters
   const positionParams: PositionParams = useMemo(
@@ -553,6 +565,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
       const newPosition: PartialPosition = { top, left };
       dragPositionRef.current = newPosition;
+      setInteractionRevision(revision => revision + 1);
 
       // Calculate raw position and apply constraints
       const rawPos = calcXYRaw(positionParams, top, left);
@@ -591,11 +604,11 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
   const onDragStop: DraggableEventHandler = useCallback(
     (e, { node }) => {
-      if (!onDragStopProp || !dragging) return;
-
-      // Stop edge auto-scroll (#2232)
+      // Stop edge auto-scroll (#2232), even if this drag stop is ignored below
       edgeScrollRef.current?.stop();
       edgeScrollRef.current = null;
+
+      if (!onDragStopProp || !dragging) return;
 
       // Reset threshold tracking (#2217)
       const wasPending = dragPendingRef.current;
@@ -686,6 +699,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
       }
 
       resizePositionRef.current = updatedSize;
+      if (handlerName === "onResize" && resizing) {
+        setInteractionRevision(revision => revision + 1);
+      }
 
       // Measure the rendered container height so containerBounds (legacy
       // isBounded) can clamp a resize to the container edge (#1779). The item's
@@ -723,6 +739,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
       onResizeStartProp,
       onResizeProp,
       onResizeStopProp,
+      resizing,
       containerWidth,
       positionParams,
       i,

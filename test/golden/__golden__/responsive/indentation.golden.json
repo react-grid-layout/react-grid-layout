@@ -1,0 +1,188 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"lg","value":[3,7]},
+    "output": [3,7],
+    "postInput": {"breakpoint":"lg","value":[3,7]}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"sm","value":[3,7]},
+    "output": [3,7],
+    "postInput": {"breakpoint":"sm","value":[3,7]}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"missing","value":[3,7]},
+    "output": [3,7],
+    "postInput": {"breakpoint":"missing","value":[3,7]}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.lg"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"lg","value":{"lg":[1,2],"sm":[5,6]}},
+    "output": [1,2],
+    "postInput": {"breakpoint":"lg","value":{"lg":[1,2],"sm":[5,6]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.sm"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"sm","value":{"lg":[1,2],"sm":[5,6]}},
+    "output": [5,6],
+    "postInput": {"breakpoint":"sm","value":{"lg":[1,2],"sm":[5,6]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.lg"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"missing","value":{"lg":[1,2],"sm":[5,6]}},
+    "output": [1,2],
+    "postInput": {"breakpoint":"missing","value":{"lg":[1,2],"sm":[5,6]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.lg"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"lg","value":{"lg":[1,2],"sm":[5,6]}},
+    "output": [1,2],
+    "postInput": {"breakpoint":"lg","value":{"lg":[1,2],"sm":[5,6]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.sm"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"sm","value":{"lg":[1,2],"sm":[5,6]}},
+    "output": [5,6],
+    "postInput": {"breakpoint":"sm","value":{"lg":[1,2],"sm":[5,6]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.sm"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"missing","value":{"lg":[1,2],"sm":[5,6]}},
+    "output": [5,6],
+    "postInput": {"breakpoint":"missing","value":{"lg":[1,2],"sm":[5,6]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.md"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"lg","value":{"lg":{"$u":1},"md":[8,9]}},
+    "output": [8,9],
+    "postInput": {"breakpoint":"lg","value":{"lg":{"$u":1},"md":[8,9]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.md"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"sm","value":{"lg":{"$u":1},"md":[8,9]}},
+    "output": [8,9],
+    "postInput": {"breakpoint":"sm","value":{"lg":{"$u":1},"md":[8,9]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.md"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"missing","value":{"lg":{"$u":1},"md":[8,9]}},
+    "output": [8,9],
+    "postInput": {"breakpoint":"missing","value":{"lg":{"$u":1},"md":[8,9]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"lg","value":{"1":[1,1],"2":[2,2],"b":[3,4]}},
+    "output": [1,1],
+    "postInput": {"breakpoint":"lg","value":{"1":[1,1],"2":[2,2],"b":[3,4]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"sm","value":{"1":[1,1],"2":[2,2],"b":[3,4]}},
+    "output": [1,1],
+    "postInput": {"breakpoint":"sm","value":{"1":[1,1],"2":[2,2],"b":[3,4]}}
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.value.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {"breakpoint":"missing","value":{"1":[1,1],"2":[2,2],"b":[3,4]}},
+    "output": [1,1],
+    "postInput": {"breakpoint":"missing","value":{"1":[1,1],"2":[2,2],"b":[3,4]}}
+  },
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"lg","value":{}},"output":[10,10],"postInput":{"breakpoint":"lg","value":{}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"sm","value":{}},"output":[10,10],"postInput":{"breakpoint":"sm","value":{}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"missing","value":{}},"output":[10,10],"postInput":{"breakpoint":"missing","value":{}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"lg","value":{"lg":{"$u":1}}},"output":[10,10],"postInput":{"breakpoint":"lg","value":{"lg":{"$u":1}}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"sm","value":{"lg":{"$u":1}}},"output":[10,10],"postInput":{"breakpoint":"sm","value":{"lg":{"$u":1}}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"missing","value":{"lg":{"$u":1}}},"output":[10,10],"postInput":{"breakpoint":"missing","value":{"lg":{"$u":1}}}}
+]

@@ -1,0 +1,276 @@
+[
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"layout":[]},"output":0,"postInput":{"layout":[]}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"id":"a","layout":[]},"output":{"$u":1},"postInput":{"id":"a","layout":[]}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"id":"absent","layout":[]},"output":{"$u":1},"postInput":{"id":"absent","layout":[]}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":[]},"input":{"layout":[]},"output":[],"postInput":{"layout":[]}},
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    },
+    "output": {"$number":"Infinity"},
+    "postInput": {
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.1"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "id": "a",
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    },
+    "output": {"h":2,"i":"a","w":2,"x":0,"y":0},
+    "postInput": {
+      "id": "a",
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "id": "absent",
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "id": "absent",
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+    "input": {
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    },
+    "output": [],
+    "postInput": {
+      "layout": [
+        {"$hole":true},
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"$hole":true},
+        {"h":2,"i":"tail","w":2,"x":0,"y":{"$number":"Infinity"}},
+        {"$hole":true}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    },
+    "output": 0,
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "id": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    },
+    "output": {"h":2,"i":"a","w":2,"x":0,"y":-8},
+    "postInput": {
+      "id": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "id": "absent",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "id": "absent",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[]},
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    },
+    "output": [],
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":-8},
+        {"h":2,"i":"nan","w":2,"x":0,"y":{"$number":"NaN"}}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": 11,
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "id": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": {"h":2,"i":"a","w":2,"x":0,"y":0},
+    "postInput": {
+      "id": "a",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+    "input": {
+      "id": "absent",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": {"$u":1},
+    "postInput": {
+      "id": "absent",
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false]
+    },
+    "input": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    },
+    "output": [
+      {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":2,"i":"a","w":2,"x":0,"y":0},
+        {"h":2,"i":"a","w":2,"x":0,"y":9},
+        {"h":2,"i":"s","static":true,"w":2,"x":0,"y":0},
+        {"h":2,"i":"truthy","static":1,"w":2,"x":0,"y":0}
+      ]
+    }
+  }
+]

@@ -7,7 +7,7 @@ TEST = ./test
 EXAMPLES = ./examples/*.{js,html,json}
 
 .PHONY: test dev lint build clean install link publish check-release \
-        release-patch release-minor release-major
+        release-patch release-minor release-major golden-update
 
 build: clean build-ts
 
@@ -42,14 +42,14 @@ view-example: clean-example
 	@$(EXEC) webpack serve --config webpack-examples.config.js --progress
 
 # Build the static e2e harness (deterministic; no dev-server race)
-e2e-build:
+e2e-build: build
 	@$(EXEC) webpack --config test/e2e/webpack.harness.config.js
 
 # Run the Playwright e2e suite against the static harness
 e2e-test: e2e-build
 	@$(EXEC) playwright test --config playwright.config.ts
 
-e2e:
+e2e: e2e-build
 	@$(EXEC) playwright test --config playwright.config.ts
 
 lint:
@@ -57,6 +57,9 @@ lint:
 
 test:
 	env NODE_ENV=test $(EXEC) jest --coverage
+
+golden-update:
+	@corepack yarn golden:update
 
 test-watch:
 	env NODE_ENV=test $(EXEC) jest --watch

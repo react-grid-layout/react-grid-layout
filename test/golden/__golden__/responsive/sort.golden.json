@@ -1,0 +1,12 @@
+[
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0}},"output":["xxs","xs","sm","md","lg"],"postInput":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"width":101},"output":"xxs","postInput":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"width":101}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0}},"output":["xxs","xs","sm","md","lg"],"postInput":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"width":101},"output":"xxs","postInput":{"breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"width":101}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"1":100,"2":100,"a":100,"b":100}},"output":["1","2","b","a"],"postInput":{"breakpoints":{"1":100,"2":100,"a":100,"b":100}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"1":100,"2":100,"a":100,"b":100},"width":101},"output":"a","postInput":{"breakpoints":{"1":100,"2":100,"a":100,"b":100},"width":101}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"a":0,"b":0,"n":-1,"z":{"$number":"Infinity"}}},"output":["n","a","b","z"],"postInput":{"breakpoints":{"a":0,"b":0,"n":-1,"z":{"$number":"Infinity"}}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{"a":0,"b":0,"n":-1,"z":{"$number":"Infinity"}},"width":101},"output":"b","postInput":{"breakpoints":{"a":0,"b":0,"n":-1,"z":{"$number":"Infinity"}},"width":101}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{}},"output":[],"postInput":{"breakpoints":{}}},
+  {"error":{"message":"No breakpoints defined","name":"Error"},"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoints":{},"width":101},"output":{"$u":1},"postInput":{"breakpoints":{},"width":101}}
+]

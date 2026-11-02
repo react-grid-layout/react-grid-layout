@@ -6,8 +6,8 @@
  */
 
 import type { CompactType, Layout, LayoutItem, Mutable } from "./types.js";
-import { getAllCollisions, getFirstCollision } from "./collision.js";
-import { sortLayoutItems } from "./sort.js";
+import { normalizeLayoutGeometryInPlace } from "./geometry/normalize.js";
+import { DragResolver } from "./interaction/resolveDrag.js";
 
 // ============================================================================
 // Layout Queries
@@ -181,6 +181,90 @@ export function withLayoutItem(
 // Bounds Correction
 // ============================================================================
 
+/** Preserve the rounding of repeated y++ while skipping whole unit ranges. */
+export function advanceRows(y: number, steps: number): number {
+  if (Number.isInteger(y)) return y + steps;
+  if (y < 0) {
+    const advance = Math.min(steps, Math.ceil(-y));
+    y += advance;
+    steps -= advance;
+  }
+  while (steps > 0) {
+    const boundary = y < 1 ? 1 : 2 ** (Math.floor(Math.log2(y)) + 1);
+    const withinRange = Math.min(steps, Math.ceil(boundary - y) - 1);
+    if (withinRange > 0) {
+      y += withinRange;
+      steps -= withinRange;
+    }
+    if (steps > 0) {
+      y++;
+      steps--;
+    }
+  }
+  return y;
+}
+
+type StaticBlocker = { item: LayoutItem; order: number };
+
+function pushBlocker(heap: StaticBlocker[], blocker: StaticBlocker): void {
+  let index = heap.length;
+  heap.push(blocker);
+  while (index > 0) {
+    const parent = Math.floor((index - 1) / 2);
+    if (heap[parent]!.order <= blocker.order) break;
+    heap[index] = heap[parent]!;
+    index = parent;
+  }
+  heap[index] = blocker;
+}
+
+function popBlocker(heap: StaticBlocker[]): void {
+  const last = heap.pop()!;
+  if (heap.length === 0) return;
+  let index = 0;
+  while (index * 2 + 1 < heap.length) {
+    let child = index * 2 + 1;
+    if (child + 1 < heap.length && heap[child + 1]!.order < heap[child]!.order)
+      child++;
+    if (last.order <= heap[child]!.order) break;
+    heap[index] = heap[child]!;
+    index = child;
+  }
+  heap[index] = last;
+}
+
+/** One row-ordered sweep; the heap retains original first-collision priority. */
+function correctStatic(item: Mutable<LayoutItem>, colliders: Layout): void {
+  const blockers: StaticBlocker[] = [];
+  for (let order = 0; order < colliders.length; order++) {
+    const other = colliders[order]!;
+    if (other.i === item.i) continue;
+    if (other.x + other.w <= item.x || other.x >= item.x + item.w) continue;
+    blockers.push({ item: other, order });
+  }
+  blockers.sort((a, b) => a.item.y - b.item.y);
+  const active: StaticBlocker[] = [];
+  let next = 0;
+  for (;;) {
+    while (
+      next < blockers.length &&
+      !(item.y + item.h <= blockers[next]!.item.y)
+    ) {
+      pushBlocker(active, blockers[next++]!);
+    }
+    while (active.length > 0 && item.y >= active[0]!.item.y + active[0]!.item.h)
+      popBlocker(active);
+    if (active.length === 0) return;
+    const collision = active[0]!.item;
+    // Keep the original collider priority and subtraction order: decimal
+    // rounding can change ceil(end - y), even when interval unions agree.
+    item.y = advanceRows(
+      item.y,
+      Math.max(1, Math.ceil(collision.y + collision.h - item.y))
+    );
+  }
+}
+
 /**
  * Ensure all layout items fit within the grid bounds.
  *
@@ -200,6 +284,8 @@ export function correctBounds(
   layout: Mutable<LayoutItem>[],
   bounds: { cols: number }
 ): LayoutItem[] {
+  // Bounds correction resolves append sentinels in its existing traversal order.
+  normalizeLayoutGeometryInPlace(layout, false);
   const collidesWith = getStatics(layout);
 
   for (let i = 0; i < layout.length; i++) {
@@ -221,16 +307,14 @@ export function correctBounds(
     // into rendering math, or the item renders at the top-left and overlaps.
     // Clamp it to the current bottom of the layout (#2161).
     if (l.y === Infinity) {
-      l.y = bottom(collidesWith);
+      l.y = bottom(collidesWith.filter(item => Number.isFinite(item.y)));
     }
 
     if (!l.static) {
       collidesWith.push(l);
     } else {
       // Static items that collide with other statics must be moved down
-      while (getFirstCollision(collidesWith, l)) {
-        l.y++;
-      }
+      correctStatic(l, collidesWith);
     }
   }
 
@@ -258,7 +342,7 @@ export function correctBounds(
  * @param isUserAction - True if this is a direct user action (affects collision resolution)
  * @param preventCollision - True to block movement into occupied space (item snaps back). No effect if allowOverlap is true.
  * @param compactType - Compaction type for collision resolution
- * @param cols - Number of columns in the grid
+ * @param _cols - Unused; kept so existing callers compile
  * @param allowOverlap - True to allow items to stack on top of each other
  * @returns The updated layout
  */
@@ -270,89 +354,19 @@ export function moveElement(
   isUserAction: boolean | undefined,
   preventCollision: boolean | undefined,
   compactType: CompactType,
-  cols: number,
+  _cols: number,
   allowOverlap?: boolean
 ): LayoutItem[] {
-  // Static items can't be moved unless explicitly draggable
-  if (l.static && l.isDraggable !== true) {
-    return [...layout];
-  }
-
-  // Short-circuit if position unchanged
-  if (l.y === y && l.x === x) {
-    return [...layout];
-  }
-
-  const oldX = l.x;
-  const oldY = l.y;
-
-  // Update position (mutates l directly - see JSDoc note)
-  if (typeof x === "number") (l as Mutable<LayoutItem>).x = x;
-  if (typeof y === "number") (l as Mutable<LayoutItem>).y = y;
-  (l as Mutable<LayoutItem>).moved = true;
-
-  // Sort for proper collision detection order
-  let sorted = sortLayoutItems(layout, compactType);
-  const movingUp =
-    compactType === "vertical" && typeof y === "number"
-      ? oldY >= y
-      : compactType === "horizontal" && typeof x === "number"
-        ? oldX >= x
-        : false;
-
-  if (movingUp) {
-    sorted = sorted.reverse();
-  }
-
-  const collisions = getAllCollisions(sorted, l);
-  const hasCollisions = collisions.length > 0;
-
-  // Handle overlap mode - just clone and return
-  if (hasCollisions && allowOverlap) {
-    return cloneLayout(layout);
-  }
-
-  // Handle prevent collision mode - revert position
-  // Return same reference to signal no change occurred
-  if (hasCollisions && preventCollision) {
-    (l as Mutable<LayoutItem>).x = oldX;
-    (l as Mutable<LayoutItem>).y = oldY;
-    (l as Mutable<LayoutItem>).moved = false;
-    return layout as LayoutItem[];
-  }
-
-  // Resolve collisions by moving other items
-  let resultLayout: LayoutItem[] = [...layout];
-  for (let i = 0; i < collisions.length; i++) {
-    const collision = collisions[i];
-    if (collision === undefined) continue;
-
-    // Skip already-moved items to prevent infinite loops
-    if (collision.moved) continue;
-
-    // Static items can't be moved - move the dragged item instead
-    if (collision.static) {
-      resultLayout = moveElementAwayFromCollision(
-        resultLayout,
-        collision,
-        l,
-        isUserAction,
-        compactType,
-        cols
-      );
-    } else {
-      resultLayout = moveElementAwayFromCollision(
-        resultLayout,
-        l,
-        collision,
-        isUserAction,
-        compactType,
-        cols
-      );
-    }
-  }
-
-  return resultLayout;
+  const result = new DragResolver(compactType).move(
+    layout,
+    l,
+    x,
+    y,
+    isUserAction,
+    preventCollision,
+    allowOverlap
+  );
+  return Array.isArray(result) ? result : [...result];
 }
 
 /**
@@ -366,7 +380,7 @@ export function moveElement(
  * @param itemToMove - The item to move away
  * @param isUserAction - True if this is a direct user action
  * @param compactType - Compaction type
- * @param cols - Number of columns
+ * @param _cols - Unused; kept so existing callers compile
  * @returns Updated layout
  */
 export function moveElementAwayFromCollision(
@@ -375,107 +389,15 @@ export function moveElementAwayFromCollision(
   itemToMove: LayoutItem,
   isUserAction: boolean | undefined,
   compactType: CompactType,
-  cols: number
+  _cols: number
 ): LayoutItem[] {
-  // Wrap mode flows left-to-right, top-to-bottom like a paragraph. For
-  // collision resolution it behaves like horizontal compaction (items push
-  // right); the final wrap compactor re-flows to strict reading order (#2252).
-  const compactH = compactType === "horizontal" || compactType === "wrap";
-  const compactV = compactType === "vertical";
-  const preventCollision = collidesWith.static;
-
-  // Try to move up/left first (only on primary collision from user action)
-  if (isUserAction) {
-    isUserAction = false; // Only try this once
-
-    // Create a fake item to test if there's room above/left
-    const fakeItem: LayoutItem = {
-      x: compactH ? Math.max(collidesWith.x - itemToMove.w, 0) : itemToMove.x,
-      y: compactV ? Math.max(collidesWith.y - itemToMove.h, 0) : itemToMove.y,
-      w: itemToMove.w,
-      h: itemToMove.h,
-      i: "-1"
-    };
-
-    const firstCollision = getFirstCollision(layout, fakeItem);
-    const collisionNorth =
-      firstCollision !== undefined &&
-      firstCollision.y + firstCollision.h > collidesWith.y;
-    const collisionWest =
-      firstCollision !== undefined &&
-      collidesWith.x + collidesWith.w > firstCollision.x;
-
-    // No collision above/left - we can move there
-    if (!firstCollision) {
-      return moveElement(
-        layout,
-        itemToMove,
-        compactH ? fakeItem.x : undefined,
-        compactV ? fakeItem.y : undefined,
-        isUserAction,
-        preventCollision,
-        compactType,
-        cols
-      );
-    }
-
-    // Handle specific collision cases
-    if (collisionNorth && compactV) {
-      return moveElement(
-        layout,
-        itemToMove,
-        undefined,
-        itemToMove.y + 1,
-        isUserAction,
-        preventCollision,
-        compactType,
-        cols
-      );
-    }
-
-    if (collisionNorth && compactType === null) {
-      // Swap positions in free-form mode (#1982). The collider takes the dragged
-      // item's y; the dragged item sits just below the collider's new bottom edge
-      // (which equals the dragged item's y plus its height), so a partial overlap
-      // resolves tight instead of shoving a full item height down and leaving a gap.
-      const newCollidesY = itemToMove.y;
-      (collidesWith as Mutable<LayoutItem>).y = newCollidesY;
-      (itemToMove as Mutable<LayoutItem>).y = newCollidesY + collidesWith.h;
-      return [...layout];
-    }
-
-    if (collisionWest && compactH) {
-      return moveElement(
-        layout,
-        collidesWith,
-        itemToMove.x,
-        undefined,
-        isUserAction,
-        preventCollision,
-        compactType,
-        cols
-      );
-    }
-  }
-
-  // Default: move down/right by 1
-  const newX = compactH ? itemToMove.x + 1 : undefined;
-  const newY = compactV ? itemToMove.y + 1 : undefined;
-
-  if (newX === undefined && newY === undefined) {
-    return [...layout];
-  }
-
-  return moveElement(
+  const result = new DragResolver(compactType).moveAway(
     layout,
+    collidesWith,
     itemToMove,
-    newX,
-    newY,
-    isUserAction,
-    preventCollision,
-    compactType,
-    cols
+    isUserAction
   );
+  return Array.isArray(result) ? result : [...result];
 }
 
 // ============================================================================

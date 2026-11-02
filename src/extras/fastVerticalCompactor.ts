@@ -23,6 +23,7 @@
  * ```
  */
 
+import { normalizeLayoutGeometry } from "../core/geometry/normalize.js";
 import type { Compactor, Layout, LayoutItem, Mutable } from "../core/types.js";
 import { cloneLayout } from "../core/layout.js";
 
@@ -85,8 +86,16 @@ function compactVerticalFast(
   for (let i = 0; i < numItems; i++) {
     const item = layout[i] as Mutable<LayoutItem>;
 
-    // Clamp x2 to grid bounds
+    // Every column below 0 shares one tide slot at -1, so items that overlap
+    // off-grid still stack, and a large negative x costs one iteration
+    // instead of |x|. An item wholly left of the grid still covers that slot.
+    // Sharing the slot can only add stacking, never overlap.
+    const offGrid = item.x < 0;
+    const x1 = offGrid ? -1 : item.x;
     let x2 = item.x + item.w;
+    if (offGrid && x2 < 0) {
+      x2 = 0;
+    }
     if (x2 > cols) {
       x2 = cols;
     }
@@ -98,7 +107,7 @@ function compactVerticalFast(
     } else {
       // Find the minimum gap between the item and the tide
       let minGap = Infinity;
-      for (let x = item.x; x < x2; ++x) {
+      for (let x = x1; x < x2; ++x) {
         const tideValue = tide[x] ?? 0;
         const gap = item.y - tideValue;
         if (gap < minGap) {
@@ -108,7 +117,7 @@ function compactVerticalFast(
 
       // Close the gap (move item up to meet the tide)
       if (!allowOverlap || minGap > 0) {
-        item.y -= minGap;
+        item.y = minGap === Infinity ? 0 : item.y - minGap;
       }
 
       // Handle collisions with static items
@@ -140,7 +149,7 @@ function compactVerticalFast(
 
     // Update tide: mark columns as blocked up to item's bottom
     const t = item.y + item.h;
-    for (let x = item.x; x < x2; ++x) {
+    for (let x = x1; x < x2; ++x) {
       const currentTide = tide[x] ?? 0;
       if (currentTide < t) {
         tide[x] = t;
@@ -165,7 +174,7 @@ export const fastVerticalCompactor: Compactor = {
 
   compact(layout: Layout, cols: number): Layout {
     // Clone the layout since we modify in place
-    const out = cloneLayout(layout) as LayoutItem[];
+    const out = cloneLayout(normalizeLayoutGeometry(layout)) as LayoutItem[];
     compactVerticalFast(out, cols, false);
     return out;
   }
@@ -181,7 +190,7 @@ export const fastVerticalOverlapCompactor: Compactor = {
   allowOverlap: true,
 
   compact(layout: Layout, cols: number): Layout {
-    const out = cloneLayout(layout) as LayoutItem[];
+    const out = cloneLayout(normalizeLayoutGeometry(layout)) as LayoutItem[];
     compactVerticalFast(out, cols, true);
     return out;
   }

@@ -208,3 +208,5 @@ export {
   findOrGenerateResponsiveLayout,
   getIndentationValue
 } from "./responsive.js";
+
+export { validateLayoutInput, MAX_GRID_ROWS } from "./validation.js";

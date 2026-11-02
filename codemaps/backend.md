@@ -85,9 +85,6 @@ Pluggable constraint chain.
 - `sortBreakpoints`, `getBreakpointFromWidth`, `getColsFromBreakpoint`
 - `findOrGenerateResponsiveLayout` — find or generate layout for a breakpoint
 
-### compact-compat.ts
-Legacy v1 `compact()` wrapper — NOT exported. Use `compactor.compact()`.
-
 ## src/extras/ — Optional Utilities
 
 | Name | Export |

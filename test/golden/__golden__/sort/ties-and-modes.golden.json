@@ -1,0 +1,570 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false,true,true,false,false,true]
+    },
+    "input": {
+      "compactType": "vertical",
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": "vertical",
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false,true,true,false,false,true]
+    },
+    "input": {
+      "compactType": "horizontal",
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": "horizontal",
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false,true,true,false,false,true]
+    },
+    "input": {
+      "compactType": "wrap",
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": "wrap",
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true,true,true,true,true,true,true]
+    },
+    "input": {
+      "compactType": null,
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": null,
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false,true,true,false,false,true]
+    },
+    "input": {
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,false,true,true,false,false,true]
+    },
+    "input": {
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":1,"i":"a","w":1,"x":2,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,true,false,false,false,true,false]
+    },
+    "input": {
+      "compactType": "vertical",
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": "vertical",
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,true,false,false,false,false,false]
+    },
+    "input": {
+      "compactType": "horizontal",
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": "horizontal",
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,true,false,false,false,true,false]
+    },
+    "input": {
+      "compactType": "wrap",
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "compactType": "wrap",
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true,true,true,true,true,true,true]
+    },
+    "input": {
+      "compactType": null,
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"a","w":1,"x":2,"y":1}
+    ],
+    "postInput": {
+      "compactType": null,
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,true,false,false,false,true,false]
+    },
+    "input": {
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.2"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.5"],"outputPaths":["$.4"]},
+        {"inputPaths":["$.layout.6"],"outputPaths":["$.5"]},
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.6"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [false,true,false,false,false,false,false]
+    },
+    "input": {
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    },
+    "output": [
+      {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+      {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+      {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+      {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+      {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+      {"h":1,"i":"a","w":1,"x":2,"y":1},
+      {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}}
+    ],
+    "postInput": {
+      "layout": [
+        {"h":1,"i":"infinity","w":1,"x":{"$number":"Infinity"},"y":{"$number":"Infinity"}},
+        {"h":1,"i":"fractional","w":1,"x":0.5,"y":0.5},
+        {"h":1,"i":"negative","w":1,"x":-1,"y":-1},
+        {"h":2,"i":"tie-2","w":2,"x":1,"y":1},
+        {"h":1,"i":"tie-1","w":1,"x":1,"y":1},
+        {"h":1,"i":"b","static":true,"w":1,"x":1,"y":2},
+        {"h":1,"i":"a","w":1,"x":2,"y":1}
+      ]
+    }
+  }
+]

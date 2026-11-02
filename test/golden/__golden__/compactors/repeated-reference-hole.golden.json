@@ -1,0 +1,52 @@
+[
+  {
+    "detail": "repeated-reference-indexOf-output-hole",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":1,"i":"a","w":1,"x":0,"y":3},
+        {"h":1,"i":"a","w":1,"x":0,"y":3}
+      ],
+      12
+    ],
+    "knownBug": "q: repeated references map to the first index and leave an output hole",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      {"$hole":true}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"a","w":1,"x":0,"y":3},
+        {"h":1,"i":"a","w":1,"x":0,"y":3}
+      ],
+      12
+    ],
+    "type": "vertical",
+    "warnings": []
+  },
+  {
+    "detail": "repeated-reference-indexOf-output-hole",
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":1,"i":"a","w":1,"x":0,"y":3},
+        {"h":1,"i":"a","w":1,"x":0,"y":3}
+      ],
+      12
+    ],
+    "knownBug": "q: repeated references map to the first index and leave an output hole",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":3},
+      {"$hole":true}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"a","w":1,"x":0,"y":3},
+        {"h":1,"i":"a","w":1,"x":0,"y":3}
+      ],
+      12
+    ],
+    "type": "horizontal",
+    "warnings": []
+  }
+]

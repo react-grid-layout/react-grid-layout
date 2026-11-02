@@ -22,6 +22,10 @@ import type {
   ResponsiveLayouts,
   Compactor
 } from "../../core/types.js";
+import {
+  validateLayoutInput,
+  validateResponsiveLayoutsInput
+} from "../../core/validation.js";
 import { cloneLayout, correctBounds } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
@@ -32,7 +36,10 @@ import {
 import { getCompactor } from "../../core/compactors.js";
 import { bottom } from "../../core/layout.js";
 
-import { GridLayout, type GridLayoutProps } from "./GridLayout.js";
+import {
+  ResolvedGridLayout as GridLayout,
+  type GridLayoutProps
+} from "./GridLayout.js";
 
 // ============================================================================
 // Types
@@ -117,7 +124,8 @@ function synchronizeLayoutWithChildren(
   children: React.ReactNode,
   cols: number,
   compactor: Compactor,
-  reSeedFromDataGrid = false
+  reSeedFromDataGrid = false,
+  maxRows = Infinity
 ): Layout {
   const layout: LayoutItem[] = [];
 
@@ -126,7 +134,13 @@ function synchronizeLayoutWithChildren(
     const key = String(child.key);
 
     const childProps = child.props as { "data-grid"?: Partial<LayoutItem> };
-    const dataGrid = childProps["data-grid"];
+    const rawDataGrid = childProps["data-grid"];
+    const dataGrid =
+      rawDataGrid &&
+      validateLayoutInput(
+        [{ x: 0, y: 0, w: 1, h: 1, ...rawDataGrid, i: key }],
+        { cols, maxRows }
+      )[0];
 
     // Find existing layout item
     const existingItem = initialLayout.find(l => l.i === key);
@@ -140,8 +154,8 @@ function synchronizeLayoutWithChildren(
         layout.push({
           ...existingItem,
           i: key,
-          w: dataGrid.w ?? existingItem.w,
-          h: dataGrid.h ?? existingItem.h,
+          w: rawDataGrid?.w === undefined ? existingItem.w : dataGrid.w,
+          h: rawDataGrid?.h === undefined ? existingItem.h : dataGrid.h,
           minW: dataGrid.minW ?? existingItem.minW,
           maxW: dataGrid.maxW ?? existingItem.maxW,
           minH: dataGrid.minH ?? existingItem.minH,
@@ -206,7 +220,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     breakpoint: propBreakpoint,
     breakpoints = DEFAULT_BREAKPOINTS as Breakpoints<B>,
     cols: colsConfig = DEFAULT_COLS as Breakpoints<B>,
-    layouts: propsLayouts = {} as ResponsiveLayouts<B>,
+    layouts: unvalidatedLayouts = {} as ResponsiveLayouts<B>,
     rowHeight = 150,
     maxRows = Infinity,
     margin: propMargin = [10, 10] as readonly [number, number],
@@ -217,6 +231,12 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     onWidthChange = noop,
     ...restProps
   } = props;
+
+  const propsLayouts = useMemo(
+    () =>
+      validateResponsiveLayoutsInput(unvalidatedLayouts, colsConfig, maxRows),
+    [unvalidatedLayouts, colsConfig, maxRows]
+  );
 
   // Get compactor (use provided or default to vertical)
   const compactor = compactorProp ?? getCompactor("vertical");
@@ -230,7 +250,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
 
   const initialCols = useMemo(() => {
     return getColsFromBreakpoint(initialBreakpoint, colsConfig);
-  }, [initialBreakpoint, colsConfig]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Use compactType for initial layout as compactor reference isn't stable here
   // findOrGenerateResponsiveLayout accepts both CompactType and Compactor (#2213)
@@ -241,7 +261,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       initialBreakpoint,
       initialBreakpoint,
       initialCols,
-      compactType
+      compactType,
+      colsConfig
     );
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -256,7 +277,9 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   const prevBreakpointRef = useRef(propBreakpoint);
   const prevBreakpointsRef = useRef(breakpoints);
   const prevColsRef = useRef(colsConfig);
-  const prevLayoutsRef = useRef(propsLayouts);
+  // Compare the raw prop: its validated form also changes with cols, which
+  // is not a prop change and must not reset the stored layouts.
+  const prevLayoutsPropRef = useRef(unvalidatedLayouts);
   const prevCompactTypeRef = useRef(compactType);
 
   // Ref to always have current layouts value (avoids stale closure in callbacks)
@@ -271,7 +294,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   // This prevents the timing issue where GridLayout sees children before the layout is updated
   // Use compactor directly (#2213)
   const derivedLayout: Layout | null = useMemo(() => {
-    if (!deepEqual(propsLayouts, prevLayoutsRef.current)) {
+    if (!deepEqual(unvalidatedLayouts, prevLayoutsPropRef.current)) {
       // Props changed, derive new layout synchronously
       return findOrGenerateResponsiveLayout(
         propsLayouts,
@@ -279,11 +302,20 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
         breakpoint,
         breakpoint,
         cols,
-        compactor
+        compactor,
+        colsConfig
       );
     }
     return null; // No change needed
-  }, [propsLayouts, breakpoints, breakpoint, cols, compactor]);
+  }, [
+    unvalidatedLayouts,
+    propsLayouts,
+    breakpoints,
+    breakpoint,
+    cols,
+    compactor,
+    colsConfig
+  ]);
 
   // The effective layout to pass to GridLayout - use derived if available, else state
   const effectiveLayout = derivedLayout ?? layout;
@@ -294,9 +326,9 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       setLayout(derivedLayout);
       setLayouts(propsLayouts);
       layoutsRef.current = propsLayouts;
-      prevLayoutsRef.current = propsLayouts;
+      prevLayoutsPropRef.current = unvalidatedLayouts;
     }
-  }, [derivedLayout, propsLayouts]);
+  }, [derivedLayout, propsLayouts, unvalidatedLayouts]);
 
   // Handle compactType changes - use compactor.compact() (#2213)
   useEffect(() => {
@@ -367,7 +399,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
           newBreakpoint,
           lastBreakpoint,
           newCols,
-          compactor
+          compactor,
+          colsConfig
         );
 
         // Re-seed from children's data-grid only when the target breakpoint
@@ -382,7 +415,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
           children,
           newCols,
           compactor,
-          layoutWasGenerated
+          layoutWasGenerated,
+          maxRows
         );
 
         // Store new layout
@@ -426,6 +460,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     propBreakpoint,
     breakpoints,
     colsConfig,
+    maxRows,
     breakpoint,
     cols,
     layout,

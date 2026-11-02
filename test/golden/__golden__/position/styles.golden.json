@@ -1,0 +1,122 @@
+[
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"height":0,"left":0,"top":0,"width":0}
+      ],
+      "output": {"MozTransform":"translate(0px,0px)","OTransform":"translate(0px,0px)","WebkitTransform":"translate(0px,0px)","height":"0px","msTransform":"translate(0px,0px)","position":"absolute","transform":"translate(0px,0px)","width":"0px"},
+      "postInput": [
+        {"height":0,"left":0,"top":0,"width":0}
+      ]
+    },
+    "id": "transform-0"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"height":0,"left":0,"top":0,"width":0}
+      ],
+      "output": {"height":"0px","left":"0px","position":"absolute","top":"0px","width":"0px"},
+      "postInput": [
+        {"height":0,"left":0,"top":0,"width":0}
+      ]
+    },
+    "id": "top-left-0"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":0,"left":0,"top":0,"width":0},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"MozTransform":"translate(0px,0px)","OTransform":"translate(0px,0px)","WebkitTransform":"translate(0px,0px)","height":"0px","msTransform":"translate(0px,0px)","position":"absolute","transform":"translate(0px,0px)","width":"0px"},"postInput":{"position":{"height":0,"left":0,"top":0,"width":0},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"transform-strategy-0"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":0,"left":0,"top":0,"width":0},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"}},"output":{"height":"0px","left":"0px","position":"absolute","top":"0px","width":"0px"},"postInput":{"position":{"height":0,"left":0,"top":0,"width":0},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"}}},"id":"absolute-strategy-0"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":0,"left":0,"top":0,"width":0},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"MozTransform":"translate(0px,0px)","OTransform":"translate(0px,0px)","WebkitTransform":"translate(0px,0px)","height":"0px","msTransform":"translate(0px,0px)","position":"absolute","transform":"translate(0px,0px)","width":"0px"},"postInput":{"position":{"height":0,"left":0,"top":0,"width":0},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"default-strategy-0"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"height":33.75,"left":11.25,"top":-2.5,"width":80.125}
+      ],
+      "output": {"MozTransform":"translate(11.25px,-2.5px)","OTransform":"translate(11.25px,-2.5px)","WebkitTransform":"translate(11.25px,-2.5px)","height":"33.75px","msTransform":"translate(11.25px,-2.5px)","position":"absolute","transform":"translate(11.25px,-2.5px)","width":"80.125px"},
+      "postInput": [
+        {"height":33.75,"left":11.25,"top":-2.5,"width":80.125}
+      ]
+    },
+    "id": "transform-1"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"height":33.75,"left":11.25,"top":-2.5,"width":80.125}
+      ],
+      "output": {"height":"33.75px","left":"11.25px","position":"absolute","top":"-2.5px","width":"80.125px"},
+      "postInput": [
+        {"height":33.75,"left":11.25,"top":-2.5,"width":80.125}
+      ]
+    },
+    "id": "top-left-1"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":33.75,"left":11.25,"top":-2.5,"width":80.125},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"MozTransform":"translate(11.25px,-2.5px)","OTransform":"translate(11.25px,-2.5px)","WebkitTransform":"translate(11.25px,-2.5px)","height":"33.75px","msTransform":"translate(11.25px,-2.5px)","position":"absolute","transform":"translate(11.25px,-2.5px)","width":"80.125px"},"postInput":{"position":{"height":33.75,"left":11.25,"top":-2.5,"width":80.125},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"transform-strategy-1"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":33.75,"left":11.25,"top":-2.5,"width":80.125},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"}},"output":{"height":"33.75px","left":"11.25px","position":"absolute","top":"-2.5px","width":"80.125px"},"postInput":{"position":{"height":33.75,"left":11.25,"top":-2.5,"width":80.125},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"}}},"id":"absolute-strategy-1"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":33.75,"left":11.25,"top":-2.5,"width":80.125},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"MozTransform":"translate(11.25px,-2.5px)","OTransform":"translate(11.25px,-2.5px)","WebkitTransform":"translate(11.25px,-2.5px)","height":"33.75px","msTransform":"translate(11.25px,-2.5px)","position":"absolute","transform":"translate(11.25px,-2.5px)","width":"80.125px"},"postInput":{"position":{"height":33.75,"left":11.25,"top":-2.5,"width":80.125},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"default-strategy-1"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}}
+      ],
+      "output": {"MozTransform":"translate(0px,0px)","OTransform":"translate(0px,0px)","WebkitTransform":"translate(0px,0px)","height":"-Infinitypx","msTransform":"translate(0px,0px)","position":"absolute","transform":"translate(0px,0px)","width":"Infinitypx"},
+      "postInput": [
+        {"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}}
+      ]
+    },
+    "id": "transform-2"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}}
+      ],
+      "output": {"height":"-Infinitypx","left":"0px","position":"absolute","top":"0px","width":"Infinitypx"},
+      "postInput": [
+        {"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}}
+      ]
+    },
+    "id": "top-left-2"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"MozTransform":"translate(0px,0px)","OTransform":"translate(0px,0px)","WebkitTransform":"translate(0px,0px)","height":"-Infinitypx","msTransform":"translate(0px,0px)","position":"absolute","transform":"translate(0px,0px)","width":"Infinitypx"},"postInput":{"position":{"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"transform-strategy-2"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"}},"output":{"height":"-Infinitypx","left":"0px","position":"absolute","top":"0px","width":"Infinitypx"},"postInput":{"position":{"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"}}},"id":"absolute-strategy-2"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"position":{"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"MozTransform":"translate(0px,0px)","OTransform":"translate(0px,0px)","WebkitTransform":"translate(0px,0px)","height":"-Infinitypx","msTransform":"translate(0px,0px)","position":"absolute","transform":"translate(0px,0px)","width":"Infinitypx"},"postInput":{"position":{"height":{"$number":"-Infinity"},"left":{"$number":"-0"},"top":{"$number":"-0"},"width":{"$number":"Infinity"}},"strategy":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"default-strategy-2"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[-1],"output":"-100%","postInput":[-1]},"id":"percentage--1"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"$number":"-0"}
+      ],
+      "output": "0%",
+      "postInput": [
+        {"$number":"-0"}
+      ]
+    },
+    "id": "percentage-0"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[0],"output":"0%","postInput":[0]},"id":"percentage-0"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[0.3333333333333333],"output":"33.33333333333333%","postInput":[0.3333333333333333]},"id":"percentage-0.3333333333333333"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[0.5],"output":"50%","postInput":[0.5]},"id":"percentage-0.5"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[1],"output":"100%","postInput":[1]},"id":"percentage-1"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":[2],"output":"200%","postInput":[2]},"id":"percentage-2"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": [
+        {"$number":"Infinity"}
+      ],
+      "output": "Infinity%",
+      "postInput": [
+        {"$number":"Infinity"}
+      ]
+    },
+    "id": "percentage-Infinity"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"absolute":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"},"default":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"},"transform":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}},"output":{"sameAbsolute":false,"sameDefault":true},"postInput":{"absolute":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"absolute"},"default":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"},"transform":{"calcStyle":{"$function":"calcStyle"},"scale":1,"type":"transform"}}},"id":"default-strategy-alias"}
+]

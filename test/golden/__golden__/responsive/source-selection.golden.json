@@ -1,0 +1,870 @@
+[
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.md.0.resizeHandles","$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.md.0.constraints","$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.md.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"md","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.md.0.resizeHandles","$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.md.0.constraints","$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.md.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"md","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":3}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.md.0.resizeHandles","$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.md.0.constraints","$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.md.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"md","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":3}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.md.0.resizeHandles","$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.md.0.constraints","$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.md.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"md","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":3}
+    ],
+    "postInput": {
+      "breakpoint": "sm",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "md": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"md","resizeHandles":["se"],"w":2,"x":0,"y":3}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.xs.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.xs.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":7}
+    ],
+    "postInput": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.xs.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":7}
+    ],
+    "postInput": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.xs.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":7}
+    ],
+    "postInput": {
+      "breakpoint": "lg",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles","$.layouts.xs.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints","$.layouts.xs.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "unknown",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"xs","resizeHandles":["se"],"w":2,"x":0,"y":7}
+        ]
+      }
+    }
+  },
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":"vertical","lastBreakpoint":"lg","layouts":{}},"output":[],"postInput":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":"vertical","lastBreakpoint":"lg","layouts":{}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":"horizontal","lastBreakpoint":"lg","layouts":{}},"output":[],"postInput":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":"horizontal","lastBreakpoint":"lg","layouts":{}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":"wrap","lastBreakpoint":"lg","layouts":{}},"output":[],"postInput":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":"wrap","lastBreakpoint":"lg","layouts":{}}},
+  {"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":null,"lastBreakpoint":"lg","layouts":{}},"output":[],"postInput":{"breakpoint":"sm","breakpoints":{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},"cols":6,"compactType":null,"lastBreakpoint":"lg","layouts":{}}},
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":0}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "vertical",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "horizontal",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": "wrap",
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    }
+  },
+  {
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layouts.lg.0.resizeHandles"],"outputPaths":["$.0.resizeHandles"]},
+        {"inputPaths":["$.layouts.lg.0.constraints"],"outputPaths":["$.0.constraints"]},
+        {"inputPaths":["$.layouts.lg.0.constraints.0"],"outputPaths":["$.0.constraints.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": false
+    },
+    "input": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    },
+    "output": [
+      {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":["se"],"static":false,"w":2,"x":0,"y":5}
+    ],
+    "postInput": {
+      "breakpoint": "md",
+      "breakpoints": {"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0},
+      "cols": 6,
+      "compactType": null,
+      "lastBreakpoint": "xs",
+      "layouts": {
+        "lg": [
+          {"constraints":[{"name":"fixture"}],"h":2,"i":"lg","resizeHandles":["se"],"w":2,"x":0,"y":5}
+        ],
+        "xs": []
+      }
+    }
+  }
+]

@@ -1,0 +1,770 @@
+[
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "n",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "n",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/n/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "n",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "n",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/n/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "ne",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "ne",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/ne/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "ne",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "ne",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/ne/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "e",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "e",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/e/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "e",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "e",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/e/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "se",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "se",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/se/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "se",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "se",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/se/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "s",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "s",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/s/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "s",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "s",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/s/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "sw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "sw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/sw/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "sw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "sw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/sw/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "w",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "w",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/w/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "w",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "w",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/w/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "nw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 2,
+        "handle": "nw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/nw/height-2",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "nw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      },
+      "output": {"h":2,"w":2},
+      "postInput": {
+        "context": {
+          "cols": 12,
+          "containerHeight": 263,
+          "containerPadding": [250,50],
+          "containerWidth": 1000,
+          "layout": [
+            {"h":3,"i":"active","w":2,"x":3,"y":2},
+            {"h":1,"i":"other","w":1,"x":0,"y":0}
+          ],
+          "margin": [10,10],
+          "maxRows": 10,
+          "rowHeight": 30
+        },
+        "h": 6,
+        "handle": "nw",
+        "item": {"h":3,"i":"active","w":2,"x":3,"y":2},
+        "ratio": 2,
+        "w": 2
+      }
+    },
+    "id": "aspect-one/nw/height-6",
+    "knownBug": "l: aspectRatio derives height only from width, ignores handle and container padding (B12)"
+  }
+]

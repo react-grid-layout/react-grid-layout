@@ -1,0 +1,50 @@
+[
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"a","w":1,"x":1,"y":3}
+      ],
+      4
+    ],
+    "order": "forward",
+    "output": [
+      {"constraints":{"$u":1},"h":10000,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":1,"x":0,"y":0},
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0},
+        {"h":1,"i":"a","w":1,"x":1,"y":3}
+      ],
+      4
+    ],
+    "securityFix": "Out-of-bounds static h Infinity is normalized before compaction",
+    "subcase": "c-infinity-static"
+  },
+  {
+    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "input": [
+      [
+        {"h":1,"i":"a","w":1,"x":1,"y":3},
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0}
+      ],
+      4
+    ],
+    "order": "reversed",
+    "output": [
+      {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":1,"y":0},
+      {"constraints":{"$u":1},"h":10000,"i":"s","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":true,"w":1,"x":0,"y":0}
+    ],
+    "postInput": [
+      [
+        {"h":1,"i":"a","w":1,"x":1,"y":3},
+        {"h":{"$number":"Infinity"},"i":"s","static":true,"w":1,"x":0,"y":0}
+      ],
+      4
+    ],
+    "securityFix": "Out-of-bounds static h Infinity is normalized before compaction",
+    "subcase": "c-infinity-static"
+  }
+]

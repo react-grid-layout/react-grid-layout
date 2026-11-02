@@ -1,0 +1,116 @@
+[
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[1],"factory":"aspectRatio"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(1)"},"postInput":{"args":[1],"factory":"aspectRatio"}},"id":"aspectRatio/factory-0"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[1.7777777777777777],"factory":"aspectRatio"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(1.7777777777777777)"},"postInput":{"args":[1.7777777777777777],"factory":"aspectRatio"}},"id":"aspectRatio/factory-1"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[0],"factory":"aspectRatio"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(0)"},"postInput":{"args":[0],"factory":"aspectRatio"}},"id":"aspectRatio/factory-2"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[-1],"factory":"aspectRatio"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(-1)"},"postInput":{"args":[-1],"factory":"aspectRatio"}},"id":"aspectRatio/factory-3"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "args": [
+          {"$number":"Infinity"}
+        ],
+        "factory": "aspectRatio"
+      },
+      "output": {"constrainSize":{"$function":"constrainSize"},"name":"aspectRatio(Infinity)"},
+      "postInput": {
+        "args": [
+          {"$number":"Infinity"}
+        ],
+        "factory": "aspectRatio"
+      }
+    },
+    "id": "aspectRatio/factory-4"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[2],"factory":"snapToGrid"},"output":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(2, 2)"},"postInput":{"args":[2],"factory":"snapToGrid"}},"id":"snapToGrid/factory-5"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[2,3],"factory":"snapToGrid"},"output":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(2, 3)"},"postInput":{"args":[2,3],"factory":"snapToGrid"}},"id":"snapToGrid/factory-6"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[0.5,1.5],"factory":"snapToGrid"},"output":{"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(0.5, 1.5)"},"postInput":{"args":[0.5,1.5],"factory":"snapToGrid"}},"id":"snapToGrid/factory-7"},
+  {"call":{"error":{"message":"snapToGrid: step values must be positive (got stepX=0, stepY=0)","name":"Error"},"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[0],"factory":"snapToGrid"},"output":{"$u":1},"postInput":{"args":[0],"factory":"snapToGrid"}},"id":"snapToGrid/factory-8"},
+  {"call":{"error":{"message":"snapToGrid: step values must be positive (got stepX=-1, stepY=2)","name":"Error"},"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[-1,2],"factory":"snapToGrid"},"output":{"$u":1},"postInput":{"args":[-1,2],"factory":"snapToGrid"}},"id":"snapToGrid/factory-9"},
+  {"call":{"error":{"message":"snapToGrid: step values must be positive (got stepX=2, stepY=0)","name":"Error"},"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[2,0],"factory":"snapToGrid"},"output":{"$u":1},"postInput":{"args":[2,0],"factory":"snapToGrid"}},"id":"snapToGrid/factory-10"},
+  {"call":{"error":{"message":"snapToGrid: step values must be positive (got stepX=2, stepY=-3)","name":"Error"},"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[2,-3],"factory":"snapToGrid"},"output":{"$u":1},"postInput":{"args":[2,-3],"factory":"snapToGrid"}},"id":"snapToGrid/factory-11"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "args": [
+          {"$number":"Infinity"}
+        ],
+        "factory": "snapToGrid"
+      },
+      "output": {"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(Infinity, Infinity)"},
+      "postInput": {
+        "args": [
+          {"$number":"Infinity"}
+        ],
+        "factory": "snapToGrid"
+      }
+    },
+    "id": "snapToGrid/factory-12"
+  },
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "args": [
+          {"$number":"NaN"}
+        ],
+        "factory": "snapToGrid"
+      },
+      "output": {"constrainPosition":{"$function":"constrainPosition"},"name":"snapToGrid(NaN, NaN)"},
+      "postInput": {
+        "args": [
+          {"$number":"NaN"}
+        ],
+        "factory": "snapToGrid"
+      }
+    },
+    "id": "snapToGrid/factory-13"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[2,3],"factory":"minSize"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(2, 3)"},"postInput":{"args":[2,3],"factory":"minSize"}},"id":"minSize/factory-14"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[-1,0],"factory":"minSize"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"minSize(-1, 0)"},"postInput":{"args":[-1,0],"factory":"minSize"}},"id":"minSize/factory-15"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "args": [
+          {"$number":"Infinity"},
+          0.5
+        ],
+        "factory": "minSize"
+      },
+      "output": {"constrainSize":{"$function":"constrainSize"},"name":"minSize(Infinity, 0.5)"},
+      "postInput": {
+        "args": [
+          {"$number":"Infinity"},
+          0.5
+        ],
+        "factory": "minSize"
+      }
+    },
+    "id": "minSize/factory-16"
+  },
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[5,6],"factory":"maxSize"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(5, 6)"},"postInput":{"args":[5,6],"factory":"maxSize"}},"id":"maxSize/factory-17"},
+  {"call":{"identity":{"aliases":[],"returnedSameArray":false,"sameObject":false},"input":{"args":[-1,0],"factory":"maxSize"},"output":{"constrainSize":{"$function":"constrainSize"},"name":"maxSize(-1, 0)"},"postInput":{"args":[-1,0],"factory":"maxSize"}},"id":"maxSize/factory-18"},
+  {
+    "call": {
+      "identity": {"aliases":[],"returnedSameArray":false,"sameObject":false},
+      "input": {
+        "args": [
+          {"$number":"Infinity"},
+          0.5
+        ],
+        "factory": "maxSize"
+      },
+      "output": {"constrainSize":{"$function":"constrainSize"},"name":"maxSize(Infinity, 0.5)"},
+      "postInput": {
+        "args": [
+          {"$number":"Infinity"},
+          0.5
+        ],
+        "factory": "maxSize"
+      }
+    },
+    "id": "maxSize/factory-19"
+  }
+]

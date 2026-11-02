@@ -1,0 +1,8 @@
+{
+"metadata":{"expectedError":"golden inline layout render cap","knownBug":"hook-inline-layout-loop: inline layout literal causes non-convergence, stopped by render cap","renderCap":12,"scenario":"hook-inline-layout-render-cap","variant":"normal-hook"},
+"steps":[
+{"callbacks":[],"dom":{"containerHeight":null,"dropping":false,"items":[],"placeholder":null},"input":{"renderCap":12,"type":"mount-inline-layout"},"renders":{"grid":12}},
+{"callbacks":[],"dom":{"containerHeight":null,"dropping":false,"items":[],"placeholder":null},"input":{"type":"record-termination"},"notes":[{"bailedOut":true,"caught":"golden inline layout render cap","renderCap":12,"renders":17}],"renders":{"grid":12}},
+{"callbacks":[],"dom":{"containerHeight":null,"dropping":false,"items":[],"placeholder":null},"input":{"type":"unmount"},"renders":{"grid":12}}
+]
+}
