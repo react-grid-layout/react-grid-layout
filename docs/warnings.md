@@ -22,19 +22,19 @@ removed in 3.0.
 
 ## Codes in 2.4
 
-| Code       | Delivery               | Meaning                                                                                    |
-| ---------- | ---------------------- | ------------------------------------------------------------------------------------------ |
-| `RGL_W002` | Runtime, once per call | A layout value or limit was out of bounds and was normalized at intake.                    |
-| `RGL_W007` | Runtime, once per call | Two or more layout items share an `i`.                                                     |
-| `RGL_W008` | JSDoc                  | The compaction type string form of the compactor argument is deprecated.                   |
-| `RGL_W009` | Runtime, once per item | A direct `GridItem` caller passed `useCSSTransforms` or `usePercentages` with no strategy. |
-| `RGL_W010` | Runtime, once per grid | Legacy `verticalCompact={false}`.                                                          |
-| `RGL_W013` | JSDoc                  | `validateLayout` is deprecated; use `assertLayoutStructure`.                               |
-| `RGL_W014` | Runtime, once per grid | `onDropDragOver` on the modern entry; use `dropConfig.onDragOver`.                         |
-| `RGL_W015` | Runtime, once per grid | A `data-grid` child prop on the modern entry; pass `layout` or `layouts`.                  |
-| `RGL_W016` | JSDoc                  | The five named overlap compactor variants are deprecated.                                  |
-| `RGL_W017` | Runtime, once per grid | `droppingItem` on the modern entry; use `dropConfig.defaultItem`.                          |
-| `RGL_W018` | Runtime, once per grid | A droppable grid has an item whose id equals the dropping item's id.                       |
+| Code       | Delivery                                  | Meaning                                                                                      |
+| ---------- | ----------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `RGL_W002` | Runtime, once per call                    | A layout value or limit was out of bounds and was normalized at intake.                      |
+| `RGL_W007` | Runtime, once per call                    | Two or more layout items share an `i`.                                                       |
+| `RGL_W008` | JSDoc; runtime for `getCompactor("wrap")` | `getCompactor` and the compaction type string form of the compactor argument are deprecated. |
+| `RGL_W009` | Runtime, once per item                    | A direct `GridItem` caller passed `useCSSTransforms` or `usePercentages` with no strategy.   |
+| `RGL_W010` | Runtime, once per grid                    | Legacy `verticalCompact={false}`.                                                            |
+| `RGL_W013` | JSDoc                                     | `validateLayout` is deprecated; use `assertLayoutStructure`.                                 |
+| `RGL_W014` | Runtime, once per grid                    | `onDropDragOver` on the modern entry; use `dropConfig.onDragOver`.                           |
+| `RGL_W015` | Runtime, once per grid                    | A `data-grid` child prop on the modern entry; pass `layout` or `layouts`.                    |
+| `RGL_W016` | JSDoc                                     | The five named overlap compactor variants are deprecated.                                    |
+| `RGL_W017` | Runtime, once per grid                    | `droppingItem` on the modern entry; use `dropConfig.defaultItem`.                            |
+| `RGL_W018` | Runtime, once per grid                    | A droppable grid has an item whose id equals the dropping item's id.                         |
 
 ### RGL_W002: layout input clamped
 
@@ -60,8 +60,11 @@ as is. Give each item a unique `i` that matches its child's `key`.
 `"vertical"` as its compactor argument. That form is deprecated: pass a
 compactor object such as `verticalCompactor`. The notice is on that parameter's
 JSDoc; the function itself is not deprecated, because object calls stay. The
-public `getCompactor` factory belongs to the same group. The `/legacy` entry's
-own use of these is private and never warns. Both are removed in 3.0.
+public `getCompactor` factory belongs to the same group and carries a
+`@deprecated` tag. `getCompactor("wrap")` also warns once at runtime, because it
+returns `noCompactor`, not wrap compaction: import `wrapCompactor` from
+`react-grid-layout/extras` instead. The `/legacy` entry's own use of these is
+private and never warns. Both are removed in 3.0.
 
 ### RGL_W009: GridItem position flags
 
