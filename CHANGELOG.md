@@ -9,6 +9,27 @@ No breaking changes. If you save layouts, read the first item under Bug Fixes: a
 - **DragConfig / ResizeConfig**: New `enableUserSelectHack` option on both configs. react-draggable adds a class to `<body>` during a drag or resize, and its `::selection` rule makes the browser restyle the whole page at pick-up and again at drop. On a production dashboard (about 3,400 elements, CPU throttled 4x), pick-up cost a 59ms style recalculation. Set it to `false` and both frames stayed under 17.6ms. Unset, react-draggable's default (`true`) applies. A grid that opts out should prevent selection itself, for example with `user-select: none`. [#1630](https://github.com/react-grid-layout/react-grid-layout/issues/1630), [#2311](https://github.com/react-grid-layout/react-grid-layout/pull/2311)
 - **Core**: `validateLayoutInput` and `MAX_GRID_ROWS` are exported from `react-grid-layout/core`. If you call the core compactors directly on a saved layout, run `validateLayoutInput` first; the components already do. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328)
 
+- **Warning codes**: Every development warning now ends with a code such as `(RGL_W002)`, listed with its fix in [`docs/warnings.md`](docs/warnings.md). Deprecation warnings fire once per grid instead of on every render, and none fire in production. A layout with two items that share an `i` now warns `RGL_W007`; collision checks treat them as one item, so both can land in the same cell. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
+- **Core**: `assertLayoutStructure(layout, contextName?)` is exported from `react-grid-layout/core` and the root. It is `validateLayout` under a clearer name: the same checks, the same messages, and it throws. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
+- **DropConfig**: `dropConfig.defaultItem` accepts an optional `i`, the id of the dropped item. With it, `dropConfig.defaultItem` covers everything `droppingItem` did. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
+
+### Deprecations
+
+Nothing is removed in 2.4; each of these keeps working through 2.4.x and is removed in 3.0. [`docs/warnings.md`](docs/warnings.md) has the migration for each code. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
+
+| Deprecated                                                                       | Use instead                                                  | Code       | How you see it         |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------- | ---------------------- |
+| `droppingItem` on `GridLayout` / `ResponsiveGridLayout`                          | `dropConfig.defaultItem` (with `i`)                          | `RGL_W017` | dev warning, once/grid |
+| `onDropDragOver` on `GridLayout` / `ResponsiveGridLayout`                        | `dropConfig.onDragOver` (native `DragEvent`)                 | `RGL_W014` | dev warning, once/grid |
+| `data-grid` children on `GridLayout` / `ResponsiveGridLayout`                    | an explicit `layout` / `layouts`                             | `RGL_W015` | dev warning, once/grid |
+| `useCSSTransforms` / `usePercentages` on a `GridItem` you render yourself        | `positionStrategy` (`transformStrategy`, `absoluteStrategy`) | `RGL_W009` | dev warning, once/item |
+| `validateLayout`                                                                 | `assertLayoutStructure`                                      | `RGL_W013` | JSDoc                  |
+| `verticalOverlapCompactor`, `horizontalOverlapCompactor`, `wrapOverlapCompactor` | `noOverlapCompactor`                                         | `RGL_W016` | JSDoc                  |
+| `fastVerticalOverlapCompactor`, `fastHorizontalOverlapCompactor`                 | migrate by hand; no export keeps their compaction            | `RGL_W016` | JSDoc                  |
+| A compaction type string passed to `findOrGenerateResponsiveLayout`              | a compactor object                                           | `RGL_W008` | JSDoc                  |
+
+The `/legacy` entry keeps `droppingItem`, `onDropDragOver` and `data-grid` and does not warn. Its `verticalCompact={false}` warning now carries `RGL_W010` and prints once per grid. `moveElement`, `moveElementAwayFromCollision`, `compactItemVertical`, `compactItemHorizontal`, `resolveCompactionCollision` and the `GridItem` export get a JSDoc notice that 3.0 removes them; they have no 2.4 replacement.
+
 ### Security
 
 - **Layout input bounds**: A crafted saved layout could freeze the tab. Apps that render layouts other users saved (Grafana-style sharing) passed them straight to compaction, and three loops scaled with the numbers in the layout, not with the item count. `y: 1e9` ran past 200,000 ops before the probe aborted it. It now takes 32. Every layout entry point bounds its input first: the `layout` prop, responsive `layouts`, `data-grid`, the hooks and their setters, the dropping item, and the legacy wrappers. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328), [#2337](https://github.com/react-grid-layout/react-grid-layout/pull/2337)
@@ -23,7 +44,7 @@ No breaking changes. If you save layouts, read the first item under Bug Fixes: a
   | `maxW`, `maxH`          | raised to the minimum and kept positive; `Infinity` and values above the grid are kept                                                           |
   | `y: Infinity`           | unchanged, so "place at the bottom" still works                                                                                                  |
 
-  A layout that needs no change comes back as the same array, so there is no extra render. A clamp logs one warning in development.
+  A layout that needs no change comes back as the same array, so there is no extra render. A clamp logs one `RGL_W002` warning in development.
 
 - Compaction work no longer scales with the coordinates it is given: classic compaction jumps to the next gap instead of stepping one row at a time, `correctBounds` sweeps overlapping statics once, `fastHorizontalCompactor` stores its tide as row ranges (a static `h: 1e9` allocated a billion-entry array), and every exported compactor normalizes non-finite geometry before arithmetic (`wrapCompactor.compact` with `w: NaN` looped forever). `fastVerticalCompactor` called directly with `x: -1e9` hung; it now returns in under 1s. [#2328](https://github.com/react-grid-layout/react-grid-layout/pull/2328), [#2335](https://github.com/react-grid-layout/react-grid-layout/pull/2335)
 
