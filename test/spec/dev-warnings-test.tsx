@@ -1,6 +1,6 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
-import { devWarn, reportOnce } from "../../src/core/dev";
+import { devWarn, reportOnce, resetDevWarnings } from "../../src/core/dev";
 import {
   assertLayoutStructure,
   validateLayout,
@@ -22,6 +22,7 @@ import { dropExternal } from "../golden-react/drop";
 let warn: jest.SpyInstance;
 let error: jest.SpyInstance;
 beforeEach(() => {
+  resetDevWarnings();
   warn = jest.spyOn(console, "warn").mockImplementation(() => {});
   error = jest.spyOn(console, "error").mockImplementation(() => {});
 });
@@ -308,7 +309,7 @@ describe("RGL_W009: direct GridItem flags", () => {
   test.each([
     ["useCSSTransforms", { useCSSTransforms: false }],
     ["usePercentages", { usePercentages: true }]
-  ])("explicit %s without a strategy warns once per item", (_flag, flags) => {
+  ])("explicit %s without a strategy warns once", (_flag, flags) => {
     const view = render(
       <GridItem {...props} {...flags}>
         <div />
