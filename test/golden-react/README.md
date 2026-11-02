@@ -108,7 +108,6 @@ Changing a known-bug golden requires the same explanation as any other diff.
 | ID                             | Pinned behavior                                               |
 | ------------------------------ | ------------------------------------------------------------- |
 | `memo-ignored-props`           | handles, static class, and drag-start closure stay stale      |
-| `double-layout-change`         | changed stops and Responsive compactor swaps notify twice     |
 | `north-overlap-snap`           | north growth overlaps above, then snaps on stop               |
 | `touch-mouse-coordinates`      | touch skips threshold; scaled touch produces NaN              |
 | `hook-inline-layout-loop`      | inline layout never converges; a finite render cap catches it |
