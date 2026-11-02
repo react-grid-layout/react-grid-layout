@@ -264,14 +264,13 @@ describe("Fast Vertical Compactor", () => {
       ["fastVerticalOverlapCompactor", fastVerticalOverlapCompactor]
     ])("%s work does not scale with a large negative x", (_, compactor) => {
       // Direct compact() calls skip the React intake clamp. The tide loops
-      // used to walk every column from x up to x + w, so x = -1e7 took ~4.6s.
+      // used to walk every column from x up to x + w, so x = -1e7 took ~4.6s
+      // and x = -1e9 never finishes: a regression fails on Jest's timeout.
       const n = 1e9;
-      const start = Date.now();
       const [item] = compactor.compact(
         [{ i: "a", x: -n, y: 3, w: n + 4, h: 1 }],
         4
       );
-      expect(Date.now() - start).toBeLessThan(1000);
       expect(item).toMatchObject({ x: -n, y: 0 });
     });
 
