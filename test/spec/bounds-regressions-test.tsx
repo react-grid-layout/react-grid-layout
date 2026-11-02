@@ -69,3 +69,23 @@ describe("a bounds change re-bounds the grid's own state", () => {
     expect(last(spy)).toMatchObject({ minW: 4 });
   });
 });
+
+test("a larger cols restores a data-grid minW an earlier smaller cols clamped", () => {
+  const spy = jest.fn();
+  const grid = (cols: number) => (
+    <GridLayout
+      width={600}
+      layout={[]}
+      gridConfig={{ cols, rowHeight: 10 }}
+      compactor={noCompactor}
+      onLayoutChange={spy}
+    >
+      <div key="a" data-grid={{ x: 0, y: 0, w: 4, h: 1, minW: 4 }} />
+    </GridLayout>
+  );
+  const view = rtlRender(grid(6));
+  view.rerender(grid(2));
+  expect(spy.mock.calls.at(-1)?.[0][0]).toMatchObject({ minW: 2 });
+  view.rerender(grid(6));
+  expect(spy.mock.calls.at(-1)?.[0][0]).toMatchObject({ minW: 4 });
+});

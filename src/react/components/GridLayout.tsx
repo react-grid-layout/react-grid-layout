@@ -493,7 +493,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       const baseLayout = layoutChanged
         ? propsLayout
         : boundsChanged
-          ? reboundLayout(layout, propsLayout, cols, maxRows)
+          ? reboundLayout(layout, propsLayout, children, cols, maxRows)
           : layout;
       const newLayout = synchronizeLayoutWithChildren(
         baseLayout,
@@ -1420,18 +1420,28 @@ const authoredLayout = (layout: Layout): Layout =>
 
 /**
  * Re-bound the grid's own layout for new bounds. Positions and sizes come from
- * state (the user's edits); min/max constraints come from the props layout just
- * validated for these bounds, so a larger grid restores constraints a smaller
- * one clamped.
+ * state (the user's edits); min/max constraints come from where the item was
+ * authored, the props layout just validated for these bounds or else the
+ * child's data-grid, so a larger grid restores constraints a smaller one
+ * clamped.
  */
 function reboundLayout(
   state: Layout,
   props: Layout,
+  children: React.ReactNode,
   cols: number,
   maxRows: number
 ): Layout {
+  const dataGrid = new Map<string, Partial<LayoutItem>>();
+  React.Children.forEach(children, child => {
+    if (!React.isValidElement(child) || child.key === null) return;
+    const authored = (child.props as { "data-grid"?: Partial<LayoutItem> })[
+      "data-grid"
+    ];
+    if (authored) dataGrid.set(String(child.key), authored);
+  });
   const merged = state.map(item => {
-    const authored = getLayoutItem(props, item.i);
+    const authored = getLayoutItem(props, item.i) ?? dataGrid.get(item.i);
     if (!authored) return item;
     return {
       ...item,
