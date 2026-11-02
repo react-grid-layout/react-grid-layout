@@ -11,7 +11,7 @@ No breaking changes. If you save layouts, read the first item under Bug Fixes: a
 
 - **Warning codes**: Every development warning now ends with a code such as `(RGL_W002)`, listed with its fix in [`docs/warnings.md`](docs/warnings.md). Deprecation warnings fire once per grid instead of on every render, and none fire in production. A layout with two items that share an `i` now warns `RGL_W007`; collision checks treat them as one item, so both can land in the same cell. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
 - **Core**: `assertLayoutStructure(layout, contextName?)` is exported from `react-grid-layout/core` and the root. It is `validateLayout` under a clearer name: the same checks, the same messages, and it throws. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
-- **DropConfig**: `dropConfig.defaultItem` accepts an optional `i`, the id of the dropped item. With it, `dropConfig.defaultItem` covers everything `droppingItem` did. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
+- **DropConfig**: `dropConfig.defaultItem` accepts an optional `i`, the id of the dropped item, and any other layout field such as `minW`. With it, `dropConfig.defaultItem` covers everything `droppingItem` did. [#2341](https://github.com/react-grid-layout/react-grid-layout/pull/2341)
 
 ### Deprecations
 

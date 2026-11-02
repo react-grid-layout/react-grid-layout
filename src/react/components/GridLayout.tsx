@@ -417,9 +417,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
             x: 0,
             y: 0,
             ...(droppingItemProp ?? {
-              ...defaultDropItem,
+              // `dropConfig={{ defaultItem: undefined }}` is a valid Partial.
+              ...(defaultDropItem ?? defaultDropConfig.defaultItem),
               // An own `i: undefined` must not replace the default id.
-              i: defaultDropItem.i ?? "__dropping-elem__"
+              i: defaultDropItem?.i ?? "__dropping-elem__"
             })
           }
         ],

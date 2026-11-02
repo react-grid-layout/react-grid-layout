@@ -571,11 +571,12 @@ export interface DropConfig {
   enabled: boolean;
 
   /**
-   * Default size for dropped items (default: { w: 1, h: 1 }), and optionally
-   * the dropped item's id (default: "__dropping-elem__"). Replaces the
-   * deprecated `droppingItem` prop; 3.0 renames it `dropConfig.item`.
+   * The dropped item (default: { w: 1, h: 1 }). `w` and `h` are required; any
+   * other layout field is optional, including the id `i` (default:
+   * "__dropping-elem__"). Replaces the deprecated `droppingItem` prop; 3.0
+   * renames it `dropConfig.item`.
    */
-  defaultItem: { w: number; h: number; i?: string };
+  defaultItem: { w: number; h: number } & Partial<Omit<LayoutItem, "w" | "h">>;
 
   /**
    * Called when dragging over the grid.

@@ -73,14 +73,20 @@ precedence over both. Grids built by `GridLayout` never warn.
   pixels.
 
 ```ts
-const percentStrategy = {
+import {
+  absoluteStrategy,
+  type PositionStrategy
+} from "react-grid-layout/core";
+
+// Pass the GridItem's current containerWidth.
+const percentStrategy = (containerWidth: number): PositionStrategy => ({
   ...absoluteStrategy,
   calcStyle: pos => ({
     ...absoluteStrategy.calcStyle(pos),
     left: `${(100 * pos.left) / containerWidth}%`,
     width: `${(100 * pos.width) / containerWidth}%`
   })
-};
+});
 ```
 
 ### RGL_W010: verticalCompact
@@ -137,7 +143,9 @@ the layout to `noOverlapCompactor`, or accept the new positions.
 
 ### RGL_W017: droppingItem
 
-Use `dropConfig.defaultItem`. Since 2.4 it accepts an optional `i`, so
+Use `dropConfig.defaultItem`. Since 2.4 it accepts an optional `i` and any
+other layout field (`minW`, `isResizable` and so on) next to the required `w`
+and `h`, so
 `dropConfig={{ enabled: true, defaultItem: { i: "new", w: 2, h: 2 } }}` covers
 everything `droppingItem` did. 3.0 renames it `dropConfig.item`. The `/legacy`
 entry keeps `droppingItem` and never warns.

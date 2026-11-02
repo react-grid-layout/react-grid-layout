@@ -461,6 +461,21 @@ describe("dropConfig.defaultItem.i (RGL_W017 replacement)", () => {
     expect(warn).not.toHaveBeenCalled();
   });
 
+  test("an undefined defaultItem falls back to the default item", () => {
+    expect(() =>
+      render(
+        <GridLayout width={1200} dropConfig={{ defaultItem: undefined }}>
+          <div key="a" />
+        </GridLayout>
+      )
+    ).not.toThrow();
+  });
+
+  test("carries the rest of a droppingItem, such as minW", () => {
+    const [, item] = dropWith({ i: "new", w: 2, h: 1, minW: 2 });
+    expect(item).toMatchObject({ i: "new", w: 2, minW: 2 });
+  });
+
   test("an explicit i: undefined keeps the default id", () => {
     const [, item] = dropWith({ i: undefined, w: 1, h: 1 });
     expect(item.i).toBe("__dropping-elem__");
