@@ -9491,7 +9491,6 @@ __metadata:
     lodash: "npm:^4.17.21"
     opener: "npm:^1.5.2"
     prettier: "npm:^3.8.1"
-    prop-types: "npm:^15.8.1"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-draggable: "npm:^4.4.6"
@@ -9499,7 +9498,6 @@ __metadata:
     react-hot-loader: "npm:^4.13.1"
     react-resizable: "npm:^3.2.0"
     react-transform-hmr: "npm:^1.0.2"
-    resize-observer-polyfill: "npm:^1.5.1"
     style-loader: "npm:^4.0.0"
     timsort: "npm:^0.3.0"
     tsup: "npm:^8.5.1"
@@ -9780,13 +9778,6 @@ __metadata:
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
   checksum: 10c0/b2bfdd09db16c082c4326e573a82c0771daaf7b53b9ce8ad60ea46aa6e30aaf475fe9b164800b89f93b748d2c234d8abff945d2551ba47bf5698e04cd7713267
-  languageName: node
-  linkType: hard
-
-"resize-observer-polyfill@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "resize-observer-polyfill@npm:1.5.1"
-  checksum: 10c0/5e882475067f0b97dc07e0f37c3e335ac5bc3520d463f777cec7e894bb273eddbfecb857ae668e6fb6881fd6f6bb7148246967172139302da50fa12ea3a15d95
   languageName: node
   linkType: hard
 
