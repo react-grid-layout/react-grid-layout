@@ -222,15 +222,19 @@ function movedItem(
  * Whether two compactors behave the same, so swapping one for the other needs
  * no re-sync (RX-8b). A new object with the same four fields, such as an inline
  * `{ ...verticalCompactor, preventCollision: true }` or the legacy wrapper's
- * per-render compactor, is the same compactor.
+ * per-render compactor, is the same compactor. That only holds when `compact`
+ * is an own property: a class compactor's `compact` lives on the prototype and
+ * may read instance state, so two instances are compared by identity.
  */
 function sameCompactor(a: Compactor, b: Compactor): boolean {
+  if (a === b) return true;
   return (
-    a === b ||
-    (a.type === b.type &&
-      a.allowOverlap === b.allowOverlap &&
-      a.preventCollision === b.preventCollision &&
-      a.compact === b.compact)
+    a.type === b.type &&
+    a.allowOverlap === b.allowOverlap &&
+    a.preventCollision === b.preventCollision &&
+    a.compact === b.compact &&
+    Object.prototype.hasOwnProperty.call(a, "compact") &&
+    Object.prototype.hasOwnProperty.call(b, "compact")
   );
 }
 

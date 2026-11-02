@@ -125,3 +125,27 @@ describe("RGL_W008", () => {
     expect(w008()).toHaveLength(1);
   });
 });
+
+test("swapping two instances of a stateful compactor class re-syncs", () => {
+  // compact lives on the prototype and reads instance state, so two instances
+  // share the compact reference but compact differently.
+  class OffsetCompactor {
+    readonly type = "vertical" as const;
+    readonly allowOverlap = false;
+    constructor(
+      readonly calls: number[],
+      readonly id: number
+    ) {}
+    compact(layout: any[], cols: number) {
+      this.calls.push(this.id);
+      return verticalCompactor.compact(layout, cols);
+    }
+  }
+  const calls: number[] = [];
+  const fixture = mountGrid({
+    variant: variant("vertical"),
+    props: { compactor: new OffsetCompactor(calls, 1) }
+  });
+  fixture.rerenderProps({ compactor: new OffsetCompactor(calls, 2) });
+  expect(calls).toContain(2);
+});
