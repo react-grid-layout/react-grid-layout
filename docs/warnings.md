@@ -10,6 +10,10 @@ silent when `process.env.NODE_ENV` is `"production"`. A deprecation warning
 fires once per grid (or per `GridItem`), not on every render. The intake
 warnings `RGL_W002` and `RGL_W007` fire once per validation call.
 
+One warning has no code yet: `fastHorizontalCompactor` warns when an item
+cannot fit under its row limit. It prints in production too, as it did before
+2.4.
+
 Some codes are JSDoc only. They mark a deprecated export in your editor and in
 lint output, and never print, because the function can run in a hot loop.
 
@@ -149,6 +153,11 @@ and `h`, so
 `dropConfig={{ enabled: true, defaultItem: { i: "new", w: 2, h: 2 } }}` covers
 everything `droppingItem` did. 3.0 renames it `dropConfig.item`. The `/legacy`
 entry keeps `droppingItem` and never warns.
+
+The id works as `droppingItem.i` always has: it names the placeholder while a
+drag is over the grid, and the grid removes any layout item with that id when
+a drag enters or leaves. In `onDrop`, give the new item its own id rather than
+keeping `i`, or the next drop replaces it.
 
 ## Announced for 3.0, no code
 

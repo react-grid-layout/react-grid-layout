@@ -34,7 +34,8 @@ function hasDataGrid(children: React.ReactNode): boolean {
   let found = false;
   React.Children.forEach(children, child => {
     if (found || !React.isValidElement(child)) return;
-    found = (child.props as { "data-grid"?: unknown })["data-grid"] != null;
+    // Truthy, as GridLayout and ResponsiveGridLayout read it.
+    found = Boolean((child.props as { "data-grid"?: unknown })["data-grid"]);
   });
   return found;
 }
@@ -65,12 +66,17 @@ export function useModernEntryDeprecations(props: {
 }): boolean {
   const legacy = useContext(LegacyEntryContext);
   const scope = useWarningScope();
+  const dataGridWarned = useRef(false);
   const { droppingItem, onDropDragOver, children } = props;
   useEffect(() => {
     if (legacy || !isDevelopment()) return;
     if (onDropDragOver) devWarn(scope, "RGL_W014", W014);
     if (droppingItem) devWarn(scope, "RGL_W017", W017);
-    if (hasDataGrid(children)) devWarn(scope, "RGL_W015", W015);
+    // Stop scanning children once this grid has warned.
+    if (!dataGridWarned.current && hasDataGrid(children)) {
+      dataGridWarned.current = true;
+      devWarn(scope, "RGL_W015", W015);
+    }
   }, [legacy, scope, droppingItem, onDropDragOver, children]);
   return legacy;
 }

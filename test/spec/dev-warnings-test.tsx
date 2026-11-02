@@ -270,6 +270,15 @@ describe("modern-entry deprecations", () => {
     expect(warnedCodes()).toEqual(["RGL_W014"]);
   });
 
+  test("a falsy data-grid, which the grid ignores, is silent", () => {
+    render(
+      <GridLayout width={1200} layout={[{ i: "a", x: 0, y: 0, w: 1, h: 1 }]}>
+        <div key="a" data-grid={false} />
+      </GridLayout>
+    );
+    expect(warn).not.toHaveBeenCalled();
+  });
+
   test("all are silent in production", () => {
     inProduction(() => {
       render(deprecated(GridLayout));
