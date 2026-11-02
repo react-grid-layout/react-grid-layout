@@ -884,22 +884,37 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         if (shouldUpdate) {
           setDroppingPosition(newDroppingPosition);
           // Keep the placeholder's layout entry in sync so commitDrop/onDrop
-          // reads the latest cell, not the initial one (#2284).
-          setLayout(currentLayout =>
-            currentLayout.map(item =>
-              item.i === itemToPlace.i &&
-              (item.x !== calculatedXY.x || item.y !== calculatedXY.y)
-                ? validateLayoutInput(
-                    [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
-                    { cols, maxRows }
-                  )[0]!
-                : item
-            )
-          );
+          // reads the latest cell, not the initial one (#2284). Move it the
+          // way a drag does, so it pushes the items it lands on (#2313).
+          setLayout(currentLayout => {
+            const item = getLayoutItem(currentLayout, itemToPlace.i);
+            if (!item) return currentLayout;
+            const target = validateLayoutInput(
+              [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
+              { cols, maxRows }
+            )[0]!;
+            if (item.x === target.x && item.y === target.y)
+              return currentLayout;
+            // moveElement mutates the items it moves and pushes. Work on
+            // copies so the layout already sent to onLayoutChange is untouched.
+            const working = currentLayout.map(cloneLayoutItem);
+            const moved = moveElement(
+              working,
+              getLayoutItem(working, itemToPlace.i)!,
+              target.x,
+              target.y,
+              true,
+              preventCollision,
+              compactType,
+              cols,
+              allowOverlap
+            );
+            return compactor.compact(moved, cols);
+          });
         }
       }
     },
-    [cols, maxRows]
+    [cols, maxRows, preventCollision, compactType, allowOverlap, compactor]
   );
 
   const applyTouchDropPosition = useCallback(
