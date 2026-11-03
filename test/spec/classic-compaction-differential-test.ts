@@ -1,4 +1,6 @@
+import { indexable } from "../../src/core/compaction/cellIndex";
 import { classicCompactor } from "../../src/core/compaction/classic";
+import type { LayoutItem } from "../../src/core/types";
 import { HORIZONTAL, VERTICAL } from "../../src/core/geometry/axis";
 import { outcome, seededLayouts } from "./helpers/loopRewrite";
 import { legacyClassicCompactor } from "./oracles/legacyClassicCompactor";
@@ -41,6 +43,52 @@ describe("classic compaction retains the pre-jump finite-input contract", () => 
       for (const item of output) {
         expect(Number.isFinite(item.x)).toBe(true);
         expect(Number.isFinite(item.y)).toBe(true);
+      }
+    }
+  );
+});
+
+describe("classic compaction on the indexed path", () => {
+  // Integer layouts with unique ids take the spatial indexes in cellIndex.ts.
+  // The generic seeds above are mostly fractional, so they rarely reach them.
+  function integerLayout(seed: number): { layout: LayoutItem[]; cols: number } {
+    let state = seed;
+    const random = () => {
+      state = (state * 1_103_515_245 + 12_345) & 2_147_483_647;
+      return state / 2_147_483_647;
+    };
+    const int = (n: number) => Math.floor(random() * n);
+    const cols = 1 + int(12);
+    const n = 1 + int(random() < 0.2 ? 100 : 40);
+    const statics = random() < 0.4 ? 0 : random() * 0.25;
+    const tall = random() < 0.25;
+    const layout = Array.from({ length: n }, (_, index) => {
+      const w = 1 + int(Math.min(cols, 4));
+      return {
+        i: String(index),
+        x: int(cols - w + 1),
+        y: int(n),
+        w,
+        h: 1 + int(tall ? 12 : 3),
+        ...(random() < statics ? { static: true } : {})
+      };
+    });
+    return { layout, cols };
+  }
+
+  it.each([VERTICAL, HORIZONTAL])(
+    "matches output, mutation and identity in 1,000 integer layouts ($pos)",
+    axis => {
+      for (let index = 0; index < 1000; index++) {
+        const args = integerLayout(index + 1);
+        expect(indexable(args.layout, args.cols)).toBe(true);
+        expect({
+          index,
+          result: outcome(args, classicCompactor(axis).compact)
+        }).toEqual({
+          index,
+          result: outcome(args, legacyClassicCompactor(axis).compact)
+        });
       }
     }
   );
