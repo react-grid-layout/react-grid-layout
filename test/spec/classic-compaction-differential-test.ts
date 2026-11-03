@@ -113,6 +113,27 @@ describe("classic compaction index gate", () => {
     }
   );
 
+  it.each([VERTICAL, HORIZONTAL])(
+    "matches the oracle on a 1024-column grid of full-width items ($pos)",
+    axis => {
+      const args = {
+        layout: Array.from({ length: 40 }, (_, k) => ({
+          i: `k${k}`,
+          x: 0,
+          y: k % 3,
+          w: 1024,
+          h: 1 + (k % 2),
+          ...(k % 13 === 5 ? { static: true } : {})
+        })),
+        cols: 1024
+      };
+      expect(indexable(args.layout, args.cols)).toBe(true);
+      expect(outcome(args, classicCompactor(axis).compact)).toEqual(
+        outcome(args, legacyClassicCompactor(axis).compact)
+      );
+    }
+  );
+
   it("walks only occupied bands for items a billion rows down", () => {
     // A column with no placed cells used to cost one Map lookup per empty
     // 8-row band between the item and row 0.

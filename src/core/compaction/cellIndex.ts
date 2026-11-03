@@ -62,11 +62,7 @@ export class PlacedIndex {
   private readonly items: LayoutItem[] = [];
 
   constructor(initial: Layout) {
-    for (let i = 0; i < initial.length; i++) {
-      const item = initial[i];
-      if (item !== undefined) this.push(item);
-      else this.items.push(item as unknown as LayoutItem);
-    }
+    for (let i = 0; i < initial.length; i++) this.push(initial[i]!);
   }
 
   private cell(column: number, rowBand: number): number[] | undefined {
@@ -96,9 +92,17 @@ export class PlacedIndex {
 
   /** Same result as getFirstCollision(compareWith, item). */
   firstCollision(item: LayoutItem): LayoutItem | undefined {
-    let best = Infinity;
+    const first = band(item.y);
     const last = band(item.y + item.h - 1);
-    for (let b = band(item.y); b <= last; b++) {
+    // A wide item can cover more cells than there are placed items; the
+    // plain scan is cheaper then.
+    if ((last - first + 1) * item.w > this.items.length) {
+      for (let index = 0; index < this.items.length; index++)
+        if (collides(this.items[index]!, item)) return this.items[index];
+      return undefined;
+    }
+    let best = Infinity;
+    for (let b = first; b <= last; b++) {
       for (let column = item.x; column < item.x + item.w; column++) {
         const cell = this.cell(column, b);
         if (cell === undefined) continue;
@@ -138,9 +142,16 @@ export class PlacedIndex {
       }
     };
     if (axis.pos === "x") {
-      // Columns are few: visit every cell left of the item's far edge.
+      // Visit every cell left of the item's far edge, unless that is more
+      // cells than placed items (wide grids, far pushes): then scan them all.
+      const first = band(item.y);
       const last = band(item.y + item.h - 1);
-      for (let b = band(item.y); b <= last; b++)
+      if ((last - first + 1) * (start + item.w) > this.items.length) {
+        for (let index = 0; index < this.items.length; index++)
+          steps = consider(this.items[index]!, steps);
+        return steps;
+      }
+      for (let b = first; b <= last; b++)
         for (let column = 0; column < start + item.w; column++)
           visit(this.cell(column, b));
       return steps;
