@@ -180,6 +180,23 @@ describe("classic compaction index gate", () => {
     }
   );
 
+  it("does not index huge statics when nothing can move", () => {
+    // 2,000 statics of 48 x 680 cells would be about 8 million cell writes.
+    const layout = Array.from({ length: 2000 }, (_, k) => ({
+      i: `s${k}`,
+      x: 0,
+      y: k * 680,
+      w: 48,
+      h: 680,
+      static: true
+    }));
+    expect(indexable(layout, 48)).toBe(true);
+    const { lookups } = countMapLookups(() =>
+      classicCompactor(VERTICAL).compact(layout, 48)
+    );
+    expect(lookups).toBeLessThan(10_000);
+  });
+
   it("walks only occupied bands for items a billion rows down", () => {
     // A column with no placed cells used to cost one Map lookup per empty
     // 8-row band between the item and row 0.

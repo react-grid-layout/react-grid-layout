@@ -20,6 +20,9 @@ const BAND = 8;
  */
 const MAX_COLUMNS = 48;
 
+/** Layout cells per movable item above which PlacedIndex is not built. */
+const MAX_PLACED_CELLS = 32;
+
 /** Average cells per movable item above which PendingIndex is not built. */
 const MAX_PENDING_CELLS = 8;
 
@@ -71,6 +74,23 @@ export class PlacedIndex {
 
   constructor(initial: Layout) {
     for (let i = 0; i < initial.length; i++) this.push(initial[i]!);
+  }
+
+  /**
+   * Indexing costs one write per cell up front, so build it only when the
+   * layout's cells come to at most MAX_PLACED_CELLS per movable item. A layout
+   * with nothing to move, or with a few movers among huge statics, keeps the
+   * plain scans.
+   */
+  static worthwhile(layout: Layout): boolean {
+    let cells = 0;
+    let movable = 0;
+    for (let i = 0; i < layout.length; i++) {
+      const item = layout[i]!;
+      if (!item.static) movable++;
+      cells += item.w * (band(item.y + item.h - 1) - band(item.y) + 1);
+    }
+    return cells <= MAX_PLACED_CELLS * movable;
   }
 
   private cell(column: number, rowBand: number): number[] | undefined {

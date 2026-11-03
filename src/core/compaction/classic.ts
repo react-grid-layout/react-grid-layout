@@ -354,7 +354,10 @@ export function classicCompactor(axis: Axis): Compactor {
       const sorted = [...layout].sort(axis.compare);
       const originalIndices = firstPositions(layout, item => item);
       const indexed = indexable(sorted, cols);
-      const placed = indexed ? new PlacedIndex(compareWith) : undefined;
+      const placed =
+        indexed && PlacedIndex.worthwhile(sorted)
+          ? new PlacedIndex(compareWith)
+          : undefined;
       const context: CollisionContext = {
         ...collisionContext(sorted, compareWith.length > 0),
         pending:
