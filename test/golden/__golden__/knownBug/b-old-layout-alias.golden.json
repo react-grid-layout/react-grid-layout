@@ -270,5 +270,5 @@
       ]
     }
   },
-  "fixed": "b: moveElement no longer mutates the oldLayout alias, so final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11)."
+  "fixed": "b: the grid moves copies (moveWithoutMutation), so the oldLayout alias stays intact and final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11)."
 }

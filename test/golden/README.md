@@ -46,7 +46,7 @@ has been fixed keeps its file and ID, and its `knownBug` key becomes
 | k / B11, l / B12        | Zero calculated size; aspect ratio ignores height               |
 | m / B13, n / B14        | Wrap factory fallback; duplicate IDs                            |
 | o / B15                 | Suspected horizontal resolver early break, with a control       |
-| p / B16                 | Detached dragged item identity (fixed in RGL-11)                |
+| p / B16                 | Detached item identity (public `moveElement` only, until 3.0)   |
 
 Additional IDs: `q` pins repeated-reference output holes; `q-move` pins horizontal
 push overflow; `q-move-static` pins static movement in a free-form swap; `r` pins
