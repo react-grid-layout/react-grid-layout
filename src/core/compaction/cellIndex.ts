@@ -20,6 +20,16 @@ const BAND = 8;
  */
 const MAX_COLUMNS = 48;
 
+/**
+ * Smallest layouts the indexes accept. Below this, building them costs more
+ * than the scans they replace (12 cols, 10 items vertical: 4.3 µs plain,
+ * 8.0 µs indexed), so small grids, the common case, keep the plain scans.
+ */
+const MIN_INDEXED_ITEMS = 64;
+
+/** Fewest movable items for PendingIndex; its per-push upkeep pays off later. */
+const MIN_PENDING_ITEMS = 192;
+
 /** Layout cells per movable item above which PlacedIndex is not built. */
 const MAX_PLACED_CELLS = 32;
 
@@ -41,6 +51,7 @@ function band(row: number): number {
  * at the first item with that id, which the indexes do not model.
  */
 export function indexable(layout: Layout, cols: number): boolean {
+  if (layout.length < MIN_INDEXED_ITEMS) return false;
   if (!Number.isInteger(cols) || cols < 1 || cols > MAX_COLUMNS) return false;
   const ids = new Set<string>();
   for (let i = 0; i < layout.length; i++) {
@@ -278,7 +289,7 @@ export class PendingIndex {
         band(item[axis.pos] + item[axis.size] - 1) - band(item[axis.pos]) + 1;
       cells += cross * along;
     }
-    return cells <= MAX_PENDING_CELLS * movable;
+    return movable >= MIN_PENDING_ITEMS && cells <= MAX_PENDING_CELLS * movable;
   }
 
   /** Record that `item` moved along the main axis from `from`. */

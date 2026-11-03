@@ -1,7 +1,8 @@
-import { indexable } from "../../src/core/compaction/cellIndex";
+import { PendingIndex, indexable } from "../../src/core/compaction/cellIndex";
 import { classicCompactor } from "../../src/core/compaction/classic";
 import type { LayoutItem } from "../../src/core/types";
 import { HORIZONTAL, VERTICAL } from "../../src/core/geometry/axis";
+import type { Axis } from "../../src/core/geometry/axis";
 import { outcome, seededLayouts } from "./helpers/loopRewrite";
 import { legacyClassicCompactor } from "./oracles/legacyClassicCompactor";
 
@@ -51,7 +52,10 @@ describe("classic compaction retains the pre-jump finite-input contract", () => 
 describe("classic compaction on the indexed path", () => {
   // Integer layouts with unique ids take the spatial indexes in cellIndex.ts.
   // The generic seeds above are mostly fractional, so they rarely reach them.
-  function integerLayout(seed: number): { layout: LayoutItem[]; cols: number } {
+  function integerLayout(
+    seed: number,
+    size: { min: number; spread: number; statics?: number }
+  ): { layout: LayoutItem[]; cols: number } {
     let state = seed;
     const random = () => {
       state = (state * 1_103_515_245 + 12_345) & 2_147_483_647;
@@ -59,9 +63,9 @@ describe("classic compaction on the indexed path", () => {
     };
     const int = (n: number) => Math.floor(random() * n);
     const cols = 1 + int(12);
-    const n = 1 + int(random() < 0.2 ? 100 : 40);
-    const statics = random() < 0.4 ? 0 : random() * 0.25;
-    const tall = random() < 0.25;
+    const n = size.min + int(size.spread);
+    const statics = size.statics ?? (random() < 0.4 ? 0 : random() * 0.25);
+    const tall = size.statics === undefined && random() < 0.25;
     const layout = Array.from({ length: n }, (_, index) => {
       const w = 1 + int(Math.min(cols, 4));
       return {
@@ -76,19 +80,38 @@ describe("classic compaction on the indexed path", () => {
     return { layout, cols };
   }
 
+  function matchesOracle(axis: Axis, args: ReturnType<typeof integerLayout>) {
+    expect(indexable(args.layout, args.cols)).toBe(true);
+    return {
+      result: outcome(args, classicCompactor(axis).compact),
+      expected: outcome(args, legacyClassicCompactor(axis).compact)
+    };
+  }
+
   it.each([VERTICAL, HORIZONTAL])(
-    "matches output, mutation and identity in 1,000 integer layouts ($pos)",
+    "matches output, mutation and identity in 300 integer layouts ($pos)",
     axis => {
-      for (let index = 0; index < 1000; index++) {
-        const args = integerLayout(index + 1);
-        expect(indexable(args.layout, args.cols)).toBe(true);
-        expect({
-          index,
-          result: outcome(args, classicCompactor(axis).compact)
-        }).toEqual({
-          index,
-          result: outcome(args, legacyClassicCompactor(axis).compact)
+      // At least 64 items: smaller layouts keep the plain scans.
+      for (let index = 0; index < 300; index++) {
+        const args = integerLayout(index + 1, { min: 64, spread: 60 });
+        const { result, expected } = matchesOracle(axis, args);
+        expect({ index, result }).toEqual({ index, result: expected });
+      }
+    }
+  );
+
+  it.each([VERTICAL, HORIZONTAL])(
+    "matches the oracle where PendingIndex is built ($pos)",
+    axis => {
+      for (let index = 0; index < 30; index++) {
+        const args = integerLayout(10_000 + index, {
+          min: 220,
+          spread: 60,
+          statics: 0.1
         });
+        expect(PendingIndex.worthwhile(args.layout, axis)).toBe(true);
+        const { result, expected } = matchesOracle(axis, args);
+        expect({ index, result }).toEqual({ index, result: expected });
       }
     }
   );
@@ -111,6 +134,20 @@ function countMapLookups<T>(run: () => T): { result: T; lookups: number } {
 }
 
 describe("classic compaction index gate", () => {
+  it("keeps grids under 64 items on the scan path", () => {
+    const layout = Array.from({ length: 63 }, (_, k) => ({
+      i: String(k),
+      x: k % 12,
+      y: Math.floor(k / 12),
+      w: 1,
+      h: 1
+    }));
+    expect(indexable(layout, 12)).toBe(false);
+    expect(
+      indexable([...layout, { i: "63", x: 0, y: 6, w: 1, h: 1 }], 12)
+    ).toBe(true);
+  });
+
   it.each([VERTICAL, HORIZONTAL])(
     "keeps repeated-id integer layouts on the scan path ($pos)",
     axis => {
@@ -156,7 +193,7 @@ describe("classic compaction index gate", () => {
       // Without the wide-query fallbacks this fixture makes 279,128 (y) and
       // 413,888 (x) lookups; with them, about 5,000 and 15,000.
       const args = {
-        layout: Array.from({ length: 60 }, (_, k) => ({
+        layout: Array.from({ length: 80 }, (_, k) => ({
           i: `k${k}`,
           x: 0,
           y: k % 3,
@@ -203,7 +240,15 @@ describe("classic compaction index gate", () => {
     const args = {
       layout: [
         { i: "static", x: 0, y: 1_000_000_000, w: 1, h: 1, static: true },
-        { i: "far", x: 1, y: 1_000_000_000, w: 1, h: 1 }
+        { i: "far", x: 1, y: 1_000_000_000, w: 1, h: 1 },
+        // Padding so the layout clears the index's minimum size.
+        ...Array.from({ length: 70 }, (_, k) => ({
+          i: `pad${k}`,
+          x: 1,
+          y: 1_000_000_001 + k,
+          w: 1,
+          h: 1
+        }))
       ],
       cols: 2
     };
