@@ -94,6 +94,45 @@ describe("classic compaction on the indexed path", () => {
   );
 });
 
+describe("classic compaction index gate", () => {
+  it.each([VERTICAL, HORIZONTAL])(
+    "keeps repeated-id integer layouts on the scan path ($pos)",
+    axis => {
+      const args = {
+        layout: [
+          { i: "dup", x: 0, y: 0, w: 2, h: 2 },
+          { i: "dup", x: 1, y: 1, w: 2, h: 2 },
+          { i: "a", x: 0, y: 3, w: 1, h: 1, static: true }
+        ],
+        cols: 4
+      };
+      expect(indexable(args.layout, args.cols)).toBe(false);
+      expect(outcome(args, classicCompactor(axis).compact)).toEqual(
+        outcome(args, legacyClassicCompactor(axis).compact)
+      );
+    }
+  );
+
+  it("walks only occupied bands for items a billion rows down", () => {
+    // A column with no placed cells used to cost one Map lookup per empty
+    // 8-row band between the item and row 0.
+    const args = {
+      layout: [
+        { i: "static", x: 0, y: 1_000_000_000, w: 1, h: 1, static: true },
+        { i: "far", x: 1, y: 1_000_000_000, w: 1, h: 1 }
+      ],
+      cols: 2
+    };
+    expect(indexable(args.layout, args.cols)).toBe(true);
+    const started = performance.now();
+    const output = classicCompactor(VERTICAL).compact(args.layout, args.cols);
+    expect(performance.now() - started).toBeLessThan(1000);
+    // The frozen oracle steps one row at a time here, so it is not run.
+    expect(output.find(item => item.i === "far")?.y).toBe(0);
+    expect(output.find(item => item.i === "static")?.y).toBe(1_000_000_000);
+  });
+});
+
 it("horizontal wrap on decimal geometry matches the pre-jump result", () => {
   // Found by the review gate after #2328: the wrap jump left a one-row gap.
   const layout = () => [

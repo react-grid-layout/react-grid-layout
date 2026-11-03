@@ -57,6 +57,8 @@ export function indexable(layout: Layout, cols: number): boolean {
 export class PlacedIndex {
   /** Row band, then column, to ascending indices. Nested so no key aliases. */
   private readonly cells = new Map<number, Map<number, number[]>>();
+  /** Column to its occupied bands, ascending, so walks skip empty bands. */
+  private readonly columnBands = new Map<number, number[]>();
   private readonly items: LayoutItem[] = [];
 
   constructor(initial: Layout) {
@@ -80,8 +82,14 @@ export class PlacedIndex {
       if (row === undefined) this.cells.set(b, (row = new Map()));
       for (let column = item.x; column < item.x + item.w; column++) {
         const cell = row.get(column);
-        if (cell === undefined) row.set(column, [index]);
-        else cell.push(index);
+        if (cell !== undefined) {
+          cell.push(index);
+          continue;
+        }
+        row.set(column, [index]);
+        let bands = this.columnBands.get(column);
+        if (bands === undefined) this.columnBands.set(column, (bands = []));
+        bands.splice(firstAfter(bands, b), 0, b);
       }
     }
   }
@@ -137,13 +145,19 @@ export class PlacedIndex {
           visit(this.cell(column, b));
       return steps;
     }
-    // Vertical: walk bands upward from the item. An item seen only in bands
-    // below `b` ends by row b * BAND, so it is at least start - b * BAND + 1
-    // steps away; stop once that cannot beat the best so far.
-    for (let b = band(start + item.h - 1); b >= 0; b--) {
-      if (Math.floor(start - (b + 1) * BAND) + 1 >= steps) break;
-      for (let column = item.x; column < item.x + item.w; column++)
+    // Vertical: walk each column's occupied bands upward from the item. An
+    // item seen only in bands below `b` ends by row (b + 1) * BAND, so it is
+    // at least start - (b + 1) * BAND + 1 steps away; stop once that cannot
+    // beat the best so far. `steps` only shrinks, so the stop holds per column.
+    const top = band(start + item.h - 1);
+    for (let column = item.x; column < item.x + item.w; column++) {
+      const bands = this.columnBands.get(column);
+      if (bands === undefined) continue;
+      for (let k = firstAfter(bands, top) - 1; k >= 0; k--) {
+        const b = bands[k]!;
+        if (Math.floor(start - (b + 1) * BAND) + 1 >= steps) break;
         visit(this.cell(column, b));
+      }
     }
     return steps;
   }
