@@ -358,7 +358,9 @@ export function classicCompactor(axis: Axis): Compactor {
       const context: CollisionContext = {
         ...collisionContext(sorted, compareWith.length > 0),
         pending:
-          indexed && compareWith.length > 0
+          indexed &&
+          compareWith.length > 0 &&
+          PendingIndex.worthwhile(sorted, axis)
             ? new PendingIndex(sorted, axis)
             : undefined,
         pushes: indexed ? { count: 0 } : undefined

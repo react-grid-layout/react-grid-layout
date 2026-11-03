@@ -94,6 +94,22 @@ describe("classic compaction on the indexed path", () => {
   );
 });
 
+/** Map.get calls made by `run`. A counter, not a spy, so a regression that
+ * makes millions of calls fails on the bound instead of exhausting the heap. */
+function countMapLookups<T>(run: () => T): { result: T; lookups: number } {
+  const original = Map.prototype.get;
+  let lookups = 0;
+  Map.prototype.get = function (this: Map<unknown, unknown>, key: unknown) {
+    lookups++;
+    return original.call(this, key);
+  };
+  try {
+    return { result: run(), lookups };
+  } finally {
+    Map.prototype.get = original;
+  }
+}
+
 describe("classic compaction index gate", () => {
   it.each([VERTICAL, HORIZONTAL])(
     "keeps repeated-id integer layouts on the scan path ($pos)",
@@ -114,7 +130,7 @@ describe("classic compaction index gate", () => {
   );
 
   it.each([VERTICAL, HORIZONTAL])(
-    "matches the oracle on a 1024-column grid of full-width items ($pos)",
+    "keeps a 1024-column grid on the scan path and matches the oracle ($pos)",
     axis => {
       const args = {
         layout: Array.from({ length: 40 }, (_, k) => ({
@@ -127,7 +143,37 @@ describe("classic compaction index gate", () => {
         })),
         cols: 1024
       };
+      expect(indexable(args.layout, args.cols)).toBe(false);
+      expect(outcome(args, classicCompactor(axis).compact)).toEqual(
+        outcome(args, legacyClassicCompactor(axis).compact)
+      );
+    }
+  );
+
+  it.each([VERTICAL, HORIZONTAL])(
+    "falls back to the scan for full-width items on a 48-column grid ($pos)",
+    axis => {
+      // Without the wide-query fallbacks this fixture makes 279,128 (y) and
+      // 413,888 (x) lookups; with them, about 5,000 and 15,000.
+      const args = {
+        layout: Array.from({ length: 60 }, (_, k) => ({
+          i: `k${k}`,
+          x: 0,
+          y: k % 3,
+          w: 48,
+          h: 1 + (k % 2),
+          ...(k % 13 === 5 ? { static: true } : {})
+        })),
+        cols: 48
+      };
       expect(indexable(args.layout, args.cols)).toBe(true);
+      const { lookups } = countMapLookups(() =>
+        classicCompactor(axis).compact(
+          args.layout.map(item => ({ ...item })),
+          args.cols
+        )
+      );
+      expect(lookups).toBeLessThan(40_000);
       expect(outcome(args, classicCompactor(axis).compact)).toEqual(
         outcome(args, legacyClassicCompactor(axis).compact)
       );
@@ -147,19 +193,9 @@ describe("classic compaction index gate", () => {
     expect(indexable(args.layout, args.cols)).toBe(true);
     // Count cell lookups, not milliseconds: the empty-band walk made about
     // 125 million Map.get calls at this y.
-    // A counter, not a spy: a regressed walk would make a spy keep every call.
-    const original = Map.prototype.get;
-    let lookups = 0;
-    Map.prototype.get = function (this: Map<unknown, unknown>, key: unknown) {
-      lookups++;
-      return original.call(this, key);
-    };
-    let output;
-    try {
-      output = classicCompactor(VERTICAL).compact(args.layout, args.cols);
-    } finally {
-      Map.prototype.get = original;
-    }
+    const { result: output, lookups } = countMapLookups(() =>
+      classicCompactor(VERTICAL).compact(args.layout, args.cols)
+    );
     expect(lookups).toBeLessThan(10_000);
     // The frozen oracle steps one row at a time here, so it is not run.
     expect(output.find(item => item.i === "far")?.y).toBe(0);

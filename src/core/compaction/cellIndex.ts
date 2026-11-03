@@ -12,8 +12,16 @@ import { collides } from "../collision.js";
 /** Rows per band. Wider bands mean fewer cells per item but more candidates. */
 const BAND = 8;
 
-/** Largest `cols` and starting column extent the index accepts. */
-const MAX_COLUMNS = 1024;
+/**
+ * Largest `cols` (and starting column extent) the indexes accept. Cells pay
+ * off when items are narrow next to the grid; on wide grids a full-width item
+ * covers more cells than the plain scans visit (vertical, 1024 columns: 600
+ * full-width items took 15 s against 120 ms), so those keep the plain scans.
+ */
+const MAX_COLUMNS = 48;
+
+/** Average cells per movable item above which PendingIndex is not built. */
+const MAX_PENDING_CELLS = 8;
 
 /** Cells one item may occupy before the layout keeps the plain scans. */
 const MAX_CELLS_PER_ITEM = 4096;
@@ -96,7 +104,7 @@ export class PlacedIndex {
     const last = band(item.y + item.h - 1);
     // A wide item can cover more cells than there are placed items; the
     // plain scan is cheaper then.
-    if ((last - first + 1) * item.w > this.items.length) {
+    if ((last - first + 1) * item.w * 2 > this.items.length) {
       for (let index = 0; index < this.items.length; index++)
         if (collides(this.items[index]!, item)) return this.items[index];
       return undefined;
@@ -146,7 +154,7 @@ export class PlacedIndex {
       // cells than placed items (wide grids, far pushes): then scan them all.
       const first = band(item.y);
       const last = band(item.y + item.h - 1);
-      if ((last - first + 1) * (start + item.w) > this.items.length) {
+      if ((last - first + 1) * (start + item.w) * 2 > this.items.length) {
         for (let index = 0; index < this.items.length; index++)
           steps = consider(this.items[index]!, steps);
         return steps;
@@ -228,6 +236,29 @@ export class PendingIndex {
         else if (cell[at] === index) cell.splice(at, 1);
       }
     }
+  }
+
+  /**
+   * Each push rewrites an item's cells, so wide items cost more to track than
+   * the scan they save. Build the index only when the average movable item
+   * covers at most MAX_PENDING_CELLS cells.
+   */
+  static worthwhile(layout: Layout, axis: Axis): boolean {
+    let cells = 0;
+    let movable = 0;
+    for (let i = 0; i < layout.length; i++) {
+      const item = layout[i]!;
+      if (item.static) continue;
+      movable++;
+      const cross =
+        axis.pos === "y"
+          ? item.w
+          : band(item.y + item.h - 1) - band(item.y) + 1;
+      const along =
+        band(item[axis.pos] + item[axis.size] - 1) - band(item[axis.pos]) + 1;
+      cells += cross * along;
+    }
+    return cells <= MAX_PENDING_CELLS * movable;
   }
 
   /** Record that `item` moved along the main axis from `from`. */
