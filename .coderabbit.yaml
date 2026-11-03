@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+reviews:
+  # Same review depth as before this file existed.
+  profile: chill
+  # Post APPROVED once every CodeRabbit comment is resolved, so a clean
+  # review counts as an approval on the PR head.
+  request_changes_workflow: true
