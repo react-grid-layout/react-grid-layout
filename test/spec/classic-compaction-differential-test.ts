@@ -124,9 +124,16 @@ describe("classic compaction index gate", () => {
       cols: 2
     };
     expect(indexable(args.layout, args.cols)).toBe(true);
-    const started = performance.now();
-    const output = classicCompactor(VERTICAL).compact(args.layout, args.cols);
-    expect(performance.now() - started).toBeLessThan(1000);
+    // Count cell lookups, not milliseconds: the empty-band walk made about
+    // 125 million Map.get calls at this y.
+    const get = jest.spyOn(Map.prototype, "get");
+    let output;
+    try {
+      output = classicCompactor(VERTICAL).compact(args.layout, args.cols);
+      expect(get.mock.calls.length).toBeLessThan(10_000);
+    } finally {
+      get.mockRestore();
+    }
     // The frozen oracle steps one row at a time here, so it is not run.
     expect(output.find(item => item.i === "far")?.y).toBe(0);
     expect(output.find(item => item.i === "static")?.y).toBe(1_000_000_000);
