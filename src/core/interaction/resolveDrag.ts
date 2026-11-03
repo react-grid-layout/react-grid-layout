@@ -92,8 +92,8 @@ export function moveWithoutMutation(
 
 /**
  * Shared only by the recursive steps of one public movement call. It writes
- * positions into the items it is given; public callers hand it copies
- * (moveWithoutMutation).
+ * positions into the items it is given: copies from moveWithoutMutation, or
+ * the caller's live items from the public moveElement.
  */
 export class DragResolver {
   private collisions: DragCollisionIndex | undefined;
@@ -122,7 +122,8 @@ export class DragResolver {
     const oldX = l.x;
     const oldY = l.y;
 
-    // Update position (writes the working copy; see moveWithoutMutation)
+    // Update position (a copy from moveWithoutMutation, or the live item from
+    // the public moveElement)
     if (typeof x === "number") l.x = x;
     if (typeof y === "number") l.y = y;
     l.moved = true;

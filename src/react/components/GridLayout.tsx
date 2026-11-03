@@ -45,10 +45,10 @@ import {
   bottom,
   cloneLayoutItem,
   getLayoutItem,
-  moveElement,
   withLayoutItem,
   correctBounds
 } from "../../core/layout.js";
+import { moveWithoutMutation } from "../../core/interaction/resolveDrag.js";
 import { boundLayoutInput } from "../../core/validation.js";
 import { getAllCollisions } from "../../core/collision.js";
 import { compactorFor } from "../../core/compactors.js";
@@ -207,7 +207,7 @@ export interface GridLayoutProps {
 const noop = () => {};
 
 /**
- * moveElement leaves its input alone and keeps item order, so the moved item
+ * moveWithoutMutation leaves its input alone and keeps item order, so the moved item
  * sits at the index `item` had in `before`. Matching by position, not id,
  * keeps duplicate ids from selecting another item.
  */
@@ -688,15 +688,14 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
       if (!l) return;
 
       // Move the element
-      const newLayout = moveElement(
+      const newLayout = moveWithoutMutation(
+        compactType,
         currentLayout,
         l,
         x,
         y,
         true,
         preventCollision,
-        compactType,
-        cols,
         allowOverlap
       );
       // Use compactor.compact() - it handles allowOverlap internally (#2213)
@@ -736,15 +735,14 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
       const l = getLayoutItem(currentLayout, i);
       if (!l) return;
 
-      const newLayout = moveElement(
+      const newLayout = moveWithoutMutation(
+        compactType,
         currentLayout,
         l,
         x,
         y,
         true,
         preventCollision,
-        compactType,
-        cols,
         allowOverlap
       );
 
@@ -854,15 +852,14 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
 
       let finalLayout = newLayout;
       if (shouldMoveItem && newX !== undefined && newY !== undefined) {
-        finalLayout = moveElement(
+        finalLayout = moveWithoutMutation(
+          compactType,
           newLayout,
           l,
           newX,
           newY,
           true,
           preventCollision,
-          compactType,
-          cols,
           allowOverlap
         );
       }
@@ -963,15 +960,14 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
         )[0]!;
         if (item.x === target.x && item.y === target.y) return current;
         const working = current.map(cloneLayoutItem);
-        const moved = moveElement(
+        const moved = moveWithoutMutation(
+          compactType,
           working,
           getLayoutItem(working, itemToPlace.i)!,
           target.x,
           target.y,
           true,
           preventCollision,
-          compactType,
-          cols,
           allowOverlap
         );
         return compactor.compact(moved, cols);

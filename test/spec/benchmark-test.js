@@ -187,12 +187,14 @@ describe("Performance Benchmarks", () => {
 
     testSizes.forEach(size => {
       it(`moves element in ${size} item layout`, () => {
-        const layout = generateLayout(size);
-        const item = layout[Math.floor(size / 2)];
-        const time = measureTime(
-          () => moveElement(layout, item, 5, 5, true, false, "vertical", 12),
-          50
-        );
+        const base = generateLayout(size);
+        const mid = Math.floor(size / 2);
+        // moveElement moves items in place, so each call gets a fresh layout;
+        // otherwise calls 2..N hit the no-move early return.
+        const time = measureTime(() => {
+          const layout = base.map(item => ({ ...item }));
+          moveElement(layout, layout[mid], 5, 5, true, false, "vertical", 12);
+        }, 50);
         benchmarkResults[`move_element_${size}_items`] = time;
 
         expect(time).toBeLessThan(size * 0.2);
@@ -267,7 +269,8 @@ describe("Performance Benchmarks", () => {
 
       // Simulate a drag from position 0,0 to 10,10 in 20 steps
       const time = measureTime(() => {
-        let currentLayout = layout;
+        // moveElement moves items in place; start each run from the same layout.
+        let currentLayout = layout.map(l => ({ ...l }));
         const item = currentLayout[0];
 
         for (let step = 0; step < iterations; step++) {
@@ -275,7 +278,7 @@ describe("Performance Benchmarks", () => {
           const y = Math.floor((step / iterations) * 10);
           currentLayout = moveElement(
             currentLayout,
-            { ...item, x, y },
+            currentLayout.find(l => l.i === item.i),
             x,
             y,
             true,

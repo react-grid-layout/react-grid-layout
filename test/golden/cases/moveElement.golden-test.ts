@@ -7,6 +7,7 @@ import {
   moveElementAwayFromCollision
 } from "../../../src/core/layout";
 import { getCompactor } from "../../../src/core/compactors";
+import { moveWithoutMutation } from "../../../src/core/interaction/resolveDrag";
 import { wrapCompactor } from "../../../src/extras/wrapCompactor";
 import { assertLayout, capture, copy } from "../capture";
 import { expectGolden } from "../expectGolden";
@@ -310,10 +311,10 @@ describe("golden movement", () => {
     });
   });
 
-  it("fixed p: a detached copy of the dragged item moves its layout entry (B16)", () => {
+  it("knownBug p: detached item moves colliders while its layout entry stays put (B16)", () => {
     expectGolden("knownBug/p-detached-item", {
-      fixed:
-        "p: moveElement finds a detached clone's layout entry by id and moves it; the clone is not written (RGL-11).",
+      knownBug:
+        "p: Passing a detached clone mutates that clone and pushes colliders, leaving the stored dragged item in place.",
       auditId: "B16",
       call: movement(
         [
@@ -434,15 +435,14 @@ function dragTrace(
           allowOverlap: false
         },
         a => {
-          moved = moveElement(
+          moved = moveWithoutMutation(
+            a.compactType,
             a.layout,
             a.l,
             a.x,
             a.y,
             a.isUserAction,
             a.preventCollision,
-            a.compactType,
-            a.cols,
             a.allowOverlap
           );
           assertLayout(initial, moved, { statics: true });
@@ -451,7 +451,7 @@ function dragTrace(
         { clone: false }
       );
       // onDrag receives the moved layout before compaction; its item is read
-      // from that layout (moveElement keeps order) and its placeholder is stale.
+      // from that layout (the move keeps order) and its placeholder is stale.
       const callback = copy({
         layout: moved,
         oldItem: oldDragItem,
@@ -491,15 +491,14 @@ function dragTrace(
         allowOverlap: false
       },
       a => {
-        moved = moveElement(
+        moved = moveWithoutMutation(
+          a.compactType,
           a.layout,
           a.l,
           a.x,
           a.y,
           a.isUserAction,
           a.preventCollision,
-          a.compactType,
-          a.cols,
           a.allowOverlap
         );
         assertLayout(initial, moved, { statics: true });
@@ -604,7 +603,7 @@ describe("golden drag handler traces", () => {
     ];
     expectGolden("knownBug/b-old-layout-alias", {
       fixed:
-        "b: moveElement no longer mutates the oldLayout alias, so final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11).",
+        "b: the grid moves copies (moveWithoutMutation), so the oldLayout alias stays intact and final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11).",
       auditId: "B2",
       call: capture({ layout, gestures }, a =>
         dragTrace(a.layout, "vertical", a.gestures)

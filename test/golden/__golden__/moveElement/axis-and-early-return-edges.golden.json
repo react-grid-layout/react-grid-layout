@@ -56,13 +56,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -93,9 +94,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -109,13 +110,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -146,9 +148,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -162,13 +164,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -199,9 +202,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -215,12 +218,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
-        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]}
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,false]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -251,13 +256,13 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":3,"y":1}
       ],
       "preventCollision": {"$u":1},
       "x": 3,
@@ -267,12 +272,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -303,11 +310,11 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -393,7 +400,13 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true]
+    },
     "input": {
       "allowOverlap": {"$u":1},
       "cols": 12,
@@ -415,9 +428,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4},
       "layout": [
-        {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2}
+        {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4}
       ],
       "preventCollision": {"$u":1},
       "x": 4,
@@ -427,10 +440,12 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -455,9 +470,9 @@
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
       "preventCollision": true,
@@ -522,13 +537,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -559,9 +575,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -575,13 +591,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -612,9 +629,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -628,13 +645,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -665,9 +683,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -681,12 +699,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
-        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]}
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,false]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -717,13 +737,13 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": {"$u":1},
       "x": 3,
@@ -733,12 +753,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -769,11 +791,11 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":1,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -859,7 +881,13 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true]
+    },
     "input": {
       "allowOverlap": {"$u":1},
       "cols": 12,
@@ -881,9 +909,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4},
       "layout": [
-        {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2}
+        {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4}
       ],
       "preventCollision": {"$u":1},
       "x": 4,
@@ -893,10 +921,12 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -921,9 +951,9 @@
       "cols": 12,
       "compactType": "horizontal",
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
       "preventCollision": true,
@@ -988,13 +1018,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1025,9 +1056,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -1041,13 +1072,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1078,9 +1110,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -1094,13 +1126,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1131,9 +1164,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -1147,12 +1180,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
-        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]}
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,false]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1183,13 +1218,13 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","moved":true,"w":1,"x":2,"y":2}
       ],
       "preventCollision": {"$u":1},
       "x": 3,
@@ -1199,12 +1234,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1235,11 +1272,11 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"south","moved":true,"w":1,"x":1,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -1325,7 +1362,13 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true]
+    },
     "input": {
       "allowOverlap": {"$u":1},
       "cols": 12,
@@ -1347,9 +1390,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4},
       "layout": [
-        {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2}
+        {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4}
       ],
       "preventCollision": {"$u":1},
       "x": 4,
@@ -1359,10 +1402,12 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1387,9 +1432,9 @@
       "cols": 12,
       "compactType": "wrap",
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
       "preventCollision": true,
@@ -1454,13 +1499,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1491,9 +1537,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -1507,13 +1553,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1544,9 +1591,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -1560,13 +1607,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1597,9 +1645,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
@@ -1613,12 +1661,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
         {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
-        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]}
+        {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
+        {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,true,true,false]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1649,13 +1699,13 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":3,"y":2},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
         {"h":1,"i":"south","w":1,"x":2,"y":3},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
-        {"h":1,"i":"east","w":1,"x":3,"y":2}
+        {"h":1,"i":"east","w":1,"x":3,"y":3}
       ],
       "preventCollision": {"$u":1},
       "x": 3,
@@ -1665,12 +1715,14 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]},
+        {"inputPaths":["$.layout.2"],"outputPaths":["$.2"]},
         {"inputPaths":["$.layout.3"],"outputPaths":["$.3"]},
         {"inputPaths":["$.layout.4"],"outputPaths":["$.4"]}
       ],
       "returnedSameArray": false,
-      "sameObject": [false,true,false,true,true]
+      "sameObject": [true,true,true,true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1701,11 +1753,11 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": true,
-      "l": {"h":1,"i":"a","w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
       "layout": [
-        {"h":1,"i":"a","w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":3},
         {"h":1,"i":"north","w":1,"x":2,"y":1},
-        {"h":1,"i":"south","w":1,"x":2,"y":3},
+        {"h":1,"i":"south","w":1,"x":2,"y":4},
         {"h":1,"i":"west","w":1,"x":1,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
@@ -1791,7 +1843,13 @@
     }
   },
   {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true]
+    },
     "input": {
       "allowOverlap": {"$u":1},
       "cols": 12,
@@ -1813,9 +1871,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4},
       "layout": [
-        {"h":1,"i":"a","isDraggable":true,"static":true,"w":1,"x":2,"y":2}
+        {"h":1,"i":"a","isDraggable":true,"moved":true,"static":true,"w":1,"x":4,"y":4}
       ],
       "preventCollision": {"$u":1},
       "x": 4,
@@ -1825,10 +1883,12 @@
   {
     "identity": {
       "aliases": [
+        {"inputPaths":["$.layout"],"outputPaths":["$"]},
+        {"inputPaths":["$.layout.0","$.l"],"outputPaths":["$.0"]},
         {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
       ],
-      "returnedSameArray": false,
-      "sameObject": [false,true]
+      "returnedSameArray": true,
+      "sameObject": [true,true]
     },
     "input": {
       "allowOverlap": {"$u":1},
@@ -1853,9 +1913,9 @@
       "cols": 12,
       "compactType": null,
       "isUserAction": {"$u":1},
-      "l": {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+      "l": {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
       "layout": [
-        {"h":1,"i":"a","moved":true,"w":1,"x":2,"y":2},
+        {"h":1,"i":"a","moved":false,"w":1,"x":2,"y":2},
         {"h":1,"i":"east","w":1,"x":3,"y":2}
       ],
       "preventCollision": true,

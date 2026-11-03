@@ -1,7 +1,14 @@
 {
   "auditId": "B16",
   "call": {
-    "identity": {"aliases":[],"returnedSameArray":false,"sameObject":[false,false]},
+    "identity": {
+      "aliases": [
+        {"inputPaths":["$.layout.0"],"outputPaths":["$.0"]},
+        {"inputPaths":["$.layout.1"],"outputPaths":["$.1"]}
+      ],
+      "returnedSameArray": false,
+      "sameObject": [true,true]
+    },
     "input": {
       "allowOverlap": {"$u":1},
       "cols": 12,
@@ -17,23 +24,23 @@
       "y": 1
     },
     "output": [
-      {"h":1,"i":"a","moved":true,"w":1,"x":0,"y":1},
-      {"h":1,"i":"b","moved":true,"w":1,"x":0,"y":0}
+      {"h":1,"i":"a","w":1,"x":0,"y":0},
+      {"h":1,"i":"b","moved":true,"w":1,"x":0,"y":2}
     ],
     "postInput": {
       "allowOverlap": {"$u":1},
       "cols": 12,
       "compactType": "vertical",
       "isUserAction": true,
-      "l": {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":false,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":0},
+      "l": {"constraints":{"$u":1},"h":1,"i":"a","isBounded":{"$u":1},"isDraggable":{"$u":1},"isResizable":{"$u":1},"maxH":{"$u":1},"maxW":{"$u":1},"minH":{"$u":1},"minW":{"$u":1},"moved":true,"resizeHandles":{"$u":1},"static":false,"w":1,"x":0,"y":1},
       "layout": [
         {"h":1,"i":"a","w":1,"x":0,"y":0},
-        {"h":1,"i":"b","w":1,"x":0,"y":1}
+        {"h":1,"i":"b","moved":true,"w":1,"x":0,"y":2}
       ],
       "preventCollision": {"$u":1},
       "x": 0,
       "y": 1
     }
   },
-  "fixed": "p: moveElement finds a detached clone's layout entry by id and moves it; the clone is not written (RGL-11)."
+  "knownBug": "p: Passing a detached clone mutates that clone and pushes colliders, leaving the stored dragged item in place."
 }

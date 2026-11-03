@@ -2,9 +2,10 @@
  * Fast Horizontal Compactor
  *
  * An optimized horizontal compaction algorithm using a "sweeping tide" approach.
- * Sparse row spans keep storage and range queries independent of layout height.
- * The tide avoids recursive collision resolution; range scans scale with the
- * number of previously placed items.
+ * Ordinary layouts (non-negative integer rows of bounded height) keep the tide
+ * in a dense per-row array. Anything else uses sparse row spans, which keep
+ * storage and range queries independent of layout height; their range scans
+ * scale with the number of previously placed items.
  *
  * Best suited for large layouts (200+ items) where compaction performance
  * is critical. For smaller layouts, the difference is negligible.
@@ -29,6 +30,24 @@ import { advanceRows, cloneLayout } from "../core/layout.js";
 
 type RowSpan = { start: number; last: number; fraction: number; right: number };
 
+/**
+ * Rightmost occupied column per integer row; rows at or past `top` are 0.
+ * `edges` flags rows where a static starts or ends.
+ */
+type DenseTide = { rows: Float64Array; top: number; edges: Uint8Array };
+
+const STATIC_TOP = 1;
+const STATIC_BOTTOM = 2;
+
+/** Sampled row spans for any geometry, or a dense array for ordinary rows. */
+type Tide = RowSpan[] | DenseTide;
+
+/**
+ * Tallest item the dense tide accepts. A dense query reads every row of the
+ * item, so a cap keeps a few tall items from costing more than the spans.
+ */
+const DENSE_MAX_H = 1024;
+
 /** Represent the old y++ samples by runs with a common fractional lattice. */
 function rowSpans(y: number, h: number, right = 0): RowSpan[] {
   const end = y + h;
@@ -51,7 +70,16 @@ function rowSpans(y: number, h: number, right = 0): RowSpan[] {
   return spans;
 }
 
-function getMaxTideForItem(tide: RowSpan[], y: number, h: number): number {
+function getMaxDenseTide(tide: DenseTide, y: number, h: number): number {
+  let maxTide = 0;
+  const end = Math.min(y + h, tide.top);
+  for (let row = y; row < end; row++)
+    maxTide = Math.max(maxTide, tide.rows[row]!);
+  return maxTide;
+}
+
+function getMaxTideForItem(tide: Tide, y: number, h: number): number {
+  if (!Array.isArray(tide)) return getMaxDenseTide(tide, y, h);
   let maxTide = 0;
   for (const query of rowSpans(y, h)) {
     for (const span of tide) {
@@ -67,17 +95,78 @@ function getMaxTideForItem(tide: RowSpan[], y: number, h: number): number {
   return maxTide;
 }
 
-function addTide(tide: RowSpan[], y: number, h: number, right: number): void {
+function addDenseTide(
+  tide: DenseTide,
+  y: number,
+  h: number,
+  right: number
+): void {
+  const end = y + h;
+  if (end > tide.rows.length) {
+    // Double instead of growing per row; rows past the old length start at 0.
+    const rows = new Float64Array(Math.max(end, tide.rows.length * 2));
+    rows.set(tide.rows);
+    tide.rows = rows;
+  }
+  for (let row = y; row < end; row++)
+    if (tide.rows[row]! < right) tide.rows[row] = right;
+  tide.top = Math.max(tide.top, end);
+}
+
+function addTide(tide: Tide, y: number, h: number, right: number): void {
   if (!(right > 0)) return;
+  if (!Array.isArray(tide)) return addDenseTide(tide, y, h, right);
   // Indexed copy, not a spread: Node 20 and 24 invoke the array iterator
   // differently for spread arguments, which made op counts engine-dependent.
   const spans = rowSpans(y, h, right);
   for (let i = 0; i < spans.length; i++) tide.push(spans[i]!);
 }
 
+/** Flag each static's top and bottom row for the dense row skip. */
+function staticEdges(statics: LayoutItem[], maxRow: number): Uint8Array {
+  const edges = new Uint8Array(maxRow + 1);
+  for (let i = 0; i < statics.length; i++) {
+    const item = statics[i]!;
+    edges[item.y] = edges[item.y]! | STATIC_TOP;
+    edges[item.y + item.h] = edges[item.y + item.h]! | STATIC_BOTTOM;
+  }
+  return edges;
+}
+
+/**
+ * Walk dense rows to the first row where rows y'..y'+h-1 gain or lose a
+ * distinct tide value, or that is one of the static edge samples below.
+ * Skipped rows keep the same window maximum and static samples, so placement
+ * is unchanged. Undefined once the walk passes the tide top, where only static
+ * edges remain.
+ */
+function nextDenseRow(
+  tide: DenseTide,
+  y: number,
+  h: number,
+  next: number
+): number | undefined {
+  const { rows, top, edges } = tide;
+  const end = Math.min(next, top + 1);
+  for (let row = y + 1; row < end; row++) {
+    if (
+      rows[row - 1] !== (rows[row] ?? 0) ||
+      (rows[row + h - 2] ?? 0) !== (rows[row + h - 1] ?? 0) ||
+      ((edges[row + h - 1] ?? 0) |
+        (edges[row + h] ?? 0) |
+        (edges[row + h + 1] ?? 0)) &
+        STATIC_TOP ||
+      ((edges[row - 1] ?? 0) | (edges[row] ?? 0) | (edges[row + 1] ?? 0)) &
+        STATIC_BOTTOM
+    )
+      return row;
+  }
+  return end === next ? next : undefined;
+}
+
 /** Skip rows with unchanged tide and static intersections, retaining the limit. */
 function nextRow(
-  tide: RowSpan[],
+  tide: Tide,
   statics: LayoutItem[],
   y: number,
   h: number,
@@ -85,10 +174,15 @@ function nextRow(
 ): number {
   if (!Number.isInteger(y) || !Number.isInteger(h)) return y + 1;
   let next = Math.max(y + 1, limit + 1);
-  for (const span of tide) {
-    if (span.fraction !== 0) continue;
-    for (const edge of [span.start - h + 1, span.last + 1]) {
-      if (edge > y) next = Math.min(next, edge);
+  if (!Array.isArray(tide)) {
+    const row = nextDenseRow(tide, y, h, next);
+    if (row !== undefined) return row;
+  } else {
+    for (const span of tide) {
+      if (span.fraction !== 0) continue;
+      for (const edge of [span.start - h + 1, span.last + 1]) {
+        if (edge > y) next = Math.min(next, edge);
+      }
     }
   }
   for (const item of statics) {
@@ -136,12 +230,13 @@ function canPlaceAt(
  *
  * The algorithm works by:
  * 1. Sorting items by (y, x, static) - top-to-bottom, left-to-right (like standard compactor)
- * 2. Maintaining sparse sampled row spans that track the rightmost occupied column per row
+ * 2. Maintaining a tide (dense rows or sampled row spans) that tracks the rightmost occupied column per row
  * 3. For each item, finding the leftmost position it can occupy
  * 4. If the item doesn't fit in its current row, wrapping to the next row
  * 5. Checking for collisions with static items and adjusting as needed
  *
- * Row ranges replace per-row allocation and traversal.
+ * Dense rows serve ordinary layouts; row ranges replace per-row allocation and
+ * traversal for huge or fractional rows.
  *
  * @param layout - The layout to compact (will be modified in place)
  * @param cols - Number of columns in the grid
@@ -164,19 +259,27 @@ function compactHorizontalFast(
     return 0;
   });
 
-  // Calculate max row extent to retain the existing invalid-extent contract.
+  // Calculate max row extent to retain the existing invalid-extent contract,
+  // and whether every item covers a short range of non-negative integer rows.
   let maxRow = 0;
+  let integerRows = true;
   for (let i = 0; i < numItems; i++) {
     const item = layout[i];
     if (item !== undefined) {
       const bottom = item.y + item.h;
       if (bottom > maxRow) maxRow = bottom;
+      integerRows =
+        integerRows &&
+        Number.isInteger(item.y) &&
+        item.y >= 0 &&
+        Number.isInteger(item.h) &&
+        item.h >= 1 &&
+        item.h <= DENSE_MAX_H;
     }
   }
 
   // Preserve the existing invalid-extent contract without allocating by height.
   if (!Number.isInteger(maxRow)) throw new RangeError("Invalid array length");
-  const tide: RowSpan[] = [];
 
   // Collect static items for collision checking
   const staticItems = layout.filter(item => item.static);
@@ -184,6 +287,17 @@ function compactHorizontalFast(
   // Safety limit for row wrapping (prevents infinite loops)
   // Use a limit relative to layout size (at least 10_000, or 100x the number of items)
   const maxRowLimit = Math.max(10_000, numItems * 100);
+
+  // Placements end by row maxRowLimit + 1 + DENSE_MAX_H, so dense storage
+  // scales with the layout size; huge or fractional rows use sampled spans.
+  const tide: Tide =
+    integerRows && maxRow <= maxRowLimit
+      ? {
+          rows: new Float64Array(maxRow),
+          top: 0,
+          edges: staticEdges(staticItems, maxRow)
+        }
+      : [];
 
   for (let i = 0; i < numItems; i++) {
     const item = layout[i] as Mutable<LayoutItem>;
@@ -292,7 +406,8 @@ function compactHorizontalFast(
 /**
  * Fast horizontal compactor - optimized for large layouts.
  *
- * Uses a sparse "sweeping tide" with storage based on placed row ranges.
+ * Uses a "sweeping tide": dense rows for ordinary layouts, sampled row ranges
+ * for huge or fractional rows.
  * Sorting and range scans replace recursive collision resolution.
  *
  * Best suited for layouts with 200+ items where compaction performance
