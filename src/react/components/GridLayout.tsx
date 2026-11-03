@@ -206,7 +206,7 @@ export interface GridLayoutProps {
 const noop = () => {};
 
 /**
- * moveElement leaves its input alone and keeps item order, so the moved item
+ * moveWithoutMutation leaves its input alone and keeps item order, so the moved item
  * sits at the index `item` had in `before`. Matching by position, not id,
  * keeps duplicate ids from selecting another item.
  */

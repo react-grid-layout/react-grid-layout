@@ -2,8 +2,8 @@
  * Core layout manipulation utilities.
  *
  * These functions create, modify, and query grid layouts. Functions that
- * return a layout leave their input untouched, with two exceptions that keep
- * their 2.x contract: `correctBounds` and
+ * return a layout leave their input untouched, with three exceptions that keep
+ * their 2.x contract until 3.0: `moveElement`, `correctBounds` and
  * `moveElementAwayFromCollision`, which write into the items they are given.
  */
 
@@ -335,9 +335,10 @@ export function correctBounds(
  *
  * **Note**: This function mutates the `l` parameter directly for performance.
  * The item's x, y, and moved properties will be modified, as are the items it
- * pushes. Callers should ideally pass a cloned item if they need to preserve
- * the original. The grid itself moves copies, so its callbacks never see a
- * mutated layout.
+ * pushes. Pass the item from `layout` itself: a detached copy pushes the
+ * colliders but leaves the layout entry in place. To keep the input intact,
+ * clone the whole layout first. The grid itself moves copies, so its callbacks
+ * never see a mutated layout.
  *
  * @param layout - Full layout
  * @param l - Item to move (will be mutated)
@@ -380,7 +381,7 @@ export function moveElement(
  * Attempts to move the item up/left first if there's room,
  * otherwise moves it down/right.
  *
- * Unlike `moveElement`, this writes the new positions into `itemToMove` and
+ * Like `moveElement`, this writes the new positions into `itemToMove` and
  * any items it pushes.
  *
  * @param layout - Full layout

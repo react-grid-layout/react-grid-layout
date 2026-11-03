@@ -1,7 +1,7 @@
 // Verbatim copy of moveElement and moveElementAwayFromCollision from master
 // before RGL-11a (sort-once). It is the oracle for the differential test in
 // test/spec/drag-resolution-test.ts and must not be edited. Delete it when
-// moveElement intentionally changes behavior (the purity PR).
+// the public moveElement becomes pure in 3.0 (RFC 0003 revision 6).
 import type {
   CompactType,
   Layout,
