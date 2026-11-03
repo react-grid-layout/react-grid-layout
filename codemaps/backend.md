@@ -55,6 +55,7 @@ Six built-in implementations of `Compactor`:
 - `getCompactor(compactType)` — lookup by type string
 - `compactItemVertical`, `compactItemHorizontal` — per-item compact
 - `resolveCompactionCollision` — recursive collision resolution
+- Implementation: `compaction/classic.ts` (both axes); `compaction/cellIndex.ts` holds the spatial indexes it uses on integer layouts with unique ids (output identical to the plain scans)
 
 ### dev.ts (internal, not exported)
 Coded warnings; codes documented in `docs/warnings.md`.
