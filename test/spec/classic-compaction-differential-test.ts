@@ -147,14 +147,20 @@ describe("classic compaction index gate", () => {
     expect(indexable(args.layout, args.cols)).toBe(true);
     // Count cell lookups, not milliseconds: the empty-band walk made about
     // 125 million Map.get calls at this y.
-    const get = jest.spyOn(Map.prototype, "get");
+    // A counter, not a spy: a regressed walk would make a spy keep every call.
+    const original = Map.prototype.get;
+    let lookups = 0;
+    Map.prototype.get = function (this: Map<unknown, unknown>, key: unknown) {
+      lookups++;
+      return original.call(this, key);
+    };
     let output;
     try {
       output = classicCompactor(VERTICAL).compact(args.layout, args.cols);
-      expect(get.mock.calls.length).toBeLessThan(10_000);
     } finally {
-      get.mockRestore();
+      Map.prototype.get = original;
     }
+    expect(lookups).toBeLessThan(10_000);
     // The frozen oracle steps one row at a time here, so it is not run.
     expect(output.find(item => item.i === "far")?.y).toBe(0);
     expect(output.find(item => item.i === "static")?.y).toBe(1_000_000_000);
