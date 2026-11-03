@@ -23,9 +23,10 @@ import type {
   Compactor
 } from "../../core/types.js";
 import {
-  validateLayoutInput,
+  boundLayoutInput,
   validateResponsiveLayoutsInput
 } from "../../core/validation.js";
+import { useWarningScope } from "./deprecations.js";
 import { cloneLayout, correctBounds } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
@@ -125,7 +126,8 @@ function synchronizeLayoutWithChildren(
   cols: number,
   compactor: Compactor,
   reSeedFromDataGrid = false,
-  maxRows = Infinity
+  maxRows = Infinity,
+  warnScope: object | null = null
 ): Layout {
   const layout: LayoutItem[] = [];
 
@@ -137,9 +139,10 @@ function synchronizeLayoutWithChildren(
     const rawDataGrid = childProps["data-grid"];
     const dataGrid =
       rawDataGrid &&
-      validateLayoutInput(
+      boundLayoutInput(
         [{ x: 0, y: 0, w: 1, h: 1, ...rawDataGrid, i: key }],
-        { cols, maxRows }
+        { cols, maxRows },
+        warnScope
       )[0];
 
     // Find existing layout item
@@ -232,10 +235,17 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
     ...restProps
   } = props;
 
+  // RGL_W002/W007 warn once per grid, not per render.
+  const warnScope = useWarningScope();
   const propsLayouts = useMemo(
     () =>
-      validateResponsiveLayoutsInput(unvalidatedLayouts, colsConfig, maxRows),
-    [unvalidatedLayouts, colsConfig, maxRows]
+      validateResponsiveLayoutsInput(
+        unvalidatedLayouts,
+        colsConfig,
+        maxRows,
+        warnScope
+      ),
+    [unvalidatedLayouts, colsConfig, maxRows, warnScope]
   );
 
   // Get compactor (use provided or default to vertical)
@@ -409,7 +419,8 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
           newCols,
           compactor,
           layoutWasGenerated,
-          maxRows
+          maxRows,
+          warnScope
         );
 
         // Store new layout
@@ -449,6 +460,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       prevColsRef.current = colsConfig;
     }
   }, [
+    warnScope,
     width,
     propBreakpoint,
     breakpoints,
@@ -522,6 +534,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       compactor={compactor}
       onLayoutChange={handleLayoutChange}
       layout={effectiveLayout}
+      warnScope={warnScope}
     >
       {children}
     </GridLayout>

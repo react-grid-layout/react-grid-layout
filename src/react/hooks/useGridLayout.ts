@@ -22,7 +22,7 @@ import {
   getLayoutItem
 } from "../../core/layout.js";
 import { moveWithoutMutation } from "../../core/interaction/resolveDrag.js";
-import { validateLayoutInput } from "../../core/validation.js";
+import { boundLayoutInput } from "../../core/validation.js";
 import { verticalCompactor } from "../../core/compactors.js";
 
 // ============================================================================
@@ -167,11 +167,13 @@ export function useGridLayout(
 
   // Track if we're currently dragging to block prop updates
   const isDraggingRef = useRef(false);
+  // RGL_W002/W007 warn once per hook instance, not per setLayout or drop.
+  const warnScope = useRef({}).current;
 
   // Initialize layout with compaction using the compactor
   const [layout, setLayoutState] = useState<Layout>(() => {
     const corrected = correctBounds(
-      cloneLayout(validateLayoutInput(propsLayout, { cols, maxRows })),
+      cloneLayout(boundLayoutInput(propsLayout, { cols, maxRows }, warnScope)),
       { cols }
     );
     return compactor.compact(corrected, cols);
@@ -204,13 +206,13 @@ export function useGridLayout(
   const setLayout = useCallback(
     (newLayout: Layout) => {
       const corrected = correctBounds(
-        cloneLayout(validateLayoutInput(newLayout, { cols, maxRows })),
+        cloneLayout(boundLayoutInput(newLayout, { cols, maxRows }, warnScope)),
         { cols }
       );
       const compacted = compactor.compact(corrected, cols);
       setLayoutState(compacted);
     },
-    [cols, maxRows, compactor]
+    [cols, maxRows, compactor, warnScope]
   );
 
   // Sync layout from props when not dragging
@@ -397,7 +399,7 @@ export function useGridLayout(
         // Resolved rows may exceed intake bounds. Validate only the new item.
         const newLayout = [
           ...layout,
-          validateLayoutInput([droppingItem], { cols, maxRows })[0]!
+          boundLayoutInput([droppingItem], { cols, maxRows }, warnScope)[0]!
         ];
         const corrected = correctBounds(newLayout, { cols });
         const compacted = compactor.compact(corrected, cols);
@@ -409,7 +411,7 @@ export function useGridLayout(
         droppingPosition: position
       });
     },
-    [layout, cols, maxRows, compactor]
+    [layout, cols, maxRows, compactor, warnScope]
   );
 
   const onDropDragLeave = useCallback(() => {

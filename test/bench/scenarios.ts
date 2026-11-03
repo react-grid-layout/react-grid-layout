@@ -271,6 +271,35 @@ function reactScenario(
   }
 }
 
+/**
+ * Random rows in [0, n/4) make most horizontal items wrap down many rows to
+ * find space. Each wrap must stay O(n), not pay an extra O(n) snapshot scan.
+ */
+function wrapHeavy(size: number): Counts {
+  const random = mulberry32(seed);
+  const input: LayoutItem[] = Array.from({ length: size }, (_, index) => {
+    const w = 1 + Math.floor(random() * 3);
+    return {
+      i: String(index),
+      x: Math.floor(random() * (cols - w + 1)),
+      y: Math.floor((random() * size) / 4),
+      w,
+      h: 1 + Math.floor(random() * 3),
+      ...(random() < 0.03 ? { static: true } : {})
+    };
+  });
+  let output: Layout = [];
+  const counts = measure(() => {
+    output = horizontalCompactor.compact(input, cols);
+  });
+  expect(output).toHaveLength(size);
+  // Every wrap re-runs moveTowardOrigin; a few per item means no wrap work.
+  expect(counts["core/compaction/classic.ts:moveTowardOrigin"]).toBeGreaterThan(
+    10 * size
+  );
+  return counts;
+}
+
 export function runScenarios(): Record<string, Counts> {
   const results: Record<string, Counts> = {};
   const recordReact = (size: number, interaction: Interaction) => {
@@ -345,6 +374,7 @@ export function runScenarios(): Record<string, Counts> {
       ).toBeGreaterThan(0);
     results[`compact-${name}/statics-scattered/0500`] = counts;
   }
+  results["compact-horizontal/wrap-heavy/0300"] = wrapHeavy(300);
   recordReact(500, "breakpoint");
   recordReact(500, "drop");
   for (const vector of securityVectors)

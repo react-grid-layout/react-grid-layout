@@ -7,8 +7,9 @@ can search for it here.
 
 Runtime warnings are development only. They go to `console.warn` and are
 silent when `process.env.NODE_ENV` is `"production"`. A deprecation warning
-fires once per grid (or per `GridItem`), not on every render. The intake
-warnings `RGL_W002` and `RGL_W007` fire once per validation call.
+fires once per grid, not on every render. The intake warnings `RGL_W002` and
+`RGL_W007` fire once per grid or hook instance, and once per call when you call
+`validateLayoutInput` yourself.
 
 One warning has no code yet: `fastHorizontalCompactor` warns when an item
 cannot fit under its row limit. It prints in production too, as it did before
@@ -24,10 +25,10 @@ removed in 3.0.
 
 | Code       | Delivery                                  | Meaning                                                                                      |
 | ---------- | ----------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `RGL_W002` | Runtime, once per call                    | A layout value or limit was out of bounds and was normalized at intake.                      |
-| `RGL_W007` | Runtime, once per call                    | Two or more layout items share an `i`.                                                       |
+| `RGL_W002` | Runtime, once per grid                    | A layout value or limit was out of bounds and was normalized at intake.                      |
+| `RGL_W007` | Runtime, once per grid                    | Two or more layout items share an `i`.                                                       |
 | `RGL_W008` | JSDoc; runtime for `getCompactor("wrap")` | `getCompactor` and the compaction type string form of the compactor argument are deprecated. |
-| `RGL_W009` | Runtime, once per item                    | A direct `GridItem` caller passed `useCSSTransforms` or `usePercentages` with no strategy.   |
+| `RGL_W009` | Runtime, once per page                    | A direct `GridItem` caller passed `useCSSTransforms` or `usePercentages` with no strategy.   |
 | `RGL_W010` | Runtime, once per grid                    | Legacy `verticalCompact={false}`.                                                            |
 | `RGL_W013` | JSDoc                                     | `validateLayout` is deprecated; use `assertLayoutStructure`.                                 |
 | `RGL_W014` | Runtime, once per grid                    | `onDropDragOver` on the modern entry; use `dropConfig.onDragOver`.                           |
@@ -47,6 +48,11 @@ Every intake path validates: the `layout` prop, `data-grid` children, stored
 `ResponsiveGridLayout` layouts, the `useGridLayout` and `useResponsiveLayout`
 hooks, and external drop items. Calling `validateLayoutInput` yourself warns on
 each call that changes the layout.
+
+Only a changed `x`, `y`, `w` or `h` warns. Bounding `minW`, `maxW`, `minH` or
+`maxH` alone is silent: responsive generation keeps `minW`, so a layout the grid
+reported for a narrow breakpoint can carry a `minW` above that breakpoint's
+cols. A `cols` change that clamps the grid's own state does not warn either.
 
 ### RGL_W007: duplicate item ids
 

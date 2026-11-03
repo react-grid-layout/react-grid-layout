@@ -49,7 +49,7 @@ import {
   correctBounds
 } from "../../core/layout.js";
 import { moveWithoutMutation } from "../../core/interaction/resolveDrag.js";
-import { validateLayoutInput } from "../../core/validation.js";
+import { boundLayoutInput } from "../../core/validation.js";
 import { getAllCollisions } from "../../core/collision.js";
 import { compactorFor } from "../../core/compactors.js";
 import { defaultPositionStrategy } from "../../core/position.js";
@@ -60,7 +60,8 @@ import { computeDropPosition } from "./dropMath.js";
 import {
   LegacyEntryContext,
   useDropIdCheck,
-  useModernEntryDeprecations
+  useModernEntryDeprecations,
+  useWarningScope
 } from "./deprecations.js";
 
 // ============================================================================
@@ -287,7 +288,8 @@ function synchronizeLayoutWithChildren(
   children: React.ReactNode,
   cols: number,
   compactor: Compactor,
-  maxRows: number
+  maxRows: number,
+  warnScope: object | null
 ): Layout {
   const layout: LayoutItem[] = [];
   const childKeys = new Set<string>();
@@ -308,9 +310,10 @@ function synchronizeLayoutWithChildren(
       const dataGrid = childProps["data-grid"];
 
       if (dataGrid) {
-        const authored = validateLayoutInput(
+        const authored = boundLayoutInput(
           [{ x: 0, y: 0, w: 1, h: 1, ...dataGrid, i: key }],
-          { cols, maxRows }
+          { cols, maxRows },
+          warnScope
         )[0]!;
         layout.push({
           i: key,
@@ -350,10 +353,13 @@ function synchronizeLayoutWithChildren(
 // Component
 // ============================================================================
 
+/** Internal: a wrapper passes its warning scope so the grid warns once. */
+type ResolvedGridLayoutProps = GridLayoutProps & { warnScope?: object };
+
 /**
  * GridLayout - A reactive, fluid grid layout with draggable, resizable components.
  */
-function GridLayout(props: GridLayoutProps): ReactElement {
+function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
   const {
     // Required
     children,
@@ -387,10 +393,15 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     onResize: onResizeProp = noop,
     onResizeStop: onResizeStopProp = noop,
     onDrop: onDropProp = noop,
-    onDropDragOver: onDropDragOverProp = noop
+    onDropDragOver: onDropDragOverProp = noop,
+    warnScope: warnScopeProp
   } = props;
 
   const legacyEntry = useModernEntryDeprecations(props);
+  // RGL_W002/W007 warn once per grid, not per render or dragover. A wrapper
+  // that bounds the layout prop shares its scope with the drop path here.
+  const ownWarnScope = useWarningScope();
+  const warnScope = warnScopeProp ?? ownWarnScope;
 
   // Resolve config interfaces with defaults
   const gridConfig: GridConfig = useMemo(
@@ -444,7 +455,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
   // Resolve dropping item - memoized to avoid unstable reference in useCallback dependencies
   const droppingItem = useMemo(
     () =>
-      validateLayoutInput(
+      boundLayoutInput(
         [
           {
             x: 0,
@@ -457,9 +468,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
             })
           }
         ],
-        { cols, maxRows }
+        { cols, maxRows },
+        warnScope
       )[0]!,
-    [droppingItemProp, defaultDropItem, cols, maxRows]
+    [droppingItemProp, defaultDropItem, cols, maxRows, warnScope]
   );
 
   useDropIdCheck(isDroppable, droppingItem.i, children);
@@ -478,7 +490,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       children,
       cols,
       compactor,
-      maxRows
+      maxRows,
+      warnScope
     )
   );
   const [activeDrag, setActiveDrag] = useState<LayoutItem | null>(null);
@@ -563,7 +576,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         children,
         cols,
         compactor,
-        maxRows
+        maxRows,
+        warnScope
       );
       // Only update if the layout actually changed (#2210)
       // This prevents infinite loops when controlled state updates trigger
@@ -578,6 +592,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     prevChildrenRef.current = children;
     prevCompactorRef.current = compactor;
   }, [
+    warnScope,
     propsLayout,
     children,
     cols,
@@ -938,9 +953,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       const moveToHoveredCell = (current: Layout): Layout => {
         const item = getLayoutItem(current, itemToPlace.i);
         if (!item) return current;
-        const target = validateLayoutInput(
+        const target = boundLayoutInput(
           [{ ...item, x: calculatedXY.x, y: calculatedXY.y }],
-          { cols, maxRows }
+          { cols, maxRows },
+          warnScope
         )[0]!;
         if (item.x === target.x && item.y === target.y) return current;
         const working = current.map(cloneLayoutItem);
@@ -969,7 +985,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         const baseLayout = layoutRef.current.filter(l => l.i !== itemToPlace.i);
         // Enter below every item, then move in, so a first hover on an
         // occupied cell pushes like any later one.
-        const entry = validateLayoutInput(
+        const entry = boundLayoutInput(
           [
             {
               ...itemToPlace,
@@ -979,7 +995,8 @@ function GridLayout(props: GridLayoutProps): ReactElement {
               isDraggable: true
             }
           ],
-          { cols, maxRows }
+          { cols, maxRows },
+          warnScope
         )[0]!;
         setLayout(moveToHoveredCell([...baseLayout, entry]));
       } else if (droppingPositionRef.current) {
@@ -992,7 +1009,15 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         }
       }
     },
-    [cols, maxRows, preventCollision, compactType, allowOverlap, compactor]
+    [
+      cols,
+      maxRows,
+      preventCollision,
+      compactType,
+      allowOverlap,
+      compactor,
+      warnScope
+    ]
   );
 
   const applyTouchDropPosition = useCallback(
@@ -1100,9 +1125,10 @@ function GridLayout(props: GridLayoutProps): ReactElement {
         ...onDragOverResult
       } = rawResult ?? {};
 
-      const finalDroppingItem = validateLayoutInput(
+      const finalDroppingItem = boundLayoutInput(
         [{ ...droppingItem, ...onDragOverResult }],
-        { cols, maxRows }
+        { cols, maxRows },
+        warnScope
       )[0]!;
 
       const { newDroppingPosition, calculatedXY } = computeDropPosition({
@@ -1130,6 +1156,7 @@ function GridLayout(props: GridLayoutProps): ReactElement {
       );
     },
     [
+      warnScope,
       droppingDOMNode,
       droppingItem,
       dropConfigOnDragOver,
@@ -1538,20 +1565,23 @@ function reboundLayout(
       maxH: authored.maxH
     };
   });
-  return validateLayoutInput(merged, { cols, maxRows });
+  // A bounds change clamps the grid's own state, not the caller's input:
+  // the wrapper already warned for the props layout at these bounds.
+  return boundLayoutInput(merged, { cols, maxRows }, false);
 }
 
 /** Public intake. Responsive rendering uses the resolved entry below. */
 function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
   const cols = props.gridConfig?.cols ?? defaultGridConfig.cols;
   const maxRows = props.gridConfig?.maxRows ?? defaultGridConfig.maxRows;
+  const warnScope = useWarningScope();
   const layout = useMemo(() => {
     const authored = props.layout ?? [];
-    const validated = validateLayoutInput(authored, { cols, maxRows });
+    const validated = boundLayoutInput(authored, { cols, maxRows }, warnScope);
     if (validated !== authored) authoredLayouts.set(validated, authored);
     return validated;
-  }, [props.layout, cols, maxRows]);
-  return <GridLayout {...props} layout={layout} />;
+  }, [props.layout, cols, maxRows, warnScope]);
+  return <GridLayout {...props} layout={layout} warnScope={warnScope} />;
 }
 // Keep the 2.x name for DevTools, WidthProvider labels and name selectors.
 UntrustedGridLayout.displayName = "GridLayout";
