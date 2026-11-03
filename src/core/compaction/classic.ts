@@ -120,10 +120,18 @@ function firstReachableCollision(
   return start - steps;
 }
 
+/** Rows a jump must skip to reset the backoff. A check costs an O(n)
+ * snapshot plus two O(n) event scans, so a shorter jump does not pay for it. */
+const WORTHWHILE_JUMP = 8;
+
 interface WrapState {
-  x: number;
-  y: number;
-  coordinates: number[];
+  /** Coordinates at the last wrap, kept only when this wrap may jump. */
+  previous?: { x: number; y: number; coordinates: number[] };
+  /** Wraps left before the next snapshot. */
+  wait: number;
+  /** Doubles after each check without a worthwhile jump, so dense layouts
+   * stop taking an O(n) snapshot on every wrap. A worthwhile jump resets it. */
+  backoff: number;
 }
 
 /** How a sample row relates vertically to another item, as collides() sees it. */
@@ -172,13 +180,23 @@ function wrapOverflow(
   fullLayout: Layout,
   axis: Axis,
   cols: number,
-  previous?: WrapState
+  state?: WrapState
 ): WrapState | undefined {
-  if (axis.pos !== "x" || !(item.x + item.w > cols)) return previous;
+  if (axis.pos !== "x" || !(item.x + item.w > cols)) return state;
 
   item.x = cols - item.w;
   item.y++;
   moveTowardOrigin(compareWith, item, axis);
+
+  state ??= { wait: 0, backoff: 0 };
+  const previous = state.previous;
+  state.previous = undefined;
+  // Skipping a jump only replays the wraps it would have skipped, so output
+  // is unchanged. Each skipped run is at most as long as the wraps before it.
+  if (state.wait > 0) {
+    state.wait--;
+    return state;
+  }
 
   // A repeated wrap with identical collision inputs and recursive side effects
   // will repeat until a vertical intersection changes. Jump to that sample.
@@ -196,18 +214,27 @@ function wrapOverflow(
     )
       unchanged = false;
   }
+  let jumped = false;
   if (unchanged && previous) {
     const next = Math.min(
       nextCollisionRow(compareWith, item, previous.y),
       nextCollisionRow(fullLayout, item, previous.y)
     );
     if (Number.isFinite(next) && next > item.y) {
+      jumped = next - item.y >= WORTHWHILE_JUMP;
       item.y = next;
       item.x = cols - item.w;
       moveTowardOrigin(compareWith, item, axis);
     }
   }
-  return { x: item.x, y: item.y, coordinates };
+  if (previous && !jumped) {
+    state.backoff = state.backoff * 2 + 1;
+    state.wait = state.backoff;
+    return state;
+  }
+  if (jumped) state.backoff = 0;
+  state.previous = { x: item.x, y: item.y, coordinates };
+  return state;
 }
 
 export function compactItem(
@@ -225,7 +252,7 @@ export function compactItem(
 
   moveTowardOrigin(compareWith, item, axis);
 
-  let previousWrap: WrapState | undefined;
+  let wrap: WrapState | undefined;
   let collision: LayoutItem | undefined;
   while ((collision = getFirstCollision(compareWith, item)) !== undefined) {
     context ??= collisionContext(fullLayout);
@@ -236,14 +263,7 @@ export function compactItem(
       axis,
       context.firstIndices.get(item.i) ?? -1
     );
-    previousWrap = wrapOverflow(
-      compareWith,
-      item,
-      fullLayout,
-      axis,
-      cols,
-      previousWrap
-    );
+    wrap = wrapOverflow(compareWith, item, fullLayout, axis, cols, wrap);
   }
 
   item[axis.pos] = Math.max(item[axis.pos], 0);

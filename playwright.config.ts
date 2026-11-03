@@ -21,7 +21,14 @@ export default defineConfig({
     baseURL: `http://localhost:${process.env.RGL_PORT || 4106}`,
     trace: "on",
     screenshot: "only-on-failure",
-    headless: true
+    headless: true,
+    // Locally, drive the installed (auto-updating) Chrome with its sandbox on:
+    // Playwright's bundled Chromium lags Chrome stable on security fixes, and
+    // Playwright launches Chromium without the sandbox by default. CI keeps the
+    // pinned image's Chromium, which runs as root in a container.
+    ...(process.env.CI
+      ? {}
+      : { channel: "chrome", launchOptions: { chromiumSandbox: true } })
   },
   webServer: {
     // Serve the pre-built static harness. Build it first with `make e2e-build`.

@@ -79,14 +79,31 @@ function atLeast(value: number, lower: number): number {
  * Optional size constraints stay absent; a present maximum is raised to a
  * present minimum if necessary, so constraints cannot restore oversized items.
  *
- * Unchanged layouts are returned as-is. Changed layouts contain new items and
- * emit one RGL_W002 console.warn per call in development. Duplicate ids are
- * kept as they are and emit one RGL_W007 warning per call in development. These are intake bounds, not
- * a cap on the final bottom: collision resolution can stack items below them.
+ * Unchanged layouts are returned as-is. Changed layouts contain new items. A
+ * changed x, y, w or h emits one RGL_W002 console.warn per call in
+ * development; bounding only minW/maxW/minH/maxH is silent, because responsive
+ * generation keeps minW and can hand a narrow breakpoint a minimum above its
+ * cols. Duplicate ids are kept as they are and emit one RGL_W007 warning per
+ * call in development. These are intake bounds, not a cap on the final
+ * bottom: collision resolution can stack items below them.
  */
 export function validateLayoutInput(
   layout: Layout,
-  { cols, maxRows = Infinity }: { cols: number | undefined; maxRows?: number }
+  bounds: { cols: number | undefined; maxRows?: number }
+): Layout {
+  return boundLayoutInput(layout, bounds, null);
+}
+
+/**
+ * validateLayoutInput with its warnings deduplicated per `warnScope` (a grid
+ * or hook instance), so a component warns once rather than on every render or
+ * dragover. `false` bounds silently, for state the grid produced itself.
+ * Internal: not exported from any public entry point.
+ */
+export function boundLayoutInput(
+  layout: Layout,
+  { cols, maxRows = Infinity }: { cols: number | undefined; maxRows?: number },
+  warnScope: object | null | false
 ): Layout {
   // Without configured cols (a saved breakpoint key), only the row fields can
   // be bounded; x, w, minW and maxW pass unchanged until GridLayout renders
@@ -97,6 +114,7 @@ export function validateLayoutInput(
     ? Math.max(1, Math.min(MAX_GRID_ROWS, maxRows))
     : MAX_GRID_ROWS;
   let output: LayoutItem[] | undefined;
+  let geometryClamped = false;
   // Duplicate ids collide as one item (C-B14). Checked in development only.
   const seen = isDevelopment() ? new Set<string>() : undefined;
   let duplicate: string | undefined;
@@ -133,6 +151,8 @@ export function validateLayoutInput(
       maxH === item.maxH
     )
       continue;
+    if (x !== item.x || y !== item.y || w !== item.w || h !== item.h)
+      geometryClamped = true;
     if (!output) {
       output = new Array(layout.length);
       for (let copy = 0; copy < layout.length; copy++)
@@ -145,16 +165,17 @@ export function validateLayoutInput(
     if (maxH !== undefined) normalized.maxH = maxH;
     output[index] = normalized;
   }
-  if (output) {
+  if (warnScope === false) return output ?? layout;
+  if (geometryClamped) {
     devWarn(
-      null,
+      warnScope,
       "RGL_W002",
       "ReactGridLayout: layout input was clamped to grid bounds."
     );
   }
   if (duplicate !== undefined) {
     devWarn(
-      null,
+      warnScope,
       "RGL_W007",
       `ReactGridLayout: layout contains more than one item with i ${JSON.stringify(duplicate)}. ` +
         "Items that share an id collide as one item; give each a unique i."
@@ -167,7 +188,8 @@ export function validateLayoutInput(
 export function validateResponsiveLayoutsInput<B extends Breakpoint>(
   layouts: ResponsiveLayouts<B>,
   cols: Breakpoints<B>,
-  maxRows = Infinity
+  maxRows = Infinity,
+  warnScope: object | null = null
 ): ResponsiveLayouts<B> {
   let output: ResponsiveLayouts<B> | undefined;
   for (const bp in layouts) {
@@ -175,7 +197,11 @@ export function validateResponsiveLayoutsInput<B extends Breakpoint>(
     // Saved keys can outlive their column configuration. Their rows are
     // bounded now; their columns are bounded when the breakpoint renders.
     if (!layout) continue;
-    const validated = validateLayoutInput(layout, { cols: cols[bp], maxRows });
+    const validated = boundLayoutInput(
+      layout,
+      { cols: cols[bp], maxRows },
+      warnScope
+    );
     if (validated !== layout) {
       output ??= { ...layouts };
       output[bp] = validated;

@@ -8,7 +8,12 @@
 /** A documented code such as "RGL_W002"; see docs/warnings.md. */
 export type WarningCode = `RGL_W${number}`;
 
-const warned = new WeakMap<object, Set<WarningCode>>();
+let warned = new WeakMap<object, Set<WarningCode>>();
+
+/** Forget every recorded warning. For tests of module-scoped warnings. */
+export function resetDevWarnings(): void {
+  warned = new WeakMap();
+}
 
 /**
  * True unless NODE_ENV is "production". Bundlers replace only the literal

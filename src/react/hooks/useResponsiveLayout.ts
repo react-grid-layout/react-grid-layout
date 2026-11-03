@@ -14,7 +14,7 @@ import type {
   ResponsiveLayouts,
   Compactor
 } from "../../core/types.js";
-import { validateLayoutInput } from "../../core/validation.js";
+import { boundLayoutInput } from "../../core/validation.js";
 import { cloneLayout } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
@@ -163,14 +163,15 @@ function copyInputs<B extends Breakpoint>(
 function resolveLayouts<B extends Breakpoint>(
   stored: StoredLayouts<B>,
   colsConfig: Breakpoints<B>,
-  maxRows: number | undefined
+  maxRows: number | undefined,
+  warnScope: object
 ): ResponsiveLayouts<B> {
   const layouts = { ...stored.generated };
   for (const bp of Object.keys(stored.inputs) as B[]) {
     const layout = stored.inputs[bp];
     if (!layout) continue;
     const cols = colsConfig[bp];
-    const validated = validateLayoutInput(layout, { cols, maxRows });
+    const validated = boundLayoutInput(layout, { cols, maxRows }, warnScope);
     // A saved key without cols keeps the consumer's item shape.
     (layouts as Record<B, Layout>)[bp] =
       cols === undefined ? validated : cloneLayout(validated);
@@ -225,11 +226,13 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // Keying cols on its content keeps `layouts` stable when cols is an inline
   // object with equal values.
   const colsKey = JSON.stringify(colsConfig);
+  // RGL_W002/W007 warn once per hook instance, not per render.
+  const warnScope = useRef({}).current;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const stableCols = useMemo(() => colsConfig, [colsKey]);
   const layouts = useMemo(
-    () => resolveLayouts(stored, stableCols, maxRows),
-    [stored, stableCols, maxRows]
+    () => resolveLayouts(stored, stableCols, maxRows, warnScope),
+    [stored, stableCols, maxRows, warnScope]
   );
 
   // Track previous values for change detection
