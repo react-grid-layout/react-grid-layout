@@ -91,6 +91,51 @@ describe("RGL_W002 once per grid", () => {
     expect(count("RGL_W002")).toBe(1);
   });
 
+  // The layout prop and the drop item are bounded at different layers; both
+  // must share the grid's scope.
+  const overSized = { enabled: true, onDragOver: () => ({ w: 40, h: 1 }) };
+  const dragOverTwice = (container: HTMLElement) => {
+    const drop = dropExternal(container);
+    try {
+      drop.enter({ x: 20, y: 20 });
+      drop.over({ x: 30, y: 20 });
+      drop.leave();
+    } finally {
+      drop.uninstall();
+    }
+  };
+
+  test("a clamped layout prop then an oversized dragover warns once", () => {
+    const view = render(
+      <GridLayout
+        width={1200}
+        layout={clamped}
+        gridConfig={{ cols: 12, rowHeight: 30 }}
+        dropConfig={overSized}
+      >
+        <div key="a" />
+      </GridLayout>
+    );
+    dragOverTwice(view.container);
+    expect(count("RGL_W002")).toBe(1);
+  });
+
+  test("Responsive: a clamped layout then an oversized dragover warns once", () => {
+    const view = render(
+      <ResponsiveGridLayout
+        width={1300}
+        layouts={{ lg: clamped }}
+        breakpoints={{ lg: 1200, sm: 0 }}
+        cols={{ lg: 12, sm: 2 }}
+        dropConfig={overSized}
+      >
+        <div key="a" />
+      </ResponsiveGridLayout>
+    );
+    dragOverTwice(view.container);
+    expect(count("RGL_W002")).toBe(1);
+  });
+
   test("Responsive with inline cols warns once across rerenders", () => {
     const layouts = { lg: clamped };
     const grid = () => (

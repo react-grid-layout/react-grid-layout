@@ -353,10 +353,13 @@ function synchronizeLayoutWithChildren(
 // Component
 // ============================================================================
 
+/** Internal: a wrapper passes its warning scope so the grid warns once. */
+type ResolvedGridLayoutProps = GridLayoutProps & { warnScope?: object };
+
 /**
  * GridLayout - A reactive, fluid grid layout with draggable, resizable components.
  */
-function GridLayout(props: GridLayoutProps): ReactElement {
+function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
   const {
     // Required
     children,
@@ -390,12 +393,15 @@ function GridLayout(props: GridLayoutProps): ReactElement {
     onResize: onResizeProp = noop,
     onResizeStop: onResizeStopProp = noop,
     onDrop: onDropProp = noop,
-    onDropDragOver: onDropDragOverProp = noop
+    onDropDragOver: onDropDragOverProp = noop,
+    warnScope: warnScopeProp
   } = props;
 
   const legacyEntry = useModernEntryDeprecations(props);
-  // RGL_W002/W007 warn once per grid, not per render or dragover.
-  const warnScope = useWarningScope();
+  // RGL_W002/W007 warn once per grid, not per render or dragover. A wrapper
+  // that bounds the layout prop shares its scope with the drop path here.
+  const ownWarnScope = useWarningScope();
+  const warnScope = warnScopeProp ?? ownWarnScope;
 
   // Resolve config interfaces with defaults
   const gridConfig: GridConfig = useMemo(
@@ -1579,7 +1585,7 @@ function UntrustedGridLayout(props: GridLayoutProps): ReactElement {
     if (validated !== authored) authoredLayouts.set(validated, authored);
     return validated;
   }, [props.layout, cols, maxRows, warnScope]);
-  return <GridLayout {...props} layout={layout} />;
+  return <GridLayout {...props} layout={layout} warnScope={warnScope} />;
 }
 // Keep the 2.x name for DevTools, WidthProvider labels and name selectors.
 UntrustedGridLayout.displayName = "GridLayout";

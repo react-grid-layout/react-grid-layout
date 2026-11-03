@@ -534,6 +534,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       compactor={compactor}
       onLayoutChange={handleLayoutChange}
       layout={effectiveLayout}
+      warnScope={warnScope}
     >
       {children}
     </GridLayout>
