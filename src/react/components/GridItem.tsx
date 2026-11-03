@@ -20,7 +20,7 @@ import {
   type EdgeScrollController
 } from "./edgeScroll.js";
 import clsx from "clsx";
-import { useDevWarning } from "./deprecations.js";
+import { devWarn } from "../../core/dev.js";
 
 import type {
   Position,
@@ -1018,15 +1018,18 @@ const W009 =
   "`calcStyle(pos)` returns its pixel style with `left` and `width` as " +
   "percentages of `containerWidth`.";
 
+/** RGL_W009 warns once per page: a grid of direct GridItems shares one cause. */
+const directGridItemScope = {};
+
 /** Direct use of GridItem: RGL_W009 for live position flags. */
 function DirectGridItem(props: GridItemProps): ReactElement {
-  useDevWarning(
+  const liveFlags =
     (props.useCSSTransforms !== undefined ||
       props.usePercentages !== undefined) &&
-      !props.positionStrategy?.calcStyle,
-    "RGL_W009",
-    W009
-  );
+    !props.positionStrategy?.calcStyle;
+  useEffect(() => {
+    if (liveFlags) devWarn(directGridItemScope, "RGL_W009", W009);
+  }, [liveFlags]);
   return GridItemInner(props);
 }
 
