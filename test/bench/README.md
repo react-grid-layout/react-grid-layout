@@ -35,6 +35,7 @@ are excluded. Each mouse event uses Testing Library's own `act` boundary.
 | `compact-horizontal`, `compact-none`, `compact-wrap` | 500         | One compaction of scattered statics with height 3                        |
 | `compact-fastVertical`, `compact-fastHorizontal`     | 500         | Same input through the fast compactors                                   |
 | `compact-horizontal/wrap-heavy`                      | 300         | Horizontal compaction of random rows in [0, n/4); most items wrap        |
+| `compact-fastHorizontal/wrap-heavy`                  | 500         | Fast horizontal compaction of random rows; most placements wrap          |
 | `breakpoint/packed`                                  | 500         | ResponsiveGridLayout width 1200 -> 600; 12 -> 6 columns                  |
 | `drop/packed`                                        | 500         | External desktop drag enter/over and drop, including placeholder cleanup |
 

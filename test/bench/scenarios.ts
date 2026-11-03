@@ -50,6 +50,27 @@ function mixed(size: number): Layout {
   return verticalCompactor.compact(correctBounds(layout, { cols }), cols);
 }
 
+/**
+ * Random columns and rows within a quarter of the item count, widths and
+ * heights 1-3, 3% static. Rows fill faster than items arrive, so most
+ * placements wrap past many filled rows.
+ */
+function wrapHeavyLayout(size: number): Layout {
+  const random = mulberry32(seed);
+  const int = (n: number) => Math.floor(random() * n);
+  return Array.from({ length: size }, (_, index) => {
+    const w = 1 + int(3);
+    return {
+      i: String(index),
+      x: int(cols - w + 1),
+      y: int(size / 4),
+      w,
+      h: 1 + int(3),
+      static: random() < 0.03
+    };
+  });
+}
+
 function dragFrame(layout: LayoutItem[], mid: number): Layout {
   const moved = moveElement(
     layout,
@@ -375,6 +396,17 @@ export function runScenarios(): Record<string, Counts> {
     results[`compact-${name}/statics-scattered/0500`] = counts;
   }
   results["compact-horizontal/wrap-heavy/0300"] = wrapHeavy(300);
+  const wrapInput = wrapHeavyLayout(500);
+  let wrapOutput: Layout = [];
+  const wrapCounts = measure(() => {
+    wrapOutput = fastHorizontalCompactor.compact(wrapInput, cols);
+  });
+  expect(wrapOutput).toHaveLength(wrapInput.length);
+  // Proves the fixture wraps: per-wrap work must show in the budget.
+  expect(
+    wrapCounts["extras/fastHorizontalCompactor.ts:nextRow"]
+  ).toBeGreaterThan(wrapInput.length);
+  results["compact-fastHorizontal/wrap-heavy/0500"] = wrapCounts;
   recordReact(500, "breakpoint");
   recordReact(500, "drop");
   for (const vector of securityVectors)
