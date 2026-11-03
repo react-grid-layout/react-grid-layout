@@ -7,6 +7,7 @@ import {
   moveElementAwayFromCollision
 } from "../../../src/core/layout";
 import { getCompactor } from "../../../src/core/compactors";
+import { moveWithoutMutation } from "../../../src/core/interaction/resolveDrag";
 import { wrapCompactor } from "../../../src/extras/wrapCompactor";
 import { assertLayout, capture, copy } from "../capture";
 import { expectGolden } from "../expectGolden";
@@ -434,15 +435,14 @@ function dragTrace(
           allowOverlap: false
         },
         a => {
-          moved = moveElement(
+          moved = moveWithoutMutation(
+            a.compactType,
             a.layout,
             a.l,
             a.x,
             a.y,
             a.isUserAction,
             a.preventCollision,
-            a.compactType,
-            a.cols,
             a.allowOverlap
           );
           assertLayout(initial, moved, { statics: true });
@@ -450,12 +450,12 @@ function dragTrace(
         },
         { clone: false }
       );
-      // onDrag receives the moved layout before compaction; its item is the
-      // live object looked up before moveElement and its placeholder is stale.
+      // onDrag receives the moved layout before compaction; its item is read
+      // from that layout (the move keeps order) and its placeholder is stale.
       const callback = copy({
         layout: moved,
         oldItem: oldDragItem,
-        newItem: item,
+        newItem: moved[currentLayout.indexOf(item)],
         placeholder
       });
       const compact = capture(
@@ -491,15 +491,14 @@ function dragTrace(
         allowOverlap: false
       },
       a => {
-        moved = moveElement(
+        moved = moveWithoutMutation(
+          a.compactType,
           a.layout,
           a.l,
           a.x,
           a.y,
           a.isUserAction,
           a.preventCollision,
-          a.compactType,
-          a.cols,
           a.allowOverlap
         );
         assertLayout(initial, moved, { statics: true });
@@ -507,6 +506,7 @@ function dragTrace(
       },
       { clone: false }
     );
+    const newItem = moved[layout.indexOf(item)];
     const compact = capture(
       { layout: moved, cols: 12 },
       a => {
@@ -524,7 +524,7 @@ function dragTrace(
       callback: copy({
         layout,
         oldItem: oldDragItem,
-        newItem: item,
+        newItem,
         placeholder: null
       }),
       oldLayout: copy(oldLayout),
@@ -584,7 +584,7 @@ describe("golden drag handler traces", () => {
     });
   });
 
-  it("knownBug b: mutating oldLayout produces a spurious layoutChange (B2)", () => {
+  it("fixed b: the oldLayout alias stays intact, so a net-zero drag reports no layoutChange (B2)", () => {
     // Normalize once exactly as a mounted GridLayout does, so missing optional
     // keys do not masquerade as the bug when deepEqual compares the true start.
     const layout = getCompactor("vertical").compact(
@@ -602,8 +602,8 @@ describe("golden drag handler traces", () => {
       }
     ];
     expectGolden("knownBug/b-old-layout-alias", {
-      knownBug:
-        "b: The oldLayout alias is mutated although final geometry equals the true drag-start snapshot, causing a spurious handler onLayoutChange.",
+      fixed:
+        "b: the grid moves copies (moveWithoutMutation), so the oldLayout alias stays intact and final geometry equal to the drag-start snapshot reports no layoutChange (RGL-11).",
       auditId: "B2",
       call: capture({ layout, gestures }, a =>
         dragTrace(a.layout, "vertical", a.gestures)

@@ -31,11 +31,13 @@ the generated files to retain this layout.
 Cases with a known defect contain `"knownBug": "<id>: <description>"`. Independent
 invariants still check ordinary cases. Add a new ID and a minimal reproducer when
 an invariant reveals a defect; do not repair production code in this corpus.
-The audit labels these B1–B16; letter IDs map as follows:
+The audit labels these B1–B16; letter IDs map as follows. A case whose defect
+has been fixed keeps its file and ID, and its `knownBug` key becomes
+`"fixed": "<id>: <description>"` naming the change that fixed it.
 
 | IDs                     | Behavior                                                        |
 | ----------------------- | --------------------------------------------------------------- |
-| a / B1, b / B2          | Stale moved flag; mutated drag baseline                         |
+| a / B1, b / B2          | Stale moved flag; mutated drag baseline (b fixed in RGL-11)     |
 | c / B3                  | Fast vertical nonfinite, bounds, fractions, order, static flags |
 | d / B4                  | Fast horizontal invalid rows, oversized items, overlap mode     |
 | e / B5                  | Wrap footprint overlap and infinite static-cell iteration       |
@@ -44,7 +46,7 @@ The audit labels these B1–B16; letter IDs map as follows:
 | k / B11, l / B12        | Zero calculated size; aspect ratio ignores height               |
 | m / B13, n / B14        | Wrap factory fallback; duplicate IDs                            |
 | o / B15                 | Suspected horizontal resolver early break, with a control       |
-| p / B16                 | Detached dragged item identity                                  |
+| p / B16                 | Detached item identity (public `moveElement` only, until 3.0)   |
 
 Additional IDs: `q` pins repeated-reference output holes; `q-move` pins horizontal
 push overflow; `q-move-static` pins static movement in a free-form swap; `r` pins
