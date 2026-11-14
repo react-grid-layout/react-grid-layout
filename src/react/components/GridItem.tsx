@@ -862,7 +862,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
     y,
     w,
     h,
-    dragging ? dragPositionRef.current : null,
+    dragging && (!dragPendingRef.current || droppingPosition)
+      ? dragPositionRef.current
+      : null,
     resizing ? resizePositionRef.current : null
   );
 
