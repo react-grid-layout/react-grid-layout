@@ -544,7 +544,7 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
     if (!deepEqual(layout, propsLayout)) {
       onLayoutChange(layout);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
   }, []); // Only run on mount
 
   // Sync layout from props

@@ -50,7 +50,7 @@ yarn dev
 ### Linting & Formatting
 
 ```bash
-# Run ESLint
+# Run oxlint
 yarn lint
 
 # Format code with Prettier (run before committing!)
@@ -209,7 +209,7 @@ const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
 - **Language**: TypeScript
 - **Build**: tsup (ESM + CJS + DTS)
 - **Testing**: Jest with @testing-library/react
-- **Linting**: ESLint 9 with flat config
+- **Linting**: oxlint (`.oxlintrc.json`)
 - **Formatting**: Prettier
 
 ## Examples

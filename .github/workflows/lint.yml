@@ -33,5 +33,5 @@ jobs:
       - name: Run Prettier
         run: yarn fmt:check
 
-      - name: Run ESLint/Flow
+      - name: Run oxlint
         run: yarn lint

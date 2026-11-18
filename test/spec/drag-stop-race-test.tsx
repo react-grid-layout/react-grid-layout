@@ -2,7 +2,9 @@ import React from "react";
 import { act, render } from "@testing-library/react";
 import GridLayout from "../../src/react/components/GridLayout";
 
-declare const globalThis: { IS_REACT_ACT_ENVIRONMENT?: boolean };
+const actGlobal = globalThis as typeof globalThis & {
+  IS_REACT_ACT_ENVIRONMENT?: boolean;
+};
 
 function mouse(type: string, clientX: number) {
   return new MouseEvent(type, {
@@ -16,10 +18,10 @@ function mouse(type: string, clientX: number) {
 }
 
 describe("#2291 onDragStop when the release beats the threshold render", () => {
-  const prevActEnv = globalThis.IS_REACT_ACT_ENVIRONMENT;
+  const prevActEnv = actGlobal.IS_REACT_ACT_ENVIRONMENT;
 
   afterEach(() => {
-    globalThis.IS_REACT_ACT_ENVIRONMENT = prevActEnv;
+    actGlobal.IS_REACT_ACT_ENVIRONMENT = prevActEnv;
   });
 
   it("ends a drag whose mouseup arrives before the drag start renders", async () => {
@@ -52,7 +54,7 @@ describe("#2291 onDragStop when the release beats the threshold render", () => {
       item.dispatchEvent(mouse("mousedown", 10));
     });
 
-    globalThis.IS_REACT_ACT_ENVIRONMENT = false;
+    actGlobal.IS_REACT_ACT_ENVIRONMENT = false;
     item.dispatchEvent(mouse("mousemove", 60));
     expect(onDragStart).toHaveBeenCalledTimes(1);
     item.dispatchEvent(mouse("mouseup", 60));

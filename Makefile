@@ -53,7 +53,7 @@ e2e: e2e-build
 	@$(EXEC) playwright test --config playwright.config.ts
 
 lint:
-	@$(EXEC) eslint --ext .js,.jsx,.ts,.tsx
+	@$(EXEC) oxlint
 
 test:
 	env NODE_ENV=test $(EXEC) jest --coverage
