@@ -439,6 +439,10 @@ function GridItemInner(props: GridItemProps): ReactElement {
         };
       }
 
+      // Parent rects include borders; item offsets start at the padding edge.
+      newPosition.left -= offsetParent.clientLeft;
+      newPosition.top -= offsetParent.clientTop;
+
       dragPositionRef.current = newPosition;
 
       // Start edge auto-scroll (#2232). Walk up from the dragged element
