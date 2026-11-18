@@ -222,22 +222,36 @@ it("preserves synchronous drag deltas when moves are batched", () => {
   expect(onDragStop).toHaveBeenCalledTimes(1);
 });
 
-it("does not trigger drag callbacks before the v2 threshold", () => {
+it("keeps the grid item geometry and does not trigger callbacks before the v2 threshold", () => {
   const onDragStart = jest.fn();
   const onDragStop = jest.fn();
   const { container } = render(
     <Modern
-      width={1200}
-      layout={[{ i: "a", x: 0, y: 0, w: 2, h: 2 }]}
+      width={1118.4}
+      layout={[{ i: "a", x: 4, y: 0, w: 2, h: 2 }]}
+      gridConfig={{
+        cols: 6,
+        margin: [12, 12],
+        containerPadding: [0, 0]
+      }}
       onDragStart={onDragStart}
       onDragStop={onDragStop}
     >
       <div key="a">a</div>
     </Modern>
   );
-  const item = container.querySelector(".react-grid-item")!;
+  const item = container.querySelector<HTMLElement>(".react-grid-item")!;
+  const { width, transform } = item.style;
+  expect(width).toBe("364px");
+
   mouse(item, "mousedown", 0, 0);
+  expect(item.style.width).toBe(width);
+  expect(item.style.transform).toBe(transform);
+
   mouse(document, "mousemove", 1, 1);
+  expect(item.style.width).toBe(width);
+  expect(item.style.transform).toBe(transform);
+
   mouse(document, "mouseup", 1, 1);
   expect(onDragStart).not.toHaveBeenCalled();
   expect(onDragStop).not.toHaveBeenCalled();
