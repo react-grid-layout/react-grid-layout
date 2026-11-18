@@ -1,5 +1,4 @@
 // @flow
-/* eslint-env jest */
 
 // Import directly from core modules (#2213)
 import {

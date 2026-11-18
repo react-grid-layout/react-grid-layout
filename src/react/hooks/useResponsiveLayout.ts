@@ -204,14 +204,14 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   const initialBreakpoint = useMemo(
     () => getBreakpointFromWidth(breakpoints, width),
     // Only calculate on mount, not on width changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
     []
   );
 
   const initialCols = useMemo(
     () => getColsFromBreakpoint(initialBreakpoint, colsConfig),
     // The original breakpoint may become stale after configuration changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
     []
   );
 
@@ -228,7 +228,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   const colsKey = JSON.stringify(colsConfig);
   // RGL_W002/W007 warn once per hook instance, not per render.
   const warnScope = useRef({}).current;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // oxlint-disable-next-line react/exhaustive-deps
   const stableCols = useMemo(() => colsConfig, [colsKey]);
   const layouts = useMemo(
     () => resolveLayouts(stored, stableCols, maxRows, warnScope),

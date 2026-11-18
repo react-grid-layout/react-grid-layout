@@ -1,5 +1,4 @@
 // @flow
-/* eslint-env jest */
 
 /**
  * Backwards Compatibility Tests

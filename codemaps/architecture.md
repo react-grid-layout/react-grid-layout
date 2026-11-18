@@ -30,7 +30,7 @@ src/
 - **Dev server**: webpack-dev-server (port 4002, `RGL_PORT`-configurable)
 - **Unit tests**: Jest + @testing-library/react (jsdom)
 - **E2E**: Playwright against static harness (`make e2e-build` → `yarn playwright test`)
-- **Lint**: ESLint 9 flat config + Prettier (`yarn fmt:check`)
+- **Lint**: oxlint (`.oxlintrc.json`) + Prettier (`yarn fmt:check`)
 - **Package manager**: yarn v1 (lockfile is v1 format; corepack yarn 4 breaks it)
 
 ## Key Architectural Patterns

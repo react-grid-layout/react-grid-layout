@@ -256,11 +256,11 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
   // Calculate initial state
   const initialBreakpoint = useMemo(() => {
     return propBreakpoint ?? getBreakpointFromWidth(breakpoints, width);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // oxlint-disable-line react/exhaustive-deps
 
   const initialCols = useMemo(() => {
     return getColsFromBreakpoint(initialBreakpoint, colsConfig);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // oxlint-disable-line react/exhaustive-deps
 
   // Use compactType for initial layout as compactor reference isn't stable here
   // findOrGenerateResponsiveLayout accepts both CompactType and Compactor (#2213)
@@ -274,7 +274,7 @@ export function ResponsiveGridLayoutInner<B extends Breakpoint = string>(
       compactType,
       colsConfig
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // oxlint-disable-line react/exhaustive-deps
 
   // State
   const [breakpoint, setBreakpoint] = useState<B>(initialBreakpoint);

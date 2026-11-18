@@ -30,8 +30,7 @@ infrastructure:
       - any-glob-to-any-file:
           - .github/**/*
           - .babelrc
-          - .eslintignore
-          - .eslintrc.json
+          - .oxlintrc.json
           - .flowconfig
           - .gitignore
           - .npmignore

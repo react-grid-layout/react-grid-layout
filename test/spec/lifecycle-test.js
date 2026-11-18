@@ -1,5 +1,4 @@
 // @flow
-/* eslint-env jest */
 
 import React, { StrictMode } from "react";
 import _ from "lodash";
