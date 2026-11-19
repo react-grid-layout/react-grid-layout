@@ -277,7 +277,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
 
   // Handle width changes
   useEffect(() => {
-    if (prevWidthRef.current === width) return;
+    const widthChanged = prevWidthRef.current !== width;
     prevWidthRef.current = width;
 
     // Determine new breakpoint
@@ -285,7 +285,8 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     const newCols = getColsFromBreakpoint(newBreakpoint, colsConfig);
 
     // Notify width change
-    onWidthChange?.(width, [10, 10], newCols, null);
+    if (widthChanged) onWidthChange?.(width, [10, 10], newCols, null);
+    if (newCols !== cols) setCols(newCols);
 
     // Check if breakpoint changed
     if (newBreakpoint !== breakpoint) {
@@ -308,7 +309,6 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
           generated: { ...prev.generated, [newBreakpoint]: newLayout }
         }));
       setBreakpoint(newBreakpoint);
-      setCols(newCols);
 
       // Notify breakpoint change
       onBreakpointChange?.(newBreakpoint, newCols);
@@ -321,6 +321,7 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
     colsConfig,
     maxRows,
     breakpoint,
+    cols,
     layouts,
     compactor,
     onBreakpointChange,
