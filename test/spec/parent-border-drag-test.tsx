@@ -83,12 +83,17 @@ describe.each([false, true])(
       scale => {
         const f = fixture(scale, customPosition);
         for (let attempt = 0; attempt < 2; attempt++) {
+          f.start.mockClear();
+          f.drag.mockClear();
+          f.stop.mockClear();
           mouse(f.tile, "mousedown", f.x, f.y);
+          expect(f.start).toHaveBeenCalledTimes(1);
           expect(f.start.mock.lastCall[3].newPosition).toEqual({
             left: 96,
             top: 68
           });
           mouse(document, "mousemove", f.x + 70, f.y + 45);
+          expect(f.drag).toHaveBeenCalledTimes(1);
           expect(f.drag.mock.lastCall[3].newPosition.left).toBeCloseTo(
             96 + 70 / scale
           );
@@ -96,11 +101,72 @@ describe.each([false, true])(
             68 + 45 / scale
           );
           mouse(document, "mouseup", f.x + 70, f.y + 45);
+          expect(f.stop).toHaveBeenCalledTimes(1);
           expect(f.stop.mock.lastCall[3].newPosition).toEqual(
             f.drag.mock.lastCall[3].newPosition
           );
         }
       }
     );
+  }
+);
+
+describe.each([false, true])(
+  "body offset parent (custom position: %s)",
+  customPosition => {
+    it.each([
+      ["position: static", false],
+      ["position: relative", true],
+      ["position: static; transform: translate(0px)", true],
+      ["position: static; translate: 0px", true],
+      ["position: static; perspective: 1000px", true],
+      ["position: static; filter: blur(0px)", true],
+      ["position: static; contain: layout", true],
+      ["position: static; will-change: transform", true]
+    ])("handles %s", (style, containingBlock) => {
+      const f = fixture(1, customPosition);
+      const body = document.body;
+      const oldStyle = body.style.cssText;
+      const properties = [
+        [body, "clientLeft", 6],
+        [body, "clientTop", 10],
+        [window, "scrollX", 40],
+        [window, "scrollY", 55]
+      ] as const;
+      const descriptors = properties.map(([target, name]) =>
+        Object.getOwnPropertyDescriptor(target, name)
+      );
+      const rect = jest.spyOn(body, "getBoundingClientRect");
+      try {
+        body.style.cssText = style as string;
+        properties.forEach(([target, name, value]) =>
+          Object.defineProperty(target, name, { configurable: true, value })
+        );
+        // A body margin and page scrolling must not become item offsets.
+        rect.mockReturnValue({ left: 13 - 40, top: 17 - 55 } as DOMRect);
+        Object.defineProperty(f.tile, "offsetParent", { value: body });
+        f.tile.getBoundingClientRect = () =>
+          ({
+            left: 96 - 40 + (containingBlock ? 13 + 6 : 0),
+            top: 68 - 55 + (containingBlock ? 17 + 10 : 0)
+          }) as DOMRect;
+        const tileRect = f.tile.getBoundingClientRect();
+        mouse(f.tile, "mousedown", tileRect.left + 20, tileRect.top + 20);
+        expect(f.start).toHaveBeenCalledTimes(1);
+        expect(f.start.mock.lastCall[3].newPosition).toEqual({
+          left: 96,
+          top: 68
+        });
+        mouse(document, "mouseup", tileRect.left + 20, tileRect.top + 20);
+      } finally {
+        rect.mockRestore();
+        body.style.cssText = oldStyle;
+        properties.forEach(([target, name], i) => {
+          const descriptor = descriptors[i];
+          if (descriptor) Object.defineProperty(target, name, descriptor);
+          else Reflect.deleteProperty(target, name);
+        });
+      }
+    });
   }
 );
