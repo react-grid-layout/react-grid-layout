@@ -93,6 +93,28 @@ function TestContainerWidthComponent({
 
 describe("React Hooks", () => {
   describe("useContainerWidth", () => {
+    it("measures the content width of a border-box container", () => {
+      function GridWrapper() {
+        const { width, containerRef } = useContainerWidth();
+        return (
+          <div
+            ref={containerRef}
+            style={{
+              boxSizing: "border-box",
+              width: 500,
+              padding: 15,
+              border: "5px solid"
+            }}
+          >
+            {width}
+          </div>
+        );
+      }
+
+      render(<GridWrapper />);
+      expect(screen.getByText("460")).toBeTruthy();
+    });
+
     it("returns containerRef and width", () => {
       const { result } = renderHook(() => useContainerWidth());
 
