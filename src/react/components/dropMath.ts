@@ -113,17 +113,23 @@ export function computeDropPosition(
   const scrollLeft = gridElement.scrollLeft ?? 0;
   const scrollTop = gridElement.scrollTop ?? 0;
   const rawGridX =
-    clientX - gridRect.left + scrollLeft + dragOffsetX - itemCenterOffsetX;
+    (clientX - gridRect.left) / transformScale +
+    scrollLeft +
+    dragOffsetX -
+    itemCenterOffsetX;
   const rawGridY =
-    clientY - gridRect.top + scrollTop + dragOffsetY - itemCenterOffsetY;
+    (clientY - gridRect.top) / transformScale +
+    scrollTop +
+    dragOffsetY -
+    itemCenterOffsetY;
 
   // Clamp to prevent negative positions (calcXY handles upper bound clamping)
   const clampedGridX = Math.max(0, rawGridX);
   const clampedGridY = Math.max(0, rawGridY);
 
   const newDroppingPosition: DroppingPosition = {
-    left: clampedGridX / transformScale,
-    top: clampedGridY / transformScale,
+    left: clampedGridX,
+    top: clampedGridY,
     e: event
   };
 

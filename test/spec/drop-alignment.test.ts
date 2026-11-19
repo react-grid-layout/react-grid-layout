@@ -1,3 +1,4 @@
+import { computeDropPosition } from "../../src/react/components/dropMath";
 /**
  * Test for PR #2167 - Dropping item alignment
  *
@@ -312,4 +313,40 @@ describe("PR #2167 - Drop item alignment", () => {
       expect(rawY_scroll - rawY_noScroll).toBe(scrollTop);
     });
   });
+});
+
+it("uses the same grid coordinates for scaled and unscaled external drops", () => {
+  const gridElement = document.createElement("div");
+  gridElement.scrollLeft = 40;
+  gridElement.scrollTop = 10;
+  jest
+    .spyOn(gridElement, "getBoundingClientRect")
+    .mockReturnValue({ left: 10, top: 20 } as DOMRect);
+  const input = {
+    gridElement,
+    droppingItem: { w: 1, h: 1 },
+    event: new Event("dragover"),
+    cols: 4,
+    margin: [0, 0] as [number, number],
+    maxRows: 20,
+    rowHeight: 50,
+    width: 400,
+    containerPadding: [0, 0] as [number, number]
+  };
+
+  const normal = computeDropPosition({
+    ...input,
+    clientX: 220,
+    clientY: 185,
+    transformScale: 1
+  });
+  const scaled = computeDropPosition({
+    ...input,
+    clientX: 115,
+    clientY: 102.5,
+    transformScale: 0.5
+  });
+
+  expect(normal.calculatedXY).toEqual({ x: 2, y: 3 });
+  expect(scaled).toEqual(normal);
 });
