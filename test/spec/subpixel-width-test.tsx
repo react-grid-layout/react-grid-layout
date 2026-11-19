@@ -177,6 +177,17 @@ describe("#2271 sub-pixel width stability", () => {
       widths.length = 0;
     });
 
+    it("keeps rendering when ResizeObserver is unavailable", () => {
+      const observer = globalThis.ResizeObserver;
+      try {
+        Reflect.deleteProperty(globalThis, "ResizeObserver");
+        render(<Wrapped />);
+        expect(widths[widths.length - 1]).toBe(1280);
+      } finally {
+        globalThis.ResizeObserver = observer;
+      }
+    });
+
     it("reports whole-pixel widths and ignores sub-pixel deltas", () => {
       render(<Wrapped />);
       act(() => {
