@@ -877,6 +877,30 @@ describe("React Hooks", () => {
       md: [{ i: "a", x: 0, y: 0, w: 3, h: 2, static: false, moved: false }]
     };
 
+    it("updates breakpoint columns when the responsive configuration changes", () => {
+      const { result, rerender } = renderHook(
+        ({ cols, minimum }) =>
+          useResponsiveLayout({
+            width: 800,
+            breakpoints: { sm: 0, lg: minimum },
+            cols: { sm: 3, lg: cols },
+            layouts
+          }),
+        { initialProps: { cols: 12, minimum: 600 } }
+      );
+
+      expect(result.current.breakpoint).toBe("lg");
+      expect(result.current.cols).toBe(12);
+
+      rerender({ cols: 8, minimum: 600 });
+      expect(result.current.breakpoint).toBe("lg");
+      expect(result.current.cols).toBe(8);
+
+      rerender({ cols: 8, minimum: 900 });
+      expect(result.current.breakpoint).toBe("sm");
+      expect(result.current.cols).toBe(3);
+    });
+
     it("returns breakpoint and layout info", () => {
       const { result } = renderHook(() =>
         useResponsiveLayout({
