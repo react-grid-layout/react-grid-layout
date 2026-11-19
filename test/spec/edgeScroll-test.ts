@@ -69,10 +69,10 @@ function makeContainer(
   } as unknown as HTMLElement;
 }
 
-function mockComputedStyle(overflowY: string) {
+function mockComputedStyle(overflowY: string, overflowX = "auto") {
   const orig = globalThis.getComputedStyle;
   (globalThis as any).getComputedStyle = () =>
-    ({ overflowY, overflowX: "auto" }) as CSSStyleDeclaration;
+    ({ overflowY, overflowX }) as CSSStyleDeclaration;
   return () => {
     (globalThis as any).getComputedStyle = orig;
   };
@@ -100,7 +100,7 @@ describe("edgeScroll (#2232)", () => {
     });
 
     it("does not scroll when no scrollable element exists", () => {
-      const restore = mockComputedStyle("visible"); // overflowY: visible -> not scrollable
+      const restore = mockComputedStyle("visible", "visible");
       const leaf = makeContainer();
       leaf.parentElement = null;
       const controller = createEdgeScrollController(leaf);
@@ -164,6 +164,43 @@ describe("edgeScroll (#2232)", () => {
 
       controller.stop();
       restore();
+    });
+
+    it("scrolls a container with horizontal overflow only", () => {
+      const restore = mockComputedStyle("hidden");
+      try {
+        const container = makeContainer({
+          scrollHeight: 200,
+          clientHeight: 200
+        });
+        const controller = createEdgeScrollController(container);
+        controller.feed(190, 100);
+        rafCallback!();
+        expect(container.scrollLeft).toBe(12);
+        controller.stop();
+      } finally {
+        restore();
+      }
+    });
+
+    it("finds a scroll container for each axis", () => {
+      const restore = mockComputedStyle("auto");
+      try {
+        const vertical = makeContainer({ scrollWidth: 200, clientWidth: 200 });
+        const horizontal = makeContainer({
+          scrollHeight: 200,
+          clientHeight: 200
+        });
+        Object.defineProperty(horizontal, "parentElement", { value: vertical });
+        const controller = createEdgeScrollController(horizontal);
+        controller.feed(190, 190);
+        rafCallback!();
+        expect(horizontal.scrollLeft).toBe(12);
+        expect(vertical.scrollTop).toBe(12);
+        controller.stop();
+      } finally {
+        restore();
+      }
     });
 
     it("scrolls left/right when near the horizontal edges", () => {

@@ -11,7 +11,7 @@
  * This module owns a single rAF loop per drag. createEdgeScrollController() is
  * called on the drag start, feed() on every drag move, and stop() on drag
  * stop/unmount. The loop reads the last pointer position and scrolls the
- * nearest scrollable element (the node itself or an ancestor) when the pointer
+ * nearest scrollable element on each axis when the pointer
  * is within the edge threshold.
  */
 
@@ -25,62 +25,68 @@ export interface EdgeScrollController {
 const EDGE_THRESHOLD = 50;
 const SCROLL_STEP = 12;
 
-function getNearestScrollable(node: HTMLElement | null): HTMLElement | null {
-  // Check the node itself first, then ancestors.
-  let el: HTMLElement | null = node;
-  while (el) {
-    const style = window.getComputedStyle(el);
-    const overflowY = style.overflowY;
-    const scrollable =
+function getScrollContainers(node: HTMLElement | null) {
+  let horizontal: HTMLElement | null = null;
+  let vertical: HTMLElement | null = null;
+  for (let el = node; el && (!horizontal || !vertical); el = el.parentElement) {
+    const { overflowX, overflowY } = window.getComputedStyle(el);
+    if (
+      !horizontal &&
+      (overflowX === "auto" || overflowX === "scroll") &&
+      el.scrollWidth > el.clientWidth
+    ) {
+      horizontal = el;
+    }
+    if (
+      !vertical &&
       (overflowY === "auto" || overflowY === "scroll") &&
-      el.scrollHeight > el.clientHeight;
-    if (scrollable) return el;
-    el = el.parentElement;
+      el.scrollHeight > el.clientHeight
+    ) {
+      vertical = el;
+    }
   }
-  return null;
+  return { horizontal, vertical };
 }
 
 export function createEdgeScrollController(
   node: HTMLElement | null
 ): EdgeScrollController {
-  const scrollContainer: HTMLElement | null = getNearestScrollable(node);
+  const { horizontal, vertical } = getScrollContainers(node);
   let rafId: number | null = null;
   let lastX = 0;
   let lastY = 0;
   let running = false;
 
   function step() {
-    const container = scrollContainer;
-    if (!container) return;
+    if (!horizontal && !vertical) return;
 
-    const rect = container.getBoundingClientRect();
-    const { clientHeight, scrollTop, scrollHeight } = container;
-    const { scrollLeft, scrollWidth, clientWidth } = container;
+    const horizontalRect = horizontal?.getBoundingClientRect();
+    const verticalRect =
+      vertical === horizontal
+        ? horizontalRect
+        : vertical?.getBoundingClientRect();
 
-    let dy = 0;
-    let dx = 0;
-
-    if (lastY < rect.top + EDGE_THRESHOLD && scrollTop > 0) {
-      dy = -SCROLL_STEP;
-    } else if (
-      lastY > rect.bottom - EDGE_THRESHOLD &&
-      scrollTop + clientHeight < scrollHeight
-    ) {
-      dy = SCROLL_STEP;
+    if (vertical && verticalRect) {
+      const { clientHeight, scrollTop, scrollHeight } = vertical;
+      if (lastY < verticalRect.top + EDGE_THRESHOLD && scrollTop > 0) {
+        vertical.scrollTop -= SCROLL_STEP;
+      } else if (
+        lastY > verticalRect.bottom - EDGE_THRESHOLD &&
+        scrollTop + clientHeight < scrollHeight
+      ) {
+        vertical.scrollTop += SCROLL_STEP;
+      }
     }
-
-    if (lastX < rect.left + EDGE_THRESHOLD && scrollLeft > 0) {
-      dx = -SCROLL_STEP;
-    } else if (
-      lastX > rect.right - EDGE_THRESHOLD &&
-      scrollLeft + clientWidth < scrollWidth
-    ) {
-      dx = SCROLL_STEP;
-    }
-
-    if (dy !== 0 || dx !== 0) {
-      container.scrollTop += dy;
-      container.scrollLeft += dx;
+    if (horizontal && horizontalRect) {
+      const { clientWidth, scrollLeft, scrollWidth } = horizontal;
+      if (lastX < horizontalRect.left + EDGE_THRESHOLD && scrollLeft > 0) {
+        horizontal.scrollLeft -= SCROLL_STEP;
+      } else if (
+        lastX > horizontalRect.right - EDGE_THRESHOLD &&
+        scrollLeft + clientWidth < scrollWidth
+      ) {
+        horizontal.scrollLeft += SCROLL_STEP;
+      }
     }
 
     if (running) {
