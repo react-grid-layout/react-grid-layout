@@ -67,7 +67,7 @@ The `/legacy` entry keeps `droppingItem`, `onDropDragOver` and `data-grid` and d
 
 - **Drag**: `moveElement` sorts once per call instead of once per collision step. In a 2,000-item grid one `moveElement` call went from 958 sorts to 1, and from 1,916,977 `collides` calls to 9,967. [#2327](https://github.com/react-grid-layout/react-grid-layout/pull/2327)
 - **Compaction**: `verticalCompactor` and `horizontalCompactor` share one implementation and drop three O(n²) bookkeeping scans (`indexOf`, `findIndex`, `getStatics`). Output is byte-identical. [#2326](https://github.com/react-grid-layout/react-grid-layout/pull/2326)
-- **Compaction**: `verticalCompactor` and `horizontalCompactor` look up collisions in spatial indexes instead of rescanning the layout, on layouts with integer geometry and unique ids. 3,000-item vertical layouts compact 16-43x faster and 1,000-item horizontal layouts 10-15x faster. Output is byte-identical; other layouts take the old path. [#2351](https://github.com/react-grid-layout/react-grid-layout/pull/2351)
+- **Compaction**: `verticalCompactor` and `horizontalCompactor` look up collisions in spatial indexes instead of rescanning the layout, on layouts of 64 or more items with integer geometry, unique ids and at most 48 columns. 3,000-item vertical layouts compact 16-43x faster and 1,000-item horizontal layouts 10-15x faster. Output is byte-identical; other layouts take the old path. [#2351](https://github.com/react-grid-layout/react-grid-layout/pull/2351)
 
 ### Dependencies
 
