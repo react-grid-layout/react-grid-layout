@@ -439,6 +439,54 @@ function GridItemInner(props: GridItemProps): ReactElement {
         };
       }
 
+      // Body may be offsetParent even when the initial containing block,
+      // rather than the body padding box, positions the item.
+      const view = node.ownerDocument.defaultView;
+      const bodyStyle =
+        offsetParent === node.ownerDocument.body
+          ? view?.getComputedStyle(offsetParent)
+          : undefined;
+      const bodyIsFallback =
+        bodyStyle &&
+        bodyStyle.position === "static" &&
+        bodyStyle.transformStyle !== "preserve-3d" &&
+        [
+          bodyStyle.transform,
+          bodyStyle.translate,
+          bodyStyle.rotate,
+          bodyStyle.scale,
+          bodyStyle.perspective,
+          bodyStyle.filter,
+          bodyStyle.backdropFilter
+        ].every(value => !value || value === "none") &&
+        !/(layout|paint|strict|content)/.test(bodyStyle.contain) &&
+        !/(transform|translate|rotate|scale|perspective|filter|contain)/.test(
+          bodyStyle.willChange
+        ) &&
+        bodyStyle.contentVisibility !== "auto";
+
+      if (bodyIsFallback && view) {
+        newPosition.left +=
+          pLeft - offsetParent.scrollLeft + view.scrollX / transformScale;
+        newPosition.top +=
+          pTop - offsetParent.scrollTop + view.scrollY / transformScale;
+        // A translation with auto insets starts at the static position,
+        // not the document origin. offsetLeft/Top include that displacement
+        // but exclude the transform itself.
+        if (node.style.transform && node.style.transform !== "none") {
+          if (!node.style.left || node.style.left === "auto") {
+            newPosition.left -= node.offsetLeft;
+          }
+          if (!node.style.top || node.style.top === "auto") {
+            newPosition.top -= node.offsetTop;
+          }
+        }
+      } else {
+        // Parent rects include borders; item offsets start at the padding edge.
+        newPosition.left -= offsetParent.clientLeft;
+        newPosition.top -= offsetParent.clientTop;
+      }
+
       dragPositionRef.current = newPosition;
 
       // Start edge auto-scroll (#2232). Walk up from the dragged element
