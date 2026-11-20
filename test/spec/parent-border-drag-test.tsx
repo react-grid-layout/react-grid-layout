@@ -122,7 +122,10 @@ describe.each([false, true])(
       ["position: static; perspective: 1000px", true],
       ["position: static; filter: blur(0px)", true],
       ["position: static; contain: layout", true],
-      ["position: static; will-change: transform", true]
+      ["position: static; will-change: transform", true],
+      ["position: static; transform-style: preserve-3d", true],
+      ["position: static; transform-style: preserve-3d; opacity: 0.9", true],
+      ["position: static; transform-style: preserve-3d; overflow: hidden", true]
     ])("handles %s", (style, containingBlock) => {
       const f = fixture(1, customPosition);
       const body = document.body;
@@ -166,6 +169,41 @@ describe.each([false, true])(
           if (descriptor) Object.defineProperty(target, name, descriptor);
           else Reflect.deleteProperty(target, name);
         });
+      }
+    });
+  }
+);
+
+// Auto insets retain the static position, including body margins and borders.
+describe.each([false, true])(
+  "body static origin (custom position: %s)",
+  customPosition => {
+    it("keeps a translated item at its static origin", () => {
+      const f = fixture(1, customPosition);
+      const body = document.body;
+      const previousStyle = body.style.cssText;
+      const rect = jest.spyOn(body, "getBoundingClientRect");
+      try {
+        body.style.cssText =
+          "position:static;margin:17px 13px;border-left:6px solid;border-top:10px solid";
+        rect.mockReturnValue({ left: 13, top: 17 } as DOMRect);
+        Object.defineProperties(f.tile, {
+          offsetParent: { value: body },
+          offsetLeft: { value: 19 },
+          offsetTop: { value: 27 }
+        });
+        f.tile.getBoundingClientRect = () =>
+          ({ left: 96 + 19, top: 68 + 27 }) as DOMRect;
+        mouse(f.tile, "mousedown", 135, 115);
+        expect(f.start).toHaveBeenCalledTimes(1);
+        expect(f.start.mock.lastCall[3].newPosition).toEqual({
+          left: 96,
+          top: 68
+        });
+        mouse(document, "mouseup", 135, 115);
+      } finally {
+        rect.mockRestore();
+        body.style.cssText = previousStyle;
       }
     });
   }

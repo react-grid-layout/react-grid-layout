@@ -449,6 +449,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
       const bodyIsFallback =
         bodyStyle &&
         bodyStyle.position === "static" &&
+        bodyStyle.transformStyle !== "preserve-3d" &&
         [
           bodyStyle.transform,
           bodyStyle.translate,
@@ -469,6 +470,17 @@ function GridItemInner(props: GridItemProps): ReactElement {
           pLeft - offsetParent.scrollLeft + view.scrollX / transformScale;
         newPosition.top +=
           pTop - offsetParent.scrollTop + view.scrollY / transformScale;
+        // A translation with auto insets starts at the static position,
+        // not the document origin. offsetLeft/Top include that displacement
+        // but exclude the transform itself.
+        if (node.style.transform && node.style.transform !== "none") {
+          if (!node.style.left || node.style.left === "auto") {
+            newPosition.left -= node.offsetLeft;
+          }
+          if (!node.style.top || node.style.top === "auto") {
+            newPosition.top -= node.offsetTop;
+          }
+        }
       } else {
         // Parent rects include borders; item offsets start at the padding edge.
         newPosition.left -= offsetParent.clientLeft;
