@@ -163,13 +163,15 @@ describe("#2271 sub-pixel width stability", () => {
 
     function Probe({
       width,
-      innerRef
+      innerRef,
+      style
     }: {
       width: number;
       innerRef?: React.Ref<HTMLDivElement>;
+      style?: React.CSSProperties;
     }) {
       widths.push(width);
-      return <div ref={innerRef} />;
+      return <div ref={innerRef} style={style} />;
     }
     const Wrapped = WidthProvider(Probe);
 
@@ -177,12 +179,12 @@ describe("#2271 sub-pixel width stability", () => {
       widths.length = 0;
     });
 
-    it("keeps rendering when ResizeObserver is unavailable", () => {
+    it("measures the mounted container without ResizeObserver", () => {
       const observer = globalThis.ResizeObserver;
       try {
         Reflect.deleteProperty(globalThis, "ResizeObserver");
-        render(<Wrapped />);
-        expect(widths[widths.length - 1]).toBe(1280);
+        render(<Wrapped measureBeforeMount style={{ width: 600.25 }} />);
+        expect(widths[widths.length - 1]).toBe(600);
       } finally {
         globalThis.ResizeObserver = observer;
       }
