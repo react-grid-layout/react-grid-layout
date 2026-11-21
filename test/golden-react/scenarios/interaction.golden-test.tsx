@@ -116,7 +116,7 @@ describe("native drag lifecycle", () => {
   });
 
   it.each([false, true])(
-    "pins click, below-threshold motion and discarded deltas, strict=%s",
+    "pins click, below-threshold motion and accumulated deltas, strict=%s",
     strict => {
       const f = mountGrid({
         variant: { name: strict ? "strict" : "normal", compact: null, strict }
@@ -131,7 +131,7 @@ describe("native drag lifecycle", () => {
       finish(
         "drag-threshold",
         f,
-        "threshold-deltas: pending drag adds dragging class and discards sub-threshold deltas"
+        "threshold-dragging-class: pending drag adds dragging class before the threshold"
       );
     }
   );
