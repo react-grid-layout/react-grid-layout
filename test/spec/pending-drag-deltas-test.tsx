@@ -21,7 +21,11 @@ function fixture(scale: number, threshold: number) {
   const start = jest.fn(),
     drag = jest.fn(),
     stop = jest.fn();
-  const { container } = render(
+  const content = (droppingPosition?: {
+    left: number;
+    top: number;
+    e: Event;
+  }) => (
     <div>
       <GridItem
         i="a"
@@ -41,6 +45,7 @@ function fixture(scale: number, threshold: number) {
         positionStrategy={createScaledStrategy(scale)}
         transformScale={scale}
         dragThreshold={threshold}
+        droppingPosition={droppingPosition}
         onDragStart={start}
         onDrag={drag}
         onDragStop={stop}
@@ -49,16 +54,67 @@ function fixture(scale: number, threshold: number) {
       </GridItem>
     </div>
   );
+  const { container, rerender } = render(content());
   const tile = container.querySelector<HTMLElement>('[data-testid="tile"]')!;
   const parent = tile.parentElement!;
   Object.defineProperty(tile, "offsetParent", { value: parent });
   parent.getBoundingClientRect = () => ({ left: 0, top: 0 }) as DOMRect;
   tile.getBoundingClientRect = () =>
     ({ left: 96 * scale, top: 68 * scale }) as DOMRect;
-  return { tile, start, drag, stop, x: 120 * scale, y: 90 * scale };
+  return {
+    tile,
+    start,
+    drag,
+    stop,
+    x: 120 * scale,
+    y: 90 * scale,
+    drop(dx: number, dy: number) {
+      rerender(
+        content({
+          left: 96 + dx / scale,
+          top: 68 + dy / scale,
+          e: new MouseEvent("dragover", {
+            clientX: 120 * scale + dx,
+            clientY: 90 * scale + dy
+          })
+        })
+      );
+    }
+  };
 }
 
 describe("pending drag deltas", () => {
+  it.each([0.5, 1, 2])(
+    "keeps dropping positions absolute at scale %s",
+    scale => {
+      const f = fixture(scale, 3);
+      f.drop(0, 0);
+      f.drop(1, 0);
+      f.drop(2, 0);
+      expect(f.start).not.toHaveBeenCalled();
+      expect(f.drag).not.toHaveBeenCalled();
+      f.drop(9, 4);
+      expect(f.start).toHaveBeenCalledTimes(1);
+      expect(f.drag).toHaveBeenCalledTimes(1);
+      expect(f.drag.mock.lastCall[3].newPosition).toEqual({
+        left: 96 + 9 / scale,
+        top: 68 + 4 / scale
+      });
+      f.drop(15, 7);
+      expect(f.drag).toHaveBeenCalledTimes(2);
+      expect(f.drag.mock.lastCall[3].newPosition).toEqual({
+        left: 96 + 15 / scale,
+        top: 68 + 7 / scale
+      });
+      f.drop(-6, -4);
+      expect(f.drag).toHaveBeenCalledTimes(3);
+      expect(f.drag.mock.lastCall[3].newPosition).toEqual({
+        left: 96 - 6 / scale,
+        top: 68 - 4 / scale
+      });
+    }
+  );
+
   it.each([0.5, 0.75, 1, 1.5, 2])(
     "retains movement across threshold and fresh gestures at scale %s",
     scale => {

@@ -838,9 +838,16 @@ function GridItemInner(props: GridItemProps): ReactElement {
         fakeData
       );
     } else if (shouldDrag) {
-      // Continue drag
-      const deltaX = droppingPosition.left - dragPositionRef.current.left;
-      const deltaY = droppingPosition.top - dragPositionRef.current.top;
+      // While pending, the rendered position has not advanced. Subtract the
+      // already accumulated displacement to supply consecutive deltas, just
+      // like DraggableCore does for native pointer events.
+      const pendingDelta = dragPendingRef.current
+        ? pendingDragDeltaRef.current
+        : { x: 0, y: 0 };
+      const deltaX =
+        droppingPosition.left - dragPositionRef.current.left - pendingDelta.x;
+      const deltaY =
+        droppingPosition.top - dragPositionRef.current.top - pendingDelta.y;
 
       const fakeData = {
         node,
