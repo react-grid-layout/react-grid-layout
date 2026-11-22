@@ -1334,6 +1334,14 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
   // Render Helpers
   // ============================================================================
 
+  const layoutById = useMemo(() => {
+    const index = new Map<string, LayoutItem>();
+    for (const item of layout) {
+      if (item && !index.has(item.i)) index.set(item.i, item);
+    }
+    return index;
+  }, [layout]);
+
   const processGridItem = useCallback(
     (
       child: ReactElement,
@@ -1341,7 +1349,7 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
     ): ReactElement | null | undefined => {
       if (!child || !child.key) return null;
 
-      const l = getLayoutItem(layout, String(child.key));
+      const l = layoutById.get(String(child.key));
       if (!l) return null;
 
       const draggable =
@@ -1409,6 +1417,7 @@ function GridLayout(props: ResolvedGridLayoutProps): ReactElement {
     },
     [
       layout,
+      layoutById,
       width,
       cols,
       margin,
