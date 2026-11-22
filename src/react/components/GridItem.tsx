@@ -292,6 +292,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
   const dragPendingRef = useRef(false);
   const initialDragClientRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const thresholdExceededRef = useRef(false);
+  const pendingDragDeltaRef = useRef({ x: 0, y: 0 });
   // Auto-scroll controller for edge-scroll during drag (#2232)
   const edgeScrollRef = useRef<EdgeScrollController | null>(null);
   // Also stop it on unmount: the dropping placeholder is unmounted on drop
@@ -440,6 +441,7 @@ function GridItemInner(props: GridItemProps): ReactElement {
       }
 
       dragPositionRef.current = newPosition;
+      pendingDragDeltaRef.current = { x: 0, y: 0 };
 
       // Start edge auto-scroll (#2232). Walk up from the dragged element
       // (not offsetParent): offsetParent is the nearest positioned ancestor,
@@ -507,6 +509,10 @@ function GridItemInner(props: GridItemProps): ReactElement {
 
       // Threshold support (#2217) - check if we've exceeded the threshold
       if (dragPendingRef.current && !thresholdExceededRef.current) {
+        // DraggableCore advances its last pointer for every event, including
+        // moves below the threshold. Keep their signed, scale-adjusted deltas.
+        pendingDragDeltaRef.current.x += deltaX;
+        pendingDragDeltaRef.current.y += deltaY;
         const dx = mouseEvent.clientX - initialDragClientRef.current.x;
         const dy = mouseEvent.clientY - initialDragClientRef.current.y;
         const distance = Math.hypot(dx, dy);
@@ -515,6 +521,9 @@ function GridItemInner(props: GridItemProps): ReactElement {
           // Haven't exceeded threshold yet, don't trigger drag
           return;
         }
+
+        deltaX = pendingDragDeltaRef.current.x;
+        deltaY = pendingDragDeltaRef.current.y;
 
         // Threshold exceeded! Call onDragStartProp first, then continue with onDrag
         thresholdExceededRef.current = true;
@@ -829,9 +838,16 @@ function GridItemInner(props: GridItemProps): ReactElement {
         fakeData
       );
     } else if (shouldDrag) {
-      // Continue drag
-      const deltaX = droppingPosition.left - dragPositionRef.current.left;
-      const deltaY = droppingPosition.top - dragPositionRef.current.top;
+      // While pending, the rendered position has not advanced. Subtract the
+      // already accumulated displacement to supply consecutive deltas, just
+      // like DraggableCore does for native pointer events.
+      const pendingDelta = dragPendingRef.current
+        ? pendingDragDeltaRef.current
+        : { x: 0, y: 0 };
+      const deltaX =
+        droppingPosition.left - dragPositionRef.current.left - pendingDelta.x;
+      const deltaY =
+        droppingPosition.top - dragPositionRef.current.top - pendingDelta.y;
 
       const fakeData = {
         node,

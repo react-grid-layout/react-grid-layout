@@ -116,7 +116,7 @@ Changing a known-bug golden requires the same explanation as any other diff.
 | `legacy-responsive-bounds`     | legacy Responsive omits container resize constraints          |
 | `legacy-bounded-resize`        | resize measures the handle's parent item height               |
 | `data-grid-key-only-sync`      | edits to existing data-grid children are ignored              |
-| `threshold-deltas`             | pending drag changes class and loses small deltas             |
+| `threshold-dragging-class`     | pending drag changes class before the movement threshold      |
 | `touch-drop-ignores-overrides` | touch drop bypasses desktop size/offset callbacks             |
 | `touch-cancel-no-stop`         | native touchcancel leaves the internal drag active            |
 
