@@ -26,24 +26,12 @@ const EDGE_THRESHOLD = 50;
 const SCROLL_STEP = 12;
 
 function getScrollContainers(node: HTMLElement | null) {
-  let horizontal: HTMLElement | null = null;
-  let vertical: HTMLElement | null = null;
-  for (let el = node; el && (!horizontal || !vertical); el = el.parentElement) {
+  const horizontal: HTMLElement[] = [];
+  const vertical: HTMLElement[] = [];
+  for (let el = node; el; el = el.parentElement) {
     const { overflowX, overflowY } = window.getComputedStyle(el);
-    if (
-      !horizontal &&
-      (overflowX === "auto" || overflowX === "scroll") &&
-      el.scrollWidth > el.clientWidth
-    ) {
-      horizontal = el;
-    }
-    if (
-      !vertical &&
-      (overflowY === "auto" || overflowY === "scroll") &&
-      el.scrollHeight > el.clientHeight
-    ) {
-      vertical = el;
-    }
+    if (overflowX === "auto" || overflowX === "scroll") horizontal.push(el);
+    if (overflowY === "auto" || overflowY === "scroll") vertical.push(el);
   }
   return { horizontal, vertical };
 }
@@ -51,14 +39,20 @@ function getScrollContainers(node: HTMLElement | null) {
 export function createEdgeScrollController(
   node: HTMLElement | null
 ): EdgeScrollController {
-  const { horizontal, vertical } = getScrollContainers(node);
+  const candidates = getScrollContainers(node);
   let rafId: number | null = null;
   let lastX = 0;
   let lastY = 0;
   let running = false;
 
   function step() {
-    if (!horizontal && !vertical) return;
+    // Dragging can create overflow after the controller starts.
+    const horizontal = candidates.horizontal.find(
+      el => el.scrollWidth > el.clientWidth
+    );
+    const vertical = candidates.vertical.find(
+      el => el.scrollHeight > el.clientHeight
+    );
 
     const horizontalRect = horizontal?.getBoundingClientRect();
     const verticalRect =
@@ -98,7 +92,10 @@ export function createEdgeScrollController(
     feed(clientX: number, clientY: number) {
       lastX = clientX;
       lastY = clientY;
-      if (!running) {
+      if (
+        !running &&
+        (candidates.horizontal.length || candidates.vertical.length)
+      ) {
         running = true;
         rafId = requestAnimationFrame(step);
       }

@@ -183,6 +183,24 @@ describe("edgeScroll (#2232)", () => {
       }
     });
 
+    it("starts scrolling when horizontal overflow appears during a drag", () => {
+      const restore = mockComputedStyle("hidden");
+      const container = makeContainer({ scrollWidth: 200, scrollHeight: 200 });
+      const controller = createEdgeScrollController(container);
+      try {
+        controller.feed(190, 100);
+        rafCallback!();
+        expect(container.scrollLeft).toBe(0);
+
+        Object.defineProperty(container, "scrollWidth", { value: 400 });
+        rafCallback!();
+        expect(container.scrollLeft).toBe(12);
+      } finally {
+        controller.stop();
+        restore();
+      }
+    });
+
     it("finds a scroll container for each axis", () => {
       const restore = mockComputedStyle("auto");
       try {
