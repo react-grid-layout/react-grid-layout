@@ -7,6 +7,7 @@
 
 import React, { useState, useRef, useEffect, type ComponentType } from "react";
 import clsx from "clsx";
+import { getContentWidth } from "../getContentWidth.js";
 
 // ============================================================================
 // Types
@@ -75,6 +76,12 @@ export function WidthProvider<P extends { width: number }>(
     useEffect(() => {
       const node = elementRef.current;
       if (!(node instanceof HTMLElement)) return;
+
+      if (typeof ResizeObserver === "undefined") {
+        const measuredWidth = Math.round(getContentWidth(node));
+        setWidth(prev => (prev === measuredWidth ? prev : measuredWidth));
+        return;
+      }
 
       let rafId: number | null = null;
 
