@@ -15,7 +15,7 @@ import type {
   Compactor
 } from "../../core/types.js";
 import { boundLayoutInput } from "../../core/validation.js";
-import { cloneLayout } from "../../core/layout.js";
+import { cloneLayout, correctBounds } from "../../core/layout.js";
 import {
   getBreakpointFromWidth,
   getColsFromBreakpoint,
@@ -158,15 +158,31 @@ function copyInputs<B extends Breakpoint>(
  * The layouts a render exposes. Inputs are validated with this render's
  * config, every render, so no setter, effect or retained callback can store
  * bounds from another commit. Rows are always bounded; columns only where the
- * breakpoint has cols (see validateLayoutInput). Generated layouts are trusted.
+ * breakpoint has cols (see validateLayoutInput). Generated layouts are
+ * corrected only when they exceed the configured columns.
  */
 function resolveLayouts<B extends Breakpoint>(
   stored: StoredLayouts<B>,
   colsConfig: Breakpoints<B>,
   maxRows: number | undefined,
-  warnScope: object
+  warnScope: object,
+  compactor: Compactor
 ): ResponsiveLayouts<B> {
   const layouts = { ...stored.generated };
+  for (const bp of Object.keys(stored.generated) as B[]) {
+    const generated = stored.generated[bp];
+    const cols = colsConfig[bp];
+    if (
+      generated &&
+      cols !== undefined &&
+      generated.some(item => item.x + item.w > cols)
+    ) {
+      (layouts as Record<B, Layout>)[bp] = compactor.compact(
+        correctBounds(cloneLayout(generated), { cols }),
+        cols
+      );
+    }
+  }
   for (const bp of Object.keys(stored.inputs) as B[]) {
     const layout = stored.inputs[bp];
     if (!layout) continue;
@@ -231,8 +247,8 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // oxlint-disable-next-line react/exhaustive-deps
   const stableCols = useMemo(() => colsConfig, [colsKey]);
   const layouts = useMemo(
-    () => resolveLayouts(stored, stableCols, maxRows, warnScope),
-    [stored, stableCols, maxRows, warnScope]
+    () => resolveLayouts(stored, stableCols, maxRows, warnScope, compactor),
+    [stored, stableCols, maxRows, warnScope, compactor]
   );
 
   // Track previous values for change detection
@@ -242,7 +258,6 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
   // When using inline objects for layouts prop, we need to compare props to props
   // and state to state, not mix them up.
   const prevPropsLayoutsRef = useRef(unvalidatedLayouts);
-  const prevLayoutsRef = useRef(layouts);
 
   // Current layout for the active breakpoint - use compactor (#2213)
   const layout = useMemo(() => {
@@ -256,6 +271,9 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
       colsConfig
     );
   }, [layouts, breakpoints, breakpoint, cols, compactor, colsConfig]);
+
+  const prevLayoutRef = useRef(layout);
+  const prevLayoutsRef = useRef(layouts);
 
   // Set layout for a specific breakpoint
   // Setters store input only; validation happens when a render reads it, so
@@ -339,7 +357,11 @@ export function useResponsiveLayout<B extends Breakpoint = DefaultBreakpoints>(
 
   // Notify layout changes
   useEffect(() => {
-    if (!deepEqual(layouts, prevLayoutsRef.current)) {
+    if (
+      !deepEqual(layout, prevLayoutRef.current) ||
+      !deepEqual(layouts, prevLayoutsRef.current)
+    ) {
+      prevLayoutRef.current = layout;
       prevLayoutsRef.current = layouts;
       onLayoutChange?.(layout, layouts);
     }

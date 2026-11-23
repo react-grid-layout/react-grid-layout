@@ -901,6 +901,42 @@ describe("React Hooks", () => {
       expect(result.current.cols).toBe(3);
     });
 
+    it("reflows a cached generated layout after its column count shrinks", () => {
+      const { result, rerender } = renderHook(
+        ({ width, smallCols }) =>
+          useResponsiveLayout({
+            width,
+            breakpoints: { sm: 0, lg: 600 },
+            cols: { sm: smallCols, lg: 12 },
+            layouts: { lg: [{ i: "a", x: 4, y: 0, w: 6, h: 2 }] }
+          }),
+        { initialProps: { width: 800, smallCols: 8 } }
+      );
+
+      rerender({ width: 500, smallCols: 8 });
+      expect(result.current.layouts.sm?.[0]).toMatchObject({ w: 6 });
+      rerender({ width: 500, smallCols: 3 });
+
+      expect(result.current.layout[0]).toMatchObject({ x: 0, w: 3 });
+      expect(result.current.layouts.sm).toEqual(result.current.layout);
+    });
+
+    it("notifies when the active layout changes with the same saved layouts", () => {
+      const onLayoutChange = jest.fn();
+      const { result, rerender } = renderHook(
+        ({ width }) => useResponsiveLayout({ width, layouts, onLayoutChange }),
+        { initialProps: { width: 1300 } }
+      );
+
+      rerender({ width: 1100 });
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      expect(onLayoutChange).toHaveBeenLastCalledWith(
+        result.current.layout,
+        result.current.layouts
+      );
+    });
+
     it("returns breakpoint and layout info", () => {
       const { result } = renderHook(() =>
         useResponsiveLayout({
