@@ -877,6 +877,66 @@ describe("React Hooks", () => {
       md: [{ i: "a", x: 0, y: 0, w: 3, h: 2, static: false, moved: false }]
     };
 
+    it("updates breakpoint columns when the responsive configuration changes", () => {
+      const { result, rerender } = renderHook(
+        ({ cols, minimum }) =>
+          useResponsiveLayout({
+            width: 800,
+            breakpoints: { sm: 0, lg: minimum },
+            cols: { sm: 3, lg: cols },
+            layouts
+          }),
+        { initialProps: { cols: 12, minimum: 600 } }
+      );
+
+      expect(result.current.breakpoint).toBe("lg");
+      expect(result.current.cols).toBe(12);
+
+      rerender({ cols: 8, minimum: 600 });
+      expect(result.current.breakpoint).toBe("lg");
+      expect(result.current.cols).toBe(8);
+
+      rerender({ cols: 8, minimum: 900 });
+      expect(result.current.breakpoint).toBe("sm");
+      expect(result.current.cols).toBe(3);
+    });
+
+    it("reflows a cached generated layout after its column count shrinks", () => {
+      const { result, rerender } = renderHook(
+        ({ width, smallCols }) =>
+          useResponsiveLayout({
+            width,
+            breakpoints: { sm: 0, lg: 600 },
+            cols: { sm: smallCols, lg: 12 },
+            layouts: { lg: [{ i: "a", x: 4, y: 0, w: 6, h: 2 }] }
+          }),
+        { initialProps: { width: 800, smallCols: 8 } }
+      );
+
+      rerender({ width: 500, smallCols: 8 });
+      expect(result.current.layouts.sm?.[0]).toMatchObject({ w: 6 });
+      rerender({ width: 500, smallCols: 3 });
+
+      expect(result.current.layout[0]).toMatchObject({ x: 0, w: 3 });
+      expect(result.current.layouts.sm).toEqual(result.current.layout);
+    });
+
+    it("notifies when the active layout changes with the same saved layouts", () => {
+      const onLayoutChange = jest.fn();
+      const { result, rerender } = renderHook(
+        ({ width }) => useResponsiveLayout({ width, layouts, onLayoutChange }),
+        { initialProps: { width: 1300 } }
+      );
+
+      rerender({ width: 1100 });
+
+      expect(onLayoutChange).toHaveBeenCalledTimes(1);
+      expect(onLayoutChange).toHaveBeenLastCalledWith(
+        result.current.layout,
+        result.current.layouts
+      );
+    });
+
     it("returns breakpoint and layout info", () => {
       const { result } = renderHook(() =>
         useResponsiveLayout({
