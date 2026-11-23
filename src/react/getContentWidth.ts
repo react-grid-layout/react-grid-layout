@@ -7,7 +7,7 @@
  * is the wrapper's content box. `offsetWidth` is the border box, which adds the
  * wrapper's padding and border and over-measures by that much.
  *
- * Prefers the computed `width`, which is the used content-box width: fractional,
+ * Prefers the computed `width`, adjusted to the content box: fractional,
  * and unaffected by CSS transforms, so a scaled grid (see `transformScale`)
  * still measures its true layout width. `getBoundingClientRect()` would report
  * the transformed width instead.
@@ -30,14 +30,17 @@ export function getContentWidth(node: HTMLElement): number {
     return Number.isFinite(parsed) ? parsed : 0;
   };
 
-  // The used content-box width, matching ResizeObserver's contentRect.
+  const padding = px(style.paddingLeft) + px(style.paddingRight);
   const computed = Number.parseFloat(style.width);
-  if (Number.isFinite(computed)) return Math.max(0, computed);
+  if (Number.isFinite(computed)) {
+    const borderBoxExtras =
+      style.boxSizing === "border-box"
+        ? padding + px(style.borderLeftWidth) + px(style.borderRightWidth)
+        : 0;
+    return Math.max(0, computed - borderBoxExtras);
+  }
 
   // clientWidth is the padding box less any scrollbar; drop padding to
   // approximate the content box.
-  return Math.max(
-    0,
-    node.clientWidth - px(style.paddingLeft) - px(style.paddingRight)
-  );
+  return Math.max(0, node.clientWidth - padding);
 }

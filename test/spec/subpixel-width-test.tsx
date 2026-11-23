@@ -190,6 +190,27 @@ describe("#2271 sub-pixel width stability", () => {
       }
     });
 
+    it("measures the content width of a border-box container without ResizeObserver", () => {
+      const observer = globalThis.ResizeObserver;
+      try {
+        Reflect.deleteProperty(globalThis, "ResizeObserver");
+        render(
+          <Wrapped
+            measureBeforeMount
+            style={{
+              boxSizing: "border-box",
+              width: 600,
+              padding: "0 12px",
+              border: "3px solid red"
+            }}
+          />
+        );
+        expect(widths[widths.length - 1]).toBe(570);
+      } finally {
+        globalThis.ResizeObserver = observer;
+      }
+    });
+
     it("reports whole-pixel widths and ignores sub-pixel deltas", () => {
       render(<Wrapped />);
       act(() => {
